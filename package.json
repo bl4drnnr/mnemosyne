@@ -1,0 +1,16 @@
+{
+  "name": "mnemosyne",
+  "version": "0.0.1",
+  "description": "Mnemosyne is the project empowering secure document storage with blockchain technology.",
+  "scripts": {},
+  "keywords": [
+    "blockchain",
+    "btc",
+    "bitcoin"
+  ],
+  "workspaces": [
+    "./mnemosyne-web-interface/*"
+  ],
+  "author": "Mikhail Bahdashych <contact@mikhailbahdashych.me>",
+  "license": "MIT"
+}
