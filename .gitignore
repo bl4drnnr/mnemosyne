@@ -1,14 +1,11 @@
+.DS_Store
 .idea/
 mnemosyne-web-interface/.idea/
 mnemosyne-web-interface/mnemosyne-front/.idea/
 mnemosyne-web-interface/mnemosyne-api/.idea/
-
-# compiled output
 mnemosyne-web-interface/mnemosyne-api/dist
 mnemosyne-web-interface/mnemosyne-api/node_modules
 mnemosyne-web-interface/mnemosyne-api/package-lock.json
-
-# Logs
 mnemosyne-web-interface/mnemosyne-api/logs
 mnemosyne-web-interface/mnemosyne-api/*.log
 mnemosyne-web-interface/mnemosyne-api/npm-debug.log*
@@ -16,27 +13,17 @@ mnemosyne-web-interface/mnemosyne-api/pnpm-debug.log*
 mnemosyne-web-interface/mnemosyne-api/yarn-debug.log*
 mnemosyne-web-interface/mnemosyne-api/yarn-error.log*
 mnemosyne-web-interface/mnemosyne-api/lerna-debug.log*
-
-# OS
-.DS_Store
-
-# Tests
 mnemosyne-web-interface/mnemosyne-api/coverage
 mnemosyne-web-interface/mnemosyne-api/.nyc_output
-
-# IDEs and editors
 mnemosyne-web-interface/mnemosyne-api/.idea
 mnemosyne-web-interface/mnemosyne-api/.project
 mnemosyne-web-interface/mnemosyne-api/.classpath
 mnemosyne-web-interface/mnemosyne-api/.c9/
 mnemosyne-web-interface/mnemosyne-api/*.launch
 mnemosyne-web-interface/mnemosyne-api/.settings/
-
 mnemosyne-web-interface/mnemosyne-front/dist
 mnemosyne-web-interface/mnemosyne-front/node_modules
 mnemosyne-web-interface/mnemosyne-front/package-lock.json
-
-# Logs
 mnemosyne-web-interface/mnemosyne-front/logs
 mnemosyne-web-interface/mnemosyne-front/*.log
 mnemosyne-web-interface/mnemosyne-front/npm-debug.log*
@@ -44,19 +31,14 @@ mnemosyne-web-interface/mnemosyne-front/pnpm-debug.log*
 mnemosyne-web-interface/mnemosyne-front/yarn-debug.log*
 mnemosyne-web-interface/mnemosyne-front/yarn-error.log*
 mnemosyne-web-interface/mnemosyne-front/lerna-debug.log*
-
-# Tests
 mnemosyne-web-interface/mnemosyne-front/coverage
 mnemosyne-web-interface/mnemosyne-front/.nyc_output
-
-# IDEs and editors
 mnemosyne-web-interface/mnemosyne-front/.idea
 mnemosyne-web-interface/mnemosyne-front/.project
 mnemosyne-web-interface/mnemosyne-front/.classpath
 mnemosyne-web-interface/mnemosyne-front/.c9/
 mnemosyne-web-interface/mnemosyne-front/*.launch
 mnemosyne-web-interface/mnemosyne-front/.settings/
-
 mnemosyne-web-interface/mnemosyne-front/.angular/cache
 mnemosyne-web-interface/mnemosyne-front/.sass-cache/
 mnemosyne-web-interface/mnemosyne-front/connect.lock
