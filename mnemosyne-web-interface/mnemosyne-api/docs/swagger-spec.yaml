@@ -25,6 +25,31 @@ paths:
       responses:
         "200":
           description: ""
+  /api/roles:
+    post:
+      operationId: RolesController_createRole
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRoleDto"
+      responses:
+        "201":
+          description: ""
+  "/api/roles/{value}":
+    get:
+      operationId: RolesController_getRoleByValue
+      parameters:
+        - name: value
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.
@@ -35,5 +60,8 @@ servers: []
 components:
   schemas:
     CreateUserDto:
+      type: object
+      properties: {}
+    CreateRoleDto:
       type: object
       properties: {}
