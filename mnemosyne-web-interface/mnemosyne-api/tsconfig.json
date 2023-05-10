@@ -20,7 +20,11 @@
     "paths": {
       "@shared/*": ["src/shared/services/*", "src/shared/*"],
       "@models/*": ["src/models/*"],
-      "@exceptions/*": ["src/exceptions/*"],
+      "@exceptions/*": [
+        "src/exceptions/*",
+        "src/exceptions/user",
+        "src/exceptions/role"
+      ],
       "@dto/*": [
         "src/dto/*",
         "src/dto/user/*",

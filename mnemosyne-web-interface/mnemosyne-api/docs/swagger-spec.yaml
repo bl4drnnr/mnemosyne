@@ -50,6 +50,32 @@ paths:
       responses:
         "200":
           description: ""
+  /api/auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: ""
+  /api/auth/registration:
+    post:
+      operationId: AuthController_registration
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.

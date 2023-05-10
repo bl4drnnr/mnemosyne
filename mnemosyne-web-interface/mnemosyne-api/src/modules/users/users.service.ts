@@ -11,6 +11,13 @@ export class UsersService {
     private readonly roleService: RolesService
   ) {}
 
+  async getUserByEmail(email: string) {
+    return await this.userRepository.findOne({
+      where: { email },
+      include: { all: true }
+    });
+  }
+
   async createUser(payload: CreateUserDto) {
     const defaultRole = await this.roleService.getRoleByValue('USER');
     const user = await this.userRepository.create(payload);

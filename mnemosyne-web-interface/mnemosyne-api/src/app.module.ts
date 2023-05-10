@@ -6,10 +6,13 @@ import { User } from '@models/user.model';
 import { RolesModule } from '@modules/roles.module';
 import { Role } from '@models/role.model';
 import { UserRole } from '@models/user-role.model';
+import { AuthModule } from '@modules/auth/auth.module';
+import { SharedModule } from '@shared/shared.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`
     }),
     SequelizeModule.forRoot({
@@ -23,9 +26,9 @@ import { UserRole } from '@models/user-role.model';
       autoLoadModels: true
     }),
     UsersModule,
-    RolesModule
-  ],
-  controllers: [],
-  providers: []
+    RolesModule,
+    AuthModule,
+    SharedModule
+  ]
 })
 export class AppModule {}
