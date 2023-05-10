@@ -9,6 +9,10 @@
     "prebuild": "rimraf dist",
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "dev:build": "docker-compose --env-file .env.development up --build",
+    "dev:down": "docker-compose --env-file .env.development down",
+    "dev": "docker-compose --env-file .env.development up",
+    "rmi": "docker rmi mnemosyne-api-api",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -22,12 +26,19 @@
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
+    "@nestjs/config": "^2.3.1",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@nestjs/sequelize": "^9.0.2",
     "@nestjs/swagger": "^6.3.0",
+    "cross-env": "^7.0.3",
+    "pg": "^8.10.0",
+    "pg-hstore": "^2.3.4",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "sequelize": "^6.31.1",
+    "sequelize-typescript": "^2.1.5"
   },
   "devDependencies": {
     "@nestjs/cli": "^8.0.0",

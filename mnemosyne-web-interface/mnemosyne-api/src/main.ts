@@ -7,7 +7,7 @@ import * as yaml from 'yaml';
 
 (async () => {
   const app = await NestFactory.create(AppModule);
-  const port = process.env.API_PORT;
+  const port = process.env.API_PORT || 3000;
 
   app.setGlobalPrefix('/api');
 

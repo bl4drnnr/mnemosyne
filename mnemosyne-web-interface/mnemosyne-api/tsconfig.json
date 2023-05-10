@@ -19,16 +19,21 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@shared/*": ["src/shared/services/*", "src/shared/*"],
-      "@models/*": ["src/models/*", "../common/models/*"],
-      "@exceptions/*": ["src/exceptions/*", "../common/exceptions/*"],
-      "@dto/*": ["src/dto/*", "../common/dto/*"],
-      "@events/*": ["src/events/*", "../common/events/*"],
+      "@models/*": ["src/models/*"],
+      "@exceptions/*": ["src/exceptions/*"],
+      "@dto/*": [
+        "src/dto/*",
+        "src/dto/user/*",
+        "src/dto/role/*"
+      ],
+      "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],
       "@decorators/*": ["src/decorators/*"],
       "@middlewares/*": ["src/middlewares/*"],
       "@modules/*": [
         "src/modules/*",
-        "src/modules/user/*"
+        "src/modules/users/*",
+        "src/modules/roles/*"
       ]
     }
   }

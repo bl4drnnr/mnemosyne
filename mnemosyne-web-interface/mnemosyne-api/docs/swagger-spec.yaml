@@ -1,5 +1,30 @@
 openapi: 3.0.0
-paths: {}
+paths:
+  /api/users:
+    post:
+      operationId: UsersController_createUser
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: ""
+  "/api/users/{id}":
+    get:
+      operationId: UsersController_getUserById
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.
@@ -8,4 +33,7 @@ info:
 tags: []
 servers: []
 components:
-  schemas: {}
+  schemas:
+    CreateUserDto:
+      type: object
+      properties: {}
