@@ -2,7 +2,15 @@
   "name": "mnemosyne",
   "version": "0.0.1",
   "description": "Mnemosyne is the project empowering secure document storage with blockchain technology.",
-  "scripts": {},
+  "scripts": {
+    "api:dev:build": "npm run dev:build --workspace=mnemosyne-api",
+    "api:dev:down": "npm run dev:down --workspace=mnemosyne-api",
+    "api:dev": "npm run dev --workspace=mnemosyne-api",
+    "api:rmi": "npm run rmi --workspace=mnemosyne-api",
+    "api:format": "npm run format --workspace=mnemosyne-api",
+    "front:dev": "npm run watch --workspace=mnemosyne-front",
+    "front:build": "npm run build --workspace=mnemosyne-front"
+  },
   "keywords": [
     "blockchain",
     "btc",

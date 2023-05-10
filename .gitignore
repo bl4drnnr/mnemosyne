@@ -45,3 +45,6 @@ mnemosyne-web-interface/mnemosyne-front/connect.lock
 mnemosyne-web-interface/mnemosyne-front/libpeerconnection.log
 mnemosyne-web-interface/mnemosyne-front/testem.log
 mnemosyne-web-interface/mnemosyne-front/typings
+
+.env
+.env.*
