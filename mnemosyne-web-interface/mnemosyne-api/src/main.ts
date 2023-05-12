@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
 import * as fs from 'fs';
 import * as yaml from 'yaml';
+import { ValidationPipe } from '@pipes/validation.pipe';
 
 (async () => {
   const app = await NestFactory.create(AppModule);
@@ -22,6 +23,8 @@ import * as yaml from 'yaml';
 
   app.use(bodyParser.json({ limit: '50mb' }));
   app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+
+  app.useGlobalPipes(new ValidationPipe());
 
   fs.writeFileSync('./docs/swagger-spec.json', JSON.stringify(document));
   fs.writeFileSync('./docs/swagger-spec.yaml', yamlString);

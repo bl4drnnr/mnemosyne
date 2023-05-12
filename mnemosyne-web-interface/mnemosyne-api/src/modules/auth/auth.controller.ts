@@ -1,6 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from '@modules/auth/auth.service';
 import { CreateUserDto } from '@dto/create-user.dto';
+import { Roles } from '@decorators/roles.decorator';
+import { RoleGuard } from '@guards/role.guard';
+import { AuthGuard } from '@guards/auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -12,6 +15,8 @@ export class AuthController {
   }
 
   @Post('registration')
+  @Roles('ADMIN', 'MANAGER')
+  @UseGuards(AuthGuard, RoleGuard)
   registration(@Body() payload: CreateUserDto) {
     return this.authService.registration(payload);
   }

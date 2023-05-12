@@ -22,7 +22,6 @@ export class UsersService {
     const defaultRole = await this.roleService.getRoleByValue('USER');
     const user = await this.userRepository.create(payload);
     await user.$set('roles', [defaultRole.id]);
-    return user;
   }
 
   async getUserById(id: string) {
