@@ -19,7 +19,7 @@ export class RoleGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const requiredRoles = this.reflector.getAllAndOverride<Array<string>>(
       ROLES_KEY,
-      [context.getHandler, context.getClass]
+      [context.getHandler(), context.getClass()]
     );
 
     if (!requiredRoles) return true;

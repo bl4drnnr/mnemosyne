@@ -23,8 +23,8 @@ export class AuthService {
     if (!user) throw new UserDoesntExistException();
 
     const passwordEquals = await bcryptjs.compare(
-      user.password,
-      payload.password
+      payload.password,
+      user.password
     );
 
     if (!passwordEquals) throw new WrongCredentialsException();

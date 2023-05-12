@@ -17,5 +17,7 @@ export class ValidationPipe implements PipeTransform<any> {
       });
       throw new ValidationException(messages);
     }
+
+    return object;
   }
 }

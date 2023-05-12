@@ -15,9 +15,14 @@ export class AuthController {
   }
 
   @Post('registration')
-  @Roles('ADMIN', 'MANAGER')
-  @UseGuards(AuthGuard, RoleGuard)
   registration(@Body() payload: CreateUserDto) {
     return this.authService.registration(payload);
+  }
+
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RoleGuard)
+  @Post('test')
+  test() {
+    //
   }
 }
