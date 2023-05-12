@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from '@modules/users.module';
@@ -9,13 +9,14 @@ import { ApiConfigService } from '@shared/config.service';
   controllers: [AuthController],
   providers: [AuthService],
   imports: [
-    UsersModule,
+    forwardRef(() => UsersModule),
     JwtModule.registerAsync({
       useFactory: async (configService: ApiConfigService) => ({
         secret: configService.jwtAuthConfig.secret
       }),
       inject: [ApiConfigService]
     })
-  ]
+  ],
+  exports: [AuthService, JwtModule]
 })
 export class AuthModule {}

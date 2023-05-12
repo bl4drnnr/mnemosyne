@@ -20,6 +20,7 @@
     "paths": {
       "@shared/*": ["src/shared/services/*", "src/shared/*"],
       "@models/*": ["src/models/*"],
+      "@pipes/*": ["src/pipes/*"],
       "@exceptions/*": [
         "src/exceptions/*",
         "src/exceptions/user",
