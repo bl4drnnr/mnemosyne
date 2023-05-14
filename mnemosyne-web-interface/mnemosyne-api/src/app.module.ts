@@ -15,6 +15,10 @@ import { AuthModule } from '@modules/auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
 import { Session } from '@models/session.model';
+import { Endpoint } from '@models/endpoint.model';
+import { AccessControlList } from '@models/access-control-list.model';
+import { AclEndpoint } from '@models/acl-endpoint.model';
+import { AclRole } from '@models/acl-role.model';
 
 @Module({
   imports: [
@@ -29,7 +33,16 @@ import { Session } from '@models/session.model';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      models: [User, Role, UserRole, Session],
+      models: [
+        User,
+        Role,
+        UserRole,
+        Session,
+        Endpoint,
+        AccessControlList,
+        AclEndpoint,
+        AclRole
+      ],
       autoLoadModels: true
     }),
     UsersModule,
