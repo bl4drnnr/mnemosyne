@@ -9,28 +9,18 @@ import {
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
-import { User } from '@models/user.model';
-import { UserRole } from '@models/user-role.model';
 import { AccessControlList } from '@models/access-control-list.model';
-import { AclRole } from '@models/acl-role.model';
+import { AclEndpoint } from '@models/acl-endpoint.model';
 
-interface RoleCreationAttributes {
-  value: string;
-  description: string;
-}
-
-@Table({ tableName: 'roles' })
-export class Role extends Model<Role, RoleCreationAttributes> {
+@Table({ tableName: 'endpoints' })
+export class Endpoint extends Model<Endpoint> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   id: string;
 
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
-  value: string;
-
-  @Column({ type: DataType.STRING, allowNull: false })
-  description: string;
+  name: string;
 
   @CreatedAt
   @Column({ field: 'created_at' })
@@ -40,9 +30,6 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   @Column({ field: 'updated_at' })
   updatedAt: Date;
 
-  @BelongsToMany(() => User, () => UserRole)
-  users: User[];
-
-  @BelongsToMany(() => AccessControlList, () => AclRole)
+  @BelongsToMany(() => AccessControlList, () => AclEndpoint)
   acl: AccessControlList[];
 }

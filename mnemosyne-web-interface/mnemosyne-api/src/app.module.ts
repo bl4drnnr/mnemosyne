@@ -11,9 +11,15 @@ import { User } from '@models/user.model';
 import { RolesModule } from '@modules/roles.module';
 import { Role } from '@models/role.model';
 import { UserRole } from '@models/user-role.model';
-import { AuthModule } from '@modules/auth/auth.module';
+import { AuthModule } from '@modules/auth.module';
 import { SharedModule } from '@shared/shared.module';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
+import { Session } from '@models/session.model';
+import { Endpoint } from '@models/endpoint.model';
+import { AccessControlList } from '@models/access-control-list.model';
+import { AclEndpoint } from '@models/acl-endpoint.model';
+import { AclRole } from '@models/acl-role.model';
+import { PermissionsModule } from '@modules/permissions.module';
 
 @Module({
   imports: [
@@ -28,13 +34,23 @@ import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      models: [User, Role, UserRole],
+      models: [
+        User,
+        Role,
+        UserRole,
+        Session,
+        Endpoint,
+        AccessControlList,
+        AclEndpoint,
+        AclRole
+      ],
       autoLoadModels: true
     }),
     UsersModule,
     RolesModule,
     AuthModule,
-    SharedModule
+    SharedModule,
+    PermissionsModule
   ]
 })
 export class AppModule implements NestModule {

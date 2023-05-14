@@ -4,6 +4,7 @@ import {
   CreatedAt,
   DataType,
   Default,
+  HasOne,
   Model,
   PrimaryKey,
   Table,
@@ -11,6 +12,7 @@ import {
 } from 'sequelize-typescript';
 import { Role } from '@models/role.model';
 import { UserRole } from '@models/user-role.model';
+import { Session } from '@models/session.model';
 
 interface UserCreationAttributes {
   email: string;
@@ -29,6 +31,9 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
+
+  @HasOne(() => Session)
+  session: Session;
 
   @CreatedAt
   @Column({ field: 'created_at' })
