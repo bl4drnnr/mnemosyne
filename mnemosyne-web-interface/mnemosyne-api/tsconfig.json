@@ -38,7 +38,9 @@
       "@modules/*": [
         "src/modules/*",
         "src/modules/users/*",
-        "src/modules/roles/*"
+        "src/modules/roles/*",
+        "src/modules/auth/*",
+        "src/modules/permissions/*"
       ]
     }
   }
