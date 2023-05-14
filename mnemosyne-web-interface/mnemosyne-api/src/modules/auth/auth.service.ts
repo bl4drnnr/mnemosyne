@@ -13,13 +13,13 @@ import { WrongCredentialsException } from '@exceptions/user/wrong-credentials.ex
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService
   ) {}
 
   async login(payload: CreateUserDto) {
-    const user = await this.userService.getUserByEmail(payload.email);
+    const user = await this.usersService.getUserByEmail(payload.email);
     if (!user) throw new UserDoesntExistException();
 
     const passwordEquals = await bcryptjs.compare(
@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   async registration(payload: CreateUserDto) {
-    const existingUser = await this.userService.getUserByEmail(payload.email);
+    const existingUser = await this.usersService.getUserByEmail(payload.email);
     if (existingUser) throw new UserAlreadyExistsException();
 
     const hashedPassword = await bcryptjs.hash(
@@ -41,7 +41,7 @@ export class AuthService {
       this.configService.hashPasswordRounds
     );
 
-    await this.userService.createUser({
+    await this.usersService.createUser({
       ...payload,
       password: hashedPassword
     });

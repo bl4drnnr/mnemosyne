@@ -29,12 +29,13 @@ export class RoleGuard implements CanActivate {
 
     if (!authHeader) throw new InvalidTokenException();
 
-    if (authHeader.split(' ')[0] !== 'Bearer' || !authHeader.split(' ')[1])
-      throw new CorruptedTokenException();
+    const bearer = authHeader.split(' ')[0];
+    const token = authHeader.split(' ')[1];
+
+    if (bearer !== 'Bearer' || !token) throw new CorruptedTokenException();
 
     try {
-      const user = this.jwtService.verify(authHeader.split(' ')[1]);
-      req.user = user;
+      const user = this.jwtService.verify(token);
       return user.roles.some((role) => requiredRoles.includes(role.value));
     } catch (e) {
       throw new ForbiddenResourceException();
