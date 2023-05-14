@@ -91,13 +91,6 @@ paths:
       responses:
         "200":
           description: ""
-  /api/auth/test:
-    post:
-      operationId: AuthController_test
-      parameters: []
-      responses:
-        "201":
-          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.

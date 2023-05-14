@@ -60,6 +60,7 @@ export class AuthService {
 
   async logout({ userId }: { userId: string }) {
     await this.sessionRepository.destroy({ where: { userId } });
+
     return new LoggedOutDto();
   }
 
