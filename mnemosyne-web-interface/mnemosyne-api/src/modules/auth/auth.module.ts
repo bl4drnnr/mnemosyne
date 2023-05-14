@@ -4,12 +4,15 @@ import { AuthService } from './auth.service';
 import { UsersModule } from '@modules/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ApiConfigService } from '@shared/config.service';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { Session } from '@models/session.model';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
   imports: [
     forwardRef(() => UsersModule),
+    SequelizeModule.forFeature([Session]),
     JwtModule.registerAsync({
       useFactory: async (configService: ApiConfigService) => ({
         secret: configService.jwtAuthConfig.secret

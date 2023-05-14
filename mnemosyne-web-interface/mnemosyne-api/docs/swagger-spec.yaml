@@ -77,6 +77,20 @@ paths:
       responses:
         "201":
           description: ""
+  /api/auth/logout:
+    get:
+      operationId: AuthController_logout
+      parameters: []
+      responses:
+        "200":
+          description: ""
+  /api/auth/refresh:
+    get:
+      operationId: AuthController_refreshTokens
+      parameters: []
+      responses:
+        "200":
+          description: ""
   /api/auth/test:
     post:
       operationId: AuthController_test

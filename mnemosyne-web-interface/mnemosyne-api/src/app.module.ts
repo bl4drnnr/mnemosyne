@@ -14,6 +14,7 @@ import { UserRole } from '@models/user-role.model';
 import { AuthModule } from '@modules/auth/auth.module';
 import { SharedModule } from '@shared/shared.module';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
+import { Session } from '@models/session.model';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      models: [User, Role, UserRole],
+      models: [User, Role, UserRole, Session],
       autoLoadModels: true
     }),
     UsersModule,
