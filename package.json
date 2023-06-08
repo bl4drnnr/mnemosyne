@@ -8,8 +8,9 @@
     "api:dev": "npm run dev --workspace=mnemosyne-api",
     "api:rmi": "npm run rmi --workspace=mnemosyne-api",
     "api:format": "npm run format --workspace=mnemosyne-api",
-    "front:dev": "npm run watch --workspace=mnemosyne-front",
+    "front:dev": "npm run start --workspace=mnemosyne-front",
     "front:build": "npm run build --workspace=mnemosyne-front",
+    "front:format": "npm run format --workspace=mnemosyne-front",
     "database:dev:init": "NODE_ENV=development npm run database:dev:init --workspace=mnemosyne-api",
     "database:dev:undo": "NODE_ENV=development npm run database:dev:undo --workspace=mnemosyne-api"
   },

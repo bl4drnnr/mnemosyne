@@ -20,7 +20,6 @@
     "@angular/platform-browser-dynamic": "^15.2.0",
     "@angular/router": "^15.2.0",
     "rxjs": "~7.8.0",
-    "styled-components": "^5.3.10",
     "tslib": "^2.3.0",
     "zone.js": "~0.12.0"
   },
@@ -29,7 +28,6 @@
     "@angular/cli": "~15.2.2",
     "@angular/compiler-cli": "^15.2.0",
     "@types/jasmine": "~4.3.0",
-    "@types/styled-components": "^5.1.26",
     "@typescript-eslint/eslint-plugin": "^5.59.9",
     "@typescript-eslint/parser": "^5.59.9",
     "eslint": "^8.42.0",
