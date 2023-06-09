@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'page-login',
@@ -7,8 +6,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  form = new FormGroup({
-    email: new FormControl<string>('', Validators.required),
-    password: new FormControl<string>('', Validators.required)
-  });
+  email: string;
+  password: string;
+
+  handleLogIn() {}
 }

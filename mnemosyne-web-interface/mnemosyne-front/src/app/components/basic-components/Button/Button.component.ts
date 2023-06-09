@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'basic-button',
@@ -11,8 +11,9 @@ export class ButtonComponent {
   @Input() isLoading = false;
   @Input() showError = false;
   @Input() errorMessage: string;
+  @Output() buttonClick = new EventEmitter<void>();
 
   onClick() {
-    // Handle button click event
+    this.buttonClick.emit();
   }
 }

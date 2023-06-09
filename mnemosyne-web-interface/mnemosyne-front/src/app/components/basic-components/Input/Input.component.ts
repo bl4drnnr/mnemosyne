@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'basic-input',
@@ -13,8 +13,9 @@ export class InputComponent {
   @Input() disabled = false;
   @Input() showError = false;
   @Input() errorMessage: string;
+  @Output() valueChange = new EventEmitter<string>();
 
   onInput() {
-    // Do something with the input value if needed
+    this.valueChange.emit(this.value);
   }
 }

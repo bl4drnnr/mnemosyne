@@ -3,12 +3,17 @@
     <basic-input
       label="Provide your email address"
       placeholder="Email"
+      (valueChange)="email = $event"
     />
     <basic-input
       label="Provide your password"
       placeholder="Password"
       type="password"
+      (valueChange)="password = $event"
     />
-    <basic-button label="Log in"/>
+    <basic-button
+      label="Log in"
+      (buttonClick)="handleLogIn()"
+    />
   </div>
 </div>
