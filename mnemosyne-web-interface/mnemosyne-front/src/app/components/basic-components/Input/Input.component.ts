@@ -1,12 +1,20 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-input',
+  selector: 'basic-input',
   templateUrl: './Input.component.html',
   styleUrls: ['./Input.component.scss']
 })
 export class InputComponent {
   @Input() label: string;
   @Input() type = 'text';
-  value: string;
+  @Input() placeholder: string;
+  @Input() value: string;
+  @Input() disabled = false;
+  @Input() showError = false;
+  @Input() errorMessage: string;
+
+  onInput() {
+    // Do something with the input value if needed
+  }
 }

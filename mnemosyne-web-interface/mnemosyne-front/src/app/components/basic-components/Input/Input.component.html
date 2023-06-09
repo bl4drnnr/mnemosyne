@@ -1,2 +1,15 @@
-<label>{{ label }}</label>
-<input [(ngModel)]="value" [type]="type" />
+<div
+  class="input-container"
+>
+  <p class="input-label" *ngIf="label">{{ label }}</p>
+  <input
+    class="input-field"
+    [ngClass]="{ 'disabled': disabled, 'error': showError }"
+    [disabled]="disabled"
+    [(ngModel)]="value"
+    [type]="type"
+    [placeholder]="placeholder"
+    (input)="onInput()"
+  />
+  <div class="error-message" *ngIf="showError">{{ errorMessage }}</div>
+</div>

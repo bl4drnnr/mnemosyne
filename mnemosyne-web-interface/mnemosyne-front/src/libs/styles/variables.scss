@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.h1,
+.h2,
+.h3,
+h1,
+h2,
+h3 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+$main-font: 'Montserrat', sans-serif;
+
+$second-color: #3fa9f5;
+$second-dark-color: #0070be;
+$second-bg-color: #5badef;
+$font-color-second: #2a75b8;
+$blue-ali: #0175be;
+
+$third-color: #ccc;
+$block-color: #a7a7a7;
+$third-semidark-color: #999999;
+$third-dark-color: #797979;
+
+$card-border: #f5f3f5;
+
+$placeholder-color: #b3b3b3;
+$image-placeholer: #f5f5f5;
+
+$successColor: #00ad00;
+$warnColor: #ff0000;
+$goldColor: #ffcc00;
+$hoverGoldColor: #e8ba00;
+
+$black: #000;
+
+$navbar-height: 100px;
+
+$color-main: #00a99d;
+$color-main-hover: #008c81;
+$color-main-shadow: #cfe6e5;
+$color-main-darker: #232d33;
+$color-light-grey: #e2e2e2;
+$text-color: #666666;
+$text-color-dark: #212529;
+$text-color-gray: #666666;
+
+$red-main: #e80f5b;
+
+$company-color: #f578c2;
+$brand-color: #f4c39a;
+$product-color: #88dca2;
+$inci-color: #67b9d3;
+$category-color: #f8dbf9;
+$enduse-color: #d2a83e;
+$family-color: #887cd3;
+$function-color: #f8ec90;
+$formulation-color: #00bffd;
+$industry-color: pink;
+$market-color: #a951fc;
+$submarket-color: #9af771;
+$warning-icon-color: #ff3300;
+
+$filter-grey-dark: #1e1e1e;
+$filter-grey-dark-hover: #2b2b2b;
+$filter-grey: #f4f4f4;
+$filter-grey-shadow: #a5a1a1;
+$filter-grey-background: #eee;
+$filter-dark-background: #1f2120;
+
+$color-white: #fff;
+$color-semi-red: #f24e54;
+
+$chat-list-item-border: #dadada;
+$color-main-messages: #e80f5b;
+$color-main-messages-hover: #ce3c25;
+
+$quote-red-color: #e80f5b;
+
+$color-main: #00a99d;
+$color-main-pressed: #04d4c5;
+$color-main-hover: #01beb1;
+$color-main-shadow: #e6f6f5;
+$color-accent: #e80f5b;
+$color-accent-pressed: #fa006b;
+$color-white: #ffffff;
+$color-lightgray: #f4f4f4;
+$color-shadow-light: #e5e5e5;
+$color-lightgray-second: #b6b6b6;
+$color-lightgray-third: #dadada;
+$color-mediumgray: #cccccc;
+$color-gray: #999999;
+$color-gray-third: #626262;
+$color-dark-grey: #525758;
+$color-error: #d70c0c;
+$color-warning: #f6841f;
+$color-success: #45a900;
+$color-black: #222c2e;
+$color-blue: #00aeff;
+$color-surface: rgba(105, 70, 82, 0.05);
+$color-shadow: rgba(0, 0, 0, 0.2);
+$color-search-text: #006f67;
+$color-tds-document: #00aeff;
+$color-sds-document: #ff6c5f;
+$color-brochure-document: #b84592;
+$color-other-document: #222c2e;
+$color-product-information-document: #ffc167;
+
+.z0 {
+  box-shadow: none;
+}
+.z1 {
+  box-shadow: 0 12px 12px -8px $color-shadow;
+}
+.z2 {
+  box-shadow: 0 16px 16px -8px $color-shadow;
+}
+.z3 {
+  box-shadow: 0 20px 24px -8px $color-shadow;
+}
+.z4 {
+  box-shadow: 0 24px 32px -8px $color-shadow;
+}
+.z1-forms {
+  box-shadow: 0 6px 8px -2px $color-shadow;
+}
+.z-bottom {
+  box-shadow: 0 -5px 24px -8px $color-shadow;
+}
+
+$z0-shadow: none;
+$z1-shadow: 0 12px 12px -8px $color-shadow;
+$z2-shadow: 0 16px 16px -8px $color-shadow;
+$z3-shadow: 0 20px 24px -8px $color-shadow;
+$z4-shadow: 0 24px 32px -8px $color-shadow;
+$z1-froms-shadow: 0 6px 8px -2px $color-shadow;
+$z-bottom-shadow: 0 -5px 24px -8px $color-shadow;
+
+$cta-border-radius: 4px;
+
+$static-gap: 15px;
+
+$screen-xs: 480px;
+
+$screen-m: 576px;
+
+$screen-sm: 768px;
+
+$screen-md: 992px;
+
+$screen-lg: 1200px;
+
+$screen-xl: 1400px;
+
+$screen-xs-max: ($screen-m - 1);
+$screen-m-max: ($screen-sm - 1);
+$screen-sm-max: ($screen-md - 1);
+$screen-md-max: ($screen-lg - 1);
+
+@mixin respond($media) {
+  @if $media==xs {
+    @media (max-width: $screen-xs-max) {
+      @content;
+    }
+  } @else if $media==m {
+    @media (min-width: $screen-m) and (max-width: $screen-m-max) {
+      @content;
+    }
+  } @else if $media==sm {
+    @media (min-width: $screen-sm) and (max-width: $screen-sm-max) {
+      @content;
+    }
+  } @else if $media==md {
+    @media (min-width: $screen-md) and (max-width: $screen-md-max) {
+      @content;
+    }
+  } @else if $media==lg {
+    @media (min-width: $screen-lg) {
+      @content;
+    }
+  } @else if $media==to_sm {
+    @media (max-width: $screen-sm-max) {
+      @content;
+    }
+  } @else if $media==to_m {
+    @media (max-width: $screen-m-max) {
+      @content;
+    }
+  } @else if $media==to_md {
+    @media (max-width: $screen-md-max) {
+      @content;
+    }
+  } @else if $media==from_m {
+    @media (min-width: $screen-m) {
+      @content;
+    }
+  } @else if $media==from_md {
+    @media (min-width: $screen-md) {
+      @content;
+    }
+  } @else if $media==from_sm {
+    @media (min-width: $screen-sm) {
+      @content;
+    }
+  } @else if $media==from_lg {
+    @media (min-width: $screen-lg) {
+      @content;
+    }
+  } @else if $media==from_lg {
+    @media (min-width: $screen-xl) {
+      @content;
+    }
+  }
+}
+
+@mixin respond_device($media) {
+  @if $media==xs {
+    @media only screen and (max-device-width: $screen-xs-max) {
+      @content;
+    }
+  } @else if $media==m {
+    @media only screen and (min-device-width: $screen-m) and (max-device-width: $screen-m-max) {
+      @content;
+    }
+  } @else if $media==sm {
+    @media only screen and (min-device-width: $screen-sm) and (max-device-width: $screen-sm-max) {
+      @content;
+    }
+  } @else if $media==md {
+    @media only screen and (min-device-width: $screen-md) and (max-device-width: $screen-md-max) {
+      @content;
+    }
+  } @else if $media==lg {
+    @media only screen and (min-device-width: $screen-lg) {
+      @content;
+    }
+  } @else if $media==to_sm {
+    @media only screen and (max-device-width: $screen-sm-max) {
+      @content;
+    }
+  } @else if $media==to_m {
+    @media only screen and (max-device-width: $screen-m-max) {
+      @content;
+    }
+  } @else if $media==to_md {
+    @media only screen and (max-device-width: $screen-md-max) {
+      @content;
+    }
+  } @else if $media==from_m {
+    @media only screen and (min-device-width: $screen-m) {
+      @content;
+    }
+  } @else if $media==from_md {
+    @media only screen and (min-device-width: $screen-md) {
+      @content;
+    }
+  } @else if $media==from_sm {
+    @media only screen and (min-device-width: $screen-sm) {
+      @content;
+    }
+  } @else if $media==from_lg {
+    @media only screen and (min-device-width: $screen-lg) {
+      @content;
+    }
+  }
+}
+
+@mixin imageRound() {
+  position: absolute;
+  height: 100%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+$z-index: (
+  fullscreen-search: 1040,
+  header: 1030,
+  footer: 1000,
+  sidebar: 1031,
+  datepicker: 15000,
+  modal-main: 10000,
+  modal: 1000,
+  modal-backdrop: 9999,
+  tooltip: 1000,
+  popover: 999,
+  button-swiper: 10,
+  side-box: 9,
+  span: 2,
+  background: 1,
+  background-about-us: 100,
+  step: 1,
+);
+
+@function z-index($key) {
+  @return map-get($z-index, $key);
+}
+@mixin z-index($key) {
+  z-index: z-index($key);
+}
