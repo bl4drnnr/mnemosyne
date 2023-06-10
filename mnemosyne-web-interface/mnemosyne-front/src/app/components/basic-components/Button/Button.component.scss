@@ -1,32 +1,53 @@
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: all 0.3s;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-}
+@import 'variables';
 
-.btn:hover {
-  background-color: #0056b3;
-}
+.btn-container {
+  width: 100%;
+  display: flex;
 
-.btn.disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+  .btn {
+    height: 36px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    transition: .3s;
 
-.btn.error {
-  background-color: red;
-}
+    .button-label {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0 5px;
+    }
 
-.error-message {
-  color: red;
-  font-size: 12px;
-  margin-top: 5px;
+    &.highHeight {
+      height: 48px;
+    }
+
+    &.disabled {
+      background-color: rgba($block-color, .20);
+      cursor: auto;
+    }
+
+    &.danger {
+      border: 1px solid rgb($warn-color, .5);
+      &:hover {
+        border: 1px solid rgb($warn-color, 1);
+        background-color: rgba($warn-color, .20);
+      }
+    }
+
+    &.fillDanger {
+      border: 1px solid $warn-color;
+      background-color: $warn-color;
+      &:hover {
+        background-color: $warn-color;
+        border: 1px solid $warn-color;
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      background-color: $color-white;
+    }
+  }
 }

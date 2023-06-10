@@ -1,11 +1,16 @@
-<button
-  class="btn"
-  [ngClass]="{ 'disabled': disabled, 'error': showError }"
-  [disabled]="disabled" (click)="onClick()"
->
-  <span *ngIf="isLoading">
-    <i class="fa fa-spinner fa-spin"></i> Loading...
-  </span>
-  <span *ngIf="!isLoading">{{ label }}</span>
-</button>
-<div class="error-message" *ngIf="showError">{{ errorMessage }}</div>
+<div class="btn-container">
+  <button
+    class="btn"
+    [ngClass]="{
+      'disabled': disabled,
+      'highHeight': highHeight,
+      'fillButton': fillButton,
+      'danger': danger,
+      'fillDanger': fillDanger
+    }"
+    [disabled]="disabled"
+    (click)="onClick()"
+  >
+    <p class="button-label">{{ label }}</p>
+  </button>
+</div>

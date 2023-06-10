@@ -11,5 +11,6 @@
     [placeholder]="placeholder"
     (input)="onInput()"
   />
-  <div class="error-message" *ngIf="showError">{{ errorMessage }}</div>
+  <p class="error-message" *ngIf="showError">{{ errorMessage }}</p>
+  <p class="input-description" *ngIf="inputDescription">{{ inputDescription }}</p>
 </div>

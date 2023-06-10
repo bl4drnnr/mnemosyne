@@ -26,12 +26,12 @@ $third-dark-color: #797979;
 $card-border: #f5f3f5;
 
 $placeholder-color: #b3b3b3;
-$image-placeholer: #f5f5f5;
+$image-placeholder: #f5f5f5;
 
-$successColor: #00ad00;
-$warnColor: #ff0000;
-$goldColor: #ffcc00;
-$hoverGoldColor: #e8ba00;
+$success-color: #00ad00;
+$warn-color: #ff0000;
+$gold-color: #ffcc00;
+$hover-gold-color: #e8ba00;
 
 $black: #000;
 
@@ -275,6 +275,7 @@ $screen-md-max: ($screen-lg - 1);
 }
 
 $z-index: (
+  loading: 9999,
   fullscreen-search: 1040,
   header: 1030,
   footer: 1000,

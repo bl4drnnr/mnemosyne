@@ -13,6 +13,7 @@ export class InputComponent {
   @Input() disabled = false;
   @Input() showError = false;
   @Input() errorMessage: string;
+  @Input() inputDescription: string;
   @Output() valueChange = new EventEmitter<string>();
 
   onInput() {

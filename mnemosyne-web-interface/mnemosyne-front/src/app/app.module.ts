@@ -8,6 +8,9 @@ import { ButtonComponent } from '@components/Button/Button.component';
 import { InputComponent } from '@components/Input/Input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from '@pages/registration/registration.component';
+import { LinkComponent } from '@components/Link/Link.component';
+import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { LoaderComponent } from '@components/Loader/Loader.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +18,10 @@ import { RegistrationComponent } from '@pages/registration/registration.componen
     LoginComponent,
     ButtonComponent,
     InputComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LinkComponent,
+    ForgotPasswordComponent,
+    LoaderComponent
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
   providers: [],

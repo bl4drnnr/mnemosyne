@@ -5,11 +5,33 @@
   align-items: center;
   justify-content: center;
 
+  .welcome-title {
+    text-align: center;
+
+    .main-title {
+      font-size: 48px;
+      margin: 0;
+    }
+
+    .second-title {
+      margin: 20px 0;
+      font-size: 32px;
+    }
+  }
+
   .login-window-wrapper {
-    width: 500px;
+    min-width: 500px;
     height: 500px;
     border: 1px solid rgba(0, 0, 0, .5);
     border-radius: 16px;
     padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .third-title {
+      margin: 0
+    }
   }
 }
