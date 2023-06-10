@@ -9,8 +9,10 @@ import { InputComponent } from '@components/Input/Input.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from '@pages/registration/registration.component';
 import { LinkComponent } from '@components/Link/Link.component';
-import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
+import { ForgotPasswordComponent } from '@pages/forgot-password/forgot-password.component';
 import { LoaderComponent } from '@components/Loader/Loader.component';
+import { HttpClientModule } from '@angular/common/http';
+import { GlobalMessageComponent } from '@components/global-message/global-message.component';
 
 @NgModule({
   declarations: [
@@ -21,9 +23,16 @@ import { LoaderComponent } from '@components/Loader/Loader.component';
     RegistrationComponent,
     LinkComponent,
     ForgotPasswordComponent,
-    LoaderComponent
+    LoaderComponent,
+    GlobalMessageComponent
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule
+  ],
   providers: [],
   bootstrap: [AppComponent]
 })

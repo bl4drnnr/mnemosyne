@@ -1,0 +1,33 @@
+.alert-container {
+  position: absolute;
+  top: 3px;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: max-content;
+
+  .alert-error {
+    background-color: #FECACA;
+    border: 1px solid #EF4444;
+    color: #EF4444;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    position: relative;
+    display: flex;
+  }
+
+  .alert-success {
+    background-color: #D1FAE5;
+    border: 1px solid #22C55E;
+    color: #22C55E;
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    position: relative;
+    display: flex;
+  }
+
+  .close-button {
+    margin-left: 25px;
+  }
+}
