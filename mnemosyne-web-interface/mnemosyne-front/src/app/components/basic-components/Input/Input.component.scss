@@ -1,0 +1,58 @@
+@import 'variables';
+
+.input-container {
+  position: relative;
+  margin-bottom: 20px;
+  width: 100%;
+
+  .input-label {
+    opacity: .9;
+    font-size: 14px;
+    margin: 14px 0;
+  }
+
+  .input-field {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    transition: all 0.3s;
+
+    &.high {
+      height: 48px;
+    }
+
+    &.onError {
+      border: 1px solid $color-error;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      background-color: $color-white;
+    }
+
+    &.error {
+      border: 1px solid red;
+    }
+
+    &.disabled {
+      opacity: 0.4;
+    }
+  }
+
+  .error-message {
+    color: $color-error;
+    font-size: small;
+    font-weight: 400;
+    margin-top: 5px;
+  }
+
+  .input-description {
+    font-size: small;
+    opacity: .5;
+    margin-top: 5px;
+  }
+}

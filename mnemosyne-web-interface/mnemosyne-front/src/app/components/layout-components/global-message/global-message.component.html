@@ -1,0 +1,7 @@
+<div *ngIf="globalMessageService.message$ | async as message" class="alert-container">
+  <div [ngClass]="globalMessageService.isError ? 'alert-error' : 'alert-success'" role="alert">
+    <p>{{ message }}</p>
+
+    <button class="close-button" (click)="globalMessageService.clear()">&times;</button>
+  </div>
+</div>

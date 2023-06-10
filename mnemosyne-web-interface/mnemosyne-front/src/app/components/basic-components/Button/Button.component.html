@@ -1,0 +1,16 @@
+<div class="btn-container">
+  <button
+    class="btn"
+    [ngClass]="{
+      'disabled': disabled,
+      'highHeight': highHeight,
+      'fillButton': fillButton,
+      'danger': danger,
+      'fillDanger': fillDanger
+    }"
+    [disabled]="disabled"
+    (click)="onClick()"
+  >
+    <p class="button-label">{{ label }}</p>
+  </button>
+</div>

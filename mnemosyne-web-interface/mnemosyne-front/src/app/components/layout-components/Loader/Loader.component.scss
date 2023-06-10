@@ -1,0 +1,43 @@
+@import 'variables';
+
+.loading-background {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: map-get($z-index, loading);
+  background-color: rgba($third-semidark-color, .35);
+
+  .loading-spinner {
+    z-index: map-get($z-index, loading);
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    width: 200px;
+    height: 200px;
+
+    &:before, &:after {
+      content: '';
+      border-radius: 50%;
+      position: absolute;
+      inset: 0;
+      box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.3) inset;
+    }
+
+    :after {
+      box-shadow: 0 10px 0 $color-main inset;
+      animation: rotate 2s linear infinite;
+    }
+
+    @keyframes rotate {
+      0% {
+        transform: rotate(0)
+      }
+      100% {
+        transform: rotate(360deg)
+      }
+    }
+  }
+}

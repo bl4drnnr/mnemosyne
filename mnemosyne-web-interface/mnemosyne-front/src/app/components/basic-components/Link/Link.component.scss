@@ -1,0 +1,18 @@
+@import 'variables';
+
+.link-component {
+  margin: 20px 0;
+
+  .link-anchor {
+    transition: all .3s;
+    color: $color-main;
+
+    &:hover {
+      color: $color-main-hover !important;
+    }
+
+    &:visited {
+      color: $color-main;
+    }
+  }
+}

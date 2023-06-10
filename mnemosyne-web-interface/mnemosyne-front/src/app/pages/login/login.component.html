@@ -1,1 +1,34 @@
-<p>login works!</p>
+<div class="login-window">
+  <div>
+    <div class="welcome-title">
+      <h1 class="main-title">Mnemosyne</h1>
+      <h2 class="second-title">Welcome back</h2>
+    </div>
+    <div class="login-window-wrapper">
+      <div>
+        <h2 class="third-title">Log in</h2>
+        <basic-input
+          label="Provide your email address"
+          placeholder="Email"
+          (valueChange)="email = $event"
+        />
+        <basic-input
+          label="Provide your password"
+          placeholder="Password"
+          type="password"
+          (valueChange)="password = $event"
+        />
+        <basic-link
+          label="Forgot password?"
+          href="/forgot-password"
+        />
+      </div>
+      <div>
+        <basic-button
+          label="Log in"
+          (buttonClick)="handleLogIn()"
+        />
+      </div>
+    </div>
+  </div>
+</div>
