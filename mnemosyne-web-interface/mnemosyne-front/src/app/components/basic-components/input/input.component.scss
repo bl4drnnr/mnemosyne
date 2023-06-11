@@ -37,6 +37,7 @@
 
     &.error {
       border: 1px solid red;
+      transition: border-color 0.3s ease-in-out;
     }
 
     &.disabled {
@@ -49,6 +50,15 @@
     font-size: small;
     font-weight: 400;
     margin-top: 5px;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+
+    &.show-error {
+      max-height: 20px;
+      opacity: 1;
+    }
   }
 
   .input-description {

@@ -2,6 +2,13 @@
   <div [ngClass]="globalMessageService.isError ? 'alert-error' : 'alert-success'" role="alert">
     <p>{{ message }}</p>
 
-    <button class="close-button" (click)="globalMessageService.clear()">&times;</button>
+    <img
+      class="close-button"
+      (click)="globalMessageService.clear()"
+      [ngSrc]="closeButtonUrl"
+      [width]="15"
+      [height]="15"
+      alt="back"
+    >
   </div>
 </div>

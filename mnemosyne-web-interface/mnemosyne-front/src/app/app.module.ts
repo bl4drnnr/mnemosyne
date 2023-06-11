@@ -8,10 +8,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { LayoutsModule } from '@layouts/layouts.module';
 import { ComponentsModule } from '@components/components.module';
 import { PagesModule } from '@pages/pages.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,

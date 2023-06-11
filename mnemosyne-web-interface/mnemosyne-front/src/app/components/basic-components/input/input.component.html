@@ -1,6 +1,4 @@
-<div
-  class="input-container"
->
+<div class="input-container">
   <p class="input-label" *ngIf="label">{{ label }}</p>
   <input
     class="input-field"
@@ -11,6 +9,6 @@
     [placeholder]="placeholder"
     (input)="onInput()"
   />
-  <p class="error-message" *ngIf="showError">{{ errorMessage }}</p>
+  <p class="error-message" [class.show-error]="showError">{{ errorMessage }}</p>
   <p class="input-description" *ngIf="inputDescription">{{ inputDescription }}</p>
 </div>

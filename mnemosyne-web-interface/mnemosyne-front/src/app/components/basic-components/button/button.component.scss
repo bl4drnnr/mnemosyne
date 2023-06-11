@@ -51,6 +51,11 @@
       }
     }
 
+    &.fillButton {
+      border: 1px solid $function-color;
+      background-color: $function-color;
+    }
+
     &:hover {
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
       background-color: $color-white;
