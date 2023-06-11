@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'basic-input',
-  templateUrl: './Input.component.html',
-  styleUrls: ['./Input.component.scss']
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss']
 })
 export class InputComponent {
   @Input() label: string;

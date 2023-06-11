@@ -32,8 +32,7 @@
       ],
       "@pages/*": ["src/app/pages/*"],
       "@shared/*": ["src/app/shared/*"],
-      "@models/*": ["src/app/models/*"],
-      "@guards/*": ["src/app/guards/*"]
+      "@env/*": ["src/app/environments/*"]
     }
   },
   "angularCompilerOptions": {

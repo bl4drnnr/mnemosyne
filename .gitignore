@@ -8,6 +8,10 @@ mnemosyne-web-interface/mnemosyne-api/dist
 mnemosyne-web-interface/mnemosyne-api/node_modules
 mnemosyne-web-interface/mnemosyne-api/package-lock.json
 
+mnemosyne-web-interface/mnemosyne-api-proxy/dist
+mnemosyne-web-interface/mnemosyne-api-proxy/node_modules
+mnemosyne-web-interface/mnemosyne-api-proxy/package-lock.json
+
 # Logs
 mnemosyne-web-interface/mnemosyne-api/logs
 mnemosyne-web-interface/mnemosyne-api/*.log
