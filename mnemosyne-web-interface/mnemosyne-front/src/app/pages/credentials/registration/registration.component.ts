@@ -11,6 +11,7 @@ export class RegistrationComponent {
   passwordRepeat: string;
   firstName: string;
   lastName: string;
+  incorrectCredentials: boolean;
 
   handleRegistration() {}
 }

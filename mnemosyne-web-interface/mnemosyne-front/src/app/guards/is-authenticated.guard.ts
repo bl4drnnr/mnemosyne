@@ -7,13 +7,16 @@ import {
   UrlTree
 } from '@angular/router';
 import { Observable, tap } from 'rxjs';
-import { LoginService } from '@pages/login/shared/login.service';
+import { AuthenticationService } from '@pages/shared/authentication.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IsAuthenticatedGuard implements CanActivate {
-  constructor(private loginService: LoginService, private router: Router) {}
+  constructor(
+    private authenticationService: AuthenticationService,
+    private router: Router
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -23,7 +26,7 @@ export class IsAuthenticatedGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return this.loginService.isLoggedIn$.pipe(
+    return this.authenticationService.isLoggedIn$.pipe(
       tap(async (isLoggedIn) => {
         if (!isLoggedIn) await this.router.navigate(['login']);
       })
