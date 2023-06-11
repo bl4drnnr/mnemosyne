@@ -1,6 +1,8 @@
+@import 'variables';
+
 .alert-container {
   position: absolute;
-  top: 3px;
+  top: 20px;
   left: 0;
   right: 0;
   margin-left: auto;
@@ -8,26 +10,30 @@
   max-width: max-content;
 
   .alert-error {
-    background-color: #FECACA;
-    border: 1px solid #EF4444;
-    color: #EF4444;
+    background-color: rgba($warning-icon-color, .15);
+    border: 1px solid $warning-icon-color;
+    color: $warning-icon-color;
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
     position: relative;
     display: flex;
+    align-items: center;
   }
 
   .alert-success {
-    background-color: #D1FAE5;
-    border: 1px solid #22C55E;
-    color: #22C55E;
+    background-color: rgba($submarket-color, .15);
+    border: 1px solid $submarket-color;
+    color: $submarket-color;
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
     position: relative;
     display: flex;
+    align-items: center;
   }
 
   .close-button {
     margin-left: 25px;
+    opacity: .65;
+    cursor: pointer;
   }
 }

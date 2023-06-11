@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
+import { LoaderService } from '@shared/loader.service';
 
 @Component({
   selector: 'layout-loader',
@@ -6,5 +7,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./loader.component.scss']
 })
 export class LoaderComponent {
-  @Input() loading: boolean;
+  constructor(public loaderService: LoaderService) {}
 }

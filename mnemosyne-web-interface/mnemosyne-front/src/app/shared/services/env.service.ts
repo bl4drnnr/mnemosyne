@@ -8,4 +8,8 @@ export class EnvService {
   get getFrontProxyUrl() {
     return environment.apiUrl;
   }
+
+  get getStaticStorageLink() {
+    return environment.staticStorage;
+  }
 }

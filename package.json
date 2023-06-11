@@ -10,9 +10,12 @@
     "api:format": "npm run format --workspace=mnemosyne-api",
     "front:dev": "npm run start --workspace=mnemosyne-front",
     "front:build": "npm run build --workspace=mnemosyne-front",
-    "front:format": "npm run format --workspace=mnemosyne-front",
     "database:dev:init": "NODE_ENV=development npm run database:dev:init --workspace=mnemosyne-api",
-    "database:dev:undo": "NODE_ENV=development npm run database:dev:undo --workspace=mnemosyne-api"
+    "database:dev:undo": "NODE_ENV=development npm run database:dev:undo --workspace=mnemosyne-api",
+    "format": "npm run format --workspace=mnemosyne-front; npm run format --workspace=mnemosyne-api-proxy; npm run format --workspace=mnemosyne-api",
+    "format:front": "npm run format --workspace=mnemosyne-front",
+    "format:api-proxy": "npm run format --workspace=mnemosyne-api-proxy",
+    "format:api": "npm run format --workspace=mnemosyne-api"
   },
   "keywords": [
     "blockchain",

@@ -36,21 +36,21 @@ export class InputComponent {
 
       if (isEmailIncorrect) {
         this.showError = true;
-        this.errorMessage = 'Wrong email address.';
+        this.errorMessage = this.errorMessage || 'Wrong email address.';
       }
     } else if (this.type === 'password' && this.value.length) {
       const isPasswordIncorrect = this.validationService.checkPasswordsRules(
         this.value
       );
       const hasError = isPasswordIncorrect.some((rule) => rule.error);
+      this.passwordErrors.emit(isPasswordIncorrect);
 
       this.showError = hasError;
       this.incorrectInput.emit(hasError);
 
       if (hasError) {
         this.showError = true;
-        this.errorMessage = 'Wrong password.';
-        this.passwordErrors.emit(isPasswordIncorrect);
+        this.errorMessage = this.errorMessage || 'Wrong password.';
       }
     } else if (!this.value.length) {
       this.showError = false;

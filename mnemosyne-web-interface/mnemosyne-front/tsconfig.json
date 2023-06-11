@@ -37,7 +37,8 @@
       "@shared/*": [
         "src/app/shared/*",
         "src/app/shared/components/*",
-        "src/app/shared/services/*"
+        "src/app/shared/services/*",
+        "src/app/shared/global-components-services/*"
       ],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],

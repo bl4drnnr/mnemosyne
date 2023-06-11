@@ -25,12 +25,58 @@ export class ApiService {
     email: string;
     password: string;
   }): Observable<{ _at: string }> {
-    const loginUrl = `${this.frontProxyUrl}/users/sign-in`;
+    const loginUrl = `${this.frontProxyUrl}/auth/login`;
 
     return this.http
       .post<{ _at: string }>(loginUrl, {
         method: 'POST',
         payload: { email, password }
+      })
+      .pipe(
+        catchError((error) => {
+          this.errorHandler.errorHandler(error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  apiProxyRegistration({
+    email,
+    password,
+    firstName,
+    lastName
+  }: {
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+  }): Observable<{ message: string }> {
+    const registrationUrl = `${this.frontProxyUrl}/auth/registration`;
+
+    return this.http
+      .post<{ message: string }>(registrationUrl, {
+        method: 'POST',
+        payload: { email, password, firstName, lastName }
+      })
+      .pipe(
+        catchError((error) => {
+          this.errorHandler.errorHandler(error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  apiProxyForgotPassword({
+    email
+  }: {
+    email: string;
+  }): Observable<{ message: string }> {
+    const forgotPassword = `${this.frontProxyUrl}/auth/forgot-password`;
+
+    return this.http
+      .post<{ message: string }>(forgotPassword, {
+        method: 'POST',
+        payload: { email }
       })
       .pipe(
         catchError((error) => {

@@ -5,17 +5,30 @@ services:
     container_name: mnemosyne-api
     restart: always
     env_file:
-      - .env.${NODE_ENV}
+      - ../mnemosyne-api/.env.${NODE_ENV}
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../mnemosyne-api
+      dockerfile: ../mnemosyne-infrastructure/api/Dockerfile
     command: npm run start:dev
     volumes:
       - ./:/usr/src/mnemosyne-api
     ports:
       - ${API_PORT}:${API_PORT}
     depends_on:
+      - api-proxy
+    networks:
+      - mnemosyne-network
+  api-proxy:
+    container_name: mnemosyne-api-proxy
+    restart: always
+    env_file:
+      - ../mnemosyne-api-proxy/.env.${PROXY_PORT}
+    ports:
+      - ${PROXY_PORT}:${PROXY_PORT}
+    depends_on:
       - database
+    networks:
+      - mnemosyne-network
   database:
     image: postgres:latest
     container_name: mnemosyne-db
@@ -27,3 +40,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DATABASE}
     volumes:
       - /:/data/postgres
+    networks:
+      - mnemosyne-network
+
+networks:
+  mnemosyne-network:
+    driver: bridge
