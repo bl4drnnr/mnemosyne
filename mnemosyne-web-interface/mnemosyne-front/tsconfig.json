@@ -30,7 +30,10 @@
         "src/app/components/page-components/*",
         "src/app/components/layout-components/*"
       ],
-      "@pages/*": ["src/app/pages/*"],
+      "@pages/*": [
+        "src/app/pages/*",
+        "src/app/pages/credentials/*"
+      ],
       "@shared/*": ["src/app/shared/*"],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
