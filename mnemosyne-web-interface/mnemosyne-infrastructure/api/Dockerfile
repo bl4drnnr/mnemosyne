@@ -7,7 +7,7 @@ RUN npm i -g @nestjs/cli
 
 COPY package*.json ./
 
-RUN npm install --force --no-workspaces
+RUN npm install --force
 
 COPY . .
 

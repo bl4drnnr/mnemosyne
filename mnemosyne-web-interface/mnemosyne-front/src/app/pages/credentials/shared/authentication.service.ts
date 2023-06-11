@@ -34,6 +34,25 @@ export class AuthenticationService {
     firstName: string;
     lastName: string;
   }) {
-    //
+    return this.apiService
+      .apiProxyRegistration({
+        email,
+        password,
+        firstName,
+        lastName
+      })
+      .pipe(
+        tap(({ message }) => {
+          console.log('registration message', message);
+        })
+      );
+  }
+
+  forgotPassword({ email }: { email: string }) {
+    return this.apiService.apiProxyForgotPassword({ email }).pipe(
+      tap(({ message }) => {
+        console.log('forgot password message', message);
+      })
+    );
   }
 }
