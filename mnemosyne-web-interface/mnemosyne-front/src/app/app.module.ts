@@ -13,6 +13,7 @@ import { ForgotPasswordComponent } from '@pages/forgot-password/forgot-password.
 import { LoaderComponent } from '@components/loader/loader.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GlobalMessageComponent } from '@components/global-message/global-message.component';
+import { LayoutsModule } from '@layouts/layouts.module';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { GlobalMessageComponent } from '@components/global-message/global-messag
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    LayoutsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
