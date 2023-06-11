@@ -1,0 +1,61 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ValidationService } from '@shared/validation.service';
+
+@Component({
+  selector: 'basic-input',
+  templateUrl: './input.component.html',
+  styleUrls: ['./input.component.scss']
+})
+export class InputComponent {
+  @Input() label: string;
+  @Input() type = 'text';
+  @Input() placeholder: string;
+  @Input() value: string;
+  @Input() disabled = false;
+  @Input() showError = false;
+  @Input() errorMessage: string;
+  @Input() inputDescription: string;
+
+  @Output() valueChange = new EventEmitter<string>();
+  @Output() incorrectInput = new EventEmitter<boolean>();
+  @Output() passwordErrors = new EventEmitter<
+    Array<{ error: boolean; text: string }>
+  >();
+
+  constructor(private validationService: ValidationService) {}
+
+  onInput() {
+    this.valueChange.emit(this.value);
+
+    if (this.type === 'email' && this.value.length) {
+      const isEmailIncorrect = !this.validationService.isEmailCorrect(
+        this.value
+      );
+      this.showError = isEmailIncorrect;
+      this.incorrectInput.emit(isEmailIncorrect);
+
+      if (isEmailIncorrect) {
+        this.showError = true;
+        this.errorMessage = 'Wrong email address.';
+      }
+    } else if (this.type === 'password' && this.value.length) {
+      const isPasswordIncorrect = this.validationService.checkPasswordsRules(
+        this.value
+      );
+      const hasError = isPasswordIncorrect.some((rule) => rule.error);
+
+      this.showError = hasError;
+      this.incorrectInput.emit(hasError);
+
+      if (hasError) {
+        this.showError = true;
+        this.errorMessage = 'Wrong password.';
+        this.passwordErrors.emit(isPasswordIncorrect);
+      }
+    } else if (!this.value.length) {
+      this.showError = false;
+      this.incorrectInput.emit(false);
+      this.passwordErrors.emit([]);
+    }
+  }
+}
