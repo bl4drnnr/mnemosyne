@@ -37,7 +37,7 @@ export class RegistrationComponent {
   ) {}
 
   handleRegistration() {
-    if (!this.isAllCredentialsCorrect()) return;
+    if (this.isAllCredentialsCorrect()) return;
 
     this.authenticationService
       .registration({
