@@ -26,11 +26,15 @@ export class AuthenticationService {
   registration({
     email,
     password,
+    tac,
+    phoneNumber,
     firstName,
     lastName
   }: {
     email: string;
     password: string;
+    tac: boolean;
+    phoneNumber: string;
     firstName: string;
     lastName: string;
   }) {
@@ -38,6 +42,8 @@ export class AuthenticationService {
       .apiProxyRegistration({
         email,
         password,
+        tac,
+        phoneNumber,
         firstName,
         lastName
       })

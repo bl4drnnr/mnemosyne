@@ -54,6 +54,11 @@
     &.fillButton {
       border: 1px solid $function-color;
       background-color: $function-color;
+
+      &.disabled {
+        background-color: rgba($block-color, .20);
+        border: 1px solid rgba($color-black, 0.1);
+      }
     }
 
     &:hover {

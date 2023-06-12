@@ -3,12 +3,14 @@ import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
 import { firstValueFrom } from 'rxjs';
+import { LoggerService } from '@shared/logger.service';
 
 @Injectable()
 export class ProxyHttpService {
   constructor(
     private readonly httpService: HttpService,
-    private readonly configService: ApiConfigService
+    private readonly configService: ApiConfigService,
+    private readonly loggerService: LoggerService
   ) {}
 
   async proxyRequest({

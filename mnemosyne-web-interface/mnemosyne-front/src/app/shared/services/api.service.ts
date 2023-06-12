@@ -43,11 +43,15 @@ export class ApiService {
   apiProxyRegistration({
     email,
     password,
+    tac,
+    phoneNumber,
     firstName,
     lastName
   }: {
     email: string;
     password: string;
+    tac: boolean;
+    phoneNumber: string;
     firstName: string;
     lastName: string;
   }): Observable<{ message: string }> {
