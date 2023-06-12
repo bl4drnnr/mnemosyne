@@ -1,10 +1,4 @@
-import {
-  IsBoolean,
-  IsEmail,
-  IsPhoneNumber,
-  IsString,
-  Length
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsString, Length } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'Should be email' })
@@ -21,9 +15,6 @@ export class CreateUserDto {
   @IsString({ message: 'Last name should be a string' })
   @Length(1, 64, { message: 'Min length of last name is 1, max is 64' })
   readonly lastName: string;
-
-  @IsPhoneNumber()
-  readonly phone: string;
 
   @IsBoolean()
   readonly tac: boolean;

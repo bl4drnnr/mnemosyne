@@ -23,13 +23,17 @@
       "@pipes/*": ["src/pipes/*"],
       "@exceptions/*": [
         "src/exceptions/*",
-        "src/exceptions/user",
-        "src/exceptions/role"
+        "src/exceptions/user/*",
+        "src/exceptions/role/*",
+        "src/exceptions/auth/*",
+        "src/exceptions/confirmation-hash/*",
+        "src/exceptions/validation/*"
       ],
       "@dto/*": [
         "src/dto/*",
         "src/dto/user/*",
-        "src/dto/role/*"
+        "src/dto/role/*",
+        "src/dto/confirmation-hash/*"
       ],
       "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],

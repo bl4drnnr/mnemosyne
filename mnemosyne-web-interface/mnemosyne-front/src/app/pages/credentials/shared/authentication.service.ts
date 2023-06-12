@@ -27,14 +27,12 @@ export class AuthenticationService {
     email,
     password,
     tac,
-    phone,
     firstName,
     lastName
   }: {
     email: string;
     password: string;
     tac: boolean;
-    phone: string;
     firstName: string;
     lastName: string;
   }) {
@@ -43,7 +41,6 @@ export class AuthenticationService {
         email,
         password,
         tac,
-        phone,
         firstName,
         lastName
       })
@@ -52,6 +49,28 @@ export class AuthenticationService {
           console.log('registration message', message);
         })
       );
+  }
+
+  confirmAccount({ hash }: { hash: string }) {
+    return this.apiService.apiProxyConfirmAccount({ hash }).pipe(
+      tap(({ message }) => {
+        console.log('confirmation account message', message);
+      })
+    );
+  }
+
+  accountConfirmationUpdate({
+    hash,
+    phone,
+    code,
+    twoFaToken
+  }: {
+    hash: string;
+    phone: string;
+    code: string;
+    twoFaToken: string;
+  }) {
+    //
   }
 
   forgotPassword({ email }: { email: string }) {

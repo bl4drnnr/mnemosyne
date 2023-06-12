@@ -44,14 +44,12 @@ export class ApiService {
     email,
     password,
     tac,
-    phone,
     firstName,
     lastName
   }: {
     email: string;
     password: string;
     tac: boolean;
-    phone: string;
     firstName: string;
     lastName: string;
   }): Observable<{ message: string }> {
@@ -60,7 +58,27 @@ export class ApiService {
     return this.http
       .post<{ message: string }>(registrationUrl, {
         method: 'POST',
-        payload: { email, password, firstName, lastName, tac, phone }
+        payload: { email, password, firstName, lastName, tac }
+      })
+      .pipe(
+        catchError((error) => {
+          this.errorHandler.errorHandler(error);
+          return throwError(() => error);
+        })
+      );
+  }
+
+  apiProxyConfirmAccount({
+    hash
+  }: {
+    hash: string;
+  }): Observable<{ message: string }> {
+    const confirmationHashUrl = `${this.frontProxyUrl}/users/account-confirmation`;
+
+    return this.http
+      .post<{ message: string }>(confirmationHashUrl, {
+        method: 'GET',
+        params: { hash }
       })
       .pipe(
         catchError((error) => {
@@ -75,10 +93,10 @@ export class ApiService {
   }: {
     email: string;
   }): Observable<{ message: string }> {
-    const forgotPassword = `${this.frontProxyUrl}/auth/forgot-password`;
+    const forgotPasswordUrl = `${this.frontProxyUrl}/auth/forgot-password`;
 
     return this.http
-      .post<{ message: string }>(forgotPassword, {
+      .post<{ message: string }>(forgotPasswordUrl, {
         method: 'POST',
         payload: { email }
       })

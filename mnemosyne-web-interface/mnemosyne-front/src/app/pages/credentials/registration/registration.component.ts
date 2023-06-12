@@ -27,7 +27,6 @@ export class RegistrationComponent {
 
   firstName: string;
   lastName: string;
-  phone: string;
 
   incorrectEmail: boolean;
   incorrectPassword: boolean;
@@ -46,7 +45,6 @@ export class RegistrationComponent {
         email: this.email,
         password: this.passwordRepeat,
         tac: this.tac,
-        phone: this.phone,
         firstName: this.firstName,
         lastName: this.lastName
       })
@@ -76,7 +74,6 @@ export class RegistrationComponent {
         this.incorrectEmail ||
         this.incorrectPassword ||
         !this.tac ||
-        !this.phone ||
         !this.firstName ||
         !this.lastName
       );

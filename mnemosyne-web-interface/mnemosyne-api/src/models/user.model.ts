@@ -19,7 +19,6 @@ interface UserCreationAttributes {
   password: string;
   firstName: string;
   lastName: string;
-  phone: string;
 }
 
 @Table({ tableName: 'users' })
@@ -41,7 +40,7 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   lastName: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: true })
   phone: string;
 
   @HasOne(() => Session)
