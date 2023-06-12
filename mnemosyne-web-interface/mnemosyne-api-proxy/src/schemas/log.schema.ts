@@ -3,7 +3,13 @@ import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 @Schema()
 export class InformationLog {
   @Prop()
-  event: string;
+  actionController: string;
+
+  @Prop()
+  method: string;
+
+  @Prop()
+  eventEndpoint: string;
 
   @Prop()
   message: string;
