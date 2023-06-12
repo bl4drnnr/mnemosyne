@@ -42,7 +42,9 @@
       ],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
-      "@guards/*": ["src/app/guards/*"]
+      "@guards/*": ["src/app/guards/*"],
+      "@features/*": ["src/app/features/*"],
+      "@modules/*": ["src/app/modules/*"]
     }
   },
   "angularCompilerOptions": {

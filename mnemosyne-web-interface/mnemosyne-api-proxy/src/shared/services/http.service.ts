@@ -3,12 +3,14 @@ import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
 import { firstValueFrom } from 'rxjs';
+import { LoggerService } from '@shared/logger.service';
 
 @Injectable()
 export class ProxyHttpService {
   constructor(
     private readonly httpService: HttpService,
-    private readonly configService: ApiConfigService
+    private readonly configService: ApiConfigService,
+    private readonly loggerService: LoggerService
   ) {}
 
   async proxyRequest({
@@ -36,8 +38,16 @@ export class ProxyHttpService {
       !allowedMethods.includes(method) ||
       !allowedEndpoints.includes(action) ||
       !allowedControllers.includes(controller)
-    )
+    ) {
+      const logMessage = { method, action, controller, payload };
+      await this.loggerService.log({
+        actionController: 'LOGGER_SERVICE',
+        eventEndpoint: 'LOGGER_SERVICE',
+        message: `Proxy tried to handle unsupported endpoint: ${logMessage}`,
+        status: 'ERROR'
+      });
       throw new BadRequestException('no-method-controller-or-action');
+    }
 
     const { username, password } = this.configService.basicAuthConfig;
 

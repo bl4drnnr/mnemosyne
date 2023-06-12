@@ -19,6 +19,7 @@ import { Router } from '@angular/router';
 })
 export class RegistrationComponent {
   step = 1;
+  tac = false;
 
   email: string;
   password: string;
@@ -26,6 +27,7 @@ export class RegistrationComponent {
 
   firstName: string;
   lastName: string;
+  phoneNumber: string;
 
   incorrectEmail: boolean;
   incorrectPassword: boolean;
@@ -37,12 +39,14 @@ export class RegistrationComponent {
   ) {}
 
   handleRegistration() {
-    if (!this.isAllCredentialsCorrect()) return;
+    if (this.isAllCredentialsCorrect()) return;
 
     this.authenticationService
       .registration({
         email: this.email,
         password: this.passwordRepeat,
+        tac: this.tac,
+        phoneNumber: this.phoneNumber,
         firstName: this.firstName,
         lastName: this.lastName
       })
@@ -63,13 +67,27 @@ export class RegistrationComponent {
     this.step--;
   }
 
-  isAllCredentialsCorrect() {
-    return (
-      !this.email ||
-      !this.password ||
-      this.password !== this.passwordRepeat ||
-      this.incorrectEmail ||
-      this.incorrectPassword
-    );
+  isAllCredentialsCorrect(includeAll = false) {
+    if (includeAll) {
+      return (
+        !this.email ||
+        !this.password ||
+        this.password !== this.passwordRepeat ||
+        this.incorrectEmail ||
+        this.incorrectPassword ||
+        !this.tac ||
+        !this.phoneNumber ||
+        !this.firstName ||
+        !this.lastName
+      );
+    } else {
+      return (
+        !this.email ||
+        !this.password ||
+        this.password !== this.passwordRepeat ||
+        this.incorrectEmail ||
+        this.incorrectPassword
+      );
+    }
   }
 }

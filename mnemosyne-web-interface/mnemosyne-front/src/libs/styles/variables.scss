@@ -11,6 +11,9 @@ h3 {
 }
 
 $main-font: 'Montserrat', sans-serif;
+$default-font-size: 16px;
+$default-font-weight: 500;
+$default-line-height: 24px;
 
 $color-main: #ffcc00;
 $color-main-hover: #e8ba00;
@@ -297,4 +300,10 @@ $z-index: (
 }
 @mixin z-index($key) {
   z-index: z-index($key);
+}
+
+@mixin standardFont($size: $default-font-size, $weight: $default-font-weight, $line-height: $default-line-height) {
+  font-size: $size;
+  font-weight: $weight;
+  line-height: $line-height;
 }

@@ -19,7 +19,8 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "@shared/*": ["src/shared/services/*", "src/shared/*"],
-      "@proxy/*": ["src/modules/proxy/*"]
+      "@proxy/*": ["src/modules/proxy/*"],
+      "@schemas/*": ["src/schemas/*"]
     }
   }
 }
