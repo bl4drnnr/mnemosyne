@@ -1,5 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
+import * as crypto from 'crypto';
 import * as uuid from 'uuid';
 import { User } from '@models/user.model';
 import { Injectable } from '@nestjs/common';
@@ -17,6 +18,8 @@ import { CorruptedTokenException } from '@exceptions/auth/corrupted-token.except
 import { InvalidTokenException } from '@exceptions/auth/invalid-token.exception';
 import { ExpiredTokenException } from '@exceptions/auth/expired-token.exception';
 import { LoggedOutDto } from '@dto/logged-out.dto';
+import { TacNotAcceptedException } from '@exceptions/user/tac-not-accepted.exception';
+import { EmailService } from '@shared/email.service';
 
 @Injectable()
 export class AuthService {
@@ -24,6 +27,7 @@ export class AuthService {
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
+    private readonly emailService: EmailService,
     @InjectModel(Session) private readonly sessionRepository: typeof Session
   ) {}
 
@@ -45,14 +49,25 @@ export class AuthService {
     const existingUser = await this.usersService.getUserByEmail(payload.email);
     if (existingUser) throw new UserAlreadyExistsException();
 
+    if (!payload.tac) throw new TacNotAcceptedException();
+
     const hashedPassword = await bcryptjs.hash(
       payload.password,
       this.configService.hashPasswordRounds
     );
 
-    await this.usersService.createUser({
+    const createdUser = await this.usersService.createUser({
       ...payload,
       password: hashedPassword
+    });
+
+    const confirmationHash = crypto.randomBytes(20).toString('hex');
+
+    await this.emailService.sendVerificationEmail({
+      confirmationHash,
+      confirmationType: 'REGISTRATION',
+      userId: createdUser.id,
+      email: createdUser.email
     });
 
     return new UserCreatedDto();

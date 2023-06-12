@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "Mnemosyne is the project empowering secure document storage with blockchain technology.",
   "scripts": {
-    "api:dev:build": "NODE_ENV=development docker-compose -f ./mnemosyne-web-interface/mnemosyne-infrastructure/docker-compose.yml --env-file ./mnemosyne-web-interface/.env.development up --build",
-    "api:dev:down": "NODE_ENV=development docker-compose -f ./mnemosyne-web-interface/mnemosyne-infrastructure/docker-compose.yml --env-file ./mnemosyne-web-interface/.env.development down",
-    "api:dev": "NODE_ENV=development docker-compose -f ./mnemosyne-web-interface/mnemosyne-infrastructure/docker-compose.yml --env-file ./mnemosyne-web-interface/.env.development up",
+    "api:dev:build": "NODE_ENV=development docker-compose --env-file ./mnemosyne-web-interface/.env.development up --build",
+    "api:dev:down": "NODE_ENV=development docker-compose --env-file ./mnemosyne-web-interface/.env.development down",
+    "api:dev": "NODE_ENV=development docker-compose --env-file ./mnemosyne-web-interface/.env.development up",
     "api:rmi": "docker rmi mnemosyne-infrastructure-api mnemosyne-infrastructure-api-proxy",
     "front:dev": "npm run start --workspace=mnemosyne-front",
     "front:build": "npm run build --workspace=mnemosyne-front",

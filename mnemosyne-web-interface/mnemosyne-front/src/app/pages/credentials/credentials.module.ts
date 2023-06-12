@@ -4,12 +4,14 @@ import { ForgotPasswordComponent } from '@pages/forgot-password/forgot-password.
 import { LoginComponent } from '@pages/login/login.component';
 import { RegistrationComponent } from '@pages/registration/registration.component';
 import { ComponentsModule } from '@components/components.module';
+import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 
 @NgModule({
   declarations: [
     ForgotPasswordComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    AccountConfirmationComponent
   ],
   imports: [CommonModule, ComponentsModule],
   exports: [ForgotPasswordComponent, LoginComponent, RegistrationComponent]

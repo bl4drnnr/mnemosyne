@@ -20,6 +20,8 @@ import { AccessControlList } from '@models/access-control-list.model';
 import { AclEndpoint } from '@models/acl-endpoint.model';
 import { AclRole } from '@models/acl-role.model';
 import { PermissionsModule } from '@modules/permissions.module';
+import { ConfirmationHashModule } from '@modules/confirmation-hash.module';
+import { ConfirmationHash } from '@models/confirmation-hash.model';
 
 @Module({
   imports: [
@@ -41,6 +43,7 @@ import { PermissionsModule } from '@modules/permissions.module';
         Session,
         Endpoint,
         AccessControlList,
+        ConfirmationHash,
         AclEndpoint,
         AclRole
       ],
@@ -50,7 +53,8 @@ import { PermissionsModule } from '@modules/permissions.module';
     RolesModule,
     AuthModule,
     SharedModule,
-    PermissionsModule
+    PermissionsModule,
+    ConfirmationHashModule
   ]
 })
 export class AppModule implements NestModule {

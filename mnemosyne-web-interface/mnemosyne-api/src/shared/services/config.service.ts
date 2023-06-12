@@ -46,4 +46,31 @@ export class ApiConfigService {
   get hashPasswordRounds() {
     return this.getNumber('HASH_PASSWORD_ROUNDS');
   }
+
+  get sendGridCredentials() {
+    return {
+      api_key: this.getString('SENDGRID_API_KEY'),
+      sender_email: this.getString('SENDGRID_SENDER_EMAIL')
+    };
+  }
+
+  get frontEndUrl() {
+    return this.getString('FRONT_END_URL');
+  }
+
+  get twilioCredentials() {
+    return {
+      twilio_auth_phone: this.getString('TWILIO_AUTH_PHONE'),
+      twilio_account_sid: this.getString('TWILIO_ACCOUNT_SID'),
+      twilio_auth_token: this.getString('TWILIO_AUTH_TOKEN')
+    };
+  }
+
+  get awsSdkCredentials() {
+    return {
+      accessKeyId: this.getString('AWS_ACCESS_KEY_ID'),
+      secretAccessKey: this.getString('AWS_SECRET_ACCESS_KEY'),
+      bucketName: this.getString('AWS_S3_NAME')
+    };
+  }
 }

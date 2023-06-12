@@ -7,6 +7,7 @@ import { GlobalMessageComponent } from '@components/global-message/global-messag
 import { LoaderComponent } from '@components/loader/loader.component';
 import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '@components/checkbox/checkbox.component';
+import { DropdownComponent } from './basic-components/dropdown/dropdown.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { CheckboxComponent } from '@components/checkbox/checkbox.component';
     LinkComponent,
     GlobalMessageComponent,
     LoaderComponent,
-    CheckboxComponent
+    CheckboxComponent,
+    DropdownComponent
   ],
   imports: [CommonModule, FormsModule, NgOptimizedImage],
   exports: [

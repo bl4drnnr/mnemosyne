@@ -73,8 +73,9 @@ export class ProxyHttpService {
     return firstValueFrom(this.httpService.request(requestConfig))
       .then((res) => res.data)
       .catch((error: any) => {
+        const errorMessage = error.response?.data?.error;
         throw new HttpException(
-          error.response?.data?.error || 'Internal server error',
+          errorMessage || error.response?.data || 'Internal server error',
           error.response?.data?.statusCode || 500
         );
       });
