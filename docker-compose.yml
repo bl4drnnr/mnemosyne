@@ -5,13 +5,13 @@ services:
     container_name: mnemosyne-api
     restart: always
     env_file:
-      - ../.env.${NODE_ENV}
+      - ./mnemosyne-web-interface/.env.${NODE_ENV}
     build:
       context: .
-      dockerfile: ../mnemosyne-infrastructure/api/Dockerfile
+      dockerfile: ./mnemosyne-infrastructure/api/Dockerfile
     command: npm run start:dev
     volumes:
-      - ../mnemosyne-api:/usr/src/mnemosyne-api
+      - ./mnemosyne-web-interface/mnemosyne-api:/usr/src/mnemosyne-api
     ports:
       - ${API_PORT}:${API_PORT}
     depends_on:
@@ -22,13 +22,13 @@ services:
     container_name: mnemosyne-api-proxy
     restart: always
     env_file:
-      - ../.env.${NODE_ENV}
+      - ./mnemosyne-web-interface/.env.${NODE_ENV}
     build:
       context: .
-      dockerfile: ../mnemosyne-infrastructure/api-proxy/Dockerfile
+      dockerfile: ./mnemosyne-infrastructure/api-proxy/Dockerfile
     command: npm run start:dev
     volumes:
-      - ../mnemosyne-api-proxy:/usr/src/mnemosyne-api-proxy
+      - ./mnemosyne-web-interface/mnemosyne-api-proxy:/usr/src/mnemosyne-api-proxy
     ports:
       - ${PROXY_PORT}:${PROXY_PORT}
     depends_on:

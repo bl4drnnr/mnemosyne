@@ -17,6 +17,9 @@ import { Session } from '@models/session.model';
 interface UserCreationAttributes {
   email: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
 }
 
 @Table({ tableName: 'users' })
@@ -31,6 +34,15 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @Column({ type: DataType.STRING, allowNull: false })
   password: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  firstName: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  lastName: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  phone: string;
 
   @HasOne(() => Session)
   session: Session;
