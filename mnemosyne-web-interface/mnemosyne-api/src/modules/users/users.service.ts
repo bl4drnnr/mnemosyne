@@ -20,9 +20,10 @@ export class UsersService {
   }
 
   async createUser(payload: CreateUserDto) {
-    const defaultRole = await this.roleService.getRoleByValue('USER');
+    const defaultRole = await this.roleService.getRoleByValue('AUTH_USER');
     const user = await this.userRepository.create(payload);
     await user.$set('roles', [defaultRole.id]);
+    return user;
   }
 
   async getUserById(id: string) {

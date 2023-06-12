@@ -44,14 +44,14 @@ export class ApiService {
     email,
     password,
     tac,
-    phoneNumber,
+    phone,
     firstName,
     lastName
   }: {
     email: string;
     password: string;
     tac: boolean;
-    phoneNumber: string;
+    phone: string;
     firstName: string;
     lastName: string;
   }): Observable<{ message: string }> {
@@ -60,7 +60,7 @@ export class ApiService {
     return this.http
       .post<{ message: string }>(registrationUrl, {
         method: 'POST',
-        payload: { email, password, firstName, lastName }
+        payload: { email, password, firstName, lastName, tac, phone }
       })
       .pipe(
         catchError((error) => {

@@ -27,14 +27,14 @@ export class AuthenticationService {
     email,
     password,
     tac,
-    phoneNumber,
+    phone,
     firstName,
     lastName
   }: {
     email: string;
     password: string;
     tac: boolean;
-    phoneNumber: string;
+    phone: string;
     firstName: string;
     lastName: string;
   }) {
@@ -43,7 +43,7 @@ export class AuthenticationService {
         email,
         password,
         tac,
-        phoneNumber,
+        phone,
         firstName,
         lastName
       })

@@ -1,4 +1,10 @@
-import { IsEmail, IsPhoneNumber, IsString, Length } from 'class-validator';
+import {
+  IsBoolean,
+  IsEmail,
+  IsPhoneNumber,
+  IsString,
+  Length
+} from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail({}, { message: 'Should be email' })
@@ -18,4 +24,7 @@ export class CreateUserDto {
 
   @IsPhoneNumber()
   readonly phone: string;
+
+  @IsBoolean()
+  readonly tac: boolean;
 }

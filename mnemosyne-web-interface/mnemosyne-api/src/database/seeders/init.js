@@ -29,5 +29,7 @@ module.exports = {
 
   async down(queryInterface) {
     await queryInterface.bulkDelete('roles', null, {});
+    await queryInterface.bulkDelete('users', null, {});
+    await queryInterface.bulkDelete('confirmation_hashes', null, {});
   }
 };

@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "database:dev:init": "npx sequelize-cli db:seed --seed init.js",
-    "database:dev:undo": "npx sequelize-cli db:undo --seed init.js"
+    "database:dev:undo": "npx sequelize-cli db:seed:undo --seed init.js"
   },
   "dependencies": {
     "@nestjs/common": "^8.0.0",
@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/sequelize": "^9.0.2",
     "@nestjs/swagger": "^6.3.0",
+    "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

@@ -40,8 +40,10 @@
         "src/modules/users/*",
         "src/modules/roles/*",
         "src/modules/auth/*",
-        "src/modules/permissions/*"
-      ]
+        "src/modules/permissions/*",
+        "src/modules/confirmation-hash/*"
+      ],
+      "@interfaces/*": ["src/libs/interfaces/*"]
     }
   }
 }
