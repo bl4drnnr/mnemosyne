@@ -5,10 +5,10 @@ WORKDIR /usr/src/mnemosyne-api-proxy
 RUN npm i -g nest
 RUN npm i -g @nestjs/cli
 
-COPY package*.json ./
+COPY ../../mnemosyne-api-proxy/package*.json ./
 
-RUN npm install --force
+RUN npm install
 
-COPY . .
+COPY ../../mnemosyne-api-proxy/ .
 
 RUN npm run build
