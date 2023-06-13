@@ -1,0 +1,32 @@
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+@Component({
+  selector: 'basic-input-button',
+  templateUrl: './input-button.component.html',
+  styleUrls: ['./input-button.component.scss']
+})
+export class InputButtonComponent {
+  @Input() placeholder: string;
+  @Input() inputLabel: string;
+  @Input() inputType = 'text';
+  @Input() inputValue: string;
+  @Input() inputPlaceholder: string;
+  @Input() inputDisabled = false;
+  @Input() inputShowError = false;
+  @Input() inputErrorMessage: string;
+  @Input() inputDescription: string;
+
+  @Input() buttonLabel: string;
+
+  @Output() inputValueChange = new EventEmitter<string>();
+  @Output() buttonClick = new EventEmitter<void>();
+
+  onInput(inputValue: string) {
+    this.inputValue = inputValue;
+    this.inputValueChange.emit(inputValue);
+  }
+
+  onClick() {
+    this.buttonClick.emit();
+  }
+}

@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '@pages/shared/authentication.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { DropdownInterface } from '@interfaces/dropdown.interface';
 
 @Component({
-  selector: 'app-account-confirmation',
+  selector: 'page-account-confirmation',
   templateUrl: './account-confirmation.component.html',
   styleUrls: ['../credentials.component.scss'],
   animations: [
@@ -18,13 +19,46 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ]
 })
 export class AccountConfirmationComponent implements OnInit {
-  step = 1;
+  step = 2;
+
+  hash: string;
+  phone: string;
+  twoFaToken: string;
+  qrCode: string;
+  code: string;
+
+  selectedMfaOption: DropdownInterface;
+  mfaOptions: Array<DropdownInterface> = [
+    { key: 'phone', value: 'Mobile phone' },
+    { key: 'mfa', value: 'Authenticator application' }
+  ];
 
   constructor(
     private authenticationService: AuthenticationService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
+
+  changeMfaOption({ key, value }: DropdownInterface) {
+    if (key === 'phone') {
+      this.selectedMfaOption = this.mfaOptions[0];
+    } else if (key === 'mfa') {
+      this.selectedMfaOption = this.mfaOptions[1];
+    }
+  }
+
+  async sendCode() {
+    //
+  }
+
+  async confirmUserSecurityUpdate() {
+    await this.authenticationService.accountConfirmationUpdate({
+      hash: '',
+      phone: '',
+      code: '',
+      twoFaToken: ''
+    });
+  }
 
   async confirmUserAccount(hash: string) {
     await this.authenticationService
@@ -36,10 +70,13 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.paramMap.subscribe(async (params) => {
-      const hash = params.get('hash');
-      if (!hash) await this.router.navigate(['login']);
-      else await this.confirmUserAccount(hash);
-    });
+    // this.route.paramMap.subscribe(async (params) => {
+    //   const hash = params.get('hash');
+    //   if (!hash) await this.router.navigate(['login']);
+    //   else {
+    //     this.hash = hash;
+    //     await this.confirmUserAccount(hash);
+    //   }
+    // });
   }
 }

@@ -24,7 +24,8 @@ const routes: Routes = [
   },
   {
     path: 'account-confirmation/:hash',
-    component: AccountConfirmationComponent
+    component: CredentialsLayout,
+    children: [{ path: '', component: AccountConfirmationComponent }]
   },
   {
     path: '',
