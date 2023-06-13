@@ -20,6 +20,7 @@ import { ExpiredTokenException } from '@exceptions/auth/expired-token.exception'
 import { LoggedOutDto } from '@dto/logged-out.dto';
 import { TacNotAcceptedException } from '@exceptions/user/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
+import { UserSettings } from '@models/user-settings.model';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,9 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
     private readonly emailService: EmailService,
-    @InjectModel(Session) private readonly sessionRepository: typeof Session
+    @InjectModel(Session) private readonly sessionRepository: typeof Session,
+    @InjectModel(UserSettings)
+    private readonly userSettingsRepository: typeof UserSettings
   ) {}
 
   async login(payload: CreateUserDto) {
@@ -68,6 +71,10 @@ export class AuthService {
       confirmationType: 'REGISTRATION',
       userId: createdUser.id,
       email: createdUser.email
+    });
+
+    await this.userSettingsRepository.create({
+      userId: createdUser.id
     });
 
     return new UserCreatedDto();

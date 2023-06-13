@@ -1,14 +1,16 @@
 import {
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
-import { ApiProperty } from '@nestjs/swagger';
+import { User } from '@models/user.model';
 
 interface ConfirmationHashCreationAttributes {
   userId: string;
@@ -24,22 +26,11 @@ export class ConfirmationHash extends Model<
   ConfirmationHash,
   ConfirmationHashCreationAttributes
 > {
-  @ApiProperty({
-    type: String,
-    nullable: false,
-    default: 'uuidv4',
-    description: 'Unique Id of the record'
-  })
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   id: string;
 
-  @ApiProperty({
-    type: String,
-    nullable: false,
-    description: 'Confirmation hash'
-  })
   @Column({
     type: DataType.STRING,
     allowNull: false,
@@ -47,20 +38,10 @@ export class ConfirmationHash extends Model<
   })
   confirmationHash: string;
 
-  @ApiProperty({
-    type: Boolean,
-    nullable: false,
-    description: 'If hash has been confirmed'
-  })
   @Default(false)
   @Column({ type: DataType.BOOLEAN, allowNull: false })
   confirmed: boolean;
 
-  @ApiProperty({
-    type: Boolean,
-    nullable: false,
-    description: 'Type of confirmation'
-  })
   @Column({
     type: DataType.ENUM('EMAIL_CHANGE', 'REGISTRATION', 'FORGOT_PASSWORD'),
     allowNull: false,
@@ -68,11 +49,6 @@ export class ConfirmationHash extends Model<
   })
   confirmationType: 'EMAIL_CHANGE' | 'REGISTRATION' | 'FORGOT_PASSWORD';
 
-  @ApiProperty({
-    type: String,
-    nullable: true,
-    description: 'Used for temporary storage of email to change'
-  })
   @Default(null)
   @Column({
     type: DataType.STRING,
@@ -81,29 +57,17 @@ export class ConfirmationHash extends Model<
   })
   changingEmail?: string;
 
-  @ApiProperty({
-    type: String,
-    format: 'uuid',
-    nullable: false,
-    description: 'User Id'
-  })
+  @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: false, field: 'user_id' })
   userId: string;
 
-  @ApiProperty({
-    type: Date,
-    nullable: false,
-    description: 'Record creation date'
-  })
+  @BelongsTo(() => User)
+  user: User;
+
   @CreatedAt
   @Column({ field: 'created_at' })
   createdAt: Date;
 
-  @ApiProperty({
-    type: Date,
-    nullable: false,
-    description: 'Record update date'
-  })
   @UpdatedAt
   @Column({ field: 'updated_at' })
   updatedAt: Date;

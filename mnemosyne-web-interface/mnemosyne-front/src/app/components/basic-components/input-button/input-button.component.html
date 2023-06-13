@@ -1,0 +1,27 @@
+<div class="input-button-container">
+  <p class="placeholder">{{ placeholder }}</p>
+  <div class="container">
+    <div class="input-wrapper">
+      <basic-input
+        [label]="inputLabel"
+        [type]="inputType"
+        [value]="inputValue"
+        [disabled]="inputDisabled"
+        [placeholder]="inputPlaceholder"
+        [errorMessage]="inputErrorMessage"
+        [showError]="inputShowError"
+        [inputDescription]="inputDescription"
+        (valueChange)="onInput($event)"
+      />
+    </div>
+
+    <div class="button-wrapper">
+      <div class="button-container">
+        <basic-button
+          [label]="buttonLabel"
+          (buttonClick)="onClick()"
+        />
+      </div>
+    </div>
+  </div>
+</div>

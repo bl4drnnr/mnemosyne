@@ -91,6 +91,32 @@ paths:
       responses:
         "200":
           description: ""
+  "/api/confirmation-hash/account-confirmation/{confirmationHash}":
+    get:
+      operationId: ConfirmationHashController_confirmAccount
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+  /api/security/generate-2fa-qr:
+    post:
+      operationId: SecurityController_generateTwoFaQrCode
+      parameters: []
+      responses:
+        "201":
+          description: ""
+  /api/security/verify-2fa:
+    post:
+      operationId: SecurityController_verifyTwoFaQrCode
+      parameters: []
+      responses:
+        "201":
+          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.

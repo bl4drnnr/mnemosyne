@@ -6,7 +6,7 @@
     "api:dev:build": "NODE_ENV=development docker-compose --env-file ./mnemosyne-web-interface/.env.development up --build",
     "api:dev:down": "NODE_ENV=development docker-compose --env-file ./mnemosyne-web-interface/.env.development down",
     "api:dev": "NODE_ENV=development docker-compose --env-file ./mnemosyne-web-interface/.env.development up",
-    "api:rmi": "docker rmi mnemosyne-infrastructure-api mnemosyne-infrastructure-api-proxy",
+    "api:rmi": "docker rmi mnemosyne-api mnemosyne-api-proxy",
     "front:dev": "npm run start --workspace=mnemosyne-front",
     "front:build": "npm run build --workspace=mnemosyne-front",
     "database:dev:init": "NODE_ENV=development npm run database:dev:init --workspace=mnemosyne-api",

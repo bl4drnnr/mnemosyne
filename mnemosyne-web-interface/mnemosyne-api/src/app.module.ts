@@ -22,6 +22,8 @@ import { AclRole } from '@models/acl-role.model';
 import { PermissionsModule } from '@modules/permissions.module';
 import { ConfirmationHashModule } from '@modules/confirmation-hash.module';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
+import { SecurityModule } from '@modules/security/security.module';
+import { UserSettings } from '@models/user-settings.model';
 
 @Module({
   imports: [
@@ -45,7 +47,8 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
         AccessControlList,
         ConfirmationHash,
         AclEndpoint,
-        AclRole
+        AclRole,
+        UserSettings
       ],
       autoLoadModels: true
     }),
@@ -54,7 +57,8 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
     AuthModule,
     SharedModule,
     PermissionsModule,
-    ConfirmationHashModule
+    ConfirmationHashModule,
+    SecurityModule
   ]
 })
 export class AppModule implements NestModule {

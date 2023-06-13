@@ -44,7 +44,8 @@
       "@layouts/*": ["src/app/layouts/*"],
       "@guards/*": ["src/app/guards/*"],
       "@features/*": ["src/app/features/*"],
-      "@modules/*": ["src/app/modules/*"]
+      "@modules/*": ["src/app/modules/*"],
+      "@interfaces/*": ["src/libs/interfaces/*"]
     }
   },
   "angularCompilerOptions": {

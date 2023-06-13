@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ForgotPasswordComponent } from '@pages/forgot-password/forgot-password.component';
 import { LoginComponent } from '@pages/login/login.component';
 import { RegistrationComponent } from '@pages/registration/registration.component';
@@ -13,7 +13,12 @@ import { AccountConfirmationComponent } from './account-confirmation/account-con
     RegistrationComponent,
     AccountConfirmationComponent
   ],
-  imports: [CommonModule, ComponentsModule],
-  exports: [ForgotPasswordComponent, LoginComponent, RegistrationComponent]
+  imports: [CommonModule, ComponentsModule, NgOptimizedImage],
+  exports: [
+    ForgotPasswordComponent,
+    LoginComponent,
+    RegistrationComponent,
+    AccountConfirmationComponent
+  ]
 })
 export class CredentialsModule {}
