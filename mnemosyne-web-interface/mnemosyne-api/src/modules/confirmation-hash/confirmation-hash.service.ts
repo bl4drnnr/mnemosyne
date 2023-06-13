@@ -27,6 +27,20 @@ export class ConfirmationHashService {
     });
   }
 
+  async getUserByConfirmationHash({
+    confirmationHash
+  }: {
+    confirmationHash: string;
+  }) {
+    const foundHash = await this.confirmationHashRepository.findOne({
+      where: { confirmationHash }
+    });
+
+    if (!foundHash) throw new HashNotFoundException();
+
+    return { userId: foundHash.userId };
+  }
+
   async confirmAccount({ confirmationHash }: { confirmationHash: string }) {
     const foundHash = await this.confirmationHashRepository.findOne({
       where: { confirmationHash }

@@ -88,6 +88,26 @@ export class ApiService {
       );
   }
 
+  apiProxyGenerateTwoFaQrCode({
+    hash
+  }: {
+    hash: string;
+  }): Observable<{ qr: string }> {
+    const generateTwoFaCode = `${this.frontProxyUrl}/security/generate-2fa-qr`;
+
+    return this.http
+      .post<{ qr: string }>(generateTwoFaCode, {
+        method: 'POST',
+        payload: { confirmationHash: hash }
+      })
+      .pipe(
+        catchError((error) => {
+          this.errorHandler.errorHandler(error);
+          return throwError(() => error);
+        })
+      );
+  }
+
   apiProxyForgotPassword({
     email
   }: {

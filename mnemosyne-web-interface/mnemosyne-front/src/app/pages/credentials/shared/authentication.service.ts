@@ -59,6 +59,14 @@ export class AuthenticationService {
     );
   }
 
+  generateTwoFaQrCode({ hash }: { hash: string }) {
+    return this.apiService.apiProxyGenerateTwoFaQrCode({ hash }).pipe(
+      tap(({ qr }) => {
+        console.log('qr', qr);
+      })
+    );
+  }
+
   accountConfirmationUpdate({
     hash,
     phone,

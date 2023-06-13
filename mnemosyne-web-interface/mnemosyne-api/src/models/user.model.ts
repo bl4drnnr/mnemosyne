@@ -4,6 +4,7 @@ import {
   CreatedAt,
   DataType,
   Default,
+  HasMany,
   HasOne,
   Model,
   PrimaryKey,
@@ -13,6 +14,8 @@ import {
 import { Role } from '@models/role.model';
 import { UserRole } from '@models/user-role.model';
 import { Session } from '@models/session.model';
+import { ConfirmationHash } from '@models/confirmation-hash.model';
+import { UserSettings } from '@models/user-settings.model';
 
 interface UserCreationAttributes {
   email: string;
@@ -40,11 +43,14 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   lastName: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
-  phone: string;
+  @HasMany(() => ConfirmationHash)
+  confirmationHashes: ConfirmationHash[];
 
   @HasOne(() => Session)
   session: Session;
+
+  @HasOne(() => UserSettings)
+  userSettings: UserSettings;
 
   @CreatedAt
   @Column({ field: 'created_at' })

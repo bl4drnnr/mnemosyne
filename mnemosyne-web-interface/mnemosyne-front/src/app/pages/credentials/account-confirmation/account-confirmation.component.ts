@@ -39,12 +39,21 @@ export class AccountConfirmationComponent implements OnInit {
     private router: Router
   ) {}
 
-  changeMfaOption({ key, value }: DropdownInterface) {
+  async changeMfaOption({ key, value }: DropdownInterface) {
     if (key === 'phone') {
       this.selectedMfaOption = this.mfaOptions[0];
     } else if (key === 'mfa') {
       this.selectedMfaOption = this.mfaOptions[1];
+      await this.generateTwoFaQrCode();
     }
+  }
+
+  async generateTwoFaQrCode() {
+    await this.authenticationService
+      .generateTwoFaQrCode({ hash: this.hash })
+      .subscribe(({ qr }) => {
+        this.qrCode = qr;
+      });
   }
 
   async sendCode() {
@@ -70,13 +79,13 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.route.paramMap.subscribe(async (params) => {
-    //   const hash = params.get('hash');
-    //   if (!hash) await this.router.navigate(['login']);
-    //   else {
-    //     this.hash = hash;
-    //     await this.confirmUserAccount(hash);
-    //   }
-    // });
+    this.route.paramMap.subscribe(async (params) => {
+      const hash = params.get('hash');
+      if (!hash) await this.router.navigate(['login']);
+      else {
+        this.hash = hash;
+        // await this.confirmUserAccount(hash);
+      }
+    });
   }
 }
