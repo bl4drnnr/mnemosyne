@@ -21,6 +21,7 @@ import { LoggedOutDto } from '@dto/logged-out.dto';
 import { TacNotAcceptedException } from '@exceptions/user/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
 import { UserSettings } from '@models/user-settings.model';
+import { LogInUserDto } from '@dto/log-in-user.dto';
 
 @Injectable()
 export class AuthService {
@@ -34,7 +35,7 @@ export class AuthService {
     private readonly userSettingsRepository: typeof UserSettings
   ) {}
 
-  async login(payload: CreateUserDto) {
+  async login(payload: LogInUserDto) {
     const user = await this.usersService.getUserByEmail(payload.email);
     if (!user) throw new UserDoesntExistException();
 

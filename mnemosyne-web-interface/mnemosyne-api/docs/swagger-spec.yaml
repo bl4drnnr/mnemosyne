@@ -60,7 +60,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateUserDto"
+              $ref: "#/components/schemas/LogInUserDto"
       responses:
         "201":
           description: ""
@@ -153,6 +153,9 @@ components:
       type: object
       properties: {}
     RevokeRoleDto:
+      type: object
+      properties: {}
+    LogInUserDto:
       type: object
       properties: {}
     CreateUserDto:

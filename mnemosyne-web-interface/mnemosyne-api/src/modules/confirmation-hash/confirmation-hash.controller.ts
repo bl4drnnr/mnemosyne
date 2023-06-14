@@ -1,4 +1,4 @@
-import {Controller, Get, Query} from '@nestjs/common';
+import { Controller, Get, Query } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 
 @Controller('confirmation-hash')

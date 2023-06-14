@@ -55,7 +55,7 @@ export class ApiService {
 
     const request$ = this.http.post<any>(requestUrl, requestBody);
 
-    const loaderTimeout$ = timer(1000).pipe(
+    const loaderTimeout$ = timer(500).pipe(
       mergeMap(() => {
         this.loaderService.start();
         return request$;
