@@ -1,6 +1,8 @@
 @import 'variables';
 
 .link-component {
+  display: inline-flex;
+
   .link-anchor {
     transition: all .3s;
     color: $color-main;

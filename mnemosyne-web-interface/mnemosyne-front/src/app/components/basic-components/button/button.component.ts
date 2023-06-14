@@ -12,6 +12,8 @@ export class ButtonComponent {
   @Input() fillButton = false;
   @Input() danger = false;
   @Input() fillDanger = false;
+  @Input() buttonDescription: string;
+
   @Output() buttonClick = new EventEmitter<void>();
 
   onClick() {

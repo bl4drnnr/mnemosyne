@@ -17,6 +17,15 @@
     position: relative;
     overflow: hidden;
 
+    &:disabled {
+      opacity: .4;
+      cursor: default;
+
+      &:hover {
+        border: 1px solid #ccc;
+      }
+    }
+
     &:focus {
       outline: none;
       box-shadow: 0 0 0 1px rgba($color-main, .25);

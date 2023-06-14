@@ -9,6 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '@components/checkbox/checkbox.component';
 import { DropdownComponent } from '@components/dropdown/dropdown.component';
 import { InputButtonComponent } from '@components/input-button/input-button.component';
+import { InputMfaComponent } from './basic-components/input-mfa/input-mfa.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { InputButtonComponent } from '@components/input-button/input-button.comp
     LoaderComponent,
     CheckboxComponent,
     DropdownComponent,
-    InputButtonComponent
+    InputButtonComponent,
+    InputMfaComponent
   ],
   imports: [CommonModule, FormsModule, NgOptimizedImage],
   exports: [
@@ -30,7 +32,8 @@ import { InputButtonComponent } from '@components/input-button/input-button.comp
     LoaderComponent,
     CheckboxComponent,
     DropdownComponent,
-    InputButtonComponent
+    InputButtonComponent,
+    InputMfaComponent
   ]
 })
 export class ComponentsModule {}
