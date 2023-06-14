@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class LinkComponent {
   @Input() label: string;
   @Input() href: string;
+  @Input() bold = false;
 }

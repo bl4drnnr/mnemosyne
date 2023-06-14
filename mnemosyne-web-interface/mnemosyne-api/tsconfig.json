@@ -27,12 +27,14 @@
         "src/exceptions/role/*",
         "src/exceptions/auth/*",
         "src/exceptions/confirmation-hash/*",
+        "src/exceptions/security/*",
         "src/exceptions/validation/*"
       ],
       "@dto/*": [
         "src/dto/*",
         "src/dto/user/*",
         "src/dto/role/*",
+        "src/dto/security/*",
         "src/dto/confirmation-hash/*"
       ],
       "@events/*": ["src/events/*"],

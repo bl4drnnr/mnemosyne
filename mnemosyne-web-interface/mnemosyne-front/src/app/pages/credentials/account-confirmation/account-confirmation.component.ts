@@ -23,9 +23,10 @@ export class AccountConfirmationComponent implements OnInit {
 
   hash: string;
   phone: string;
-  twoFaToken: string;
   qrCode: string;
   code: string;
+
+  phoneCodeSent = false;
 
   selectedMfaOption: DropdownInterface;
   mfaOptions: Array<DropdownInterface> = [
@@ -39,7 +40,7 @@ export class AccountConfirmationComponent implements OnInit {
     private router: Router
   ) {}
 
-  async changeMfaOption({ key, value }: DropdownInterface) {
+  async changeMfaOption({ key }: DropdownInterface) {
     if (key === 'phone') {
       this.selectedMfaOption = this.mfaOptions[0];
     } else if (key === 'mfa') {
@@ -57,7 +58,7 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   async sendCode() {
-    //
+    this.phoneCodeSent = true;
   }
 
   async confirmUserSecurityUpdate() {
@@ -76,6 +77,18 @@ export class AccountConfirmationComponent implements OnInit {
         if (message === 'account-confirmed') this.step = 2;
         else this.step = 3;
       });
+  }
+
+  isAllFieldsCorrect() {
+    if (this.selectedMfaOption.key === 'phone') {
+      return (
+        this.phone && this.code && this.code.length === 6 && this.phoneCodeSent
+      );
+    } else if (this.selectedMfaOption.key === 'mfa') {
+      return this.qrCode && this.code && this.code.length === 6;
+    } else {
+      return false;
+    }
   }
 
   ngOnInit() {

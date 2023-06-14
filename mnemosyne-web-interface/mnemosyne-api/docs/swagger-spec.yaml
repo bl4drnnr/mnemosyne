@@ -104,15 +104,35 @@ paths:
         "200":
           description: ""
   /api/security/generate-2fa-qr:
-    post:
+    get:
       operationId: SecurityController_generateTwoFaQrCode
       parameters: []
       responses:
-        "201":
+        "200":
           description: ""
   /api/security/verify-2fa:
     post:
       operationId: SecurityController_verifyTwoFaQrCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyTwoFaDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/send-sms-code:
+    post:
+      operationId: SecurityController_sendSmsCode
+      parameters: []
+      responses:
+        "201":
+          description: ""
+  /api/security/verify-mobile-phone:
+    post:
+      operationId: SecurityController_verifyMobilePhone
       parameters: []
       responses:
         "201":
@@ -136,5 +156,8 @@ components:
       type: object
       properties: {}
     CreateUserDto:
+      type: object
+      properties: {}
+    VerifyTwoFaDto:
       type: object
       properties: {}

@@ -1,3 +1,8 @@
 <div class="link-component">
-  <a class="link-anchor" [href]="href">{{ label }}</a>
+  <span *ngIf="bold">
+    <b><a class="link-anchor" [href]="href">{{ label }}</a></b>
+  </span>
+  <span *ngIf="!bold">
+    <a class="link-anchor" [href]="href">{{ label }}</a>
+  </span>
 </div>

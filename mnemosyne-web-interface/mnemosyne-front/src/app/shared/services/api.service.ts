@@ -97,8 +97,8 @@ export class ApiService {
 
     return this.http
       .post<{ qr: string }>(generateTwoFaCode, {
-        method: 'POST',
-        payload: { confirmationHash: hash }
+        method: 'GET',
+        params: { confirmationHash: hash }
       })
       .pipe(
         catchError((error) => {
