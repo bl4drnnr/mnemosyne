@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { SecurityService } from '@modules/security/security.service';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
 
@@ -13,10 +13,10 @@ export class SecurityController {
     return this.securityService.generate2FaQrCode({ confirmationHash });
   }
 
-  @Post('verify-2fa/:confirmationHash')
+  @Post('verify-2fa')
   verifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
-    @Param() { confirmationHash }: { confirmationHash: string }
+    @Query() { confirmationHash }: { confirmationHash: string }
   ) {
     return this.securityService.verifyTwoFaQrCode({
       payload,

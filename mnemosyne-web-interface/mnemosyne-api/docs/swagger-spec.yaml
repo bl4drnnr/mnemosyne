@@ -60,7 +60,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/CreateUserDto"
+              $ref: "#/components/schemas/LogInUserDto"
       responses:
         "201":
           description: ""
@@ -91,13 +91,13 @@ paths:
       responses:
         "200":
           description: ""
-  "/api/confirmation-hash/account-confirmation/{confirmationHash}":
+  /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
       parameters:
         - name: confirmationHash
           required: true
-          in: path
+          in: query
           schema:
             type: string
       responses:
@@ -110,7 +110,7 @@ paths:
       responses:
         "200":
           description: ""
-  "/api/security/verify-2fa/{confirmationHash}":
+  /api/security/verify-2fa:
     post:
       operationId: SecurityController_verifyTwoFaQrCode
       parameters: []
@@ -153,6 +153,9 @@ components:
       type: object
       properties: {}
     RevokeRoleDto:
+      type: object
+      properties: {}
+    LogInUserDto:
       type: object
       properties: {}
     CreateUserDto:

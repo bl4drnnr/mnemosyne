@@ -14,6 +14,7 @@ import { AuthGuard } from '@guards/auth.guard';
 import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import { UserId } from '@decorators/user-id.decorator';
 import { ValidationPipe } from '@pipes/validation.pipe';
+import { LogInUserDto } from '@dto/log-in-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -21,7 +22,7 @@ export class AuthController {
 
   @UsePipes(ValidationPipe)
   @Post('login')
-  async login(@Body() payload: CreateUserDto, @Res({ passthrough: true }) res) {
+  async login(@Body() payload: LogInUserDto, @Res({ passthrough: true }) res) {
     const response = await this.authService.login(payload);
 
     res.cookie('_rt', response._rt);

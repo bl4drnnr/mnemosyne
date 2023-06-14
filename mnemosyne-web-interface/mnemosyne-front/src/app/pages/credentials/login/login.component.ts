@@ -20,12 +20,23 @@ import { animate, style, transition, trigger } from '@angular/animations';
 export class LoginComponent {
   email: string;
   password: string;
-  incorrectCredentials: boolean;
+
+  incorrectEmail: boolean;
+  incorrectPassword: boolean;
 
   constructor(
     private authenticationService: AuthenticationService,
     private router: Router
   ) {}
+
+  isAllCredentialsCorrect() {
+    return (
+      !this.email ||
+      !this.password ||
+      this.incorrectEmail ||
+      this.incorrectPassword
+    );
+  }
 
   handleLogIn() {
     this.authenticationService

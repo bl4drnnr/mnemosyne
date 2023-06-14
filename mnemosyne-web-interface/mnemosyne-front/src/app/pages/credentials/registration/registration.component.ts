@@ -22,8 +22,8 @@ export class RegistrationComponent {
   tac = false;
 
   email: string;
-  password: string;
-  passwordRepeat: string;
+  password = '';
+  passwordRepeat = '';
 
   firstName: string;
   lastName: string;
@@ -63,6 +63,10 @@ export class RegistrationComponent {
 
   backStep() {
     this.step--;
+  }
+
+  isPasswordsMatch() {
+    return this.password === this.passwordRepeat;
   }
 
   isAllCredentialsCorrect(includeAll = false) {

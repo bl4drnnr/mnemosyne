@@ -17,7 +17,7 @@ export class InputButtonComponent {
   @Input() inputDescription: string;
 
   @Input() buttonLabel: string;
-  @Input() buttonDescription: string;
+  @Input() buttonDescription: string | null;
   @Input() buttonDisabled = false;
 
   @Output() inputValueChange = new EventEmitter<string>();

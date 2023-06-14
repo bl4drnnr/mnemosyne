@@ -8,9 +8,9 @@
         [value]="inputValue"
         [disabled]="inputDisabled"
         [placeholder]="inputPlaceholder"
-        [errorMessage]="inputValue && inputShowError ? inputErrorMessage : ''"
+        [errorMessage]="inputValue && inputShowError ? inputErrorMessage : null"
         [showError]="inputShowError"
-        [inputDescription]="!inputShowError ? inputDescription : ''"
+        [inputDescription]="!inputShowError ? inputDescription : null"
         (valueChange)="onInput($event)"
       ></basic-input>
     </div>
