@@ -110,7 +110,7 @@ paths:
       responses:
         "200":
           description: ""
-  /api/security/verify-2fa:
+  "/api/security/verify-2fa/{confirmationHash}":
     post:
       operationId: SecurityController_verifyTwoFaQrCode
       parameters: []

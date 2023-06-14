@@ -19,7 +19,9 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
   ]
 })
 export class AccountConfirmationComponent implements OnInit {
-  step = 2;
+  step = 1;
+
+  isAccountConfirmed = false;
 
   hash: string;
   phone: string;
@@ -70,12 +72,16 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   async confirmUserAccount(hash: string) {
-    await this.authenticationService
+    this.authenticationService
       .confirmAccount({ hash })
       .subscribe(({ message }) => {
-        if (message === 'account-confirmed') this.step = 2;
+        if (message === 'account-confirmed') this.isAccountConfirmed = true;
         else this.step = 3;
       });
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
   }
 
   startCountdown() {

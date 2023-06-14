@@ -32,7 +32,8 @@
       ],
       "@pages/*": [
         "src/app/pages/*",
-        "src/app/pages/credentials/*"
+        "src/app/pages/credentials/*",
+        "src/app/pages/static/*"
       ],
       "@shared/*": [
         "src/app/shared/*",

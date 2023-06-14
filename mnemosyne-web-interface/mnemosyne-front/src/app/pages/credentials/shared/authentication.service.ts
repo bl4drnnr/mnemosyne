@@ -36,19 +36,13 @@ export class AuthenticationService {
     firstName: string;
     lastName: string;
   }) {
-    return this.apiService
-      .apiProxyRegistration({
-        email,
-        password,
-        tac,
-        firstName,
-        lastName
-      })
-      .pipe(
-        tap(({ message }) => {
-          console.log('registration message', message);
-        })
-      );
+    return this.apiService.apiProxyRegistration({
+      email,
+      password,
+      tac,
+      firstName,
+      lastName
+    });
   }
 
   confirmAccount({ hash }: { hash: string }) {

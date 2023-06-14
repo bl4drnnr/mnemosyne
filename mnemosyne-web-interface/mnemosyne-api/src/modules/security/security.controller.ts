@@ -13,10 +13,10 @@ export class SecurityController {
     return this.securityService.generate2FaQrCode({ confirmationHash });
   }
 
-  @Post('verify-2fa')
+  @Post('verify-2fa/:confirmationHash')
   verifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
-    @Query() { confirmationHash }: { confirmationHash: string }
+    @Param() { confirmationHash }: { confirmationHash: string }
   ) {
     return this.securityService.verifyTwoFaQrCode({
       payload,

@@ -1,9 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, Observable, throwError } from 'rxjs';
+import {
+  catchError,
+  delay,
+  finalize,
+  Observable,
+  tap,
+  throwError,
+  timeout
+} from 'rxjs';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/services/error-handler.service';
+import { LoaderService } from '@shared/loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +21,7 @@ export class ApiService {
   constructor(
     private http: HttpClient,
     private globalMessageService: GlobalMessageService,
+    private loaderService: LoaderService,
     private envService: EnvService,
     private errorHandler: ErrorHandlerService
   ) {}
@@ -95,6 +105,8 @@ export class ApiService {
   }): Observable<{ qr: string }> {
     const generateTwoFaCode = `${this.frontProxyUrl}/security/generate-2fa-qr`;
 
+    this.loaderService.start();
+
     return this.http
       .post<{ qr: string }>(generateTwoFaCode, {
         method: 'GET',
@@ -104,6 +116,9 @@ export class ApiService {
         catchError((error) => {
           this.errorHandler.errorHandler(error);
           return throwError(() => error);
+        }),
+        finalize(() => {
+          this.loaderService.stop();
         })
       );
   }

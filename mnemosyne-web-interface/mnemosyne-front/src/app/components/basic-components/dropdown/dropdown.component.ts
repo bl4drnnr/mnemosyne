@@ -30,6 +30,7 @@ export class DropdownComponent {
       (option) => option.key === optionKey
     );
     this.selectedOption.emit(selectedOption);
+    // @typescript-eslint/no-non-null-assertion
     this.currentOption = selectedOption!.value;
     this.toggleDropdown();
   }
