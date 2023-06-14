@@ -12,9 +12,9 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/services/error-handler.service';
 import { LoaderService } from '@shared/loader.service';
-import { CONTROLLERS_TYPE } from '@types/controllers.type';
-import { ENDPOINTS_TYPE } from '@types/endpoints.type';
-import { ALLOWED_METHODS_TYPE } from '@types/methods.type';
+import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
+import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
+import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
 
 @Injectable({
   providedIn: 'root'

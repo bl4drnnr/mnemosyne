@@ -25,12 +25,12 @@ export class ForgotPasswordComponent {
   handleForgotPassword() {
     if (this.incorrectEmail) return;
 
-    this.authenticationService
-      .forgotPassword({
-        email: this.email
-      })
-      .subscribe(() => {
-        //
-      });
+    // this.authenticationService
+    //   .forgotPassword({
+    //     email: this.email
+    //   })
+    //   .subscribe(() => {
+
+    // });
   }
 }

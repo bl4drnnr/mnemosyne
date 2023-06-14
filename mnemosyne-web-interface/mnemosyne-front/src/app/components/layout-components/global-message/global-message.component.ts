@@ -9,6 +9,8 @@ import { EnvService } from '@shared/env.service';
 })
 export class GlobalMessageComponent implements OnInit {
   closeButtonUrl: string;
+  successIcon: string;
+  errorIcon: string;
 
   constructor(
     public globalMessageService: GlobalMessageService,
@@ -19,5 +21,7 @@ export class GlobalMessageComponent implements OnInit {
 
   ngOnInit(): void {
     this.closeButtonUrl = `${this.staticStorageLink}/icons/close.svg`;
+    this.successIcon = `${this.staticStorageLink}/icons/check-circle.svg`;
+    this.errorIcon = `${this.staticStorageLink}/icons/error.svg`;
   }
 }

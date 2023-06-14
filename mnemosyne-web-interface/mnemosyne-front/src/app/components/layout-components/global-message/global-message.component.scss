@@ -2,38 +2,82 @@
 
 .alert-container {
   position: absolute;
-  top: 20px;
+  top: 50px;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
   max-width: max-content;
+  min-width: 500px;
+  transition: .3s;
+
+  .alert-content {
+    display: flex;
+
+    .alert-icon {
+      margin-right: 16px;
+    }
+  }
+
+  .alert-header {
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .alert-message {
+    opacity: .5;
+    font-size: 14px;
+  }
+
+  .close-container {
+    position: absolute;
+    height: 100%;
+    border-left: 1px solid rgba(0, 0, 0, .25);
+    right: 0;
+    display: flex;
+    align-items: center;
+    transition: .3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba($color-light-grey, .5);
+    }
+
+    .close-button {
+      opacity: .25;
+      margin: 0 16px;
+    }
+  }
 
   .alert-error {
-    background-color: rgba($warning-icon-color, .15);
-    border: 1px solid $warning-icon-color;
-    color: $warning-icon-color;
+    border-left: 10px solid $warn-color;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 10px 50px;
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
     position: relative;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    transition: .3s;
+
+    &:hover {
+      border-left: 90px solid $warn-color;
+    }
   }
 
   .alert-success {
-    background-color: rgba($submarket-color, .15);
-    border: 1px solid $submarket-color;
-    color: $submarket-color;
+    border-left: 10px solid $success-color;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 10px 50px;
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
     position: relative;
     display: flex;
     align-items: center;
-  }
+    justify-content: space-between;
+    transition: .3s;
 
-  .close-button {
-    margin-left: 25px;
-    opacity: .65;
-    cursor: pointer;
+    &:hover {
+      border-left: 90px solid $success-color;
+    }
   }
 }
