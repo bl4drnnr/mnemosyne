@@ -6,7 +6,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { UserSettings } from '@models/user-settings.model';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
-import {MfaSetDto} from "@dto/mfa-set.dto";
+import { MfaSetDto } from '@dto/mfa-set.dto';
 
 @Injectable()
 export class SecurityService {

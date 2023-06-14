@@ -1,5 +1,9 @@
 <div class="dropdown">
-  <button class="dropdown-toggle" (click)="toggleDropdown()">
+  <button
+    class="dropdown-toggle"
+    (click)="toggleDropdown()"
+    [disabled]="disabled"
+  >
     <span class="arrow" [ngClass]="{ 'arrow-open': isDropdownOpen }"></span>
     {{ currentOption || defaultLabel }}
   </button>

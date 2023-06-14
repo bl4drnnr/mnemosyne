@@ -27,6 +27,10 @@ export class AccountConfirmationComponent implements OnInit {
   code: string;
 
   phoneCodeSent = false;
+  isPhoneCorrect = true;
+  time = 60;
+  resendMessage: string;
+  isCountdownRunning = false;
 
   selectedMfaOption: DropdownInterface;
   mfaOptions: Array<DropdownInterface> = [
@@ -43,10 +47,13 @@ export class AccountConfirmationComponent implements OnInit {
   async changeMfaOption({ key }: DropdownInterface) {
     if (key === 'phone') {
       this.selectedMfaOption = this.mfaOptions[0];
+      this.qrCode = '';
     } else if (key === 'mfa') {
       this.selectedMfaOption = this.mfaOptions[1];
       await this.generateTwoFaQrCode();
     }
+    this.code = '';
+    this.phone = '';
   }
 
   async generateTwoFaQrCode() {
@@ -57,17 +64,9 @@ export class AccountConfirmationComponent implements OnInit {
       });
   }
 
-  async sendCode() {
+  async sendSmdCode() {
     this.phoneCodeSent = true;
-  }
-
-  async confirmUserSecurityUpdate() {
-    await this.authenticationService.accountConfirmationUpdate({
-      hash: '',
-      phone: '',
-      code: '',
-      twoFaToken: ''
-    });
+    this.startCountdown();
   }
 
   async confirmUserAccount(hash: string) {
@@ -79,12 +78,31 @@ export class AccountConfirmationComponent implements OnInit {
       });
   }
 
+  startCountdown() {
+    this.isCountdownRunning = true;
+    const countdownInterval = setInterval(() => {
+      this.time -= 1;
+      if (this.time <= 0) {
+        clearInterval(countdownInterval);
+        this.isCountdownRunning = false;
+        this.time = 60;
+      }
+      this.resendMessage = `You can resend SMS in ${this.time} seconds.`;
+    }, 1000);
+  }
+
+  isMobilePhoneCorrect(phone: string) {
+    const pattern = /^(\+\d{1,3}[- ]?)?\d{10}$/;
+    this.phone = phone;
+    if (phone.length) this.isPhoneCorrect = pattern.test(phone);
+  }
+
   isAllFieldsCorrect() {
-    if (this.selectedMfaOption.key === 'phone') {
+    if (this.selectedMfaOption?.key === 'phone') {
       return (
         this.phone && this.code && this.code.length === 6 && this.phoneCodeSent
       );
-    } else if (this.selectedMfaOption.key === 'mfa') {
+    } else if (this.selectedMfaOption?.key === 'mfa') {
       return this.qrCode && this.code && this.code.length === 6;
     } else {
       return false;

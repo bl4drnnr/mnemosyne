@@ -8,11 +8,11 @@
         [value]="inputValue"
         [disabled]="inputDisabled"
         [placeholder]="inputPlaceholder"
-        [errorMessage]="inputErrorMessage"
+        [errorMessage]="inputValue && inputShowError ? inputErrorMessage : ''"
         [showError]="inputShowError"
-        [inputDescription]="inputDescription"
+        [inputDescription]="!inputShowError ? inputDescription : ''"
         (valueChange)="onInput($event)"
-      />
+      ></basic-input>
     </div>
 
     <div class="button-wrapper">
@@ -20,6 +20,8 @@
         <basic-button
           [label]="buttonLabel"
           (buttonClick)="onClick()"
+          [disabled]="buttonDisabled"
+          [buttonDescription]="buttonDescription"
         />
       </div>
     </div>

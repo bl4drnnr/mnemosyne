@@ -63,20 +63,6 @@ export class AuthenticationService {
     return this.apiService.apiProxyGenerateTwoFaQrCode({ hash });
   }
 
-  accountConfirmationUpdate({
-    hash,
-    phone,
-    code,
-    twoFaToken
-  }: {
-    hash: string;
-    phone: string;
-    code: string;
-    twoFaToken: string;
-  }) {
-    //
-  }
-
   forgotPassword({ email }: { email: string }) {
     return this.apiService.apiProxyForgotPassword({ email }).pipe(
       tap(({ message }) => {

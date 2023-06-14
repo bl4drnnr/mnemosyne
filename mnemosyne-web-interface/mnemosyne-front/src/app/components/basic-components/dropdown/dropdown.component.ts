@@ -16,7 +16,10 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
 export class DropdownComponent {
   @Input() options: Array<DropdownInterface>;
   @Input() defaultLabel: string;
+  @Input() disabled: boolean;
+
   @Output() selectedOption = new EventEmitter<DropdownInterface>();
+
   currentOption: string;
   isDropdownOpen = false;
 
