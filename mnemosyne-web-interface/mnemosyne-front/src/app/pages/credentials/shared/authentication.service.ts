@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +14,19 @@ export class AuthenticationService {
     this._isLoggedIn$.next(!!token);
   }
 
-  login({ email, password }: { email: string; password: string }) {
-    return this.apiService.apiProxyLogin({ email, password }).pipe(
-      tap(({ _at }) => {
-        sessionStorage.setItem('_at', _at);
-        this._isLoggedIn$.next(true);
-      })
-    );
+  login({
+    email,
+    password
+  }: {
+    email: string;
+    password: string;
+  }): Observable<{ message: string }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'auth',
+      action: 'login',
+      payload: { email, password }
+    });
   }
 
   registration({
@@ -35,33 +41,34 @@ export class AuthenticationService {
     tac: boolean;
     firstName: string;
     lastName: string;
-  }) {
-    return this.apiService.apiProxyRegistration({
-      email,
-      password,
-      tac,
-      firstName,
-      lastName
+  }): Observable<{ message: string }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'auth',
+      action: 'registration',
+      payload: { email, password, firstName, lastName, tac }
     });
   }
 
-  confirmAccount({ hash }: { hash: string }) {
-    return this.apiService.apiProxyConfirmAccount({ hash }).pipe(
-      tap(({ message }) => {
-        console.log('confirmation account message', message);
-      })
-    );
+  confirmAccount({ hash }: { hash: string }): Observable<{ message: string }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'confirmation-hash',
+      action: 'account-confirmation',
+      params: { confirmationHash: hash }
+    });
   }
 
-  generateTwoFaQrCode({ hash }: { hash: string }) {
-    return this.apiService.apiProxyGenerateTwoFaQrCode({ hash });
+  generateTwoFaQrCode({ hash }: { hash: string }): Observable<{ qr: string }> {
+    return this.apiService.apiProxyRequest({
+      method: 'GET',
+      controller: 'security',
+      action: 'generate-2fa-qr',
+      params: { confirmationHash: hash }
+    });
   }
 
   forgotPassword({ email }: { email: string }) {
-    return this.apiService.apiProxyForgotPassword({ email }).pipe(
-      tap(({ message }) => {
-        console.log('forgot password message', message);
-      })
-    );
+    // return this.apiService.apiProxyForgotPassword({ email });
   }
 }
