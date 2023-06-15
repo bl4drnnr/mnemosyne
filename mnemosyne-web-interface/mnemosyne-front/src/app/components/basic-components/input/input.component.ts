@@ -1,10 +1,37 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ValidationService } from '@shared/validation.service';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
 
 @Component({
   selector: 'basic-input',
   templateUrl: './input.component.html',
-  styleUrls: ['./input.component.scss']
+  styleUrls: ['./input.component.scss'],
+  animations: [
+    trigger('showErrorAnimation', [
+      state(
+        'void',
+        style({
+          opacity: 0,
+          transform: 'translateY(-10px)'
+        })
+      ),
+      state(
+        '*',
+        style({
+          opacity: 1,
+          transform: 'translateY(0)'
+        })
+      ),
+      transition('void => *', animate('0.3s')),
+      transition('* => void', animate('0.3s'))
+    ])
+  ]
 })
 export class InputComponent {
   @Input() label: string;
@@ -58,4 +85,6 @@ export class InputComponent {
       this.passwordErrors.emit([]);
     }
   }
+
+  protected readonly removeEventListener = removeEventListener;
 }

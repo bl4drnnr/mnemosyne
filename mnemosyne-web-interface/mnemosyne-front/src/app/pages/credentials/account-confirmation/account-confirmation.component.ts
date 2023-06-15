@@ -22,16 +22,17 @@ export class AccountConfirmationComponent implements OnInit {
   step = 1;
 
   isAccountConfirmed = false;
+  accountConfirmationError: boolean;
 
   hash: string;
   phone: string;
   qrCode: string;
   code: string;
 
+  resendMessage: string;
   phoneCodeSent = false;
   isPhoneCorrect = true;
   time = 60;
-  resendMessage: string;
   isCountdownRunning = false;
 
   selectedMfaOption: DropdownInterface;
@@ -61,23 +62,55 @@ export class AccountConfirmationComponent implements OnInit {
   async generateTwoFaQrCode() {
     await this.authenticationService
       .generateTwoFaQrCode({ hash: this.hash })
-      .subscribe(({ qr }) => {
-        this.qrCode = qr;
+      .subscribe({
+        next: ({ qr }) => (this.qrCode = qr)
+      });
+  }
+
+  async verifyTwoFaQrCode() {
+    await this.authenticationService
+      .verifyTwoFaQrCode({ hash: this.hash, code: this.code })
+      .subscribe({
+        next: () => (this.step = 3)
       });
   }
 
   async sendSmdCode() {
-    this.phoneCodeSent = true;
-    this.startCountdown();
+    await this.authenticationService
+      .sendSmsCode({ hash: this.hash, phone: this.phone })
+      .subscribe({
+        next: () => {
+          this.phoneCodeSent = true;
+          this.startCountdown();
+        }
+      });
+  }
+
+  async verifyMobilePhone() {
+    await this.authenticationService
+      .verifyMobilePhone({
+        hash: this.hash,
+        phone: this.phone,
+        code: this.code
+      })
+      .subscribe({
+        next: () => (this.step = 3)
+      });
+  }
+
+  async setUserMfa() {
+    if (this.selectedMfaOption.key === 'phone') {
+      await this.verifyMobilePhone();
+    } else if (this.selectedMfaOption.key === 'mfa') {
+      await this.verifyTwoFaQrCode();
+    }
   }
 
   async confirmUserAccount(hash: string) {
-    this.authenticationService
-      .confirmAccount({ hash })
-      .subscribe(({ message }) => {
-        if (message === 'account-confirmed') this.isAccountConfirmed = true;
-        else this.step = 3;
-      });
+    this.authenticationService.confirmAccount({ hash }).subscribe({
+      next: () => (this.isAccountConfirmed = true),
+      error: () => (this.accountConfirmationError = true)
+    });
   }
 
   async handleRedirect(path: string) {
@@ -118,10 +151,11 @@ export class AccountConfirmationComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');
-      if (!hash) await this.router.navigate(['login']);
-      else {
+      if (!hash) {
+        await this.router.navigate(['login']);
+      } else {
         this.hash = hash;
-        // await this.confirmUserAccount(hash);
+        await this.confirmUserAccount(hash);
       }
     });
   }

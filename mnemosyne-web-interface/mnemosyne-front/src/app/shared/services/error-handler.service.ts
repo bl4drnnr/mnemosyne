@@ -14,6 +14,11 @@ export class ErrorHandlerService {
       message: error.error.message,
       isError: true
     });
+
+    setTimeout(() => {
+      this.globalMessageService.clear();
+    }, 10000);
+
     return throwError(() => error.error.message);
   }
 }

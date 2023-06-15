@@ -15,6 +15,7 @@ import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import { UserId } from '@decorators/user-id.decorator';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { LogInUserDto } from '@dto/log-in-user.dto';
+import { MfaRequiredDto } from '@dto/mfa-required.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -25,9 +26,13 @@ export class AuthController {
   async login(@Body() payload: LogInUserDto, @Res({ passthrough: true }) res) {
     const response = await this.authService.login(payload);
 
-    res.cookie('_rt', response._rt);
+    if (response instanceof MfaRequiredDto) {
+      return response;
+    } else if ('_rt' in response && '_at' in response) {
+      res.cookie('_rt', response._rt);
 
-    return { _at: response._at };
+      return { _at: response._at };
+    }
   }
 
   @UsePipes(ValidationPipe)

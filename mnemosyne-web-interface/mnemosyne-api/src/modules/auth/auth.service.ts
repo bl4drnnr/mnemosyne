@@ -1,3 +1,5 @@
+import * as node2fa from 'node-2fa';
+import * as dayjs from 'dayjs';
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
 import * as crypto from 'crypto';
@@ -22,10 +24,18 @@ import { TacNotAcceptedException } from '@exceptions/user/tac-not-accepted.excep
 import { EmailService } from '@shared/email.service';
 import { UserSettings } from '@models/user-settings.model';
 import { LogInUserDto } from '@dto/log-in-user.dto';
+import { Sequelize } from 'sequelize-typescript';
+import { Transaction } from 'sequelize';
+import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
+import { AccountNotSecuredException } from '@exceptions/account-not-secured.exception';
+import { MfaRequiredDto } from '@dto/mfa-required.dto';
+import { WrongCodeException } from '@exceptions/wrong-code.exception';
+import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly sequelize: Sequelize,
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
@@ -36,6 +46,8 @@ export class AuthService {
   ) {}
 
   async login(payload: LogInUserDto) {
+    const trx = await this.sequelize.transaction();
+
     const user = await this.usersService.getUserByEmail(payload.email);
     if (!user) throw new UserDoesntExistException();
 
@@ -46,13 +58,52 @@ export class AuthService {
 
     if (!passwordEquals) throw new WrongCredentialsException();
 
-    return this.generateTokens(user);
+    const registrationHash = user.confirmationHashes.find(
+      (hash) => hash.confirmationType === 'REGISTRATION'
+    );
+    if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
+
+    const userPhone = user.userSettings.phone;
+    const userPhoneCode = user.userSettings.phoneCode;
+    const phoneCodeSentAt = user.userSettings.codeSentAt;
+    const userTwoFaToken = user.userSettings.twoFaToken;
+
+    if (!userPhone && !userTwoFaToken) throw new AccountNotSecuredException();
+
+    if (!payload.mfaCode || !payload.phoneCode) return new MfaRequiredDto();
+
+    if (payload.phoneCode && user.userSettings.phone) {
+      if (userPhoneCode !== payload.phoneCode) throw new WrongCodeException();
+
+      const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
+
+      if (
+        userPhoneCode === payload.phoneCode &&
+        dayjs(phoneCodeSentAt) < fiveMinutesAgo
+      )
+        throw new SmsExpiredException();
+    }
+
+    if (payload.mfaCode && user.userSettings.twoFaToken) {
+      const delta = node2fa.verifyToken(userTwoFaToken, payload.mfaCode);
+
+      if (!delta || (delta && delta.delta !== 0))
+        throw new WrongCodeException();
+    }
+
+    const { _rt, _at } = await this.generateTokens({ user, trx });
+
+    await trx.commit();
+
+    return { _rt, _at };
   }
 
   async registration(payload: CreateUserDto) {
-    const existingUser = await this.usersService.getUserByEmail(payload.email);
-    if (existingUser) throw new UserAlreadyExistsException();
+    const trx = await this.sequelize.transaction();
 
+    const existingUser = await this.usersService.getUserByEmail(payload.email);
+
+    if (existingUser) throw new UserAlreadyExistsException();
     if (!payload.tac) throw new TacNotAcceptedException();
 
     const hashedPassword = await bcryptjs.hash(
@@ -61,22 +112,33 @@ export class AuthService {
     );
 
     const createdUser = await this.usersService.createUser({
-      ...payload,
-      password: hashedPassword
+      payload: {
+        ...payload,
+        password: hashedPassword
+      },
+      trx
     });
 
     const confirmationHash = crypto.randomBytes(20).toString('hex');
 
     await this.emailService.sendVerificationEmail({
-      confirmationHash,
-      confirmationType: 'REGISTRATION',
-      userId: createdUser.id,
-      email: createdUser.email
+      payload: {
+        confirmationHash,
+        confirmationType: 'REGISTRATION',
+        userId: createdUser.id,
+        email: createdUser.email
+      },
+      trx
     });
 
-    await this.userSettingsRepository.create({
-      userId: createdUser.id
-    });
+    await this.userSettingsRepository.create(
+      {
+        userId: createdUser.id
+      },
+      { transaction: trx }
+    );
+
+    await trx.commit();
 
     return new UserCreatedDto();
   }
@@ -88,6 +150,8 @@ export class AuthService {
   }
 
   async refreshToken({ refreshToken }: { refreshToken: string }) {
+    const trx = await this.sequelize.transaction();
+
     if (!refreshToken) throw new CorruptedTokenException();
 
     const payload: { id: string } = this.verifyToken({ token: refreshToken });
@@ -98,7 +162,9 @@ export class AuthService {
 
     const user = await this.usersService.getUserById(token.userId);
 
-    const { _at, _rt } = await this.generateTokens(user);
+    const { _at, _rt } = await this.generateTokens({ user, trx });
+
+    await trx.commit();
 
     return { _at, _rt };
   }
@@ -144,35 +210,52 @@ export class AuthService {
     return { id, token: this.jwtService.sign(payload, options) };
   }
 
-  private async updateRefreshToken(refreshTokenPayload: {
+  private async updateRefreshToken({
+    userId,
+    tokenId,
+    trx
+  }: {
     userId: string;
     tokenId: string;
+    trx: Transaction;
   }) {
     const currentSession = await this.sessionRepository.findOne({
-      where: { userId: refreshTokenPayload.userId }
+      where: { userId }
     });
 
     if (currentSession) {
       await this.sessionRepository.destroy({
-        where: { id: currentSession.id }
+        where: { id: currentSession.id },
+        transaction: trx
       });
     }
 
-    await this.sessionRepository.create({
-      ...refreshTokenPayload
-    });
+    await this.sessionRepository.create(
+      {
+        userId,
+        tokenId
+      },
+      { transaction: trx }
+    );
   }
 
-  private async generateTokens({ id, roles }: User) {
+  private async generateTokens({
+    user,
+    trx
+  }: {
+    user: User;
+    trx: Transaction;
+  }) {
     const accessToken = this.generateAccessToken({
-      roles: roles.map((role) => role.value),
-      userId: id
+      roles: user.roles.map((role) => role.value),
+      userId: user.id
     });
     const refreshToken = this.generateRefreshToken();
 
     await this.updateRefreshToken({
-      userId: id,
-      tokenId: refreshToken.id
+      userId: user.id,
+      tokenId: refreshToken.id,
+      trx
     });
 
     return { _at: accessToken, _rt: refreshToken.token };

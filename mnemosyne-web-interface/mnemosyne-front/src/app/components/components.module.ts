@@ -10,6 +10,7 @@ import { CheckboxComponent } from '@components/checkbox/checkbox.component';
 import { DropdownComponent } from '@components/dropdown/dropdown.component';
 import { InputButtonComponent } from '@components/input-button/input-button.component';
 import { InputMfaComponent } from './basic-components/input-mfa/input-mfa.component';
+import { EmojiComponent } from './basic-components/emoji/emoji.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { InputMfaComponent } from './basic-components/input-mfa/input-mfa.compon
     CheckboxComponent,
     DropdownComponent,
     InputButtonComponent,
-    InputMfaComponent
+    InputMfaComponent,
+    EmojiComponent
   ],
   imports: [CommonModule, FormsModule, NgOptimizedImage],
   exports: [
@@ -33,7 +35,8 @@ import { InputMfaComponent } from './basic-components/input-mfa/input-mfa.compon
     CheckboxComponent,
     DropdownComponent,
     InputButtonComponent,
-    InputMfaComponent
+    InputMfaComponent,
+    EmojiComponent
   ]
 })
 export class ComponentsModule {}
