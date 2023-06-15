@@ -1,3 +1,5 @@
+import * as node2fa from 'node-2fa';
+import * as dayjs from 'dayjs';
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
 import * as crypto from 'crypto';
@@ -26,6 +28,9 @@ import { Sequelize } from 'sequelize-typescript';
 import { Transaction } from 'sequelize';
 import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
 import { AccountNotSecuredException } from '@exceptions/account-not-secured.exception';
+import { MfaRequiredDto } from '@dto/mfa-required.dto';
+import { WrongCodeException } from '@exceptions/wrong-code.exception';
+import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 
 @Injectable()
 export class AuthService {
@@ -58,8 +63,33 @@ export class AuthService {
     );
     if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
 
-    if (!user.userSettings.phone || !user.userSettings.twoFaToken)
-      throw new AccountNotSecuredException();
+    const userPhone = user.userSettings.phone;
+    const userPhoneCode = user.userSettings.phoneCode;
+    const phoneCodeSentAt = user.userSettings.codeSentAt;
+    const userTwoFaToken = user.userSettings.twoFaToken;
+
+    if (!userPhone && !userTwoFaToken) throw new AccountNotSecuredException();
+
+    if (!payload.mfaCode || !payload.phoneCode) return new MfaRequiredDto();
+
+    if (payload.phoneCode && user.userSettings.phone) {
+      if (userPhoneCode !== payload.phoneCode) throw new WrongCodeException();
+
+      const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
+
+      if (
+        userPhoneCode === payload.phoneCode &&
+        dayjs(phoneCodeSentAt) < fiveMinutesAgo
+      )
+        throw new SmsExpiredException();
+    }
+
+    if (payload.mfaCode && user.userSettings.twoFaToken) {
+      const delta = node2fa.verifyToken(userTwoFaToken, payload.mfaCode);
+
+      if (!delta || (delta && delta.delta !== 0))
+        throw new WrongCodeException();
+    }
 
     const { _rt, _at } = await this.generateTokens({ user, trx });
 

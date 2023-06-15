@@ -35,7 +35,8 @@
         "src/dto/user/*",
         "src/dto/role/*",
         "src/dto/security/*",
-        "src/dto/confirmation-hash/*"
+        "src/dto/confirmation-hash/*",
+        "src/dto/auth/*"
       ],
       "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],
