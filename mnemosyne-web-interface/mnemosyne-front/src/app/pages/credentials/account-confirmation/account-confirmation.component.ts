@@ -22,6 +22,7 @@ export class AccountConfirmationComponent implements OnInit {
   step = 1;
 
   isAccountConfirmed = false;
+  isMfaNotSet = true;
   accountConfirmationError: boolean;
 
   hash: string;
@@ -108,7 +109,11 @@ export class AccountConfirmationComponent implements OnInit {
 
   async confirmUserAccount(hash: string) {
     this.authenticationService.confirmAccount({ hash }).subscribe({
-      next: () => (this.isAccountConfirmed = true),
+      next: ({ message }) => {
+        this.isAccountConfirmed = true;
+        if (message !== 'account-confirmed')
+          this.isMfaNotSet = message === 'mfa-not-set';
+      },
       error: () => (this.accountConfirmationError = true)
     });
   }
