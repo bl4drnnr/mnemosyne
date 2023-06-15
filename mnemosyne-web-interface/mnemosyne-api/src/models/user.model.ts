@@ -43,6 +43,14 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   lastName: string;
 
+  @Default(false)
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    field: 'is_security_compliant'
+  })
+  isSecurityCompliant: boolean;
+
   @HasMany(() => ConfirmationHash)
   confirmationHashes: ConfirmationHash[];
 
