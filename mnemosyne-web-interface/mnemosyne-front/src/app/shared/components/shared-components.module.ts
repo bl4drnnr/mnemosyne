@@ -5,9 +5,11 @@ import { SidebarComponent } from '@shared/components/sidebar/sidebar.component';
 import { FooterComponent } from '@shared/components/footer/footer.component';
 import { RouterModule } from '@angular/router';
 
+const components = [HeaderComponent, SidebarComponent, FooterComponent];
+
 @NgModule({
-  declarations: [HeaderComponent, SidebarComponent, FooterComponent],
+  declarations: [...components],
   imports: [CommonModule, RouterModule],
-  exports: [HeaderComponent, SidebarComponent, FooterComponent]
+  exports: [...components]
 })
 export class SharedComponentsModule {}
