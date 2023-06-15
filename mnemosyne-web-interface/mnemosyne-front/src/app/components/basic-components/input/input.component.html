@@ -12,6 +12,7 @@
   <p
     class="error-message"
     *ngIf="showError"
+    [@showErrorAnimation]="true"
     [class.show-error]="showError"
   >
     {{ errorMessage }}

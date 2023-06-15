@@ -1,18 +1,31 @@
-<div *ngIf="globalMessageService.message$ | async as message" class="alert-container">
+<div *ngIf="globalMessageService.message$ | async as message" [@fadeInOut]="true" class="alert-container">
   <div [ngClass]="globalMessageService.isError ? 'alert-error' : 'alert-success'" role="alert">
     <div class="alert-content">
-      <img
-        class="alert-icon"
-        [ngSrc]="successIcon"
-        [width]="50"
-        [height]="50"
-        alt="success"
-      >
+      <div *ngIf="globalMessageService.isError">
+        <img
+          class="alert-icon error"
+          [ngSrc]="errorIcon"
+          [width]="50"
+          [height]="50"
+          alt="error"
+        >
+      </div>
+      <div *ngIf="!globalMessageService.isError">
+        <img
+          class="alert-icon success"
+          [ngSrc]="successIcon"
+          [width]="50"
+          [height]="50"
+          alt="success"
+        >
+      </div>
+
       <div>
         <h2 class="alert-header">{{ globalMessageService.isError ? 'Error' : 'Success' }}</h2>
         <p class="alert-message">{{ message }}</p>
       </div>
     </div>
+
     <div class="close-container" (click)="globalMessageService.clear()">
       <p class="close-button">Close</p>
     </div>

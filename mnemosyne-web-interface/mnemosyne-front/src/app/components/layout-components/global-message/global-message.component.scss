@@ -16,6 +16,14 @@
 
     .alert-icon {
       margin-right: 16px;
+
+      &.error {
+        filter: $warn-color-svg;
+      }
+
+      &.success {
+        filter: $success-color-svg;
+      }
     }
   }
 
