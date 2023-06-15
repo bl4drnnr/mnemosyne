@@ -22,15 +22,14 @@ import { ExpiredTokenException } from '@exceptions/auth/expired-token.exception'
 import { LoggedOutDto } from '@dto/logged-out.dto';
 import { TacNotAcceptedException } from '@exceptions/user/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
-import { UserSettings } from '@models/user-settings.model';
 import { LogInUserDto } from '@dto/log-in-user.dto';
 import { Sequelize } from 'sequelize-typescript';
 import { Transaction } from 'sequelize';
 import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
-import { AccountNotSecuredException } from '@exceptions/account-not-secured.exception';
 import { MfaRequiredDto } from '@dto/mfa-required.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
+import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 
 @Injectable()
 export class AuthService {
@@ -40,9 +39,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
     private readonly emailService: EmailService,
-    @InjectModel(Session) private readonly sessionRepository: typeof Session,
-    @InjectModel(UserSettings)
-    private readonly userSettingsRepository: typeof UserSettings
+    @InjectModel(Session) private readonly sessionRepository: typeof Session
   ) {}
 
   async login(payload: LogInUserDto) {
@@ -63,12 +60,11 @@ export class AuthService {
     );
     if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
 
-    const userPhone = user.userSettings.phone;
     const userPhoneCode = user.userSettings.phoneCode;
     const phoneCodeSentAt = user.userSettings.codeSentAt;
     const userTwoFaToken = user.userSettings.twoFaToken;
 
-    if (!userPhone && !userTwoFaToken) throw new AccountNotSecuredException();
+    if (!user.isSecurityCompliant) return new MfaNotSetDto();
 
     if (!payload.mfaCode || !payload.phoneCode) return new MfaRequiredDto();
 
@@ -131,12 +127,7 @@ export class AuthService {
       trx
     });
 
-    await this.userSettingsRepository.create(
-      {
-        userId: createdUser.id
-      },
-      { transaction: trx }
-    );
+    await this.usersService.createUserSettings({ userId: createdUser.id, trx });
 
     await trx.commit();
 
@@ -160,7 +151,7 @@ export class AuthService {
 
     if (!token) throw new InvalidTokenException();
 
-    const user = await this.usersService.getUserById(token.userId);
+    const user = await this.usersService.getUserById({ id: token.userId });
 
     const { _at, _rt } = await this.generateTokens({ user, trx });
 

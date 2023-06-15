@@ -6,16 +6,15 @@ import { HashNotFoundException } from '@exceptions/hash-not-found.exception';
 import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
 import { AccountConfirmedDto } from '@dto/account-confirmed.dto';
 import { Transaction } from 'sequelize';
-import { UserSettings } from '@models/user-settings.model';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
+import { UsersService } from '@modules/users.service';
 
 @Injectable()
 export class ConfirmationHashService {
   constructor(
+    private readonly userService: UsersService,
     @InjectModel(ConfirmationHash)
-    private readonly confirmationHashRepository: typeof ConfirmationHash,
-    @InjectModel(UserSettings)
-    private readonly userSettingsRepository: typeof UserSettings
+    private readonly confirmationHashRepository: typeof ConfirmationHash
   ) {}
 
   async createConfirmationHash({
@@ -57,8 +56,8 @@ export class ConfirmationHashService {
 
     if (!foundHash) throw new HashNotFoundException();
 
-    const userSettings = await this.userSettingsRepository.findOne({
-      where: { userId: foundHash.userId }
+    const userSettings = await this.userService.getUserSettingsByUserId({
+      userId: foundHash.userId
     });
 
     if (foundHash.confirmed && (userSettings.phone || userSettings.twoFaToken))

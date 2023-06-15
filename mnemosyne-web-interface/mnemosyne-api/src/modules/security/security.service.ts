@@ -3,8 +3,6 @@ import * as dayjs from 'dayjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
-import { InjectModel } from '@nestjs/sequelize';
-import { UserSettings } from '@models/user-settings.model';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { MfaSetDto } from '@dto/mfa-set.dto';
@@ -19,9 +17,7 @@ export class SecurityService {
   constructor(
     private readonly confirmationHashService: ConfirmationHashService,
     private readonly userService: UsersService,
-    private readonly phoneService: PhoneService,
-    @InjectModel(UserSettings)
-    private readonly userSettingsRepository: typeof UserSettings
+    private readonly phoneService: PhoneService
   ) {}
 
   async generate2FaQrCode({ confirmationHash }: { confirmationHash: string }) {
@@ -29,19 +25,17 @@ export class SecurityService {
       await this.confirmationHashService.getUserByConfirmationHash({
         confirmationHash
       });
-    const user = await this.userService.getUserById(userId);
+    const user = await this.userService.getUserById({ id: userId });
 
     const { qr, secret } = node2fa.generateSecret({
       name: 'Mnemosyne',
       account: user.email
     });
 
-    await this.userSettingsRepository.update(
-      {
-        twoFaToken: secret
-      },
-      { where: { userId } }
-    );
+    await this.userService.updateUserSettings({
+      payload: { twoFaToken: secret },
+      userId
+    });
 
     return { qr };
   }
@@ -63,13 +57,18 @@ export class SecurityService {
       userId = userConfirmationHash.userId;
     }
 
-    const { twoFaToken } = await this.userSettingsRepository.findOne({
-      where: { userId }
+    const { twoFaToken } = await this.userService.getUserSettingsByUserId({
+      userId
     });
 
     const delta = node2fa.verifyToken(twoFaToken, payload.code);
 
     if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
+
+    await this.userService.changeSecurityComplianceStatus({
+      userId,
+      isSecurityCompliant: true
+    });
 
     return new MfaSetDto();
   }
@@ -91,8 +90,8 @@ export class SecurityService {
       userId = userConfirmationHash.userId;
     }
 
-    const { codeSentAt } = await this.userSettingsRepository.findOne({
-      where: { userId }
+    const { codeSentAt } = await this.userService.getUserSettingsByUserId({
+      userId
     });
 
     const oneMinuteAgo = dayjs().subtract(1, 'minute');
@@ -103,14 +102,14 @@ export class SecurityService {
       targetPhoneNumber: payload.phone
     });
 
-    await this.userSettingsRepository.update(
-      {
+    await this.userService.updateUserSettings({
+      payload: {
         phone: payload.phone,
         phoneCode: sentSmsCode.toString(),
         codeSentAt: new Date()
       },
-      { where: { userId } }
-    );
+      userId
+    });
 
     return new SmsCodeSentDto();
   }
@@ -133,9 +132,7 @@ export class SecurityService {
     }
 
     const { codeSentAt, phoneCode, phone } =
-      await this.userSettingsRepository.findOne({
-        where: { userId }
-      });
+      await this.userService.getUserSettingsByUserId({ userId });
 
     if (phone !== payload.phone) throw new BadRequestException();
 
@@ -146,12 +143,15 @@ export class SecurityService {
     if (phoneCode === payload.code && dayjs(codeSentAt) < fiveMinutesAgo)
       throw new SmsExpiredException();
 
-    await this.userSettingsRepository.update(
-      {
-        phoneCode: null
-      },
-      { where: { userId } }
-    );
+    await this.userService.changeSecurityComplianceStatus({
+      userId,
+      isSecurityCompliant: true
+    });
+
+    await this.userService.updateUserSettings({
+      payload: { phoneCode: null, codeSentAt: null },
+      userId
+    });
 
     return new MfaSetDto();
   }
