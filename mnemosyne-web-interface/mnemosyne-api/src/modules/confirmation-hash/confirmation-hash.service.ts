@@ -5,6 +5,7 @@ import { VerificationEmailInterface } from '@interfaces/verification-email.inter
 import { HashNotFoundException } from '@exceptions/hash-not-found.exception';
 import { EmailAlreadyConfirmedException } from '@exceptions/email-already-confirmed.exception';
 import { AccountConfirmedDto } from '@dto/account-confirmed.dto';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class ConfirmationHashService {
@@ -14,17 +15,21 @@ export class ConfirmationHashService {
   ) {}
 
   async createConfirmationHash({
-    userId,
-    confirmationHash,
-    confirmationType,
-    email
-  }: VerificationEmailInterface) {
-    await this.confirmationHashRepository.create({
-      userId,
-      confirmationHash,
-      confirmationType,
-      changingEmail: email
-    });
+    payload,
+    trx
+  }: {
+    payload: VerificationEmailInterface;
+    trx: Transaction;
+  }) {
+    await this.confirmationHashRepository.create(
+      {
+        userId: payload.userId,
+        confirmationHash: payload.confirmationHash,
+        confirmationType: payload.confirmationType,
+        changingEmail: payload.email
+      },
+      { transaction: trx }
+    );
   }
 
   async getUserByConfirmationHash({

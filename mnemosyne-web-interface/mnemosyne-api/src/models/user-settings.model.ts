@@ -34,6 +34,9 @@ export class UserSettings extends Model<
   @Column({ type: DataType.STRING, allowNull: true, field: 'phone_code' })
   phoneCode: string;
 
+  @Column({ type: DataType.DATE, allowNull: true, field: 'code_sent_at' })
+  codeSentAt: Date;
+
   @Column({ type: DataType.STRING, allowNull: true, field: 'two_fa_token' })
   twoFaToken: string;
 

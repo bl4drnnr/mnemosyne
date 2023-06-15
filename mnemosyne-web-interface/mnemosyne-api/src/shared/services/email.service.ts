@@ -4,6 +4,7 @@ import * as SendGrid from '@sendgrid/mail';
 import { ConfirmationHashService } from '@modules/confirmation-hash/confirmation-hash.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { Transaction } from 'sequelize';
 
 @Injectable()
 export class EmailService {
@@ -81,7 +82,13 @@ export class EmailService {
     return await SendGrid.send(mail);
   }
 
-  async sendVerificationEmail(payload: VerificationEmailInterface) {
+  async sendVerificationEmail({
+    payload,
+    trx
+  }: {
+    payload: VerificationEmailInterface;
+    trx: Transaction;
+  }) {
     const emailSettings = {
       email: ['EMAIL_CHANGE', 'FORGOT_PASSWORD'].includes(
         payload.confirmationType
@@ -96,8 +103,11 @@ export class EmailService {
     };
 
     await this.confirmationHashService.createConfirmationHash({
-      userId: payload.userId,
-      ...emailSettings
+      payload: {
+        userId: payload.userId,
+        ...emailSettings
+      },
+      trx
     });
 
     await this.sendEmail({
