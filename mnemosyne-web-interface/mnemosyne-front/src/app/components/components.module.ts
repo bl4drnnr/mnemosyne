@@ -9,34 +9,25 @@ import { FormsModule } from '@angular/forms';
 import { CheckboxComponent } from '@components/checkbox/checkbox.component';
 import { DropdownComponent } from '@components/dropdown/dropdown.component';
 import { InputButtonComponent } from '@components/input-button/input-button.component';
-import { InputMfaComponent } from './basic-components/input-mfa/input-mfa.component';
-import { EmojiComponent } from './basic-components/emoji/emoji.component';
+import { InputMfaComponent } from '@components/input-mfa/input-mfa.component';
+import { EmojiComponent } from '@components/emoji/emoji.component';
+
+const components = [
+  ButtonComponent,
+  InputComponent,
+  LinkComponent,
+  GlobalMessageComponent,
+  LoaderComponent,
+  CheckboxComponent,
+  DropdownComponent,
+  InputButtonComponent,
+  InputMfaComponent,
+  EmojiComponent
+];
 
 @NgModule({
-  declarations: [
-    ButtonComponent,
-    InputComponent,
-    LinkComponent,
-    GlobalMessageComponent,
-    LoaderComponent,
-    CheckboxComponent,
-    DropdownComponent,
-    InputButtonComponent,
-    InputMfaComponent,
-    EmojiComponent
-  ],
+  declarations: [...components],
   imports: [CommonModule, FormsModule, NgOptimizedImage],
-  exports: [
-    ButtonComponent,
-    InputComponent,
-    LinkComponent,
-    GlobalMessageComponent,
-    LoaderComponent,
-    CheckboxComponent,
-    DropdownComponent,
-    InputButtonComponent,
-    InputMfaComponent,
-    EmojiComponent
-  ]
+  exports: [...components]
 })
 export class ComponentsModule {}
