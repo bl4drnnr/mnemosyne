@@ -9,6 +9,7 @@ import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { MfaSetDto } from '@dto/mfa-set.dto';
 import { SendSmsCodeDto } from '@dto/send-sms-code.dto';
 import { PhoneService } from '@shared/phone.service';
+import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
 
 @Injectable()
 export class SecurityService {
@@ -59,16 +60,13 @@ export class SecurityService {
       userId = userConfirmationHash.userId;
     }
 
-    const { delta } = node2fa.verifyToken(payload.twoFaToken, payload.code);
+    const { twoFaToken } = await this.userSettingsRepository.findOne({
+      where: { userId }
+    });
 
-    if (delta !== 0) throw new WrongCodeException();
+    const delta = node2fa.verifyToken(twoFaToken, payload.code);
 
-    await this.userSettingsRepository.update(
-      {
-        twoFaToken: payload.twoFaToken
-      },
-      { where: { userId } }
-    );
+    if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
 
     return new MfaSetDto();
   }
@@ -91,7 +89,13 @@ export class SecurityService {
     }
   }
 
-  async verifyMobilePhone() {
+  async verifyMobilePhone({
+    payload,
+    confirmationHash
+  }: {
+    payload: VerifyMobilePhoneDto;
+    confirmationHash: string;
+  }) {
     //
   }
 }

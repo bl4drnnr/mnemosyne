@@ -3,4 +3,6 @@ export type ENDPOINTS_TYPE =
   | 'login'
   | 'generate-2fa-qr'
   | 'account-confirmation'
-  | 'send-sms-code';
+  | 'send-sms-code'
+  | 'verify-2fa'
+  | 'verify-mobile-phone';

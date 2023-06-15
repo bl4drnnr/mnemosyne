@@ -68,6 +68,22 @@ export class AuthenticationService {
     });
   }
 
+  verifyTwoFaQrCode({
+    hash,
+    code
+  }: {
+    hash: string;
+    code: string;
+  }): Observable<{ message: string }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'security',
+      action: 'verify-2fa',
+      params: { confirmationHash: hash },
+      payload: { code }
+    });
+  }
+
   sendSmsCode({
     hash,
     phone
@@ -79,7 +95,26 @@ export class AuthenticationService {
       method: 'POST',
       controller: 'security',
       action: 'send-sms-code',
-      payload: { confirmationHash: hash, phone }
+      params: { confirmationHash: hash },
+      payload: { phone }
+    });
+  }
+
+  verifyMobilePhone({
+    hash,
+    phone,
+    code
+  }: {
+    hash: string;
+    phone: string;
+    code: string;
+  }) {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'security',
+      action: 'verify-mobile-phone',
+      params: { confirmationHash: hash },
+      payload: { phone, code }
     });
   }
 

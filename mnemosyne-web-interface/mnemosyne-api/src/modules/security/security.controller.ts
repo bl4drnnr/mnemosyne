@@ -2,6 +2,7 @@ import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { SecurityService } from '@modules/security/security.service';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
 import { SendSmsCodeDto } from '@dto/send-sms-code.dto';
+import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
 
 @Controller('security')
 export class SecurityController {
@@ -38,8 +39,12 @@ export class SecurityController {
 
   @Post('verify-mobile-phone')
   verifyMobilePhone(
+    @Body() payload: VerifyMobilePhoneDto,
     @Query() { confirmationHash }: { confirmationHash: string }
   ) {
-    return this.securityService.verifyMobilePhone();
+    return this.securityService.verifyMobilePhone({
+      payload,
+      confirmationHash
+    });
   }
 }

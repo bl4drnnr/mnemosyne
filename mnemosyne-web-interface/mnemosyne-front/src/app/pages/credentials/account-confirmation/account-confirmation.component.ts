@@ -19,7 +19,7 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
   ]
 })
 export class AccountConfirmationComponent implements OnInit {
-  step = 2;
+  step = 1;
 
   isAccountConfirmed = false;
   accountConfirmationError: boolean;
@@ -67,6 +67,14 @@ export class AccountConfirmationComponent implements OnInit {
       });
   }
 
+  async verifyTwoFaQrCode() {
+    await this.authenticationService
+      .verifyTwoFaQrCode({ hash: this.hash, code: this.code })
+      .subscribe({
+        next: () => (this.step = 3)
+      });
+  }
+
   async sendSmdCode() {
     await this.authenticationService
       .sendSmsCode({ hash: this.hash, phone: this.phone })
@@ -76,6 +84,26 @@ export class AccountConfirmationComponent implements OnInit {
           this.startCountdown();
         }
       });
+  }
+
+  async verifyMobilePhone() {
+    await this.authenticationService
+      .verifyMobilePhone({
+        hash: this.hash,
+        phone: this.phone,
+        code: this.code
+      })
+      .subscribe({
+        next: () => (this.step = 3)
+      });
+  }
+
+  async setUserMfa() {
+    if (this.selectedMfaOption.key === 'phone') {
+      await this.verifyMobilePhone();
+    } else if (this.selectedMfaOption.key === 'mfa') {
+      await this.verifyTwoFaQrCode();
+    }
   }
 
   async confirmUserAccount(hash: string) {
@@ -127,7 +155,7 @@ export class AccountConfirmationComponent implements OnInit {
         await this.router.navigate(['login']);
       } else {
         this.hash = hash;
-        // await this.confirmUserAccount(hash);
+        await this.confirmUserAccount(hash);
       }
     });
   }

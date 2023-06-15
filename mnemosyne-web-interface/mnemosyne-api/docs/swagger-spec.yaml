@@ -140,6 +140,12 @@ paths:
     post:
       operationId: SecurityController_verifyMobilePhone
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyMobilePhoneDto"
       responses:
         "201":
           description: ""
@@ -171,5 +177,8 @@ components:
       type: object
       properties: {}
     SendSmsCodeDto:
+      type: object
+      properties: {}
+    VerifyMobilePhoneDto:
       type: object
       properties: {}
