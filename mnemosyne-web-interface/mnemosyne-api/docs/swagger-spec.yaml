@@ -127,6 +127,12 @@ paths:
     post:
       operationId: SecurityController_sendSmsCode
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendSmsCodeDto"
       responses:
         "201":
           description: ""
@@ -162,5 +168,8 @@ components:
       type: object
       properties: {}
     VerifyTwoFaDto:
+      type: object
+      properties: {}
+    SendSmsCodeDto:
       type: object
       properties: {}

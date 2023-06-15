@@ -52,7 +52,7 @@ export class AuthenticationService {
 
   confirmAccount({ hash }: { hash: string }): Observable<{ message: string }> {
     return this.apiService.apiProxyRequest({
-      method: 'POST',
+      method: 'GET',
       controller: 'confirmation-hash',
       action: 'account-confirmation',
       params: { confirmationHash: hash }
@@ -65,6 +65,21 @@ export class AuthenticationService {
       controller: 'security',
       action: 'generate-2fa-qr',
       params: { confirmationHash: hash }
+    });
+  }
+
+  sendSmsCode({
+    hash,
+    phone
+  }: {
+    hash: string;
+    phone: string;
+  }): Observable<{ message: string }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'security',
+      action: 'send-sms-code',
+      payload: { confirmationHash: hash, phone }
     });
   }
 

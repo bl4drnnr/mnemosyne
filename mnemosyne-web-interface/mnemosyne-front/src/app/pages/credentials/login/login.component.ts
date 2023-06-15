@@ -44,8 +44,8 @@ export class LoginComponent {
         email: this.email,
         password: this.password
       })
-      .subscribe(async () => {
-        await this.router.navigate(['dashboard']);
+      .subscribe({
+        next: async () => await this.router.navigate(['dashboard'])
       });
   }
 }

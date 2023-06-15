@@ -48,8 +48,8 @@ export class RegistrationComponent {
         firstName: this.firstName,
         lastName: this.lastName
       })
-      .subscribe(() => {
-        this.step = 3;
+      .subscribe({
+        next: () => (this.step = 3)
       });
   }
 
