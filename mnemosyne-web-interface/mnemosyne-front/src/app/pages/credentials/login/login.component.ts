@@ -82,4 +82,6 @@ export class LoginComponent {
         }
       });
   }
+
+  protected readonly trigger = trigger;
 }
