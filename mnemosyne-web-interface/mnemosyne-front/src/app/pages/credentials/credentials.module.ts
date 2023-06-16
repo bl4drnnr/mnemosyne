@@ -5,6 +5,7 @@ import { LoginComponent } from '@pages/login/login.component';
 import { RegistrationComponent } from '@pages/registration/registration.component';
 import { ComponentsModule } from '@components/components.module';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
+import { LayoutsModule } from '@layouts/layouts.module';
 
 const components = [
   ForgotPasswordComponent,
@@ -15,7 +16,7 @@ const components = [
 
 @NgModule({
   declarations: [...components],
-  imports: [CommonModule, ComponentsModule, NgOptimizedImage],
+  imports: [CommonModule, ComponentsModule, NgOptimizedImage, LayoutsModule],
   exports: [...components]
 })
 export class CredentialsModule {}

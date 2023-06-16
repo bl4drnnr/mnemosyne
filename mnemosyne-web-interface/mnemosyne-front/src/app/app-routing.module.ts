@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegistrationComponent } from '@pages/registration/registration.component';
 import { LoginComponent } from '@pages/login/login.component';
 import { ForgotPasswordComponent } from '@pages/forgot-password/forgot-password.component';
-import { CredentialsLayout } from '@layouts/credentials/credentials.layout';
 import { AccountConfirmationComponent } from '@pages/account-confirmation/account-confirmation.component';
 import { EmptyLayout } from '@layouts/empty/empty.component';
 import { TermsAndConditionsComponent } from '@pages/terms-and-conditions/terms-and-conditions.component';
@@ -13,23 +12,21 @@ import { DashboardComponent } from '@pages/dashboard/dashboard.component';
 const routes: Routes = [
   {
     path: 'login',
-    component: CredentialsLayout,
+    component: LoginComponent,
     children: [{ path: '', component: LoginComponent }]
   },
   {
     path: 'registration',
-    component: CredentialsLayout,
+    component: RegistrationComponent,
     children: [{ path: '', component: RegistrationComponent }]
   },
   {
     path: 'forgot-password',
-    component: CredentialsLayout,
-    children: [{ path: '', component: ForgotPasswordComponent }]
+    component: ForgotPasswordComponent
   },
   {
     path: 'account-confirmation/:hash',
-    component: CredentialsLayout,
-    children: [{ path: '', component: AccountConfirmationComponent }]
+    component: AccountConfirmationComponent
   },
   {
     path: 'tac',
