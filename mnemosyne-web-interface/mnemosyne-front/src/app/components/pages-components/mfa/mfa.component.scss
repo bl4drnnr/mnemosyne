@@ -1,0 +1,21 @@
+@import 'variables';
+
+.qr-code-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.qr-code-input-wrapper {
+  margin: 20px 0;
+}
+
+.options-list {
+  margin: 20px 0 20px 20px;
+
+  .option-item {
+    color: $color-dark-grey;
+    font-size: 14px;
+    padding-bottom: 10px;
+  }
+}

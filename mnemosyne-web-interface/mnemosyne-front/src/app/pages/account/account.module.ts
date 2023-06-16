@@ -6,6 +6,7 @@ const components = [DashboardComponent];
 
 @NgModule({
   declarations: [...components],
-  imports: [CommonModule]
+  imports: [CommonModule],
+  exports: [...components]
 })
 export class AccountModule {}

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { AuthenticationService } from '@pages/shared/authentication.service';
 import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { LoginResponse } from '@responses/login.response';
 
 @Component({
   selector: 'page-login',
@@ -18,11 +19,20 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ]
 })
 export class LoginComponent {
+  step = 1;
+
   email: string;
   password: string;
 
   incorrectEmail: boolean;
   incorrectPassword: boolean;
+
+  isMfaSet: boolean;
+  isPhoneRequired: boolean;
+  isMfaRequired: boolean;
+
+  phoneCode: string;
+  mfaCode: string;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -42,10 +52,34 @@ export class LoginComponent {
     this.authenticationService
       .login({
         email: this.email,
-        password: this.password
+        password: this.password,
+        phoneCode: this.phoneCode,
+        mfaCode: this.mfaCode
       })
       .subscribe({
-        next: async () => await this.router.navigate(['dashboard'])
+        next: async ({ message }) => {
+          switch (message) {
+            case LoginResponse.MFA_NOT_SET:
+              this.step = 0;
+              this.isMfaSet = false;
+              break;
+            case LoginResponse.MFA_REQUIRED:
+              this.step = 2;
+              this.isPhoneRequired = true;
+              this.isMfaRequired = true;
+              break;
+            case LoginResponse.PHONE_REQUIRED:
+              this.step = 2;
+              this.isPhoneRequired = true;
+              break;
+            case LoginResponse.TWO_FA_REQUIRED:
+              this.step = 2;
+              this.isMfaRequired = true;
+              break;
+            default:
+              await this.router.navigate(['dashboard']);
+          }
+        }
       });
   }
 }

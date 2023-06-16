@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ValidationService } from '@shared/validation.service';
 import {
   animate,
   state,
@@ -7,6 +6,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
+import { ValidationService } from '@shared/validation.service';
 
 @Component({
   selector: 'basic-input',
