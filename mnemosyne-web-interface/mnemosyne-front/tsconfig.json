@@ -38,17 +38,19 @@
       ],
       "@shared/*": [
         "src/app/shared/*",
-        "src/app/shared/components/*",
+        "src/app/shared/api/*",
         "src/app/shared/services/*",
         "src/app/shared/global-components-services/*"
       ],
-      "@responses/*": ["src/app/shared/responses/*"],
+      "@responses/*": ["src/libs/api/responses/*"],
+      "@payloads/*": ["src/libs/api/payloads/*"],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
       "@guards/*": ["src/app/guards/*"],
       "@features/*": ["src/app/features/*"],
       "@modules/*": ["src/app/modules/*"],
       "@interfaces/*": [
+        "src/libs/interfaces/components/*",
         "src/libs/interfaces/*",
         "src/libs/types/*"
       ]

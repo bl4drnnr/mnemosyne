@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { LoginPayload } from '@payloads/login.payload';
+import { RegistrationPayload } from '@payloads/registration.payload';
+import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
+import { SendSmsCodePayload } from '@payloads/send-sms-code.payload';
+import { VerifyMobilePhonePayload } from '@payloads/verify-mobile-phone.payload';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +24,7 @@ export class AuthenticationService {
     password,
     phoneCode,
     mfaCode
-  }: {
-    email: string;
-    password: string;
-    phoneCode: string;
-    mfaCode: string;
-  }): Observable<{ message: string }> {
+  }: LoginPayload): Observable<{ message: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'auth',
@@ -39,13 +39,7 @@ export class AuthenticationService {
     tac,
     firstName,
     lastName
-  }: {
-    email: string;
-    password: string;
-    tac: boolean;
-    firstName: string;
-    lastName: string;
-  }): Observable<{ message: string }> {
+  }: RegistrationPayload): Observable<{ message: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'auth',
@@ -75,10 +69,7 @@ export class AuthenticationService {
   verifyTwoFaQrCode({
     hash,
     code
-  }: {
-    hash: string;
-    code: string;
-  }): Observable<{ message: string }> {
+  }: VerifyTwoFaPayload): Observable<{ message: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
@@ -91,10 +82,7 @@ export class AuthenticationService {
   sendSmsCode({
     hash,
     phone
-  }: {
-    hash: string;
-    phone: string;
-  }): Observable<{ message: string }> {
+  }: SendSmsCodePayload): Observable<{ message: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
@@ -104,15 +92,7 @@ export class AuthenticationService {
     });
   }
 
-  verifyMobilePhone({
-    hash,
-    phone,
-    code
-  }: {
-    hash: string;
-    phone: string;
-    code: string;
-  }) {
+  verifyMobilePhone({ hash, phone, code }: VerifyMobilePhonePayload) {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',

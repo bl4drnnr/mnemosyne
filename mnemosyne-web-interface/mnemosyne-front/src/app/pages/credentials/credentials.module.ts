@@ -6,19 +6,16 @@ import { RegistrationComponent } from '@pages/registration/registration.componen
 import { ComponentsModule } from '@components/components.module';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 
+const components = [
+  ForgotPasswordComponent,
+  LoginComponent,
+  RegistrationComponent,
+  AccountConfirmationComponent
+];
+
 @NgModule({
-  declarations: [
-    ForgotPasswordComponent,
-    LoginComponent,
-    RegistrationComponent,
-    AccountConfirmationComponent
-  ],
+  declarations: [...components],
   imports: [CommonModule, ComponentsModule, NgOptimizedImage],
-  exports: [
-    ForgotPasswordComponent,
-    LoginComponent,
-    RegistrationComponent,
-    AccountConfirmationComponent
-  ]
+  exports: [...components]
 })
 export class CredentialsModule {}

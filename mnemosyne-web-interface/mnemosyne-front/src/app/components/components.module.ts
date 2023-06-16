@@ -12,6 +12,9 @@ import { InputButtonComponent } from '@components/input-button/input-button.comp
 import { InputMfaComponent } from '@components/input-mfa/input-mfa.component';
 import { EmojiComponent } from '@components/emoji/emoji.component';
 import { MfaComponent } from '@components/mfa/mfa.component';
+import { HeaderComponent } from '@components/header/header.component';
+import { FooterComponent } from '@components/footer/footer.component';
+import { SiderbarComponent } from '@components/siderbar/siderbar.component';
 
 const components = [
   ButtonComponent,
@@ -24,7 +27,10 @@ const components = [
   InputButtonComponent,
   InputMfaComponent,
   EmojiComponent,
-  MfaComponent
+  MfaComponent,
+  HeaderComponent,
+  FooterComponent,
+  SiderbarComponent
 ];
 
 @NgModule({
