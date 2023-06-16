@@ -11,6 +11,7 @@ import { DropdownComponent } from '@components/dropdown/dropdown.component';
 import { InputButtonComponent } from '@components/input-button/input-button.component';
 import { InputMfaComponent } from '@components/input-mfa/input-mfa.component';
 import { EmojiComponent } from '@components/emoji/emoji.component';
+import { MfaComponent } from '@components/mfa/mfa.component';
 
 const components = [
   ButtonComponent,
@@ -22,7 +23,8 @@ const components = [
   DropdownComponent,
   InputButtonComponent,
   InputMfaComponent,
-  EmojiComponent
+  EmojiComponent,
+  MfaComponent
 ];
 
 @NgModule({

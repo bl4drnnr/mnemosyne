@@ -16,16 +16,20 @@ export class AuthenticationService {
 
   login({
     email,
-    password
+    password,
+    phoneCode,
+    mfaCode
   }: {
     email: string;
     password: string;
+    phoneCode: string;
+    mfaCode: string;
   }): Observable<{ message: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'auth',
       action: 'login',
-      payload: { email, password }
+      payload: { email, password, phoneCode, mfaCode }
     });
   }
 

@@ -27,7 +27,7 @@
       "@components/*": [
         "src/app/components/*",
         "src/app/components/basic-components/*",
-        "src/app/components/page-components/*",
+        "src/app/components/pages-components/*",
         "src/app/components/layout-components/*"
       ],
       "@pages/*": [
@@ -42,6 +42,7 @@
         "src/app/shared/services/*",
         "src/app/shared/global-components-services/*"
       ],
+      "@responses/*": ["src/app/shared/responses/*"],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
       "@guards/*": ["src/app/guards/*"],
