@@ -9,6 +9,11 @@ import { LayoutsModule } from '@layouts/layouts.module';
 import { ComponentsModule } from '@components/components.module';
 import { PagesModule } from '@pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LottieModule } from 'ngx-lottie';
+
+export function playerFactory() {
+  return import('lottie-web');
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,7 +26,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     LayoutsModule,
     ComponentsModule,
-    PagesModule
+    PagesModule,
+    LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [],
   bootstrap: [AppComponent]
