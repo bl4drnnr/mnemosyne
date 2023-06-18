@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
