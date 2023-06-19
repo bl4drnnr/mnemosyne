@@ -48,6 +48,17 @@ export class LoginComponent {
     );
   }
 
+  loginMfaButtonDisabled() {
+    return (
+      (this.isPhoneRequired && !this.phoneCode) ||
+      (this.isMfaRequired && !this.mfaCode) ||
+      (this.isPhoneRequired &&
+        this.isMfaRequired &&
+        !this.phoneCode &&
+        !this.mfaCode)
+    );
+  }
+
   handleLogIn() {
     this.authenticationService
       .login({
@@ -57,7 +68,7 @@ export class LoginComponent {
         mfaCode: this.mfaCode
       })
       .subscribe({
-        next: async ({ message }) => {
+        next: async ({ message, _at }) => {
           switch (message) {
             case LoginResponse.MFA_NOT_SET:
               this.step = 0;
@@ -77,6 +88,8 @@ export class LoginComponent {
               this.isMfaRequired = true;
               break;
             default:
+              localStorage.setItem('_at', _at);
+              this.authenticationService.changeIsLoggedIn(true);
               await this.router.navigate(['dashboard']);
           }
         }

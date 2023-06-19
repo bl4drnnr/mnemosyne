@@ -6,12 +6,14 @@ import { RegistrationPayload } from '@payloads/registration.payload';
 import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
 import { SendSmsCodePayload } from '@payloads/send-sms-code.payload';
 import { VerifyMobilePhonePayload } from '@payloads/verify-mobile-phone.payload';
+import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
+import { ResetUserPasswordDto } from '@payloads/reset-user-password.dto';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  _isLoggedIn$ = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this._isLoggedIn$.asObservable();
 
   constructor(private apiService: ApiService) {
@@ -19,12 +21,16 @@ export class AuthenticationService {
     this._isLoggedIn$.next(!!token);
   }
 
+  changeIsLoggedIn(loginStatus: boolean) {
+    this._isLoggedIn$.next(loginStatus);
+  }
+
   login({
     email,
     password,
     phoneCode,
     mfaCode
-  }: LoginPayload): Observable<{ message: string }> {
+  }: LoginPayload): Observable<{ message: string; _at: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'auth',
@@ -102,7 +108,26 @@ export class AuthenticationService {
     });
   }
 
-  forgotPassword({ email }: { email: string }) {
-    // return this.apiService.apiProxyForgotPassword({ email });
+  forgotPassword({ email }: ForgotPasswordPayload) {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'users',
+      action: 'forgot-password',
+      payload: { email }
+    });
+  }
+
+  resetUserPassword({
+    hash,
+    password,
+    phoneCode,
+    mfaCode
+  }: ResetUserPasswordDto) {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'users',
+      action: 'reset-user-password',
+      payload: { hash, password, phoneCode, mfaCode }
+    });
   }
 }

@@ -1,1 +1,5 @@
-export type CONTROLLERS_TYPE = 'auth' | 'security' | 'confirmation-hash';
+export type CONTROLLERS_TYPE =
+  | 'auth'
+  | 'security'
+  | 'confirmation-hash'
+  | 'users';

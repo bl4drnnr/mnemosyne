@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
@@ -12,6 +12,7 @@ import { UsersService } from '@modules/users.service';
 @Injectable()
 export class ConfirmationHashService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     @InjectModel(ConfirmationHash)
     private readonly confirmationHashRepository: typeof ConfirmationHash
@@ -19,10 +20,10 @@ export class ConfirmationHashService {
 
   async createConfirmationHash({
     payload,
-    trx
+    trx: transaction
   }: {
     payload: VerificationEmailInterface;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     await this.confirmationHashRepository.create(
       {
@@ -31,17 +32,20 @@ export class ConfirmationHashService {
         confirmationType: payload.confirmationType,
         changingEmail: payload.email
       },
-      { transaction: trx }
+      { transaction }
     );
   }
 
   async getUserByConfirmationHash({
-    confirmationHash
+    confirmationHash,
+    trx: transaction
   }: {
     confirmationHash: string;
+    trx?: Transaction;
   }) {
     const foundHash = await this.confirmationHashRepository.findOne({
-      where: { confirmationHash }
+      where: { confirmationHash },
+      transaction
     });
 
     if (!foundHash) throw new HashNotFoundException();
@@ -49,15 +53,23 @@ export class ConfirmationHashService {
     return { userId: foundHash.userId };
   }
 
-  async confirmAccount({ confirmationHash }: { confirmationHash: string }) {
+  async confirmAccount({
+    confirmationHash,
+    trx: transaction
+  }: {
+    confirmationHash: string;
+    trx?: Transaction;
+  }) {
     const foundHash = await this.confirmationHashRepository.findOne({
-      where: { confirmationHash }
+      where: { confirmationHash },
+      transaction
     });
 
     if (!foundHash) throw new HashNotFoundException();
 
     const userSettings = await this.userService.getUserSettingsByUserId({
-      userId: foundHash.userId
+      userId: foundHash.userId,
+      trx: transaction
     });
 
     if (foundHash.confirmed && (userSettings.phone || userSettings.twoFaToken))
@@ -70,7 +82,7 @@ export class ConfirmationHashService {
       {
         confirmed: true
       },
-      { where: { id: foundHash.id } }
+      { where: { id: foundHash.id }, transaction }
     );
 
     return new AccountConfirmedDto();

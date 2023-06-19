@@ -1,11 +1,15 @@
-import { IsBoolean, IsEmail, IsString, Length } from 'class-validator';
+import { IsBoolean, IsString, Length, Matches } from 'class-validator';
 
 export class CreateUserDto {
-  @IsEmail({}, { message: 'Should be email' })
+  @Matches(
+    /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
+    { message: 'Wrong email format' }
+  )
   readonly email: string;
 
-  @IsString({ message: 'Password should be a string' })
-  @Length(8, 64, { message: 'Min length of password is 8, max is 64' })
+  @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
+    message: 'Wrong password format'
+  })
   readonly password: string;
 
   @IsString({ message: 'First name should be a string' })
