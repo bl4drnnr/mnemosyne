@@ -48,6 +48,17 @@ export class LoginComponent {
     );
   }
 
+  loginMfaButtonDisabled() {
+    return (
+      (this.isPhoneRequired && !this.phoneCode) ||
+      (this.isMfaRequired && !this.mfaCode) ||
+      (this.isPhoneRequired &&
+        this.isMfaRequired &&
+        !this.phoneCode &&
+        !this.mfaCode)
+    );
+  }
+
   handleLogIn() {
     this.authenticationService
       .login({

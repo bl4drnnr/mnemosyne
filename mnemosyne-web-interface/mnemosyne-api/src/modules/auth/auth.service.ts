@@ -66,11 +66,18 @@ export class AuthService {
 
     if (!user.isSecurityCompliant) return new MfaNotSetDto();
 
-    if (!payload.mfaCode || !payload.phoneCode) {
-      if (userPhoneCode && !userTwoFaToken) return new MfaRequiredDto('phone-required');
-      else if (!userPhoneCode && userTwoFaToken) return new MfaRequiredDto('two-fa-required');
-      else return new MfaRequiredDto();
-    }
+    if (
+      !payload.mfaCode &&
+      userTwoFaToken &&
+      !payload.phoneCode &&
+      userPhoneCode
+    )
+      return new MfaRequiredDto();
+
+    if (!payload.mfaCode && userTwoFaToken)
+      return new MfaRequiredDto('two-fa-required');
+    if (!payload.phoneCode && userPhoneCode)
+      return new MfaRequiredDto('phone-required');
 
     if (payload.phoneCode && user.userSettings.phone) {
       if (userPhoneCode !== payload.phoneCode) throw new WrongCodeException();
