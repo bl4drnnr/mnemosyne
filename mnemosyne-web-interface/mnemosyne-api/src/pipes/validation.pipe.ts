@@ -1,11 +1,17 @@
-import { ArgumentMetadata, PipeTransform } from '@nestjs/common';
+import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
 import { plainToInstance } from 'class-transformer';
 import { validate } from 'class-validator';
 import { ValidationException } from '@exceptions/validation/validation.exception';
+import { Transaction } from 'sequelize';
 
+@Injectable()
 export class ValidationPipe implements PipeTransform<any> {
   async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
-    const object = plainToInstance(metadata.metatype, value);
+    let object: any;
+
+    if (value instanceof Transaction) return value;
+    else object = plainToInstance(metadata.metatype, value);
+
     const errors = await validate(object);
 
     if (errors.length) {

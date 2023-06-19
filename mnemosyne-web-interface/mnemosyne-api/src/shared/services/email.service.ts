@@ -84,10 +84,10 @@ export class EmailService {
 
   async sendVerificationEmail({
     payload,
-    trx
+    trx: transaction
   }: {
     payload: VerificationEmailInterface;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     const emailSettings = {
       email: ['EMAIL_CHANGE', 'FORGOT_PASSWORD'].includes(
@@ -107,7 +107,7 @@ export class EmailService {
         userId: payload.userId,
         ...emailSettings
       },
-      trx
+      trx: transaction
     });
 
     await this.sendEmail({

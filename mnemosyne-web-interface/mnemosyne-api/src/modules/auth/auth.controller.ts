@@ -6,6 +6,7 @@ import {
   Post,
   Res,
   UseGuards,
+  UseInterceptors,
   UsePipes
 } from '@nestjs/common';
 import { AuthService } from '@modules/auth/auth.service';
@@ -16,15 +17,23 @@ import { UserId } from '@decorators/user-id.decorator';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { LogInUserDto } from '@dto/log-in-user.dto';
 import { MfaRequiredDto } from '@dto/mfa-required.dto';
+import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
+import { TransactionParam } from '@decorators/transaction.decorator';
+import { Transaction } from 'sequelize';
 
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @UseInterceptors(TransactionInterceptor)
   @UsePipes(ValidationPipe)
   @Post('login')
-  async login(@Body() payload: LogInUserDto, @Res({ passthrough: true }) res) {
-    const response = await this.authService.login(payload);
+  async login(
+    @Body() payload: LogInUserDto,
+    @Res({ passthrough: true }) res,
+    @TransactionParam() trx: Transaction
+  ) {
+    const response = await this.authService.login({ payload, trx });
 
     if (response instanceof MfaRequiredDto) {
       return response;
@@ -35,30 +44,42 @@ export class AuthController {
     }
   }
 
+  @UseInterceptors(TransactionInterceptor)
   @UsePipes(ValidationPipe)
   @Post('registration')
-  registration(@Body() payload: CreateUserDto) {
-    return this.authService.registration(payload);
+  registration(
+    @Body() payload: CreateUserDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.authService.registration({ payload, trx });
   }
 
+  @UseInterceptors(TransactionInterceptor)
   @UseGuards(AuthGuard)
   @Get('logout')
-  async logout(@UserId() userId: string, @Res() res) {
+  async logout(
+    @UserId() userId: string,
+    @Res() res,
+    @TransactionParam() trx: Transaction
+  ) {
     res.clearCookie('_rt');
 
-    const response = await this.authService.logout({ userId });
+    const response = await this.authService.logout({ userId, trx });
 
     return res.status(HttpStatus.OK).json(response);
   }
 
+  @UseInterceptors(TransactionInterceptor)
   @UseGuards(AuthGuard)
   @Get('refresh')
   async refreshTokens(
     @CookieRefreshToken() refreshToken: string,
-    @Res({ passthrough: true }) res
+    @Res({ passthrough: true }) res,
+    @TransactionParam() trx: Transaction
   ) {
     const { _rt, _at } = await this.authService.refreshToken({
-      refreshToken
+      refreshToken,
+      trx
     });
 
     res.cookie('_rt', _rt);

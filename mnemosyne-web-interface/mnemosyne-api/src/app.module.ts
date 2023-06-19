@@ -24,6 +24,8 @@ import { ConfirmationHashModule } from '@modules/confirmation-hash.module';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { SecurityModule } from '@modules/security/security.module';
 import { UserSettings } from '@models/user-settings.model';
+import { Transaction } from 'sequelize';
+import TYPES = Transaction.TYPES;
 
 @Module({
   imports: [
@@ -38,6 +40,7 @@ import { UserSettings } from '@models/user-settings.model';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
+      transactionType: TYPES.EXCLUSIVE,
       models: [
         User,
         Role,

@@ -13,32 +13,6 @@ export class ValidationService {
     } else return email === '';
   }
 
-  isPasswordCorrect(password: string) {
-    if (password) {
-      const regex = new RegExp(
-        '^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
-      );
-      return regex.test(password);
-    } else {
-      return null;
-    }
-  }
-
-  isPasswordsSame({
-    password,
-    passwordRepeat
-  }: {
-    password: string;
-    passwordRepeat: string;
-  }) {
-    return password === passwordRepeat;
-  }
-
-  checkPasswordLength(password: string) {
-    if (password) return password.length >= 8;
-    else return false;
-  }
-
   checkPasswordsRules(password: string) {
     const passwordRules = [
       {

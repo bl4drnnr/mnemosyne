@@ -5,4 +5,6 @@ export type ENDPOINTS_TYPE =
   | 'account-confirmation'
   | 'send-sms-code'
   | 'verify-2fa'
-  | 'verify-mobile-phone';
+  | 'verify-mobile-phone'
+  | 'forgot-password'
+  | 'reset-user-password';

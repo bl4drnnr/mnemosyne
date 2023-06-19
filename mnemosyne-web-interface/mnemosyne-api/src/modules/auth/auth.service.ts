@@ -42,10 +42,11 @@ export class AuthService {
     @InjectModel(Session) private readonly sessionRepository: typeof Session
   ) {}
 
-  async login(payload: LogInUserDto) {
-    const trx = await this.sequelize.transaction();
-
-    const user = await this.usersService.getUserByEmail(payload.email);
+  async login({ payload, trx }: { payload: LogInUserDto; trx: Transaction }) {
+    const user = await this.usersService.getUserByEmail({
+      email: payload.email,
+      trx
+    });
     if (!user) throw new UserDoesntExistException();
 
     const passwordEquals = await bcryptjs.compare(
@@ -100,15 +101,20 @@ export class AuthService {
 
     const { _rt, _at } = await this.generateTokens({ user, trx });
 
-    await trx.commit();
-
     return { _rt, _at };
   }
 
-  async registration(payload: CreateUserDto) {
-    const trx = await this.sequelize.transaction();
-
-    const existingUser = await this.usersService.getUserByEmail(payload.email);
+  async registration({
+    payload,
+    trx
+  }: {
+    payload: CreateUserDto;
+    trx: Transaction;
+  }) {
+    const existingUser = await this.usersService.getUserByEmail({
+      email: payload.email,
+      trx
+    });
 
     if (existingUser) throw new UserAlreadyExistsException();
     if (!payload.tac) throw new TacNotAcceptedException();
@@ -140,33 +146,36 @@ export class AuthService {
 
     await this.usersService.createUserSettings({ userId: createdUser.id, trx });
 
-    await trx.commit();
-
     return new UserCreatedDto();
   }
 
-  async logout({ userId }: { userId: string }) {
-    await this.sessionRepository.destroy({ where: { userId } });
+  async logout({ userId, trx }: { userId: string; trx: Transaction }) {
+    await this.sessionRepository.destroy({
+      where: { userId },
+      transaction: trx
+    });
 
     return new LoggedOutDto();
   }
 
-  async refreshToken({ refreshToken }: { refreshToken: string }) {
-    const trx = await this.sequelize.transaction();
-
+  async refreshToken({
+    refreshToken,
+    trx
+  }: {
+    refreshToken: string;
+    trx: Transaction;
+  }) {
     if (!refreshToken) throw new CorruptedTokenException();
 
     const payload: { id: string } = this.verifyToken({ token: refreshToken });
 
-    const token = await this.getTokenById(payload.id);
+    const token = await this.getTokenById({ tokenId: payload.id, trx });
 
     if (!token) throw new InvalidTokenException();
 
-    const user = await this.usersService.getUserById({ id: token.userId });
+    const user = await this.usersService.getUserById({ id: token.userId, trx });
 
     const { _at, _rt } = await this.generateTokens({ user, trx });
-
-    await trx.commit();
 
     return { _at, _rt };
   }
@@ -215,20 +224,21 @@ export class AuthService {
   private async updateRefreshToken({
     userId,
     tokenId,
-    trx
+    trx: transaction
   }: {
     userId: string;
     tokenId: string;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     const currentSession = await this.sessionRepository.findOne({
-      where: { userId }
+      where: { userId },
+      transaction
     });
 
     if (currentSession) {
       await this.sessionRepository.destroy({
         where: { id: currentSession.id },
-        transaction: trx
+        transaction
       });
     }
 
@@ -237,16 +247,16 @@ export class AuthService {
         userId,
         tokenId
       },
-      { transaction: trx }
+      { transaction }
     );
   }
 
   private async generateTokens({
     user,
-    trx
+    trx: transaction
   }: {
     user: User;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     const accessToken = this.generateAccessToken({
       roles: user.roles.map((role) => role.value),
@@ -257,15 +267,22 @@ export class AuthService {
     await this.updateRefreshToken({
       userId: user.id,
       tokenId: refreshToken.id,
-      trx
+      trx: transaction
     });
 
     return { _at: accessToken, _rt: refreshToken.token };
   }
 
-  private async getTokenById(tokenId: string) {
+  private async getTokenById({
+    tokenId,
+    trx: transaction
+  }: {
+    tokenId: string;
+    trx?: Transaction;
+  }) {
     return this.sessionRepository.findOne({
-      where: { tokenId }
+      where: { tokenId },
+      transaction
     });
   }
 }

@@ -1,5 +1,83 @@
 openapi: 3.0.0
 paths:
+  /api/users/forgot-password:
+    post:
+      operationId: UsersController_forgotPassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ForgotPasswordDto"
+      responses:
+        "201":
+          description: ""
+  /api/users/reset-user-password:
+    post:
+      operationId: UsersController_resetUserPassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetUserPasswordDto"
+      responses:
+        "201":
+          description: ""
+  /api/confirmation-hash/account-confirmation:
+    get:
+      operationId: ConfirmationHashController_confirmAccount
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+  /api/auth/login:
+    post:
+      operationId: AuthController_login
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LogInUserDto"
+      responses:
+        "201":
+          description: ""
+  /api/auth/registration:
+    post:
+      operationId: AuthController_registration
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserDto"
+      responses:
+        "201":
+          description: ""
+  /api/auth/logout:
+    get:
+      operationId: AuthController_logout
+      parameters: []
+      responses:
+        "200":
+          description: ""
+  /api/auth/refresh:
+    get:
+      operationId: AuthController_refreshTokens
+      parameters: []
+      responses:
+        "200":
+          description: ""
   /api/roles:
     post:
       operationId: RolesController_createRole
@@ -50,58 +128,6 @@ paths:
               $ref: "#/components/schemas/RevokeRoleDto"
       responses:
         "201":
-          description: ""
-  /api/auth/login:
-    post:
-      operationId: AuthController_login
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LogInUserDto"
-      responses:
-        "201":
-          description: ""
-  /api/auth/registration:
-    post:
-      operationId: AuthController_registration
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateUserDto"
-      responses:
-        "201":
-          description: ""
-  /api/auth/logout:
-    get:
-      operationId: AuthController_logout
-      parameters: []
-      responses:
-        "200":
-          description: ""
-  /api/auth/refresh:
-    get:
-      operationId: AuthController_refreshTokens
-      parameters: []
-      responses:
-        "200":
-          description: ""
-  /api/confirmation-hash/account-confirmation:
-    get:
-      operationId: ConfirmationHashController_confirmAccount
-      parameters:
-        - name: confirmationHash
-          required: true
-          in: query
-          schema:
-            type: string
-      responses:
-        "200":
           description: ""
   /api/security/generate-2fa-qr:
     get:
@@ -158,6 +184,18 @@ tags: []
 servers: []
 components:
   schemas:
+    ForgotPasswordDto:
+      type: object
+      properties: {}
+    ResetUserPasswordDto:
+      type: object
+      properties: {}
+    LogInUserDto:
+      type: object
+      properties: {}
+    CreateUserDto:
+      type: object
+      properties: {}
     CreateRoleDto:
       type: object
       properties: {}
@@ -165,12 +203,6 @@ components:
       type: object
       properties: {}
     RevokeRoleDto:
-      type: object
-      properties: {}
-    LogInUserDto:
-      type: object
-      properties: {}
-    CreateUserDto:
       type: object
       properties: {}
     VerifyTwoFaDto:

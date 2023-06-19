@@ -50,7 +50,8 @@
         "src/modules/permissions/*",
         "src/modules/confirmation-hash/*"
       ],
-      "@interfaces/*": ["src/libs/interfaces/*"]
+      "@interfaces/*": ["src/libs/interfaces/*"],
+      "@interceptors/*": ["src/interceptors/*"]
     }
   }
 }
