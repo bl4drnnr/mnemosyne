@@ -11,7 +11,7 @@ import { VerifyMobilePhonePayload } from '@payloads/verify-mobile-phone.payload'
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  _isLoggedIn$ = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this._isLoggedIn$.asObservable();
 
   constructor(private apiService: ApiService) {
@@ -19,12 +19,16 @@ export class AuthenticationService {
     this._isLoggedIn$.next(!!token);
   }
 
+  changeIsLoggedIn(loginStatus: boolean) {
+    this._isLoggedIn$.next(loginStatus);
+  }
+
   login({
     email,
     password,
     phoneCode,
     mfaCode
-  }: LoginPayload): Observable<{ message: string }> {
+  }: LoginPayload): Observable<{ message: string; _at: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'auth',

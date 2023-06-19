@@ -6,12 +6,14 @@ import { RegistrationComponent } from '@pages/registration/registration.componen
 import { ComponentsModule } from '@components/components.module';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 import { LayoutsModule } from '@layouts/layouts.module';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const components = [
   ForgotPasswordComponent,
   LoginComponent,
   RegistrationComponent,
-  AccountConfirmationComponent
+  AccountConfirmationComponent,
+  ResetPasswordComponent
 ];
 
 @NgModule({

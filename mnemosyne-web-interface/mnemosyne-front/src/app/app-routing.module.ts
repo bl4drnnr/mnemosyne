@@ -6,6 +6,8 @@ import { ForgotPasswordComponent } from '@pages/forgot-password/forgot-password.
 import { AccountConfirmationComponent } from '@pages/account-confirmation/account-confirmation.component';
 import { TermsAndConditionsComponent } from '@pages/terms-and-conditions/terms-and-conditions.component';
 import { DashboardComponent } from '@pages/dashboard/dashboard.component';
+import { IsAuthenticatedGuard } from '@guards/is-authenticated.guard';
+import { ResetPasswordComponent } from '@pages/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -30,7 +32,12 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    canActivate: [IsAuthenticatedGuard]
+  },
+  {
+    path: 'reset-password/:hash',
+    component: ResetPasswordComponent
   }
 ];
 
