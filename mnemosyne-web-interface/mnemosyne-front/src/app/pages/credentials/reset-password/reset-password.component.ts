@@ -19,6 +19,12 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class ResetPasswordComponent implements OnInit {
   hash: string;
+  password: string;
+  phoneCode: string;
+  mfaCode: string;
+
+  isPhoneRequired: boolean;
+  isMfaRequired: boolean;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -26,8 +32,13 @@ export class ResetPasswordComponent implements OnInit {
     private router: Router
   ) {}
 
-  async resetUserPassword(hash: string) {
-    //
+  async resetUserPassword() {
+    await this.authenticationService.resetUserPassword({
+      hash: this.hash,
+      password: this.password,
+      phoneCode: this.phoneCode,
+      mfaCode: this.mfaCode
+    });
   }
 
   async handleRedirect(path: string) {
@@ -38,7 +49,6 @@ export class ResetPasswordComponent implements OnInit {
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');
       if (!hash) await this.router.navigate(['login']);
-      else await this.resetUserPassword(hash);
     });
   }
 }
