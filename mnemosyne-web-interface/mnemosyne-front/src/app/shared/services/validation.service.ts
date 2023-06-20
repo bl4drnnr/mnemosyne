@@ -13,6 +13,27 @@ export class ValidationService {
     } else return email === '';
   }
 
+  mfaButtonDisable({
+    isPhoneRequired,
+    isMfaRequired,
+    phoneCode,
+    mfaCode
+  }: {
+    isPhoneRequired: boolean;
+    isMfaRequired: boolean;
+    phoneCode: string | undefined;
+    mfaCode: string | undefined;
+  }) {
+    return (
+      (isPhoneRequired && phoneCode?.length !== 6) ||
+      (isMfaRequired && mfaCode?.length !== 6) ||
+      (isPhoneRequired &&
+        isMfaRequired &&
+        phoneCode?.length !== 6 &&
+        mfaCode?.length !== 6)
+    );
+  }
+
   checkPasswordsRules(password: string) {
     const passwordRules = [
       {

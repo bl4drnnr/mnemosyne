@@ -67,14 +67,18 @@ export class EmailService {
         `
       };
     } else if (confirmationType === 'FORGOT_PASSWORD') {
+      const resetPasswordLink = `${this.configService.frontEndUrl}/reset-password/${confirmationHash}`;
+
       mail = {
         ...mail,
         subject: 'Mnemosyne - Password reset',
         html: `
           <h1>Hello, hope you are doing well!</h1>
           <br>
-          <p>Copy and paste this verification hash in order to change your password</p>
-          <p>Confirmation string: <b>${confirmationHash}</b></p>
+          <p>Click <a href="${resetPasswordLink}">here</a> in order to reset password.</p>
+          <br>
+          <p>If link doesn't work, copy this and paste in browser.</p>
+          <p>${resetPasswordLink}</p>
         `
       };
     }
