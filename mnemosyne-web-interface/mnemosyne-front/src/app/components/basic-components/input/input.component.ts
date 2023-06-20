@@ -85,6 +85,4 @@ export class InputComponent {
       this.passwordErrors.emit([]);
     }
   }
-
-  protected readonly removeEventListener = removeEventListener;
 }

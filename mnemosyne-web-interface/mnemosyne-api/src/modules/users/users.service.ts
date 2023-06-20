@@ -1,5 +1,6 @@
 import * as crypto from 'crypto';
 import * as bcryptjs from 'bcryptjs';
+import * as dayjs from 'dayjs';
 import {
   BadRequestException,
   forwardRef,
@@ -18,11 +19,9 @@ import { Sequelize } from 'sequelize-typescript';
 import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { ApiConfigService } from '@shared/config.service';
-import { UserDoesntExistException } from '@exceptions/user-doesnt-exist.exception';
 import { AuthService } from '@modules/auth.service';
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
-import dayjs from 'dayjs';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 
 @Injectable()
@@ -170,7 +169,7 @@ export class UsersService {
       transaction: trx
     });
 
-    if (!user) throw new UserDoesntExistException();
+    if (!user) return new ResetPasswordEmailDto();
 
     const userLastPasswordReset =
       (await this.confirmationHashService.getUserConfirmationHashes({
@@ -178,9 +177,9 @@ export class UsersService {
         getOne: true
       })) as ConfirmationHash;
 
-    const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
+    const threeMinutesAgo = dayjs().subtract(3, 'minutes');
 
-    if (dayjs(userLastPasswordReset.createdAt) < fiveMinutesAgo)
+    if (dayjs(userLastPasswordReset.createdAt) < threeMinutesAgo)
       throw new BadRequestException();
 
     const forgotPasswordHash = crypto.randomBytes(20).toString('hex');
@@ -211,6 +210,8 @@ export class UsersService {
       await this.confirmationHashService.getUserByConfirmationHash({
         confirmationHash: hash
       });
+
+    if (forgotPasswordHash && !password) return;
 
     const user = await this.userRepository.findByPk(forgotPasswordHash.userId, {
       transaction: trx

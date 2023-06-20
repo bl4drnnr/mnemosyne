@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
-  selector: 'app-reset-password',
+  selector: 'page-reset-password',
   templateUrl: './reset-password.component.html',
   styleUrls: ['../credentials.component.scss'],
   animations: [
@@ -19,7 +19,8 @@ import { animate, style, transition, trigger } from '@angular/animations';
 })
 export class ResetPasswordComponent implements OnInit {
   hash: string;
-  password: string;
+  password = '';
+  incorrectPassword = true;
   phoneCode: string;
   mfaCode: string;
 
@@ -33,12 +34,19 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   async resetUserPassword() {
-    await this.authenticationService.resetUserPassword({
-      hash: this.hash,
-      password: this.password,
-      phoneCode: this.phoneCode,
-      mfaCode: this.mfaCode
-    });
+    await this.authenticationService
+      .resetUserPassword({
+        hash: this.hash,
+        password: this.password,
+        phoneCode: this.phoneCode,
+        mfaCode: this.mfaCode
+      })
+      .subscribe({
+        next: () => {},
+        error: async () => {
+          await this.handleRedirect('login');
+        }
+      });
   }
 
   async handleRedirect(path: string) {
@@ -48,7 +56,11 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');
-      if (!hash) await this.router.navigate(['login']);
+      if (!hash) await this.handleRedirect('login');
+      else {
+        this.hash = hash;
+        await this.resetUserPassword();
+      }
     });
   }
 }

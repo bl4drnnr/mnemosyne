@@ -5,7 +5,7 @@
     [ngClass]="{ 'disabled': disabled, 'error': showError }"
     [disabled]="disabled"
     [(ngModel)]="value"
-    [type]="type"
+    [type]="type === 'password-repeat' ? 'password' : type"
     [placeholder]="placeholder"
     (input)="onInput()"
   />

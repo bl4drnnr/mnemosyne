@@ -23,14 +23,12 @@ export class RegistrationComponent {
 
   email: string;
   password = '';
-  passwordRepeat = '';
 
   firstName: string;
   lastName: string;
 
-  incorrectEmail: boolean;
-  incorrectPassword: boolean;
-  passwordErrors: Array<{ error: boolean; text: string }>;
+  incorrectEmail = true;
+  incorrectPassword = true;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -38,12 +36,12 @@ export class RegistrationComponent {
   ) {}
 
   handleRegistration() {
-    if (this.isAllCredentialsCorrect()) return;
+    if (this.wrongCredentials()) return;
 
     this.authenticationService
       .registration({
         email: this.email,
-        password: this.passwordRepeat,
+        password: this.password,
         tac: this.tac,
         firstName: this.firstName,
         lastName: this.lastName
@@ -65,30 +63,7 @@ export class RegistrationComponent {
     this.step--;
   }
 
-  isPasswordsMatch() {
-    return this.password === this.passwordRepeat;
-  }
-
-  isAllCredentialsCorrect(includeAll = false) {
-    if (includeAll) {
-      return (
-        !this.email ||
-        !this.password ||
-        this.password !== this.passwordRepeat ||
-        this.incorrectEmail ||
-        this.incorrectPassword ||
-        !this.tac ||
-        !this.firstName ||
-        !this.lastName
-      );
-    } else {
-      return (
-        !this.email ||
-        !this.password ||
-        this.password !== this.passwordRepeat ||
-        this.incorrectEmail ||
-        this.incorrectPassword
-      );
-    }
+  wrongCredentials() {
+    return this.incorrectPassword || this.incorrectEmail;
   }
 }
