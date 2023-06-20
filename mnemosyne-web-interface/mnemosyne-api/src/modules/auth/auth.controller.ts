@@ -20,6 +20,7 @@ import { MfaRequiredDto } from '@dto/mfa-required.dto';
 import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
+import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -35,7 +36,10 @@ export class AuthController {
   ) {
     const response = await this.authService.login({ payload, trx });
 
-    if (response instanceof MfaRequiredDto) {
+    if (
+      response instanceof MfaRequiredDto ||
+      response instanceof MfaNotSetDto
+    ) {
       return response;
     } else if ('_rt' in response && '_at' in response) {
       res.cookie('_rt', response._rt);

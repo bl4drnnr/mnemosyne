@@ -23,6 +23,7 @@ import { AuthService } from '@modules/auth.service';
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
+import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 
 @Injectable()
 export class UsersService {
@@ -174,12 +175,16 @@ export class UsersService {
     const userLastPasswordReset =
       (await this.confirmationHashService.getUserConfirmationHashes({
         userId: user.id,
+        hashType: 'FORGOT_PASSWORD',
         getOne: true
       })) as ConfirmationHash;
 
     const threeMinutesAgo = dayjs().subtract(3, 'minutes');
 
-    if (dayjs(userLastPasswordReset.createdAt) < threeMinutesAgo)
+    if (
+      userLastPasswordReset &&
+      dayjs(userLastPasswordReset.createdAt) < threeMinutesAgo
+    )
       throw new BadRequestException();
 
     const forgotPasswordHash = crypto.randomBytes(20).toString('hex');
@@ -214,19 +219,29 @@ export class UsersService {
     if (forgotPasswordHash && !password) return;
 
     const user = await this.userRepository.findByPk(forgotPasswordHash.userId, {
-      transaction: trx
+      transaction: trx,
+      include: [{ all: true }]
     });
 
-    this.authService.checkUserMfaStatus({
+    const mfaStatusResponse = this.authService.checkUserMfaStatus({
       mfaCode,
       phoneCode,
       userSettings: user.userSettings
     });
 
+    if (mfaStatusResponse) return mfaStatusResponse;
+
     const hashedPassword = await bcryptjs.hash(
       password,
       this.configService.hashPasswordRounds
     );
+
+    const isPreviousPassword = await bcryptjs.compare(
+      hashedPassword,
+      user.password
+    );
+
+    if (isPreviousPassword) throw new PreviousPasswordException();
 
     await this.updateUser({
       payload: { password: hashedPassword },

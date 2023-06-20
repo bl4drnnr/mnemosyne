@@ -1,16 +1,18 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Post, Query } from '@nestjs/common';
 import { SecurityService } from '@modules/security/security.service';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
 import { SendSmsCodeDto } from '@dto/send-sms-code.dto';
 import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
+import { MfaByCredentialsDto } from '@dto/mfa-by-credentials.dto';
 
 @Controller('security')
 export class SecurityController {
   constructor(private readonly securityService: SecurityService) {}
 
-  @Get('generate-2fa-qr')
+  @Post('generate-2fa-qr')
   generateTwoFaQrCode(
-    @Query() { confirmationHash }: { confirmationHash: string }
+    @Query() { confirmationHash }: { confirmationHash: string },
+    @Body() payload: MfaByCredentialsDto
   ) {
     return this.securityService.generate2FaQrCode({ confirmationHash });
   }

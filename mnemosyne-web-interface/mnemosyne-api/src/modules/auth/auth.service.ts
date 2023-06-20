@@ -65,11 +65,13 @@ export class AuthService {
 
     if (!user.isSecurityCompliant) return new MfaNotSetDto();
 
-    this.checkUserMfaStatus({
+    const mfaStatusResponse = this.checkUserMfaStatus({
       mfaCode: payload.mfaCode,
       phoneCode: payload.phoneCode,
       userSettings: user.userSettings
     });
+
+    if (mfaStatusResponse) return mfaStatusResponse;
 
     const { _rt, _at } = await this.generateTokens({ user, trx });
 
@@ -160,7 +162,7 @@ export class AuthService {
     mfaCode: string;
     phoneCode: string;
     userSettings: UserSettings;
-  }) {
+  }): MfaRequiredDto | void {
     const {
       twoFaToken: userTwoFaToken,
       phoneCode: userPhoneCode,

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '@pages/shared/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
+import { ValidationService } from '@shared/validation.service';
 
 @Component({
   selector: 'page-reset-password',
@@ -18,8 +20,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
   ]
 })
 export class ResetPasswordComponent implements OnInit {
+  step = 1;
   hash: string;
-  password = '';
+  password: string;
   incorrectPassword = true;
   phoneCode: string;
   mfaCode: string;
@@ -29,6 +32,7 @@ export class ResetPasswordComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private validationService: ValidationService,
     private route: ActivatedRoute,
     private router: Router
   ) {}
@@ -42,7 +46,28 @@ export class ResetPasswordComponent implements OnInit {
         mfaCode: this.mfaCode
       })
       .subscribe({
-        next: () => {},
+        next: async (response) => {
+          if (response && response.message) {
+            switch (response.message) {
+              case ResetUserPasswordResponse.MFA_REQUIRED:
+                this.isPhoneRequired = true;
+                this.isMfaRequired = true;
+                break;
+              case ResetUserPasswordResponse.PHONE_REQUIRED:
+                this.isPhoneRequired = true;
+                break;
+              case ResetUserPasswordResponse.TWO_FA_REQUIRED:
+                this.isMfaRequired = true;
+                break;
+              case ResetUserPasswordResponse.PASSWORD_RESET:
+                this.step = 3;
+                break;
+              default:
+                await this.handleRedirect('login');
+                break;
+            }
+          }
+        },
         error: async () => {
           await this.handleRedirect('login');
         }
@@ -51,6 +76,15 @@ export class ResetPasswordComponent implements OnInit {
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  mfaButtonDisabled() {
+    return this.validationService.mfaButtonDisable({
+      isPhoneRequired: this.isPhoneRequired,
+      isMfaRequired: this.isMfaRequired,
+      phoneCode: this.phoneCode,
+      mfaCode: this.mfaCode
+    });
   }
 
   ngOnInit() {

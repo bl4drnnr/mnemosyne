@@ -3,6 +3,7 @@ import { AuthenticationService } from '@pages/shared/authentication.service';
 import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { LoginResponse } from '@responses/login.response';
+import { ValidationService } from '@shared/validation.service';
 
 @Component({
   selector: 'page-login',
@@ -36,6 +37,7 @@ export class LoginComponent {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private validationService: ValidationService,
     private router: Router
   ) {}
 
@@ -49,14 +51,12 @@ export class LoginComponent {
   }
 
   loginMfaButtonDisabled() {
-    return (
-      (this.isPhoneRequired && !this.phoneCode) ||
-      (this.isMfaRequired && !this.mfaCode) ||
-      (this.isPhoneRequired &&
-        this.isMfaRequired &&
-        !this.phoneCode &&
-        !this.mfaCode)
-    );
+    return this.validationService.mfaButtonDisable({
+      isPhoneRequired: this.isPhoneRequired,
+      isMfaRequired: this.isMfaRequired,
+      phoneCode: this.phoneCode,
+      mfaCode: this.mfaCode
+    });
   }
 
   handleLogIn() {
@@ -94,5 +94,9 @@ export class LoginComponent {
           }
         }
       });
+  }
+
+  confirmUserMfa() {
+    this.step = 1;
   }
 }

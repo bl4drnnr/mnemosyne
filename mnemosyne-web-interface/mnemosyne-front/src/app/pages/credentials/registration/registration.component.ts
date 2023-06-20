@@ -36,7 +36,7 @@ export class RegistrationComponent {
   ) {}
 
   handleRegistration() {
-    if (this.wrongCredentials()) return;
+    if (this.wrongCredentials({ includeAll: true })) return;
 
     this.authenticationService
       .registration({
@@ -63,7 +63,17 @@ export class RegistrationComponent {
     this.step--;
   }
 
-  wrongCredentials() {
-    return this.incorrectPassword || this.incorrectEmail;
+  wrongCredentials({ includeAll }: { includeAll?: boolean }) {
+    if (!includeAll) {
+      return this.incorrectPassword || this.incorrectEmail;
+    } else {
+      return (
+        this.incorrectPassword ||
+        this.incorrectEmail ||
+        !this.tac ||
+        this.lastName.length < 1 ||
+        this.firstName.length < 1
+      );
+    }
   }
 }
