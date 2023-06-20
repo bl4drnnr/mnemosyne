@@ -1,18 +1,12 @@
-import { IsMobilePhone, IsOptional, IsString, Matches } from 'class-validator';
+import { Matches } from 'class-validator';
 
-export class SendSmsCodeDto {
-  @IsString({ message: 'Phone should be a string' })
-  @IsMobilePhone()
-  readonly phone: string;
-
-  @IsOptional()
+export class MfaByCredentialsDto {
   @Matches(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     { message: 'Wrong email format' }
   )
   readonly email: string;
 
-  @IsOptional()
   @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
     message: 'Wrong password format'
   })

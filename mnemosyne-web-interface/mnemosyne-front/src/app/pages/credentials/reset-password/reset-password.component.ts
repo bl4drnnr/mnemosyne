@@ -78,11 +78,6 @@ export class ResetPasswordComponent implements OnInit {
     await this.router.navigate([path]);
   }
 
-  async handleNextStep() {
-    if (this.isMfaRequired || this.isPhoneRequired) this.step = 2;
-    else await this.resetUserPassword();
-  }
-
   mfaButtonDisabled() {
     return this.validationService.mfaButtonDisable({
       isPhoneRequired: this.isPhoneRequired,

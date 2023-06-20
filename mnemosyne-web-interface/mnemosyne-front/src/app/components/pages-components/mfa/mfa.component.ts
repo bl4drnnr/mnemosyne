@@ -12,6 +12,8 @@ import { AuthenticationService } from '@pages/shared/authentication.service';
 })
 export class MfaComponent {
   @Input() hash: string;
+  @Input() email: string;
+  @Input() password: string;
   @Output() confirmUserMfa = new EventEmitter<void>();
 
   phone: string;

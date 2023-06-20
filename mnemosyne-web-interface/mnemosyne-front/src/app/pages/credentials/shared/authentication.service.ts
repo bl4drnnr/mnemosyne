@@ -76,7 +76,7 @@ export class AuthenticationService {
 
   generateTwoFaQrCode({ hash }: { hash: string }): Observable<{ qr: string }> {
     return this.apiService.apiProxyRequest({
-      method: 'GET',
+      method: 'POST',
       controller: 'security',
       action: 'generate-2fa-qr',
       params: { confirmationHash: hash }

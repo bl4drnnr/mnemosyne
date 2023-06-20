@@ -95,4 +95,8 @@ export class LoginComponent {
         }
       });
   }
+
+  confirmUserMfa() {
+    this.step = 1;
+  }
 }
