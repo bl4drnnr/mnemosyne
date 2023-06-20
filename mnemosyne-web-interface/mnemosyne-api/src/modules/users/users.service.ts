@@ -1,6 +1,11 @@
 import * as crypto from 'crypto';
 import * as bcryptjs from 'bcryptjs';
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@models/user.model';
 import { CreateUserDto } from '@dto/create-user.dto';
@@ -17,6 +22,8 @@ import { UserDoesntExistException } from '@exceptions/user-doesnt-exist.exceptio
 import { AuthService } from '@modules/auth.service';
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
+import dayjs from 'dayjs';
+import { ConfirmationHash } from '@models/confirmation-hash.model';
 
 @Injectable()
 export class UsersService {
@@ -164,6 +171,17 @@ export class UsersService {
     });
 
     if (!user) throw new UserDoesntExistException();
+
+    const userLastPasswordReset =
+      (await this.confirmationHashService.getUserConfirmationHashes({
+        userId: user.id,
+        getOne: true
+      })) as ConfirmationHash;
+
+    const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
+
+    if (dayjs(userLastPasswordReset.createdAt) < fiveMinutesAgo)
+      throw new BadRequestException();
 
     const forgotPasswordHash = crypto.randomBytes(20).toString('hex');
 

@@ -8,6 +8,7 @@ import { AccountConfirmedDto } from '@dto/account-confirmed.dto';
 import { Transaction } from 'sequelize';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { UsersService } from '@modules/users.service';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 
 @Injectable()
 export class ConfirmationHashService {
@@ -51,6 +52,40 @@ export class ConfirmationHashService {
     if (!foundHash) throw new HashNotFoundException();
 
     return { userId: foundHash.userId };
+  }
+
+  async getUserConfirmationHashes({
+    userId,
+    hashType,
+    getOne = false,
+    getAll = false,
+    orderBy = 'created_at',
+    order = 'DESC'
+  }: {
+    userId: string;
+    hashType?: CONFIRMATION_TYPE;
+    getOne?: boolean;
+    getAll?: boolean;
+    orderBy?: string;
+    order?: 'ASC' | 'DESC';
+  }): Promise<ConfirmationHash | Array<ConfirmationHash>> {
+    const where: Partial<ConfirmationHash> = { userId };
+
+    if (hashType) where.confirmationHash = hashType;
+
+    if (getOne) {
+      return await this.confirmationHashRepository.findOne({
+        where: { ...where },
+        order: [[orderBy, order]]
+      });
+    }
+
+    if (getAll) {
+      return await this.confirmationHashRepository.findAll({
+        where: { ...where },
+        order: [[orderBy, order]]
+      });
+    }
   }
 
   async confirmAccount({

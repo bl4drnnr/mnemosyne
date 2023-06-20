@@ -17,6 +17,8 @@ import { AuthenticationService } from '@pages/shared/authentication.service';
   ]
 })
 export class ForgotPasswordComponent {
+  step = 1;
+
   email: string;
   incorrectEmail: boolean;
 
@@ -25,12 +27,10 @@ export class ForgotPasswordComponent {
   handleForgotPassword() {
     if (this.incorrectEmail) return;
 
-    // this.authenticationService
-    //   .forgotPassword({
-    //     email: this.email
-    //   })
-    //   .subscribe(() => {
-
-    // });
+    this.authenticationService.forgotPassword({
+      email: this.email
+    }).subscribe({
+      next: () => (this.step = 2)
+    });
   }
 }

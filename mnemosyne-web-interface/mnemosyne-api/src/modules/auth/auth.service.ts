@@ -168,7 +168,7 @@ export class AuthService {
       phone
     } = userSettings;
 
-    if (!mfaCode && userTwoFaToken && !phoneCode && userPhoneCode)
+    if (!mfaCode && userTwoFaToken && !phoneCode && phone)
       return new MfaRequiredDto();
 
     if (!mfaCode && userTwoFaToken)
