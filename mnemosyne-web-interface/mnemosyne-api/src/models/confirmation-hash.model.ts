@@ -11,11 +11,12 @@ import {
   UpdatedAt
 } from 'sequelize-typescript';
 import { User } from '@models/user.model';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 
 interface ConfirmationHashCreationAttributes {
   userId: string;
   confirmationHash: string;
-  confirmationType: 'EMAIL_CHANGE' | 'REGISTRATION' | 'FORGOT_PASSWORD';
+  confirmationType: CONFIRMATION_TYPE;
   changingEmail?: string;
 }
 
@@ -47,7 +48,7 @@ export class ConfirmationHash extends Model<
     allowNull: false,
     field: 'confirmation_type'
   })
-  confirmationType: 'EMAIL_CHANGE' | 'REGISTRATION' | 'FORGOT_PASSWORD';
+  confirmationType: CONFIRMATION_TYPE;
 
   @Default(null)
   @Column({

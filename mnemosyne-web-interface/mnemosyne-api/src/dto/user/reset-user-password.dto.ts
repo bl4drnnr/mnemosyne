@@ -1,10 +1,11 @@
 import { IsOptional, Length, Matches } from 'class-validator';
 
 export class ResetUserPasswordDto {
+  @IsOptional()
   @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
     message: 'Wrong password format'
   })
-  readonly password: string;
+  readonly password?: string;
 
   @Length(40, 40, { message: 'Wrong hash length' })
   readonly hash: string;

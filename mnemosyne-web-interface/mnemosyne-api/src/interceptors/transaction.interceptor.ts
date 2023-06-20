@@ -28,11 +28,11 @@ export class TransactionInterceptor implements NestInterceptor {
       tap(async () => {
         await transaction.commit();
       }),
-      catchError(async (err) => {
+      catchError(async (err: HttpException) => {
         await transaction.rollback();
         throw new HttpException(
-          'Internal server error',
-          HttpStatus.INTERNAL_SERVER_ERROR
+          err.getResponse() || 'Internal server error',
+          err.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR
         );
       })
     );

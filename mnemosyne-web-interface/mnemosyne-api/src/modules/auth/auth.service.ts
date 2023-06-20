@@ -5,7 +5,7 @@ import * as bcryptjs from 'bcryptjs';
 import * as crypto from 'crypto';
 import * as uuid from 'uuid';
 import { User } from '@models/user.model';
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '@dto/create-user.dto';
 import { UsersService } from '@modules/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -30,15 +30,17 @@ import { MfaRequiredDto } from '@dto/mfa-required.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
+import { UserSettings } from '@models/user-settings.model';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly sequelize: Sequelize,
-    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
     private readonly emailService: EmailService,
+    @Inject(forwardRef(() => UsersService))
+    private readonly usersService: UsersService,
     @InjectModel(Session) private readonly sessionRepository: typeof Session
   ) {}
 
@@ -61,43 +63,13 @@ export class AuthService {
     );
     if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
 
-    const userPhoneCode = user.userSettings.phoneCode;
-    const phoneCodeSentAt = user.userSettings.codeSentAt;
-    const userTwoFaToken = user.userSettings.twoFaToken;
-
     if (!user.isSecurityCompliant) return new MfaNotSetDto();
 
-    if (
-      !payload.mfaCode &&
-      userTwoFaToken &&
-      !payload.phoneCode &&
-      userPhoneCode
-    )
-      return new MfaRequiredDto();
-
-    if (!payload.mfaCode && userTwoFaToken)
-      return new MfaRequiredDto('two-fa-required');
-    if (!payload.phoneCode && userPhoneCode)
-      return new MfaRequiredDto('phone-required');
-
-    if (payload.phoneCode && user.userSettings.phone) {
-      if (userPhoneCode !== payload.phoneCode) throw new WrongCodeException();
-
-      const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
-
-      if (
-        userPhoneCode === payload.phoneCode &&
-        dayjs(phoneCodeSentAt) < fiveMinutesAgo
-      )
-        throw new SmsExpiredException();
-    }
-
-    if (payload.mfaCode && user.userSettings.twoFaToken) {
-      const delta = node2fa.verifyToken(userTwoFaToken, payload.mfaCode);
-
-      if (!delta || (delta && delta.delta !== 0))
-        throw new WrongCodeException();
-    }
+    this.checkUserMfaStatus({
+      mfaCode: payload.mfaCode,
+      phoneCode: payload.phoneCode,
+      userSettings: user.userSettings
+    });
 
     const { _rt, _at } = await this.generateTokens({ user, trx });
 
@@ -178,6 +150,50 @@ export class AuthService {
     const { _at, _rt } = await this.generateTokens({ user, trx });
 
     return { _at, _rt };
+  }
+
+  checkUserMfaStatus({
+    mfaCode,
+    phoneCode,
+    userSettings
+  }: {
+    mfaCode: string;
+    phoneCode: string;
+    userSettings: UserSettings;
+  }) {
+    const {
+      twoFaToken: userTwoFaToken,
+      phoneCode: userPhoneCode,
+      codeSentAt: phoneCodeSentAt,
+      phone
+    } = userSettings;
+
+    if (!mfaCode && userTwoFaToken && !phoneCode && phone)
+      return new MfaRequiredDto();
+
+    if (!mfaCode && userTwoFaToken)
+      return new MfaRequiredDto('two-fa-required');
+    if (!phoneCode && userPhoneCode)
+      return new MfaRequiredDto('phone-required');
+
+    if (phoneCode && phone) {
+      if (userPhoneCode !== phoneCode) throw new WrongCodeException();
+
+      const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
+
+      if (
+        userPhoneCode === phoneCode &&
+        dayjs(phoneCodeSentAt) < fiveMinutesAgo
+      )
+        throw new SmsExpiredException();
+    }
+
+    if (mfaCode && userTwoFaToken) {
+      const delta = node2fa.verifyToken(userTwoFaToken, mfaCode);
+
+      if (!delta || (delta && delta.delta !== 0))
+        throw new WrongCodeException();
+    }
   }
 
   private verifyToken({ token }: { token: string }) {

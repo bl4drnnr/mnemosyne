@@ -15,6 +15,7 @@ import { MfaComponent } from '@components/mfa/mfa.component';
 import { HeaderComponent } from '@components/header/header.component';
 import { FooterComponent } from '@components/footer/footer.component';
 import { SiderbarComponent } from '@components/siderbar/siderbar.component';
+import { CreatePasswordComponent } from './pages-components/create-password/create-password.component';
 
 const components = [
   ButtonComponent,
@@ -34,8 +35,8 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, CreatePasswordComponent],
   imports: [CommonModule, FormsModule, NgOptimizedImage],
-  exports: [...components]
+  exports: [...components, CreatePasswordComponent]
 })
 export class ComponentsModule {}

@@ -8,6 +8,13 @@ import { SendSmsCodePayload } from '@payloads/send-sms-code.payload';
 import { VerifyMobilePhonePayload } from '@payloads/verify-mobile-phone.payload';
 import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
 import { ResetUserPasswordDto } from '@payloads/reset-user-password.dto';
+import { LoginResponse } from '@responses/login.response';
+import { RegistrationResponse } from '@responses/registration.response';
+import { ConfirmAccountResponse } from '@responses/confirm-account.response';
+import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
+import { SendSmsCodeResponse } from '@responses/send-sms-code.response';
+import { ForgotPasswordResponse } from '@responses/forgot-password.response';
+import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +37,7 @@ export class AuthenticationService {
     password,
     phoneCode,
     mfaCode
-  }: LoginPayload): Observable<{ message: string; _at: string }> {
+  }: LoginPayload): Observable<{ message: LoginResponse; _at: string }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'auth',
@@ -45,7 +52,7 @@ export class AuthenticationService {
     tac,
     firstName,
     lastName
-  }: RegistrationPayload): Observable<{ message: string }> {
+  }: RegistrationPayload): Observable<{ message: RegistrationResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'auth',
@@ -54,7 +61,11 @@ export class AuthenticationService {
     });
   }
 
-  confirmAccount({ hash }: { hash: string }): Observable<{ message: string }> {
+  confirmAccount({
+    hash
+  }: {
+    hash: string;
+  }): Observable<{ message: ConfirmAccountResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'GET',
       controller: 'confirmation-hash',
@@ -75,7 +86,7 @@ export class AuthenticationService {
   verifyTwoFaQrCode({
     hash,
     code
-  }: VerifyTwoFaPayload): Observable<{ message: string }> {
+  }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
@@ -88,7 +99,7 @@ export class AuthenticationService {
   sendSmsCode({
     hash,
     phone
-  }: SendSmsCodePayload): Observable<{ message: string }> {
+  }: SendSmsCodePayload): Observable<{ message: SendSmsCodeResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
@@ -98,7 +109,11 @@ export class AuthenticationService {
     });
   }
 
-  verifyMobilePhone({ hash, phone, code }: VerifyMobilePhonePayload) {
+  verifyMobilePhone({
+    hash,
+    phone,
+    code
+  }: VerifyMobilePhonePayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
@@ -108,7 +123,9 @@ export class AuthenticationService {
     });
   }
 
-  forgotPassword({ email }: ForgotPasswordPayload) {
+  forgotPassword({
+    email
+  }: ForgotPasswordPayload): Observable<{ message: ForgotPasswordResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'users',
@@ -122,7 +139,7 @@ export class AuthenticationService {
     password,
     phoneCode,
     mfaCode
-  }: ResetUserPasswordDto) {
+  }: ResetUserPasswordDto): Observable<{ message: ResetUserPasswordResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'users',

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '@pages/shared/authentication.service';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { ConfirmAccountResponse } from '@responses/confirm-account.response';
 
 @Component({
   selector: 'page-account-confirmation',
@@ -42,8 +43,8 @@ export class AccountConfirmationComponent implements OnInit {
     this.authenticationService.confirmAccount({ hash }).subscribe({
       next: ({ message }) => {
         this.isAccountConfirmed = true;
-        if (message !== 'account-confirmed')
-          this.isMfaNotSet = message === 'mfa-not-set';
+        if (message !== ConfirmAccountResponse.ACCOUNT_CONFIRMED)
+          this.isMfaNotSet = message === ConfirmAccountResponse.MFA_NOT_SET;
       },
       error: () => (this.accountConfirmationError = true)
     });
