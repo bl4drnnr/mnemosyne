@@ -14,6 +14,9 @@ import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { ApiConfigService } from '@shared/config.service';
 import { UserDoesntExistException } from '@exceptions/user-doesnt-exist.exception';
+import { AuthService } from '@modules/auth.service';
+import { PasswordResetDto } from '@dto/password-reset.dto';
+import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 
 @Injectable()
 export class UsersService {
@@ -22,6 +25,8 @@ export class UsersService {
     private readonly roleService: RolesService,
     private readonly emailService: EmailService,
     private readonly configService: ApiConfigService,
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
     @Inject(forwardRef(() => ConfirmationHashService))
     private readonly confirmationHashService: ConfirmationHashService,
     @InjectModel(User) private readonly userRepository: typeof User,
@@ -171,6 +176,8 @@ export class UsersService {
       },
       trx
     });
+
+    return new ResetPasswordEmailDto();
   }
 
   async resetUserPassword({
@@ -191,6 +198,12 @@ export class UsersService {
       transaction: trx
     });
 
+    this.authService.checkUserMfaStatus({
+      mfaCode,
+      phoneCode,
+      userSettings: user.userSettings
+    });
+
     const hashedPassword = await bcryptjs.hash(
       password,
       this.configService.hashPasswordRounds
@@ -201,5 +214,7 @@ export class UsersService {
       userId: forgotPasswordHash.userId,
       trx
     });
+
+    return new PasswordResetDto();
   }
 }
