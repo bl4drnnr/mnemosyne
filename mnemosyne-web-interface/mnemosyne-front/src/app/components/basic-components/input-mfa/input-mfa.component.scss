@@ -22,4 +22,34 @@
       border: 1px solid rgba($color-black, 0.1);
     }
   }
+
+  .resend-button {
+    height: 50px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid rgba($color-main-hover, 0.5);
+    transition: .3s;
+
+    &.disabled {
+      background-color: rgba($block-color, .20);
+      border: 1px solid rgba($color-black, 0.1);
+
+      &:hover {
+        cursor: default;
+        box-shadow: none !important;
+        background-color: rgba($block-color, .20) !important;
+      }
+    }
+
+    &:hover {
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      background-color: $color-white;
+      border: 1px solid rgba($color-black, 0.1);
+    }
+
+    .resend-button-label {
+      padding: 0 10px;
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { LoginResponse } from '@responses/login.response';
 import { ValidationService } from '@shared/validation.service';
+import { SmsService } from '@pages/shared/sms.service';
 
 @Component({
   selector: 'page-login',
@@ -37,6 +38,7 @@ export class LoginComponent {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private smsService: SmsService,
     private validationService: ValidationService,
     private router: Router
   ) {}
@@ -56,6 +58,13 @@ export class LoginComponent {
       isMfaRequired: this.isMfaRequired,
       phoneCode: this.phoneCode,
       mfaCode: this.mfaCode
+    });
+  }
+
+  resendSmsCode() {
+    this.smsService.resendLoginSms({
+      email: this.email,
+      password: this.password
     });
   }
 

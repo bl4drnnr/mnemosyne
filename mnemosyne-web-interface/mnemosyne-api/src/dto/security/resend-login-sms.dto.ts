@@ -1,10 +1,6 @@
-import { IsMobilePhone, IsOptional, IsString, Matches } from 'class-validator';
+import { IsOptional, Matches } from 'class-validator';
 
-export class SendSmsCodeDto {
-  @IsString({ message: 'Phone should be a string' })
-  @IsMobilePhone()
-  readonly phone: string;
-
+export class ResendLoginSmsDto {
   @IsOptional()
   @Matches(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
