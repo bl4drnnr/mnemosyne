@@ -47,4 +47,13 @@
     (keydown.backspace)="onInputChange(5, $event)"
     #input5
   >
+  <button
+    class="resend-button"
+    *ngIf="isPhone"
+    [disabled]="isPhoneButtonDisabled"
+    [ngClass]="{ 'disabled': isPhoneButtonDisabled }"
+    (click)="resendSms.emit()"
+  >
+    <p class="resend-button-label">Resend code</p>
+  </button>
 </div>

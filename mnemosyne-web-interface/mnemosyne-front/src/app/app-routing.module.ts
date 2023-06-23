@@ -8,6 +8,7 @@ import { TermsAndConditionsComponent } from '@pages/terms-and-conditions/terms-a
 import { DashboardComponent } from '@pages/dashboard/dashboard.component';
 import { IsAuthenticatedGuard } from '@guards/is-authenticated.guard';
 import { ResetPasswordComponent } from '@pages/reset-password/reset-password.component';
+import { HomeComponent } from '@pages/home/home.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
     component: AccountConfirmationComponent
   },
   {
-    path: 'tac',
+    path: 'terms-and-conditions',
     component: TermsAndConditionsComponent
   },
   {
@@ -38,6 +39,14 @@ const routes: Routes = [
   {
     path: 'reset-password/:hash',
     component: ResetPasswordComponent
+  },
+  {
+    path: '',
+    component: HomeComponent
+  },
+  {
+    path: 'home',
+    redirectTo: ''
   }
 ];
 

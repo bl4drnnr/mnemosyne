@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   Output,
   ViewChild
 } from '@angular/core';
@@ -18,8 +19,11 @@ export class InputMfaComponent {
   @ViewChild('input3') input3: ElementRef;
   @ViewChild('input4') input4: ElementRef;
   @ViewChild('input5') input5: ElementRef;
+  @Input() isPhone = false;
+  @Input() isPhoneButtonDisabled = false;
 
   @Output() mfaCode = new EventEmitter<string>();
+  @Output() resendSms = new EventEmitter<void>();
 
   code = '';
 

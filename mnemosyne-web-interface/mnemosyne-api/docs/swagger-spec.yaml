@@ -130,11 +130,17 @@ paths:
         "201":
           description: ""
   /api/security/generate-2fa-qr:
-    get:
+    post:
       operationId: SecurityController_generateTwoFaQrCode
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MfaByCredentialsDto"
       responses:
-        "200":
+        "201":
           description: ""
   /api/security/verify-2fa:
     post:
@@ -149,16 +155,29 @@ paths:
       responses:
         "201":
           description: ""
-  /api/security/send-sms-code:
+  /api/security/registration-send-sms-code:
     post:
-      operationId: SecurityController_sendSmsCode
+      operationId: SecurityController_registrationSendSmsCode
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SendSmsCodeDto"
+              $ref: "#/components/schemas/RegistrationSendSmsCodeDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/resend-login-sms:
+    post:
+      operationId: SecurityController_resendLoginSms
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResendLoginSmsDto"
       responses:
         "201":
           description: ""
@@ -205,10 +224,16 @@ components:
     RevokeRoleDto:
       type: object
       properties: {}
+    MfaByCredentialsDto:
+      type: object
+      properties: {}
     VerifyTwoFaDto:
       type: object
       properties: {}
-    SendSmsCodeDto:
+    RegistrationSendSmsCodeDto:
+      type: object
+      properties: {}
+    ResendLoginSmsDto:
       type: object
       properties: {}
     VerifyMobilePhoneDto:

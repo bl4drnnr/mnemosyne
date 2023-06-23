@@ -24,6 +24,8 @@ import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
+import { UserDoesntExistException } from '@exceptions/user-doesnt-exist.exception';
+import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 
 @Injectable()
 export class UsersService {
@@ -158,12 +160,31 @@ export class UsersService {
     });
   }
 
+  async verifyUserCredentials({
+    email,
+    password,
+    trx: transaction
+  }: {
+    email: string;
+    password: string;
+    trx?: Transaction;
+  }) {
+    const user = await this.getUserByEmail({ email, trx: transaction });
+    if (!user) throw new UserDoesntExistException();
+
+    const passwordEquals = await bcryptjs.compare(password, user.password);
+
+    if (!passwordEquals) throw new WrongCredentialsException();
+
+    return user;
+  }
+
   async forgotPassword({
     payload,
     trx
   }: {
     payload: ForgotPasswordDto;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     const user = await this.userRepository.findOne({
       where: { email: payload.email },
@@ -207,7 +228,7 @@ export class UsersService {
     trx
   }: {
     payload: ResetUserPasswordDto;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     const { password, hash, phoneCode, mfaCode } = payload;
 

@@ -56,7 +56,7 @@ export class MfaComponent {
 
   async sendSmdCode() {
     await this.authenticationService
-      .sendSmsCode({ hash: this.hash, phone: this.phone })
+      .registrationSendSmsCode({ hash: this.hash, phone: this.phone })
       .subscribe({
         next: () => {
           this.phoneCodeSent = true;

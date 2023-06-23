@@ -3,6 +3,7 @@ import { ApiConfigService } from '@shared/config.service';
 import { EmailService } from '@shared/email.service';
 import { ConfirmationHashModule } from '@modules/confirmation-hash/confirmation-hash.module';
 import { PhoneService } from '@shared/phone.service';
+import { UsersModule } from '@modules/users.module';
 
 const providers = [ApiConfigService, EmailService, PhoneService];
 
@@ -10,6 +11,6 @@ const providers = [ApiConfigService, EmailService, PhoneService];
 @Module({
   providers,
   exports: [...providers],
-  imports: [ConfirmationHashModule]
+  imports: [ConfirmationHashModule, UsersModule]
 })
 export class SharedModule {}

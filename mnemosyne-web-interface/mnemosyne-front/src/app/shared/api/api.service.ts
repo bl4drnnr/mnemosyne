@@ -28,7 +28,7 @@ export class ApiService {
     private errorHandler: ErrorHandlerService
   ) {}
 
-  frontProxyUrl: string = this.envService.getFrontProxyUrl;
+  private frontProxyUrl: string = this.envService.getFrontProxyUrl;
 
   apiProxyRequest({
     controller,

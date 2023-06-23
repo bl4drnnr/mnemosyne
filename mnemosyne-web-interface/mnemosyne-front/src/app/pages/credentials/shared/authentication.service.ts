@@ -96,14 +96,14 @@ export class AuthenticationService {
     });
   }
 
-  sendSmsCode({
+  registrationSendSmsCode({
     hash,
     phone
   }: SendSmsCodePayload): Observable<{ message: SendSmsCodeResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
-      action: 'send-sms-code',
+      action: 'registration-send-sms-code',
       params: { confirmationHash: hash },
       payload: { phone }
     });

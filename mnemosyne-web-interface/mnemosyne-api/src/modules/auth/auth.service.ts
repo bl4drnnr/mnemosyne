@@ -45,18 +45,11 @@ export class AuthService {
   ) {}
 
   async login({ payload, trx }: { payload: LogInUserDto; trx: Transaction }) {
-    const user = await this.usersService.getUserByEmail({
+    const user = await this.usersService.verifyUserCredentials({
       email: payload.email,
+      password: payload.password,
       trx
     });
-    if (!user) throw new UserDoesntExistException();
-
-    const passwordEquals = await bcryptjs.compare(
-      payload.password,
-      user.password
-    );
-
-    if (!passwordEquals) throw new WrongCredentialsException();
 
     const registrationHash = user.confirmationHashes.find(
       (hash) => hash.confirmationType === 'REGISTRATION'
@@ -83,7 +76,7 @@ export class AuthService {
     trx
   }: {
     payload: CreateUserDto;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     const existingUser = await this.usersService.getUserByEmail({
       email: payload.email,
@@ -137,7 +130,7 @@ export class AuthService {
     trx
   }: {
     refreshToken: string;
-    trx: Transaction;
+    trx?: Transaction;
   }) {
     if (!refreshToken) throw new CorruptedTokenException();
 
