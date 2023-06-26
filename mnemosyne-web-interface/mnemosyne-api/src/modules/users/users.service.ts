@@ -24,7 +24,6 @@ import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
-import { UserDoesntExistException } from '@exceptions/user-doesnt-exist.exception';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 
 @Injectable()
@@ -170,10 +169,9 @@ export class UsersService {
     trx?: Transaction;
   }) {
     const user = await this.getUserByEmail({ email, trx: transaction });
-    if (!user) throw new UserDoesntExistException();
+    if (!user) throw new WrongCredentialsException();
 
     const passwordEquals = await bcryptjs.compare(password, user.password);
-
     if (!passwordEquals) throw new WrongCredentialsException();
 
     return user;

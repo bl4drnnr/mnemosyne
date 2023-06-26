@@ -4,8 +4,11 @@ export type ENDPOINTS_TYPE =
   | 'generate-2fa-qr'
   | 'account-confirmation'
   | 'registration-send-sms-code'
-  | 'verify-2fa'
+  | 'login-verify-2fa'
+  | 'registration-verify-2fa'
   | 'verify-mobile-phone'
   | 'forgot-password'
   | 'reset-user-password'
-  | 'resend-login-sms';
+  | 'login-send-sms-code'
+  | 'registration-generate-2fa-qr'
+  | 'login-generate-2fa-qr';

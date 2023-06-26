@@ -129,22 +129,42 @@ paths:
       responses:
         "201":
           description: ""
-  /api/security/generate-2fa-qr:
+  /api/security/registration-generate-2fa-qr:
+    get:
+      operationId: SecurityController_registrationGenerateTwoFaQrCode
+      parameters: []
+      responses:
+        "200":
+          description: ""
+  /api/security/login-generate-2fa-qr:
     post:
-      operationId: SecurityController_generateTwoFaQrCode
+      operationId: SecurityController_loginGenerateTwoFaQrCode
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MfaByCredentialsDto"
+              $ref: "#/components/schemas/MfaLoginDto"
       responses:
         "201":
           description: ""
-  /api/security/verify-2fa:
+  /api/security/registration-verify-2fa:
     post:
-      operationId: SecurityController_verifyTwoFaQrCode
+      operationId: SecurityController_registrationVerifyTwoFaQrCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyTwoFaDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/login-verify-2fa:
+    post:
+      operationId: SecurityController_loginVerifyTwoFaQrCode
       parameters: []
       requestBody:
         required: true
@@ -168,16 +188,16 @@ paths:
       responses:
         "201":
           description: ""
-  /api/security/resend-login-sms:
+  /api/security/login-send-sms-code:
     post:
-      operationId: SecurityController_resendLoginSms
+      operationId: SecurityController_loginSendSmsCode
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ResendLoginSmsDto"
+              $ref: "#/components/schemas/MfaLoginDto"
       responses:
         "201":
           description: ""
@@ -224,16 +244,13 @@ components:
     RevokeRoleDto:
       type: object
       properties: {}
-    MfaByCredentialsDto:
+    MfaLoginDto:
       type: object
       properties: {}
     VerifyTwoFaDto:
       type: object
       properties: {}
     RegistrationSendSmsCodeDto:
-      type: object
-      properties: {}
-    ResendLoginSmsDto:
       type: object
       properties: {}
     VerifyMobilePhoneDto:

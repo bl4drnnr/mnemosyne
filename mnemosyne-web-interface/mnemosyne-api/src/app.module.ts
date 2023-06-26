@@ -26,6 +26,8 @@ import { SecurityModule } from '@modules/security/security.module';
 import { UserSettings } from '@models/user-settings.model';
 import { Transaction } from 'sequelize';
 import TYPES = Transaction.TYPES;
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
 
 @Module({
   imports: [
@@ -62,6 +64,12 @@ import TYPES = Transaction.TYPES;
     PermissionsModule,
     ConfirmationHashModule,
     SecurityModule
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TransactionInterceptor
+    }
   ]
 })
 export class AppModule implements NestModule {

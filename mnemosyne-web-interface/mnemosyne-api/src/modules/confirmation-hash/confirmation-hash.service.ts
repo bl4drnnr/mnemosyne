@@ -102,15 +102,15 @@ export class ConfirmationHashService {
 
     if (!foundHash) throw new HashNotFoundException();
 
-    const userSettings = await this.userService.getUserSettingsByUserId({
-      userId: foundHash.userId,
+    const user = await this.userService.getUserById({
+      id: foundHash.userId,
       trx: transaction
     });
 
-    if (foundHash.confirmed && (userSettings.phone || userSettings.twoFaToken))
+    if (foundHash.confirmed && user.isSecurityCompliant)
       throw new AccountAlreadyConfirmedException();
 
-    if (foundHash.confirmed && !userSettings.phone && !userSettings.twoFaToken)
+    if (foundHash.confirmed && !user.isSecurityCompliant)
       return new MfaNotSetDto();
 
     await this.confirmationHashRepository.update(

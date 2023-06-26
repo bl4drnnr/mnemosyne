@@ -63,6 +63,7 @@ export class ProxyHttpService {
       }
     };
 
+    // TODO ???
     if (action === 'sign-up') {
       requestConfig.headers['registration-authorization'] = signUpApiAuthToken;
     }
