@@ -8,4 +8,6 @@ export type ENDPOINTS_TYPE =
   | 'verify-mobile-phone'
   | 'forgot-password'
   | 'reset-user-password'
-  | 'resend-login-sms';
+  | 'login-send-sms-code'
+  | 'registration-generate-2fa-qr'
+  | 'login-generate-2fa-qr';

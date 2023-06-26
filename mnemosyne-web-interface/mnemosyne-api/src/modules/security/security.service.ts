@@ -11,7 +11,7 @@ import { PhoneService } from '@shared/phone.service';
 import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
 import { SmsCodeSentDto } from '@dto/sms-code-sent.dto';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
-import { ResendLoginSmsDto } from '@dto/resend-login-sms.dto';
+import { MfaLoginDto } from '@dto/mfa-login.dto';
 import { Transaction } from 'sequelize';
 
 @Injectable()
@@ -22,7 +22,7 @@ export class SecurityService {
     private readonly phoneService: PhoneService
   ) {}
 
-  async generate2FaQrCode({
+  async registrationGenerateTwoFaQrCode({
     confirmationHash,
     trx
   }: {
@@ -44,6 +44,33 @@ export class SecurityService {
     await this.userService.updateUserSettings({
       payload: { twoFaToken: secret },
       userId,
+      trx
+    });
+
+    return { qr };
+  }
+
+  async loginGenerateTwoFaQrCode({
+    payload,
+    trx
+  }: {
+    payload: MfaLoginDto;
+    trx?: Transaction;
+  }) {
+    const user = await this.userService.verifyUserCredentials({
+      email: payload.email,
+      password: payload.password,
+      trx
+    });
+
+    const { qr, secret } = node2fa.generateSecret({
+      name: 'Mnemosyne',
+      account: user.email
+    });
+
+    await this.userService.updateUserSettings({
+      payload: { twoFaToken: secret },
+      userId: user.id,
       trx
     });
 
@@ -112,11 +139,11 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async resendLoginSms({
+  async loginSendSmsCode({
     payload,
     trx
   }: {
-    payload: ResendLoginSmsDto;
+    payload: MfaLoginDto;
     trx?: Transaction;
   }) {
     const user = await this.userService.verifyUserCredentials({
@@ -125,7 +152,13 @@ export class SecurityService {
       trx
     });
 
-    // TODO Continue here with verifyAndResendSmsCode function
+    await this.phoneService.verifyAndResendSmsCode({
+      userId: user.id,
+      phone: user.userSettings.phone,
+      trx
+    });
+
+    return new SmsCodeSentDto();
   }
 
   async verifyMobilePhone({

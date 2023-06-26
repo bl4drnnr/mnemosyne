@@ -12,8 +12,6 @@ import { JwtService } from '@nestjs/jwt';
 import { UserAlreadyExistsException } from '@exceptions/user/user-already-exists.exception';
 import { ApiConfigService } from '@shared/config.service';
 import { UserCreatedDto } from '@dto/user-created.dto';
-import { UserDoesntExistException } from '@exceptions/user/user-doesnt-exist.exception';
-import { WrongCredentialsException } from '@exceptions/user/wrong-credentials.exception';
 import { InjectModel } from '@nestjs/sequelize';
 import { Session } from '@models/session.model';
 import { CorruptedTokenException } from '@exceptions/auth/corrupted-token.exception';

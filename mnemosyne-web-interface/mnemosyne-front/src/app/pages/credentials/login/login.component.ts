@@ -62,7 +62,7 @@ export class LoginComponent {
   }
 
   resendSmsCode() {
-    this.smsService.resendLoginSms({
+    this.smsService.loginSendSmsCode({
       email: this.email,
       password: this.password
     });

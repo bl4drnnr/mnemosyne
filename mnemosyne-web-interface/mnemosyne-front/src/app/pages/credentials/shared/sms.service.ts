@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
-import { ResendLoginSmsPayload } from '@payloads/resend-login-sms.payload';
+import { MfaLoginPayload } from '@payloads/mfa-login.payload';
 import { Observable } from 'rxjs';
 import { SendSmsCodeResponse } from '@responses/send-sms-code.response';
+import { SendSmsCodePayload } from '@payloads/send-sms-code.payload';
+import { VerifyMobilePhonePayload } from '@payloads/verify-mobile-phone.payload';
+import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +13,42 @@ import { SendSmsCodeResponse } from '@responses/send-sms-code.response';
 export class SmsService {
   constructor(private apiService: ApiService) {}
 
-  resendLoginSms({
+  loginSendSmsCode({
     email,
     password
-  }: ResendLoginSmsPayload): Observable<{ message: SendSmsCodeResponse }> {
+  }: MfaLoginPayload): Observable<{ message: SendSmsCodeResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
-      action: 'resend-login-sms',
+      action: 'login-send-sms-code',
       payload: { email, password }
+    });
+  }
+
+  registrationSendSmsCode({
+    hash,
+    phone
+  }: SendSmsCodePayload): Observable<{ message: SendSmsCodeResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'security',
+      action: 'registration-send-sms-code',
+      params: { confirmationHash: hash },
+      payload: { phone }
+    });
+  }
+
+  verifyMobilePhone({
+    hash,
+    phone,
+    code
+  }: VerifyMobilePhonePayload): Observable<{ message: VerifyTwoFaResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'security',
+      action: 'verify-mobile-phone',
+      params: { confirmationHash: hash },
+      payload: { phone, code }
     });
   }
 }

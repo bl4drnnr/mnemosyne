@@ -6,7 +6,6 @@ import {
   Post,
   Res,
   UseGuards,
-  UseInterceptors,
   UsePipes
 } from '@nestjs/common';
 import { AuthService } from '@modules/auth/auth.service';
@@ -17,7 +16,6 @@ import { UserId } from '@decorators/user-id.decorator';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { LogInUserDto } from '@dto/log-in-user.dto';
 import { MfaRequiredDto } from '@dto/mfa-required.dto';
-import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
@@ -26,7 +24,6 @@ import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseInterceptors(TransactionInterceptor)
   @UsePipes(ValidationPipe)
   @Post('login')
   async login(
@@ -48,7 +45,6 @@ export class AuthController {
     }
   }
 
-  @UseInterceptors(TransactionInterceptor)
   @UsePipes(ValidationPipe)
   @Post('registration')
   registration(
@@ -58,7 +54,6 @@ export class AuthController {
     return this.authService.registration({ payload, trx });
   }
 
-  @UseInterceptors(TransactionInterceptor)
   @UseGuards(AuthGuard)
   @Get('logout')
   async logout(
@@ -73,7 +68,6 @@ export class AuthController {
     return res.status(HttpStatus.OK).json(response);
   }
 
-  @UseInterceptors(TransactionInterceptor)
   @UseGuards(AuthGuard)
   @Get('refresh')
   async refreshTokens(
