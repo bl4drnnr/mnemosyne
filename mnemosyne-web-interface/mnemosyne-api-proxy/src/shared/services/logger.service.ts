@@ -11,28 +11,6 @@ export class LoggerService {
     private readonly logger: Model<InformationLog>
   ) {}
 
-  async handleLogAction({
-    logType,
-    method,
-    controller,
-    endpoint,
-    message,
-    status,
-    payload
-  }: LogActionInterface) {
-    delete payload.body['password'];
-
-    await this.log({
-      logType,
-      method,
-      controller,
-      endpoint,
-      message,
-      status,
-      payload
-    });
-  }
-
   async log({
     logType,
     method,
@@ -49,8 +27,10 @@ export class LoggerService {
       endpoint,
       message,
       status,
-      payload
+      payload: JSON.stringify(payload),
+      timestamp: new Date()
     });
+
     await log.save();
   }
 }
