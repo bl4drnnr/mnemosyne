@@ -1,9 +1,12 @@
-import { BadRequestException, Injectable, HttpException } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
 import { firstValueFrom } from 'rxjs';
 import { LoggerService } from '@shared/logger.service';
+import { ACTION_CONTROLLER_TYPE } from '@interfaces/action-controller.type';
+import { STATUS_TYPE } from '@interfaces/status.type';
+import { METHODS_TYPE } from '@interfaces/method.type';
 
 @Injectable()
 export class ProxyHttpService {
@@ -18,15 +21,13 @@ export class ProxyHttpService {
     action,
     payload,
     method,
-    params,
-    signUpApiAuthToken
+    params
   }: {
     controller: string;
     action: string;
     payload?: object;
     method: string;
     params?: object;
-    signUpApiAuthToken?: string;
   }) {
     const allowedMethods = this.configService.allowedRequestMethods;
     const allowedControllers = this.configService.allowedControllers;
@@ -41,12 +42,11 @@ export class ProxyHttpService {
     ) {
       const logMessage = { method, action, controller, payload };
       await this.loggerService.log({
-        actionController: 'LOGGER_SERVICE',
-        eventEndpoint: 'LOGGER_SERVICE',
-        message: `Proxy tried to handle unsupported endpoint: ${logMessage}`,
-        status: 'ERROR'
+        logType: ACTION_CONTROLLER_TYPE.PROXY_SERVICE,
+        status: STATUS_TYPE.ERROR,
+        message: `Proxy tried to handle unsupported endpoint: ${logMessage}`
       });
-      throw new BadRequestException('no-method-controller-or-action');
+      return;
     }
 
     const { username, password } = this.configService.basicAuthConfig;
@@ -63,17 +63,28 @@ export class ProxyHttpService {
       }
     };
 
-    // TODO ???
-    if (action === 'sign-up') {
-      requestConfig.headers['registration-authorization'] = signUpApiAuthToken;
-    }
-
     requestConfig.data = method === 'POST' ? payload : {};
     requestConfig.params = params ? params : {};
 
+    await this.loggerService.handleLogAction({
+      logType: ACTION_CONTROLLER_TYPE.LOGGER_SERVICE,
+      method: method as METHODS_TYPE,
+      controller,
+      endpoint: action,
+      status: STATUS_TYPE.INFO,
+      payload: { body: payload, params }
+    });
+
     return firstValueFrom(this.httpService.request(requestConfig))
       .then((res) => res.data)
-      .catch((error: any) => {
+      .catch(async (error: any) => {
+        await this.loggerService.handleLogAction({
+          logType: ACTION_CONTROLLER_TYPE.PROXY_SERVICE,
+          status: STATUS_TYPE.ERROR,
+          message: 'Error occurs while handling response from the API.',
+          payload: { body: error.response }
+        });
+
         const errorMessage = error.response?.data?.error;
         throw new HttpException(
           errorMessage || error.response?.data || 'Internal server error',
