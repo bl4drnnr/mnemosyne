@@ -36,14 +36,27 @@ export class MfaService {
     });
   }
 
-  verifyTwoFaQrCode({
+  loginVerifyTwoQrCode({
+    email,
+    password,
+    code
+  }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: 'POST',
+      controller: 'security',
+      action: 'login-verify-2fa',
+      payload: { email, password, code }
+    });
+  }
+
+  registrationVerifyTwoQrCode({
     hash,
     code
   }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
       method: 'POST',
       controller: 'security',
-      action: 'verify-2fa',
+      action: 'registration-verify-2fa',
       params: { confirmationHash: hash },
       payload: { code }
     });

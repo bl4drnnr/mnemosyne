@@ -33,17 +33,26 @@ export class SecurityController {
   }
 
   @UsePipes(ValidationPipe)
-  @Post('verify-2fa')
-  verifyTwoFaQrCode(
+  @Post('registration-verify-2fa')
+  registrationVerifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
     @Query() { confirmationHash }: { confirmationHash: string },
     @TransactionParam() trx: Transaction
   ) {
-    return this.securityService.verifyTwoFaQrCode({
+    return this.securityService.registrationVerifyTwoFaQrCode({
       payload,
       confirmationHash,
       trx
     });
+  }
+
+  @UsePipes(ValidationPipe)
+  @Post('login-verify-2fa')
+  loginVerifyTwoFaQrCode(
+    @Body() payload: VerifyTwoFaDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.loginVerifyTwoFaQrCode({ payload, trx });
   }
 
   @UsePipes(ValidationPipe)
@@ -69,6 +78,7 @@ export class SecurityController {
     return this.securityService.loginSendSmsCode({ payload, trx });
   }
 
+  // TODO Refactor this function for the login and registration
   @UsePipes(ValidationPipe)
   @Post('verify-mobile-phone')
   verifyMobilePhone(

@@ -149,9 +149,22 @@ paths:
       responses:
         "201":
           description: ""
-  /api/security/verify-2fa:
+  /api/security/registration-verify-2fa:
     post:
-      operationId: SecurityController_verifyTwoFaQrCode
+      operationId: SecurityController_registrationVerifyTwoFaQrCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyTwoFaDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/login-verify-2fa:
+    post:
+      operationId: SecurityController_loginVerifyTwoFaQrCode
       parameters: []
       requestBody:
         required: true

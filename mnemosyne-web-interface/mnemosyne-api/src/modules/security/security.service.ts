@@ -1,6 +1,6 @@
 import * as node2fa from 'node-2fa';
 import * as dayjs from 'dayjs';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
@@ -34,20 +34,14 @@ export class SecurityService {
         confirmationHash,
         trx
       });
+
     const user = await this.userService.getUserById({ id: userId, trx });
 
-    const { qr, secret } = node2fa.generateSecret({
-      name: 'Mnemosyne',
-      account: user.email
-    });
-
-    await this.userService.updateUserSettings({
-      payload: { twoFaToken: secret },
-      userId,
+    return await this.generateQrCode({
+      email: user.email,
+      userId: user.id,
       trx
     });
-
-    return { qr };
   }
 
   async loginGenerateTwoFaQrCode({
@@ -63,21 +57,14 @@ export class SecurityService {
       trx
     });
 
-    const { qr, secret } = node2fa.generateSecret({
-      name: 'Mnemosyne',
-      account: user.email
-    });
-
-    await this.userService.updateUserSettings({
-      payload: { twoFaToken: secret },
+    return await this.generateQrCode({
+      email: user.email,
       userId: user.id,
       trx
     });
-
-    return { qr };
   }
 
-  async verifyTwoFaQrCode({
+  async registrationVerifyTwoFaQrCode({
     payload,
     confirmationHash,
     trx
@@ -86,33 +73,45 @@ export class SecurityService {
     confirmationHash: string;
     trx?: Transaction;
   }) {
-    let userId: string;
+    const { userId } =
+      await this.confirmationHashService.getUserByConfirmationHash({
+        confirmationHash,
+        trx
+      });
 
-    if (confirmationHash) {
-      const userConfirmationHash =
-        await this.confirmationHashService.getUserByConfirmationHash({
-          confirmationHash,
-          trx
-        });
-      userId = userConfirmationHash.userId;
+    try {
+      return await this.verifyQrCode({
+        userId,
+        code: payload.code,
+        trx
+      });
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
     }
+  }
 
-    const { twoFaToken } = await this.userService.getUserSettingsByUserId({
-      userId,
+  async loginVerifyTwoFaQrCode({
+    payload,
+    trx
+  }: {
+    payload: VerifyTwoFaDto;
+    trx?: Transaction;
+  }) {
+    const user = await this.userService.verifyUserCredentials({
+      email: payload.email,
+      password: payload.password,
       trx
     });
 
-    const delta = node2fa.verifyToken(twoFaToken, payload.code);
-
-    if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
-
-    await this.userService.changeSecurityComplianceStatus({
-      userId,
-      isSecurityCompliant: true,
-      trx
-    });
-
-    return new MfaSetDto();
+    try {
+      return await this.verifyQrCode({
+        userId: user.id,
+        code: payload.code,
+        trx
+      });
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
+    }
   }
 
   async registrationSendSmsCode({
@@ -202,6 +201,56 @@ export class SecurityService {
     await this.userService.updateUserSettings({
       payload: { phoneCode: null, codeSentAt: null },
       userId,
+      trx
+    });
+
+    return new MfaSetDto();
+  }
+
+  private async generateQrCode({
+    email,
+    userId,
+    trx
+  }: {
+    email: string;
+    userId: string;
+    trx?: Transaction;
+  }) {
+    const { qr, secret } = node2fa.generateSecret({
+      name: 'Mnemosyne',
+      account: email
+    });
+
+    await this.userService.updateUserSettings({
+      payload: { twoFaToken: secret },
+      userId,
+      trx
+    });
+
+    return { qr };
+  }
+
+  private async verifyQrCode({
+    userId,
+    code,
+    trx
+  }: {
+    userId: string;
+    code: string;
+    trx?: Transaction;
+  }) {
+    const { twoFaToken } = await this.userService.getUserSettingsByUserId({
+      userId,
+      trx
+    });
+
+    const delta = node2fa.verifyToken(twoFaToken, code);
+
+    if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
+
+    await this.userService.changeSecurityComplianceStatus({
+      userId,
+      isSecurityCompliant: true,
       trx
     });
 

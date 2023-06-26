@@ -101,11 +101,22 @@ export class MfaComponent {
   }
 
   private async verifyTwoFaQrCode() {
-    await this.mfaService
-      .verifyTwoFaQrCode({ hash: this.hash, code: this.code })
-      .subscribe({
-        next: () => this.confirmUserMfa.emit()
+    console.log('this.hash', this.hash);
+    console.log('this.email', this.email);
+    console.log('this.password', this.password);
+    if (this.hash) {
+      await this.mfaService
+        .registrationVerifyTwoQrCode({ hash: this.hash, code: this.code })
+        .subscribe({
+          next: () => this.confirmUserMfa.emit()
+        });
+    } else if (this.email && this.password) {
+      await this.mfaService.loginVerifyTwoQrCode({
+        email: this.email,
+        password: this.password,
+        code: this.code
       });
+    }
   }
 
   private async verifyMobilePhone() {

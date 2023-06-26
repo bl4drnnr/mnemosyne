@@ -1,4 +1,6 @@
 export interface VerifyTwoFaPayload {
-  hash: string;
+  hash?: string;
+  password?: string;
+  email?: string;
   code: string;
 }
