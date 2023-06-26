@@ -101,9 +101,6 @@ export class MfaComponent {
   }
 
   private async verifyTwoFaQrCode() {
-    console.log('this.hash', this.hash);
-    console.log('this.email', this.email);
-    console.log('this.password', this.password);
     if (this.hash) {
       await this.mfaService
         .registrationVerifyTwoQrCode({ hash: this.hash, code: this.code })
@@ -111,24 +108,41 @@ export class MfaComponent {
           next: () => this.confirmUserMfa.emit()
         });
     } else if (this.email && this.password) {
-      await this.mfaService.loginVerifyTwoQrCode({
-        email: this.email,
-        password: this.password,
-        code: this.code
-      });
+      await this.mfaService
+        .loginVerifyTwoQrCode({
+          email: this.email,
+          password: this.password,
+          code: this.code
+        })
+        .subscribe({
+          next: () => this.confirmUserMfa.emit()
+        });
     }
   }
 
   private async verifyMobilePhone() {
-    await this.smsService
-      .verifyMobilePhone({
-        hash: this.hash,
-        phone: this.phone,
-        code: this.code
-      })
-      .subscribe({
-        next: () => this.confirmUserMfa.emit()
-      });
+    if (this.hash) {
+      await this.smsService
+        .registrationVerifyMobilePhone({
+          hash: this.hash,
+          phone: this.phone,
+          code: this.code
+        })
+        .subscribe({
+          next: () => this.confirmUserMfa.emit()
+        });
+    } else if (this.email && this.password) {
+      await this.smsService
+        .loginVerifyMobilePhone({
+          phone: this.phone,
+          code: this.code,
+          password: this.password,
+          email: this.email
+        })
+        .subscribe({
+          next: () => this.confirmUserMfa.emit()
+        });
+    }
   }
 
   private startCountdown() {

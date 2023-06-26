@@ -14,11 +14,6 @@ paths:
           in: path
           schema:
             type: string
-        - name: registration-authorization
-          required: true
-          in: header
-          schema:
-            type: string
       responses:
         "201":
           description: ""

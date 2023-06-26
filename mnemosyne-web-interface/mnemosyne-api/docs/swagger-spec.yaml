@@ -201,9 +201,22 @@ paths:
       responses:
         "201":
           description: ""
-  /api/security/verify-mobile-phone:
+  /api/security/registration-verify-mobile-phone:
     post:
-      operationId: SecurityController_verifyMobilePhone
+      operationId: SecurityController_registrationVerifyMobilePhone
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyMobilePhoneDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/login-verify-mobile-phone:
+    post:
+      operationId: SecurityController_loginVerifyMobilePhone
       parameters: []
       requestBody:
         required: true

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel as InjectModelMongo } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { InformationLog } from '@schemas/log.schema';
+import { LogActionInterface } from '@interfaces/log-action.interface';
 
 @Injectable()
 export class LoggerService {
@@ -11,28 +12,36 @@ export class LoggerService {
   ) {}
 
   async log({
-    actionController,
+    logType,
     method,
-    eventEndpoint,
+    controller,
+    endpoint,
     message,
     status,
-    payload
-  }: {
-    actionController: string | 'LOGGER_SERVICE' | 'PROXY_SERVICE';
-    method?: 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE';
-    eventEndpoint: string | 'LOGGER_SERVICE' | 'PROXY_SERVICE';
-    message?: string;
-    status: 'SUCCESS' | 'ERROR';
-    payload?: any;
-  }) {
-    // TODO Implement more sophisticated functionality here
+    payload,
+    error
+  }: LogActionInterface) {
+    const logPayload: { body?: object; params?: object } = {};
+
+    if (payload) {
+      const payloadCopy = { ...payload.body };
+      if (payloadCopy['password']) delete payloadCopy['password'];
+      logPayload.body = payloadCopy;
+    }
+    if (payload.params) logPayload.params = payload.params;
+
     const log = new this.logger({
-      actionController,
+      logType,
       method,
-      eventEndpoint,
+      controller,
+      endpoint,
       message,
-      status
+      status,
+      payload: logPayload,
+      error,
+      timestamp: new Date()
     });
+
     await log.save();
   }
 }

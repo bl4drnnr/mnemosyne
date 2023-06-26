@@ -1,5 +1,7 @@
 export interface VerifyMobilePhonePayload {
-  hash: string;
+  hash?: string;
+  password?: string;
+  email?: string;
   phone: string;
   code: string;
 }

@@ -18,16 +18,14 @@ export class ProxyController {
       method: string;
       payload?: object;
       params?: object;
-    },
-    @Headers('registration-authorization') signUpApiAuthToken?: string
+    }
   ) {
     return await this.proxyService.proxyAction({
       controller,
       action,
       payload,
       method,
-      params,
-      signUpApiAuthToken
+      params
     });
   }
 }
