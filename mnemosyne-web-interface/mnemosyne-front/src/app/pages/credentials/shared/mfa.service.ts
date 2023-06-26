@@ -4,6 +4,9 @@ import { Observable } from 'rxjs';
 import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
 import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
 import { MfaLoginPayload } from '@payloads/mfa-login.payload';
+import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
+import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
+import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +19,9 @@ export class MfaService {
     password
   }: MfaLoginPayload): Observable<{ qr: string }> {
     return this.apiService.apiProxyRequest({
-      method: 'POST',
-      controller: 'security',
-      action: 'login-generate-2fa-qr',
+      method: ALLOWED_METHODS_TYPE.POST,
+      controller: CONTROLLERS_TYPE.SECURITY,
+      action: ENDPOINTS_TYPE.LOGIN_GENERATE_2FA_QR,
       payload: { email, password }
     });
   }
@@ -29,9 +32,9 @@ export class MfaService {
     hash: string;
   }): Observable<{ qr: string }> {
     return this.apiService.apiProxyRequest({
-      method: 'GET',
-      controller: 'security',
-      action: 'registration-generate-2fa-qr',
+      method: ALLOWED_METHODS_TYPE.GET,
+      controller: CONTROLLERS_TYPE.SECURITY,
+      action: ENDPOINTS_TYPE.REGISTRATION_GENERATE_2FA_QR,
       params: { confirmationHash: hash }
     });
   }
@@ -42,9 +45,9 @@ export class MfaService {
     code
   }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: 'POST',
-      controller: 'security',
-      action: 'login-verify-2fa',
+      method: ALLOWED_METHODS_TYPE.POST,
+      controller: CONTROLLERS_TYPE.SECURITY,
+      action: ENDPOINTS_TYPE.LOGIN_VERIFY_2FA,
       payload: { email, password, code }
     });
   }
@@ -54,9 +57,9 @@ export class MfaService {
     code
   }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: 'POST',
-      controller: 'security',
-      action: 'registration-verify-2fa',
+      method: ALLOWED_METHODS_TYPE.POST,
+      controller: CONTROLLERS_TYPE.SECURITY,
+      action: ENDPOINTS_TYPE.REGISTRATION_VERIFY_2FA,
       params: { confirmationHash: hash },
       payload: { code }
     });

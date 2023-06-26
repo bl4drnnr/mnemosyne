@@ -160,7 +160,7 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async verifyMobilePhone({
+  async registrationVerifyMobilePhone({
     payload,
     confirmationHash,
     trx
@@ -169,27 +169,70 @@ export class SecurityService {
     confirmationHash: string;
     trx?: Transaction;
   }) {
-    let userId: string;
+    const { userId } =
+      await this.confirmationHashService.getUserByConfirmationHash({
+        confirmationHash,
+        trx
+      });
 
-    if (confirmationHash) {
-      const userConfirmationHash =
-        await this.confirmationHashService.getUserByConfirmationHash({
-          confirmationHash,
-          trx
-        });
-      userId = userConfirmationHash.userId;
+    try {
+      return await this.verifySmsCode({
+        providedPhone: payload.phone,
+        providedCode: payload.code,
+        userId,
+        trx
+      });
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
     }
+  }
 
+  async loginVerifyMobilePhone({
+    payload,
+    trx
+  }: {
+    payload: VerifyMobilePhoneDto;
+    trx?: Transaction;
+  }) {
+    const user = await this.userService.verifyUserCredentials({
+      email: payload.email,
+      password: payload.password,
+      trx
+    });
+
+    try {
+      return await this.verifySmsCode({
+        providedPhone: payload.phone,
+        providedCode: payload.code,
+        userId: user.id,
+        trx
+      });
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
+    }
+  }
+
+  private async verifySmsCode({
+    providedPhone,
+    providedCode,
+    userId,
+    trx
+  }: {
+    providedPhone: string;
+    providedCode: string;
+    userId: string;
+    trx?: Transaction;
+  }) {
     const { codeSentAt, phoneCode, phone } =
       await this.userService.getUserSettingsByUserId({ userId, trx });
 
-    if (phone !== payload.phone) throw new BadRequestException();
+    if (phone !== providedPhone) throw new BadRequestException();
 
-    if (phoneCode !== payload.code) throw new WrongCodeException();
+    if (phoneCode !== providedPhone) throw new WrongCodeException();
 
     const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
 
-    if (phoneCode === payload.code && dayjs(codeSentAt) < fiveMinutesAgo)
+    if (phoneCode === providedCode && dayjs(codeSentAt) < fiveMinutesAgo)
       throw new SmsExpiredException();
 
     await this.userService.changeSecurityComplianceStatus({

@@ -78,17 +78,28 @@ export class SecurityController {
     return this.securityService.loginSendSmsCode({ payload, trx });
   }
 
-  // TODO Refactor this function for the login and registration
   @UsePipes(ValidationPipe)
-  @Post('verify-mobile-phone')
-  verifyMobilePhone(
+  @Post('registration-verify-mobile-phone')
+  registrationVerifyMobilePhone(
     @Body() payload: VerifyMobilePhoneDto,
     @Query() { confirmationHash }: { confirmationHash: string },
     @TransactionParam() trx: Transaction
   ) {
-    return this.securityService.verifyMobilePhone({
+    return this.securityService.registrationVerifyMobilePhone({
       payload,
       confirmationHash,
+      trx
+    });
+  }
+
+  @UsePipes(ValidationPipe)
+  @Post('login-verify-mobile-phone')
+  loginVerifyMobilePhone(
+    @Body() payload: VerifyMobilePhoneDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.loginVerifyMobilePhone({
+      payload,
       trx
     });
   }

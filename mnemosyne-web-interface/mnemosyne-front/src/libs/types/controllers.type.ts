@@ -1,5 +1,6 @@
-export type CONTROLLERS_TYPE =
-  | 'auth'
-  | 'security'
-  | 'confirmation-hash'
-  | 'users';
+export enum CONTROLLERS_TYPE {
+  AUTH = 'auth',
+  SECURITY = 'security',
+  CONFIRMATION_HASH = 'confirmation-hash',
+  USERS = 'users'
+}
