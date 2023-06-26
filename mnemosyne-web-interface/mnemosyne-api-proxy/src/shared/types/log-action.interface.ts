@@ -9,5 +9,6 @@ export interface LogActionInterface {
   endpoint?: string;
   message?: string;
   status: STATUS_TYPE;
-  payload?: { body?: any; params?: any };
+  payload?: { body?: object; params?: object };
+  error?: object;
 }

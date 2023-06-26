@@ -5,8 +5,8 @@ import { STATUS_TYPE } from '@interfaces/status.type';
 
 @Schema()
 export class InformationLog {
-  @Prop({ required: false })
-  logType?: ACTION_CONTROLLER_TYPE;
+  @Prop()
+  logType: ACTION_CONTROLLER_TYPE;
 
   @Prop({ required: false })
   method?: METHODS_TYPE;
@@ -20,14 +20,17 @@ export class InformationLog {
   @Prop({ required: false })
   message?: string;
 
-  @Prop({ required: false })
-  status?: STATUS_TYPE;
+  @Prop()
+  status: STATUS_TYPE;
 
-  @Prop({ type: String, required: false })
-  payload?: string;
+  @Prop({ type: Object, required: false })
+  payload?: object;
 
-  @Prop({ required: false })
-  timestamp?: Date;
+  @Prop({ type: Object, required: false })
+  error?: object;
+
+  @Prop()
+  timestamp: Date;
 }
 
 export const LogSchema = SchemaFactory.createForClass(InformationLog);

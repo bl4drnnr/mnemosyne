@@ -66,19 +66,13 @@ export class ProxyHttpService {
     requestConfig.data = method === 'POST' ? payload : {};
     requestConfig.params = params ? params : {};
 
-    const logPayload: { body?: object; params?: object } = {};
-    if (payload) logPayload['body'] = payload;
-    if (params) logPayload['params'] = params;
     await this.loggerService.log({
       logType: ACTION_CONTROLLER_TYPE.LOGGER_SERVICE,
       method: method as METHODS_TYPE,
       controller,
       endpoint: action,
       status: STATUS_TYPE.INFO,
-      payload: {
-        body: JSON.stringify(logPayload?.body),
-        params: JSON.stringify(logPayload?.params)
-      }
+      payload: { body: payload, params }
     });
 
     return firstValueFrom(this.httpService.request(requestConfig))
@@ -88,7 +82,8 @@ export class ProxyHttpService {
           logType: ACTION_CONTROLLER_TYPE.PROXY_SERVICE,
           status: STATUS_TYPE.ERROR,
           message: 'Error occurs while handling response from the API.',
-          payload: { body: JSON.stringify(error.response?.data) }
+          error: error.response?.data,
+          payload: { body: payload, params }
         });
 
         const errorMessage = error.response?.data?.error;

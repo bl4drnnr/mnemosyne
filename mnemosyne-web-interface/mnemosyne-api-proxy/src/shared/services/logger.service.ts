@@ -18,8 +18,18 @@ export class LoggerService {
     endpoint,
     message,
     status,
-    payload
+    payload,
+    error
   }: LogActionInterface) {
+    const logPayload: { body?: object; params?: object } = {};
+
+    if (payload) {
+      const payloadCopy = { ...payload.body };
+      if (payloadCopy['password']) delete payloadCopy['password'];
+      logPayload.body = payloadCopy;
+    }
+    if (payload.params) logPayload.params = payload.params;
+
     const log = new this.logger({
       logType,
       method,
@@ -27,7 +37,8 @@ export class LoggerService {
       endpoint,
       message,
       status,
-      payload: JSON.stringify(payload),
+      payload: logPayload,
+      error,
       timestamp: new Date()
     });
 
