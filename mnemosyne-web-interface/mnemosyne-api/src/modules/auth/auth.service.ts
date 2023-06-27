@@ -162,7 +162,7 @@ export class AuthService {
     phoneCode: string;
     userSettings: UserSettings;
     userId: string;
-  }): Promise<MfaRequiredDto | void> {
+  }) {
     const {
       twoFaToken: userTwoFaToken,
       phoneCode: userPhoneCode,

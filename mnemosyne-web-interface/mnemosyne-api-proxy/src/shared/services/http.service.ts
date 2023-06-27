@@ -2,7 +2,6 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
-import { firstValueFrom } from 'rxjs';
 import { LoggerService } from '@shared/logger.service';
 import { ACTION_CONTROLLER_TYPE } from '@interfaces/action-controller.type';
 import { STATUS_TYPE } from '@interfaces/status.type';
@@ -75,22 +74,29 @@ export class ProxyHttpService {
       payload: { body: payload, params }
     });
 
-    return firstValueFrom(this.httpService.request(requestConfig))
-      .then((res) => res.data)
-      .catch(async (error: any) => {
-        await this.loggerService.log({
-          logType: ACTION_CONTROLLER_TYPE.PROXY_SERVICE,
-          status: STATUS_TYPE.ERROR,
-          message: 'Error occurs while handling response from the API.',
-          error: error.response?.data,
-          payload: { body: payload, params }
-        });
+    return new Promise((resolve, reject) => {
+      this.httpService.request(requestConfig).subscribe({
+        next: (res) => {
+          resolve(res.data);
+        },
+        error: async (error: any) => {
+          await this.loggerService.log({
+            logType: ACTION_CONTROLLER_TYPE.PROXY_SERVICE,
+            status: STATUS_TYPE.ERROR,
+            message: 'Error occurs while handling response from the API.',
+            error: error.response?.data,
+            payload: { body: payload, params }
+          });
 
-        const errorMessage = error.response?.data?.error;
-        throw new HttpException(
-          errorMessage || error.response?.data || 'Internal server error',
-          error.response?.data?.statusCode || 500
-        );
+          const errorMessage = error.response?.data?.error;
+          reject(
+            new HttpException(
+              errorMessage || error.response?.data || 'Internal server error',
+              error.response?.data?.statusCode || 500
+            )
+          );
+        }
       });
+    });
   }
 }
