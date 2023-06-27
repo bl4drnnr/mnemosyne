@@ -1,1 +1,27 @@
-<p>home works!</p>
+<div class="home-welcome-window">
+
+  <div class="home-welcome-animation">
+    <ng-lottie [options]="animationOptions"></ng-lottie>
+  </div>
+
+  <div class="home-welcome-text">
+    <ngx-typed-js
+      [showCursor]="true"
+      [strings]="['Mnemosyne']"
+      [startDelay]="1000"
+      [typeSpeed]="200"
+    >
+      <h1 class="welcome-header"><span class="typing"></span></h1>
+    </ngx-typed-js>
+
+    <ngx-typed-js
+      [strings]="['awesome', 'amazing']"
+      [loop]="true"
+      [startDelay]="2000"
+      [typeSpeed]="150"
+      [backSpeed]="100"
+    >
+      <h2>Where we make <span class="typing"></span> company!</h2>
+    </ngx-typed-js>
+  </div>
+</div>

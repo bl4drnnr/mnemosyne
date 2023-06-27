@@ -1,6 +1,11 @@
-import { IsOptional, Matches } from 'class-validator';
+import { IsMobilePhone, IsOptional, IsString, Matches } from 'class-validator';
 
 export class MfaLoginDto {
+  @IsOptional()
+  @IsString({ message: 'Phone should be a string' })
+  @IsMobilePhone()
+  readonly phone: string;
+
   @IsOptional()
   @Matches(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,

@@ -153,7 +153,7 @@ export class SecurityService {
 
     await this.phoneService.verifyAndResendSmsCode({
       userId: user.id,
-      phone: user.userSettings.phone,
+      phone: user.userSettings.phone || payload.phone,
       trx
     });
 
@@ -228,7 +228,7 @@ export class SecurityService {
 
     if (phone !== providedPhone) throw new BadRequestException();
 
-    if (phoneCode !== providedPhone) throw new WrongCodeException();
+    if (phoneCode !== providedCode) throw new WrongCodeException();
 
     const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
 

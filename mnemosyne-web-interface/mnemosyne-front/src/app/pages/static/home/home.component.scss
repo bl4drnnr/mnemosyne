@@ -1,0 +1,28 @@
+@import 'variables';
+
+.home-welcome-window {
+  height: 100vh;
+  border: 1px solid red;
+  display: flex;
+  margin: 0 auto;
+  justify-content: flex-end;
+  position: relative;
+
+  .home-welcome-text {
+    max-width: 800px;
+    position: absolute;
+    right: 0;
+    left: 10%;
+    top: 40%;
+
+    .welcome-header {
+      font-weight: 100;
+      font-size: 102px;
+      color: $filter-grey-dark-hover;
+    }
+  }
+
+  .home-welcome-animation {
+    width: 80%;
+  }
+}

@@ -16,6 +16,7 @@ import { HeaderComponent } from '@components/header/header.component';
 import { FooterComponent } from '@components/footer/footer.component';
 import { SiderbarComponent } from '@components/siderbar/siderbar.component';
 import { CreatePasswordComponent } from './pages-components/create-password/create-password.component';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 const components = [
   ButtonComponent,
@@ -36,7 +37,13 @@ const components = [
 
 @NgModule({
   declarations: [...components, CreatePasswordComponent],
-  imports: [CommonModule, FormsModule, NgOptimizedImage],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgOptimizedImage,
+    RouterLinkActive,
+    RouterLink
+  ],
   exports: [...components, CreatePasswordComponent]
 })
 export class ComponentsModule {}

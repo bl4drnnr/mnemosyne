@@ -33,8 +33,8 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    component: DashboardComponent,
-    canActivate: [IsAuthenticatedGuard]
+    component: DashboardComponent
+    // canActivate: [IsAuthenticatedGuard]
   },
   {
     path: 'reset-password/:hash',

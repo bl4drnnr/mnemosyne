@@ -38,7 +38,7 @@ export class AuthController {
       response instanceof MfaNotSetDto
     ) {
       return response;
-    } else if ('_rt' in response && '_at' in response) {
+    } else if (response && '_rt' in response && '_at' in response) {
       res.cookie('_rt', response._rt);
 
       return { _at: response._at };

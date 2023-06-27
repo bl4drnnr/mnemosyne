@@ -3,6 +3,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   ViewChild
 } from '@angular/core';
@@ -12,7 +13,7 @@ import {
   templateUrl: './input-mfa.component.html',
   styleUrls: ['./input-mfa.component.scss']
 })
-export class InputMfaComponent {
+export class InputMfaComponent implements OnInit {
   @ViewChild('input0') input0: ElementRef;
   @ViewChild('input1') input1: ElementRef;
   @ViewChild('input2') input2: ElementRef;
@@ -20,12 +21,19 @@ export class InputMfaComponent {
   @ViewChild('input4') input4: ElementRef;
   @ViewChild('input5') input5: ElementRef;
   @Input() isPhone = false;
-  @Input() isPhoneButtonDisabled = false;
 
   @Output() mfaCode = new EventEmitter<string>();
   @Output() resendSms = new EventEmitter<void>();
 
   code = '';
+  time = 120;
+  resendMessage: string;
+  isCountdownRunning = false;
+
+  initResendSms() {
+    this.resendSms.emit();
+    this.startCountdown();
+  }
 
   onInputChange(index: number, event: Event) {
     const inputValue = this.getInputValue(index);
@@ -38,6 +46,29 @@ export class InputMfaComponent {
       this.mfaCode.emit(this.code);
       this.focusPreviousInput(index);
     }
+  }
+
+  private startCountdown() {
+    this.isCountdownRunning = true;
+    const countdownInterval = setInterval(() => {
+      this.time -= 1;
+      this.updateResendMessage(this.time);
+      if (this.time <= 0) {
+        clearInterval(countdownInterval);
+        this.isCountdownRunning = false;
+        this.resetTime();
+      }
+    }, 1000);
+  }
+
+  private updateResendMessage(time: number) {
+    this.resendMessage = `You can resend SMS in ${time} second${
+      time !== 1 ? 's' : ''
+    }.`;
+  }
+
+  private resetTime() {
+    this.time = 120;
   }
 
   private getInputValue(index: number): string {
@@ -107,5 +138,9 @@ export class InputMfaComponent {
       default:
         return null;
     }
+  }
+
+  ngOnInit(): void {
+    if (this.isPhone) this.startCountdown();
   }
 }
