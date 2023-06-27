@@ -53,3 +53,12 @@
     }
   }
 }
+
+.resend-message {
+  display: flex;
+  justify-content: flex-end;
+  color: $color-dark-grey;
+  font-size: 14px;
+  margin-top: 10px;
+  opacity: 0.8;
+}

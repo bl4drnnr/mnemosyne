@@ -62,10 +62,12 @@ export class LoginComponent {
   }
 
   resendSmsCode() {
-    this.smsService.loginSendSmsCode({
-      email: this.email,
-      password: this.password
-    });
+    this.smsService
+      .loginSendSmsCode({
+        email: this.email,
+        password: this.password
+      })
+      .subscribe();
   }
 
   handleLogIn() {

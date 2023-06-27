@@ -18,13 +18,14 @@ export class SmsService {
 
   loginSendSmsCode({
     email,
-    password
+    password,
+    phone
   }: MfaLoginPayload): Observable<{ message: SendSmsCodeResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.POST,
       controller: CONTROLLERS_TYPE.SECURITY,
       action: ENDPOINTS_TYPE.LOGIN_SEND_SMS_CODE,
-      payload: { email, password }
+      payload: { email, password, phone }
     });
   }
 

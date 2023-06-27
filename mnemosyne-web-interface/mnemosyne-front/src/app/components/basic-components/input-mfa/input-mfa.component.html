@@ -1,59 +1,62 @@
-<div class="two-factor-auth">
-  <input
-    class="two-factor-input"
-    type="text"
-    maxlength="1"
-    (input)="onInputChange(0, $event)"
-    (keydown.backspace)="onInputChange(0, $event)"
-    #input0
-  >
-  <input
-    class="two-factor-input"
-    type="text"
-    maxlength="1"
-    (input)="onInputChange(1, $event)"
-    (keydown.backspace)="onInputChange(1, $event)"
-    #input1
-  >
-  <input
-    class="two-factor-input"
-    type="text"
-    maxlength="1"
-    (input)="onInputChange(2, $event)"
-    (keydown.backspace)="onInputChange(2, $event)"
-    #input2
-  >
-  <input
-    class="two-factor-input"
-    type="text"
-    maxlength="1"
-    (input)="onInputChange(3, $event)"
-    (keydown.backspace)="onInputChange(3, $event)"
-    #input3
-  >
-  <input
-    class="two-factor-input"
-    type="text"
-    maxlength="1"
-    (input)="onInputChange(4, $event)"
-    (keydown.backspace)="onInputChange(4, $event)"
-    #input4
-  >
-  <input
-    class="two-factor-input"
-    type="text"
-    maxlength="1"
-    (input)="onInputChange(5, $event)"
-    (keydown.backspace)="onInputChange(5, $event)"
-    #input5
-  >
-  <button
-    class="resend-button"
-    *ngIf="isPhone"
-    [disabled]="isPhoneButtonDisabled"
-    [ngClass]="{ 'disabled': isPhoneButtonDisabled }"
-    (click)="resendSms.emit()"
-  >
-    <p class="resend-button-label">Resend code</p>
-  </button>
+<div>
+  <div class="two-factor-auth">
+    <input
+      class="two-factor-input"
+      type="text"
+      maxlength="1"
+      (input)="onInputChange(0, $event)"
+      (keydown.backspace)="onInputChange(0, $event)"
+      #input0
+    >
+    <input
+      class="two-factor-input"
+      type="text"
+      maxlength="1"
+      (input)="onInputChange(1, $event)"
+      (keydown.backspace)="onInputChange(1, $event)"
+      #input1
+    >
+    <input
+      class="two-factor-input"
+      type="text"
+      maxlength="1"
+      (input)="onInputChange(2, $event)"
+      (keydown.backspace)="onInputChange(2, $event)"
+      #input2
+    >
+    <input
+      class="two-factor-input"
+      type="text"
+      maxlength="1"
+      (input)="onInputChange(3, $event)"
+      (keydown.backspace)="onInputChange(3, $event)"
+      #input3
+    >
+    <input
+      class="two-factor-input"
+      type="text"
+      maxlength="1"
+      (input)="onInputChange(4, $event)"
+      (keydown.backspace)="onInputChange(4, $event)"
+      #input4
+    >
+    <input
+      class="two-factor-input"
+      type="text"
+      maxlength="1"
+      (input)="onInputChange(5, $event)"
+      (keydown.backspace)="onInputChange(5, $event)"
+      #input5
+    >
+    <button
+      class="resend-button"
+      *ngIf="isPhone"
+      [disabled]="isCountdownRunning"
+      [ngClass]="{ 'disabled': isCountdownRunning }"
+      (click)="initResendSms()"
+    >
+      <p class="resend-button-label">Resend code</p>
+    </button>
+  </div>
+  <p class="resend-message" *ngIf="isCountdownRunning">{{ resendMessage }}</p>
 </div>

@@ -5,7 +5,7 @@ import * as bcryptjs from 'bcryptjs';
 import * as crypto from 'crypto';
 import * as uuid from 'uuid';
 import { User } from '@models/user.model';
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { CreateUserDto } from '@dto/create-user.dto';
 import { UsersService } from '@modules/users.service';
 import { JwtService } from '@nestjs/jwt';
@@ -29,6 +29,7 @@ import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { UserSettings } from '@models/user-settings.model';
+import { PhoneService } from '@shared/phone.service';
 
 @Injectable()
 export class AuthService {
@@ -37,6 +38,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
     private readonly emailService: EmailService,
+    private readonly phoneService: PhoneService,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     @InjectModel(Session) private readonly sessionRepository: typeof Session
@@ -56,13 +58,18 @@ export class AuthService {
 
     if (!user.isSecurityCompliant) return new MfaNotSetDto();
 
-    const mfaStatusResponse = this.checkUserMfaStatus({
-      mfaCode: payload.mfaCode,
-      phoneCode: payload.phoneCode,
-      userSettings: user.userSettings
-    });
+    try {
+      const mfaStatusResponse = await this.checkUserMfaStatus({
+        mfaCode: payload.mfaCode,
+        phoneCode: payload.phoneCode,
+        userSettings: user.userSettings,
+        userId: user.id
+      });
 
-    if (mfaStatusResponse) return mfaStatusResponse;
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
+    }
 
     const { _rt, _at } = await this.generateTokens({ user, trx });
 
@@ -145,15 +152,17 @@ export class AuthService {
     return { _at, _rt };
   }
 
-  checkUserMfaStatus({
+  async checkUserMfaStatus({
     mfaCode,
     phoneCode,
-    userSettings
+    userSettings,
+    userId
   }: {
     mfaCode: string;
     phoneCode: string;
     userSettings: UserSettings;
-  }): MfaRequiredDto | void {
+    userId: string;
+  }): Promise<MfaRequiredDto | void> {
     const {
       twoFaToken: userTwoFaToken,
       phoneCode: userPhoneCode,
@@ -166,8 +175,13 @@ export class AuthService {
 
     if (!mfaCode && userTwoFaToken)
       return new MfaRequiredDto('two-fa-required');
-    if (!phoneCode && userPhoneCode)
+    if (!phoneCode && phone) {
+      await this.phoneService.verifyAndResendSmsCode({
+        userId,
+        phone
+      });
       return new MfaRequiredDto('phone-required');
+    }
 
     if (phoneCode && phone) {
       if (userPhoneCode !== phoneCode) throw new WrongCodeException();

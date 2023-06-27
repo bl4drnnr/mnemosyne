@@ -4,6 +4,7 @@ import * as dayjs from 'dayjs';
 import {
   BadRequestException,
   forwardRef,
+  HttpException,
   Inject,
   Injectable
 } from '@nestjs/common';
@@ -242,13 +243,18 @@ export class UsersService {
       include: [{ all: true }]
     });
 
-    const mfaStatusResponse = this.authService.checkUserMfaStatus({
-      mfaCode,
-      phoneCode,
-      userSettings: user.userSettings
-    });
+    try {
+      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
+        mfaCode,
+        phoneCode,
+        userSettings: user.userSettings,
+        userId: user.id
+      });
 
-    if (mfaStatusResponse) return mfaStatusResponse;
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
+    }
 
     const hashedPassword = await bcryptjs.hash(
       password,

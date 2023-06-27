@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  forwardRef,
+  Inject,
+  Injectable
+} from '@nestjs/common';
 import { Twilio } from 'twilio';
 import { ApiConfigService } from '@shared/config.service';
 import { Transaction } from 'sequelize';
@@ -8,6 +13,7 @@ import * as dayjs from 'dayjs';
 @Injectable()
 export class PhoneService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly configService: ApiConfigService
   ) {}
@@ -45,7 +51,8 @@ export class PhoneService {
 
     const oneMinuteAgo = dayjs().subtract(1, 'minute');
 
-    if (dayjs(codeSentAt) < oneMinuteAgo) throw new BadRequestException();
+    if (oneMinuteAgo.diff(dayjs(codeSentAt), 'minutes') < 1)
+      throw new BadRequestException();
 
     const sentSmsCode = await this.sendSmsCode({
       targetPhoneNumber: phone

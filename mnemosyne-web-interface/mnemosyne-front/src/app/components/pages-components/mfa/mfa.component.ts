@@ -25,7 +25,7 @@ export class MfaComponent {
   resendMessage: string;
   phoneCodeSent = false;
   isPhoneCorrect = true;
-  time = 60;
+  time = 120;
   isCountdownRunning = false;
 
   selectedMfaOption: DropdownInterface;
@@ -72,7 +72,11 @@ export class MfaComponent {
         });
     } else if (this.email && this.password) {
       await this.smsService
-        .loginSendSmsCode({ email: this.email, password: this.password })
+        .loginSendSmsCode({
+          email: this.email,
+          password: this.password,
+          phone: this.phone
+        })
         .subscribe({
           next: () => {
             this.phoneCodeSent = true;
@@ -152,7 +156,7 @@ export class MfaComponent {
       if (this.time <= 0) {
         clearInterval(countdownInterval);
         this.isCountdownRunning = false;
-        this.time = 60;
+        this.time = 120;
       }
       this.resendMessage = `You can resend SMS in ${this.time} seconds.`;
     }, 1000);
