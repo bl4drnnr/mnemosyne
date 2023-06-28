@@ -15,8 +15,18 @@ import {
   styleUrls: ['./home.component.scss'],
   animations: [
     trigger('buttonAnimation', [
-      state('hidden', style({ opacity: 0, filter: 'blur(15px)' })),
-      state('visible', style({ opacity: 1, filter: 'blur(0)' })),
+      state(
+        'hidden',
+        style({
+          opacity: 0,
+          transform: 'translateY(-80px)',
+          filter: 'blur(15px)'
+        })
+      ),
+      state(
+        'visible',
+        style({ opacity: 1, transform: 'translateY(0)', filter: 'blur(0)' })
+      ),
       transition('hidden => visible', animate('1000ms ease-in')),
       transition('visible => hidden', animate('1000ms ease-out'))
     ]),
@@ -25,7 +35,7 @@ import {
         style({
           opacity: 0,
           transform: 'translateY(-80px)',
-          filter: 'blur(10px)'
+          filter: 'blur(15px)'
         }),
         animate(
           '1000ms ease-out',
@@ -43,6 +53,7 @@ export class HomeComponent {
     private readonly router: Router
   ) {}
 
+  staticStorageLink: string = this.envService.getStaticStorageLink;
   animationOptions = {
     path: `${this.envService.getStaticStorageLink}/animations/blockchain_technology_home.json`
   };

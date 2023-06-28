@@ -72,9 +72,40 @@
       <div class="home-start-button-container" [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'">
         <div (click)="handleRedirect('registration')" class="home-start-button"
         >
-          Let's dive into it!
+          <b>Sign Up</b>
         </div>
       </div>
     </div>
+
+    <div
+      [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
+      class="continue-line"
+    >
+      <p class="continue-with-paragraph"><span>continue with</span></p>
+    </div>
+
+    <div class="alternative-login" [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'">
+      <div class="alternative-login-item margin-right">
+        <img
+          class="alternative-login-icon"
+          [ngSrc]="staticStorageLink + '/icons/google.svg'"
+          [width]="25"
+          [height]="25"
+          alt="google"
+        >
+        Google
+      </div>
+      <div class="alternative-login-item margin-left">
+        <img
+          class="alternative-login-icon-2"
+          [ngSrc]="staticStorageLink + '/icons/apple.svg'"
+          [width]="30"
+          [height]="30"
+          alt="apple"
+        >
+        Apple
+      </div>
+    </div>
+
   </div>
 </div>

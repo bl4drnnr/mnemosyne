@@ -21,7 +21,7 @@
   }
 
   &:hover input ~ .checkmark {
-    background-color: #ccc;
+    background-color: $color-white;
   }
 
   input:checked ~ .checkmark {
