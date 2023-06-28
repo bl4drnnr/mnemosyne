@@ -2,27 +2,103 @@
 
 .home-welcome-window {
   height: 100vh;
-  border: 1px solid red;
   display: flex;
   margin: 0 auto;
   justify-content: flex-end;
   position: relative;
 
   .home-welcome-text {
-    max-width: 800px;
+    max-width: 600px;
     position: absolute;
     right: 0;
     left: 10%;
-    top: 40%;
+    top: 20%;
 
     .welcome-header {
       font-weight: 100;
       font-size: 102px;
       color: $filter-grey-dark-hover;
     }
+
+    .welcome-header-2-wrapper {
+      display: flex;
+      margin-left: 10px;
+
+      &.margin-top {
+        margin-top: 20px
+      }
+    }
+
+    .welcome-header-2 {
+      font-weight: 200;
+      font-size: 48px;
+      color: $filter-grey-dark-hover;
+
+      &.padding {
+        padding-left: 10px;
+      }
+    }
+
+    .welcome-header-3 {
+      font-weight: 300;
+      font-size: 24px;
+      color: $filter-grey-dark-hover;
+      padding-left: 5px;
+    }
+
+    .home-start-button-wrapper {
+      margin-left: 10px;
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+
+      .home-start-button-container {
+        border-top: 1px solid rgba($color-dark-grey, .5);
+        width: 100%;
+        margin-top: 30px;
+
+        .home-start-button {
+          background-color: $color-main;
+          color: $color-black;
+          cursor: pointer;
+          font-size: 20px;
+          font-weight: 400;
+          line-height: 45px;
+          margin-top: 30px;
+          position: relative;
+          text-decoration: none;
+          overflow: hidden;
+          border-radius: 6px;
+
+          &:hover {
+            text-decoration: none;
+
+            &:after {
+              left: 120%;
+              transition: all 1500ms cubic-bezier(0.19, 1, 0.22, 1);
+            }
+          }
+
+          &:after {
+            background: white;
+            content: "";
+            height: 155px;
+            left: -75px;
+            opacity: .2;
+            position: absolute;
+            top: -50px;
+            transform: rotate(35deg);
+            transition: all 1500ms cubic-bezier(0.19, 1, 0.22, 1);
+            width: 50px;
+          }
+        }
+      }
+    }
   }
 
   .home-welcome-animation {
-    width: 80%;
+    width: 70%;
   }
 }

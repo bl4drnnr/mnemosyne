@@ -9,19 +9,72 @@
       [showCursor]="true"
       [strings]="['Mnemosyne']"
       [startDelay]="1000"
-      [typeSpeed]="200"
+      [typeSpeed]="100"
     >
       <h1 class="welcome-header"><span class="typing"></span></h1>
     </ngx-typed-js>
 
-    <ngx-typed-js
-      [strings]="['awesome', 'amazing']"
-      [loop]="true"
-      [startDelay]="2000"
-      [typeSpeed]="150"
-      [backSpeed]="100"
+    <div class="welcome-header-2-wrapper">
+      <ngx-typed-js
+        [strings]="['Secure.']"
+        [showCursor]="false"
+        [startDelay]="1500"
+        [typeSpeed]="70"
+        (completed)="currentTypingText = 2"
+      >
+        <h2 class="welcome-header-2"><span class="typing"></span></h2>
+      </ngx-typed-js>
+      <ngx-typed-js
+        *ngIf="currentTypingText > 1"
+        [strings]="['Transparent.']"
+        [showCursor]="false"
+        [typeSpeed]="70"
+        (completed)="currentTypingText = 3"
+      >
+        <h2 class="welcome-header-2 padding"><span class="typing"></span></h2>
+      </ngx-typed-js>
+      <ngx-typed-js
+        [startDelay]="3600"
+        [strings]="['Immutable.']"
+        [typeSpeed]="70"
+        (completed)="currentTypingText = 4"
+      >
+        <h2 [ngClass]="currentTypingText >= 3 ? 'welcome-header-2 padding' : 'welcome-header-2'">
+          <span class="typing"></span>
+        </h2>
+      </ngx-typed-js>
+    </div>
+
+    <div
+      *ngIf="currentTypingText >= 3"
+      [@fadeIn]="true"
+      class="welcome-header-2-wrapper margin-top"
     >
-      <h2>Where we make <span class="typing"></span> company!</h2>
-    </ngx-typed-js>
+      <ngx-typed-js
+        contentType="html"
+        [loop]="true"
+        [startDelay]="2200"
+        [strings]="[
+          '<b>secured with the blockchain.</b>',
+          '<b>decentralized with the blockchain.</b>',
+          '<b>tamper-proofed by the blockchain.</b>'
+        ]"
+        [typeSpeed]="50"
+        [backSpeed]="10"
+      >
+        <p class="welcome-header-3">
+          Discover the limitless possibilities of blockchain-driven storage where you can be sure that you data is <span class="typing"></span>
+        </p>
+      </ngx-typed-js>
+    </div>
+
+    <div class="home-start-button-wrapper">
+      <div class="home-start-button-container" [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'">
+        <div (click)="handleRedirect('registration')" class="home-start-button"
+        >
+          Let's dive into it!
+        </div>
+      </div>
+    </div>
   </div>
 </div>
