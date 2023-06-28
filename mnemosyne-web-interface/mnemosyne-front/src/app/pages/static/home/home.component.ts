@@ -53,7 +53,6 @@ export class HomeComponent {
     private readonly router: Router
   ) {}
 
-  staticStorageLink: string = this.envService.getStaticStorageLink;
   animationOptions = {
     path: `${this.envService.getStaticStorageLink}/animations/blockchain_technology_home.json`
   };

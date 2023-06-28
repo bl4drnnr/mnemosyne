@@ -19,7 +19,7 @@
       padding: 0 5px;
     }
 
-    &.highHeight {
+    &.high-height {
       height: 48px;
     }
 
@@ -42,7 +42,7 @@
       }
     }
 
-    &.fillDanger {
+    &.fill-danger {
       border: 1px solid $warn-color;
       background-color: $warn-color;
       &:hover {
@@ -51,9 +51,9 @@
       }
     }
 
-    &.fillButton {
-      border: 1px solid $function-color;
-      background-color: $function-color;
+    &.fill-button {
+      border: 1px solid $color-main;
+      background-color: $color-main;
 
       &.disabled {
         background-color: rgba($block-color, .20);
@@ -62,7 +62,7 @@
     }
 
     &:hover {
-      background-color: rgba($color-main-hover, .3);
+      background-color: $color-main-hover;
     }
   }
 

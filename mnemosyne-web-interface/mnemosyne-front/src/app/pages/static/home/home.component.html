@@ -4,17 +4,17 @@
     <ng-lottie [options]="animationOptions"></ng-lottie>
   </div>
 
-  <div class="home-welcome-text">
+  <div class="home-welcome-text-container">
     <ngx-typed-js
       [showCursor]="true"
       [strings]="['Mnemosyne']"
       [startDelay]="1000"
       [typeSpeed]="100"
     >
-      <h1 class="welcome-header"><span class="typing"></span></h1>
+      <h1 class="welcome-header-title"><span class="typing"></span></h1>
     </ngx-typed-js>
 
-    <div class="welcome-header-2-wrapper">
+    <div class="welcome-header-subtitle-wrapper">
       <ngx-typed-js
         [strings]="['Secure.']"
         [showCursor]="false"
@@ -22,7 +22,7 @@
         [typeSpeed]="70"
         (completed)="currentTypingText = 2"
       >
-        <h2 class="welcome-header-2"><span class="typing"></span></h2>
+        <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
       </ngx-typed-js>
       <ngx-typed-js
         *ngIf="currentTypingText > 1"
@@ -31,7 +31,7 @@
         [typeSpeed]="70"
         (completed)="currentTypingText = 3"
       >
-        <h2 class="welcome-header-2 padding"><span class="typing"></span></h2>
+        <h2 class="welcome-header-subtitle padding"><span class="typing"></span></h2>
       </ngx-typed-js>
       <ngx-typed-js
         [startDelay]="3600"
@@ -39,7 +39,7 @@
         [typeSpeed]="70"
         (completed)="currentTypingText = 4"
       >
-        <h2 [ngClass]="currentTypingText >= 3 ? 'welcome-header-2 padding' : 'welcome-header-2'">
+        <h2 [ngClass]="currentTypingText >= 3 ? 'welcome-header-subtitle padding' : 'welcome-header-subtitle'">
           <span class="typing"></span>
         </h2>
       </ngx-typed-js>
@@ -48,7 +48,7 @@
     <div
       *ngIf="currentTypingText >= 3"
       [@fadeIn]="true"
-      class="welcome-header-2-wrapper margin-top"
+      class="welcome-header-p-wrapper"
     >
       <ngx-typed-js
         contentType="html"
@@ -62,49 +62,29 @@
         [typeSpeed]="50"
         [backSpeed]="10"
       >
-        <p class="welcome-header-3">
+        <p class="welcome-header-p">
           Discover the limitless possibilities of blockchain-driven storage where you can be sure that you data is <span class="typing"></span>
         </p>
       </ngx-typed-js>
     </div>
 
-    <div class="home-start-button-wrapper">
-      <div class="home-start-button-container" [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'">
-        <div (click)="handleRedirect('registration')" class="home-start-button"
-        >
-          <b>Sign Up</b>
-        </div>
-      </div>
+    <div
+      [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
+      class="home-start-button-wrapper"
+    >
+      <basic-button
+        label="Sign Up"
+        [highHeight]="true"
+        [fillButton]="true"
+        (buttonClick)="handleRedirect('registration')"
+      />
     </div>
 
     <div
+      class="home-start-button-wrapper"
       [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
-      class="continue-line"
     >
-      <p class="continue-with-paragraph"><span>continue with</span></p>
-    </div>
-
-    <div class="alternative-login" [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'">
-      <div class="alternative-login-item margin-right">
-        <img
-          class="alternative-login-icon"
-          [ngSrc]="staticStorageLink + '/icons/google.svg'"
-          [width]="25"
-          [height]="25"
-          alt="google"
-        >
-        Google
-      </div>
-      <div class="alternative-login-item margin-left">
-        <img
-          class="alternative-login-icon-2"
-          [ngSrc]="staticStorageLink + '/icons/apple.svg'"
-          [width]="30"
-          [height]="30"
-          alt="apple"
-        >
-        Apple
-      </div>
+      <page-component-alt-registration [block]="false"></page-component-alt-registration>
     </div>
 
   </div>

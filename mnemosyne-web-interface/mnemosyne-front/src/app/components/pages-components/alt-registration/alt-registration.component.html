@@ -1,0 +1,27 @@
+<p class="continue-with-paragraph"><span>continue with</span></p>
+
+<div
+  class="alternative-registration-container"
+  [ngClass]="block ? 'block' : 'flex'"
+>
+  <div class="alternative-registration-item margin-right">
+    <img
+      class="alternative-registration-icon"
+      [ngSrc]="staticStorageLink + '/icons/google.svg'"
+      [width]="25"
+      [height]="25"
+      alt="google"
+    >
+    Google
+  </div>
+  <div class="alternative-registration-item margin-left">
+    <img
+      class="alternative-registration-icon-2"
+      [ngSrc]="staticStorageLink + '/icons/apple.svg'"
+      [width]="30"
+      [height]="30"
+      alt="apple"
+    >
+    Apple
+  </div>
+</div>

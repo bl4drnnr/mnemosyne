@@ -1,0 +1,57 @@
+@import 'variables';
+
+.alternative-registration-container {
+  &.flex {
+    display: flex;
+  }
+  &.block {
+    display: block;
+  }
+}
+
+.continue-with-paragraph {
+  width: 100%;
+  text-align: center;
+  border-bottom: 1px solid rgba($color-dark-grey, .5);
+  line-height: 0.1em;
+  margin: 10px 0 20px;
+  opacity: .5;
+
+  span {
+    background: $color-white;
+    padding: 0 10px;
+  }
+}
+
+.alternative-registration-item {
+  width: 100%;
+  border: 1px solid rgba($color-dark-grey, .75);
+  background-color: $color-white;
+  cursor: pointer;
+  height: 50px;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: .2s;
+
+  &:hover {
+    background-color: $color-shadow-light;
+  }
+
+  .alternative-registration-icon {
+    margin-right: 10px;
+  }
+
+  .alternative-registration-icon-2 {
+    margin-right: 5px;
+  }
+
+  &.margin-left {
+    margin-left: 10px;
+  }
+
+  &.margin-right {
+    margin-right: 10px;
+  }
+}
