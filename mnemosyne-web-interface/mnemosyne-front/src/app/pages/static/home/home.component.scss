@@ -2,27 +2,58 @@
 
 .home-welcome-window {
   height: 100vh;
-  border: 1px solid red;
   display: flex;
   margin: 0 auto;
   justify-content: flex-end;
   position: relative;
+}
 
-  .home-welcome-text {
-    max-width: 800px;
-    position: absolute;
-    right: 0;
-    left: 10%;
-    top: 40%;
+.home-welcome-text-container {
+  max-width: 600px;
+  position: absolute;
+  right: 0;
+  left: 10%;
+  top: 20%;
+}
 
-    .welcome-header {
-      font-weight: 100;
-      font-size: 102px;
-      color: $filter-grey-dark-hover;
-    }
+.welcome-header-title {
+  font-weight: 300;
+  font-size: 102px;
+  color: $filter-grey-dark-hover;
+}
+
+.welcome-header-subtitle-wrapper {
+  display: flex;
+  margin-left: 10px;
+}
+
+.welcome-header-p-wrapper {
+  margin-top: 20px;
+  margin-left: 10px;
+}
+
+.welcome-header-subtitle {
+  font-weight: 200;
+  font-size: 48px;
+  color: $filter-grey-dark-hover;
+
+  &.padding {
+    padding-left: 10px;
   }
+}
 
-  .home-welcome-animation {
-    width: 80%;
-  }
+.welcome-header-p {
+  font-weight: 300;
+  font-size: 24px;
+  color: $filter-grey-dark-hover;
+  padding-left: 5px;
+}
+
+.home-start-button-wrapper {
+  margin: 30px 0 0 10px;
+}
+
+.home-welcome-animation {
+  width: 80%;
+  filter: blur(3px);
 }
