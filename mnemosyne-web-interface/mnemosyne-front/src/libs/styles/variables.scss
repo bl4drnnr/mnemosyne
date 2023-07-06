@@ -220,51 +220,51 @@ $screen-md-max: ($screen-lg - 1);
 
 @mixin respond_device($media) {
   @if $media==xs {
-    @media only screen and (max-device-width: $screen-xs-max) {
+    @media only screen and (max-width: $screen-xs-max) {
       @content;
     }
   } @else if $media==m {
-    @media only screen and (min-device-width: $screen-m) and (max-device-width: $screen-m-max) {
+    @media only screen and (min-width: $screen-m) and (max-width: $screen-m-max) {
       @content;
     }
   } @else if $media==sm {
-    @media only screen and (min-device-width: $screen-sm) and (max-device-width: $screen-sm-max) {
+    @media only screen and (min-width: $screen-sm) and (max-width: $screen-sm-max) {
       @content;
     }
   } @else if $media==md {
-    @media only screen and (min-device-width: $screen-md) and (max-device-width: $screen-md-max) {
+    @media only screen and (min-width: $screen-md) and (max-width: $screen-md-max) {
       @content;
     }
   } @else if $media==lg {
-    @media only screen and (min-device-width: $screen-lg) {
+    @media only screen and (min-width: $screen-lg) {
       @content;
     }
   } @else if $media==to_sm {
-    @media only screen and (max-device-width: $screen-sm-max) {
+    @media only screen and (max-width: $screen-sm-max) {
       @content;
     }
   } @else if $media==to_m {
-    @media only screen and (max-device-width: $screen-m-max) {
+    @media only screen and (max-width: $screen-m-max) {
       @content;
     }
   } @else if $media==to_md {
-    @media only screen and (max-device-width: $screen-md-max) {
+    @media only screen and (max-width: $screen-md-max) {
       @content;
     }
   } @else if $media==from_m {
-    @media only screen and (min-device-width: $screen-m) {
+    @media only screen and (min-width: $screen-m) {
       @content;
     }
   } @else if $media==from_md {
-    @media only screen and (min-device-width: $screen-md) {
+    @media only screen and (min-width: $screen-md) {
       @content;
     }
   } @else if $media==from_sm {
-    @media only screen and (min-device-width: $screen-sm) {
+    @media only screen and (min-width: $screen-sm) {
       @content;
     }
   } @else if $media==from_lg {
-    @media only screen and (min-device-width: $screen-lg) {
+    @media only screen and (min-width: $screen-lg) {
       @content;
     }
   }

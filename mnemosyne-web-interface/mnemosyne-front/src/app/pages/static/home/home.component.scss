@@ -6,6 +6,10 @@
   margin: 0 auto;
   justify-content: flex-end;
   position: relative;
+
+  @include respond_device(to_m) {
+    display: block;
+  }
 }
 
 .home-welcome-text-container {
@@ -14,28 +18,55 @@
   right: 0;
   left: 10%;
   top: 20%;
+
+  @include respond_device(to_m) {
+    margin: 0 auto;
+    position: unset;
+    width: 100%;
+  }
 }
 
 .welcome-header-title {
   font-weight: 300;
   font-size: 102px;
   color: $filter-grey-dark-hover;
+
+  @include respond_device(to_m) {
+    font-size: 52px;
+    text-align: center;
+  }
 }
 
 .welcome-header-subtitle-wrapper {
   display: flex;
   margin-left: 10px;
+
+  @include respond_device(to_m) {
+    flex-direction: column;
+    text-align: center;
+    margin: 0;
+  }
 }
 
 .welcome-header-p-wrapper {
   margin-top: 20px;
   margin-left: 10px;
+
+  @include respond_device(to_m) {
+    margin: 0;
+    text-align: center;
+  }
 }
 
 .welcome-header-subtitle {
   font-weight: 200;
   font-size: 48px;
   color: $filter-grey-dark-hover;
+
+  @include respond_device(to_m) {
+    font-size: 32px;
+    padding: 0 !important;
+  }
 
   &.padding {
     padding-left: 10px;
@@ -47,13 +78,26 @@
   font-size: 24px;
   color: $filter-grey-dark-hover;
   padding-left: 5px;
+
+  @include respond_device(to_m) {
+    padding: 0;
+    font-size: 18px;
+  }
 }
 
 .home-start-button-wrapper {
   margin: 30px 0 0 10px;
+
+  @include respond_device(to_m) {
+    margin: 20px 10px 0 10px;
+  }
 }
 
 .home-welcome-animation {
   width: 80%;
   filter: blur(3px);
+
+  @include respond_device(to_m) {
+    display: none;
+  }
 }

@@ -2,28 +2,28 @@
 
 .input-button-container {
   width: 100%;
+}
 
-  .placeholder {
-    opacity: .9;
-    font-size: 14px;
-    margin: 14px 0;
-  }
+.placeholder {
+  opacity: .9;
+  font-size: 14px;
+  margin: 14px 0;
+}
 
-  .container {
-    display: flex;
-    justify-content: space-between;
+.container {
+  display: flex;
+  justify-content: space-between;
+}
 
-    .input-wrapper {
-      width: 75%;
-    }
+.input-wrapper {
+  width: 75%;
+}
 
-    .button-wrapper {
-      width: 25%;
-      margin-left: 15px;
+.button-wrapper {
+  width: 25%;
+  margin-left: 15px;
+}
 
-      .button-container {
-        width: 100%;
-      }
-    }
-  }
+.button-container {
+  width: 100%;
 }

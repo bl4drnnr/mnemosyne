@@ -4,100 +4,100 @@
   position: relative;
   display: inline-block;
   width: 100%;
+}
 
-  .dropdown-toggle {
-    background-color: $color-white;
-    border: 1px solid $color-light-grey;
-    color: $filter-grey-dark-hover;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-    transition: .2s;
-    position: relative;
-    overflow: hidden;
+.dropdown-toggle {
+  background-color: $color-white;
+  border: 1px solid $color-light-grey;
+  color: $filter-grey-dark-hover;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  transition: .2s;
+  position: relative;
+  overflow: hidden;
 
-    &:disabled {
-      opacity: .4;
-      cursor: default;
-
-      &:hover {
-        border: 1px solid $color-light-grey;
-      }
-    }
-
-    &:focus {
-      outline: none;
-    }
+  &:disabled {
+    opacity: .4;
+    cursor: default;
 
     &:hover {
-      background-color: $card-border;
-    }
-
-    .arrow {
-      position: absolute;
-      top: 50%;
-      right: 12px;
-      transform: translateY(-50%);
-      width: 0;
-      height: 0;
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-top: 4px solid $filter-grey-dark-hover;
-      transition: transform 0.2s;
-
-      &.arrow-open {
-        transform: translateY(-50%) rotate(180deg);
-      }
+      border: 1px solid $color-light-grey;
     }
   }
 
-  .dropdown-menu {
-    width: 100%;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
-    min-width: 160px;
-    padding: 8px 0;
-    margin: 2px 0 0;
-    list-style: none;
-    background-color: $color-white;
-    border: 1px solid $color-mediumgray;
-    border-radius: 4px;
-
-    &.show {
-      opacity: 1;
-      visibility: visible;
-      transition-delay: 0s;
-    }
+  &:focus {
+    outline: none;
   }
 
-  .dropdown-item {
-    display: block;
-    padding: 8px 12px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.42857143;
-    color: $filter-grey-dark-hover;
-    white-space: nowrap;
-    background-color: transparent;
-    border: 0;
-    text-align: left;
-    width: 100%;
-    cursor: pointer;
-    transition: .2s;
+  &:hover {
+    background-color: $card-border;
+  }
+}
 
-    &:hover,
-    &:focus {
-      background-color: $card-border;
-    }
+.arrow {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid $filter-grey-dark-hover;
+  transition: transform 0.2s;
 
-    &:active {
-      background-color: $color-shadow-light;
-    }
+  &.arrow-open {
+    transform: translateY(-50%) rotate(180deg);
+  }
+}
+
+.dropdown-menu {
+  width: 100%;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
+  min-width: 160px;
+  padding: 8px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  background-color: $color-white;
+  border: 1px solid $color-mediumgray;
+  border-radius: 4px;
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+}
+
+.dropdown-item {
+  display: block;
+  padding: 8px 12px;
+  clear: both;
+  font-weight: normal;
+  line-height: 1.42857143;
+  color: $filter-grey-dark-hover;
+  white-space: nowrap;
+  background-color: transparent;
+  border: 0;
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+  transition: .2s;
+
+  &:hover,
+  &:focus {
+    background-color: $card-border;
+  }
+
+  &:active {
+    background-color: $color-shadow-light;
   }
 }
