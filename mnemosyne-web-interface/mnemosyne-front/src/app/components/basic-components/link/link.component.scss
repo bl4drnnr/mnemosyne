@@ -2,17 +2,17 @@
 
 .link-component {
   display: inline-flex;
+}
 
-  .link-anchor {
-    transition: all .3s;
+.link-anchor {
+  transition: all .3s;
+  color: $color-main;
+
+  &:hover {
+    color: $color-main-hover !important;
+  }
+
+  &:visited {
     color: $color-main;
-
-    &:hover {
-      color: $color-main-hover !important;
-    }
-
-    &:visited {
-      color: $color-main;
-    }
   }
 }

@@ -1,5 +1,5 @@
 <div *ngIf="globalMessageService.message$ | async as message" [@fadeInOut]="true" class="alert-container">
-  <div [ngClass]="globalMessageService.isError ? 'alert-error' : 'alert-success'" role="alert">
+  <div [ngClass]="globalMessageService.isError ? 'alert error' : 'alert success'" role="alert">
     <div class="alert-content">
       <div *ngIf="globalMessageService.isError">
         <img

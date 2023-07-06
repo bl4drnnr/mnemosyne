@@ -12,79 +12,86 @@
   transition: .3s;
   background-color: $color-white;
 
-  .alert-content {
-    display: flex;
-
-    .alert-icon {
-      margin-right: 16px;
-
-      &.error {
-        filter: $warn-color-svg;
-      }
-
-      &.success {
-        filter: $success-color-svg;
-      }
-    }
+  @include respond_device(to_m) {
+    margin-right: unset;
+    margin-left: 5%;
+    left: unset;
+    right: unset;
+    min-width: unset;
+    max-width: unset;
+    width: 90%;
   }
+}
 
-  .alert-header {
-    margin: 0;
-    font-weight: 500;
-  }
+.alert-content {
+  display: flex;
 
-  .alert-message {
-    opacity: .5;
-    font-size: 14px;
-  }
+  .alert-icon {
+    margin-right: 16px;
 
-  .close-container {
-    position: absolute;
-    height: 100%;
-    border-left: 1px solid rgba(0, 0, 0, .25);
-    right: 0;
-    display: flex;
-    align-items: center;
-    transition: .3s;
-    cursor: pointer;
-
-    &:hover {
-      background-color: rgba($color-light-grey, .5);
+    &.error {
+      filter: $warn-color-svg;
     }
 
-    .close-button {
-      opacity: .25;
-      margin: 0 16px;
+    &.success {
+      filter: $success-color-svg;
     }
   }
+}
 
-  .alert-error {
+.alert-header {
+  margin: 0;
+  font-weight: 500;
+}
+
+.alert-message {
+  opacity: .5;
+  font-size: 14px;
+}
+
+.close-container {
+  position: absolute;
+  height: 100%;
+  border-left: 1px solid rgba(0, 0, 0, .25);
+  right: 0;
+  display: flex;
+  align-items: center;
+  transition: .3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba($color-light-grey, .5);
+  }
+
+  .close-button {
+    opacity: .25;
+    margin: 0 16px;
+  }
+}
+
+.alert {
+  box-shadow: rgba(0, 0, 0, 0.1) 0 10px 50px;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: .3s;
+
+  @include respond_device(to_m) {
+    width: 100%;
+  }
+
+  &.error {
     border-left: 10px solid $warn-color;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 10px 50px;
-    padding: 0.75rem 1rem;
-    border-radius: 0.25rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: .3s;
-
     &:hover {
       border-left: 90px solid $warn-color;
     }
   }
 
-  .alert-success {
+  &.success {
     border-left: 10px solid $success-color;
-    box-shadow: rgba(0, 0, 0, 0.1) 0 10px 50px;
-    padding: 0.75rem 1rem;
-    border-radius: 0.25rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    transition: .3s;
-
     &:hover {
       border-left: 90px solid $success-color;
     }

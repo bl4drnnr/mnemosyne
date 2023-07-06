@@ -2,73 +2,73 @@
 
 .btn-container {
   width: 100%;
+}
 
-  .btn {
-    height: 36px;
-    width: 100%;
-    border-radius: 5px;
-    cursor: pointer;
-    border: 1px solid rgba($color-main-hover, .5);
-    transition: .3s;
-    background-color: $color-white;
+.btn {
+  height: 36px;
+  width: 100%;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 1px solid rgba($color-main-hover, .5);
+  transition: .3s;
+  background-color: $color-white;
 
-    .button-label {
-      margin: 0;
-      font-size: 14px;
-      font-weight: 400;
-      padding: 0 5px;
+  &.high-height {
+    height: 48px;
+  }
+
+  &.disabled {
+    background-color: rgba($block-color, .20);
+    border: 1px solid rgba($color-black, .1);
+
+    &:hover {
+      cursor: default;
+      box-shadow: none !important;
+      background-color: rgba($block-color, .20) !important;
     }
+  }
 
-    &.high-height {
-      height: 48px;
+  &.danger {
+    border: 1px solid rgb($warn-color, .5);
+    &:hover {
+      border: 1px solid rgb($warn-color, 1);
+      background-color: rgba($warn-color, .20);
     }
+  }
+
+  &.fill-danger {
+    border: 1px solid $warn-color;
+    background-color: $warn-color;
+    &:hover {
+      background-color: $warn-color;
+      border: 1px solid $warn-color;
+    }
+  }
+
+  &.fill-button {
+    border: 1px solid $color-main;
+    background-color: $color-main;
 
     &.disabled {
       background-color: rgba($block-color, .20);
       border: 1px solid rgba($color-black, .1);
-
-      &:hover {
-        cursor: default;
-        box-shadow: none !important;
-        background-color: rgba($block-color, .20) !important;
-      }
-    }
-
-    &.danger {
-      border: 1px solid rgb($warn-color, .5);
-      &:hover {
-        border: 1px solid rgb($warn-color, 1);
-        background-color: rgba($warn-color, .20);
-      }
-    }
-
-    &.fill-danger {
-      border: 1px solid $warn-color;
-      background-color: $warn-color;
-      &:hover {
-        background-color: $warn-color;
-        border: 1px solid $warn-color;
-      }
-    }
-
-    &.fill-button {
-      border: 1px solid $color-main;
-      background-color: $color-main;
-
-      &.disabled {
-        background-color: rgba($block-color, .20);
-        border: 1px solid rgba($color-black, .1);
-      }
-    }
-
-    &:hover {
-      background-color: $color-main-hover;
     }
   }
 
-  .button-description {
-    font-size: small;
-    opacity: .5;
-    margin-top: 5px;
+  &:hover {
+    background-color: $color-main-hover;
   }
+}
+
+.button-label {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 0 5px;
+}
+
+.button-description {
+  font-size: small;
+  opacity: .5;
+  margin-top: 5px;
 }
