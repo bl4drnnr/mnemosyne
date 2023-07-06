@@ -15,10 +15,8 @@ import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import { UserId } from '@decorators/user-id.decorator';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { LogInUserDto } from '@dto/log-in-user.dto';
-import { MfaRequiredDto } from '@dto/mfa-required.dto';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
-import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -28,21 +26,9 @@ export class AuthController {
   @Post('login')
   async login(
     @Body() payload: LogInUserDto,
-    @Res({ passthrough: true }) res,
     @TransactionParam() trx: Transaction
   ) {
-    const response = await this.authService.login({ payload, trx });
-
-    if (
-      response instanceof MfaRequiredDto ||
-      response instanceof MfaNotSetDto
-    ) {
-      return response;
-    } else if (response && '_rt' in response && '_at' in response) {
-      res.cookie('_rt', response._rt);
-
-      return { _at: response._at };
-    }
+    return this.authService.login({ payload, trx });
   }
 
   @UsePipes(ValidationPipe)

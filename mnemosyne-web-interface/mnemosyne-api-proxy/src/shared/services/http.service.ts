@@ -27,7 +27,7 @@ export class ProxyHttpService {
     payload?: object;
     method: string;
     params?: object;
-  }) {
+  }): Promise<object> {
     const allowedMethods = this.configService.allowedRequestMethods;
     const allowedControllers = this.configService.allowedControllers;
     const allowedEndpoints = this.configService.allowedEndpoints;
