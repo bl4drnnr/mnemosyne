@@ -53,7 +53,9 @@ export class ApiService {
     if (params) requestBody.params = params;
     if (payload) requestBody.payload = payload;
 
-    const request$ = this.http.post<any>(requestUrl, requestBody);
+    const request$ = this.http.post<any>(requestUrl, requestBody, {
+      withCredentials: true
+    });
 
     const loaderTimeout$ = timer(1000).pipe(
       mergeMap(() => {

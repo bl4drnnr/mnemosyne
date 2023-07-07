@@ -5,10 +5,15 @@ import * as fs from 'fs';
 import * as yaml from 'yaml';
 
 (async () => {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
   const port = process.env.PROXY_PORT;
 
   app.setGlobalPrefix('/api');
+
+  app.enableCors({
+    origin: ['http://localhost:4200'],
+    credentials: true
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Mnemosyne')
