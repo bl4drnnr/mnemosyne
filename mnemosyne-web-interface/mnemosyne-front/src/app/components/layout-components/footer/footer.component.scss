@@ -1,0 +1,15 @@
+@import 'variables';
+
+footer {
+  left: 0;
+  bottom: 0;
+  height: 60px;
+  transition: transform 0.3s ease-in-out;
+  box-shadow: $card-shadow;
+  z-index: map-get($z-index, header);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+}

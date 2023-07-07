@@ -27,6 +27,10 @@
     "@nestjs/mongoose": "^9.2.2",
     "@nestjs/platform-express": "^9.0.0",
     "@nestjs/swagger": "^6.3.0",
+    "@types/cookie": "^0.5.1",
+    "@types/cors": "^2.8.13",
+    "cookie": "^0.5.0",
+    "cors": "^2.8.5",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
   },

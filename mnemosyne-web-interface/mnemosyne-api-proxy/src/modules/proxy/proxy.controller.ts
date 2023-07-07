@@ -1,4 +1,4 @@
-import { Controller, Param, Post, Body, Headers } from '@nestjs/common';
+import { Controller, Param, Post, Body, Res, Headers } from '@nestjs/common';
 import { ProxyService } from '@proxy/proxy.service';
 
 @Controller('proxy')
@@ -9,6 +9,9 @@ export class ProxyController {
   async proxyAction(
     @Param('controller') controller: string,
     @Param('action') action: string,
+    @Res({ passthrough: true }) res,
+    @Headers('X-Access-Token') accessToken: string,
+    @Headers('cookie') cookies: string,
     @Body()
     {
       method,
@@ -20,12 +23,21 @@ export class ProxyController {
       params?: object;
     }
   ) {
-    return await this.proxyService.proxyAction({
+    const response = await this.proxyService.proxyAction({
       controller,
       action,
       payload,
       method,
-      params
+      params,
+      cookies,
+      accessToken
     });
+
+    if ('_at' in response && '_rt' in response) {
+      res.cookie('_rt', response._rt, { httpOnly: true });
+      return { _at: response._at };
+    } else {
+      return response;
+    }
   }
 }
