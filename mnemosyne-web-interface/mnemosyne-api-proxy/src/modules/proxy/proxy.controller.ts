@@ -1,4 +1,4 @@
-import { Controller, Param, Post, Body, Res } from '@nestjs/common';
+import { Controller, Param, Post, Body, Res, Headers } from '@nestjs/common';
 import { ProxyService } from '@proxy/proxy.service';
 
 @Controller('proxy')
@@ -10,6 +10,8 @@ export class ProxyController {
     @Param('controller') controller: string,
     @Param('action') action: string,
     @Res({ passthrough: true }) res,
+    @Headers('X-Access-Token') accessToken: string,
+    @Headers('cookie') cookies: string,
     @Body()
     {
       method,
@@ -26,7 +28,9 @@ export class ProxyController {
       action,
       payload,
       method,
-      params
+      params,
+      cookies,
+      accessToken
     });
 
     if ('_at' in response && '_rt' in response) {

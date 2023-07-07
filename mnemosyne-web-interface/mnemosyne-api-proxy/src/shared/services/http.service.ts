@@ -20,13 +20,17 @@ export class ProxyHttpService {
     action,
     payload,
     method,
-    params
+    params,
+    accessToken,
+    cookies
   }: {
     controller: string;
     action: string;
     payload?: object;
     method: string;
     params?: object;
+    accessToken?: string;
+    cookies?: string;
   }): Promise<object> {
     const allowedMethods = this.configService.allowedRequestMethods;
     const allowedControllers = this.configService.allowedControllers;
@@ -64,6 +68,9 @@ export class ProxyHttpService {
 
     requestConfig.data = method === 'POST' ? payload : {};
     requestConfig.params = params ? params : {};
+
+    if (accessToken) requestConfig.headers['x-access-token'] = accessToken;
+    if (cookies) requestConfig.headers.cookie = cookies;
 
     await this.loggerService.log({
       logType: ACTION_CONTROLLER_TYPE.LOGGER_SERVICE,

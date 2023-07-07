@@ -49,6 +49,7 @@
       "@guards/*": ["src/app/guards/*"],
       "@features/*": ["src/app/features/*"],
       "@modules/*": ["src/app/modules/*"],
+      "@interceptors/*": ["src/app/interceptors/*"],
       "@interfaces/*": [
         "src/libs/interfaces/components/*",
         "src/libs/interfaces/*",

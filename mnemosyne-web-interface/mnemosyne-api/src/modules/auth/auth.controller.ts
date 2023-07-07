@@ -11,12 +11,12 @@ import {
 import { AuthService } from '@modules/auth/auth.service';
 import { CreateUserDto } from '@dto/create-user.dto';
 import { AuthGuard } from '@guards/auth.guard';
-import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import { UserId } from '@decorators/user-id.decorator';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { LogInUserDto } from '@dto/log-in-user.dto';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
+import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -61,13 +61,9 @@ export class AuthController {
     @Res({ passthrough: true }) res,
     @TransactionParam() trx: Transaction
   ) {
-    const { _rt, _at } = await this.authService.refreshToken({
+    return this.authService.refreshToken({
       refreshToken,
       trx
     });
-
-    res.cookie('_rt', _rt);
-
-    return { _at };
   }
 }
