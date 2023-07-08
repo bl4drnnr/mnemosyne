@@ -1,4 +1,5 @@
 <div class="page-container">
+  <layout-siderbar *ngIf="showSideBar"></layout-siderbar>
   <layout-header *ngIf="showHeader"></layout-header>
   <div class="content-wrapper"><ng-content></ng-content></div>
   <layout-footer *ngIf="showFooter"></layout-footer>

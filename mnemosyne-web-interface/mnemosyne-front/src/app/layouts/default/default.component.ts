@@ -8,4 +8,5 @@ import { Component, Input } from '@angular/core';
 export class DefaultLayout {
   @Input() showHeader = true;
   @Input() showFooter = true;
+  @Input() showSideBar = true;
 }
