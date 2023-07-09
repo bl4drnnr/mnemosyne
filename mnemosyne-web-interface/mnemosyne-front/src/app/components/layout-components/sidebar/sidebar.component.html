@@ -1,0 +1,19 @@
+<div class="sidebar-container" *ngIf="isSidebarOpen" (click)="handleCloseSidebar()">
+  <div class="sidebar-box" [@slideInOut]="true">
+    <div class="sidebar-side"></div>
+
+    <div class="sidebar-side">
+      <div class="sidebar-button-wrapper">
+        <basic-button
+          label="Settings"
+          (buttonClick)="handleRedirect('/account/settings')"
+        />
+      </div>
+      <basic-button
+        label="Log out"
+        (buttonClick)="handleLogout()"
+        [danger]="true"
+      />
+    </div>
+  </div>
+</div>

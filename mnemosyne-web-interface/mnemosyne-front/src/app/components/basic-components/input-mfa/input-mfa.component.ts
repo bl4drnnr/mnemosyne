@@ -140,7 +140,7 @@ export class InputMfaComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.isPhone) this.startCountdown();
   }
 }

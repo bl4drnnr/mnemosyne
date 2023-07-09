@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import {Component, EventEmitter, HostListener, Output} from '@angular/core';
 
 @Component({
   selector: 'layout-header',
@@ -8,6 +8,8 @@ import { Component, HostListener } from '@angular/core';
 export class HeaderComponent {
   scrolled = false;
   lastScrollPosition = 0;
+
+  @Output() openSidebar = new EventEmitter<void>();
 
   @HostListener('window:scroll')
   onWindowScroll() {
