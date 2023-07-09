@@ -9,10 +9,17 @@ header {
   transition: transform 0.3s ease-in-out;
   box-shadow: $card-shadow;
   z-index: map-get($z-index, header);
+
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: $color-white;
+}
+
+.header-side {}
+
+.sidebar-burger {
+  cursor: pointer;
 }
 
 .hide {

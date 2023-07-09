@@ -9,9 +9,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  // @typescript-eslint/no-empty-function
-  constructor() {}
-
   intercept(
     request: HttpRequest<unknown>,
     next: HttpHandler

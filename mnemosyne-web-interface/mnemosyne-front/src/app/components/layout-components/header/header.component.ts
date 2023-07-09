@@ -1,4 +1,5 @@
-import {Component, EventEmitter, HostListener, Output} from '@angular/core';
+import { Component, EventEmitter, HostListener, Output } from '@angular/core';
+import { EnvService } from '@shared/env.service';
 
 @Component({
   selector: 'layout-header',
@@ -6,10 +7,14 @@ import {Component, EventEmitter, HostListener, Output} from '@angular/core';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
+  @Output() openSidebar = new EventEmitter<void>();
+
   scrolled = false;
   lastScrollPosition = 0;
 
-  @Output() openSidebar = new EventEmitter<void>();
+  constructor(private readonly envService: EnvService) {}
+
+  staticStorageLink = `${this.envService.getStaticStorageLink}`;
 
   @HostListener('window:scroll')
   onWindowScroll() {
