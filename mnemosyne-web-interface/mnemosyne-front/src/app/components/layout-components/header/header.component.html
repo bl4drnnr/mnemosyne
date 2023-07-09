@@ -1,3 +1,13 @@
 <header [ngClass]="{'hide': scrolled}">
-
+  <div class="header-side">
+    <img
+      class="sidebar-burger"
+      (click)="openSidebar.emit()"
+      [ngSrc]="staticStorageLink + '/icons/hamburger.svg'"
+      [width]="25"
+      [height]="25"
+      alt="burger"
+    >
+  </div>
+  <div class="header-side"></div>
 </header>

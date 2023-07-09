@@ -32,7 +32,7 @@ export class GlobalMessageComponent implements OnInit {
 
   staticStorageLink: string = this.envService.getStaticStorageLink;
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.closeButtonUrl = `${this.staticStorageLink}/icons/close.svg`;
     this.successIcon = `${this.staticStorageLink}/icons/check-circle.svg`;
     this.errorIcon = `${this.staticStorageLink}/icons/error.svg`;

@@ -14,10 +14,10 @@ import { EmojiComponent } from '@components/emoji/emoji.component';
 import { MfaComponent } from '@components/mfa/mfa.component';
 import { HeaderComponent } from '@components/header/header.component';
 import { FooterComponent } from '@components/footer/footer.component';
-import { SiderbarComponent } from '@components/siderbar/siderbar.component';
-import { CreatePasswordComponent } from './pages-components/create-password/create-password.component';
+import { SidebarComponent } from '@components/sidebar/sidebar.component';
+import { CreatePasswordComponent } from '@components/create-password/create-password.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { AltRegistrationComponent } from './pages-components/alt-registration/alt-registration.component';
+import { AltRegistrationComponent } from '@components/alt-registration/alt-registration.component';
 
 const components = [
   ButtonComponent,
@@ -33,7 +33,7 @@ const components = [
   MfaComponent,
   HeaderComponent,
   FooterComponent,
-  SiderbarComponent
+  SidebarComponent
 ];
 
 @NgModule({

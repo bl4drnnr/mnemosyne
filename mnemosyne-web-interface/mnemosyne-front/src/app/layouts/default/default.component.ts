@@ -9,4 +9,6 @@ export class DefaultLayout {
   @Input() showHeader = true;
   @Input() showFooter = true;
   @Input() showSideBar = true;
+
+  isSidebarOpen = false;
 }
