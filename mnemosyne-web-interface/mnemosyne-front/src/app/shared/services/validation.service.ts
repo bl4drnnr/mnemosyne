@@ -36,26 +36,26 @@ export class ValidationService {
 
   checkPasswordsRules(password: string) {
     const passwordRules = [
-      {
-        error: true,
-        text: 'Password length should be more than 8 characters'
-      },
-      {
-        error: true,
-        text: 'Password should contain at least one lowercase character'
-      },
-      {
-        error: true,
-        text: 'Password should contain at least one special character'
-      },
-      {
-        error: true,
-        text: 'Password should contain at least one digit character'
-      },
-      {
-        error: true,
-        text: 'Password should contain at least one uppercase character'
-      }
+
+      error: true,
+      text: 'Password length should be more than 8 characters'
+  },
+{
+  error: true,
+  text: 'Password should contain at least one lowercase character'
+},
+{
+  error: true,
+    text: 'Password should contain at least one special character'
+},
+{
+  error: true,
+    text: 'Password should contain at least one digit character'
+},
+{
+  error: true,
+    text: 'Password should contain at least one uppercase character'
+}{
     ];
 
     if (password) {
