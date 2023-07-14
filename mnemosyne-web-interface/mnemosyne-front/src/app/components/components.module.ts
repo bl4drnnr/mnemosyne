@@ -18,6 +18,7 @@ import { SidebarComponent } from '@components/sidebar/sidebar.component';
 import { CreatePasswordComponent } from '@components/create-password/create-password.component';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AltRegistrationComponent } from '@components/alt-registration/alt-registration.component';
+import { TranslocoModule } from '@ngneat/transloco';
 
 const components = [
   ButtonComponent,
@@ -47,7 +48,8 @@ const components = [
     FormsModule,
     NgOptimizedImage,
     RouterLinkActive,
-    RouterLink
+    RouterLink,
+    TranslocoModule
   ],
   exports: [...components, CreatePasswordComponent, AltRegistrationComponent]
 })
