@@ -2,11 +2,25 @@ import { Component, Input, OnInit } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
+import { TRANSLOCO_SCOPE, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'layout-credentials',
   templateUrl: './credentials.layout.html',
-  styleUrls: ['./credentials.layout.scss']
+  styleUrls: ['./credentials.layout.scss'],
+  providers: [
+    {
+      provide: TRANSLOCO_SCOPE,
+      useValue: [
+        { scope: 'credentials/header', alias: 'header' },
+        { scope: 'credentials/login', alias: 'login' },
+        { scope: 'credentials/account-confirmation', alias: 'acc-conf' },
+        { scope: 'credentials/forgot-password', alias: 'forg-pass' },
+        { scope: 'credentials/registration', alias: 'reg' },
+        { scope: 'credentials/reset-password', alias: 'res-pass' }
+      ]
+    }
+  ]
 })
 export class CredentialsLayout implements OnInit {
   @Input() renderSide: 'right' | 'left';
@@ -20,13 +34,33 @@ export class CredentialsLayout implements OnInit {
   @Input() headerLink: 'login' | 'registration';
   @Input() isAnimation: boolean;
 
+  constructor(
+    private readonly envService: EnvService,
+    private readonly router: Router,
+    private readonly translocoService: TranslocoService
+  ) {}
+
   options: AnimationOptions;
   staticStorageLink: string;
 
-  constructor(
-    private readonly envService: EnvService,
-    private readonly router: Router
-  ) {}
+  languageFlags = [
+    {
+      name: 'pl',
+      link: `${this.envService.getStaticStorageLink}/icons/pl.png`
+    },
+    {
+      name: 'ru',
+      link: `${this.envService.getStaticStorageLink}/icons/ru.png`
+    },
+    {
+      name: 'en',
+      link: `${this.envService.getStaticStorageLink}/icons/en.png`
+    }
+  ];
+
+  changeLanguage(languageCode: string) {
+    this.translocoService.setActiveLang(languageCode);
+  }
 
   ngOnInit() {
     if (this.isAnimation) {

@@ -6,7 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./link.component.scss']
 })
 export class LinkComponent {
-  @Input() label: string;
+  @Input() label: any;
   @Input() href: string;
   @Input() bold = false;
 }
