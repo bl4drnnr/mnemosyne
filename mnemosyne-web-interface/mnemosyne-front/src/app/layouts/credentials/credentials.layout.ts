@@ -20,13 +20,32 @@ export class CredentialsLayout implements OnInit {
   @Input() headerLink: 'login' | 'registration';
   @Input() isAnimation: boolean;
 
-  options: AnimationOptions;
-  staticStorageLink: string;
-
   constructor(
     private readonly envService: EnvService,
     private readonly router: Router
   ) {}
+
+  options: AnimationOptions;
+  staticStorageLink: string;
+
+  languageFlags = [
+    {
+      name: 'pl',
+      link: `${this.envService.getStaticStorageLink}/icons/pl.png`
+    },
+    {
+      name: 'ru',
+      link: `${this.envService.getStaticStorageLink}/icons/ru.png`
+    },
+    {
+      name: 'uk',
+      link: `${this.envService.getStaticStorageLink}/icons/en.png`
+    }
+  ];
+
+  changeLanguage(lang: string) {
+    //
+  }
 
   ngOnInit() {
     if (this.isAnimation) {

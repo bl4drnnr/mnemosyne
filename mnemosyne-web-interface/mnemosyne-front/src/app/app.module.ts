@@ -11,6 +11,7 @@ import { PagesModule } from '@pages/pages.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LottieModule } from 'ngx-lottie';
 import { AuthInterceptor } from '@interceptors/auth.interceptor';
+import { TranslocoRootModule } from './transloco-root.module';
 
 export function playerFactory() {
   return import('lottie-web');
@@ -28,6 +29,7 @@ export function playerFactory() {
     LayoutsModule,
     ComponentsModule,
     PagesModule,
+    TranslocoRootModule,
     LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [
