@@ -1,0 +1,29 @@
+{
+  "email": "Email",
+  "pass": "Password",
+  "phone": "Mobile phone number",
+  "provideEmail": "Provide your email address",
+  "providePass": "Provide your password",
+  "providePhone": "Provide your phone number",
+  "wrongPassFormat": "Wrong password format",
+  "wrongEmailFormat": "Wrong email address",
+  "passRepeat": "Password repeat",
+  "provideRepeatPass": "Repeat your password",
+  "firstName": "First name",
+  "provideFirstName": "Provide your first name",
+  "lastName": "Last name",
+  "provideLastName": "Provide your last name",
+  "passRulesNotFollowed": "Wrong password format. Not all rules are followed!",
+  "wrongPassFormatOrMiss": "Wrong password format or password mismatch",
+  "passwordRules": {
+    "eightChars": "Password length should be more than 8 characters",
+    "lower": "Password should contain at least one lowercase character",
+    "spec": "Password should contain at least one special character",
+    "digit": "Password should contain at least one digit character",
+    "upper": "Password should contain at least one uppercase character"
+  },
+  "resendCodeIn": "You can resend SMS in {{ time }} sec{{ s }}.",
+  "phoneInvalidFormat": "Phone invalid format. Make sure the phone number matches (+1234567890)",
+  "phoneInputDescription": "Make sure you provided phone number with country code. Once you have got a message on your phone, provide the 6-digit code into the input field below.",
+  "resetPassInputDesc": "Confirmation link will be sent to provided email address, if the account with this email address exists. Link will be valid for 24h, make sure you will reset password in this period of time."
+}

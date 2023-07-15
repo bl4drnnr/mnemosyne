@@ -1,0 +1,10 @@
+{
+  "logIn": "Log In",
+  "createAcc": "Create an account",
+  "goBack": "Go back",
+  "sendCode": "Send code",
+  "resendCode": "Resend code",
+  "continue": "Continue",
+  "resetPass": "Reset password",
+  "resetPassResendEmail": "Resend reset password email"
+}

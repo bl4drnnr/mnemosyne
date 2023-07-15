@@ -13,7 +13,9 @@ import {
   TranslocoPersistLangModule
 } from '@ngneat/transloco-persist-lang';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class TranslocoHttpLoader implements TranslocoLoader {
   constructor(private http: HttpClient) {}
 

@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidationService {
+  constructor(private readonly translocoService: TranslocoService) {}
+
   isEmailCorrect(email: string) {
     if (email) {
       const regex = new RegExp(
@@ -38,23 +41,43 @@ export class ValidationService {
     const passwordRules = [
       {
         error: true,
-        text: 'Password length should be more than 8 characters'
+        text: this.translocoService.translate(
+          'passwordRules.eightChars',
+          {},
+          'components/input'
+        )
       },
       {
         error: true,
-        text: 'Password should contain at least one lowercase character'
+        text: this.translocoService.translate(
+          'passwordRules.lower',
+          {},
+          'components/input'
+        )
       },
       {
         error: true,
-        text: 'Password should contain at least one special character'
+        text: this.translocoService.translate(
+          'passwordRules.spec',
+          {},
+          'components/input'
+        )
       },
       {
         error: true,
-        text: 'Password should contain at least one digit character'
+        text: this.translocoService.translate(
+          'passwordRules.digit',
+          {},
+          'components/input'
+        )
       },
       {
         error: true,
-        text: 'Password should contain at least one uppercase character'
+        text: this.translocoService.translate(
+          'passwordRules.upper',
+          {},
+          'components/input'
+        )
       }
     ];
 

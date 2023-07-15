@@ -19,6 +19,7 @@ import { CreatePasswordComponent } from '@components/create-password/create-pass
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AltRegistrationComponent } from '@components/alt-registration/alt-registration.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { ThemeToggleComponent } from './basic-components/theme-toggle/theme-toggle.component';
 
 const components = [
   ButtonComponent,
@@ -41,7 +42,8 @@ const components = [
   declarations: [
     ...components,
     CreatePasswordComponent,
-    AltRegistrationComponent
+    AltRegistrationComponent,
+    ThemeToggleComponent
   ],
   imports: [
     CommonModule,

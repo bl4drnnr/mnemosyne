@@ -1,0 +1,29 @@
+{
+  "email": "E-mail",
+  "pass": "Hasło",
+  "phone": "Numer telefonu komórkowego",
+  "provideEmail": "Podaj swój adres e-mail",
+  "providePass": "Podaj swoje hasło",
+  "providePhone": "Podaj swój numer telefonu",
+  "wrongPassFormat": "Nieprawidłowy format hasła",
+  "wrongEmailFormat": "Niepoprawny e-mail",
+  "passRepeat": "Powtórz hasło",
+  "provideRepeatPass": "Powtórz swoje hasło",
+  "firstName": "Imię",
+  "provideFirstName": "Podaj swoje imię",
+  "lastName": "Nazwisko",
+  "provideLastName": "Podaj swoje nazwisko",
+  "passRulesNotFollowed": "Zły format hasła. Nie wszystkie zasady są przestrzegane!",
+  "wrongPassFormatOrMiss": "Niewłaściwy format hasła lub niezgodność hasła",
+  "passwordRules": {
+    "eightChars": "Długość hasła powinna być dłuższa niż 8 znaków",
+    "lower": "Hasło powinno zawierać co najmniej jedną małą literę",
+    "spec": "Hasło powinno zawierać co najmniej jeden znak specjalny",
+    "digit": "Hasło powinno zawierać co najmniej jedną cyfrę",
+    "upper": "Hasło powinno zawierać co najmniej jedną wielką literę"
+  },
+  "resendCodeIn": "Możesz wysłać SMSa za {{ time }} sec{{ s }}.",
+  "phoneInvalidFormat": "Nieprawidłowy format telefonu. Upewnij się, że numer telefonu pasuje (+1234567890)",
+  "phoneInputDescription": "Upewnij się, że podałeś numer telefonu z numerem kierunkowym kraju. Po odebraniu wiadomości na telefonie wprowadź 6-cyfrowy kod w poniższym polu wprowadzania.",
+  "resetPassInputDesc": "Link potwierdzający zostanie wysłany na podany adres e-mail, jeśli istnieje konto z tym adresem e-mail. Link będzie ważny przez 24 godziny, upewnij się, że w tym czasie zresetujesz hasło."
+}

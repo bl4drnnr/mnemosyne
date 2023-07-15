@@ -1,0 +1,13 @@
+{
+  "secureYourAcc": "Secure your account",
+  "mfaObligation": "According to Security & Privacy policies of Mnemosyne you are obligated to secure your personal account with additional measures. This measure is multi-factor authentication (MFA/2FA).",
+  "twoOptions": "You have 2 options",
+  "canBeChangedLater": "can be changed later",
+  "phoneNumber": "Phone Number",
+  "phoneNumberDesc": "every time you log in one-time SMS code will be sent to your mobile phone in order to proof your identity.",
+  "authApp": "Authenticator application",
+  "authAppDesc": "use authenticator application (such as Google Authenticator or Microsoft Authenticator) in order to store token that will be generating one-time code for you every time you log in.",
+  "scanQr1": "Scan the QR code below using applications such as",
+  "scanQr2": "or",
+  "scanQr3": "and provide the 6-digit code in the field."
+}

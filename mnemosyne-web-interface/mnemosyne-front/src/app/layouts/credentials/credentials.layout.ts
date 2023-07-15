@@ -12,6 +12,11 @@ import { TRANSLOCO_SCOPE, TranslocoService } from '@ngneat/transloco';
     {
       provide: TRANSLOCO_SCOPE,
       useValue: [
+        { scope: 'components/mfa', alias: 'mfa' },
+        { scope: 'components/dropdown', alias: 'dropdown' },
+        { scope: 'components/link', alias: 'link' },
+        { scope: 'components/button', alias: 'button' },
+        { scope: 'components/input', alias: 'input' },
         { scope: 'credentials/header', alias: 'header' },
         { scope: 'credentials/login', alias: 'login' },
         { scope: 'credentials/account-confirmation', alias: 'acc-conf' },

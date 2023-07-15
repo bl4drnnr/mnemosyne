@@ -61,10 +61,7 @@ export class InputComponent {
       this.showError = isEmailIncorrect;
       this.incorrectInput.emit(isEmailIncorrect);
 
-      if (isEmailIncorrect) {
-        this.showError = true;
-        this.errorMessage = this.errorMessage || 'Wrong email address.';
-      }
+      if (isEmailIncorrect) this.showError = true;
     } else if (this.type === 'password' && this.value.length) {
       const isPasswordIncorrect = this.validationService.checkPasswordsRules(
         this.value
@@ -75,10 +72,7 @@ export class InputComponent {
       this.showError = hasError;
       this.incorrectInput.emit(hasError);
 
-      if (hasError) {
-        this.showError = true;
-        this.errorMessage = this.errorMessage || 'Wrong password.';
-      }
+      if (hasError) this.showError = true;
     } else if (!this.value.length) {
       this.showError = false;
       this.incorrectInput.emit(false);
