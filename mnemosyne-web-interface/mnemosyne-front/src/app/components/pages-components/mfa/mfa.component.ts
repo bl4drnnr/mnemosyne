@@ -31,22 +31,8 @@ export class MfaComponent {
 
   selectedMfaOption: DropdownInterface;
   mfaOptions: Array<DropdownInterface> = [
-    {
-      key: 'phone',
-      value: this.translocoService.translate(
-        'mobilePhone',
-        {},
-        'components/dropdown'
-      )
-    },
-    {
-      key: 'mfa',
-      value: this.translocoService.translate(
-        'authApp',
-        {},
-        'components/dropdown'
-      )
-    }
+    { key: 'phone', value: 'Phone' },
+    { key: 'mfa', value: 'Auth app' }
   ];
 
   constructor(

@@ -2,5 +2,9 @@
   "logIn": "Zaloguj się",
   "createAcc": "Załóż konto",
   "goBack": "Wróć",
-  "resendCode": "Wyślij kod"
+  "sendCode": "Wyślij kod",
+  "resendCode": "Wyślij kod",
+  "continue": "Kontynuj",
+  "resetPass": "Resetuj hasło",
+  "resetPassResendEmail": "Wyślij ponownie wiadomość e-mail dotyczącą resetowania hasła"
 }

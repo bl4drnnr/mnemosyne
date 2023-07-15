@@ -2,5 +2,9 @@
   "logIn": "Log In",
   "createAcc": "Create an account",
   "goBack": "Go back",
-  "resendCode": "Resend code"
+  "sendCode": "Send code",
+  "resendCode": "Resend code",
+  "continue": "Continue",
+  "resetPass": "Reset password",
+  "resetPassResendEmail": "Resend reset password email"
 }

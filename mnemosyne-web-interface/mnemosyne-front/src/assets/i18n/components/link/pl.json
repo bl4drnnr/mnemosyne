@@ -1,5 +1,7 @@
 {
   "forgotPass": "Zapomniałeś hasła?",
   "mfaNoAccess": "Nie mam dostępu do dodatkowej aplikacji weryfikacyjnej / telefonu",
-  "alreadyHaveAccount": "Już masz konto?"
+  "alreadyHaveAccount": "Już masz konto?",
+  "backToLogin": "Wróć na stronę logowania",
+  "readTac": "Przeczytaj więcej o warunkach"
 }
