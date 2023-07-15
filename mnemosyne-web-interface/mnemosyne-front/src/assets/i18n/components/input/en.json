@@ -1,0 +1,24 @@
+{
+  "email": "Email",
+  "pass": "Password",
+  "provideEmail": "Provide your email address",
+  "providePass": "Provide your password",
+  "wrongPassFormat": "Wrong password format",
+  "wrongEmailFormat": "Wrong email address",
+  "passRepeat": "Password repeat",
+  "provideRepeatPass": "Repeat your password",
+  "firstName": "First name",
+  "provideFirstName": "Provide your first name",
+  "lastName": "Last name",
+  "provideLastName": "Provide your last name",
+  "passRulesNotFollowed": "Wrong password format. Not all rules are followed!",
+  "wrongPassFormatOrMiss": "Wrong password format or password mismatch",
+  "passwordRules": {
+    "eightChars": "Password length should be more than 8 characters",
+    "lower": "Password should contain at least one lowercase character",
+    "spec": "Password should contain at least one special character",
+    "digit": "Password should contain at least one digit character",
+    "upper": "Password should contain at least one uppercase character"
+  },
+  "resendCodeIn": "You can resend SMS in {{ time }} sec{{ s }}."
+}

@@ -1,0 +1,24 @@
+{
+  "email": "E-mail",
+  "pass": "Hasło",
+  "provideEmail": "Podaj swój adres e-mail",
+  "providePass": "Podaj swoje hasło",
+  "wrongPassFormat": "Nieprawidłowy format hasła",
+  "wrongEmailFormat": "Niepoprawny e-mail",
+  "passRepeat": "Powtórz hasło",
+  "provideRepeatPass": "Powtórz swoje hasło",
+  "firstName": "Imię",
+  "provideFirstName": "Podaj swoje imię",
+  "lastName": "Nazwisko",
+  "provideLastName": "Podaj swoje nazwisko",
+  "passRulesNotFollowed": "Zły format hasła. Nie wszystkie zasady są przestrzegane!",
+  "wrongPassFormatOrMiss": "Niewłaściwy format hasła lub niezgodność hasła",
+  "passwordRules": {
+    "eightChars": "Długość hasła powinna być dłuższa niż 8 znaków",
+    "lower": "Hasło powinno zawierać co najmniej jedną małą literę",
+    "spec": "Hasło powinno zawierać co najmniej jeden znak specjalny",
+    "digit": "Hasło powinno zawierać co najmniej jedną cyfrę",
+    "upper": "Hasło powinno zawierać co najmniej jedną wielką literę"
+  },
+  "resendCodeIn": "Możesz wysłać SMSa za {{ time }} sec{{ s }}."
+}

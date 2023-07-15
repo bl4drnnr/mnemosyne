@@ -55,7 +55,7 @@
       [ngClass]="{ 'disabled': isCountdownRunning }"
       (click)="initResendSms()"
     >
-      <p class="resend-button-label">Resend code</p>
+      <p class="resend-button-label">{{ 'button.resendCode' | transloco }}</p>
     </button>
   </div>
   <p class="resend-message" *ngIf="isCountdownRunning">{{ resendMessage }}</p>

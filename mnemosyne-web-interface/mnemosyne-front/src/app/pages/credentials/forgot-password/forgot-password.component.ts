@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AuthenticationService } from '@pages/shared/authentication.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'page-forgot-password',
@@ -26,7 +27,10 @@ export class ForgotPasswordComponent {
   time = 180;
   isCountdownRunning = false;
 
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(
+    private readonly authenticationService: AuthenticationService,
+    private readonly translocoService: TranslocoService
+  ) {}
 
   handleForgotPassword() {
     if (this.incorrectEmail) return;
@@ -52,7 +56,11 @@ export class ForgotPasswordComponent {
         this.isCountdownRunning = false;
         this.time = 180;
       }
-      this.resendMessage = `You can resend email in ${this.time} seconds.`;
+      this.resendMessage = this.translocoService.translate(
+        'resendCodeIn',
+        { time: this.time, s: this.time !== 1 ? 's' : '' },
+        'components/input'
+      );
     }, 1000);
   }
 }

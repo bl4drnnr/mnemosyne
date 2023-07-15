@@ -7,6 +7,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'basic-input-mfa',
@@ -29,6 +30,8 @@ export class InputMfaComponent implements OnInit {
   time = 120;
   resendMessage: string;
   isCountdownRunning = false;
+
+  constructor(private readonly translocoService: TranslocoService) {}
 
   initResendSms() {
     this.resendSms.emit();
@@ -62,9 +65,11 @@ export class InputMfaComponent implements OnInit {
   }
 
   private updateResendMessage(time: number) {
-    this.resendMessage = `You can resend SMS in ${time} second${
-      time !== 1 ? 's' : ''
-    }.`;
+    this.resendMessage = this.translocoService.translate(
+      'resendCodeIn',
+      { time, s: time !== 1 ? 's' : '' },
+      'components/input'
+    );
   }
 
   private resetTime() {

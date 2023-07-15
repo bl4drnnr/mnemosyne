@@ -3,6 +3,7 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { AuthenticationService } from '@pages/shared/authentication.service';
 import { SmsService } from '@pages/shared/sms.service';
 import { MfaService } from '@pages/shared/mfa.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'page-component-mfa',
@@ -30,14 +31,29 @@ export class MfaComponent {
 
   selectedMfaOption: DropdownInterface;
   mfaOptions: Array<DropdownInterface> = [
-    { key: 'phone', value: 'Mobile phone' },
-    { key: 'mfa', value: 'Authenticator application' }
+    {
+      key: 'phone',
+      value: this.translocoService.translate(
+        'mobilePhone',
+        {},
+        'components/dropdown'
+      )
+    },
+    {
+      key: 'mfa',
+      value: this.translocoService.translate(
+        'authApp',
+        {},
+        'components/dropdown'
+      )
+    }
   ];
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private smsService: SmsService,
-    private mfaService: MfaService
+    private readonly authenticationService: AuthenticationService,
+    private readonly translocoService: TranslocoService,
+    private readonly smsService: SmsService,
+    private readonly mfaService: MfaService
   ) {}
 
   async changeMfaOption({ key }: DropdownInterface) {
@@ -158,7 +174,11 @@ export class MfaComponent {
         this.isCountdownRunning = false;
         this.time = 120;
       }
-      this.resendMessage = `You can resend SMS in ${this.time} seconds.`;
+      this.resendMessage = this.translocoService.translate(
+        'resendCodeIn',
+        { time: this.time, s: this.time !== 1 ? 's' : '' },
+        'components/input'
+      );
     }, 1000);
   }
 
