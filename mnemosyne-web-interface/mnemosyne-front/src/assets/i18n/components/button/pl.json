@@ -6,5 +6,6 @@
   "resendCode": "Wyślij kod",
   "continue": "Kontynuj",
   "resetPass": "Resetuj hasło",
-  "resetPassResendEmail": "Wyślij ponownie wiadomość e-mail dotyczącą resetowania hasła"
+  "resetPassResendEmail": "Wyślij ponownie wiadomość e-mail dotyczącą resetowania hasła",
+  "setUpNewPass": "Ustaw nowe hasło"
 }

@@ -4,10 +4,10 @@
   "twoOptions": "Masz 2 opcje",
   "canBeChangedLater": "można zmienić później",
   "phoneNumber": "Numer telefonu",
-  "phoneNumberDesc": "za każdym razem, gdy się logujesz, jednorazowy kod SMS zostanie wysłany na Twój telefon komórkowy w celu potwierdzenia Twojej tożsamości.",
+  "phoneNumberDesc": " - za każdym razem, gdy się logujesz, jednorazowy kod SMS zostanie wysłany na Twój telefon komórkowy w celu potwierdzenia Twojej tożsamości.",
   "authApp": "Aplikacja authenticator",
-  "authAppDesc": "użyj aplikacji uwierzytelniającej (takiej jak Google Authenticator lub Microsoft Authenticator) do przechowywania tokena, który będzie generował dla Ciebie jednorazowy kod przy każdym logowaniu.",
-  "scanQr1": "Zeskanuj poniższy kod QR za pomocą aplikacji takich jak",
-  "scanQr2": "lub",
-  "scanQr3": "i podaj 6-cyfrowy kod w polu."
+  "authAppDesc": " - użyj aplikacji uwierzytelniającej (takiej jak Google Authenticator lub Microsoft Authenticator) do przechowywania tokena, który będzie generował dla Ciebie jednorazowy kod przy każdym logowaniu.",
+  "scanQr1": "Zeskanuj poniższy kod QR za pomocą aplikacji takich jak ",
+  "scanQr2": " lub ",
+  "scanQr3": " i podaj 6-cyfrowy kod w polu."
 }

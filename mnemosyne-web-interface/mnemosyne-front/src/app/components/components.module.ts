@@ -19,7 +19,7 @@ import { CreatePasswordComponent } from '@components/create-password/create-pass
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AltRegistrationComponent } from '@components/alt-registration/alt-registration.component';
 import { TranslocoModule } from '@ngneat/transloco';
-import { ThemeToggleComponent } from './basic-components/theme-toggle/theme-toggle.component';
+import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
 
 const components = [
   ButtonComponent,
@@ -35,24 +35,22 @@ const components = [
   MfaComponent,
   HeaderComponent,
   FooterComponent,
-  SidebarComponent
+  SidebarComponent,
+  CreatePasswordComponent,
+  AltRegistrationComponent
 ];
 
 @NgModule({
-  declarations: [
-    ...components,
-    CreatePasswordComponent,
-    AltRegistrationComponent,
-    ThemeToggleComponent
-  ],
+  declarations: [...components],
+  exports: [...components, ModeToggleModule],
   imports: [
     CommonModule,
     FormsModule,
     NgOptimizedImage,
     RouterLinkActive,
     RouterLink,
+    ModeToggleModule,
     TranslocoModule
-  ],
-  exports: [...components, CreatePasswordComponent, AltRegistrationComponent]
+  ]
 })
 export class ComponentsModule {}

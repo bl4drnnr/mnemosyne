@@ -6,5 +6,6 @@
   "resendCode": "Resend code",
   "continue": "Continue",
   "resetPass": "Reset password",
-  "resetPassResendEmail": "Resend reset password email"
+  "resetPassResendEmail": "Resend reset password email",
+  "setUpNewPass": "Set up new password"
 }

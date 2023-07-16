@@ -12,11 +12,11 @@
   <ul class="options-list">
     <li class="option-item">
       <b><span>{{ t('mfa.phoneNumber') }}</span></b>
-      &nbsp;-&nbsp;<span>{{ t('mfa.phoneNumberDesc') }}</span>
+      <span>{{ t('mfa.phoneNumberDesc') }}</span>
     </li>
     <li class="option-item">
       <b><span>{{ t('mfa.authApp') }}</span></b>
-      &nbsp;-&nbsp;<span>{{ t('mfa.authAppDesc') }}</span>
+      <span>{{ t('mfa.authAppDesc') }}</span>
     </li>
   </ul>
 
@@ -51,11 +51,11 @@
 
   <div *ngIf="selectedMfaOption?.key === 'mfa'">
     <p class="paragraph">
-      <span>{{ t('mfa.scanQr1') }}&nbsp;</span>
+      <span>{{ t('mfa.scanQr1') }}</span>
       <basic-link label="Google Authenticator" [bold]="true" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pli=1"/>
-      <span>&nbsp;{{ t('mfa.scanQr2') }}&nbsp;</span>
+      <span>{{ t('mfa.scanQr2') }}</span>
       <basic-link label="Microsoft Authenticator" [bold]="true" href="https://support.microsoft.com/en-us/account-billing/download-and-install-the-microsoft-authenticator-app-351498fc-850a-45da-b7b6-27e523b8702a"/>
-      <span>&nbsp;{{ t('mfa.scanQr3') }}</span>
+      <span>{{ t('mfa.scanQr3') }}</span>
     </p>
     <div *ngIf="qrCode" class="qr-code-wrapper">
       <img [ngSrc]="qrCode" width="200" height="200" alt="qr">
