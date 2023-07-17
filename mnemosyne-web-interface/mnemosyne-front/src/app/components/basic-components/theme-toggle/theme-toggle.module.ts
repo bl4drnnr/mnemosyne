@@ -5,6 +5,7 @@ import {
   MODE_STORAGE_SERVICE,
   ModeLocalStorageService
 } from '@components/theme-toggle/mode-storage.service';
+import {NgIf, NgOptimizedImage} from "@angular/common";
 
 @NgModule({
   declarations: [ThemeToggleComponent],
@@ -14,6 +15,10 @@ import {
       provide: MODE_STORAGE_SERVICE,
       useClass: ModeLocalStorageService
     }
+  ],
+  imports: [
+    NgIf,
+    NgOptimizedImage
   ],
   exports: [ThemeToggleComponent]
 })

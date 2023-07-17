@@ -6,13 +6,13 @@
 
 .link-anchor {
   transition: all .3s;
-  color: $color-main;
+  color: var(--main-color);
 
   &:hover {
-    color: $color-main-hover !important;
+    color: var(--main-color-hover) !important;
   }
 
   &:visited {
-    color: $color-main;
+    color: var(--main-color);
   }
 }

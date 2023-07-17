@@ -1,6 +1,20 @@
-<div class="toggle-btn-container">
-  <button (click)="toggle()">
-    <span class="light">LIGHT</span>
-    <span class="dark">DARK</span>
-  </button>
+<div *ngIf="currentMode === Mode.LIGHT">
+  <img
+    [ngSrc]="moonIcon"
+    [width]="24"
+    [height]="24"
+    (click)="toggle()"
+    class="mode-icon"
+    alt="moon"
+  >
+</div>
+<div *ngIf="currentMode === Mode.DARK || !currentMode">
+  <img
+    [ngSrc]="sunIcon"
+    [width]="24"
+    [height]="24"
+    (click)="toggle()"
+    class="mode-icon"
+    alt="sun"
+  >
 </div>

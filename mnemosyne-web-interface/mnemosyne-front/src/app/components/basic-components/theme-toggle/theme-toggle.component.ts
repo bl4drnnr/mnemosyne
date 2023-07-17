@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { ModeToggleService } from '@components/theme-toggle/theme-toggle.service';
+import {Mode} from "@components/theme-toggle/theme-toggle.model";
 
 @Component({
   selector: 'basic-theme-toggle',
@@ -8,8 +9,10 @@ import { ModeToggleService } from '@components/theme-toggle/theme-toggle.service
   styleUrls: ['./theme-toggle.component.scss']
 })
 export class ThemeToggleComponent implements OnInit {
+  protected readonly Mode = Mode;
   sunIcon: string;
   moonIcon: string;
+  currentMode: string;
 
   constructor(
     private readonly envService: EnvService,
@@ -20,6 +23,7 @@ export class ThemeToggleComponent implements OnInit {
 
   toggle() {
     this.modeToggleService.toggleMode();
+    this.currentMode = this.modeToggleService.getCurrentMode();
   }
 
   ngOnInit() {

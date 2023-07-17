@@ -37,6 +37,10 @@ export class ModeToggleService {
     this.document.body.classList.add(this.currentMode);
   }
 
+  getCurrentMode() {
+    return this.modeStorage.get();
+  }
+
   toggleMode() {
     this.document.body.classList.toggle(Mode.LIGHT);
     this.document.body.classList.toggle(Mode.DARK);

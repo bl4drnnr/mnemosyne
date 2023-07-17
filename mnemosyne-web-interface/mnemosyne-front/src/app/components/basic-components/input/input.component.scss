@@ -17,28 +17,34 @@
   height: 36px;
   padding: 10px;
   font-size: 14px;
-  border: 1px solid rgba($color-main-hover, 0.5);
+  border: 1px solid var(--main-color-border);
   border-radius: 5px;
-  background-color: $color-white;
+  background-color: var(--bg-color);
   transition: all 0.3s;
+  color: var(--text-color);
+
+  &::placeholder {
+    color: var(--text-color);
+    opacity: .5;
+  }
 
   &.high {
     height: 48px;
   }
 
   &.onError {
-    border: 1px solid $color-error;
+    border: 1px solid var(--error-color);
   }
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    background-color: $color-white;
-    border: 1px solid rgba($color-black, 0.1);
+    box-shadow: var(--input-shadow);
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
   }
 
   &.error {
-    border: 1px solid red;
+    border: 1px solid var(--error-color);
     transition: border-color 0.3s ease-in-out;
   }
 
@@ -48,7 +54,7 @@
 }
 
 .error-message {
-  color: $color-error;
+  color: var(--error-color);
   font-size: small;
   font-weight: 400;
   margin-top: 5px;

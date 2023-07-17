@@ -18,14 +18,15 @@
     cursor: pointer;
     height: 0;
     width: 0;
+    transition: .2s;
   }
 
   &:hover input ~ .checkmark {
-    background-color: $color-white;
+    background-color: var(--color-hover);
   }
 
   input:checked ~ .checkmark {
-    background-color: rgb($color-main, 1);
+    background-color: var(--main-color);
   }
 
   .checkmark {
@@ -36,6 +37,7 @@
     width: 25px;
     background-color: rgba($color-dark-grey, .15);
     border-radius: 5px;
+    transition: .2s;
 
     &:after {
       content: "";
@@ -52,7 +54,7 @@
       top: 5px;
       width: 5px;
       height: 10px;
-      border: solid black;
+      border: solid $black;
       border-width: 0 3px 3px 0;
       transform: rotate(45deg);
     }
@@ -80,14 +82,15 @@
     cursor: pointer;
     height: 0;
     width: 0;
+    transition: .2s;
   }
 
   .label-box:hover input ~ .checkmark {
-    background-color: #ccc;
+    background-color: var(--color-hover);
   }
 
   .label-box input:checked ~ .checkmark {
-    background-color: rgb($color-main, .5);
+    background-color: rgb($color-main, .7);
   }
 
   .checkmark:after {

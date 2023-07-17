@@ -9,54 +9,55 @@
   width: 100%;
   border-radius: 5px;
   cursor: pointer;
-  border: 1px solid rgba($color-main-hover, .5);
+  border: 1px solid var(--main-color-border);
   transition: .3s;
-  background-color: $color-white;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 
   &.high-height {
     height: 48px;
   }
 
   &.disabled {
-    background-color: rgba($block-color, .20);
-    border: 1px solid rgba($color-black, .1);
+    background-color: var(--disabled-color);
+    border: 1px solid var(--border-color);
 
     &:hover {
       cursor: default;
       box-shadow: none !important;
-      background-color: rgba($block-color, .20) !important;
+      background-color: var(--disabled-color) !important;
     }
   }
 
   &.danger {
-    border: 1px solid rgb($warn-color, .5);
+    border: 1px solid var(--warn-color);
     &:hover {
-      border: 1px solid rgb($warn-color, 1);
-      background-color: rgba($warn-color, .20);
+      border: 1px solid var(--warn-color);
+      background-color: var(--warn-color);
     }
   }
 
   &.fill-danger {
-    border: 1px solid $warn-color;
-    background-color: $warn-color;
+    border: 1px solid var(--warn-color);
+    background-color: var(--warn-color);
     &:hover {
-      background-color: $warn-color;
-      border: 1px solid $warn-color;
+      background-color: var(--warn-color);
+      border: 1px solid var(--warn-color);
     }
   }
 
   &.fill-button {
-    border: 1px solid $color-main;
-    background-color: $color-main;
+    border: 1px solid var(--main-color);
+    background-color: var(--main-color);
 
     &.disabled {
-      background-color: rgba($block-color, .20);
-      border: 1px solid rgba($color-black, .1);
+      background-color: var(--disabled-color);
+      border: 1px solid var(--border-color);
     }
   }
 
   &:hover {
-    background-color: $color-main-hover;
+    background-color: var(--main-color-hover);
   }
 }
 

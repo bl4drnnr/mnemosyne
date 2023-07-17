@@ -13,39 +13,51 @@ import { HomeComponent } from '@pages/home/home.component';
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    title: 'Mnemosyne | Login'
   },
   {
     path: 'registration',
-    component: RegistrationComponent
+    component: RegistrationComponent,
+    title: 'Mnemosyne | Registration'
   },
   {
     path: 'forgot-password',
-    component: ForgotPasswordComponent
+    component: ForgotPasswordComponent,
+    title: 'Mnemosyne | Forgot Password'
   },
   {
     path: 'account-confirmation/:hash',
-    component: AccountConfirmationComponent
+    component: AccountConfirmationComponent,
+    title: 'Mnemosyne | Account Confirmation'
   },
   {
     path: 'terms-and-conditions',
-    component: TermsAndConditionsComponent
+    component: TermsAndConditionsComponent,
+    title: 'Mnemosyne | T&C'
   },
   {
     path: 'dashboard',
-    component: DashboardComponent
+    component: DashboardComponent,
+    title: 'Mnemosyne | Dashboard'
     // canActivate: [IsAuthenticatedGuard]
   },
   {
     path: 'reset-password/:hash',
-    component: ResetPasswordComponent
+    component: ResetPasswordComponent,
+    title: 'Mnemosyne | Reset Password'
   },
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponent,
+    title: 'Mnemosyne | Home'
   },
   {
     path: 'home',
+    redirectTo: ''
+  },
+  {
+    path: 'index',
     redirectTo: ''
   }
 ];
