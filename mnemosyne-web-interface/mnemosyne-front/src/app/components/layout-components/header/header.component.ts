@@ -34,9 +34,7 @@ export class HeaderComponent {
   @HostListener('window:scroll')
   onWindowScroll() {
     const currentScrollPosition = window.pageYOffset;
-
     this.scrolled = currentScrollPosition >= this.lastScrollPosition;
-
     this.lastScrollPosition = currentScrollPosition;
   }
 }

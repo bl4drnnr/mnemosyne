@@ -286,6 +286,7 @@ $z-index: (
   fullscreen-search: 1040,
   header: 1030,
   footer: 1000,
+  dropdown: 1000,
   sidebar: 1031,
   datepicker: 15000,
   modal-main: 10000,
@@ -335,7 +336,9 @@ h1, h2, h3, h4, h5, p, span, ul, li, ol {
   --error-color: #{$color-error};
   --input-shadow: #{0 0 5px rgba(0, 0, 0, 0.3)};
   --card-shadow: #{rgba($color-shadow-light, 0.3) 0px 1px 2px 0px, rgba($color-shadow-light, 0.15) 0px 2px 6px 2px};
+  --alert-shadow: #{rgba($black, 0.1) 0 10px 50px};
   --color-hover: #{$color-shadow-hover-light};
+  --loader-background: #{rgba($color-black, 0.5)};
 }
 
 @mixin dark() {
@@ -354,5 +357,7 @@ h1, h2, h3, h4, h5, p, span, ul, li, ol {
   --error-color: #{$color-error};
   --input-shadow: #{0 0 5px rgba(255, 255, 255, 0.3)};
   --card-shadow: #{rgba($color-shadow-dark, 0.3) 0px 1px 2px 0px, rgba($color-shadow-dark, 0.15) 0px 2px 6px 2px};
+  --alert-shadow: #{rgba($color-white, 0.1) 0 10px 50px};
   --color-hover: #{$color-shadow-hover-dark};
+  --loader-background: #{rgba($color-white, 0.5)};
 }

@@ -10,7 +10,7 @@
   max-width: max-content;
   min-width: 650px;
   transition: .3s;
-  background-color: $color-white;
+  background-color: var(--bg-color);
 
   @include respond_device(to_m) {
     margin-right: unset;
@@ -30,11 +30,11 @@
     margin-right: 16px;
 
     &.error {
-      filter: $warn-color-svg;
+      filter: var(--warn-color-svg);
     }
 
     &.success {
-      filter: $success-color-svg;
+      filter: var(--success-color-svg);
     }
   }
 }
@@ -52,7 +52,7 @@
 .close-container {
   position: absolute;
   height: 100%;
-  border-left: 1px solid rgba(0, 0, 0, .25);
+  border-left: 1px solid var(--border-color);
   right: 0;
   display: flex;
   align-items: center;
@@ -60,7 +60,7 @@
   cursor: pointer;
 
   &:hover {
-    background-color: rgba($color-light-grey, .5);
+    background-color: var(--color-hover);
   }
 
   .close-button {
@@ -70,7 +70,7 @@
 }
 
 .alert {
-  box-shadow: rgba(0, 0, 0, 0.1) 0 10px 50px;
+  box-shadow: var(--alert-shadow);
   padding: 0.75rem 1rem;
   border-radius: 0.25rem;
   position: relative;
@@ -84,16 +84,18 @@
   }
 
   &.error {
-    border-left: 10px solid $warn-color;
+    border-left: 10px solid var(--warn-color);
+
     &:hover {
-      border-left: 90px solid $warn-color;
+      border-left: 90px solid var(--warn-color);
     }
   }
 
   &.success {
-    border-left: 10px solid $success-color;
+    border-left: 10px solid var(--success-color);
+
     &:hover {
-      border-left: 90px solid $success-color;
+      border-left: 90px solid var(--success-color);
     }
   }
 }
