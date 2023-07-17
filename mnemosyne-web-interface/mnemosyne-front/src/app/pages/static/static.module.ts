@@ -5,7 +5,7 @@ import { TermsAndConditionsComponent } from '@pages/terms-and-conditions/terms-a
 import { HomeComponent } from './home/home.component';
 import { LottieComponent } from 'ngx-lottie';
 import { NgxTypedJsModule } from 'ngx-typed-js';
-import {TranslocoModule} from "@ngneat/transloco";
+import { LayoutsModule } from '@layouts/layouts.module';
 
 @NgModule({
   declarations: [TermsAndConditionsComponent, HomeComponent],
@@ -15,7 +15,7 @@ import {TranslocoModule} from "@ngneat/transloco";
     LottieComponent,
     NgxTypedJsModule,
     NgOptimizedImage,
-    TranslocoModule
+    LayoutsModule
   ],
   exports: [TermsAndConditionsComponent]
 })

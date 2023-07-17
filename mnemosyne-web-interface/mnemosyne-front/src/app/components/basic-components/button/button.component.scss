@@ -31,6 +31,7 @@
 
   &.danger {
     border: 1px solid var(--warn-color);
+
     &:hover {
       border: 1px solid var(--warn-color);
       background-color: var(--warn-color);
@@ -40,6 +41,7 @@
   &.fill-danger {
     border: 1px solid var(--warn-color);
     background-color: var(--warn-color);
+
     &:hover {
       background-color: var(--warn-color);
       border: 1px solid var(--warn-color);
@@ -50,6 +52,10 @@
     border: 1px solid var(--main-color);
     background-color: var(--main-color);
 
+    &:hover {
+      background-color: var(--main-color-hover) !important;
+    }
+
     &.disabled {
       background-color: var(--disabled-color);
       border: 1px solid var(--border-color);
@@ -57,7 +63,7 @@
   }
 
   &:hover {
-    background-color: var(--main-color-hover);
+    background-color: var(--color-hover);
   }
 }
 
@@ -66,6 +72,10 @@
   font-size: 14px;
   font-weight: 400;
   padding: 0 5px;
+
+  &.fill-button {
+    color: $color-black !important;
+  }
 }
 
 .button-description {

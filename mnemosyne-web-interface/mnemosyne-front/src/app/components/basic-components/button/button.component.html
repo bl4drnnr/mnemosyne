@@ -11,7 +11,7 @@
     [disabled]="disabled"
     (click)="onClick()"
   >
-    <p class="button-label">{{ label }}</p>
+    <p [ngClass]="fillButton ? 'button-label fill-button' : 'button-label'">{{ label }}</p>
   </button>
   <p
     [class]="buttonDescription ? 'button-description' : ''"

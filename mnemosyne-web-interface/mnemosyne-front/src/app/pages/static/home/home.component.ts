@@ -8,7 +8,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import {TRANSLOCO_SCOPE} from "@ngneat/transloco";
+import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 
 @Component({
   selector: 'app-home',
@@ -48,9 +48,7 @@ import {TRANSLOCO_SCOPE} from "@ngneat/transloco";
   providers: [
     {
       provide: TRANSLOCO_SCOPE,
-      useValue: [
-        { scope: 'credentials/registration', alias: 'reg' }
-      ]
+      useValue: [{ scope: 'credentials/registration', alias: 'reg' }]
     }
   ]
 })

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { ModeToggleService } from '@components/theme-toggle/theme-toggle.service';
-import {Mode} from "@components/theme-toggle/theme-toggle.model";
+import { Mode } from '@components/theme-toggle/theme-toggle.model';
 
 @Component({
   selector: 'basic-theme-toggle',
