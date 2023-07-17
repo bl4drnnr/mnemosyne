@@ -9,7 +9,7 @@
 .resend-message {
   display: flex;
   justify-content: flex-end;
-  color: $color-dark-grey;
+  color: var(--text-color);
   font-size: 14px;
   margin-top: 10px;
   opacity: 0.8;
@@ -20,10 +20,11 @@
   height: 50px;
   font-size: 24px;
   text-align: center;
-  border: 1px solid rgba($color-main-hover, 0.5);
+  border: 1px solid var(--main-color-hover);
   border-radius: 5px;
-  background-color: #f5f5f5;
+  background-color: var(--input-shadow);
   transition: all 0.3s;
+  color: var(--text-color);
 
   @include respond_device(to_m) {
     width: 42px;
@@ -32,9 +33,9 @@
 
   &:focus {
     outline: none;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    background-color: $color-white;
-    border: 1px solid rgba($color-black, 0.1);
+    box-shadow: var(--input-shadow);
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
   }
 }
 
@@ -43,24 +44,24 @@
   width: 100%;
   border-radius: 5px;
   cursor: pointer;
-  border: 1px solid rgba($color-main-hover, 0.5);
+  border: 1px solid var(--main-color-hover);
   transition: .3s;
 
   &.disabled {
-    background-color: rgba($block-color, .20);
-    border: 1px solid rgba($color-black, 0.1);
+    background-color: var(--disabled-color);
+    border: 1px solid var(--border-color);
 
     &:hover {
       cursor: default;
       box-shadow: none !important;
-      background-color: rgba($block-color, .20) !important;
+      background-color: var(--border-color) !important;
     }
   }
 
   &:hover {
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    background-color: $color-white;
-    border: 1px solid rgba($color-black, 0.1);
+    box-shadow: var(--input-shadow);
+    background-color: var(--color-hover);
+    border: 1px solid var(--border-color);
   }
 }
 

@@ -7,9 +7,9 @@
 }
 
 .dropdown-toggle {
-  background-color: $color-white;
-  border: 1px solid $color-light-grey;
-  color: $filter-grey-dark-hover;
+  background-color: var(--bg-color);
+  border: 1px solid var(--color-hover);
+  color: var(--text-color);
   padding: 8px 12px;
   border-radius: 4px;
   cursor: pointer;
@@ -23,7 +23,7 @@
     cursor: default;
 
     &:hover {
-      border: 1px solid $color-light-grey;
+      border: 1px solid var(--color-hover);
     }
   }
 
@@ -32,7 +32,7 @@
   }
 
   &:hover {
-    background-color: $card-border;
+    background-color: var(--color-hover);
   }
 }
 
@@ -45,7 +45,7 @@
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
-  border-top: 4px solid $filter-grey-dark-hover;
+  border-top: 4px solid var(--text-color);
   transition: transform 0.2s;
 
   &.arrow-open {
@@ -58,7 +58,7 @@
   position: absolute;
   top: 100%;
   left: 0;
-  z-index: 1000;
+  z-index: map-get($z-index, dropdown);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.2s ease-in-out, visibility 0s linear 0.2s;
@@ -66,8 +66,8 @@
   padding: 8px 0;
   margin: 2px 0 0;
   list-style: none;
-  background-color: $color-white;
-  border: 1px solid $color-mediumgray;
+  background-color: var(--bg-color);
+  border: 1px solid var(--color-hover);
   border-radius: 4px;
 
   &.show {
@@ -83,7 +83,7 @@
   clear: both;
   font-weight: normal;
   line-height: 1.42857143;
-  color: $filter-grey-dark-hover;
+  color: var(--text-color);
   white-space: nowrap;
   background-color: transparent;
   border: 0;
@@ -94,10 +94,10 @@
 
   &:hover,
   &:focus {
-    background-color: $card-border;
+    background-color: var(--color-hover);
   }
 
-  &:active {
-    background-color: $color-shadow-light;
+  &.active {
+    background-color: var(--color-hover);
   }
 }

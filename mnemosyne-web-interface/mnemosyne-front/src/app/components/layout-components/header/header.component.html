@@ -1,13 +1,33 @@
 <header [ngClass]="{'hide': scrolled}">
-  <div class="header-side">
-    <img
-      class="sidebar-burger"
-      (click)="openSidebar.emit()"
-      [ngSrc]="staticStorageLink + '/icons/hamburger.svg'"
-      [width]="25"
-      [height]="25"
-      alt="burger"
-    >
+  <div class="header-content">
+    <div class="header-side">
+      <img
+        *ngIf="showHeaderBurger"
+        class="sidebar-burger"
+        (click)="openSidebar.emit()"
+        [ngSrc]="staticStorageLink + '/icons/hamburger.svg'"
+        [width]="25"
+        [height]="25"
+        alt="burger"
+      >
+    </div>
+
+    <div class="header-side">
+      <ng-container *transloco="let t">
+        <basic-button
+          [label]="t('button.logIn')"
+          (buttonClick)="handleRedirect('login')"
+        />
+        <div class="header-button-wrapper">
+          <basic-button
+            [label]="t('button.createAcc')"
+            [fillButton]="true"
+            (buttonClick)="handleRedirect('registration')"
+          />
+        </div>
+      </ng-container>
+      <basic-theme-toggle></basic-theme-toggle>
+      <basic-change-language></basic-change-language>
+    </div>
   </div>
-  <div class="header-side"></div>
 </header>

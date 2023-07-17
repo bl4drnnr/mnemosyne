@@ -12,21 +12,21 @@
 .continue-with-paragraph {
   width: 100%;
   text-align: center;
-  border-bottom: 1px solid rgba($color-dark-grey, .5);
+  border-bottom: 1px solid var(--border-color);
   line-height: 0.1em;
   margin: 10px 0 20px;
   opacity: .5;
 
   span {
-    background: $color-white;
+    background: var(--bg-color);
     padding: 0 10px;
   }
 }
 
 .alternative-registration-item {
   width: 100%;
-  border: 1px solid rgba($color-dark-grey, .75);
-  background-color: $color-white;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-color);
   cursor: pointer;
   height: 50px;
   border-radius: 6px;
@@ -34,9 +34,10 @@
   justify-content: center;
   align-items: center;
   transition: .2s;
+  color: var(--paragraph-color);
 
   &:hover {
-    background-color: $color-shadow-light;
+    background-color: var(--color-hover);
   }
 
   .alternative-registration-icon {

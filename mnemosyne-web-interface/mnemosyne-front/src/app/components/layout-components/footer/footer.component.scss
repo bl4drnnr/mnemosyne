@@ -5,7 +5,7 @@ footer {
   bottom: 0;
   height: 60px;
   transition: transform 0.3s ease-in-out;
-  box-shadow: $card-shadow;
+  box-shadow: var(--card-shadow);
   z-index: map-get($z-index, header);
   display: flex;
   justify-content: space-between;

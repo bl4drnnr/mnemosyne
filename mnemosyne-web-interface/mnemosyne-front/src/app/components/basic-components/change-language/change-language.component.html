@@ -1,0 +1,23 @@
+<div class="change-language-container">
+  <div *ngIf="!showLanguages">
+    <img
+      class="language-flag"
+      (click)="showLanguages = true"
+      [ngSrc]="currentLanguage.link"
+      [alt]="currentLanguage.name"
+      [width]="28"
+      [height]="28"
+    >
+  </div>
+  <div *ngIf="showLanguages">
+    <img
+      class="language-flag"
+      (click)="changeLanguage(flag.name)"
+      *ngFor="let flag of languages"
+      [ngSrc]="flag.link"
+      [alt]="flag.name"
+      [width]="28"
+      [height]="28"
+    >
+  </div>
+</div>

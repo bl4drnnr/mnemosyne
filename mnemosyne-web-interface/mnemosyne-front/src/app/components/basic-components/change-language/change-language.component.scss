@@ -1,0 +1,10 @@
+@import 'variables';
+
+.change-language-container {
+  display: flex;
+}
+
+.language-flag {
+  cursor: pointer;
+  margin: 0 5px;
+}

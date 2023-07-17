@@ -16,7 +16,8 @@ $default-font-weight: 500;
 $default-line-height: 24px;
 
 $color-main: #ffcc00;
-$color-main-hover: #e8ba00;
+$color-main-hover: #ffe580;
+$color-main-border: #e8ba00;
 
 $second-color: #3fa9f5;
 $second-dark-color: #0070be;
@@ -89,7 +90,8 @@ $color-accent: #e80f5b;
 $color-accent-pressed: #fa006b;
 $color-white: #ffffff;
 $color-lightgray: #f4f4f4;
-$color-shadow-light: #e5e5e5;
+$color-shadow-hover-light: #e5e5e5;
+$color-shadow-hover-dark: #4b4b4b;
 $color-lightgray-second: #b6b6b6;
 $color-lightgray-third: #dadada;
 $color-mediumgray: #cccccc;
@@ -102,44 +104,45 @@ $color-success: #45a900;
 $color-black: #222c2e;
 $color-blue: #00aeff;
 $color-surface: rgba(105, 70, 82, 0.05);
-$color-shadow: rgba(0, 0, 0, 0.2);
+$color-shadow-light: rgba(0, 0, 0, 0.2);
+$color-shadow-dark: rgba(255, 255, 255, 0.2);
 $color-search-text: #006f67;
 $color-tds-document: #00aeff;
 $color-sds-document: #ff6c5f;
 $color-brochure-document: #b84592;
 $color-other-document: #222c2e;
 $color-product-information-document: #ffc167;
+$color-black-background: #121212;
 
-.z0 {
-  box-shadow: none;
-}
-.z1 {
-  box-shadow: 0 12px 12px -8px $color-shadow;
-}
-.z2 {
-  box-shadow: 0 16px 16px -8px $color-shadow;
-}
-.z3 {
-  box-shadow: 0 20px 24px -8px $color-shadow;
-}
-.z4 {
-  box-shadow: 0 24px 32px -8px $color-shadow;
-}
-.z1-forms {
-  box-shadow: 0 6px 8px -2px $color-shadow;
-}
-.z-bottom {
-  box-shadow: 0 -5px 24px -8px $color-shadow;
-}
-
-$z0-shadow: none;
-$z1-shadow: 0 12px 12px -8px $color-shadow;
-$z2-shadow: 0 16px 16px -8px $color-shadow;
-$z3-shadow: 0 20px 24px -8px $color-shadow;
-$z4-shadow: 0 24px 32px -8px $color-shadow;
-$z1-froms-shadow: 0 6px 8px -2px $color-shadow;
-$z-bottom-shadow: 0 -5px 24px -8px $color-shadow;
-$card-shadow: rgba($color-shadow, 0.3) 0px 1px 2px 0px, rgba($color-shadow, 0.15) 0px 2px 6px 2px;
+//.z0 {
+//  box-shadow: none;
+//}
+//.z1 {
+//  box-shadow: 0 12px 12px -8px $color-shadow;
+//}
+//.z2 {
+//  box-shadow: 0 16px 16px -8px $color-shadow;
+//}
+//.z3 {
+//  box-shadow: 0 20px 24px -8px $color-shadow;
+//}
+//.z4 {
+//  box-shadow: 0 24px 32px -8px $color-shadow;
+//}
+//.z1-forms {
+//  box-shadow: 0 6px 8px -2px $color-shadow;
+//}
+//.z-bottom {
+//  box-shadow: 0 -5px 24px -8px $color-shadow;
+//}
+//
+//$z0-shadow: none;
+//$z1-shadow: 0 12px 12px -8px $color-shadow;
+//$z2-shadow: 0 16px 16px -8px $color-shadow;
+//$z3-shadow: 0 20px 24px -8px $color-shadow;
+//$z4-shadow: 0 24px 32px -8px $color-shadow;
+//$z1-froms-shadow: 0 6px 8px -2px $color-shadow;
+//$z-bottom-shadow: 0 -5px 24px -8px $color-shadow;
 
 $cta-border-radius: 4px;
 
@@ -283,6 +286,7 @@ $z-index: (
   fullscreen-search: 1040,
   header: 1030,
   footer: 1000,
+  dropdown: 1000,
   sidebar: 1031,
   datepicker: 15000,
   modal-main: 10000,
@@ -301,6 +305,7 @@ $z-index: (
 @function z-index($key) {
   @return map-get($z-index, $key);
 }
+
 @mixin z-index($key) {
   z-index: z-index($key);
 }
@@ -309,4 +314,50 @@ $z-index: (
   font-size: $size;
   font-weight: $weight;
   line-height: $line-height;
+}
+
+h1, h2, h3, h4, h5, p, span, ul, li, ol {
+  color: var(--paragraph-color);
+}
+
+@mixin light() {
+  --bg-color: #{$color-white};
+  --main-color: #{$color-main};
+  --main-color-hover: #{$color-main-hover};
+  --main-color-border: #{rgba($color-main-border, .5)};
+  --text-color: #{$text-color};
+  --paragraph-color: #{$black};
+  --border-color: #{rgba($color-black, .1)};
+  --disabled-color: #{rgba($block-color, .2)};
+  --success-color: #{$success-color};
+  --success-color-svg: #{$success-color-svg};
+  --warn-color: #{$warn-color};
+  --warn-color-svg: #{$warn-color-svg};
+  --error-color: #{$color-error};
+  --input-shadow: #{0 0 5px rgba(0, 0, 0, 0.3)};
+  --card-shadow: #{rgba($color-shadow-light, 0.3) 0px 1px 2px 0px, rgba($color-shadow-light, 0.15) 0px 2px 6px 2px};
+  --alert-shadow: #{rgba($black, 0.1) 0 10px 50px};
+  --color-hover: #{$color-shadow-hover-light};
+  --loader-background: #{rgba($color-black, 0.5)};
+}
+
+@mixin dark() {
+  --bg-color: #{$color-black-background};
+  --main-color: #{$color-main};
+  --main-color-hover: #{darken($color-main-hover, 30%)};
+  --main-color-border: #{rgba($color-main-border, .5)};
+  --text-color: #{$color-white};
+  --paragraph-color: #{rgba($color-white, .85)};
+  --border-color: #{rgba($color-white, .3)};
+  --disabled-color: #{rgba($color-white, .1)};
+  --success-color: #{$success-color};
+  --success-color-svg: #{$success-color-svg};
+  --warn-color: #{$warn-color};
+  --warn-color-svg: #{$warn-color-svg};
+  --error-color: #{$color-error};
+  --input-shadow: #{0 0 5px rgba(255, 255, 255, 0.3)};
+  --card-shadow: #{rgba($color-shadow-dark, 0.3) 0px 1px 2px 0px, rgba($color-shadow-dark, 0.15) 0px 2px 6px 2px};
+  --alert-shadow: #{rgba($color-white, 0.1) 0 10px 50px};
+  --color-hover: #{$color-shadow-hover-dark};
+  --loader-background: #{rgba($color-white, 0.5)};
 }

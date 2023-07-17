@@ -10,7 +10,7 @@
   <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
     <button
       *ngFor="let option of options"
-      class="dropdown-item"
+      [ngClass]="option.value === currentOption ? 'dropdown-item active' : 'dropdown-item'"
       (click)="onSelect(option.key)"
     >
       {{ option.value }}

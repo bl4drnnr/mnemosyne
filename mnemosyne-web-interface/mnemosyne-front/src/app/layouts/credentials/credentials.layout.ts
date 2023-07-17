@@ -41,30 +41,14 @@ export class CredentialsLayout implements OnInit {
 
   constructor(
     private readonly envService: EnvService,
-    private readonly router: Router,
-    private readonly translocoService: TranslocoService
+    private readonly router: Router
   ) {}
 
   options: AnimationOptions;
   staticStorageLink: string;
 
-  languageFlags = [
-    {
-      name: 'pl',
-      link: `${this.envService.getStaticStorageLink}/icons/pl.png`
-    },
-    {
-      name: 'ru',
-      link: `${this.envService.getStaticStorageLink}/icons/ru.png`
-    },
-    {
-      name: 'en',
-      link: `${this.envService.getStaticStorageLink}/icons/en.png`
-    }
-  ];
-
-  changeLanguage(languageCode: string) {
-    this.translocoService.setActiveLang(languageCode);
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
   }
 
   ngOnInit() {
@@ -75,9 +59,5 @@ export class CredentialsLayout implements OnInit {
     } else {
       this.staticStorageLink = `${this.envService.getStaticStorageLink}/${this.folder}/${this.picture}`;
     }
-  }
-
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
   }
 }
