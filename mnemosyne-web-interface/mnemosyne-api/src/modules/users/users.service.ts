@@ -1,3 +1,4 @@
+import { S3 } from 'aws-sdk';
 import * as crypto from 'crypto';
 import * as bcryptjs from 'bcryptjs';
 import * as dayjs from 'dayjs';
@@ -26,6 +27,7 @@ import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
+import { UploadPhotoDto } from '@dto/upload-photo.dto';
 
 @Injectable()
 export class UsersService {
@@ -275,5 +277,39 @@ export class UsersService {
     });
 
     return new PasswordResetDto();
+  }
+
+  async uploadUserPhoto({
+    payload,
+    userId,
+    trx
+  }: {
+    payload: UploadPhotoDto;
+    userId: string;
+    trx?: Transaction;
+  }) {
+    console.log('payload', payload);
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    const base64Data = Buffer.from(
+      payload.formData.replace(/^data:image\/\w+;base64,/, ''),
+      'base64'
+    );
+
+    const type = payload.formData.split(';')[0].split('/')[1];
+    const userIdHash = crypto.createHash('md5').update(userId).digest('hex');
+
+    const params = {
+      Bucket: bucketName,
+      Key: `users-profile-pictures/${userIdHash}.${type}`,
+      Body: base64Data,
+      ContentEncoding: 'base64',
+      ContentType: `image/${type}`
+    };
+
+    return await s3.upload(params).promise();
   }
 }

@@ -39,8 +39,10 @@
       "@shared/*": [
         "src/app/shared/*",
         "src/app/shared/api/*",
-        "src/app/shared/services/*",
         "src/app/shared/global-components-services/*"
+      ],
+      "@services/*": [
+        "src/app/shared/services/*"
       ],
       "@responses/*": ["src/libs/api/responses/*"],
       "@payloads/*": ["src/libs/api/payloads/*"],

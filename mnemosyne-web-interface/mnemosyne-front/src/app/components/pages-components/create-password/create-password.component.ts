@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ValidationService } from '@shared/validation.service';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
   selector: 'page-component-create-password',

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthenticationService } from '@pages/shared/authentication.service';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ConfirmAccountResponse } from '@responses/confirm-account.response';
+import { AuthenticationService } from '@services/authentication.service';
 
 @Component({
   selector: 'page-account-confirmation',

@@ -21,6 +21,7 @@ import { AltRegistrationComponent } from '@components/alt-registration/alt-regis
 import { TranslocoModule } from '@ngneat/transloco';
 import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
 import { ChangeLanguageComponent } from './basic-components/change-language/change-language.component';
+import { UserPhotoComponent } from './basic-components/user-photo/user-photo.component';
 
 const components = [
   ButtonComponent,
@@ -42,8 +43,13 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [...components, ChangeLanguageComponent],
-  exports: [...components, ModeToggleModule, ChangeLanguageComponent],
+  declarations: [...components, ChangeLanguageComponent, UserPhotoComponent],
+  exports: [
+    ...components,
+    ModeToggleModule,
+    ChangeLanguageComponent,
+    UserPhotoComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,

@@ -6,7 +6,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { ValidationService } from '@shared/validation.service';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
   selector: 'basic-input',

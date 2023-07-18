@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthenticationService } from '@pages/shared/authentication.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
-import { ValidationService } from '@shared/validation.service';
+import { AuthenticationService } from '@services/authentication.service';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
   selector: 'page-reset-password',
