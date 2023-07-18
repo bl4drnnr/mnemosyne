@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
-import { AuthenticationService } from '@pages/shared/authentication.service';
-import { SmsService } from '@pages/shared/sms.service';
-import { MfaService } from '@pages/shared/mfa.service';
 import { TranslocoService } from '@ngneat/transloco';
+import { AuthenticationService } from '@services/authentication.service';
+import { SmsService } from '@services/sms.service';
+import { MfaService } from '@services/mfa.service';
 
 @Component({
   selector: 'page-component-mfa',

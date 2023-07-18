@@ -12,5 +12,7 @@ export enum ENDPOINTS_TYPE {
   RESET_USER_PASSWORD = 'reset-user-password',
   LOGIN_SEND_SMS_CODE = 'login-send-sms-code',
   REGISTRATION_GENERATE_2FA_QR = 'registration-generate-2fa-qr',
-  LOGIN_GENERATE_2FA_QR = 'login-generate-2fa-qr'
+  LOGIN_GENERATE_2FA_QR = 'login-generate-2fa-qr',
+  UPLOAD_USER_PHOTO = 'upload-user-photo',
+  REFRESH = 'refresh'
 }

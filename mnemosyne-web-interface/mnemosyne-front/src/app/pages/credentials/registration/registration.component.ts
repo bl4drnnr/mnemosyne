@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { AuthenticationService } from '@pages/shared/authentication.service';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '@services/authentication.service';
 
 @Component({
   selector: 'page-registration',

@@ -26,6 +26,19 @@ paths:
       responses:
         "201":
           description: ""
+  /api/users/upload-user-photo:
+    post:
+      operationId: UsersController_uploadUserPhoto
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UploadPhotoDto"
+      responses:
+        "201":
+          description: ""
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
@@ -240,6 +253,9 @@ components:
       type: object
       properties: {}
     ResetUserPasswordDto:
+      type: object
+      properties: {}
+    UploadPhotoDto:
       type: object
       properties: {}
     LogInUserDto:

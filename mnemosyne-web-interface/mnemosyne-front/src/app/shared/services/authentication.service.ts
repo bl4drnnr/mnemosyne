@@ -96,4 +96,12 @@ export class AuthenticationService {
       payload: { hash, password, phoneCode, mfaCode }
     });
   }
+
+  refreshTokens({ accessToken }: { accessToken: string }) {
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS_TYPE.GET,
+      controller: CONTROLLERS_TYPE.AUTH,
+      action: ENDPOINTS_TYPE.REFRESH
+    });
+  }
 }
