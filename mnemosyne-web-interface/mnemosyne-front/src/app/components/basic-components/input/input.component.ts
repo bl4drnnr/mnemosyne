@@ -7,6 +7,7 @@ import {
   trigger
 } from '@angular/animations';
 import { ValidationService } from '@services/validation.service';
+import { LoaderService } from '@shared/loader.service';
 
 @Component({
   selector: 'basic-input',
@@ -49,7 +50,10 @@ export class InputComponent {
     Array<{ error: boolean; text: string }>
   >();
 
-  constructor(private validationService: ValidationService) {}
+  constructor(
+    private validationService: ValidationService,
+    public loaderService: LoaderService
+  ) {}
 
   onInput() {
     this.valueChange.emit(this.value);

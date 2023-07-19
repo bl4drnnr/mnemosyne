@@ -32,7 +32,7 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @UsePipes(ValidationPipe)
+  // @UsePipes(ValidationPipe)
   @Post('upload-user-photo')
   async uploadUserPhoto(
     @Body() payload: UploadPhotoDto,

@@ -35,13 +35,15 @@ export class ApiService {
     action,
     method,
     payload,
-    params
+    params,
+    accessToken
   }: {
     controller: CONTROLLERS_TYPE;
     action: ENDPOINTS_TYPE;
     method: ALLOWED_METHODS_TYPE;
     payload?: object;
     params?: object;
+    accessToken?: string;
   }): Observable<any> {
     const requestUrl = `${this.frontProxyUrl}/${controller}/${action}`;
     const requestBody: {
@@ -49,12 +51,15 @@ export class ApiService {
       params?: object;
       payload?: object;
     } = { method };
+    const headers: { [key: string]: string } = {};
 
     if (params) requestBody.params = params;
     if (payload) requestBody.payload = payload;
+    if (accessToken) headers['X-Access-Token'] = accessToken;
 
     const request$ = this.http.post<any>(requestUrl, requestBody, {
-      withCredentials: true
+      withCredentials: true,
+      headers
     });
 
     const loaderTimeout$ = timer(1000).pipe(

@@ -320,6 +320,10 @@ h1, h2, h3, h4, h5, p, span, ul, li, ol {
   color: var(--paragraph-color);
 }
 
+p, spam, ul, li, ol {
+  opacity: .85;
+}
+
 @mixin light() {
   --bg-color: #{$color-white};
   --main-color: #{$color-main};

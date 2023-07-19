@@ -6,7 +6,6 @@ import { ForgotPasswordComponent } from '@pages/forgot-password/forgot-password.
 import { AccountConfirmationComponent } from '@pages/account-confirmation/account-confirmation.component';
 import { TermsAndConditionsComponent } from '@pages/terms-and-conditions/terms-and-conditions.component';
 import { DashboardComponent } from '@pages/dashboard/dashboard.component';
-import { IsAuthenticatedGuard } from '@guards/is-authenticated.guard';
 import { ResetPasswordComponent } from '@pages/reset-password/reset-password.component';
 import { HomeComponent } from '@pages/home/home.component';
 
@@ -40,7 +39,6 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardComponent,
     title: 'Mnemosyne | Dashboard'
-    // canActivate: [IsAuthenticatedGuard]
   },
   {
     path: 'reset-password/:hash',

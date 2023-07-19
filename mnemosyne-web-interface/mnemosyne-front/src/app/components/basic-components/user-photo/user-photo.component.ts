@@ -41,15 +41,21 @@ export class UserPhotoComponent {
 
       if (file) {
         this.currentFile = file;
+        const accessToken = localStorage.getItem('_at')!;
 
-        this.userPhotoService.upload(this.currentFile).subscribe({
-          next: () => {
-            //
-          },
-          error: (err: any) => {
-            //
-          }
-        });
+        this.userPhotoService
+          .upload({
+            file: this.currentFile,
+            accessToken
+          })
+          .subscribe({
+            next: () => {
+              //
+            },
+            error: () => {
+              //
+            }
+          });
       }
 
       this.selectedFiles = undefined;

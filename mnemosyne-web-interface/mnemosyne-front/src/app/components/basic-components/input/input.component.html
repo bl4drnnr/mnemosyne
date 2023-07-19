@@ -2,7 +2,10 @@
   <p class="input-label" *ngIf="label">{{ label }}</p>
   <input
     class="input-field"
-    [ngClass]="{ 'disabled': disabled, 'error': showError }"
+    [ngClass]="{
+    'disabled': disabled || loaderService.getStatus(),
+    'error': showError
+    }"
     [disabled]="disabled"
     [(ngModel)]="value"
     [type]="type === 'password-repeat' ? 'password' : type"

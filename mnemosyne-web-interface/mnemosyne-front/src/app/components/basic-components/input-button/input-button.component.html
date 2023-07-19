@@ -6,7 +6,7 @@
         [label]="inputLabel"
         [type]="inputType"
         [value]="inputValue"
-        [disabled]="inputDisabled"
+        [disabled]="inputDisabled || loaderService.getStatus()"
         [placeholder]="inputPlaceholder"
         [errorMessage]="inputValue && inputShowError ? inputErrorMessage : null"
         [showError]="inputShowError"
@@ -20,7 +20,7 @@
         <basic-button
           [label]="buttonLabel"
           (buttonClick)="onClick()"
-          [disabled]="buttonDisabled"
+          [disabled]="buttonDisabled || loaderService.getStatus()"
           [buttonDescription]="buttonDescription"
         />
       </div>

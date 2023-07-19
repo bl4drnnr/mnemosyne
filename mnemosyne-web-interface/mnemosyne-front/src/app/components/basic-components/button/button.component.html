@@ -2,13 +2,13 @@
   <button
     class="btn"
     [ngClass]="{
-      'disabled': disabled,
+      'disabled': disabled || loaderService.getStatus(),
       'high-height': highHeight,
       'fill-button': fillButton,
       'danger': danger,
       'fill-danger': fillDanger
     }"
-    [disabled]="disabled"
+    [disabled]="disabled || loaderService.getStatus()"
     (click)="onClick()"
   >
     <p [ngClass]="fillButton ? 'button-label fill-button' : 'button-label'">{{ label }}</p>

@@ -18,17 +18,7 @@ import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  _isLoggedIn$ = new BehaviorSubject<boolean>(false);
-  isLoggedIn$ = this._isLoggedIn$.asObservable();
-
-  constructor(private apiService: ApiService) {
-    const token = sessionStorage.getItem('_at');
-    this._isLoggedIn$.next(!!token);
-  }
-
-  changeIsLoggedIn(loginStatus: boolean) {
-    this._isLoggedIn$.next(loginStatus);
-  }
+  constructor(private readonly apiService: ApiService) {}
 
   login({
     email,
@@ -97,11 +87,16 @@ export class AuthenticationService {
     });
   }
 
-  refreshTokens({ accessToken }: { accessToken: string }) {
+  refreshTokens({
+    accessToken
+  }: {
+    accessToken: string;
+  }): Observable<{ _at: string }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.GET,
       controller: CONTROLLERS_TYPE.AUTH,
-      action: ENDPOINTS_TYPE.REFRESH
+      action: ENDPOINTS_TYPE.REFRESH,
+      accessToken
     });
   }
 }

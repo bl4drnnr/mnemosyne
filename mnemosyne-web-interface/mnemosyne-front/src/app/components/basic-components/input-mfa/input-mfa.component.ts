@@ -8,6 +8,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
+import { LoaderService } from '@shared/loader.service';
 
 @Component({
   selector: 'basic-input-mfa',
@@ -31,7 +32,10 @@ export class InputMfaComponent implements OnInit {
   resendMessage: string;
   isCountdownRunning = false;
 
-  constructor(private readonly translocoService: TranslocoService) {}
+  constructor(
+    private readonly translocoService: TranslocoService,
+    public loaderService: LoaderService
+  ) {}
 
   initResendSms() {
     this.resendSms.emit();

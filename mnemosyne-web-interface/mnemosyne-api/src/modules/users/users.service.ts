@@ -288,7 +288,6 @@ export class UsersService {
     userId: string;
     trx?: Transaction;
   }) {
-    console.log('payload', payload);
     const { accessKeyId, secretAccessKey, bucketName } =
       this.configService.awsSdkCredentials;
 

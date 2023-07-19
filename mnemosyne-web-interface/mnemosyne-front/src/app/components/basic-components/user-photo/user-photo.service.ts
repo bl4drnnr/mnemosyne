@@ -10,7 +10,7 @@ import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
 export class UserPhotoService {
   constructor(private apiService: ApiService) {}
 
-  upload(file: File) {
+  upload({ file, accessToken }: { file: File; accessToken: string }) {
     const formData: FormData = new FormData();
 
     formData.append('file', file);
@@ -19,7 +19,8 @@ export class UserPhotoService {
       method: ALLOWED_METHODS_TYPE.POST,
       controller: CONTROLLERS_TYPE.USERS,
       action: ENDPOINTS_TYPE.UPLOAD_USER_PHOTO,
-      payload: { formData }
+      payload: { formData },
+      accessToken
     });
   }
 }

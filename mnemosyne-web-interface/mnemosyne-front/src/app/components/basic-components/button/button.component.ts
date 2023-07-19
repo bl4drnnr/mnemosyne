@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { LoaderService } from '@shared/loader.service';
 
 @Component({
   selector: 'basic-button',
@@ -15,6 +16,8 @@ export class ButtonComponent {
   @Input() buttonDescription: string | null;
 
   @Output() buttonClick = new EventEmitter<void>();
+
+  constructor(public loaderService: LoaderService) {}
 
   onClick() {
     this.buttonClick.emit();
