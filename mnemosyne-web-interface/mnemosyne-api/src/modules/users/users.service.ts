@@ -28,6 +28,8 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
+import {WrongPictureException} from "@exceptions/wrong-picture.exception";
+import {PhotoUploadedDto} from "@dto/photo-uploaded.dto";
 
 @Injectable()
 export class UsersService {
@@ -281,12 +283,10 @@ export class UsersService {
 
   async uploadUserPhoto({
     payload,
-    userId,
-    trx
+    userId
   }: {
     payload: UploadPhotoDto;
     userId: string;
-    trx?: Transaction;
   }) {
     const { accessKeyId, secretAccessKey, bucketName } =
       this.configService.awsSdkCredentials;
@@ -294,11 +294,14 @@ export class UsersService {
     const s3 = new S3({ accessKeyId, secretAccessKey });
 
     const base64Data = Buffer.from(
-      payload.formData.replace(/^data:image\/\w+;base64,/, ''),
+      payload.userPhoto.replace(/^data:image\/\w+;base64,/, ''),
       'base64'
     );
 
-    const type = payload.formData.split(';')[0].split('/')[1];
+    const type = payload.userPhoto.split(';')[0].split('/')[1];
+
+    if (type !== 'png') throw new WrongPictureException();
+
     const userIdHash = crypto.createHash('md5').update(userId).digest('hex');
 
     const params = {
@@ -309,6 +312,40 @@ export class UsersService {
       ContentType: `image/${type}`
     };
 
-    return await s3.upload(params).promise();
+    await s3.upload(params).promise();
+
+    return new PhotoUploadedDto();
+  }
+
+  async getUserInfo({ userId, trx }: { userId: string; trx?: Transaction }) {
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    const userIdHash = crypto.createHash('md5').update(userId).digest('hex');
+
+    let isProfilePicPresent = true;
+
+    try {
+      await s3
+        .headObject({
+          Bucket: bucketName,
+          Key: `users-profile-pictures/${userIdHash}.png`
+        })
+        .promise();
+    } catch (e) {
+      isProfilePicPresent = false;
+    }
+
+    const userData = await this.getUserById({ id: userId, trx });
+
+    return {
+      userId: userIdHash,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      isProfilePicPresent
+    };
   }
 }

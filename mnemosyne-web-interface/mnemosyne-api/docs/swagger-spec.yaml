@@ -39,6 +39,13 @@ paths:
       responses:
         "201":
           description: ""
+  /api/users/user-info:
+    get:
+      operationId: UsersController_getUserInfo
+      parameters: []
+      responses:
+        "200":
+          description: ""
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
