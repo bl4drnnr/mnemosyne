@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { LoginPayload } from '@payloads/login.payload';
 import { RegistrationPayload } from '@payloads/registration.payload';
 import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
-import { ResetUserPasswordDto } from '@payloads/reset-user-password.dto';
+import { ResetUserPasswordPayload } from '@payloads/reset-user-password.payload';
 import { LoginResponse } from '@responses/login.response';
 import { RegistrationResponse } from '@responses/registration.response';
 import { ConfirmAccountResponse } from '@responses/confirm-account.response';
@@ -13,22 +13,13 @@ import { ResetUserPasswordResponse } from '@responses/reset-user-password.respon
 import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
 import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
 import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
+import { LogoutResponse } from '@responses/logout.response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  _isLoggedIn$ = new BehaviorSubject<boolean>(false);
-  isLoggedIn$ = this._isLoggedIn$.asObservable();
-
-  constructor(private apiService: ApiService) {
-    const token = sessionStorage.getItem('_at');
-    this._isLoggedIn$.next(!!token);
-  }
-
-  changeIsLoggedIn(loginStatus: boolean) {
-    this._isLoggedIn$.next(loginStatus);
-  }
+  constructor(private readonly apiService: ApiService) {}
 
   login({
     email,
@@ -88,7 +79,9 @@ export class AuthenticationService {
     password,
     phoneCode,
     mfaCode
-  }: ResetUserPasswordDto): Observable<{ message: ResetUserPasswordResponse }> {
+  }: ResetUserPasswordPayload): Observable<{
+    message: ResetUserPasswordResponse;
+  }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.POST,
       controller: CONTROLLERS_TYPE.USERS,
@@ -97,11 +90,29 @@ export class AuthenticationService {
     });
   }
 
-  refreshTokens({ accessToken }: { accessToken: string }) {
+  refreshTokens({
+    accessToken
+  }: {
+    accessToken: string;
+  }): Observable<{ _at: string }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.GET,
       controller: CONTROLLERS_TYPE.AUTH,
-      action: ENDPOINTS_TYPE.REFRESH
+      action: ENDPOINTS_TYPE.REFRESH,
+      accessToken
+    });
+  }
+
+  logout({
+    accessToken
+  }: {
+    accessToken: string;
+  }): Observable<{ message: LogoutResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS_TYPE.GET,
+      controller: CONTROLLERS_TYPE.AUTH,
+      action: ENDPOINTS_TYPE.LOGOUT,
+      accessToken
     });
   }
 }

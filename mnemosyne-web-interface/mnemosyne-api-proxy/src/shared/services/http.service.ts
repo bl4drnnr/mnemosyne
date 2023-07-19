@@ -69,7 +69,7 @@ export class ProxyHttpService {
     requestConfig.data = method === 'POST' ? payload : {};
     requestConfig.params = params ? params : {};
 
-    if (accessToken) requestConfig.headers['x-access-token'] = accessToken;
+    if (accessToken) requestConfig.headers['X-Access-Token'] = accessToken;
     if (cookies) requestConfig.headers.cookie = cookies;
 
     await this.loggerService.log({

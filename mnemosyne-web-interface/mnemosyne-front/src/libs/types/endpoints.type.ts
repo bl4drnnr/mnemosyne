@@ -1,7 +1,6 @@
 export enum ENDPOINTS_TYPE {
   REGISTRATION = 'registration',
   LOGIN = 'login',
-  GENERATE_2FA_QR = 'generate-2fa-qr',
   ACCOUNT_CONFIRMATION = 'account-confirmation',
   REGISTRATION_SEND_SMS_CODE = 'registration-send-sms-code',
   LOGIN_VERIFY_2FA = 'login-verify-2fa',
@@ -14,5 +13,7 @@ export enum ENDPOINTS_TYPE {
   REGISTRATION_GENERATE_2FA_QR = 'registration-generate-2fa-qr',
   LOGIN_GENERATE_2FA_QR = 'login-generate-2fa-qr',
   UPLOAD_USER_PHOTO = 'upload-user-photo',
-  REFRESH = 'refresh'
+  REFRESH = 'refresh',
+  LOGOUT = 'logout',
+  USER_INFO = 'user-info'
 }

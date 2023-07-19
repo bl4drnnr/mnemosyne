@@ -3,6 +3,7 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as fs from 'fs';
 import * as yaml from 'yaml';
+import * as bodyParser from 'body-parser';
 
 (async () => {
   const app = await NestFactory.create(AppModule);
@@ -26,6 +27,9 @@ import * as yaml from 'yaml';
 
   fs.writeFileSync('./docs/swagger-spec.json', JSON.stringify(document));
   fs.writeFileSync('./docs/swagger-spec.yaml', yamlString);
+
+  app.use(bodyParser.json({ limit: '5mb' }));
+  app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
   SwaggerModule.setup('docs', app, document);
 

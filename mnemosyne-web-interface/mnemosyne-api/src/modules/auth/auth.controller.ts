@@ -54,7 +54,6 @@ export class AuthController {
     return res.status(HttpStatus.OK).json(response);
   }
 
-  @UseGuards(AuthGuard)
   @Get('refresh')
   async refreshTokens(
     @CookieRefreshToken() refreshToken: string,

@@ -25,7 +25,7 @@ export class RoleGuard implements CanActivate {
     if (!requiredRoles) return true;
 
     const req = context.switchToHttp().getRequest();
-    const authHeader = req.headers['x-access-token'];
+    const authHeader = req.headers['X-Access-Token'];
 
     if (!authHeader) throw new InvalidTokenException();
 

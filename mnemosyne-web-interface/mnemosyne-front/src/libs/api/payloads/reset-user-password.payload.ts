@@ -1,4 +1,4 @@
-export interface ResetUserPasswordDto {
+export interface ResetUserPasswordPayload {
   password: string;
   hash: string;
   phoneCode: string;

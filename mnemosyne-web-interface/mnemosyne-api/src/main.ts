@@ -20,8 +20,8 @@ import * as yaml from 'yaml';
   const document = SwaggerModule.createDocument(app, config);
   const yamlString: string = yaml.stringify(document, {});
 
-  app.use(bodyParser.json({ limit: '50mb' }));
-  app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
+  app.use(bodyParser.json({ limit: '5mb' }));
+  app.use(bodyParser.urlencoded({ limit: '5mb', extended: true }));
 
   fs.writeFileSync('./docs/swagger-spec.json', JSON.stringify(document));
   fs.writeFileSync('./docs/swagger-spec.yaml', yamlString);

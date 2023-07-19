@@ -3,17 +3,17 @@
     *ngIf="showSideBar"
     [isSidebarOpen]="isSidebarOpen"
     (closeSidebar)="isSidebarOpen = false"
-  ></layout-sidebar>
+  />
 
   <layout-header
     *ngIf="showHeader"
     [showHeaderBurger]="showHeaderBurger"
     (openSidebar)="isSidebarOpen = true"
-  ></layout-header>
+  />
 
   <div class="content-wrapper">
-    <ng-content></ng-content>
+    <ng-content />
   </div>
 
-  <layout-footer *ngIf="showFooter"></layout-footer>
+  <layout-footer *ngIf="showFooter"/>
 </div>

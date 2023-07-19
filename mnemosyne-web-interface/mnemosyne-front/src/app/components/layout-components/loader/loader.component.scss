@@ -43,37 +43,44 @@ span {
 .let1 {
   animation: drop 1.2s ease-in-out infinite;
   animation-delay: 1.2s;
+  color: var(--main-color);
 }
 
 .let2 {
   animation: drop 1.2s ease-in-out infinite;
   animation-delay: 1.3s;
+  color: var(--main-color);
 }
 
 .let3 {
   animation: drop 1.2s ease-in-out infinite;
   animation-delay: 1.4s;
+  color: var(--main-color);
 }
 
 .let4 {
   animation: drop 1.2s ease-in-out infinite;
   animation-delay: 1.5s;
+  color: var(--main-color);
 
 }
 
 .let5 {
   animation: drop 1.2s ease-in-out infinite;
   animation-delay: 1.6s;
+  color: var(--main-color);
 }
 
 .let6 {
   animation: drop 1.2s ease-in-out infinite;
   animation-delay: 1.7s;
+  color: var(--main-color);
 }
 
 .let7 {
   animation: drop 1.2s ease-in-out infinite;
   animation-delay: 1.8s;
+  color: var(--main-color);
 }
 
 @keyframes drop {

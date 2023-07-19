@@ -12,7 +12,7 @@
       >
     </div>
 
-    <div class="header-side">
+    <div class="header-side" *ngIf="!isUserLoggedIn">
       <ng-container *transloco="let t">
         <basic-button
           [label]="t('button.logIn')"
@@ -28,7 +28,23 @@
       </ng-container>
       <basic-theme-toggle></basic-theme-toggle>
       <div class="lang-button-wrapper">
-        <basic-change-language></basic-change-language>
+        <basic-change-language/>
+      </div>
+    </div>
+
+    <div class="header-side" *ngIf="isUserLoggedIn">
+      <ng-container *transloco="let t">
+        <div class="header-button-wrapper">
+          <basic-button
+            [label]="t('button.logOut')"
+            [danger]="true"
+            (buttonClick)="logout()"
+          />
+        </div>
+      </ng-container>
+      <basic-theme-toggle></basic-theme-toggle>
+      <div class="lang-button-wrapper">
+        <basic-change-language/>
       </div>
     </div>
   </div>

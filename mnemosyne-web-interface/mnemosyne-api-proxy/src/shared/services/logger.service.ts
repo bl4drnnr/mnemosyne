@@ -28,7 +28,7 @@ export class LoggerService {
       if (payloadCopy['password']) delete payloadCopy['password'];
       logPayload.body = payloadCopy;
     }
-    if (payload.params) logPayload.params = payload.params;
+    if (payload && payload.params) logPayload.params = payload.params;
 
     const log = new this.logger({
       logType,

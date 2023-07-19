@@ -11,5 +11,5 @@ export class AltRegistrationComponent {
 
   constructor(private envService: EnvService) {}
 
-  staticStorageLink = `${this.envService.getStaticStorageLink}`;
+  staticStorageLink = this.envService.getStaticStorageLink;
 }

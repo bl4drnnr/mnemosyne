@@ -1,4 +1,11 @@
-import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  UsePipes
+} from '@nestjs/common';
 import { UsersService } from '@modules/users.service';
 import { ForgotPasswordDto } from '@dto/forgot-password.dto';
 import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
@@ -32,17 +39,23 @@ export class UsersController {
   }
 
   @UseGuards(AuthGuard)
-  @UsePipes(ValidationPipe)
   @Post('upload-user-photo')
   async uploadUserPhoto(
     @Body() payload: UploadPhotoDto,
-    @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @UserId() userId: string
   ) {
     return this.usersService.uploadUserPhoto({
       payload,
-      userId,
-      trx
+      userId
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('user-info')
+  async getUserInfo(
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.usersService.getUserInfo({ userId, trx });
   }
 }

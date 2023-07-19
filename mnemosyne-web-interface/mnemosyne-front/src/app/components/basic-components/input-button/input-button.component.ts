@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { LoaderService } from '@shared/loader.service';
 
 @Component({
   selector: 'basic-input-button',
@@ -22,6 +23,8 @@ export class InputButtonComponent {
 
   @Output() inputValueChange = new EventEmitter<string>();
   @Output() buttonClick = new EventEmitter<void>();
+
+  constructor(public loaderService: LoaderService) {}
 
   onInput(inputValue: string) {
     this.inputValue = inputValue;

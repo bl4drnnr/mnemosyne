@@ -1,58 +1,69 @@
-import { Component } from '@angular/core';
-import { UserPhotoService } from '@components/user-photo/user-photo.service';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import { EnvService } from '@shared/env.service';
+import { UsersService } from '@services/users.service';
 
 @Component({
   selector: 'basic-user-photo',
   templateUrl: './user-photo.component.html',
   styleUrls: ['./user-photo.component.scss']
 })
-export class UserPhotoComponent {
-  selectedFiles?: FileList;
-  currentFile?: File;
-  preview = '';
+export class UserPhotoComponent implements OnInit {
+  @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
+  @Input() isProfilePicPresent: boolean;
+  @Input() userId: string;
 
-  constructor(private readonly userPhotoService: UserPhotoService) {}
+  selectedFiles?: FileList;
+  preview: string | ArrayBuffer | null = '';
+  userProfilePictureLink: string;
+
+  staticStorageLink = this.envService.getStaticStorageLink;
+
+  constructor(
+    private readonly envService: EnvService,
+    private readonly usersService: UsersService
+  ) {}
 
   selectFile(event: any): void {
-    this.preview = '';
     this.selectedFiles = event.target.files;
 
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
+    if (!this.selectedFiles) return;
 
-      if (file) {
-        this.preview = '';
-        this.currentFile = file;
+    const file = event.target.files[0];
 
-        const reader = new FileReader();
+    const reader = new FileReader();
 
-        reader.onload = (e: any) => {
-          this.preview = e.target.result;
-        };
+    reader.readAsDataURL(file);
 
-        reader.readAsDataURL(this.currentFile);
-      }
-    }
+    reader.onload = () => {
+      this.preview = reader.result;
+    };
   }
 
   upload() {
-    if (this.selectedFiles) {
-      const file: File | null = this.selectedFiles.item(0);
+    this.fileInput.nativeElement.click();
 
-      if (file) {
-        this.currentFile = file;
+    if (!this.selectedFiles) return;
 
-        this.userPhotoService.upload(this.currentFile).subscribe({
-          next: () => {
-            //
-          },
-          error: (err: any) => {
-            //
-          }
-        });
+    const accessToken = localStorage.getItem('_at')!;
+
+    this.usersService.uploadUserPhoto({
+      userPhoto: this.preview,
+      accessToken
+    }).subscribe({
+      next: () => {
+        //
+      },
+      error: () => {
+        //
       }
+    });
 
-      this.selectedFiles = undefined;
-    }
+    this.selectedFiles = undefined;
+  }
+
+  ngOnInit() {
+    this.userProfilePictureLink = this.isProfilePicPresent
+      ? `${this.staticStorageLink}/users-profile-pictures/${this.userId}.png`
+      : `${this.staticStorageLink}/users-profile-pictures/default.png`;
   }
 }
