@@ -1,7 +1,9 @@
 import {
   Body,
   Controller,
-  Get, Patch,
+  Delete,
+  Get,
+  Patch,
   Post,
   UseGuards,
   UsePipes
@@ -15,7 +17,7 @@ import { Transaction } from 'sequelize';
 import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
-import {UpdateUserInfoDto} from "@dto/update-user-info.dto";
+import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 
 @Controller('users')
 export class UsersController {
@@ -60,6 +62,7 @@ export class UsersController {
     return this.usersService.getUserInfo({ userId, trx });
   }
 
+  @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   @Patch('user-info')
   async updateUserInfo(
@@ -68,7 +71,9 @@ export class UsersController {
     @Body() payload: UpdateUserInfoDto
   ) {
     return this.usersService.updateUser({
-      userId, payload, trx
+      userId,
+      payload,
+      trx
     });
   }
 }

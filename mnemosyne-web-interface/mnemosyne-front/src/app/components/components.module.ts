@@ -22,6 +22,9 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
 import { ChangeLanguageComponent } from '@components/change-language/change-language.component';
 import { UserPhotoComponent } from '@components/user-photo/user-photo.component';
+import { ModalComponent } from './basic-components/modal/modal.component';
+import { SecuritySettingsComponent } from './pages-components/security-settings/security-settings.component';
+import { UserInfoSettingsComponent } from './pages-components/user-info-settings/user-info-settings.component';
 
 const components = [
   ButtonComponent,
@@ -43,7 +46,14 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [...components, ChangeLanguageComponent, UserPhotoComponent],
+  declarations: [
+    ...components,
+    ChangeLanguageComponent,
+    UserPhotoComponent,
+    ModalComponent,
+    SecuritySettingsComponent,
+    UserInfoSettingsComponent
+  ],
   exports: [
     ...components,
     ModeToggleModule,

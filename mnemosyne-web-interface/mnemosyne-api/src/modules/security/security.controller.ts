@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Query, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+  UsePipes
+} from '@nestjs/common';
 import { SecurityService } from '@modules/security/security.service';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
 import { RegistrationSendSmsCodeDto } from '@dto/registration-send-sms-code.dto';
@@ -7,6 +16,9 @@ import { MfaLoginDto } from '@dto/mfa-login.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
+import { AuthGuard } from '@guards/auth.guard';
+import { UserId } from '@decorators/user-id.decorator';
+import { DeleteAccountDto } from '@dto/delete-account.dto';
 
 @Controller('security')
 export class SecurityController {
@@ -99,6 +111,20 @@ export class SecurityController {
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.loginVerifyMobilePhone({
+      payload,
+      trx
+    });
+  }
+
+  @UseGuards(AuthGuard)
+  @Delete('delete-account')
+  deleteUserAccount(
+    @UserId() userId: string,
+    @Body() payload: DeleteAccountDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.deleteUserAccount({
+      userId,
       payload,
       trx
     });

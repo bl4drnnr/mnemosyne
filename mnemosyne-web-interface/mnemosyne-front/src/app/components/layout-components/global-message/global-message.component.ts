@@ -8,7 +8,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import {TRANSLOCO_SCOPE, TranslocoService} from "@ngneat/transloco";
+import { TRANSLOCO_SCOPE, TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'layout-global-message',

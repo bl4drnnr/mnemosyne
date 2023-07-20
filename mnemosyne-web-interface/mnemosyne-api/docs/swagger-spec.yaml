@@ -46,6 +46,18 @@ paths:
       responses:
         "200":
           description: ""
+    patch:
+      operationId: UsersController_updateUserInfo
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserInfoDto"
+      responses:
+        "200":
+          description: ""
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
@@ -247,6 +259,19 @@ paths:
       responses:
         "201":
           description: ""
+  /api/security/delete-account:
+    delete:
+      operationId: SecurityController_deleteUserAccount
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteAccountDto"
+      responses:
+        "200":
+          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.
@@ -263,6 +288,9 @@ components:
       type: object
       properties: {}
     UploadPhotoDto:
+      type: object
+      properties: {}
+    UpdateUserInfoDto:
       type: object
       properties: {}
     LogInUserDto:
@@ -290,5 +318,8 @@ components:
       type: object
       properties: {}
     VerifyMobilePhoneDto:
+      type: object
+      properties: {}
+    DeleteAccountDto:
       type: object
       properties: {}

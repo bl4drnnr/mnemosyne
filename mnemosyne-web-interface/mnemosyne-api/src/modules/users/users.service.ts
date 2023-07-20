@@ -30,7 +30,7 @@ import { WrongCredentialsException } from '@exceptions/wrong-credentials.excepti
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
-import {LinkExpiredException} from "@exceptions/link-expired.exception";
+import { LinkExpiredException } from '@exceptions/link-expired.exception';
 
 @Injectable()
 export class UsersService {
@@ -243,13 +243,15 @@ export class UsersService {
 
     if (forgotPasswordHash && !password) return;
 
-    const { createdAt } = await this.confirmationHashService.getConfirmationHash({
-      confirmationHash: hash, trx
-    });
+    const { createdAt } =
+      await this.confirmationHashService.getConfirmationHash({
+        confirmationHash: hash,
+        trx
+      });
 
     const oneDayAgo = dayjs().subtract(1, 'day');
 
-    if (dayjs(createdAt) < oneDayAgo) throw new LinkExpiredException()
+    if (dayjs(createdAt) < oneDayAgo) throw new LinkExpiredException();
 
     const user = await this.userRepository.findByPk(forgotPasswordHash.userId, {
       transaction: trx,
@@ -353,8 +355,21 @@ export class UsersService {
       userId: userIdHash,
       firstName: userData.firstName,
       lastName: userData.lastName,
+      location: userData.location,
+      company: userData.company,
+      website: userData.website,
       email: userData.email,
       isProfilePicPresent
     };
+  }
+
+  async deleteUserAccount({
+    userId,
+    trx
+  }: {
+    userId: string;
+    trx?: Transaction;
+  }) {
+    // @TODO Think about either make it soft or hard delete
   }
 }
