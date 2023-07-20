@@ -13,5 +13,6 @@
   "previous-password": "Previous password cannot be set as new one",
   "tac-not-accepted": "T&C is not accepted",
   "user-already-exists": "User already exists",
-  "wrong-picture-format": "Wrong format of the uploaded picture"
+  "wrong-picture-format": "Wrong format of the uploaded picture",
+  "link-expired": "Link has expired"
 }

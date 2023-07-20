@@ -13,5 +13,6 @@
   "previous-password": "Poprzednie hasło nie może być ustawione jako nowe",
   "tac-not-accepted": "T&C nie są akceptowane",
   "user-already-exists": "Użytkownik już istnieje",
-  "wrong-picture-format": "Zły format przesłanego obrazu"
+  "wrong-picture-format": "Zły format przesłanego obrazu",
+  "link-expired": "Link stracił ważność"
 }
