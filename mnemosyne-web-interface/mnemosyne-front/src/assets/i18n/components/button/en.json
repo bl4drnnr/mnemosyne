@@ -8,5 +8,6 @@
   "continue": "Continue",
   "resetPass": "Reset password",
   "resetPassResendEmail": "Resend reset password email",
-  "setUpNewPass": "Set up new password"
+  "setUpNewPass": "Set up new password",
+  "upload": "Upload"
 }

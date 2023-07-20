@@ -20,8 +20,8 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AltRegistrationComponent } from '@components/alt-registration/alt-registration.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
-import { ChangeLanguageComponent } from './basic-components/change-language/change-language.component';
-import { UserPhotoComponent } from './basic-components/user-photo/user-photo.component';
+import { ChangeLanguageComponent } from '@components/change-language/change-language.component';
+import { UserPhotoComponent } from '@components/user-photo/user-photo.component';
 
 const components = [
   ButtonComponent,

@@ -1,0 +1,18 @@
+{
+  "error": "Ошибка",
+  "wrong-credentials": "Неверные учетные данные",
+  "corrupted-token": "Повреждённый токен",
+  "token-expired": "Срок действия токена истек",
+  "forbidden": "Запрещено",
+  "invalid-token": "Недействительный токен",
+  "account-already-confirmed": "Учетная запись уже подтверждена",
+  "hash-not-found": "Хэш подтверждения не найден",
+  "sms-expired": "Срок действия SMS-кода истек",
+  "wrong-code": "Неверный код",
+  "account-not-confirmed": "Учетная запись пользователя не подтверждена",
+  "previous-password": "Предыдущий пароль не может быть установлен как новый",
+  "tac-not-accepted": "Условия не приняты",
+  "user-already-exists": "Пользователь уже существует",
+  "wrong-picture-format": "Неверный формат загружаемой картинки",
+  "link-expired": "Срок действия ссылки истек"
+}

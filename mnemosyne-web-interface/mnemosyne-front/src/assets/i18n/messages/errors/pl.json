@@ -1,0 +1,18 @@
+{
+  "error": "Błąd",
+  "wrong-credentials": "Błędne dane uwierzytelniające",
+  "corrupted-token": "Uszkodzony token",
+  "token-expired": "Token wygasł",
+  "forbidden": "Zakazane",
+  "invalid-token": "Nieprawidłowy token",
+  "account-already-confirmed": "Konto już potwierdzone",
+  "hash-not-found": "Nie znaleziono skrótu potwierdzenia",
+  "sms-expired": "Kod SMS wygasł",
+  "wrong-code": "Błędny kod",
+  "account-not-confirmed": "Konto użytkownika nie zostało potwierdzone",
+  "previous-password": "Poprzednie hasło nie może być ustawione jako nowe",
+  "tac-not-accepted": "T&C nie są akceptowane",
+  "user-already-exists": "Użytkownik już istnieje",
+  "wrong-picture-format": "Zły format przesłanego obrazu",
+  "link-expired": "Link stracił ważność"
+}

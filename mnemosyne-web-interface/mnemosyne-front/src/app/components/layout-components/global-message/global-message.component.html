@@ -21,7 +21,11 @@
       </div>
 
       <div>
-        <h2 class="alert-header">{{ globalMessageService.isError ? 'Error' : 'Success' }}</h2>
+        <ng-container *transloco="let t">
+          <h2 class="alert-header">
+            {{ globalMessageService.isError ? t('errors.error') : t('responses.success') }}
+          </h2>
+        </ng-container>
         <p class="alert-message">{{ message }}</p>
       </div>
     </div>

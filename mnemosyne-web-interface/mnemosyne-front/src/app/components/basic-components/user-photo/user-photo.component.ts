@@ -1,6 +1,8 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { UsersService } from '@services/users.service';
+import { GlobalMessageService } from '@shared/global-message.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'basic-user-photo',
@@ -15,12 +17,15 @@ export class UserPhotoComponent implements OnInit {
   selectedFiles?: FileList;
   preview: string | ArrayBuffer | null = '';
   userProfilePictureLink: string;
+  showText: boolean;
 
   staticStorageLink = this.envService.getStaticStorageLink;
 
   constructor(
     private readonly envService: EnvService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly translocoService: TranslocoService
   ) {}
 
   selectFile(event: any): void {
@@ -40,23 +45,26 @@ export class UserPhotoComponent implements OnInit {
   }
 
   upload() {
-    this.fileInput.nativeElement.click();
-
     if (!this.selectedFiles) return;
 
     const accessToken = localStorage.getItem('_at')!;
 
-    this.usersService.uploadUserPhoto({
-      userPhoto: this.preview,
-      accessToken
-    }).subscribe({
-      next: () => {
-        //
-      },
-      error: () => {
-        //
-      }
-    });
+    this.usersService
+      .uploadUserPhoto({
+        userPhoto: this.preview,
+        accessToken
+      })
+      .subscribe({
+        next: ({ message }) =>
+          this.globalMessageService.handle({
+            message: this.translocoService.translate(
+              message,
+              {},
+              'messages/responses'
+            ),
+            isError: false
+          })
+      });
 
     this.selectedFiles = undefined;
   }

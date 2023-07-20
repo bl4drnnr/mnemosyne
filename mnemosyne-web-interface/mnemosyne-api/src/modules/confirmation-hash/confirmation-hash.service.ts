@@ -37,6 +37,19 @@ export class ConfirmationHashService {
     );
   }
 
+  getConfirmationHash({
+                        confirmationHash,
+                        trx: transaction
+                            }: {
+    confirmationHash: string;
+    trx?: Transaction;
+  }) {
+    return this.confirmationHashRepository.findOne({
+      where: { confirmationHash },
+      transaction
+    });
+  }
+
   async getUserByConfirmationHash({
     confirmationHash,
     trx: transaction

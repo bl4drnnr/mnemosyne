@@ -12,6 +12,8 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
     {
       provide: TRANSLOCO_SCOPE,
       useValue: [
+        { scope: 'messages/errors', alias: 'errors' },
+        { scope: 'messages/responses', alias: 'responses' },
         { scope: 'components/mfa', alias: 'mfa' },
         { scope: 'components/dropdown', alias: 'dropdown' },
         { scope: 'components/link', alias: 'link' },

@@ -1,7 +1,7 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, Patch,
   Post,
   UseGuards,
   UsePipes
@@ -15,6 +15,7 @@ import { Transaction } from 'sequelize';
 import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
+import {UpdateUserInfoDto} from "@dto/update-user-info.dto";
 
 @Controller('users')
 export class UsersController {
@@ -57,5 +58,17 @@ export class UsersController {
     @TransactionParam() trx: Transaction
   ) {
     return this.usersService.getUserInfo({ userId, trx });
+  }
+
+  @UseGuards(AuthGuard)
+  @Patch('user-info')
+  async updateUserInfo(
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction,
+    @Body() payload: UpdateUserInfoDto
+  ) {
+    return this.usersService.updateUser({
+      userId, payload, trx
+    });
   }
 }
