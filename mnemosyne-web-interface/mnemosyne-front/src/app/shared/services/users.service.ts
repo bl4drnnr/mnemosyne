@@ -6,6 +6,7 @@ import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
 import { UploadUserPhotoPayload } from '@payloads/upload-user-photo.payload';
 import { Observable } from 'rxjs';
 import { UserInfoResponse } from '@responses/user-info.response';
+import { PhotoUploadedResponse } from '@responses/photo-uploaded.response';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,10 @@ import { UserInfoResponse } from '@responses/user-info.response';
 export class UsersService {
   constructor(private readonly apiService: ApiService) {}
 
-  uploadUserPhoto({ userPhoto, accessToken }: UploadUserPhotoPayload) {
+  uploadUserPhoto({
+    userPhoto,
+    accessToken
+  }: UploadUserPhotoPayload): Observable<{ message: PhotoUploadedResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.POST,
       controller: CONTROLLERS_TYPE.USERS,

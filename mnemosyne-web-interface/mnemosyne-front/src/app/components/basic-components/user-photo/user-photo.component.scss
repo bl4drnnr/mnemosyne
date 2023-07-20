@@ -1,6 +1,37 @@
 @import 'variables';
 
+.user-photo-container {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+}
+
 .user-photo {
   border-radius: 50%;
-  border: 1px solid var(--disabled-color);
+  position: relative;
+}
+
+.select-photo-button {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0;
+  border-radius: 50%;
+  background-color: var(--disabled-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.select-photo-button-text {
+  color: var(--main-color);
+}
+
+.upload-photo-description {
+  color: var(--text-color);
+  opacity: .75;
+  font-size: 12px;
+  text-align: center;
+  margin: 10px 0;
 }

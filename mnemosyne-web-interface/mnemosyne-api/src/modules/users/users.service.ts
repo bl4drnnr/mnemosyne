@@ -28,8 +28,8 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
-import {WrongPictureException} from "@exceptions/wrong-picture.exception";
-import {PhotoUploadedDto} from "@dto/photo-uploaded.dto";
+import { WrongPictureException } from '@exceptions/wrong-picture.exception';
+import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
 
 @Injectable()
 export class UsersService {

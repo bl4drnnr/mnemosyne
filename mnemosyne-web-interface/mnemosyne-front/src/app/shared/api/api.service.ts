@@ -21,11 +21,11 @@ import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
 })
 export class ApiService {
   constructor(
-    private http: HttpClient,
-    private globalMessageService: GlobalMessageService,
-    private loaderService: LoaderService,
-    private envService: EnvService,
-    private errorHandler: ErrorHandlerService
+    private readonly http: HttpClient,
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly loaderService: LoaderService,
+    private readonly envService: EnvService,
+    private readonly errorHandler: ErrorHandlerService
   ) {}
 
   private frontProxyUrl: string = this.envService.getFrontProxyUrl;

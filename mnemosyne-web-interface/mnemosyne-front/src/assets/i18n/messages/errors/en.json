@@ -1,0 +1,17 @@
+{
+  "error": "Error",
+  "wrong-credentials": "Wrong credentials",
+  "corrupted-token": "Corrupted token",
+  "token-expired": "Token expired",
+  "forbidden": "Forbidden",
+  "invalid-token": "Invalid token",
+  "account-already-confirmed": "Account already confirmed",
+  "hash-not-found": "Confirmation hash not found",
+  "sms-expired": "SMS code has expired",
+  "wrong-code": "Wrong code",
+  "account-not-confirmed": "User account has not been confirmed",
+  "previous-password": "Previous password cannot be set as new one",
+  "tac-not-accepted": "T&C is not accepted",
+  "user-already-exists": "User already exists",
+  "wrong-picture-format": "Wrong format of the uploaded picture"
+}
