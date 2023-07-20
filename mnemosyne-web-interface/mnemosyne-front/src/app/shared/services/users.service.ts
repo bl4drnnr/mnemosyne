@@ -1,13 +1,13 @@
-import {ApiService} from '@shared/api.service';
-import {Injectable} from '@angular/core';
-import {ALLOWED_METHODS_TYPE} from '@interfaces/methods.type';
-import {CONTROLLERS_TYPE} from '@interfaces/controllers.type';
-import {ENDPOINTS_TYPE} from '@interfaces/endpoints.type';
-import {UploadUserPhotoPayload} from '@payloads/upload-user-photo.payload';
-import {Observable} from 'rxjs';
-import {UserInfoResponse} from '@responses/user-info.response';
-import {PhotoUploadedResponse} from '@responses/photo-uploaded.response';
-import {UpdateUserInfoPayload} from "@payloads/update-user-info.payload";
+import { ApiService } from '@shared/api.service';
+import { Injectable } from '@angular/core';
+import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
+import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
+import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
+import { UploadUserPhotoPayload } from '@payloads/upload-user-photo.payload';
+import { Observable } from 'rxjs';
+import { UserInfoResponse } from '@responses/user-info.response';
+import { PhotoUploadedResponse } from '@responses/photo-uploaded.response';
+import { UpdateUserInfoPayload } from '@payloads/update-user-info.payload';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +46,7 @@ export class UsersService {
     payload
   }: {
     accessToken: string;
-    payload: UpdateUserInfoPayload
+    payload: UpdateUserInfoPayload;
   }) {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.PATCH,

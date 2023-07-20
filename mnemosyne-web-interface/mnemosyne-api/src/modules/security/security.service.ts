@@ -1,6 +1,11 @@
 import * as node2fa from 'node-2fa';
 import * as dayjs from 'dayjs';
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  Injectable,
+  UnauthorizedException
+} from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
 import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
@@ -13,13 +18,19 @@ import { SmsCodeSentDto } from '@dto/sms-code-sent.dto';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { MfaLoginDto } from '@dto/mfa-login.dto';
 import { Transaction } from 'sequelize';
+import { DeleteAccountDto } from '@dto/delete-account.dto';
+import { AuthService } from '@modules/auth.service';
+import { AccountDeletedDto } from '@dto/account-deleted.dto';
+import { DeleteConfirmationRequiredDto } from '@dto/delete-confirmation-required.dto';
+import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-confirmation.exception';
 
 @Injectable()
 export class SecurityService {
   constructor(
     private readonly confirmationHashService: ConfirmationHashService,
     private readonly userService: UsersService,
-    private readonly phoneService: PhoneService
+    private readonly phoneService: PhoneService,
+    private readonly authService: AuthService
   ) {}
 
   async registrationGenerateTwoFaQrCode({
@@ -210,6 +221,46 @@ export class SecurityService {
     } catch (e: any) {
       throw new HttpException(e.response.error, e.status);
     }
+  }
+
+  async deleteUserAccount({
+    userId,
+    payload,
+    trx
+  }: {
+    userId: string;
+    payload: DeleteAccountDto;
+    trx?: Transaction;
+  }) {
+    const user = await this.userService.verifyUserCredentials({
+      email: payload.email,
+      password: payload.password,
+      trx
+    });
+
+    if (userId !== user.id) throw new UnauthorizedException('unauthorized');
+
+    try {
+      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
+        mfaCode: payload.mfaCode,
+        phoneCode: payload.phoneCode,
+        userSettings: user.userSettings,
+        userId: user.id
+      });
+
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
+    }
+
+    if (!payload.fullName) return new DeleteConfirmationRequiredDto();
+
+    if (payload.fullName !== `${user.firstName} ${user.lastName}`)
+      throw new WrongDeletionConfirmationException();
+
+    await this.userService.deleteUserAccount({ userId, trx });
+
+    return new AccountDeletedDto();
   }
 
   private async verifySmsCode({

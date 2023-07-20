@@ -32,11 +32,16 @@
       ],
       "@dto/*": [
         "src/dto/*",
-        "src/dto/user/*",
-        "src/dto/role/*",
-        "src/dto/security/*",
-        "src/dto/confirmation-hash/*",
-        "src/dto/auth/*"
+        "src/dto/user/requests/*",
+        "src/dto/user/responses/*",
+        "src/dto/role/responses/*",
+        "src/dto/role/requests/*",
+        "src/dto/security/requests/*",
+        "src/dto/security/responses/*",
+        "src/dto/confirmation-hash/requests/*",
+        "src/dto/confirmation-hash/responses/*",
+        "src/dto/auth/requests/*",
+        "src/dto/auth/responses/*"
       ],
       "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],

@@ -1,7 +1,7 @@
-import {BadRequestException} from "@nestjs/common";
+import { BadRequestException } from '@nestjs/common';
 
 export class LinkExpiredException extends BadRequestException {
-  constructor(message = 'link-expired', description = 'Link has expired') {
-    super(message, description);
+  constructor(message = 'link-expired') {
+    super(message);
   }
 }

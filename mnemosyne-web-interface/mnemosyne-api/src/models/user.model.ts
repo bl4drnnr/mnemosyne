@@ -43,6 +43,15 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false, field: 'last_name' })
   lastName: string;
 
+  @Column({ type: DataType.STRING, allowNull: true })
+  location: string;
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  company: string;
+
+  @Column({ type: DataType.STRING, allowNull: true })
+  website: string;
+
   @Default(false)
   @Column({
     type: DataType.BOOLEAN,

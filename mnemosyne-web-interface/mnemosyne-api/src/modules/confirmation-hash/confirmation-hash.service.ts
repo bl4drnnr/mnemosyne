@@ -38,9 +38,9 @@ export class ConfirmationHashService {
   }
 
   getConfirmationHash({
-                        confirmationHash,
-                        trx: transaction
-                            }: {
+    confirmationHash,
+    trx: transaction
+  }: {
     confirmationHash: string;
     trx?: Transaction;
   }) {
