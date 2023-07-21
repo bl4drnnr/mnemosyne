@@ -1,7 +1,7 @@
 import { IsMobilePhone, IsString } from 'class-validator';
 
 export class RegistrationSendSmsCodeDto {
-  @IsString({ message: 'Phone should be a string' })
+  @IsString({ message: 'wrong-phone-format' })
   @IsMobilePhone()
   readonly phone: string;
 }
