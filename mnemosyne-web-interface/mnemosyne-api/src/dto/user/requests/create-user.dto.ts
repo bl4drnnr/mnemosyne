@@ -1,24 +1,36 @@
-import { IsBoolean, IsString, Length, Matches } from 'class-validator';
+import { IsBoolean, IsFQDN, IsString, Length, Matches } from 'class-validator';
 
 export class CreateUserDto {
   @Matches(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-    { message: 'Wrong email format' }
+    { message: 'wrong-email-format' }
   )
   readonly email: string;
 
   @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
-    message: 'Wrong password format'
+    message: 'wrong-password-format'
   })
   readonly password: string;
 
-  @IsString({ message: 'First name should be a string' })
-  @Length(1, 64, { message: 'Min length of first name is 1, max is 64' })
+  @IsString({ message: 'wrong-first-name-format' })
+  @Length(1, 64, { message: 'wrong-first-name-length' })
   readonly firstName: string;
 
-  @IsString({ message: 'Last name should be a string' })
-  @Length(1, 64, { message: 'Min length of last name is 1, max is 64' })
+  @IsString({ message: 'wrong-last-name-format' })
+  @Length(1, 64, { message: 'wrong-last-name-length' })
   readonly lastName: string;
+
+  @IsString({ message: 'wrong-location-format' })
+  @Length(8, 128, { message: 'wrong-location-length' })
+  readonly location: string;
+
+  @IsString({ message: 'wrong-company-format' })
+  @Length(2, 64, { message: 'wrong-company-length' })
+  readonly company: string;
+
+  @IsString({ message: 'wrong-fqdn' })
+  @IsFQDN()
+  readonly website: string;
 
   @IsBoolean()
   readonly tac: boolean;

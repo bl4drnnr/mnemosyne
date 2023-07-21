@@ -41,16 +41,29 @@ export class CredentialsLayout implements OnInit {
   @Input() headerLink: 'login' | 'registration';
   @Input() isAnimation: boolean;
 
+  @Input() isScrollable = false;
+  @Input() scrollableStep: number;
+  @Input() currentStep: number;
+
+  options: AnimationOptions;
+  staticStorageLink: string;
+
   constructor(
     private readonly envService: EnvService,
     private readonly router: Router
   ) {}
 
-  options: AnimationOptions;
-  staticStorageLink: string;
-
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  enableScrolling() {
+    return (
+      this.isScrollable &&
+      this.scrollableStep &&
+      this.currentStep &&
+      this.scrollableStep === this.currentStep
+    );
   }
 
   ngOnInit() {

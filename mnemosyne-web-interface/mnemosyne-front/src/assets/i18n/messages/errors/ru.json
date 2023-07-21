@@ -14,5 +14,22 @@
   "tac-not-accepted": "Условия не приняты",
   "user-already-exists": "Пользователь уже существует",
   "wrong-picture-format": "Неверный формат загружаемой картинки",
-  "link-expired": "Срок действия ссылки истек"
+  "link-expired": "Срок действия ссылки истек",
+  "validation": {
+    "wrong-email-format": "Неверный формат электронной почты",
+    "wrong-password-format": "Неверный формат пароля",
+    "mfa-code-should-be-6-digit-code": "Код MFA должен состоять из 6 цифр",
+    "phone-code-should-be-6-digit-code": "Телефонный код должен состоять из 6 цифр",
+    "wrong-phone-format": "Неверный формат телефона",
+    "wrong-hash-length": "Неверная длина хеша",
+    "wrong-first-name-length": "Минимальная длина имени — 1 символ, максимальная — 64 символа",
+    "wrong-first-name-format": "Имя должно быть строкой",
+    "wrong-last-name-length": "Минимальная длина фамилии 1 символ, максимальная 64 символа",
+    "wrong-last-name-format": "Фамилия должна быть строкой",
+    "wrong-location-length": "Минимальная длина локации 8 символов, максимальная 128 символов",
+    "wrong-location-format": "Местоположение должно быть строкой",
+    "wrong-company-length": "Минимальная длина компании 2 символа, максимальная 64 символа",
+    "wrong-company-format": "Компания должна быть строкой",
+    "wrong-fqdn": "Неверное полное доменное имя (URL)"
+  }
 }

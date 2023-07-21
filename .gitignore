@@ -27,6 +27,7 @@ mnemosyne-web-interface/mnemosyne-api/.classpath
 mnemosyne-web-interface/mnemosyne-api/.c9/
 mnemosyne-web-interface/mnemosyne-api/*.launch
 mnemosyne-web-interface/mnemosyne-api/.settings/
+mnemosyne-web-interface/mnemosyne-api/mongologsmanager.ts
 mnemosyne-web-interface/mnemosyne-front/dist
 mnemosyne-web-interface/mnemosyne-front/node_modules
 mnemosyne-web-interface/mnemosyne-front/package-lock.json

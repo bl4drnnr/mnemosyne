@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
   selector: 'page-registration',
@@ -22,17 +23,25 @@ export class RegistrationComponent {
   tac = false;
 
   email: string;
-  password = '';
+  password: string;
 
   firstName: string;
   lastName: string;
+  location: string;
+  company: string;
+  website: string;
 
   incorrectEmail = true;
   incorrectPassword = true;
+  incorrectFirstName: boolean;
+  incorrectLastName: boolean;
+  incorrectCompanyName: boolean;
+  incorrectLocationName: boolean;
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
+    private readonly authenticationService: AuthenticationService,
+    public validationService: ValidationService,
+    private readonly router: Router
   ) {}
 
   handleRegistration() {
@@ -67,12 +76,19 @@ export class RegistrationComponent {
     if (!includeAll) {
       return this.incorrectPassword || this.incorrectEmail;
     } else {
+      const wrongWebsite = !this.validationService.isFQDN(this.website);
+
       return (
-        this.incorrectPassword ||
-        this.incorrectEmail ||
-        !this.tac ||
-        this.lastName.length < 1 ||
-        this.firstName.length < 1
+        // this.incorrectPassword ||
+        // this.incorrectEmail ||
+        // !this.tac ||
+        // this.lastName.length < 1 ||
+        // this.firstName.length < 1 ||
+        // this.incorrectFirstName ||
+        // this.incorrectLastName ||
+        // this.incorrectCompanyName ||
+        // this.incorrectLocationName ||
+        wrongWebsite
       );
     }
   }

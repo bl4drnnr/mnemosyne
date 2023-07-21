@@ -14,6 +14,8 @@ export class ErrorHandlerService {
   ) {}
 
   errorHandler(error: HttpErrorResponse) {
+    // @TODO Continue here. Check the type/name of the object
+    // that contains errors and render them
     const errorMessage = this.translocoService.translate(
       error.error.message,
       {},

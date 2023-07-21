@@ -43,6 +43,8 @@ export class InputComponent {
   @Input() showError = false;
   @Input() errorMessage: string | null;
   @Input() inputDescription: string | null;
+  @Input() minLength: number;
+  @Input() maxLength: number;
 
   @Output() valueChange = new EventEmitter<string>();
   @Output() incorrectInput = new EventEmitter<boolean>();
@@ -77,6 +79,15 @@ export class InputComponent {
       this.incorrectInput.emit(hasError);
 
       if (hasError) this.showError = true;
+    } else if (this.maxLength || this.minLength) {
+      const hasError = !this.validationService.checkLength({
+        str: this.value,
+        min: this.minLength,
+        max: this.maxLength
+      });
+
+      this.showError = hasError;
+      this.incorrectInput.emit(hasError);
     } else if (!this.value.length) {
       this.showError = false;
       this.incorrectInput.emit(false);

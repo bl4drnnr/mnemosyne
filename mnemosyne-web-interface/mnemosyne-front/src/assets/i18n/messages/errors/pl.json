@@ -14,5 +14,22 @@
   "tac-not-accepted": "T&C nie są akceptowane",
   "user-already-exists": "Użytkownik już istnieje",
   "wrong-picture-format": "Zły format przesłanego obrazu",
-  "link-expired": "Link stracił ważność"
+  "link-expired": "Link stracił ważność",
+  "validation": {
+    "wrong-email-format": "Zły format e-maila",
+    "wrong-password-format": "Niewłaściwy format hasła",
+    "mfa-code-should-be-6-digit-code": "Kod MFA powinien mieć 6 cyfr",
+    "phone-code-should-be-6-digit-code": "Kod telefonu powinien składać się z 6 cyfr",
+    "wrong-phone-format": "Niewłaściwy format telefonu",
+    "wrong-hash-length": "Niewłaściwa długość skrótu",
+    "wrong-first-name-length": "Minimalna długość imienia to 1 symbol, maksymalna to 64 symbole",
+    "wrong-first-name-format": "Imię powinno być ciągiem znaków",
+    "wrong-last-name-length": "Minimalna długość nazwiska to 1 znak, maksymalna to 64 symbole",
+    "wrong-last-name-format": "Nazwisko powinno być ciągiem znaków",
+    "wrong-location-length": "Minimalna długość lokalizacji to 8 symboli, maksymalna to 128 symboli",
+    "wrong-location-format": "Lokalizacja powinna być ciągiem znaków",
+    "wrong-company-length": "Minimalna długość firmy to 2 symbole, maksymalna to 64 symbole",
+    "wrong-company-format": "Firma powinna być ciągiem znaków",
+    "wrong-fqdn": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)"
+  }
 }
