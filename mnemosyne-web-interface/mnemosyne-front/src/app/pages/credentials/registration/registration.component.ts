@@ -25,14 +25,18 @@ export class RegistrationComponent {
   email: string;
   password = '';
 
-  firstName = '';
-  lastName = '';
-  location = '';
-  company = '';
-  website = '';
+  firstName: string;
+  lastName: string;
+  location: string;
+  company: string;
+  website: string;
 
   incorrectEmail = true;
   incorrectPassword = true;
+  incorrectFirstName: boolean;
+  incorrectLastName: boolean;
+  incorrectCompanyName: boolean;
+  incorrectLocationName: boolean;
 
   constructor(
     private readonly authenticationService: AuthenticationService,
@@ -72,10 +76,6 @@ export class RegistrationComponent {
     if (!includeAll) {
       return this.incorrectPassword || this.incorrectEmail;
     } else {
-      const wrongCompanyName = this.isCompanyNameWrong();
-      const wrongLocation = this.isLocationWrong();
-      const wrongFirstName = this.isFirstNameWrong();
-      const wrongLastName = this.isLastNameWrong();
       const wrongWebsite = !this.validationService.isFQDN(this.website);
 
       return (
@@ -84,42 +84,12 @@ export class RegistrationComponent {
         !this.tac ||
         this.lastName.length < 1 ||
         this.firstName.length < 1 ||
-        wrongFirstName ||
-        wrongLastName ||
-        wrongCompanyName ||
-        wrongWebsite ||
-        wrongLocation
+        this.incorrectFirstName ||
+        this.incorrectLastName ||
+        this.incorrectCompanyName ||
+        this.incorrectLocationName ||
+        wrongWebsite
       );
     }
-  }
-
-  isCompanyNameWrong() {
-    return !this.validationService.checkLength({
-      str: this.company,
-      min: 2,
-      max: 64
-    });
-  }
-
-  isLocationWrong() {
-    return !this.validationService.checkLength({
-      str: this.location,
-      min: 8,
-      max: 128
-    });
-  }
-
-  isFirstNameWrong() {
-    return !this.validationService.checkLength({
-      str: this.firstName,
-      max: 64
-    });
-  }
-
-  isLastNameWrong() {
-    return !this.validationService.checkLength({
-      str: this.lastName,
-      max: 64
-    });
   }
 }
