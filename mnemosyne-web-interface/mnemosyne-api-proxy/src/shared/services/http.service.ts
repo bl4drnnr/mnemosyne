@@ -95,10 +95,17 @@ export class ProxyHttpService {
             payload: { body: payload, params }
           });
 
-          const errorMessage = error.response?.data?.error;
+          let errorMessage = error.response?.data;
+
+          try {
+            errorMessage = { message: JSON.parse(errorMessage.message) };
+          } catch (e) {
+            errorMessage = error.response?.data;
+          }
+
           reject(
             new HttpException(
-              errorMessage || error.response?.data || 'Internal server error',
+              errorMessage || 'Internal server error',
               error.response?.data?.statusCode || 500
             )
           );
