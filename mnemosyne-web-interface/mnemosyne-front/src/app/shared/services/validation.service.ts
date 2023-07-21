@@ -100,4 +100,39 @@ export class ValidationService {
     }
     return passwordRules;
   }
+
+  isFQDN(domain: string) {
+    if (domain) {
+      const regex = new RegExp(
+        /^(?!.*?_.*?)(?!(?:[\w]+?\.)?\-[\w\.\-]*?)(?![\w]+?\-\.(?:[\w\.\-]+?))(?=[\w])(?=[\w\.\-]*?\.+[\w\.\-]*?)(?![\w\.\-]{254})(?!(?:\.?[\w\-\.]*?[\w\-]{64,}\.)+?)[\w\.\-]+?(?<![\w\-\.]*?\.[\d]+?)(?<=[\w\-]{2,})(?<![\w\-]{25})$/
+      );
+      return regex.test(domain);
+    } else return domain === '';
+  }
+
+  checkLength({
+    str,
+    min,
+    max,
+    considerEmpty = false
+  }: {
+    str: string;
+    min?: number;
+    max?: number;
+    considerEmpty?: boolean;
+  }) {
+    if (!str && !considerEmpty) return true;
+
+    const length = str.length;
+
+    if (min !== undefined && max !== undefined) {
+      return length >= min && length <= max;
+    } else if (min !== undefined) {
+      return length >= min;
+    } else if (max !== undefined) {
+      return length <= max;
+    }
+
+    return false;
+  }
 }

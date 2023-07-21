@@ -25,5 +25,16 @@
   "resendCodeIn": "You can resend SMS in {{ time }} sec{{ s }}.",
   "phoneInvalidFormat": "Phone invalid format. Make sure the phone number matches (+1234567890)",
   "phoneInputDescription": "Make sure you provided phone number with country code. Once you have got a message on your phone, provide the 6-digit code into the input field below.",
-  "resetPassInputDesc": "Confirmation link will be sent to provided email address, if the account with this email address exists. Link will be valid for 24h, make sure you will reset password in this period of time."
+  "resetPassInputDesc": "Confirmation link will be sent to provided email address, if the account with this email address exists. Link will be valid for 24h, make sure you will reset password in this period of time.",
+  "fieldRequired": "Field is required",
+  "location": "Location",
+  "provideLocation": "Provide your location",
+  "locationDesc": "Field is optional. If you want you can provide the location where you are living/based/working.",
+  "company": "Company",
+  "provideCompany": "Provide your company",
+  "companyDesc": "Field is optional. Provide the company name you work for or you are owner of.",
+  "website": "Website",
+  "provideWebsite": "Provide your website",
+  "websiteDesc": "Field is optional. Should be FQDN. Provide the URL of the website that is associated with you or your company.",
+  "wrongFQDN": "Wrong fully qualified domain name (URL)"
 }

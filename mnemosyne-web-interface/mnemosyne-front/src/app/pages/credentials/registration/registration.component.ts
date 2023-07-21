@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
   selector: 'page-registration',
@@ -24,15 +25,19 @@ export class RegistrationComponent {
   email: string;
   password = '';
 
-  firstName: string;
-  lastName: string;
+  firstName = '';
+  lastName = '';
+  location = '';
+  company = '';
+  website = '';
 
   incorrectEmail = true;
   incorrectPassword = true;
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
+    private readonly authenticationService: AuthenticationService,
+    public validationService: ValidationService,
+    private readonly router: Router
   ) {}
 
   handleRegistration() {
@@ -67,13 +72,54 @@ export class RegistrationComponent {
     if (!includeAll) {
       return this.incorrectPassword || this.incorrectEmail;
     } else {
+      const wrongCompanyName = this.isCompanyNameWrong();
+      const wrongLocation = this.isLocationWrong();
+      const wrongFirstName = this.isFirstNameWrong();
+      const wrongLastName = this.isLastNameWrong();
+      const wrongWebsite = !this.validationService.isFQDN(this.website);
+
       return (
         this.incorrectPassword ||
         this.incorrectEmail ||
         !this.tac ||
         this.lastName.length < 1 ||
-        this.firstName.length < 1
+        this.firstName.length < 1 ||
+        wrongFirstName ||
+        wrongLastName ||
+        wrongCompanyName ||
+        wrongWebsite ||
+        wrongLocation
       );
     }
+  }
+
+  isCompanyNameWrong() {
+    return !this.validationService.checkLength({
+      str: this.company,
+      min: 2,
+      max: 64
+    });
+  }
+
+  isLocationWrong() {
+    return !this.validationService.checkLength({
+      str: this.location,
+      min: 8,
+      max: 128
+    });
+  }
+
+  isFirstNameWrong() {
+    return !this.validationService.checkLength({
+      str: this.firstName,
+      max: 64
+    });
+  }
+
+  isLastNameWrong() {
+    return !this.validationService.checkLength({
+      str: this.lastName,
+      max: 64
+    });
   }
 }

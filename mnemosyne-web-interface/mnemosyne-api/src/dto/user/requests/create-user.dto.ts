@@ -1,4 +1,4 @@
-import { IsBoolean, IsString, Length, Matches } from 'class-validator';
+import { IsBoolean, IsFQDN, IsString, Length, Matches } from 'class-validator';
 
 export class CreateUserDto {
   @Matches(
@@ -19,6 +19,18 @@ export class CreateUserDto {
   @IsString({ message: 'Last name should be a string' })
   @Length(1, 64, { message: 'Min length of last name is 1, max is 64' })
   readonly lastName: string;
+
+  @IsString({ message: 'Location should be a string' })
+  @Length(8, 128, { message: 'Min length of location is 8, max is 128' })
+  readonly location: string;
+
+  @IsString({ message: 'Company should be a string' })
+  @Length(2, 64, { message: 'Min length of company is 2, max is 64' })
+  readonly company: string;
+
+  @IsString({ message: 'Website should be a string' })
+  @IsFQDN()
+  readonly website: string;
 
   @IsBoolean()
   readonly tac: boolean;

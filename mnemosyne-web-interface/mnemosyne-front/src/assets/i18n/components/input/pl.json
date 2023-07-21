@@ -25,5 +25,16 @@
   "resendCodeIn": "Możesz wysłać SMSa za {{ time }} sec{{ s }}.",
   "phoneInvalidFormat": "Nieprawidłowy format telefonu. Upewnij się, że numer telefonu pasuje (+1234567890)",
   "phoneInputDescription": "Upewnij się, że podałeś numer telefonu z numerem kierunkowym kraju. Po odebraniu wiadomości na telefonie wprowadź 6-cyfrowy kod w poniższym polu wprowadzania.",
-  "resetPassInputDesc": "Link potwierdzający zostanie wysłany na podany adres e-mail, jeśli istnieje konto z tym adresem e-mail. Link będzie ważny przez 24 godziny, upewnij się, że w tym czasie zresetujesz hasło."
+  "resetPassInputDesc": "Link potwierdzający zostanie wysłany na podany adres e-mail, jeśli istnieje konto z tym adresem e-mail. Link będzie ważny przez 24 godziny, upewnij się, że w tym czasie zresetujesz hasło.",
+  "fieldRequired": "Pole jest wymagane",
+  "location": "Lokalizacja",
+  "provideLocation": "Podaj swoją lokalizację",
+  "locationDesc": "Pole jest opcjonalne. Jeśli chcesz, możesz podać lokalizację, w której mieszkasz/mieszkasz/pracujesz.",
+  "company": "Firma",
+  "provideCompany": "Podaj swoją firmę",
+  "companyDesc": "Pole jest opcjonalne. Podaj nazwę firmy, dla której pracujesz lub której jesteś właścicielem.",
+  "website": "Strona internetowa",
+  "provideWebsite": "Podaj swoją stronę internetową",
+  "websiteDesc": "Pole jest opcjonalne. Powinno być FQDN. Podaj adres URL strony internetowej, która jest powiązana z Tobą lub Twoją firmą.",
+  "wrongFQDN": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)"
 }
