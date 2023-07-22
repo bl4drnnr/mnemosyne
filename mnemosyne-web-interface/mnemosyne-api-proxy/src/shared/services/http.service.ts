@@ -98,7 +98,7 @@ export class ProxyHttpService {
           let errorMessage = error.response?.data;
 
           try {
-            errorMessage = { message: JSON.parse(errorMessage.message) };
+            errorMessage = { messages: JSON.parse(errorMessage.message) };
           } catch (e) {
             errorMessage = error.response?.data;
           }

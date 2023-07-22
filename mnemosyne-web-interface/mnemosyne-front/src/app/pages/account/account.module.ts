@@ -5,10 +5,10 @@ import { LayoutsModule } from '@layouts/layouts.module';
 import { ComponentsModule } from '@components/components.module';
 import { SettingsComponent } from './settings/settings.component';
 
-const components = [DashboardComponent];
+const components = [DashboardComponent, SettingsComponent];
 
 @NgModule({
-  declarations: [...components, SettingsComponent],
+  declarations: [...components],
   imports: [CommonModule, LayoutsModule, ComponentsModule],
   exports: [...components]
 })

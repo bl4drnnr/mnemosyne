@@ -14,16 +14,31 @@ export class ErrorHandlerService {
   ) {}
 
   errorHandler(error: HttpErrorResponse) {
-    // @TODO Continue here. Check the type/name of the object
-    // that contains errors and render them
-    const errorMessage = this.translocoService.translate(
-      error.error.message,
-      {},
-      'messages/errors'
-    );
+    const errorPayload = error.error;
+    let displayErrorMessage = '';
+
+    if (errorPayload.message) {
+      displayErrorMessage = this.translocoService.translate(
+        errorPayload.message,
+        {},
+        'messages/errors'
+      );
+    } else if (errorPayload.messages) {
+      errorPayload.messages.forEach(
+        (messageItem: { property: string; error: Array<string> }) => {
+          messageItem.error.forEach((message: string) => {
+            displayErrorMessage += `${this.translocoService.translate(
+              `validation.${message}`,
+              {},
+              'messages/errors'
+            )}<br>`;
+          });
+        }
+      );
+    }
 
     this.globalMessageService.handle({
-      message: errorMessage,
+      message: displayErrorMessage,
       isError: true
     });
 
@@ -31,6 +46,6 @@ export class ErrorHandlerService {
       this.globalMessageService.clear();
     }, 10000);
 
-    return throwError(() => error.error.message);
+    return throwError(() => displayErrorMessage);
   }
 }

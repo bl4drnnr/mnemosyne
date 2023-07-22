@@ -28,7 +28,8 @@
         "src/app/components/*",
         "src/app/components/basic-components/*",
         "src/app/components/pages-components/*",
-        "src/app/components/layout-components/*"
+        "src/app/components/layout-components/*",
+        "src/app/components/dashboard-components/*"
       ],
       "@pages/*": [
         "src/app/pages/*",

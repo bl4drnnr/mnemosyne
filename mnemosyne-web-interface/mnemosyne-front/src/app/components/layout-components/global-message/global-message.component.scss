@@ -59,6 +59,7 @@
   align-items: center;
   transition: .3s;
   cursor: pointer;
+  background-color: var(--bg-color);
 
   &:hover {
     background-color: var(--color-hover);

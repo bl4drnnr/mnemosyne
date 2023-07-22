@@ -1,4 +1,4 @@
-import { IsBoolean, IsFQDN, IsString, Length, Matches } from 'class-validator';
+import {IsBoolean, IsFQDN, IsOptional, IsString, Length, Matches} from 'class-validator';
 
 export class CreateUserDto {
   @Matches(
@@ -20,14 +20,17 @@ export class CreateUserDto {
   @Length(1, 64, { message: 'wrong-last-name-length' })
   readonly lastName: string;
 
+  @IsOptional()
   @IsString({ message: 'wrong-location-format' })
   @Length(8, 128, { message: 'wrong-location-length' })
   readonly location: string;
 
+  @IsOptional()
   @IsString({ message: 'wrong-company-format' })
   @Length(2, 64, { message: 'wrong-company-length' })
   readonly company: string;
 
+  @IsOptional()
   @IsString({ message: 'wrong-fqdn' })
   @IsFQDN()
   readonly website: string;

@@ -10,7 +10,7 @@ import { MfaService } from '@services/mfa.service';
   templateUrl: './mfa.component.html',
   styleUrls: [
     './mfa.component.scss',
-    '../../../pages/credentials/credentials.component.scss'
+    '../../../pages/credentials/shared/credentials.component.scss'
   ]
 })
 export class MfaComponent {

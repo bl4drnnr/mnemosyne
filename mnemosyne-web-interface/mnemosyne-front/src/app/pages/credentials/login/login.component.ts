@@ -9,7 +9,7 @@ import { SmsService } from '@services/sms.service';
 @Component({
   selector: 'page-login',
   templateUrl: './login.component.html',
-  styleUrls: ['../credentials.component.scss'],
+  styleUrls: ['../shared/credentials.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
@@ -100,7 +100,7 @@ export class LoginComponent {
               break;
             default:
               localStorage.setItem('_at', _at);
-              await this.router.navigate(['dashboard']);
+              await this.router.navigate(['account/dashboard']);
           }
         }
       });
