@@ -8,7 +8,7 @@ import { ValidationService } from '@services/validation.service';
 @Component({
   selector: 'page-reset-password',
   templateUrl: './reset-password.component.html',
-  styleUrls: ['../credentials.component.scss'],
+  styleUrls: ['../shared/credentials.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [

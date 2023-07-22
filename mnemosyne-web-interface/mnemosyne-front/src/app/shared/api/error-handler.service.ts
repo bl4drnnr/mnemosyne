@@ -25,14 +25,14 @@ export class ErrorHandlerService {
       );
     } else if (errorPayload.messages) {
       errorPayload.messages.forEach(
-        (messageItem: { property: string; error: Array<string>; }) => {
+        (messageItem: { property: string; error: Array<string> }) => {
           messageItem.error.forEach((message: string) => {
             displayErrorMessage += `${this.translocoService.translate(
               `validation.${message}`,
               {},
               'messages/errors'
             )}<br>`;
-          })
+          });
         }
       );
     }

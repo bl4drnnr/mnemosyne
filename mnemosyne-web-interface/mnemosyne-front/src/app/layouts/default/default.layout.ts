@@ -10,6 +10,7 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
       provide: TRANSLOCO_SCOPE,
       useValue: [
         { scope: 'components/button', alias: 'button' },
+        { scope: 'components/sidebar', alias: 'sidebar' },
         { scope: 'credentials/registration', alias: 'reg' },
         { scope: 'account/settings', alias: 'settings' }
       ]

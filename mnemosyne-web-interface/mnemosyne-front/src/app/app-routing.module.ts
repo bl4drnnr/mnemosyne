@@ -8,6 +8,7 @@ import { TermsAndConditionsComponent } from '@pages/terms-and-conditions/terms-a
 import { DashboardComponent } from '@pages/dashboard/dashboard.component';
 import { ResetPasswordComponent } from '@pages/reset-password/reset-password.component';
 import { HomeComponent } from '@pages/home/home.component';
+import { SettingsComponent } from '@pages/settings/settings.component';
 
 const routes: Routes = [
   {
@@ -36,14 +37,23 @@ const routes: Routes = [
     title: 'Mnemosyne | T&C'
   },
   {
-    path: 'dashboard',
+    path: 'account/dashboard',
     component: DashboardComponent,
     title: 'Mnemosyne | Dashboard'
+  },
+  {
+    path: 'account/settings',
+    component: SettingsComponent,
+    title: 'Mnemosyne | Settings'
   },
   {
     path: 'reset-password/:hash',
     component: ResetPasswordComponent,
     title: 'Mnemosyne | Reset Password'
+  },
+  {
+    path: 'account',
+    redirectTo: 'account/dashboard'
   },
   {
     path: '',

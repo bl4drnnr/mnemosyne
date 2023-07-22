@@ -7,7 +7,7 @@ import { AuthenticationService } from '@services/authentication.service';
 @Component({
   selector: 'page-account-confirmation',
   templateUrl: './account-confirmation.component.html',
-  styleUrls: ['../credentials.component.scss'],
+  styleUrls: ['../shared/credentials.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [

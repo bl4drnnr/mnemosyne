@@ -7,7 +7,7 @@ import { ValidationService } from '@services/validation.service';
 @Component({
   selector: 'page-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['../credentials.component.scss'],
+  styleUrls: ['../shared/credentials.component.scss'],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
