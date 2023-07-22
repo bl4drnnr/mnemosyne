@@ -79,15 +79,15 @@ export class RegistrationComponent {
       const wrongWebsite = !this.validationService.isFQDN(this.website);
 
       return (
-        // this.incorrectPassword ||
-        // this.incorrectEmail ||
-        // !this.tac ||
-        // this.lastName.length < 1 ||
-        // this.firstName.length < 1 ||
-        // this.incorrectFirstName ||
-        // this.incorrectLastName ||
-        // this.incorrectCompanyName ||
-        // this.incorrectLocationName ||
+        this.incorrectPassword ||
+        this.incorrectEmail ||
+        !this.tac ||
+        this.lastName.length < 1 ||
+        this.firstName.length < 1 ||
+        this.incorrectFirstName ||
+        this.incorrectLastName ||
+        this.incorrectCompanyName ||
+        this.incorrectLocationName ||
         wrongWebsite
       );
     }

@@ -26,7 +26,7 @@
             {{ globalMessageService.isError ? t('errors.error') : t('responses.success') }}
           </h2>
         </ng-container>
-        <p class="alert-message">{{ message }}</p>
+        <p class="alert-message" [innerHTML]="message"></p>
       </div>
     </div>
 
