@@ -15,6 +15,7 @@
   "user-already-exists": "Użytkownik już istnieje",
   "wrong-picture-format": "Zły format przesłanego obrazu",
   "link-expired": "Link stracił ważność",
+  "unhandled-endpoint": "Nieobsługiwany punkt końcowy",
   "validation": {
     "wrong-email-format": "Zły format e-maila",
     "wrong-password-format": "Niewłaściwy format hasła",

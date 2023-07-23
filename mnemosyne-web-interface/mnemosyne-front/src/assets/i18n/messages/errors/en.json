@@ -15,6 +15,7 @@
   "user-already-exists": "User already exists",
   "wrong-picture-format": "Wrong format of the uploaded picture",
   "link-expired": "Link has expired",
+  "unhandled-endpoint": "Unhandled endpoint",
   "validation": {
     "wrong-email-format": "Wrong email format",
     "wrong-password-format": "Wrong password format",

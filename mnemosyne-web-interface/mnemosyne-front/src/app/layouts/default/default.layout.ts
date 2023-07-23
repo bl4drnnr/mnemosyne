@@ -9,7 +9,13 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
     {
       provide: TRANSLOCO_SCOPE,
       useValue: [
+        { scope: 'messages/errors', alias: 'errors' },
+        { scope: 'messages/responses', alias: 'responses' },
+        { scope: 'components/mfa', alias: 'mfa' },
+        { scope: 'components/dropdown', alias: 'dropdown' },
+        { scope: 'components/link', alias: 'link' },
         { scope: 'components/button', alias: 'button' },
+        { scope: 'components/input', alias: 'input' },
         { scope: 'components/sidebar', alias: 'sidebar' },
         { scope: 'credentials/registration', alias: 'reg' },
         { scope: 'account/settings', alias: 'settings' }

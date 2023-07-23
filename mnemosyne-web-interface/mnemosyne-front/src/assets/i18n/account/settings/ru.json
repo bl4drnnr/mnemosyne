@@ -1,5 +1,9 @@
 {
   "selectPhoto": "Выберете фото",
-  "uploadPhotoDescription": "Рекомендуемое разрешение фото 150х150. Допускается только формат PNG."
+  "uploadPhotoDescription": "Рекомендуемое разрешение фото 150х150. Допускается только формат PNG.",
+  "personalSettings": "Личные настройки",
+  "managePersonalSettings": "Управление вашей личной информацией",
+  "securitySettings": "Настройки безопасности",
+  "manageSecuritySettings": "Управление настройками безопасности вашей учетной записи"
 }
 

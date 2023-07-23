@@ -10,5 +10,6 @@
   "resetPassResendEmail": "Wyślij ponownie wiadomość e-mail dotyczącą resetowania hasła",
   "setUpNewPass": "Ustaw nowe hasło",
   "upload": "Zauploduj",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "saveSettings": "Zapisz ustawienia"
 }

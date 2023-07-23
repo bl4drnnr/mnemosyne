@@ -41,6 +41,7 @@ export class UsersController {
     return this.usersService.resetUserPassword({ payload, trx });
   }
 
+  @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   @Post('upload-user-photo')
   async uploadUserPhoto(
@@ -70,7 +71,7 @@ export class UsersController {
     @TransactionParam() trx: Transaction,
     @Body() payload: UpdateUserInfoDto
   ) {
-    return this.usersService.updateUser({
+    return this.usersService.updateUserInfo({
       userId,
       payload,
       trx

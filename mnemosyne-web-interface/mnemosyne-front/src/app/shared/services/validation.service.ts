@@ -107,7 +107,7 @@ export class ValidationService {
         /^(?!.*?_.*?)(?!(?:[\w]+?\.)?\-[\w\.\-]*?)(?![\w]+?\-\.(?:[\w\.\-]+?))(?=[\w])(?=[\w\.\-]*?\.+[\w\.\-]*?)(?![\w\.\-]{254})(?!(?:\.?[\w\-\.]*?[\w\-]{64,}\.)+?)[\w\.\-]+?(?<![\w\-\.]*?\.[\d]+?)(?<=[\w\-]{2,})(?<![\w\-]{25})$/
       );
       return regex.test(domain);
-    } else return domain === '' || domain === undefined;
+    } else return domain === '' || domain === undefined || domain === null;
   }
 
   checkLength({ str, min, max }: { str: string; min?: number; max?: number }) {

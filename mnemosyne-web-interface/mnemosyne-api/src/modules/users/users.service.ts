@@ -31,6 +31,8 @@ import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
 import { LinkExpiredException } from '@exceptions/link-expired.exception';
+import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
+import { UserUpdatedDto } from '@dto/user-updated.dto';
 
 @Injectable()
 export class UsersService {
@@ -361,6 +363,20 @@ export class UsersService {
       email: userData.email,
       isProfilePicPresent
     };
+  }
+
+  async updateUserInfo({
+    userId,
+    payload,
+    trx
+  }: {
+    userId: string;
+    payload: UpdateUserInfoDto;
+    trx?: Transaction;
+  }) {
+    await this.updateUser({ payload, userId, trx });
+
+    return new UserUpdatedDto();
   }
 
   async deleteUserAccount({

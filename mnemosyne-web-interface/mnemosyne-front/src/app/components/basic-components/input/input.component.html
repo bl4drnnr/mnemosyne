@@ -4,7 +4,8 @@
     class="input-field"
     [ngClass]="{
     'disabled': disabled || loaderService.getStatus(),
-    'error': showError
+    'error': showError,
+    'password-size': ['password-repeat', 'password'].includes(type) && value && value.length > 0
     }"
     [disabled]="disabled"
     [(ngModel)]="value"

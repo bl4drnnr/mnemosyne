@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { UserInfoResponse } from '@responses/user-info.response';
 import { PhotoUploadedResponse } from '@responses/photo-uploaded.response';
 import { UpdateUserInfoPayload } from '@payloads/update-user-info.payload';
+import { UserUpdatedResponse } from '@responses/user-updated.response';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,7 @@ export class UsersService {
   }: {
     accessToken: string;
     payload: UpdateUserInfoPayload;
-  }) {
+  }): Observable<{ message: UserUpdatedResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.PATCH,
       controller: CONTROLLERS_TYPE.USERS,

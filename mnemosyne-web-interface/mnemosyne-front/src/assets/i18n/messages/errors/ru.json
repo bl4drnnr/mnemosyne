@@ -15,6 +15,7 @@
   "user-already-exists": "Пользователь уже существует",
   "wrong-picture-format": "Неверный формат загружаемой картинки",
   "link-expired": "Срок действия ссылки истек",
+  "unhandled-endpoint": "Необработанная конечная точка",
   "validation": {
     "wrong-email-format": "Неверный формат электронной почты",
     "wrong-password-format": "Неверный формат пароля",

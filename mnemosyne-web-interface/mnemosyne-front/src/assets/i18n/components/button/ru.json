@@ -10,5 +10,6 @@
   "resetPassResendEmail": "Повторно отправить электронное письмо для сброса пароля",
   "setUpNewPass": "Установить новый пароль",
   "upload": "Загрузить",
-  "dashboard": "Дашборд"
+  "dashboard": "Дашборд",
+  "saveSettings": "Сохранить"
 }
