@@ -11,5 +11,6 @@
   "setUpNewPass": "Установить новый пароль",
   "upload": "Загрузить",
   "dashboard": "Дашборд",
-  "saveSettings": "Сохранить"
+  "saveSettings": "Сохранить",
+  "close": "Закрыть"
 }

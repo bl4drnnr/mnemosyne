@@ -11,7 +11,7 @@ import {
 import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 
 @Component({
-  selector: 'app-home',
+  selector: 'basic-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   animations: [

@@ -17,78 +17,11 @@
       </div>
     </div>
 
-    <div
-      class="personal-settings-container"
-      *ngIf="currentSection === 'personal' && userInfo"
-    >
-      <basic-user-photo
-        [isProfilePicPresent]="userInfo.isProfilePicPresent"
-        [userId]="userInfo.userId"
+    <div *ngIf="currentSection === 'personal' && userInfo">
+      <basic-user-info-settings
+        [userInfo]="userInfo"
+        (saveUserInfoEvent)="saveUserInfo($event)"
       />
-      <div class="personal-settings-inputs">
-        <h3>{{ t('settings.managePersonalSettings') }}</h3>
-
-        <div class="dived-line"></div>
-
-        <basic-input
-          [label]="t('input.provideFirstName')"
-          [placeholder]="t('input.firstName')"
-          [inputDescription]="t('input.fieldRequired')"
-          [value]="userInfo.firstName"
-          [minLength]="1"
-          [maxLength]="64"
-          (valueChange)="userInfo.firstName = $event"
-          (incorrectInput)="incorrectFirstName = $event"
-        />
-        <basic-input
-          [label]="t('input.provideLastName')"
-          [placeholder]="t('input.lastName')"
-          [inputDescription]="t('input.fieldRequired')"
-          [value]="userInfo.lastName"
-          [minLength]="1"
-          [maxLength]="64"
-          (valueChange)="userInfo.lastName = $event"
-          (incorrectInput)="incorrectLastName = $event"
-        />
-        <basic-input
-          [label]="t('input.location')"
-          [placeholder]="t('input.provideLocation')"
-          [inputDescription]="t('input.locationDesc')"
-          [errorMessage]="t('input.locationError')"
-          [value]="userInfo.location"
-          [minLength]="8"
-          [maxLength]="128"
-          (valueChange)="userInfo.location = $event"
-          (incorrectInput)="incorrectLocationName = $event"
-        />
-        <basic-input
-          [label]="t('input.company')"
-          [placeholder]="t('input.provideCompany')"
-          [inputDescription]="t('input.companyDesc')"
-          [errorMessage]="t('input.companyError')"
-          [value]="userInfo.company"
-          [minLength]="2"
-          [maxLength]="64"
-          (valueChange)="userInfo.company = $event"
-          (incorrectInput)="incorrectCompanyName = $event"
-        />
-        <basic-input
-          [label]="t('input.website')"
-          [placeholder]="t('input.provideWebsite')"
-          [inputDescription]="t('input.websiteDesc')"
-          [showError]="!validationService.isFQDN(userInfo.website)"
-          [errorMessage]="t('input.wrongFQDN')"
-          [value]="userInfo.website"
-          (valueChange)="userInfo.website = $event"
-        />
-
-        <div class="dived-line"></div>
-
-        <basic-button
-          [label]="t('button.saveSettings')"
-          (buttonClick)="saveUserInfo()"
-        />
-      </div>
     </div>
 
     <div *ngIf="currentSection === 'security'"></div>

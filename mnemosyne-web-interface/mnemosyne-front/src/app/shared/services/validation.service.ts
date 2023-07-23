@@ -125,4 +125,11 @@ export class ValidationService {
 
     return false;
   }
+
+  checkBase64PngImage(image: string) {
+    if (image) {
+      const regex = new RegExp(/data:image\/png;base64,([^\"]*)/);
+      return regex.test(image);
+    } return image === '';
+  }
 }

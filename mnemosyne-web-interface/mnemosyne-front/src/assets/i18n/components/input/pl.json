@@ -29,7 +29,7 @@
   "fieldRequired": "Pole jest wymagane",
   "location": "Lokalizacja",
   "provideLocation": "Podaj swoją lokalizację",
-  "locationDesc": "Pole jest opcjonalne. Jeśli chcesz, możesz podać lokalizację, w której mieszkasz/mieszkasz/pracujesz.",
+  "locationDesc": "Pole jest opcjonalne. Jeśli chcesz, możesz podać lokalizację, w której znajdujesz się/mieszkasz/pracujesz.",
   "locationError": "Minimalna długość lokalizacji to 8 symboli, maksymalna to 128 symboli.",
   "company": "Firma",
   "provideCompany": "Podaj swoją firmę",

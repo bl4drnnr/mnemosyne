@@ -107,7 +107,7 @@ export class ProxyHttpService {
 
           reject(
             new HttpException(
-              errorMessage || 'Internal server error',
+              errorMessage || 'internal-server-error',
               error.response?.data?.statusCode || 500
             )
           );

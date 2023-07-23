@@ -1,6 +1,6 @@
-import { IsBase64 } from 'class-validator';
+import { Matches } from 'class-validator';
 
 export class UploadPhotoDto {
-  @IsBase64()
+  @Matches(/data:image\/png;base64,([^\"]*)/, { message: 'user-photo-must-be-base64' })
   readonly userPhoto: string;
 }

@@ -16,6 +16,7 @@
   "wrong-picture-format": "Zły format przesłanego obrazu",
   "link-expired": "Link stracił ważność",
   "unhandled-endpoint": "Nieobsługiwany punkt końcowy",
+  "internal-server-error": "Wewnętrzy błąd serwerowy",
   "validation": {
     "wrong-email-format": "Zły format e-maila",
     "wrong-password-format": "Niewłaściwy format hasła",
@@ -31,6 +32,7 @@
     "wrong-location-format": "Lokalizacja powinna być ciągiem znaków",
     "wrong-company-length": "Minimalna długość firmy to 2 symbole, maksymalna to 64 symbole",
     "wrong-company-format": "Firma powinna być ciągiem znaków",
-    "wrong-fqdn": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)"
+    "wrong-fqdn": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)",
+    "user-photo-must-be-base64": "Zdjęcie profilowe użytkownika musi być PNG zakodowane w Base64"
   }
 }

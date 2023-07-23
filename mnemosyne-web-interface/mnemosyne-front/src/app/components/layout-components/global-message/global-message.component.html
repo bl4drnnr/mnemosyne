@@ -1,37 +1,38 @@
-<div *ngIf="globalMessageService.message$ | async as message" [@fadeInOut]="true" class="alert-container">
-  <div [ngClass]="globalMessageService.isError ? 'alert error' : 'alert success'" role="alert">
-    <div class="alert-content">
-      <div *ngIf="globalMessageService.isError">
-        <img
-          class="alert-icon error"
-          [ngSrc]="errorIcon"
-          [width]="50"
-          [height]="50"
-          alt="error"
-        >
-      </div>
-      <div *ngIf="!globalMessageService.isError">
-        <img
-          class="alert-icon success"
-          [ngSrc]="successIcon"
-          [width]="50"
-          [height]="50"
-          alt="success"
-        >
-      </div>
+<ng-container *transloco="let t">
+  <div *ngIf="globalMessageService.message$ | async as message" [@fadeInOut]="true" class="alert-container">
+    <div [ngClass]="globalMessageService.isError ? 'alert error' : 'alert success'" role="alert">
+      <div class="alert-content">
+        <div *ngIf="globalMessageService.isError">
+          <img
+            class="alert-icon error"
+            [ngSrc]="errorIcon"
+            [width]="50"
+            [height]="50"
+            alt="error"
+          >
+        </div>
+        <div *ngIf="!globalMessageService.isError">
+          <img
+            class="alert-icon success"
+            [ngSrc]="successIcon"
+            [width]="50"
+            [height]="50"
+            alt="success"
+          >
+        </div>
 
-      <div>
-        <ng-container *transloco="let t">
+        <div>
           <h2 class="alert-header">
             {{ globalMessageService.isError ? t('errors.error') : t('responses.success') }}
           </h2>
-        </ng-container>
-        <p class="alert-message" [innerHTML]="message"></p>
+          <p class="alert-message" [innerHTML]="message"></p>
+        </div>
+      </div>
+
+      <div class="close-container" (click)="globalMessageService.clear()">
+        <p class="close-button">{{ t('button.close') }}</p>
       </div>
     </div>
-
-    <div class="close-container" (click)="globalMessageService.clear()">
-      <p class="close-button">Close</p>
-    </div>
   </div>
-</div>
+
+</ng-container>

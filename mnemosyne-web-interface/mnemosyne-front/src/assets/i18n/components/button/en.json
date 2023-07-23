@@ -11,5 +11,6 @@
   "setUpNewPass": "Set up new password",
   "upload": "Upload",
   "dashboard": "Dashboard",
-  "saveSettings": "Save settings"
+  "saveSettings": "Save settings",
+  "close": "Close"
 }
