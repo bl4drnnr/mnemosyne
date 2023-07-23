@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
@@ -49,7 +49,7 @@ export class ProxyHttpService {
         status: STATUS_TYPE.ERROR,
         message: `Proxy tried to handle unsupported endpoint: ${logMessage.toString()}`
       });
-      return;
+      throw new BadRequestException('unhandled-endpoint');
     }
 
     const { username, password } = this.configService.basicAuthConfig;
@@ -66,7 +66,9 @@ export class ProxyHttpService {
       }
     };
 
-    requestConfig.data = method === 'POST' ? payload : {};
+    const bodySupportMethod = ['POST', 'PATCH', 'DELETE'];
+
+    requestConfig.data = bodySupportMethod.includes(method) ? payload : {};
     requestConfig.params = params ? params : {};
 
     if (accessToken) requestConfig.headers['X-Access-Token'] = accessToken;
@@ -105,7 +107,7 @@ export class ProxyHttpService {
 
           reject(
             new HttpException(
-              errorMessage || 'Internal server error',
+              errorMessage || 'internal-server-error',
               error.response?.data?.statusCode || 500
             )
           );

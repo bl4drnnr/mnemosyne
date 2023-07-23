@@ -43,6 +43,9 @@ export class UserSettings extends Model<
   @Column({ type: DataType.BOOLEAN, allowNull: true, field: 'email_changed' })
   emailChanged: boolean;
 
+  @Column({ type: DataType.DATE, allowNull: true, field: 'password_changed' })
+  passwordChanged: Date;
+
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: false, field: 'user_id' })
   userId: string;

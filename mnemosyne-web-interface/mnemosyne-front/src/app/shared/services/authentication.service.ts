@@ -103,11 +103,8 @@ export class AuthenticationService {
     });
   }
 
-  logout({
-    accessToken
-  }: {
-    accessToken: string;
-  }): Observable<{ message: LogoutResponse }> {
+  logout(): Observable<{ message: LogoutResponse }> {
+    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.GET,
       controller: CONTROLLERS_TYPE.AUTH,

@@ -1,7 +1,33 @@
 <layout-default>
-  <basic-user-photo
-    *ngIf="userInfo"
-    [isProfilePicPresent]="userInfo.isProfilePicPresent"
-    [userId]="userInfo.userId"
-  />
+  <ng-container *transloco="let t">
+    <div class="settings-header-container">
+      <div
+        class="settings-header-box"
+        [ngClass]="{ active: currentSection === 'personal' }"
+        (click)="currentSection = 'personal'"
+      >
+        <h3 class="settings-header-title">{{ t('settings.personalSettings') }}</h3>
+      </div>
+      <div
+        class="settings-header-box"
+        [ngClass]="{ active: currentSection === 'security' }"
+        (click)="currentSection = 'security'"
+      >
+        <h3 class="settings-header-title">{{ t('settings.securitySettings') }}</h3>
+      </div>
+    </div>
+
+    <div *ngIf="currentSection === 'personal' && userInfo">
+      <dashboard-user-info-settings
+        [userInfo]="userInfo"
+        (saveUserInfoEvent)="saveUserInfo($event)"
+      />
+    </div>
+
+    <div *ngIf="currentSection === 'security' && userSecurity">
+      <dashboard-security-settings
+        [userSecurity]="userSecurity"
+      />
+    </div>
+  </ng-container>
 </layout-default>

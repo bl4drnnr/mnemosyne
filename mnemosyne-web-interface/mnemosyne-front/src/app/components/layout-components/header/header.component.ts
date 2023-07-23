@@ -36,8 +36,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    const accessToken = localStorage.getItem('_at')!;
-    this.authenticationService.logout({ accessToken }).subscribe({
+    this.authenticationService.logout().subscribe({
       next: () => this.logoutUser(),
       error: () => this.logoutUser()
     });

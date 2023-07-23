@@ -23,6 +23,10 @@
   transition: all 0.3s;
   color: var(--text-color);
 
+  &.password-size {
+    font-size: 20px;
+  }
+
   &::placeholder {
     color: var(--text-color);
     opacity: .5;

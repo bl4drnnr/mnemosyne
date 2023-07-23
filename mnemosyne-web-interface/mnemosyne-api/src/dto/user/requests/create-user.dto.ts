@@ -1,4 +1,11 @@
-import {IsBoolean, IsFQDN, IsOptional, IsString, Length, Matches} from 'class-validator';
+import {
+  IsBoolean,
+  IsFQDN,
+  IsOptional,
+  IsString,
+  Length,
+  Matches
+} from 'class-validator';
 
 export class CreateUserDto {
   @Matches(

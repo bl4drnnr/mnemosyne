@@ -10,5 +10,7 @@
   "resetPassResendEmail": "Resend reset password email",
   "setUpNewPass": "Set up new password",
   "upload": "Upload",
-  "dashboard": "Dashboard"
+  "dashboard": "Dashboard",
+  "saveSettings": "Save settings",
+  "close": "Close"
 }

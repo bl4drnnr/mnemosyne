@@ -1,4 +1,8 @@
 {
   "selectPhoto": "Wybierz zdjęcie",
-  "uploadPhotoDescription": "Zalecana rozdzielczość zdjęcia to 150x150. Dozwolony jest tylko format PNG."
+  "uploadPhotoDescription": "Zalecana rozdzielczość zdjęcia to 150x150. Dozwolony jest tylko format PNG.",
+  "personalSettings": "Ustawienia osobiste",
+  "managePersonalSettings": "Zarządzaj swoimi danymi osobowymi",
+  "securitySettings": "Ustawienia bezpieczeństwa",
+  "manageSecuritySettings": "Zarządzaj ustawieniami bezpieczeństwa swojego konta"
 }

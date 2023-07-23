@@ -30,7 +30,6 @@
 .welcome-header-title {
   font-weight: 300;
   font-size: 102px;
-  color: var(--text-color);
 
   @include respond_device(to_m) {
     font-size: 52px;
@@ -63,7 +62,6 @@
 .welcome-header-subtitle {
   font-weight: 200;
   font-size: 48px;
-  color: var(--text-color);
 
   @include respond_device(to_m) {
     font-size: 32px;
@@ -78,7 +76,6 @@
 .welcome-header-p {
   font-weight: 300;
   font-size: 24px;
-  color: var(--text-color);
   padding-left: 5px;
 
   @include respond_device(to_m) {

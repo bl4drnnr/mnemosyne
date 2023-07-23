@@ -9,7 +9,7 @@ export class ValidationPipe implements PipeTransform<any> {
   async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
     let object: any;
 
-    if (value instanceof Transaction) return value;
+    if (value instanceof Transaction || typeof value === 'string') return value;
     else object = plainToInstance(metadata.metatype, value);
 
     const errors = await validate(object);

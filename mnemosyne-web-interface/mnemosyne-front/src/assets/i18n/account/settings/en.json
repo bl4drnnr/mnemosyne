@@ -1,4 +1,8 @@
 {
   "selectPhoto": "Select a photo",
-  "uploadPhotoDescription": "The recommended resolution of the photo is 150x150. Only PNG format is allowed."
+  "uploadPhotoDescription": "The recommended resolution of the photo is 150x150. Only PNG format is allowed.",
+  "personalSettings": "Personal settings",
+  "managePersonalSettings": "Manage your personal information",
+  "securitySettings": "Security settings",
+  "manageSecuritySettings": "Manage the security settings of your account"
 }

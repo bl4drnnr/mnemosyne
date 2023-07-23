@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Patch,
   Post,
@@ -41,6 +40,7 @@ export class UsersController {
     return this.usersService.resetUserPassword({ payload, trx });
   }
 
+  @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   @Post('upload-user-photo')
   async uploadUserPhoto(
@@ -62,6 +62,15 @@ export class UsersController {
     return this.usersService.getUserInfo({ userId, trx });
   }
 
+  @UseGuards(AuthGuard)
+  @Get('user-security')
+  async getUserSecuritySettings(
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.usersService.getUserSecuritySettings({ userId, trx });
+  }
+
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   @Patch('user-info')
@@ -70,7 +79,7 @@ export class UsersController {
     @TransactionParam() trx: Transaction,
     @Body() payload: UpdateUserInfoDto
   ) {
-    return this.usersService.updateUser({
+    return this.usersService.updateUserInfo({
       userId,
       payload,
       trx

@@ -31,7 +31,7 @@ export class TransactionInterceptor implements NestInterceptor {
       catchError(async (err: HttpException) => {
         await transaction.rollback();
         throw new HttpException(
-          err.message || 'Internal server error' || err.getResponse(),
+          err.message || 'internal-server-error' || err.getResponse(),
           HttpStatus.INTERNAL_SERVER_ERROR
         );
       })

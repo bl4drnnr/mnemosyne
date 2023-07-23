@@ -56,7 +56,7 @@ export class ConfirmationHash extends Model<
     allowNull: true,
     field: 'changing_email'
   })
-  changingEmail?: string;
+  changingEmail: string;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: false, field: 'user_id' })

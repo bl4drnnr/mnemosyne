@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import { UserInfoResponse } from '@responses/user-info.response';
 import { PhotoUploadedResponse } from '@responses/photo-uploaded.response';
 import { UpdateUserInfoPayload } from '@payloads/update-user-info.payload';
+import { UserUpdatedResponse } from '@responses/user-updated.response';
+import { UserSecurityResponse } from '@responses/user-security.response';
 
 @Injectable({
   providedIn: 'root'
@@ -16,9 +18,9 @@ export class UsersService {
   constructor(private readonly apiService: ApiService) {}
 
   uploadUserPhoto({
-    userPhoto,
-    accessToken
+    userPhoto
   }: UploadUserPhotoPayload): Observable<{ message: PhotoUploadedResponse }> {
+    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.POST,
       controller: CONTROLLERS_TYPE.USERS,
@@ -28,11 +30,8 @@ export class UsersService {
     });
   }
 
-  getUserInfo({
-    accessToken
-  }: {
-    accessToken: string;
-  }): Observable<UserInfoResponse> {
+  getUserInfo(): Observable<UserInfoResponse> {
+    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.GET,
       controller: CONTROLLERS_TYPE.USERS,
@@ -41,13 +40,22 @@ export class UsersService {
     });
   }
 
+  getUserSecuritySettings(): Observable<UserSecurityResponse> {
+    const accessToken = localStorage.getItem('_at')!;
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS_TYPE.GET,
+      controller: CONTROLLERS_TYPE.USERS,
+      action: ENDPOINTS_TYPE.USER_SECURITY,
+      accessToken
+    });
+  }
+
   updateUserInfo({
-    accessToken,
     payload
   }: {
-    accessToken: string;
     payload: UpdateUserInfoPayload;
-  }) {
+  }): Observable<{ message: UserUpdatedResponse }> {
+    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.PATCH,
       controller: CONTROLLERS_TYPE.USERS,

@@ -1,1 +1,77 @@
-<p>security-settings works!</p>
+<ng-container *transloco="let t">
+  <div class="security-settings-container">
+    <h3>Manage security settings of your account and make sure it is secured</h3>
+    <ul class="rules-list">
+      <li class="rule">Please, make sure you have read Mnemosyne's Security & Privacy policies since some settings are obliged for all users.</li>
+      <li class="rule">According to some Mnemosyne's Security & Privacy policies all users are obliged to have at least one way of multi-factor authentication. Therefore, you can have 2 of them at the same time, but cannot disable both.</li>
+      <li class="rule">You are only allowed to change your account password once every 24 hours.</li>
+      <li class="rule">You can change your email only once!</li>
+      <li class="rule">According to the Mnemosyne's Security & Privacy policies and GDPR, request of data deletion will be proceed as soon as possible and all user's data will be immediately deleted from all Mnemosyne's systems.</li>
+    </ul>
+
+    <div class="dived-line no-bottom"></div>
+
+    <div class="security-setting-section">
+      <div class="security-setting-section-content">
+        <div class="text-section">
+          <p class="security-setting-section-title">Set 2FA</p>
+          <p class="security-setting-section-p">Secure your account with Two-Factor Authentication (2FA).</p>
+        </div>
+        <div class="button-section">
+          <basic-button label="Set 2FA" />
+        </div>
+      </div>
+    </div>
+
+    <div class="security-setting-section">
+      <div class="security-setting-section-content">
+        <div class="text-section">
+          <p class="security-setting-section-title">Set mobile phone</p>
+          <p class="security-setting-section-p">Alternative way to secure your account. Used as additional 2FA method.</p>
+        </div>
+        <div class="button-section">
+          <basic-button label="Set mobile phone" />
+        </div>
+      </div>
+    </div>
+
+    <div class="security-setting-section">
+      <div class="security-setting-section-content">
+        <div class="text-section">
+          <p class="security-setting-section-title">Change password</p>
+          <p class="security-setting-section-p">Change your password by providing the current password and the new password. You will have to confirm the change with MFA.</p>
+        </div>
+        <div class="button-section">
+          <basic-button label="Change password" />
+        </div>
+      </div>
+    </div>
+
+    <div class="security-setting-section">
+      <div class="security-setting-section-content">
+        <div class="text-section">
+          <p class="security-setting-section-title">Change email</p>
+          <p class="security-setting-section-p">Change your email, but be careful! You are allowed to change your email address only one time!</p>
+        </div>
+        <div class="button-section">
+          <basic-button label="Change email" />
+        </div>
+      </div>
+    </div>
+
+    <div class="security-setting-section danger">
+      <div class="security-setting-section-content">
+        <div class="text-section">
+          <p class="security-setting-section-title">Delete account</p>
+          <p class="security-setting-section-p">There is no way back. Data will be lost without way to recover it.</p>
+        </div>
+        <div class="button-section">
+          <basic-button
+            label="Delete account"
+            [danger]="true"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
