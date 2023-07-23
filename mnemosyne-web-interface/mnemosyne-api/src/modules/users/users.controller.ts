@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Patch,
   Post,
@@ -61,6 +60,15 @@ export class UsersController {
     @TransactionParam() trx: Transaction
   ) {
     return this.usersService.getUserInfo({ userId, trx });
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('user-security')
+  async getUserSecuritySettings(
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.usersService.getUserSecuritySettings({ userId, trx });
   }
 
   @UsePipes(ValidationPipe)

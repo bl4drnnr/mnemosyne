@@ -365,6 +365,27 @@ export class UsersService {
     };
   }
 
+  async getUserSecuritySettings({
+    userId,
+    trx
+  }: {
+    userId: string;
+    trx?: Transaction;
+  }) {
+    const { userSettings, email } = await this.getUserById({
+      id: userId,
+      trx
+    });
+
+    return {
+      emailChanged: userSettings.emailChanged,
+      passwordChanged: userSettings.passwordChanged,
+      phone: userSettings.phone,
+      twoFaToken: !!userSettings.twoFaToken,
+      email
+    };
+  }
+
   async updateUserInfo({
     userId,
     payload,

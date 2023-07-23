@@ -58,6 +58,13 @@ paths:
       responses:
         "200":
           description: ""
+  /api/users/user-security:
+    get:
+      operationId: UsersController_getUserSecuritySettings
+      parameters: []
+      responses:
+        "200":
+          description: ""
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount

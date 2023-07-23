@@ -15,5 +15,6 @@ export enum ENDPOINTS_TYPE {
   UPLOAD_USER_PHOTO = 'upload-user-photo',
   REFRESH = 'refresh',
   LOGOUT = 'logout',
-  USER_INFO = 'user-info'
+  USER_INFO = 'user-info',
+  USER_SECURITY = 'user-security'
 }

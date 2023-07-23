@@ -130,6 +130,7 @@ export class ValidationService {
     if (image) {
       const regex = new RegExp(/data:image\/png;base64,([^\"]*)/);
       return regex.test(image);
-    } return image === '';
+    }
+    return image === '';
   }
 }

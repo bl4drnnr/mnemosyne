@@ -3,7 +3,7 @@ import { trigger, style, animate, transition } from '@angular/animations';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'layout-sidebar',
+  selector: 'dashboard-sidebar',
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
   animations: [
@@ -22,13 +22,8 @@ export class SidebarComponent {
   @Input() isSidebarOpen = false;
 
   @Output() closeSidebar = new EventEmitter<void>();
-  @Output() logout = new EventEmitter<void>();
 
   constructor(private readonly router: Router) {}
-
-  handleLogout() {
-    this.logout.emit();
-  }
 
   handleCloseSidebar() {
     this.isSidebarOpen = false;

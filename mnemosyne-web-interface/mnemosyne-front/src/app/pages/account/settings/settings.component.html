@@ -18,12 +18,16 @@
     </div>
 
     <div *ngIf="currentSection === 'personal' && userInfo">
-      <basic-user-info-settings
+      <dashboard-user-info-settings
         [userInfo]="userInfo"
         (saveUserInfoEvent)="saveUserInfo($event)"
       />
     </div>
 
-    <div *ngIf="currentSection === 'security'"></div>
+    <div *ngIf="currentSection === 'security' && userSecurity">
+      <dashboard-security-settings
+        [userSecurity]="userSecurity"
+      />
+    </div>
   </ng-container>
 </layout-default>

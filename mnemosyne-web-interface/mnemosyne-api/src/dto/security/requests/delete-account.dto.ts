@@ -14,13 +14,13 @@ export class DeleteAccountDto {
 
   @IsOptional()
   @Matches(/^\d{6}$/, { message: 'mfa-code-should-be-6-digit-code' })
-  readonly mfaCode?: string;
+  readonly mfaCode: string;
 
   @IsOptional()
   @Matches(/^\d{6}$/, { message: 'phone-code-should-be-6-digit-code' })
-  readonly phoneCode?: string;
+  readonly phoneCode: string;
 
   @IsOptional()
   @IsString()
-  readonly fullName?: string;
+  readonly fullName: string;
 }

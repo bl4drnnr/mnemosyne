@@ -59,7 +59,8 @@ const components = [
     ModeToggleModule,
     ChangeLanguageComponent,
     UserPhotoComponent,
-    UserInfoSettingsComponent
+    UserInfoSettingsComponent,
+    SecuritySettingsComponent
   ],
   imports: [
     CommonModule,

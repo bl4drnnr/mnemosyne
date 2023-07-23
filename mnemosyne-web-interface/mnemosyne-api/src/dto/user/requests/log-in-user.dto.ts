@@ -14,9 +14,9 @@ export class LogInUserDto {
 
   @IsOptional()
   @Length(6, 6, { message: 'phone-code-should-be-6-digit-code' })
-  readonly phoneCode?: string;
+  readonly phoneCode: string;
 
   @IsOptional()
   @Length(6, 6, { message: 'mfa-code-should-be-6-digit-code' })
-  readonly mfaCode?: string;
+  readonly mfaCode: string;
 }

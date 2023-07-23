@@ -5,16 +5,16 @@ export class ResetUserPasswordDto {
   @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
     message: 'wrong-password-format'
   })
-  readonly password?: string;
+  readonly password: string;
 
   @Length(40, 40, { message: 'wrong-hash-length' })
   readonly hash: string;
 
   @IsOptional()
   @Matches(/^\d{6}$/, { message: 'mfa-code-should-be-6-digit-code' })
-  readonly mfaCode?: string;
+  readonly mfaCode: string;
 
   @IsOptional()
   @Matches(/^\d{6}$/, { message: 'phone-code-should-be-6-digit-code' })
-  readonly phoneCode?: string;
+  readonly phoneCode: string;
 }

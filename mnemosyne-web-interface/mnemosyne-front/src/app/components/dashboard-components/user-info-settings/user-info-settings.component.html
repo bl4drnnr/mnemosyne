@@ -1,6 +1,6 @@
-<div class="personal-settings-container">
-  <ng-container *transloco="let t">
-    <basic-user-photo
+<ng-container *transloco="let t">
+  <div class="personal-settings-container">
+    <dashboard-user-photo
       [isProfilePicPresent]="userInfo.isProfilePicPresent"
       [userId]="userInfo.userId"
     />
@@ -29,6 +29,16 @@
         (valueChange)="userInfo.lastName = $event"
         (incorrectInput)="incorrectLastName = $event"
       />
+
+      <basic-input
+        [label]="t('input.email')"
+        [value]="userInfo.email"
+        [disabled]="true"
+        [inputDescription]="t('input.emailChangeInfo')"
+      />
+
+      <div class="dived-line"></div>
+
       <basic-input
         [label]="t('input.location')"
         [placeholder]="t('input.provideLocation')"
@@ -68,6 +78,6 @@
         (buttonClick)="saveUserInfo()"
       />
     </div>
+  </div>
 
-  </ng-container>
-</div>
+</ng-container>

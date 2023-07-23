@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {UserInfoResponse} from "@responses/user-info.response";
-import {ValidationService} from "@services/validation.service";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { UserInfoResponse } from '@responses/user-info.response';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
-  selector: 'basic-user-info-settings',
+  selector: 'dashboard-user-info-settings',
   templateUrl: './user-info-settings.component.html',
   styleUrls: ['./user-info-settings.component.scss']
 })

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 
 @Component({
-  selector: 'emoji',
+  selector: 'basic-emoji',
   templateUrl: './emoji.component.html',
   styleUrls: ['./emoji.component.scss']
 })

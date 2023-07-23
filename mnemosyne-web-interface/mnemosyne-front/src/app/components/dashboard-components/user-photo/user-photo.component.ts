@@ -3,10 +3,10 @@ import { EnvService } from '@shared/env.service';
 import { UsersService } from '@services/users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
-import {ValidationService} from "@services/validation.service";
+import { ValidationService } from '@services/validation.service';
 
 @Component({
-  selector: 'basic-user-photo',
+  selector: 'dashboard-user-photo',
   templateUrl: './user-photo.component.html',
   styleUrls: ['./user-photo.component.scss']
 })
@@ -49,33 +49,27 @@ export class UserPhotoComponent implements OnInit {
   upload() {
     if (!this.selectedFiles) return;
 
-    if (!this.isImageValid()) return this.globalMessageService.handle({
-      message: this.translocoService.translate(
-        'validation.user-photo-must-be-base64',
-        {},
-        'errors'
-      ),
-      isError: true
-    });
-
-    const accessToken = localStorage.getItem('_at')!;
-
-    this.usersService
-      .uploadUserPhoto({
-        userPhoto: this.preview,
-        accessToken
-      })
-      .subscribe({
-        next: ({ message }) =>
-          this.globalMessageService.handle({
-            message: this.translocoService.translate(
-              message,
-              {},
-              'messages/responses'
-            ),
-            isError: false
-          })
+    if (!this.isImageValid())
+      return this.globalMessageService.handle({
+        message: this.translocoService.translate(
+          'validation.user-photo-must-be-base64',
+          {},
+          'errors'
+        ),
+        isError: true
       });
+
+    this.usersService.uploadUserPhoto({ userPhoto: this.preview }).subscribe({
+      next: ({ message }) =>
+        this.globalMessageService.handle({
+          message: this.translocoService.translate(
+            message,
+            {},
+            'messages/responses'
+          ),
+          isError: false
+        })
+    });
 
     this.selectedFiles = undefined;
   }

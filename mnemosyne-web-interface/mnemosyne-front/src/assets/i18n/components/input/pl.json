@@ -38,5 +38,6 @@
   "website": "Strona internetowa",
   "provideWebsite": "Podaj swoją stronę internetową",
   "websiteDesc": "Pole jest opcjonalne. Powinno być FQDN. Podaj adres URL strony internetowej, która jest powiązana z Tobą lub Twoją firmą.",
-  "wrongFQDN": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)"
+  "wrongFQDN": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)",
+  "emailChangeInfo": "Adres e-mail można zmienić w ustawieniach zabezpieczeń. Uważaj! Możesz zmienić e-mail tylko raz."
 }

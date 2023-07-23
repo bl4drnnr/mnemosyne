@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { UserInfoResponse } from '@responses/user-info.response';
 import { Router } from '@angular/router';
 import { UsersService } from '@services/users.service';
 import { AuthenticationService } from '@services/authentication.service';
@@ -24,9 +23,9 @@ export class RefreshTokensService {
   }
 
   async refreshTokens() {
-    let accessToken = localStorage.getItem('_at');
+    const accessToken = localStorage.getItem('_at');
 
-    if (!accessToken) return await this.handleRedirect('login');
+    if (!accessToken) return this.handleLogout();
 
     this.authenticationService
       .refreshTokens({
@@ -37,8 +36,6 @@ export class RefreshTokensService {
         error: async () => await this.handleLogout()
       });
 
-    accessToken = localStorage.getItem('_at')!;
-
-    return this.usersService.getUserInfo({ accessToken });
+    return this.usersService.getUserInfo();
   }
 }
