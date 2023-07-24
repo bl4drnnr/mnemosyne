@@ -1,111 +1,85 @@
 <ng-container *transloco="let t">
   <div class="security-settings-container">
-    <h3>Manage security settings of your account and make sure it is secured</h3>
+    <h3>{{ t('settings.securitySettingsRules.title') }}</h3>
     <ul class="rules-list">
-      <li class="rule">Please, make sure you have read Mnemosyne's Security & Privacy policies since some settings are obliged for all users.</li>
-      <li class="rule">According to some Mnemosyne's Security & Privacy policies all users are obliged to have at least one way of multi-factor authentication. Therefore, you can have 2 of them at the same time, but cannot disable both.</li>
-      <li class="rule">You are only allowed to change your account password once every 24 hours.</li>
-      <li class="rule">You can change your email only once!</li>
-      <li class="rule">According to the Mnemosyne's Security & Privacy policies and GDPR, request of data deletion will be proceed as soon as possible and all user's data will be immediately deleted from all Mnemosyne's systems.</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule1') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule2') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule3') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule4') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule5') }}</li>
     </ul>
 
     <div class="dived-line no-bottom"></div>
 
     <security-setting-section
-      [showSection]="!userSecurity.twoFaToken"
-      [title]="'Set 2FA'"
-      [description]="'Secure your account with Two-Factor Authentication (2FA).'"
-      [buttonLabel]="'Set 2FA'"
+      [showSection]="!userSecurity.isTwoFaSetUp"
+      [title]="t('settings.mfa.setup2fa')"
+      [description]="t('settings.mfa.setup2faDesc')"
+      [buttonLabel]="t('settings.mfa.setup2fa')"
       (onButtonClick)="set2faModal = true"
     />
 
     <security-setting-section
-      [showSection]="userSecurity.twoFaToken"
-      [title]="'Disable 2FA'"
-      [description]="'Secure your account with Two-Factor Authentication (2FA).'"
-      [buttonLabel]="'Disable 2FA'"
+      [showSection]="userSecurity.isTwoFaSetUp"
+      [title]="t('settings.mfa.disable2fa')"
+      [description]="t('settings.mfa.disable2faDesc')"
+      [buttonLabel]="t('settings.mfa.disable2fa')"
       [dangerButton]="true"
+      [disabledButton]="userSecurity.isTwoFaSetUp && !userSecurity.phoneStatus.isSetUp"
       (onButtonClick)="disable2faModal = true"
     />
 
     <security-setting-section
-      [showSection]="!userSecurity.phone"
-      [title]="'Set mobile phone'"
-      [description]="'Alternative way to secure your account. Used as additional 2FA method.'"
-      [buttonLabel]="'Set mobile phone'"
+      [showSection]="!userSecurity.phoneStatus.isSetUp"
+      [title]="t('settings.phone.setupPhone')"
+      [description]="t('settings.phone.setupPhoneDesc')"
+      [buttonLabel]="t('settings.phone.setupPhone')"
       (onButtonClick)="setMobilePhoneModal = true"
     />
 
     <security-setting-section
-      [showSection]="!(!!userSecurity.phone)"
-      [title]="'Disable mobile phone'"
-      [description]="'Alternative way to secure your account. Used as additional 2FA method.'"
-      [buttonLabel]="'Disable mobile phone'"
+      [showSection]="userSecurity.phoneStatus.isSetUp"
+      [title]="t('settings.phone.disablePhone')"
+      [description]="t('settings.phone.disablePhoneDesc')"
+      [buttonLabel]="t('settings.phone.disablePhone')"
       [dangerButton]="true"
+      [disabledButton]="userSecurity.phoneStatus.isSetUp && !userSecurity.isTwoFaSetUp"
       (onButtonClick)="disableMobilePhoneModal = true"
     />
 
-    <div class="security-setting-section">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Change password</p>
-          <p class="security-setting-section-p">Change your password by providing the current password and the new password. You will have to confirm the change with MFA.</p>
-        </div>
-        <div class="button-section">
-          <basic-button
-            label="Change password"
-            [disabled]="!userSecurity.passwordCanBeChanged"
-            (buttonClick)="changePasswordModal = true"
-          />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="true"
+      [title]="t('settings.password.changePassword')"
+      [description]="t('settings.password.changePasswordDesc')"
+      [buttonLabel]="t('settings.password.changePassword')"
+      [disabledButton]="!userSecurity.passwordCanBeChanged"
+      (onButtonClick)="changePasswordModal = true"
+    />
 
-    <div class="security-setting-section" *ngIf="!userSecurity.emailChanged">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Change email</p>
-          <p class="security-setting-section-p">Change your email, but be careful! You are allowed to change your email address only one time!</p>
-        </div>
-        <div class="button-section">
-          <basic-button
-            label="Change email"
-            (buttonClick)="changeEmailModal = true"
-          />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="!userSecurity.emailChanged"
+      [title]="t('settings.email.changeEmail')"
+      [description]="t('settings.email.changeEmailDesc')"
+      [buttonLabel]="t('settings.email.changeEmail')"
+      (onButtonClick)="changeEmailModal = true"
+    />
 
-    <div class="security-setting-section" *ngIf="userSecurity.emailChanged">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Change email</p>
-          <p class="security-setting-section-p">Email has been already changed</p>
-        </div>
-        <div class="button-section">
-          <basic-button
-            label="Change email"
-            [disabled]="true"
-          />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="userSecurity.emailChanged"
+      [title]="t('settings.email.changeEmail')"
+      [description]="t('settings.email.emailAlreadyChanged')"
+      [buttonLabel]="t('settings.email.changeEmail')"
+      [disabledButton]="true"
+    />
 
-    <div class="security-setting-section danger">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Delete account</p>
-          <p class="security-setting-section-p">There is no way back. Data will be lost without way to recover it.</p>
-        </div>
-        <div class="button-section">
-          <basic-button
-            label="Delete account"
-            [danger]="true"
-            (buttonClick)="deleteAccountModal = true"
-          />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="true"
+      [title]="t('settings.deleteAcc.deleteAcc')"
+      [description]="t('settings.deleteAcc.deleteAccDesc')"
+      [buttonLabel]="t('settings.deleteAcc.deleteAcc')"
+      [dangerButton]="true"
+      (onButtonClick)="deleteAccountModal = true"
+    />
   </div>
 
   <basic-modal

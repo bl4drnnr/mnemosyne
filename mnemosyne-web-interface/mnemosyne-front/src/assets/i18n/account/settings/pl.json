@@ -4,5 +4,38 @@
   "personalSettings": "Ustawienia osobiste",
   "managePersonalSettings": "Zarządzaj swoimi danymi osobowymi",
   "securitySettings": "Ustawienia bezpieczeństwa",
-  "manageSecuritySettings": "Zarządzaj ustawieniami bezpieczeństwa swojego konta"
+  "manageSecuritySettings": "Zarządzaj ustawieniami bezpieczeństwa swojego konta",
+  "securitySettingsRules": {
+    "title": "Zarządzaj ustawieniami bezpieczeństwa swojego konta i upewnij się, że jest ono zabezpieczone",
+    "rule1": "Upewnij się, że przeczytałeś Zasady bezpieczeństwa i prywatności Mnemosyne, ponieważ niektóre ustawienia są obowiązkowe dla wszystkich użytkowników.",
+    "rule2": "Zgodnie z niektórymi zasadami bezpieczeństwa i prywatności Mnemosyne, wszyscy użytkownicy muszą mieć co najmniej jeden sposób uwierzytelniania wieloskładnikowego. Dlatego możesz mieć 2 z nich w tym samym czasie, ale nie możesz wyłączyć obu.",
+    "rule3": "Możesz zmienić hasło do konta tylko raz na 24 godziny.",
+    "rule4": "Możesz zmienić adres e-mail tylko raz!",
+    "rule5": "Zgodnie z polityką bezpieczeństwa i prywatności Mnemosyne oraz RODO, żądanie usunięcia danych zostanie zrealizowane tak szybko, jak to możliwe, a wszystkie dane użytkownika zostaną natychmiast usunięte ze wszystkich systemów Mnemosyne."
+  },
+  "mfa": {
+    "setup2fa": "Ustaw 2FA",
+    "disable2fa": "Wyłącz 2FA",
+    "setup2faDesc": "Zabezpiecz swoje konto za pomocą aplikacji mobilnej Two-Factor Authentication (2FA), która wygeneruje jednorazowy 6-cyfrowy kod do dodatkowej weryfikacji.",
+    "disable2faDesc": "Wyłączenie 2FA zwiększy niepewność twojego konta. Zdecydowanie zalecamy zachowanie go, chyba że zaakceptujesz ryzyko. Ponadto, zgodnie z zasadami, jesteś zobowiązany do posiadania co najmniej jednego sposobu MFA."
+  },
+  "phone": {
+    "setupPhone": "Skonfiguruj telefon komórkowy",
+    "disablePhone": "Wyłącz telefon komórkowy",
+    "setupPhoneDesc": "Zabezpiecz swoje konto jednorazowym kodem, który otrzymasz za każdym razem, gdy logujesz się na swoje konto. Alternatywny sposób uwierzytelniania dwuetapowego. Zalecane użycie obu.",
+    "disablePhoneDesc": "Odłączenie telefonu od konta zwiększy poziom niepewności twojego konta. Nie zalecamy tego ze względów bezpieczeństwa. Pamiętaj, że zgodnie z zasadami musisz mieć co najmniej jeden sposób MFA."
+  },
+  "password": {
+    "changePassword": "Zmień hasło",
+    "changePasswordDesc": "Zmień swoje hasło, podając aktualne hasło i nowe hasło. Pamiętaj, że po pomyślnej zmianie hasła zostaniesz wylogowany ze swojego konta."
+  },
+  "email": {
+    "changeEmail": "Zmień email",
+    "changeEmailDesc": "Zmień adres e-mail, ale bądź ostrożny! Możesz zmienić swój adres e-mail tylko raz! Aby zmienić adres e-mail swojego konta, musisz kliknąć link w wiadomości e-mail.",
+    "emailAlreadyChanged": "E-mail został już zmieniony. Możesz zmienić swój e-mail tylko raz!"
+  },
+  "deleteAcc": {
+    "deleteAcc": "Usuń konto",
+    "deleteAccDesc": "Nie ma odwrotu. Dane zostaną utracone bez możliwości ich odzyskania. Zgodnie z polityką bezpieczeństwa i prywatności Mnemosyne oraz prawem wszystkie dane zostaną natychmiast usunięte z systemów."
+  }
 }

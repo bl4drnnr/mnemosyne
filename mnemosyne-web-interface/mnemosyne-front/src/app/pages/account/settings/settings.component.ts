@@ -14,7 +14,7 @@ import { UserSecurityResponse } from '@responses/user-security.response';
 export class SettingsComponent {
   userInfo: UserInfoResponse;
   userSecurity: UserSecurityResponse;
-  currentSection: 'personal' | 'security' = 'personal';
+  currentSection: 'personal' | 'security' = 'security';
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,

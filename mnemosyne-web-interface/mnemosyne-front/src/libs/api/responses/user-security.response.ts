@@ -1,7 +1,10 @@
 export interface UserSecurityResponse {
   emailChanged: boolean;
   passwordCanBeChanged: boolean;
-  phone: string | null;
-  twoFaToken: boolean;
+  phoneStatus: {
+    isSetUp: boolean;
+    twoLastDigit: string | null;
+  };
+  isTwoFaSetUp: boolean;
   email: string;
 }
