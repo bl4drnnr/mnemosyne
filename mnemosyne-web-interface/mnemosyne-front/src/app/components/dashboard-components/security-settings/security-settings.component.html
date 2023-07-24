@@ -11,29 +11,39 @@
 
     <div class="dived-line no-bottom"></div>
 
-    <div class="security-setting-section">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Set 2FA</p>
-          <p class="security-setting-section-p">Secure your account with Two-Factor Authentication (2FA).</p>
-        </div>
-        <div class="button-section">
-          <basic-button label="Set 2FA" />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="!userSecurity.twoFaToken"
+      [title]="'Set 2FA'"
+      [description]="'Secure your account with Two-Factor Authentication (2FA).'"
+      [buttonLabel]="'Set 2FA'"
+      (onButtonClick)="set2faModal = true"
+    />
 
-    <div class="security-setting-section">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Set mobile phone</p>
-          <p class="security-setting-section-p">Alternative way to secure your account. Used as additional 2FA method.</p>
-        </div>
-        <div class="button-section">
-          <basic-button label="Set mobile phone" />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="userSecurity.twoFaToken"
+      [title]="'Disable 2FA'"
+      [description]="'Secure your account with Two-Factor Authentication (2FA).'"
+      [buttonLabel]="'Disable 2FA'"
+      [dangerButton]="true"
+      (onButtonClick)="disable2faModal = true"
+    />
+
+    <security-setting-section
+      [showSection]="!userSecurity.phone"
+      [title]="'Set mobile phone'"
+      [description]="'Alternative way to secure your account. Used as additional 2FA method.'"
+      [buttonLabel]="'Set mobile phone'"
+      (onButtonClick)="setMobilePhoneModal = true"
+    />
+
+    <security-setting-section
+      [showSection]="!(!!userSecurity.phone)"
+      [title]="'Disable mobile phone'"
+      [description]="'Alternative way to secure your account. Used as additional 2FA method.'"
+      [buttonLabel]="'Disable mobile phone'"
+      [dangerButton]="true"
+      (onButtonClick)="disableMobilePhoneModal = true"
+    />
 
     <div class="security-setting-section">
       <div class="security-setting-section-content">
@@ -42,19 +52,41 @@
           <p class="security-setting-section-p">Change your password by providing the current password and the new password. You will have to confirm the change with MFA.</p>
         </div>
         <div class="button-section">
-          <basic-button label="Change password" />
+          <basic-button
+            label="Change password"
+            [disabled]="!userSecurity.passwordCanBeChanged"
+            (buttonClick)="changePasswordModal = true"
+          />
         </div>
       </div>
     </div>
 
-    <div class="security-setting-section">
+    <div class="security-setting-section" *ngIf="!userSecurity.emailChanged">
       <div class="security-setting-section-content">
         <div class="text-section">
           <p class="security-setting-section-title">Change email</p>
           <p class="security-setting-section-p">Change your email, but be careful! You are allowed to change your email address only one time!</p>
         </div>
         <div class="button-section">
-          <basic-button label="Change email" />
+          <basic-button
+            label="Change email"
+            (buttonClick)="changeEmailModal = true"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="security-setting-section" *ngIf="userSecurity.emailChanged">
+      <div class="security-setting-section-content">
+        <div class="text-section">
+          <p class="security-setting-section-title">Change email</p>
+          <p class="security-setting-section-p">Email has been already changed</p>
+        </div>
+        <div class="button-section">
+          <basic-button
+            label="Change email"
+            [disabled]="true"
+          />
         </div>
       </div>
     </div>
@@ -69,9 +101,53 @@
           <basic-button
             label="Delete account"
             [danger]="true"
+            (buttonClick)="deleteAccountModal = true"
           />
         </div>
       </div>
     </div>
   </div>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="set2faModal"
+    (closeModal)="set2faModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="disable2faModal"
+    (closeModal)="disable2faModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="setMobilePhoneModal"
+    (closeModal)="setMobilePhoneModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="changePasswordModal"
+    (closeModal)="changePasswordModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="changeEmailModal"
+    (closeModal)="changeEmailModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="deleteAccountModal"
+    (closeModal)="deleteAccountModal = false"
+  ></basic-modal>
+
 </ng-container>

@@ -290,7 +290,7 @@ $z-index: (
   sidebar: 1031,
   datepicker: 15000,
   modal-main: 10000,
-  modal: 1000,
+  modal: 1032,
   modal-backdrop: 9999,
   tooltip: 1000,
   popover: 999,
@@ -342,7 +342,7 @@ p, spam, ul, li, ol {
   --card-shadow: #{rgba($color-shadow-light, 0.3) 0px 1px 2px 0px, rgba($color-shadow-light, 0.15) 0px 2px 6px 2px};
   --alert-shadow: #{rgba($black, 0.1) 0 10px 50px};
   --color-hover: #{$color-shadow-hover-light};
-  --loader-background: #{rgba($color-black, 0.5)};
+  --loader-background: #{rgba($color-black, .5) 0 0 no-repeat padding-box};
 }
 
 @mixin dark() {
@@ -363,5 +363,5 @@ p, spam, ul, li, ol {
   --card-shadow: #{rgba($color-shadow-dark, 0.3) 0px 1px 2px 0px, rgba($color-shadow-dark, 0.15) 0px 2px 6px 2px};
   --alert-shadow: #{rgba($color-white, 0.1) 0 10px 50px};
   --color-hover: #{$color-shadow-hover-dark};
-  --loader-background: #{rgba($color-white, 0.5)};
+  --loader-background: #{rgba($color-white, .5) 0 0 no-repeat padding-box};
 }

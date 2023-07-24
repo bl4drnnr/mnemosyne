@@ -1,7 +1,7 @@
 export interface UserSecurityResponse {
-  emailChanged: string;
-  passwordChanged: Date;
-  phone: string;
+  emailChanged: boolean;
+  passwordCanBeChanged: boolean;
+  phone: string | null;
   twoFaToken: boolean;
   email: string;
 }

@@ -25,6 +25,7 @@ import { UserPhotoComponent } from '@components/user-photo/user-photo.component'
 import { ModalComponent } from '@components/modal/modal.component';
 import { SecuritySettingsComponent } from '@components/security-settings/security-settings.component';
 import { UserInfoSettingsComponent } from '@components/user-info-settings/user-info-settings.component';
+import { SecuritySettingSectionComponent } from '@components/security-settings/shared/security-setting-section/security-setting-section.component';
 
 const components = [
   ButtonComponent,
@@ -42,26 +43,18 @@ const components = [
   FooterComponent,
   SidebarComponent,
   CreatePasswordComponent,
-  AltRegistrationComponent
+  AltRegistrationComponent,
+  ChangeLanguageComponent,
+  UserPhotoComponent,
+  ModalComponent,
+  SecuritySettingsComponent,
+  UserInfoSettingsComponent,
+  SecuritySettingSectionComponent
 ];
 
 @NgModule({
-  declarations: [
-    ...components,
-    ChangeLanguageComponent,
-    UserPhotoComponent,
-    ModalComponent,
-    SecuritySettingsComponent,
-    UserInfoSettingsComponent
-  ],
-  exports: [
-    ...components,
-    ModeToggleModule,
-    ChangeLanguageComponent,
-    UserPhotoComponent,
-    UserInfoSettingsComponent,
-    SecuritySettingsComponent
-  ],
+  declarations: [...components],
+  exports: [...components, ModeToggleModule],
   imports: [
     CommonModule,
     FormsModule,

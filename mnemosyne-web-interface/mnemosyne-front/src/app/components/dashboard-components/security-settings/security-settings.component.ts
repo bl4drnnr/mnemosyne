@@ -8,4 +8,12 @@ import { UserSecurityResponse } from '@responses/user-security.response';
 })
 export class SecuritySettingsComponent {
   @Input() userSecurity: UserSecurityResponse;
+
+  set2faModal: boolean;
+  disable2faModal: boolean;
+  setMobilePhoneModal: boolean;
+  disableMobilePhoneModal: boolean;
+  changeEmailModal: boolean;
+  changePasswordModal: boolean;
+  deleteAccountModal: boolean;
 }

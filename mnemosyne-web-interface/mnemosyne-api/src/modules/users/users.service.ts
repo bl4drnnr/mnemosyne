@@ -377,11 +377,17 @@ export class UsersService {
       trx
     });
 
+    const oneDayAgo = dayjs().subtract(1, 'day');
+
+    const passwordCanBeChanged = userSettings.passwordChanged
+      ? dayjs(userSettings.passwordChanged) > oneDayAgo
+      : true;
+
     return {
       emailChanged: userSettings.emailChanged,
-      passwordChanged: userSettings.passwordChanged,
       phone: userSettings.phone,
       twoFaToken: !!userSettings.twoFaToken,
+      passwordCanBeChanged,
       email
     };
   }
