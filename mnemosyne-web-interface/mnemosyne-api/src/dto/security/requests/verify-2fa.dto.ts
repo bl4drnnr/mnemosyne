@@ -4,6 +4,9 @@ export class VerifyTwoFaDto {
   @Matches(/^\d{6}$/, { message: 'mfa-code-should-be-6-digit-code' })
   readonly code: string;
 
+  // @TODO Check the length of the token
+  readonly twoFaToken: string;
+
   @IsOptional()
   @Matches(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,

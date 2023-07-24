@@ -76,6 +76,17 @@ export class SecurityController {
     return this.securityService.loginVerifyTwoFaQrCode({ payload, trx });
   }
 
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Post('verify-2fa')
+  verifyTwoFaQrCode(
+    @Body() payload: VerifyTwoFaDto,
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.verifyTwoFaQrCode({ payload, userId, trx });
+  }
+
   @UsePipes(ValidationPipe)
   @Post('registration-send-sms-code')
   registrationSendSmsCode(
