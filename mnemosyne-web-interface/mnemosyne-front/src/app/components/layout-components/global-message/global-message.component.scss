@@ -11,7 +11,7 @@
   min-width: 650px;
   transition: .3s;
   background-color: var(--bg-color);
-  z-index: map-get($z-index, loading);
+  @include z-index(loading);
 
   @include respond_device(to_m) {
     margin-right: unset;

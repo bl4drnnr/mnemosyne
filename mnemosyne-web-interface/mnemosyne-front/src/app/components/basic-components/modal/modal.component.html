@@ -1,0 +1,18 @@
+<div class="modal-container" *ngIf="showModal">
+  <div class="modal-wrapper">
+    <div class="window-header">
+      <img
+        [ngSrc]="staticStorageLink + '/icons/backarrowmodal.svg'"
+        [width]="72"
+        [height]="72"
+        (click)="closeModal.emit()"
+        alt="close"
+      >
+      <h3 class="modal-title">{{ header }}</h3>
+    </div>
+    <div class="description">{{ description }}</div>
+    <div class="child-wrapper">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div>

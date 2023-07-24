@@ -1,0 +1,48 @@
+@import 'variables';
+
+.security-setting-section {
+  width: 100%;
+  min-height: 100px;
+  border-bottom: 1px solid var(--border-color);
+  transition: .2s;
+  display: flex;
+  align-items: center;
+
+  &.danger {
+    border-bottom: 1px solid var(--warn-color);
+    &:hover {
+      border-bottom: 1px solid var(--error-color);
+    }
+  }
+
+  &:hover {
+    border-bottom: 1px solid var(--main-color-border);
+  }
+}
+
+.security-setting-section-content {
+  width: 90%;
+  height: 80%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-section {
+  width: 70%;
+}
+
+.button-section {
+  width: 20%;
+}
+
+.security-setting-section-title {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.security-setting-section-p {
+  font-size: 14px;
+  margin-top: 10px;
+}

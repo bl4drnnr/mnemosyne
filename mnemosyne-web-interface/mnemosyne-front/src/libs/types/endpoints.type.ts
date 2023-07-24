@@ -16,5 +16,7 @@ export enum ENDPOINTS_TYPE {
   REFRESH = 'refresh',
   LOGOUT = 'logout',
   USER_INFO = 'user-info',
-  USER_SECURITY = 'user-security'
+  USER_SECURITY = 'user-security',
+  GENERATE_2FA_QR = 'generate-2fa-qr',
+  VERIFY_2FA = 'verify-2fa'
 }

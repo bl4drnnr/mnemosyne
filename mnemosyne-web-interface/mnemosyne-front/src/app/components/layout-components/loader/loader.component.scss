@@ -6,12 +6,12 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--loader-background);
-  z-index: map-get($z-index, loading);
+  background: var(--loader-background);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  @include z-index(loading);
 }
 
 .loader-container {

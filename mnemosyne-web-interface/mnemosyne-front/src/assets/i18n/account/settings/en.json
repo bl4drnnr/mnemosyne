@@ -4,5 +4,38 @@
   "personalSettings": "Personal settings",
   "managePersonalSettings": "Manage your personal information",
   "securitySettings": "Security settings",
-  "manageSecuritySettings": "Manage the security settings of your account"
+  "manageSecuritySettings": "Manage the security settings of your account",
+  "securitySettingsRules": {
+    "title": "Manage security settings of your account and make sure it is secured",
+    "rule1": "Please, make sure you have read Mnemosyne's Security & Privacy policies since some settings are obliged for all users.",
+    "rule2": "According to some Mnemosyne's Security & Privacy policies all users are obliged to have at least one way of multi-factor authentication. Therefore, you can have 2 of them at the same time, but cannot disable both.",
+    "rule3": "You are only allowed to change your account password once every 24 hours.",
+    "rule4": "You can change your email only once!",
+    "rule5": "According to the Mnemosyne's Security & Privacy policies and GDPR, request of data deletion will be proceed as soon as possible and all user's data will be immediately deleted from all Mnemosyne's systems."
+  },
+  "mfa": {
+    "setup2fa": "Set up 2FA",
+    "disable2fa": "Disable 2FA",
+    "setup2faDesc": "Secure your account with Two-Factor Authentication (2FA) mobile application that will be generating one-time 6-digit code for the additional verification.",
+    "disable2faDesc": "Disabling of 2FA will increase the insecurity of your account. We would highly recommend to keep it unless you accept the risk. Also, according to policies, you are obliged to have at least one way of MFA."
+  },
+  "phone": {
+    "setupPhone": "Set up mobile phone",
+    "disablePhone": "Disable mobile phone",
+    "setupPhoneDesc": "Secure your account with one-time code that you will be receiving every time you are logging in to your account. Alternative way of Two-Factor Authentication. Recommended to use both.",
+    "disablePhoneDesc": "Disconnecting the phone from your account will increase the level of insecurity of your account. We would not recommend to that because of security reasons. Keep in mind that according to policies, you are obliged to have at least one way of MFA."
+  },
+  "password": {
+    "changePassword": "Change password",
+    "changePasswordDesc": "Change your password by providing the current password and the new password. Consider in mind that after successful password change you will be logged out from your account."
+  },
+  "email": {
+    "changeEmail": "Change email",
+    "changeEmailDesc": "Change your email, but be careful! You are allowed to change your email address only one time! In order to change email address of your account you will need to click in the link in the email.",
+    "emailAlreadyChanged": "Email has already been changed. You are allowed to change your email only one time!"
+  },
+  "deleteAcc": {
+    "deleteAcc": "Delete account",
+    "deleteAccDesc": "There is no way back. Data will be lost without way to recover it. According to Mnemosyne's Security & Privacy policies and law enforcement all data will be immediately removed from systems."
+  }
 }

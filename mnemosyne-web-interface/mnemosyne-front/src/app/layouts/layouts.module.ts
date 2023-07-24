@@ -7,6 +7,7 @@ import { EmptyLayout } from '@layouts/empty/empty.layout';
 import { ComponentsModule } from '@components/components.module';
 import { LottieComponent } from 'ngx-lottie';
 import { TranslocoModule } from '@ngneat/transloco';
+import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
 
 const components = [DefaultLayout, EmptyLayout, CredentialsLayout];
 
@@ -18,7 +19,8 @@ const components = [DefaultLayout, EmptyLayout, CredentialsLayout];
     NgOptimizedImage,
     ComponentsModule,
     LottieComponent,
-    TranslocoModule
+    TranslocoModule,
+    ModeToggleModule
   ],
   exports: [...components]
 })

@@ -75,6 +75,22 @@ export class SecurityService {
     });
   }
 
+  async generateTwoFaQrCode({
+    userId,
+    trx
+  }: {
+    userId: string;
+    trx?: Transaction;
+  }) {
+    const user = await this.userService.getUserById({ id: userId, trx });
+
+    return await this.generateQrCode({
+      email: user.email,
+      userId: user.id,
+      trx
+    });
+  }
+
   async registrationVerifyTwoFaQrCode({
     payload,
     confirmationHash,
@@ -94,6 +110,7 @@ export class SecurityService {
       return await this.verifyQrCode({
         userId,
         code: payload.code,
+        token: payload.twoFaToken,
         trx
       });
     } catch (e: any) {
@@ -118,6 +135,36 @@ export class SecurityService {
       return await this.verifyQrCode({
         userId: user.id,
         code: payload.code,
+        token: payload.twoFaToken,
+        trx
+      });
+    } catch (e: any) {
+      throw new HttpException(e.response.error, e.status);
+    }
+  }
+
+  async verifyTwoFaQrCode({
+    payload,
+    userId,
+    trx
+  }: {
+    payload: VerifyTwoFaDto;
+    userId: string;
+    trx?: Transaction;
+  }) {
+    const user = await this.userService.getUserById({
+      id: userId,
+      trx
+    });
+
+    if (user.userSettings.twoFaToken !== payload.twoFaToken)
+      throw new BadRequestException();
+
+    try {
+      return await this.verifyQrCode({
+        userId: user.id,
+        code: payload.code,
+        token: payload.twoFaToken,
         trx
       });
     } catch (e: any) {
@@ -321,22 +368,26 @@ export class SecurityService {
       trx
     });
 
-    return { qr };
+    return { qr, secret };
   }
 
   private async verifyQrCode({
     userId,
     code,
+    token,
     trx
   }: {
     userId: string;
     code: string;
+    token: string;
     trx?: Transaction;
   }) {
     const { twoFaToken } = await this.userService.getUserSettingsByUserId({
       userId,
       trx
     });
+
+    if (token !== twoFaToken) throw new BadRequestException();
 
     const delta = node2fa.verifyToken(twoFaToken, code);
 

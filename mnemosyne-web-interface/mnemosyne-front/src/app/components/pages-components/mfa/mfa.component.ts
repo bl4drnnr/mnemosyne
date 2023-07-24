@@ -22,6 +22,7 @@ export class MfaComponent {
   phone: string;
   qrCode: string;
   code: string;
+  twoFaToken: string;
 
   resendMessage: string;
   phoneCodeSent = false;
@@ -64,7 +65,7 @@ export class MfaComponent {
 
   async sendSmdCode() {
     if (this.hash) {
-      await this.smsService
+      this.smsService
         .registrationSendSmsCode({ hash: this.hash, phone: this.phone })
         .subscribe({
           next: () => {
@@ -73,7 +74,7 @@ export class MfaComponent {
           }
         });
     } else if (this.email && this.password) {
-      await this.smsService
+      this.smsService
         .loginSendSmsCode({
           email: this.email,
           password: this.password,
@@ -108,17 +109,22 @@ export class MfaComponent {
 
   private async verifyTwoFaQrCode() {
     if (this.hash) {
-      await this.mfaService
-        .registrationVerifyTwoQrCode({ hash: this.hash, code: this.code })
+      this.mfaService
+        .registrationVerifyTwoFaQrCode({
+          hash: this.hash,
+          code: this.code,
+          twoFaToken: this.twoFaToken
+        })
         .subscribe({
           next: () => this.confirmUserMfa.emit()
         });
     } else if (this.email && this.password) {
-      await this.mfaService
-        .loginVerifyTwoQrCode({
+      this.mfaService
+        .loginVerifyTwoFaQrCode({
           email: this.email,
           password: this.password,
-          code: this.code
+          code: this.code,
+          twoFaToken: this.twoFaToken
         })
         .subscribe({
           next: () => this.confirmUserMfa.emit()
@@ -128,7 +134,7 @@ export class MfaComponent {
 
   private async verifyMobilePhone() {
     if (this.hash) {
-      await this.smsService
+      this.smsService
         .registrationVerifyMobilePhone({
           hash: this.hash,
           phone: this.phone,
@@ -138,7 +144,7 @@ export class MfaComponent {
           next: () => this.confirmUserMfa.emit()
         });
     } else if (this.email && this.password) {
-      await this.smsService
+      this.smsService
         .loginVerifyMobilePhone({
           phone: this.phone,
           code: this.code,
@@ -170,19 +176,25 @@ export class MfaComponent {
 
   private async generateTwoFaQrCode() {
     if (this.hash) {
-      await this.mfaService
+      this.mfaService
         .registrationGenerateTwoFaQrCode({ hash: this.hash })
         .subscribe({
-          next: ({ qr }) => (this.qrCode = qr)
+          next: ({ qr, secret }) => {
+            this.qrCode = qr;
+            this.twoFaToken = secret;
+          }
         });
     } else if (this.email && this.password) {
-      await this.mfaService
+      this.mfaService
         .loginGenerateTwoFaQrCode({
           email: this.email,
           password: this.password
         })
         .subscribe({
-          next: ({ qr }) => (this.qrCode = qr)
+          next: ({ qr, secret }) => {
+            this.qrCode = qr;
+            this.twoFaToken = secret;
+          }
         });
     }
   }

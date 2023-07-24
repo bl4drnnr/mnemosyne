@@ -1,77 +1,139 @@
 <ng-container *transloco="let t">
   <div class="security-settings-container">
-    <h3>Manage security settings of your account and make sure it is secured</h3>
+    <h3>{{ t('settings.securitySettingsRules.title') }}</h3>
     <ul class="rules-list">
-      <li class="rule">Please, make sure you have read Mnemosyne's Security & Privacy policies since some settings are obliged for all users.</li>
-      <li class="rule">According to some Mnemosyne's Security & Privacy policies all users are obliged to have at least one way of multi-factor authentication. Therefore, you can have 2 of them at the same time, but cannot disable both.</li>
-      <li class="rule">You are only allowed to change your account password once every 24 hours.</li>
-      <li class="rule">You can change your email only once!</li>
-      <li class="rule">According to the Mnemosyne's Security & Privacy policies and GDPR, request of data deletion will be proceed as soon as possible and all user's data will be immediately deleted from all Mnemosyne's systems.</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule1') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule2') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule3') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule4') }}</li>
+      <li class="rule">{{ t('settings.securitySettingsRules.rule5') }}</li>
     </ul>
 
     <div class="dived-line no-bottom"></div>
 
-    <div class="security-setting-section">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Set 2FA</p>
-          <p class="security-setting-section-p">Secure your account with Two-Factor Authentication (2FA).</p>
-        </div>
-        <div class="button-section">
-          <basic-button label="Set 2FA" />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="!userSecurity.isTwoFaSetUp"
+      [title]="t('settings.mfa.setup2fa')"
+      [description]="t('settings.mfa.setup2faDesc')"
+      [buttonLabel]="t('settings.mfa.setup2fa')"
+      (onButtonClick)="generateTwoFaQrCode()"
+    />
 
-    <div class="security-setting-section">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Set mobile phone</p>
-          <p class="security-setting-section-p">Alternative way to secure your account. Used as additional 2FA method.</p>
-        </div>
-        <div class="button-section">
-          <basic-button label="Set mobile phone" />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="userSecurity.isTwoFaSetUp"
+      [title]="t('settings.mfa.disable2fa')"
+      [description]="t('settings.mfa.disable2faDesc')"
+      [buttonLabel]="t('settings.mfa.disable2fa')"
+      [dangerButton]="true"
+      [disabledButton]="userSecurity.isTwoFaSetUp && !userSecurity.phoneStatus.isSetUp"
+      (onButtonClick)="disable2faModal = true"
+    />
 
-    <div class="security-setting-section">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Change password</p>
-          <p class="security-setting-section-p">Change your password by providing the current password and the new password. You will have to confirm the change with MFA.</p>
-        </div>
-        <div class="button-section">
-          <basic-button label="Change password" />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="!userSecurity.phoneStatus.isSetUp"
+      [title]="t('settings.phone.setupPhone')"
+      [description]="t('settings.phone.setupPhoneDesc')"
+      [buttonLabel]="t('settings.phone.setupPhone')"
+      (onButtonClick)="setMobilePhoneModal = true"
+    />
 
-    <div class="security-setting-section">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Change email</p>
-          <p class="security-setting-section-p">Change your email, but be careful! You are allowed to change your email address only one time!</p>
-        </div>
-        <div class="button-section">
-          <basic-button label="Change email" />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="userSecurity.phoneStatus.isSetUp"
+      [title]="t('settings.phone.disablePhone')"
+      [description]="t('settings.phone.disablePhoneDesc')"
+      [buttonLabel]="t('settings.phone.disablePhone')"
+      [dangerButton]="true"
+      [disabledButton]="userSecurity.phoneStatus.isSetUp && !userSecurity.isTwoFaSetUp"
+      (onButtonClick)="disableMobilePhoneModal = true"
+    />
 
-    <div class="security-setting-section danger">
-      <div class="security-setting-section-content">
-        <div class="text-section">
-          <p class="security-setting-section-title">Delete account</p>
-          <p class="security-setting-section-p">There is no way back. Data will be lost without way to recover it.</p>
-        </div>
-        <div class="button-section">
-          <basic-button
-            label="Delete account"
-            [danger]="true"
-          />
-        </div>
-      </div>
-    </div>
+    <security-setting-section
+      [showSection]="true"
+      [title]="t('settings.password.changePassword')"
+      [description]="t('settings.password.changePasswordDesc')"
+      [buttonLabel]="t('settings.password.changePassword')"
+      [disabledButton]="!userSecurity.passwordCanBeChanged"
+      (onButtonClick)="changePasswordModal = true"
+    />
+
+    <security-setting-section
+      [showSection]="!userSecurity.emailChanged"
+      [title]="t('settings.email.changeEmail')"
+      [description]="t('settings.email.changeEmailDesc')"
+      [buttonLabel]="t('settings.email.changeEmail')"
+      (onButtonClick)="changeEmailModal = true"
+    />
+
+    <security-setting-section
+      [showSection]="userSecurity.emailChanged"
+      [title]="t('settings.email.changeEmail')"
+      [description]="t('settings.email.emailAlreadyChanged')"
+      [buttonLabel]="t('settings.email.changeEmail')"
+      [disabledButton]="true"
+    />
+
+    <security-setting-section
+      [showSection]="true"
+      [title]="t('settings.deleteAcc.deleteAcc')"
+      [description]="t('settings.deleteAcc.deleteAccDesc')"
+      [buttonLabel]="t('settings.deleteAcc.deleteAcc')"
+      [dangerButton]="true"
+      (onButtonClick)="deleteAccountModal = true"
+    />
   </div>
+
+  <basic-modal
+    [header]="t('settings.mfa.setup2fa')"
+    [description]="t('settings.mfa.setup2faDesc')"
+    [showModal]="set2faModal"
+    (closeModal)="set2faModal = false"
+  >
+    <div *ngIf="qrCode" class="qr-code-wrapper"><img [ngSrc]="qrCode" width="200" height="200" alt="qr"></div>
+    <div *ngIf="!qrCode" class="spinner-wrapper"><basic-spinner/></div>
+
+    <basic-input-mfa (mfaCode)="mfaCode = $event" />
+
+    <div class="last-button">
+      <basic-button
+        [label]="t('button.continue')"
+        (buttonClick)="verifyTwoFaQrCode()"
+      />
+    </div>
+  </basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="disable2faModal"
+    (closeModal)="disable2faModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="setMobilePhoneModal"
+    (closeModal)="setMobilePhoneModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="changePasswordModal"
+    (closeModal)="changePasswordModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="changeEmailModal"
+    (closeModal)="changeEmailModal = false"
+  ></basic-modal>
+
+  <basic-modal
+    [header]="t('')"
+    [description]="t('')"
+    [showModal]="deleteAccountModal"
+    (closeModal)="deleteAccountModal = false"
+  ></basic-modal>
+
 </ng-container>

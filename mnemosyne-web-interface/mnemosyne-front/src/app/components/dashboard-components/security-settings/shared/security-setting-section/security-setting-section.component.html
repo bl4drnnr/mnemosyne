@@ -1,0 +1,16 @@
+<div class="security-setting-section" *ngIf="showSection">
+  <div class="security-setting-section-content">
+    <div class="text-section">
+      <p class="security-setting-section-title">{{ title }}</p>
+      <p class="security-setting-section-p">{{ description }}</p>
+    </div>
+    <div class="button-section">
+      <basic-button
+        [label]="buttonLabel"
+        [danger]="dangerButton"
+        [disabled]="disabledButton"
+        (buttonClick)="onButtonClick.emit()"
+      />
+    </div>
+  </div>
+</div>

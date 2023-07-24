@@ -377,11 +377,23 @@ export class UsersService {
       trx
     });
 
+    const oneDay = dayjs().add(24, 'hours');
+    const passwordCanBeChanged = userSettings.passwordChanged
+      ? oneDay.diff(dayjs(userSettings.passwordChanged), 'hours') < 0
+      : true;
+
+    const emailChanged = !!userSettings.emailChanged;
+    const isTwoFaSetUp = !!userSettings.twoFaToken;
+    const isSetUp = !!userSettings.phone;
+    const twoLastDigit = !!userSettings.phone
+      ? userSettings.phone.slice(-2)
+      : null;
+
     return {
-      emailChanged: userSettings.emailChanged,
-      passwordChanged: userSettings.passwordChanged,
-      phone: userSettings.phone,
-      twoFaToken: !!userSettings.twoFaToken,
+      phoneStatus: { isSetUp, twoLastDigit },
+      passwordCanBeChanged,
+      emailChanged,
+      isTwoFaSetUp,
       email
     };
   }
