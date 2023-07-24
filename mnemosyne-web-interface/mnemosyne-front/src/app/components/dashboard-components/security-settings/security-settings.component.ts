@@ -1,5 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { UserSecurityResponse } from '@responses/user-security.response';
+import { MfaService } from '@services/mfa.service';
+import { Router } from '@angular/router';
+import { RefreshTokensService } from '@services/refresh-tokens.service';
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -11,9 +14,26 @@ export class SecuritySettingsComponent {
 
   set2faModal: boolean;
   disable2faModal: boolean;
+  qrCode: string;
+  mfaCode: string;
+
   setMobilePhoneModal: boolean;
   disableMobilePhoneModal: boolean;
+
   changeEmailModal: boolean;
   changePasswordModal: boolean;
   deleteAccountModal: boolean;
+
+  constructor(
+    private readonly mfaService: MfaService,
+    private readonly refreshTokensService: RefreshTokensService
+  ) {}
+
+  async generateTwoFaQrCode() {
+    this.mfaService.generateTwoFaQrCode().subscribe({
+      next: ({ qr }) => (this.qrCode = qr),
+      error: () => this.refreshTokensService.handleLogout()
+    });
+    this.set2faModal = true;
+  }
 }

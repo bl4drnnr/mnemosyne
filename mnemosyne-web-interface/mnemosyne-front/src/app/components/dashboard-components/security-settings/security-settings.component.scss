@@ -25,3 +25,21 @@
     padding-bottom: 10px;
   }
 }
+
+.qr-code-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.last-button {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}

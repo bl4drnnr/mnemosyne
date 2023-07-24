@@ -64,7 +64,7 @@ export class MfaComponent {
 
   async sendSmdCode() {
     if (this.hash) {
-      await this.smsService
+      this.smsService
         .registrationSendSmsCode({ hash: this.hash, phone: this.phone })
         .subscribe({
           next: () => {
@@ -73,7 +73,7 @@ export class MfaComponent {
           }
         });
     } else if (this.email && this.password) {
-      await this.smsService
+      this.smsService
         .loginSendSmsCode({
           email: this.email,
           password: this.password,
@@ -108,13 +108,13 @@ export class MfaComponent {
 
   private async verifyTwoFaQrCode() {
     if (this.hash) {
-      await this.mfaService
+      this.mfaService
         .registrationVerifyTwoQrCode({ hash: this.hash, code: this.code })
         .subscribe({
           next: () => this.confirmUserMfa.emit()
         });
     } else if (this.email && this.password) {
-      await this.mfaService
+      this.mfaService
         .loginVerifyTwoQrCode({
           email: this.email,
           password: this.password,
@@ -128,7 +128,7 @@ export class MfaComponent {
 
   private async verifyMobilePhone() {
     if (this.hash) {
-      await this.smsService
+      this.smsService
         .registrationVerifyMobilePhone({
           hash: this.hash,
           phone: this.phone,
@@ -138,7 +138,7 @@ export class MfaComponent {
           next: () => this.confirmUserMfa.emit()
         });
     } else if (this.email && this.password) {
-      await this.smsService
+      this.smsService
         .loginVerifyMobilePhone({
           phone: this.phone,
           code: this.code,
@@ -170,13 +170,13 @@ export class MfaComponent {
 
   private async generateTwoFaQrCode() {
     if (this.hash) {
-      await this.mfaService
+      this.mfaService
         .registrationGenerateTwoFaQrCode({ hash: this.hash })
         .subscribe({
           next: ({ qr }) => (this.qrCode = qr)
         });
     } else if (this.email && this.password) {
-      await this.mfaService
+      this.mfaService
         .loginGenerateTwoFaQrCode({
           email: this.email,
           password: this.password

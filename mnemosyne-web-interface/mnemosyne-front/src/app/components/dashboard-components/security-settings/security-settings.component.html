@@ -16,7 +16,7 @@
       [title]="t('settings.mfa.setup2fa')"
       [description]="t('settings.mfa.setup2faDesc')"
       [buttonLabel]="t('settings.mfa.setup2fa')"
-      (onButtonClick)="set2faModal = true"
+      (onButtonClick)="generateTwoFaQrCode()"
     />
 
     <security-setting-section
@@ -83,11 +83,22 @@
   </div>
 
   <basic-modal
-    [header]="t('')"
-    [description]="t('')"
+    [header]="t('settings.mfa.setup2fa')"
+    [description]="t('settings.mfa.setup2faDesc')"
     [showModal]="set2faModal"
     (closeModal)="set2faModal = false"
-  ></basic-modal>
+  >
+    <div *ngIf="qrCode" class="qr-code-wrapper"><img [ngSrc]="qrCode" width="200" height="200" alt="qr"></div>
+    <div *ngIf="!qrCode" class="spinner-wrapper"><basic-spinner/></div>
+
+    <basic-input-mfa (mfaCode)="mfaCode = $event" />
+
+    <div class="last-button">
+      <basic-button
+        [label]="t('button.continue')"
+      />
+    </div>
+  </basic-modal>
 
   <basic-modal
     [header]="t('')"

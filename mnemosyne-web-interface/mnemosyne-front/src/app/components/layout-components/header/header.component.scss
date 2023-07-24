@@ -8,8 +8,8 @@ header {
   height: 60px;
   transition: transform 0.3s ease-in-out;
   box-shadow: var(--card-shadow);
-  z-index: map-get($z-index, header);
   background-color: var(--bg-color);
+  @include z-index(header);
 }
 
 .header-content {

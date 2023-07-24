@@ -38,7 +38,7 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   async resetUserPassword() {
-    await this.authenticationService
+    this.authenticationService
       .resetUserPassword({
         hash: this.hash,
         password: this.password,

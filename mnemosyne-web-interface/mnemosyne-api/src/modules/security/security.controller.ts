@@ -44,6 +44,15 @@ export class SecurityController {
     return this.securityService.loginGenerateTwoFaQrCode({ payload, trx });
   }
 
+  @UseGuards(AuthGuard)
+  @Get('generate-2fa-qr')
+  generateTwoFaQrCode(
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.generateTwoFaQrCode({ userId, trx });
+  }
+
   @UsePipes(ValidationPipe)
   @Post('registration-verify-2fa')
   registrationVerifyTwoFaQrCode(

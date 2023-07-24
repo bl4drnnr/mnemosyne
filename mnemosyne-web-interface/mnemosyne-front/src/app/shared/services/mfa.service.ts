@@ -14,6 +14,19 @@ import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
 export class MfaService {
   constructor(private apiService: ApiService) {}
 
+  registrationGenerateTwoFaQrCode({
+    hash
+  }: {
+    hash: string;
+  }): Observable<{ qr: string }> {
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS_TYPE.GET,
+      controller: CONTROLLERS_TYPE.SECURITY,
+      action: ENDPOINTS_TYPE.REGISTRATION_GENERATE_2FA_QR,
+      params: { confirmationHash: hash }
+    });
+  }
+
   loginGenerateTwoFaQrCode({
     email,
     password
@@ -26,16 +39,13 @@ export class MfaService {
     });
   }
 
-  registrationGenerateTwoFaQrCode({
-    hash
-  }: {
-    hash: string;
-  }): Observable<{ qr: string }> {
+  generateTwoFaQrCode(): Observable<{ qr: string }> {
+    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS_TYPE.GET,
       controller: CONTROLLERS_TYPE.SECURITY,
-      action: ENDPOINTS_TYPE.REGISTRATION_GENERATE_2FA_QR,
-      params: { confirmationHash: hash }
+      action: ENDPOINTS_TYPE.GENERATE_2FA_QR,
+      accessToken
     });
   }
 

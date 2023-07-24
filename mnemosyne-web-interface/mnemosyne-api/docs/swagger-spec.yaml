@@ -188,6 +188,13 @@ paths:
       responses:
         "201":
           description: ""
+  /api/security/generate-2fa-qr:
+    get:
+      operationId: SecurityController_generateTwoFaQrCode
+      parameters: []
+      responses:
+        "200":
+          description: ""
   /api/security/registration-verify-2fa:
     post:
       operationId: SecurityController_registrationVerifyTwoFaQrCode

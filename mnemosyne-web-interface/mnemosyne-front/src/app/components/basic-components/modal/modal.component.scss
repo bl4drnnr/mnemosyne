@@ -11,7 +11,7 @@
   position: fixed;
   display: flex;
   background: var(--loader-background);
-  z-index: map-get($z-index, modal);
+  @include z-index(modal);
 }
 
 .modal-wrapper {

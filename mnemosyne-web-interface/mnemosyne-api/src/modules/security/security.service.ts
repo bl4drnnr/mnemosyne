@@ -75,6 +75,22 @@ export class SecurityService {
     });
   }
 
+  async generateTwoFaQrCode({
+    userId,
+    trx
+                            }: {
+    userId: string;
+    trx?: Transaction
+  }) {
+    const user = await this.userService.getUserById({ id: userId, trx });
+
+    return await this.generateQrCode({
+      email: user.email,
+      userId: user.id,
+      trx
+    });
+  }
+
   async registrationVerifyTwoFaQrCode({
     payload,
     confirmationHash,
