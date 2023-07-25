@@ -2,7 +2,10 @@
   <div class="two-factor-auth">
     <input
       class="two-factor-input"
-      [ngClass]="{ 'disabled': loaderService.getStatus() }"
+      [ngClass]="{
+        'disabled': loaderService.getStatus(),
+        'on-white': onWhite
+      }"
       type="text"
       maxlength="1"
       (input)="onInputChange(0, $event)"
@@ -12,7 +15,10 @@
     >
     <input
       class="two-factor-input"
-      [ngClass]="{ 'disabled': loaderService.getStatus() }"
+      [ngClass]="{
+        'disabled': loaderService.getStatus(),
+        'on-white': onWhite
+      }"
       type="text"
       maxlength="1"
       (input)="onInputChange(1, $event)"
@@ -22,7 +28,10 @@
     >
     <input
       class="two-factor-input"
-      [ngClass]="{ 'disabled': loaderService.getStatus() }"
+      [ngClass]="{
+        'disabled': loaderService.getStatus(),
+        'on-white': onWhite
+      }"
       type="text"
       maxlength="1"
       (input)="onInputChange(2, $event)"
@@ -32,7 +41,10 @@
     >
     <input
       class="two-factor-input"
-      [ngClass]="{ 'disabled': loaderService.getStatus() }"
+      [ngClass]="{
+        'disabled': loaderService.getStatus(),
+        'on-white': onWhite
+      }"
       type="text"
       maxlength="1"
       (input)="onInputChange(3, $event)"
@@ -42,7 +54,10 @@
     >
     <input
       class="two-factor-input"
-      [ngClass]="{ 'disabled': loaderService.getStatus() }"
+      [ngClass]="{
+        'disabled': loaderService.getStatus(),
+        'on-white': onWhite
+      }"
       type="text"
       maxlength="1"
       (input)="onInputChange(4, $event)"
@@ -52,7 +67,10 @@
     >
     <input
       class="two-factor-input"
-      [ngClass]="{ 'disabled': loaderService.getStatus() }"
+      [ngClass]="{
+        'disabled': loaderService.getStatus(),
+        'on-white': onWhite
+      }"
       type="text"
       maxlength="1"
       (input)="onInputChange(5, $event)"
@@ -64,11 +82,21 @@
       class="resend-button"
       *ngIf="isPhone"
       [disabled]="isCountdownRunning || loaderService.getStatus()"
-      [ngClass]="{ 'disabled': isCountdownRunning || loaderService.getStatus() }"
+      [ngClass]="{
+        'disabled': isCountdownRunning || loaderService.getStatus(),
+        'on-white': onWhite
+      }"
       (click)="initResendSms()"
     >
-      <p class="resend-button-label">{{ 'button.resendCode' | transloco }}</p>
+      <p
+        class="resend-button-label"
+        [ngClass]="{ 'on-white': onWhite }"
+      >{{ 'button.resendCode' | transloco }}</p>
     </button>
   </div>
-  <p class="resend-message" *ngIf="isCountdownRunning">{{ resendMessage }}</p>
+  <p
+    class="resend-message"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngIf="isCountdownRunning"
+  >{{ resendMessage }}</p>
 </div>

@@ -18,6 +18,25 @@
     height: 48px;
   }
 
+  &.on-white {
+    background-color: $color-white;
+
+    &:hover {
+      background-color: var(--main-color-hover);
+    }
+
+    &.disabled {
+      border-color: $color-lightgray-third;
+      background-color: rgba($block-color, .2) !important;
+
+      &:hover {
+        cursor: default;
+        box-shadow: none !important;
+        background-color: rgba($block-color, .2) !important;
+      }
+    }
+  }
+
   &.disabled {
     background-color: var(--disabled-color);
     border: 1px solid var(--border-color);
@@ -78,6 +97,10 @@
   font-weight: 400;
   padding: 0 5px;
 
+  &.on-white {
+    color: $color-black;
+  }
+
   &.fill-button {
     color: $color-black !important;
   }
@@ -87,4 +110,8 @@
   font-size: small;
   opacity: .5;
   margin-top: 5px;
+
+  &.on-white {
+    color: $color-black;
+  }
 }

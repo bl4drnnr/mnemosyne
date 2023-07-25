@@ -12,6 +12,10 @@
   font-size: 14px;
   margin-top: 10px;
   opacity: 0.8;
+
+  &.on-white {
+    color: $color-black;
+  }
 }
 
 .two-factor-input[type="text"] {
@@ -24,6 +28,19 @@
   background-color: var(--input-shadow);
   transition: all 0.3s;
   color: var(--text-color);
+
+  &.on-white {
+    border: 1px solid rgba($color-main-border, .5);
+    background-color: $color-white;
+    color: $text-color;
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      background-color: $color-white;
+      border: 1px solid rgba($color-black, .1);
+    }
+  }
 
   @include respond_device(to_m) {
     width: 42px;
@@ -70,4 +87,8 @@
 
 .resend-button-label {
   padding: 0 10px;
+
+  &.on-white {
+    color: $color-black;
+  }
 }

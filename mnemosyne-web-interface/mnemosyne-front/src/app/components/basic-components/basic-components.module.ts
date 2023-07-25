@@ -16,6 +16,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
 import { CopyClipboardDirective } from '@directives/clipboard.directive';
 import { QrMfaComponent } from './qr-mfa/qr-mfa.component';
+import { PhoneComponent } from './phone/phone.component';
 
 const components = [
   ButtonComponent,
@@ -32,7 +33,12 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [...components, CopyClipboardDirective, QrMfaComponent],
+  declarations: [
+    ...components,
+    CopyClipboardDirective,
+    QrMfaComponent,
+    PhoneComponent
+  ],
   imports: [
     CommonModule,
     NgOptimizedImage,
@@ -40,6 +46,6 @@ const components = [
     TranslocoModule,
     ModeToggleModule
   ],
-  exports: [...components, QrMfaComponent]
+  exports: [...components, QrMfaComponent, PhoneComponent]
 })
 export class BasicComponentsModule {}

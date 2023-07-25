@@ -125,8 +125,12 @@ export class SecurityController {
   @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe)
   @Get('send-sms-code')
-  sendSmsCode(@UserId() userId: string, @TransactionParam() trx: Transaction) {
-    return this.securityService.sendSmsCode({ userId, trx });
+  sendSmsCode(
+    @Body() payload: RegistrationSendSmsCodeDto,
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.sendSmsCode({ payload, userId, trx });
   }
 
   @UsePipes(ValidationPipe)

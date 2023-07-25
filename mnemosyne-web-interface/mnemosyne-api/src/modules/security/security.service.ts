@@ -253,16 +253,17 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async sendSmsCode({ userId, trx }: { userId: string; trx?: Transaction }) {
-    const userSettings = await this.userService.getUserSettingsByUserId({
-      userId,
-      trx
-    });
-
-    if (!userSettings.phone) throw new BadRequestException();
-
+  async sendSmsCode({
+                      payload,
+                      userId,
+                      trx
+  }: {
+    payload: RegistrationSendSmsCodeDto;
+    userId: string;
+    trx?: Transaction;
+  }) {
     await this.phoneService.verifyAndResendSmsCode({
-      phone: userSettings.phone,
+      phone: payload.phone,
       userId,
       trx
     });

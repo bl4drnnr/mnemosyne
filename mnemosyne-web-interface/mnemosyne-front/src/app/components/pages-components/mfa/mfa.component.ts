@@ -25,10 +25,7 @@ export class MfaComponent {
   twoFaToken: string;
   showQr = true;
 
-  resendMessage: string;
   phoneCodeSent = false;
-  isPhoneCorrect = true;
-  time = 120;
   isCountdownRunning = false;
 
   selectedMfaOption: DropdownInterface;
@@ -64,14 +61,13 @@ export class MfaComponent {
     }
   }
 
-  async sendSmdCode() {
+  async sendSmsCode() {
     if (this.hash) {
       this.smsService
         .registrationSendSmsCode({ hash: this.hash, phone: this.phone })
         .subscribe({
           next: () => {
             this.phoneCodeSent = true;
-            this.startCountdown();
           }
         });
     } else if (this.email && this.password) {
@@ -84,16 +80,9 @@ export class MfaComponent {
         .subscribe({
           next: () => {
             this.phoneCodeSent = true;
-            this.startCountdown();
           }
         });
     }
-  }
-
-  isMobilePhoneCorrect(phone: string) {
-    const pattern = /^(\+\d{1,3}[- ]?)?\d{10}$/;
-    this.phone = phone;
-    if (phone.length) this.isPhoneCorrect = pattern.test(phone);
   }
 
   isAllFieldsCorrect() {
@@ -156,23 +145,6 @@ export class MfaComponent {
           next: () => this.confirmUserMfa.emit()
         });
     }
-  }
-
-  private startCountdown() {
-    this.isCountdownRunning = true;
-    const countdownInterval = setInterval(() => {
-      this.time -= 1;
-      if (this.time <= 0) {
-        clearInterval(countdownInterval);
-        this.isCountdownRunning = false;
-        this.time = 120;
-      }
-      this.resendMessage = this.translocoService.translate(
-        'resendCodeIn',
-        { time: this.time, s: this.time !== 1 ? 's' : '' },
-        'components/input'
-      );
-    }, 1000);
   }
 
   private async generateTwoFaQrCode() {

@@ -6,7 +6,7 @@ import { CONTROLLERS } from '@interfaces/controllers.type';
 import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
 import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
 import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
-import { MfaLoginPayload } from '@payloads/mfa-login.payload';
+import { LoginPhonePayload } from '@payloads/login-phone.payload';
 import { GenerateTwoFaResponse } from '@responses/generate-two-fa.response';
 import { DisableTwoFaPayload } from '@payloads/disable-two-fa.payload';
 import { MfaDisabledResponse } from '@responses/mfa-disabled.response';
@@ -33,7 +33,7 @@ export class MfaService {
   loginGenerateTwoFaQrCode({
     email,
     password
-  }: MfaLoginPayload): Observable<GenerateTwoFaResponse> {
+  }: LoginPhonePayload): Observable<GenerateTwoFaResponse> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,

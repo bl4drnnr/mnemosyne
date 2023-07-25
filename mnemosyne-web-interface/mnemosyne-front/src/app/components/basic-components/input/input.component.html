@@ -1,5 +1,9 @@
 <div class="input-container">
-  <p class="input-label" *ngIf="label">{{ label }}</p>
+  <p
+    class="input-label"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngIf="label"
+  >{{ label }}</p>
   <div
     *ngIf="readOnly"
     [copy-clipboard]="value"
@@ -7,6 +11,7 @@
   >
     <input
       class="input-field read-only"
+      [ngClass]="{ 'on-white': onWhite }"
       [disabled]="true"
       [(ngModel)]="value"
       [placeholder]="placeholder"
@@ -18,7 +23,8 @@
       [ngClass]="{
         'disabled': disabled || loaderService.getStatus(),
         'error': showError,
-        'password-size': ['password-repeat', 'password'].includes(type) && value && value.length > 0
+        'password-size': ['password-repeat', 'password'].includes(type) && value && value.length > 0,
+        'on-white': onWhite
       }"
       [disabled]="disabled"
       [(ngModel)]="value"
@@ -35,7 +41,11 @@
   >
     {{ errorMessage }}
   </p>
-  <p class="input-description" *ngIf="inputDescription">
+  <p
+    class="input-description"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngIf="inputDescription"
+  >
     {{ inputDescription }}
   </p>
 </div>

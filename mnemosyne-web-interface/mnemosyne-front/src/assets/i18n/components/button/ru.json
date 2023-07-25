@@ -5,6 +5,7 @@
   "goBack": "Назад",
   "sendCode": "Отправить код",
   "resendCode": "Отправить код",
+  "verifyCode": "Проверить код",
   "continue": "Продолжить",
   "resetPass": "Сбросить пароль",
   "resetPassResendEmail": "Повторно отправить электронное письмо для сброса пароля",
@@ -12,5 +13,6 @@
   "upload": "Загрузить",
   "dashboard": "Дашборд",
   "saveSettings": "Сохранить",
-  "close": "Закрыть"
+  "close": "Закрыть",
+  "disableMfa": "Отключить MFA"
 }

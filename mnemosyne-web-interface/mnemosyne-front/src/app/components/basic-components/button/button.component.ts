@@ -13,6 +13,7 @@ export class ButtonComponent {
   @Input() fillButton = false;
   @Input() danger = false;
   @Input() fillDanger = false;
+  @Input() onWhite = false;
   @Input() buttonDescription: string | null;
 
   @Output() buttonClick = new EventEmitter<void>();

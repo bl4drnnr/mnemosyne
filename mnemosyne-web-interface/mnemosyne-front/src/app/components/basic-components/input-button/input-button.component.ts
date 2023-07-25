@@ -21,6 +21,8 @@ export class InputButtonComponent {
   @Input() buttonDescription: string | null;
   @Input() buttonDisabled = false;
 
+  @Input() onWhite = false;
+
   @Output() inputValueChange = new EventEmitter<string>();
   @Output() buttonClick = new EventEmitter<void>();
 
