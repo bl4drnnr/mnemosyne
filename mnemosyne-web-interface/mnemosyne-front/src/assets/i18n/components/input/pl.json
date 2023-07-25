@@ -23,7 +23,7 @@
     "upper": "Hasło powinno zawierać co najmniej jedną wielką literę"
   },
   "resendCodeIn": "Możesz wysłać SMSa za {{ time }} sec{{ s }}.",
-  "phoneInvalidFormat": "Nieprawidłowy format telefonu. Upewnij się, że numer telefonu pasuje (+1234567890)",
+  "phoneInvalidFormat": "Nieprawidłowy format telefonu. Upewnij się, że numer telefonu pasuje do formatu (+1234567890)",
   "phoneInputDescription": "Upewnij się, że podałeś numer telefonu z numerem kierunkowym kraju. Po odebraniu wiadomości na telefonie wprowadź 6-cyfrowy kod w poniższym polu wprowadzania.",
   "resetPassInputDesc": "Link potwierdzający zostanie wysłany na podany adres e-mail, jeśli istnieje konto z tym adresem e-mail. Link będzie ważny przez 24 godziny, upewnij się, że w tym czasie zresetujesz hasło.",
   "fieldRequired": "Pole jest wymagane",
@@ -39,5 +39,7 @@
   "provideWebsite": "Podaj swoją stronę internetową",
   "websiteDesc": "Pole jest opcjonalne. Powinno być FQDN. Podaj adres URL strony internetowej, która jest powiązana z Tobą lub Twoją firmą.",
   "wrongFQDN": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)",
-  "emailChangeInfo": "Adres e-mail można zmienić w ustawieniach zabezpieczeń. Uważaj! Możesz zmienić e-mail tylko raz."
+  "emailChangeInfo": "Adres e-mail można zmienić w ustawieniach zabezpieczeń. Uważaj! Możesz zmienić e-mail tylko raz.",
+  "mfaToken": "Token MFA",
+  "copied": "Wiadomość została pomyślnie skopiowana do schowka"
 }

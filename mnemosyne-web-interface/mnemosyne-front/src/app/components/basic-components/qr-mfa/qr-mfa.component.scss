@@ -1,0 +1,38 @@
+@import 'variables';
+
+.qr-code-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.qr-code {
+  cursor: pointer;
+}
+
+.paragraph {
+  font-size: 14px;
+  margin: 20px 0;
+
+  &.on-white {
+    color: $color-black;
+  }
+}
+
+.p-center {
+  text-align: center;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.qr-code-input-wrapper {
+  margin: 20px 0;
+}

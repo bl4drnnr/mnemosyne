@@ -1,0 +1,16 @@
+<ng-container *transloco="let t">
+  <basic-input-button
+    (buttonClick)="sendSms()"
+    (inputValueChange)="isMobilePhoneCorrect($event)"
+    [inputShowError]="!isPhoneCorrect && phone.length > 0"
+    [inputDisabled]="isCountdownRunning"
+    [buttonLabel]="!phoneCodeSent ? t('button.sendCode') : t('button.resendCode')"
+    [buttonDisabled]="!isPhoneCorrect || !phone || isCountdownRunning"
+    [buttonDescription]="isCountdownRunning ? resendMessage : null"
+    [inputErrorMessage]="t('input.phoneInvalidFormat')"
+    [placeholder]="t('input.providePhone')"
+    [inputPlaceholder]="t('input.phone')"
+    [inputDescription]="t('input.phoneInputDescription')"
+    [onWhite]="onWhite"
+  />
+</ng-container>

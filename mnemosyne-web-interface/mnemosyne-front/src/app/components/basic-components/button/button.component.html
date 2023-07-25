@@ -6,15 +6,25 @@
       'high-height': highHeight,
       'fill-button': fillButton,
       'danger': danger,
-      'fill-danger': fillDanger
+      'fill-danger': fillDanger,
+      'on-white': onWhite
     }"
     [disabled]="disabled || loaderService.getStatus()"
     (click)="onClick()"
   >
-    <p [ngClass]="fillButton ? 'button-label fill-button' : 'button-label'">{{ label }}</p>
+    <p
+      class="button-label"
+      [ngClass]="{
+        'fill-button' : fillButton,
+        'on-white': onWhite
+      }"
+    >{{ label }}</p>
   </button>
   <p
-    [class]="buttonDescription ? 'button-description' : ''"
+    [ngClass]="{
+      'button-description': buttonDescription,
+      'on-white': onWhite
+    }"
     *ngIf="buttonDescription"
   >
     {{ buttonDescription }}

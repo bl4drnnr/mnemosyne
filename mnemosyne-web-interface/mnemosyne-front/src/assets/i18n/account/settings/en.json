@@ -37,5 +37,9 @@
   "deleteAcc": {
     "deleteAcc": "Delete account",
     "deleteAccDesc": "There is no way back. Data will be lost without way to recover it. According to Mnemosyne's Security & Privacy policies and law enforcement all data will be immediately removed from systems."
-  }
+  },
+  "mfaSetUp": "MFA has been successfully set up!",
+  "mfaDisabled": "MFA has been successfully disabled.",
+  "phoneSetUp": "Mobile phone has been successfully set up!",
+  "phoneDisabled": "Mobile phone has been successfully disabled."
 }

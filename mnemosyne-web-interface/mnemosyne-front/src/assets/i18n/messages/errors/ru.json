@@ -17,6 +17,10 @@
   "link-expired": "Срок действия ссылки истек",
   "unhandled-endpoint": "Необработанная конечная точка",
   "internal-server-error": "Внутренняя серверная ошибка",
+  "wrong-mfa-token": "Неправильный токен MFA",
+  "wrong-provided-phone": "Неправильно указан номер мобильного телефона",
+  "two-fa-not-set-up": "MFA не настроен",
+  "phone-not-set-up": "Мобильный телефон не настроен",
   "validation": {
     "wrong-email-format": "Неверный формат электронной почты",
     "wrong-password-format": "Неверный формат пароля",

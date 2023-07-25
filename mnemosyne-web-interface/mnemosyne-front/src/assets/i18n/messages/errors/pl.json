@@ -17,6 +17,10 @@
   "link-expired": "Link stracił ważność",
   "unhandled-endpoint": "Nieobsługiwany punkt końcowy",
   "internal-server-error": "Wewnętrzy błąd serwerowy",
+  "wrong-mfa-token": "Niewłaściwy token MFA",
+  "wrong-provided-phone": "Źle podany numer telefonu komórkowego",
+  "two-fa-not-set-up": "MFA nie zostało skonfigurowane",
+  "phone-not-set-up": "Telefon komórkowy nie został skonfigurowany",
   "validation": {
     "wrong-email-format": "Zły format e-maila",
     "wrong-password-format": "Niewłaściwy format hasła",

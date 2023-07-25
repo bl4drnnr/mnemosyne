@@ -4,7 +4,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { LoginResponse } from '@responses/login.response';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
-import { SmsService } from '@services/sms.service';
+import { PhoneService } from '@services/phone.service';
 
 @Component({
   selector: 'page-login',
@@ -38,7 +38,7 @@ export class LoginComponent {
 
   constructor(
     private authenticationService: AuthenticationService,
-    private smsService: SmsService,
+    private smsService: PhoneService,
     private validationService: ValidationService,
     private router: Router
   ) {}

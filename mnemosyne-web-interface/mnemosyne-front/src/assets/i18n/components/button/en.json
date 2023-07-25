@@ -5,6 +5,7 @@
   "goBack": "Go back",
   "sendCode": "Send code",
   "resendCode": "Resend code",
+  "verifyCode": "Verify code",
   "continue": "Continue",
   "resetPass": "Reset password",
   "resetPassResendEmail": "Resend reset password email",
@@ -12,5 +13,7 @@
   "upload": "Upload",
   "dashboard": "Dashboard",
   "saveSettings": "Save settings",
-  "close": "Close"
+  "close": "Close",
+  "disableMfa": "Disable MFA",
+  "disconnectPhone": "Disconnect mobile phone"
 }

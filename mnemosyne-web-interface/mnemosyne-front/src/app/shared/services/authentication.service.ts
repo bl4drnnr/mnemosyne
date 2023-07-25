@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
 import { Observable } from 'rxjs';
+import { ALLOWED_METHODS } from '@interfaces/methods.type';
+import { CONTROLLERS } from '@interfaces/controllers.type';
+import { AUTH_ENDPOINTS } from '@interfaces/auth.type';
 import { LoginPayload } from '@payloads/login.payload';
 import { RegistrationPayload } from '@payloads/registration.payload';
 import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
@@ -10,9 +13,6 @@ import { RegistrationResponse } from '@responses/registration.response';
 import { ConfirmAccountResponse } from '@responses/confirm-account.response';
 import { ForgotPasswordResponse } from '@responses/forgot-password.response';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
-import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
-import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
-import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
 import { LogoutResponse } from '@responses/logout.response';
 
 @Injectable({
@@ -28,9 +28,9 @@ export class AuthenticationService {
     mfaCode
   }: LoginPayload): Observable<{ message: LoginResponse; _at: string }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.AUTH,
-      action: ENDPOINTS_TYPE.LOGIN,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.AUTH,
+      action: AUTH_ENDPOINTS.LOGIN,
       payload: { email, password, phoneCode, mfaCode }
     });
   }
@@ -43,9 +43,9 @@ export class AuthenticationService {
     lastName
   }: RegistrationPayload): Observable<{ message: RegistrationResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.AUTH,
-      action: ENDPOINTS_TYPE.REGISTRATION,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.AUTH,
+      action: AUTH_ENDPOINTS.REGISTRATION,
       payload: { email, password, firstName, lastName, tac }
     });
   }
@@ -56,9 +56,9 @@ export class AuthenticationService {
     hash: string;
   }): Observable<{ message: ConfirmAccountResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.GET,
-      controller: CONTROLLERS_TYPE.CONFIRMATION_HASH,
-      action: ENDPOINTS_TYPE.ACCOUNT_CONFIRMATION,
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.CONFIRMATION_HASH,
+      action: AUTH_ENDPOINTS.ACCOUNT_CONFIRMATION,
       params: { confirmationHash: hash }
     });
   }
@@ -67,9 +67,9 @@ export class AuthenticationService {
     email
   }: ForgotPasswordPayload): Observable<{ message: ForgotPasswordResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.USERS,
-      action: ENDPOINTS_TYPE.FORGOT_PASSWORD,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.USERS,
+      action: AUTH_ENDPOINTS.FORGOT_PASSWORD,
       payload: { email }
     });
   }
@@ -83,9 +83,9 @@ export class AuthenticationService {
     message: ResetUserPasswordResponse;
   }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.USERS,
-      action: ENDPOINTS_TYPE.RESET_USER_PASSWORD,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.USERS,
+      action: AUTH_ENDPOINTS.RESET_USER_PASSWORD,
       payload: { hash, password, phoneCode, mfaCode }
     });
   }
@@ -96,9 +96,9 @@ export class AuthenticationService {
     accessToken: string;
   }): Observable<{ _at: string }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.GET,
-      controller: CONTROLLERS_TYPE.AUTH,
-      action: ENDPOINTS_TYPE.REFRESH,
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.AUTH,
+      action: AUTH_ENDPOINTS.REFRESH,
       accessToken
     });
   }
@@ -106,9 +106,9 @@ export class AuthenticationService {
   logout(): Observable<{ message: LogoutResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.GET,
-      controller: CONTROLLERS_TYPE.AUTH,
-      action: ENDPOINTS_TYPE.LOGOUT,
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.AUTH,
+      action: AUTH_ENDPOINTS.LOGOUT,
       accessToken
     });
   }

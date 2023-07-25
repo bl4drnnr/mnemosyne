@@ -21,7 +21,8 @@
       "@shared/*": ["src/shared/services/*", "src/shared/*"],
       "@proxy/*": ["src/modules/proxy/*"],
       "@schemas/*": ["src/schemas/*"],
-      "@interfaces/*": ["src/shared/types/*"]
+      "@interfaces/*": ["src/shared/types/*"],
+      "@exceptions/*": ["src/exceptions/*"]
     }
   }
 }

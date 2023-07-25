@@ -1,0 +1,44 @@
+<ng-container *transloco="let t">
+  <div *ngIf="qrCode && showQr" class="qr-code-wrapper">
+    <img
+      class="qr-code"
+      [ngSrc]="qrCode"
+      (click)="showQr = false"
+      width="200"
+      height="200"
+      alt="qr"
+    >
+  </div>
+  <p
+    class="paragraph p-center"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngIf="qrCode && showQr"
+  >
+    {{ t('mfa.clickQr') }}
+  </p>
+
+  <div *ngIf="qrCode && !showQr">
+    <basic-input
+      [label]="t('input.mfaToken')"
+      [value]="twoFaToken"
+      [readOnly]="true"
+      [onWhite]="true"
+      [inputDescription]="t('mfa.pasteQrToken')"
+    />
+  </div>
+  <p
+    class="paragraph p-center pointer"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngIf="qrCode && !showQr"
+    (click)="showQr = true"
+  >{{ t('mfa.clickQrBack') }}</p>
+
+  <div *ngIf="!qrCode" class="spinner-wrapper"><basic-spinner/></div>
+
+  <div class="qr-code-input-wrapper">
+    <basic-input-mfa
+      [onWhite]="true"
+      (mfaCode)="code.emit($event)"
+    />
+  </div>
+</ng-container>

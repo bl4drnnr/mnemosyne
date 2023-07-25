@@ -5,6 +5,7 @@
   "goBack": "Wróć",
   "sendCode": "Wyślij kod",
   "resendCode": "Wyślij kod",
+  "verifyCode": "Weryfikuj kod",
   "continue": "Kontynuj",
   "resetPass": "Resetuj hasło",
   "resetPassResendEmail": "Wyślij ponownie wiadomość e-mail dotyczącą resetowania hasła",
@@ -12,5 +13,7 @@
   "upload": "Zauploduj",
   "dashboard": "Dashboard",
   "saveSettings": "Zapisz ustawienia",
-  "close": "Zamknij"
+  "close": "Zamknij",
+  "disableMfa": "Deaktywuj MFA",
+  "disconnectPhone": "Deaktywuj telefon"
 }

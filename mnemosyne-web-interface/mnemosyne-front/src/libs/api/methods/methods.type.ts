@@ -1,4 +1,4 @@
-export enum ALLOWED_METHODS_TYPE {
+export enum ALLOWED_METHODS {
   POST = 'POST',
   GET = 'GET',
   DELETE = 'DELETE',

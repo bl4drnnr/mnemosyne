@@ -19,6 +19,29 @@
       (onButtonClick)="generateTwoFaQrCode()"
     />
 
+    <basic-modal
+      [header]="t('settings.mfa.setup2fa')"
+      [description]="t('settings.mfa.setup2faDesc')"
+      [showModal]="set2faModal"
+      (closeModal)="set2faModal = false"
+    >
+      <basic-qr-mfa
+        [qrCode]="qrCode"
+        [twoFaToken]="twoFaToken"
+        [showQr]="showQr"
+        (code)="mfaCode = $event"
+        [onWhite]="true"
+      />
+      <div class="last-button">
+        <basic-button
+          [label]="t('button.continue')"
+          [disabled]="mfaCode.length !== 6"
+          [onWhite]="true"
+          (buttonClick)="verifyTwoFaQrCode()"
+        />
+      </div>
+    </basic-modal>
+
     <security-setting-section
       [showSection]="userSecurity.isTwoFaSetUp"
       [title]="t('settings.mfa.disable2fa')"
@@ -29,6 +52,27 @@
       (onButtonClick)="disable2faModal = true"
     />
 
+    <basic-modal
+      [header]="t('settings.mfa.disable2fa')"
+      [description]="t('settings.mfa.disable2faDesc')"
+      [showModal]="disable2faModal"
+      (closeModal)="disable2faModal = false"
+    >
+      <basic-input-mfa
+        [onWhite]="true"
+        (mfaCode)="disableTwoFaCode = $event"
+      />
+      <div class="last-button">
+        <basic-button
+          [danger]="true"
+          [onWhite]="true"
+          [disabled]="disableTwoFaCode.length !== 6"
+          [label]="t('button.disableMfa')"
+          (buttonClick)="disableTwoFa()"
+        />
+      </div>
+    </basic-modal>
+
     <security-setting-section
       [showSection]="!userSecurity.phoneStatus.isSetUp"
       [title]="t('settings.phone.setupPhone')"
@@ -36,6 +80,33 @@
       [buttonLabel]="t('settings.phone.setupPhone')"
       (onButtonClick)="setMobilePhoneModal = true"
     />
+
+    <basic-modal
+      [header]="t('settings.phone.setupPhone')"
+      [description]="t('settings.phone.setupPhoneDesc')"
+      [showModal]="setMobilePhoneModal"
+      (closeModal)="setMobilePhoneModal = false"
+    >
+      <basic-phone
+        [phoneCodeSent]="phoneCodeSent"
+        (sendSmsCode)="sendSmsCode($event)"
+        [onWhite]="true"
+      />
+      <div *ngIf="phoneCodeSent">
+        <basic-input-mfa
+          [onWhite]="true"
+          (mfaCode)="phoneCode = $event"
+        />
+      </div>
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [disabled]="!phoneCodeSent || phoneCode.length !== 6"
+          [label]="t('button.verifyCode')"
+          (buttonClick)="verifyMobilePhone()"
+        />
+      </div>
+    </basic-modal>
 
     <security-setting-section
       [showSection]="userSecurity.phoneStatus.isSetUp"
@@ -47,6 +118,22 @@
       (onButtonClick)="disableMobilePhoneModal = true"
     />
 
+    <basic-modal
+      [header]="t('settings.phone.disablePhone')"
+      [description]="t('settings.phone.disablePhoneDesc')"
+      [showModal]="disableMobilePhoneModal"
+      (closeModal)="disableMobilePhoneModal = false"
+    >
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [danger]="true"
+          [label]="t('button.disconnectPhone')"
+          (buttonClick)="disableMobilePhone()"
+        />
+      </div>
+    </basic-modal>
+
     <security-setting-section
       [showSection]="true"
       [title]="t('settings.password.changePassword')"
@@ -56,6 +143,13 @@
       (onButtonClick)="changePasswordModal = true"
     />
 
+    <basic-modal
+      [header]="t('settings.password.changePassword')"
+      [description]="t('settings.password.changePasswordDesc')"
+      [showModal]="changePasswordModal"
+      (closeModal)="changePasswordModal = false"
+    ></basic-modal>
+
     <security-setting-section
       [showSection]="!userSecurity.emailChanged"
       [title]="t('settings.email.changeEmail')"
@@ -63,6 +157,13 @@
       [buttonLabel]="t('settings.email.changeEmail')"
       (onButtonClick)="changeEmailModal = true"
     />
+
+    <basic-modal
+      [header]="t('settings.email.changeEmail')"
+      [description]="t('settings.email.changeEmailDesc')"
+      [showModal]="changeEmailModal"
+      (closeModal)="changeEmailModal = false"
+    ></basic-modal>
 
     <security-setting-section
       [showSection]="userSecurity.emailChanged"
@@ -80,60 +181,13 @@
       [dangerButton]="true"
       (onButtonClick)="deleteAccountModal = true"
     />
+
+    <basic-modal
+      [header]="t('settings.deleteAcc.deleteAcc')"
+      [description]="t('settings.deleteAcc.deleteAccDesc')"
+      [showModal]="deleteAccountModal"
+      (closeModal)="deleteAccountModal = false"
+    ></basic-modal>
   </div>
-
-  <basic-modal
-    [header]="t('settings.mfa.setup2fa')"
-    [description]="t('settings.mfa.setup2faDesc')"
-    [showModal]="set2faModal"
-    (closeModal)="set2faModal = false"
-  >
-    <div *ngIf="qrCode" class="qr-code-wrapper"><img [ngSrc]="qrCode" width="200" height="200" alt="qr"></div>
-    <div *ngIf="!qrCode" class="spinner-wrapper"><basic-spinner/></div>
-
-    <basic-input-mfa (mfaCode)="mfaCode = $event" />
-
-    <div class="last-button">
-      <basic-button
-        [label]="t('button.continue')"
-        (buttonClick)="verifyTwoFaQrCode()"
-      />
-    </div>
-  </basic-modal>
-
-  <basic-modal
-    [header]="t('')"
-    [description]="t('')"
-    [showModal]="disable2faModal"
-    (closeModal)="disable2faModal = false"
-  ></basic-modal>
-
-  <basic-modal
-    [header]="t('')"
-    [description]="t('')"
-    [showModal]="setMobilePhoneModal"
-    (closeModal)="setMobilePhoneModal = false"
-  ></basic-modal>
-
-  <basic-modal
-    [header]="t('')"
-    [description]="t('')"
-    [showModal]="changePasswordModal"
-    (closeModal)="changePasswordModal = false"
-  ></basic-modal>
-
-  <basic-modal
-    [header]="t('')"
-    [description]="t('')"
-    [showModal]="changeEmailModal"
-    (closeModal)="changeEmailModal = false"
-  ></basic-modal>
-
-  <basic-modal
-    [header]="t('')"
-    [description]="t('')"
-    [showModal]="deleteAccountModal"
-    (closeModal)="deleteAccountModal = false"
-  ></basic-modal>
 
 </ng-container>

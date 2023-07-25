@@ -9,7 +9,7 @@ import {
   UsePipes
 } from '@nestjs/common';
 import { SecurityService } from '@modules/security/security.service';
-import { VerifyTwoFaDto } from '@dto/verify-2fa.dto';
+import { VerifyTwoFaDto } from '@dto/verify-two-fa.dto';
 import { RegistrationSendSmsCodeDto } from '@dto/registration-send-sms-code.dto';
 import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
 import { MfaLoginDto } from '@dto/mfa-login.dto';
@@ -19,6 +19,7 @@ import { Transaction } from 'sequelize';
 import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
 import { DeleteAccountDto } from '@dto/delete-account.dto';
+import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
 
 @Controller('security')
 export class SecurityController {
@@ -87,6 +88,17 @@ export class SecurityController {
     return this.securityService.verifyTwoFaQrCode({ payload, userId, trx });
   }
 
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Post('disable-2fa')
+  disableTwoFa(
+    @Body() payload: DisableTwoFaDto,
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.disableTwoFa({ payload, userId, trx });
+  }
+
   @UsePipes(ValidationPipe)
   @Post('registration-send-sms-code')
   registrationSendSmsCode(
@@ -108,6 +120,17 @@ export class SecurityController {
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.loginSendSmsCode({ payload, trx });
+  }
+
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Get('send-sms-code')
+  sendSmsCode(
+    @Body() payload: RegistrationSendSmsCodeDto,
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.sendSmsCode({ payload, userId, trx });
   }
 
   @UsePipes(ValidationPipe)
@@ -134,6 +157,28 @@ export class SecurityController {
       payload,
       trx
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Post('verify-mobile-phone')
+  verifyMobilePhone(
+    @Body() payload: VerifyMobilePhoneDto,
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.verifyMobilePhone({ payload, userId, trx });
+  }
+
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Post('disable-phone')
+  disablePhone(
+    @Body() payload: DisableTwoFaDto,
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.disablePhone({ payload, userId, trx });
   }
 
   @UseGuards(AuthGuard)

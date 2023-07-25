@@ -34,6 +34,40 @@ export class SettingsComponent {
     });
   }
 
+  setTwoFa() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate('mfaSetUp', {}, 'settings'),
+      isError: false
+    });
+  }
+
+  disableTwoFa() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate('mfaDisabled', {}, 'settings'),
+      isError: false
+    });
+  }
+
+  setPhone() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate('phoneSetUp', {}, 'settings'),
+      isError: false
+    });
+  }
+
+  disableMobilePhone() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate('phoneDisabled', {}, 'settings'),
+      isError: false
+    });
+  }
+
+  getUserSecuritySettings() {
+    this.usersService.getUserSecuritySettings().subscribe({
+      next: (userSecurity) => (this.userSecurity = userSecurity)
+    });
+  }
+
   async ngOnInit() {
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
 
@@ -42,8 +76,6 @@ export class SettingsComponent {
         next: (userInfo) => (this.userInfo = userInfo)
       });
 
-    this.usersService.getUserSecuritySettings().subscribe({
-      next: (userSecurity) => (this.userSecurity = userSecurity)
-    });
+    this.getUserSecuritySettings();
   }
 }

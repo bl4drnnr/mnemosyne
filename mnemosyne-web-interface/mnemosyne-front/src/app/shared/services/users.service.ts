@@ -1,8 +1,8 @@
 import { ApiService } from '@shared/api.service';
 import { Injectable } from '@angular/core';
-import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
-import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
-import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
+import { ALLOWED_METHODS } from '@interfaces/methods.type';
+import { CONTROLLERS } from '@interfaces/controllers.type';
+import { USERS_ENDPOINTS } from '@interfaces/users.type';
 import { UploadUserPhotoPayload } from '@payloads/upload-user-photo.payload';
 import { Observable } from 'rxjs';
 import { UserInfoResponse } from '@responses/user-info.response';
@@ -10,6 +10,8 @@ import { PhotoUploadedResponse } from '@responses/photo-uploaded.response';
 import { UpdateUserInfoPayload } from '@payloads/update-user-info.payload';
 import { UserUpdatedResponse } from '@responses/user-updated.response';
 import { UserSecurityResponse } from '@responses/user-security.response';
+import { DeleteAccountPayload } from '@payloads/delete-account.payload';
+import { AccountDeletedResponse } from '@responses/account-deleted.response';
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +24,9 @@ export class UsersService {
   }: UploadUserPhotoPayload): Observable<{ message: PhotoUploadedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.USERS,
-      action: ENDPOINTS_TYPE.UPLOAD_USER_PHOTO,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.USERS,
+      action: USERS_ENDPOINTS.UPLOAD_USER_PHOTO,
       payload: { userPhoto },
       accessToken
     });
@@ -33,9 +35,9 @@ export class UsersService {
   getUserInfo(): Observable<UserInfoResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.GET,
-      controller: CONTROLLERS_TYPE.USERS,
-      action: ENDPOINTS_TYPE.USER_INFO,
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.USERS,
+      action: USERS_ENDPOINTS.USER_INFO,
       accessToken
     });
   }
@@ -43,9 +45,9 @@ export class UsersService {
   getUserSecuritySettings(): Observable<UserSecurityResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.GET,
-      controller: CONTROLLERS_TYPE.USERS,
-      action: ENDPOINTS_TYPE.USER_SECURITY,
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.USERS,
+      action: USERS_ENDPOINTS.USER_SECURITY,
       accessToken
     });
   }
@@ -57,10 +59,26 @@ export class UsersService {
   }): Observable<{ message: UserUpdatedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.PATCH,
-      controller: CONTROLLERS_TYPE.USERS,
-      action: ENDPOINTS_TYPE.USER_INFO,
+      method: ALLOWED_METHODS.PATCH,
+      controller: CONTROLLERS.USERS,
+      action: USERS_ENDPOINTS.USER_INFO,
       payload,
+      accessToken
+    });
+  }
+
+  deleteAccount({
+    password,
+    mfaCode,
+    phoneCode,
+    fullName
+  }: DeleteAccountPayload): Observable<{ message: AccountDeletedResponse }> {
+    const accessToken = localStorage.getItem('_at')!;
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS.DELETE,
+      controller: CONTROLLERS.USERS,
+      action: USERS_ENDPOINTS.DELETE_ACCOUNT,
+      payload: { password, mfaCode, phoneCode, fullName },
       accessToken
     });
   }

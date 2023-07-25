@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthenticationService } from '@services/authentication.service';
-import { SmsService } from '@services/sms.service';
+import { PhoneService } from '@services/phone.service';
 import { MfaService } from '@services/mfa.service';
 
 @Component({
@@ -23,11 +23,9 @@ export class MfaComponent {
   qrCode: string;
   code: string;
   twoFaToken: string;
+  showQr = true;
 
-  resendMessage: string;
   phoneCodeSent = false;
-  isPhoneCorrect = true;
-  time = 120;
   isCountdownRunning = false;
 
   selectedMfaOption: DropdownInterface;
@@ -39,7 +37,7 @@ export class MfaComponent {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translocoService: TranslocoService,
-    private readonly smsService: SmsService,
+    private readonly smsService: PhoneService,
     private readonly mfaService: MfaService
   ) {}
 
@@ -63,36 +61,26 @@ export class MfaComponent {
     }
   }
 
-  async sendSmdCode() {
+  async sendSmsCode(phone: string) {
+    this.phone = phone;
+
     if (this.hash) {
       this.smsService
-        .registrationSendSmsCode({ hash: this.hash, phone: this.phone })
+        .registrationSendSmsCode({ hash: this.hash, phone })
         .subscribe({
-          next: () => {
-            this.phoneCodeSent = true;
-            this.startCountdown();
-          }
+          next: () => (this.phoneCodeSent = true)
         });
     } else if (this.email && this.password) {
       this.smsService
         .loginSendSmsCode({
           email: this.email,
           password: this.password,
-          phone: this.phone
+          phone
         })
         .subscribe({
-          next: () => {
-            this.phoneCodeSent = true;
-            this.startCountdown();
-          }
+          next: () => (this.phoneCodeSent = true)
         });
     }
-  }
-
-  isMobilePhoneCorrect(phone: string) {
-    const pattern = /^(\+\d{1,3}[- ]?)?\d{10}$/;
-    this.phone = phone;
-    if (phone.length) this.isPhoneCorrect = pattern.test(phone);
   }
 
   isAllFieldsCorrect() {
@@ -157,24 +145,10 @@ export class MfaComponent {
     }
   }
 
-  private startCountdown() {
-    this.isCountdownRunning = true;
-    const countdownInterval = setInterval(() => {
-      this.time -= 1;
-      if (this.time <= 0) {
-        clearInterval(countdownInterval);
-        this.isCountdownRunning = false;
-        this.time = 120;
-      }
-      this.resendMessage = this.translocoService.translate(
-        'resendCodeIn',
-        { time: this.time, s: this.time !== 1 ? 's' : '' },
-        'components/input'
-      );
-    }, 1000);
-  }
-
   private async generateTwoFaQrCode() {
+    this.qrCode = '';
+    this.twoFaToken = '';
+
     if (this.hash) {
       this.mfaService
         .registrationGenerateTwoFaQrCode({ hash: this.hash })

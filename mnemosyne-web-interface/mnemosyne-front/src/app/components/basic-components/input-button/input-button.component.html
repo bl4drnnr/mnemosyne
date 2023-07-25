@@ -1,5 +1,5 @@
 <div class="input-button-container">
-  <p class="placeholder">{{ placeholder }}</p>
+  <p class="placeholder" [ngClass]="{ 'on-white': onWhite }">{{ placeholder }}</p>
   <div class="container">
     <div class="input-wrapper">
       <basic-input
@@ -10,6 +10,7 @@
         [placeholder]="inputPlaceholder"
         [errorMessage]="inputValue && inputShowError ? inputErrorMessage : null"
         [showError]="inputShowError"
+        [onWhite]="onWhite"
         [inputDescription]="!inputShowError ? inputDescription : null"
         (valueChange)="onInput($event)"
       />
@@ -20,6 +21,7 @@
         <basic-button
           [label]="buttonLabel"
           (buttonClick)="onClick()"
+          [onWhite]="onWhite"
           [disabled]="buttonDisabled || loaderService.getStatus()"
           [buttonDescription]="buttonDescription"
         />

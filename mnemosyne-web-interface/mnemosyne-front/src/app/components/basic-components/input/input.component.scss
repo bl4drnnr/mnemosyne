@@ -10,6 +10,10 @@
   opacity: .9;
   font-size: 14px;
   margin: 14px 0;
+
+  &.on-white {
+    color: $color-black;
+  }
 }
 
 .input-field {
@@ -30,6 +34,24 @@
   &::placeholder {
     color: var(--text-color);
     opacity: .5;
+  }
+
+  &.on-white {
+    border: 1px solid rgba($color-main-border, .5);
+    background-color: $color-white;
+    color: $text-color;
+
+    &::placeholder {
+      color: $text-color;
+      opacity: .5;
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      background-color: $color-white;
+      border: 1px solid rgba($color-black, .1);
+    }
   }
 
   &.high {
@@ -55,6 +77,10 @@
   &.disabled {
     opacity: 0.4;
   }
+
+  &.read-only {
+    cursor: pointer;
+  }
 }
 
 .error-message {
@@ -75,4 +101,8 @@
   font-size: small;
   opacity: .5;
   margin-top: 5px;
+
+  &.on-white {
+    color: $color-black;
+  }
 }

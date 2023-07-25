@@ -23,6 +23,7 @@ export class InputMfaComponent implements OnInit {
   @ViewChild('input4') input4: ElementRef;
   @ViewChild('input5') input5: ElementRef;
   @Input() isPhone = false;
+  @Input() onWhite = false;
 
   @Output() mfaCode = new EventEmitter<string>();
   @Output() resendSms = new EventEmitter<void>();

@@ -221,6 +221,32 @@ paths:
       responses:
         "201":
           description: ""
+  /api/security/verify-2fa:
+    post:
+      operationId: SecurityController_verifyTwoFaQrCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyTwoFaDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/disable-2fa:
+    post:
+      operationId: SecurityController_disableTwoFa
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisableTwoFaDto"
+      responses:
+        "201":
+          description: ""
   /api/security/registration-send-sms-code:
     post:
       operationId: SecurityController_registrationSendSmsCode
@@ -247,6 +273,19 @@ paths:
       responses:
         "201":
           description: ""
+  /api/security/send-sms-code:
+    get:
+      operationId: SecurityController_sendSmsCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegistrationSendSmsCodeDto"
+      responses:
+        "200":
+          description: ""
   /api/security/registration-verify-mobile-phone:
     post:
       operationId: SecurityController_registrationVerifyMobilePhone
@@ -270,6 +309,32 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyMobilePhoneDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/verify-mobile-phone:
+    post:
+      operationId: SecurityController_verifyMobilePhone
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifyMobilePhoneDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/disable-phone:
+    post:
+      operationId: SecurityController_disablePhone
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DisableTwoFaDto"
       responses:
         "201":
           description: ""
@@ -326,6 +391,9 @@ components:
       type: object
       properties: {}
     VerifyTwoFaDto:
+      type: object
+      properties: {}
+    DisableTwoFaDto:
       type: object
       properties: {}
     RegistrationSendSmsCodeDto:

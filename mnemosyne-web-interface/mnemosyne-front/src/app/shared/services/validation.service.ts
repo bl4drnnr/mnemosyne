@@ -133,4 +133,12 @@ export class ValidationService {
     }
     return image === '';
   }
+
+  checkPhoneFormat(phone: string) {
+    if (phone) {
+      const regex = new RegExp(/^(\+\d{1,3}[- ]?)?\d{10}$/);
+      return regex.test(phone);
+    }
+    return phone === '';
+  }
 }

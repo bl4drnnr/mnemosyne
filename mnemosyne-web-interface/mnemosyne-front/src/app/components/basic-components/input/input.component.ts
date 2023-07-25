@@ -8,6 +8,8 @@ import {
 } from '@angular/animations';
 import { ValidationService } from '@services/validation.service';
 import { LoaderService } from '@shared/loader.service';
+import { GlobalMessageService } from '@shared/global-message.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'basic-input',
@@ -45,6 +47,8 @@ export class InputComponent {
   @Input() inputDescription: string | null;
   @Input() minLength: number;
   @Input() maxLength: number;
+  @Input() readOnly = false;
+  @Input() onWhite = false;
 
   @Output() valueChange = new EventEmitter<string>();
   @Output() incorrectInput = new EventEmitter<boolean>();
@@ -53,7 +57,9 @@ export class InputComponent {
   >();
 
   constructor(
-    private validationService: ValidationService,
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly validationService: ValidationService,
+    private readonly translocoService: TranslocoService,
     public loaderService: LoaderService
   ) {}
 
@@ -93,5 +99,12 @@ export class InputComponent {
       this.incorrectInput.emit(false);
       this.passwordErrors.emit([]);
     }
+  }
+
+  notifyClipboardCopy() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate('copied', {}, 'input'),
+      isError: false
+    });
   }
 }

@@ -6,8 +6,8 @@
   margin-top: 20px;
 }
 
-.qr-code-input-wrapper {
-  margin: 20px 0;
+.qr-code {
+  cursor: pointer;
 }
 
 .options-list {
@@ -18,4 +18,18 @@
     font-size: 14px;
     padding-bottom: 10px;
   }
+}
+
+.spinner-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.p-center {
+  text-align: center;
+}
+
+.pointer {
+  cursor: pointer;
 }
