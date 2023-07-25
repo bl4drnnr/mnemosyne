@@ -12,9 +12,9 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/api/error-handler.service';
 import { LoaderService } from '@shared/loader.service';
-import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
+import { CONTROLLERS } from '@interfaces/controllers.type';
 import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
-import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
+import { ALLOWED_METHODS } from '@interfaces/methods.type';
 
 @Injectable({
   providedIn: 'root'
@@ -38,16 +38,16 @@ export class ApiService {
     params,
     accessToken
   }: {
-    controller: CONTROLLERS_TYPE;
+    controller: CONTROLLERS;
     action: ENDPOINTS_TYPE;
-    method: ALLOWED_METHODS_TYPE;
+    method: ALLOWED_METHODS;
     payload?: object;
     params?: object;
     accessToken?: string;
   }): Observable<any> {
     const requestUrl = `${this.frontProxyUrl}/${controller}/${action}`;
     const requestBody: {
-      method: ALLOWED_METHODS_TYPE;
+      method: ALLOWED_METHODS;
       params?: object;
       payload?: object;
     } = { method };

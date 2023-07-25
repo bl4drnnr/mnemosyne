@@ -56,7 +56,9 @@
       "@interfaces/*": [
         "src/libs/interfaces/components/*",
         "src/libs/interfaces/*",
-        "src/libs/types/*"
+        "src/libs/api/controllers/*",
+        "src/libs/api/endpoints/*",
+        "src/libs/api/methods/*"
       ]
     }
   },

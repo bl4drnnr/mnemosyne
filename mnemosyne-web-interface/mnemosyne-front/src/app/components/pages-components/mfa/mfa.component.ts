@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthenticationService } from '@services/authentication.service';
-import { SmsService } from '@services/sms.service';
+import { PhoneService } from '@services/phone.service';
 import { MfaService } from '@services/mfa.service';
 
 @Component({
@@ -39,7 +39,7 @@ export class MfaComponent {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translocoService: TranslocoService,
-    private readonly smsService: SmsService,
+    private readonly smsService: PhoneService,
     private readonly mfaService: MfaService
   ) {}
 

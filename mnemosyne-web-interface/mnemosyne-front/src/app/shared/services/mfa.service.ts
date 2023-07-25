@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
 import { Observable } from 'rxjs';
+import { ALLOWED_METHODS } from '@interfaces/methods.type';
+import { CONTROLLERS } from '@interfaces/controllers.type';
+import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
 import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
 import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
 import { MfaLoginPayload } from '@payloads/mfa-login.payload';
-import { ALLOWED_METHODS_TYPE } from '@interfaces/methods.type';
-import { CONTROLLERS_TYPE } from '@interfaces/controllers.type';
-import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
 import { GenerateTwoFaResponse } from '@responses/generate-two-fa.response';
+import { DisableTwoFaPayload } from '@payloads/disable-two-fa.payload';
+import { MfaDisabledResponse } from '@responses/mfa-disabled.response';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +23,9 @@ export class MfaService {
     hash: string;
   }): Observable<GenerateTwoFaResponse> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.GET,
-      controller: CONTROLLERS_TYPE.SECURITY,
-      action: ENDPOINTS_TYPE.REGISTRATION_GENERATE_2FA_QR,
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.REGISTRATION_GENERATE_2FA_QR,
       params: { confirmationHash: hash }
     });
   }
@@ -33,9 +35,9 @@ export class MfaService {
     password
   }: MfaLoginPayload): Observable<GenerateTwoFaResponse> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.SECURITY,
-      action: ENDPOINTS_TYPE.LOGIN_GENERATE_2FA_QR,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.LOGIN_GENERATE_2FA_QR,
       payload: { email, password }
     });
   }
@@ -43,9 +45,9 @@ export class MfaService {
   generateTwoFaQrCode(): Observable<GenerateTwoFaResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.GET,
-      controller: CONTROLLERS_TYPE.SECURITY,
-      action: ENDPOINTS_TYPE.GENERATE_2FA_QR,
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.GENERATE_2FA_QR,
       accessToken
     });
   }
@@ -56,9 +58,9 @@ export class MfaService {
     code
   }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.SECURITY,
-      action: ENDPOINTS_TYPE.REGISTRATION_VERIFY_2FA,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.REGISTRATION_VERIFY_2FA,
       params: { confirmationHash: hash },
       payload: { code, twoFaToken }
     });
@@ -71,9 +73,9 @@ export class MfaService {
     code
   }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.SECURITY,
-      action: ENDPOINTS_TYPE.LOGIN_VERIFY_2FA,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.LOGIN_VERIFY_2FA,
       payload: { email, password, code, twoFaToken }
     });
   }
@@ -84,10 +86,23 @@ export class MfaService {
   }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS_TYPE.POST,
-      controller: CONTROLLERS_TYPE.SECURITY,
-      action: ENDPOINTS_TYPE.VERIFY_2FA,
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.VERIFY_2FA,
       payload: { twoFaToken, code },
+      accessToken
+    });
+  }
+
+  disableTwoFa({
+    code
+  }: DisableTwoFaPayload): Observable<{ message: MfaDisabledResponse }> {
+    const accessToken = localStorage.getItem('_at')!;
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS.POST,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.DISABLE_2FA,
+      payload: { code },
       accessToken
     });
   }

@@ -48,7 +48,9 @@ export class SecuritySettingsComponent {
         code: this.mfaCode
       })
       .subscribe({
-        next: () => {}
+        next: () => {
+          //
+        }
       });
   }
 }
