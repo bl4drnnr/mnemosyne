@@ -14,5 +14,6 @@
   "dashboard": "Dashboard",
   "saveSettings": "Zapisz ustawienia",
   "close": "Zamknij",
-  "disableMfa": "Deaktywuj MFA"
+  "disableMfa": "Deaktywuj MFA",
+  "disconnectPhone": "Deaktywuj telefon"
 }

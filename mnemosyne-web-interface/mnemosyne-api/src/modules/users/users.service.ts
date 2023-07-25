@@ -270,7 +270,7 @@ export class UsersService {
 
       if (mfaStatusResponse) return mfaStatusResponse;
     } catch (e: any) {
-      throw new HttpException(e.response.error, e.status);
+      throw new HttpException(e.response.message, e.status);
     }
 
     const hashedPassword = await bcryptjs.hash(

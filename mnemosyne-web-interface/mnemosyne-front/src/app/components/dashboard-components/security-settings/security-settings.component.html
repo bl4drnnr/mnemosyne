@@ -30,10 +30,12 @@
         [twoFaToken]="twoFaToken"
         [showQr]="showQr"
         (code)="mfaCode = $event"
+        [onWhite]="true"
       />
       <div class="last-button">
         <basic-button
           [label]="t('button.continue')"
+          [disabled]="mfaCode.length !== 6"
           [onWhite]="true"
           (buttonClick)="verifyTwoFaQrCode()"
         />
@@ -58,13 +60,13 @@
     >
       <basic-input-mfa
         [onWhite]="true"
-        (mfaCode)="disable2faCode = $event"
+        (mfaCode)="disableTwoFaCode = $event"
       />
       <div class="last-button">
         <basic-button
           [danger]="true"
           [onWhite]="true"
-          [disabled]="disable2faCode.length !== 6"
+          [disabled]="disableTwoFaCode.length !== 6"
           [label]="t('button.disableMfa')"
           (buttonClick)="disableTwoFa()"
         />
@@ -87,7 +89,7 @@
     >
       <basic-phone
         [phoneCodeSent]="phoneCodeSent"
-        (sendSmsCode)="sendSmsCode()"
+        (sendSmsCode)="sendSmsCode($event)"
         [onWhite]="true"
       />
       <div *ngIf="phoneCodeSent">
@@ -121,7 +123,16 @@
       [description]="t('settings.phone.disablePhoneDesc')"
       [showModal]="disableMobilePhoneModal"
       (closeModal)="disableMobilePhoneModal = false"
-    ></basic-modal>
+    >
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [danger]="true"
+          [label]="t('button.disconnectPhone')"
+          (buttonClick)="disableMobilePhone()"
+        />
+      </div>
+    </basic-modal>
 
     <security-setting-section
       [showSection]="true"

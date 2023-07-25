@@ -37,5 +37,9 @@
   "deleteAcc": {
     "deleteAcc": "Usuń konto",
     "deleteAccDesc": "Nie ma odwrotu. Dane zostaną utracone bez możliwości ich odzyskania. Zgodnie z polityką bezpieczeństwa i prywatności Mnemosyne oraz prawem wszystkie dane zostaną natychmiast usunięte z systemów."
-  }
+  },
+  "mfaSetUp": "MFA zostało pomyślnie skonfigurowane!",
+  "mfaDisabled": "MFA zostało pomyślnie wyłączone.",
+  "phoneSetUp": "Telefon komórkowy został pomyślnie skonfigurowany!",
+  "phoneDisabled": "Telefon komórkowy został pomyślnie wyłączony."
 }

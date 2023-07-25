@@ -14,5 +14,6 @@
   "dashboard": "Дашборд",
   "saveSettings": "Сохранить",
   "close": "Закрыть",
-  "disableMfa": "Отключить MFA"
+  "disableMfa": "Отключить MFA",
+  "disconnectPhone": "Отключить мобильный телефон"
 }

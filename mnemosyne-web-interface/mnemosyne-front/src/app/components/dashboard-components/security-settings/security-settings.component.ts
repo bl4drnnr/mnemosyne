@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserSecurityResponse } from '@responses/user-security.response';
 import { MfaService } from '@services/mfa.service';
 import { Router } from '@angular/router';
@@ -12,15 +12,20 @@ import { PhoneService } from '@services/phone.service';
 })
 export class SecuritySettingsComponent {
   @Input() userSecurity: UserSecurityResponse;
+  @Output() setTwoFa = new EventEmitter<void>();
+  @Output() unsetTwoFa = new EventEmitter<void>();
+  @Output() setPhone = new EventEmitter<void>();
+  @Output() unsetPhone = new EventEmitter<void>();
+  @Output() userSettingsReInit = new EventEmitter<void>();
 
   set2faModal: boolean;
   qrCode: string;
   twoFaToken: string;
-  mfaCode: string;
+  mfaCode = '';
   showQr = true;
 
   disable2faModal: boolean;
-  disable2faCode = '';
+  disableTwoFaCode = '';
 
   setMobilePhoneModal: boolean;
   phone: string;
@@ -58,28 +63,32 @@ export class SecuritySettingsComponent {
       })
       .subscribe({
         next: () => {
-          //
+          this.set2faModal = false;
+          this.setTwoFa.emit();
+          this.userSettingsReInit.emit();
         }
       });
   }
 
   async disableTwoFa() {
-    this.mfaService.disableTwoFa({ code: this.disable2faCode }).subscribe({
+    this.mfaService.disableTwoFa({ code: this.disableTwoFaCode }).subscribe({
       next: () => {
-        //
+        this.disable2faModal = false;
+        this.unsetTwoFa.emit();
+        this.userSettingsReInit.emit();
       }
     });
   }
 
-  async sendSmsCode() {
+  async sendSmsCode(phone: string) {
+    this.phone = phone;
+
     this.phoneService
       .sendSmsCode({
         phone: this.phone
       })
       .subscribe({
-        next: () => {
-          //
-        }
+        next: () => (this.phoneCodeSent = true)
       });
   }
 
@@ -91,7 +100,23 @@ export class SecuritySettingsComponent {
       })
       .subscribe({
         next: () => {
-          //
+          this.setMobilePhoneModal = false;
+          this.setPhone.emit();
+          this.userSettingsReInit.emit();
+        }
+      });
+  }
+
+  disableMobilePhone() {
+    this.phoneService
+      .disablePhone({
+        code: this.phoneCode
+      })
+      .subscribe({
+        next: () => {
+          this.disableMobilePhoneModal = false;
+          this.unsetPhone.emit();
+          this.userSettingsReInit.emit();
         }
       });
   }

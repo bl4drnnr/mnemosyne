@@ -61,26 +61,24 @@ export class MfaComponent {
     }
   }
 
-  async sendSmsCode() {
+  async sendSmsCode(phone: string) {
+    this.phone = phone;
+
     if (this.hash) {
       this.smsService
-        .registrationSendSmsCode({ hash: this.hash, phone: this.phone })
+        .registrationSendSmsCode({ hash: this.hash, phone })
         .subscribe({
-          next: () => {
-            this.phoneCodeSent = true;
-          }
+          next: () => (this.phoneCodeSent = true)
         });
     } else if (this.email && this.password) {
       this.smsService
         .loginSendSmsCode({
           email: this.email,
           password: this.password,
-          phone: this.phone
+          phone
         })
         .subscribe({
-          next: () => {
-            this.phoneCodeSent = true;
-          }
+          next: () => (this.phoneCodeSent = true)
         });
     }
   }

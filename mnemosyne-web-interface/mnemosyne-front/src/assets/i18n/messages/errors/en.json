@@ -17,6 +17,10 @@
   "link-expired": "Link has expired",
   "unhandled-endpoint": "Unhandled endpoint",
   "internal-server-error": "Internal server error",
+  "wrong-mfa-token": "Wrong MFA token",
+  "wrong-provided-phone": "Wrong provided mobile phone number",
+  "two-fa-not-set-up": "MFA has not been set up",
+  "phone-not-set-up": "Mobile phone has not been set up",
   "validation": {
     "wrong-email-format": "Wrong email format",
     "wrong-password-format": "Wrong password format",

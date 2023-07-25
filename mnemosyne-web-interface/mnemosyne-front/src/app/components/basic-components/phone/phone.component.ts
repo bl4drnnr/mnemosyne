@@ -9,7 +9,7 @@ import { TranslocoService } from '@ngneat/transloco';
 export class PhoneComponent {
   @Input() phoneCodeSent: boolean;
   @Input() onWhite = false;
-  @Output() sendSmsCode = new EventEmitter<void>();
+  @Output() sendSmsCode = new EventEmitter<string>();
   @Output() runningCountdown = new EventEmitter<boolean>();
 
   phone: string;
@@ -24,7 +24,7 @@ export class PhoneComponent {
   ) {}
 
   sendSms() {
-    this.sendSmsCode.emit();
+    this.sendSmsCode.emit(this.phone);
     this.startCountdown();
   }
 

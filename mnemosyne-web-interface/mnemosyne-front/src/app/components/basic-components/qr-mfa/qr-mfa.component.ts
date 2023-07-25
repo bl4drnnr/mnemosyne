@@ -9,5 +9,6 @@ export class QrMfaComponent {
   @Input() qrCode: string;
   @Input() twoFaToken: string;
   @Input() showQr: boolean;
+  @Input() onWhite = false;
   @Output() code = new EventEmitter<string>();
 }

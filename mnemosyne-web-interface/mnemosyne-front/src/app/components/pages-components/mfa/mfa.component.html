@@ -33,7 +33,7 @@
   <div *ngIf="selectedMfaOption?.key === 'phone'">
     <basic-phone
       [phoneCodeSent]="phoneCodeSent"
-      (sendSmsCode)="sendSmsCode()"
+      (sendSmsCode)="sendSmsCode($event)"
       (runningCountdown)="isCountdownRunning = $event"
     />
 

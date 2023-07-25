@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
@@ -6,6 +6,7 @@ import { LoggerService } from '@shared/logger.service';
 import { ACTION_CONTROLLER_TYPE } from '@interfaces/action-controller.type';
 import { STATUS_TYPE } from '@interfaces/status.type';
 import { METHODS_TYPE } from '@interfaces/method.type';
+import { UnhandledEndpointException } from '@exceptions/unhandled-endpoint.exception';
 
 @Injectable()
 export class ProxyHttpService {
@@ -49,7 +50,7 @@ export class ProxyHttpService {
         status: STATUS_TYPE.ERROR,
         message: `Proxy tried to handle unsupported endpoint: ${logMessage.toString()}`
       });
-      throw new BadRequestException('unhandled-endpoint');
+      throw new UnhandledEndpointException();
     }
 
     const { username, password } = this.configService.basicAuthConfig;
