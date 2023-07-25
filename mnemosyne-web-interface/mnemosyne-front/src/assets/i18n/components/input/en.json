@@ -39,5 +39,7 @@
   "provideWebsite": "Provide your website",
   "websiteDesc": "Field is optional. Should be FQDN. Provide the URL of the website that is associated with you or your company.",
   "wrongFQDN": "Wrong fully qualified domain name (URL)",
-  "emailChangeInfo": "Email can be changed from the security settings. Be careful! You are allowed to change the email only one time."
+  "emailChangeInfo": "Email can be changed from the security settings. Be careful! You are allowed to change the email only one time.",
+  "mfaToken": "MFA Token",
+  "copied": "Message has been successfully copied to the clipboard"
 }

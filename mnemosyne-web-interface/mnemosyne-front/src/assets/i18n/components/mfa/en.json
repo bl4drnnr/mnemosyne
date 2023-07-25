@@ -9,5 +9,8 @@
   "authAppDesc": " - use authenticator application (such as Google Authenticator or Microsoft Authenticator) in order to store token that will be generating one-time code for you every time you log in.",
   "scanQr1": "Scan the QR code below using applications such as ",
   "scanQr2": " or ",
-  "scanQr3": " and provide the 6-digit code in the field."
+  "scanQr3": " and provide the 6-digit code in the field.",
+  "clickQr": "If you are unable to scan the QR code, click the QR code and manually add the secret to the authentication application or password manager.",
+  "clickQrBack": "To show the QR code back, click here.",
+  "pasteQrToken": "Paste this code into the authenticator application or in your password manager. Make sure you store this token in the secure manner."
 }

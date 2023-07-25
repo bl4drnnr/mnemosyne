@@ -23,6 +23,7 @@ export class MfaComponent {
   qrCode: string;
   code: string;
   twoFaToken: string;
+  showQr = true;
 
   resendMessage: string;
   phoneCodeSent = false;
@@ -175,6 +176,9 @@ export class MfaComponent {
   }
 
   private async generateTwoFaQrCode() {
+    this.qrCode = '';
+    this.twoFaToken = '';
+
     if (this.hash) {
       this.mfaService
         .registrationGenerateTwoFaQrCode({ hash: this.hash })

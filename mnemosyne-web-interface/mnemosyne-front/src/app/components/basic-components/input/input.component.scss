@@ -55,6 +55,10 @@
   &.disabled {
     opacity: 0.4;
   }
+
+  &.read-only {
+    cursor: pointer;
+  }
 }
 
 .error-message {

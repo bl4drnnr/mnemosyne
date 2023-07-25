@@ -14,6 +14,8 @@ import { SpinnerComponent } from '@components/spinner/spinner.component';
 import { FormsModule } from '@angular/forms';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
+import { CopyClipboardDirective } from '@directives/clipboard.directive';
+import { QrMfaComponent } from './qr-mfa/qr-mfa.component';
 
 const components = [
   ButtonComponent,
@@ -30,7 +32,7 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, CopyClipboardDirective, QrMfaComponent],
   imports: [
     CommonModule,
     NgOptimizedImage,
@@ -38,6 +40,6 @@ const components = [
     TranslocoModule,
     ModeToggleModule
   ],
-  exports: [...components]
+  exports: [...components, QrMfaComponent]
 })
 export class BasicComponentsModule {}

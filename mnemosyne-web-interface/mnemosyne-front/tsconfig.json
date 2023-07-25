@@ -59,7 +59,8 @@
         "src/libs/api/controllers/*",
         "src/libs/api/endpoints/*",
         "src/libs/api/methods/*"
-      ]
+      ],
+      "@directives/*": ["src/app/directives/*"]
     }
   },
   "angularCompilerOptions": {

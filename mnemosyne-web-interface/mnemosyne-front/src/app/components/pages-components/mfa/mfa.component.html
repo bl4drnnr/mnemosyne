@@ -22,9 +22,9 @@
 
   <basic-dropdown
     [options]="[
-    { key: 'phone', value: t('dropdown.mobilePhone') },
-    { key: 'mfa', value: t('dropdown.authApp') }
-  ]"
+      { key: 'phone', value: t('dropdown.mobilePhone') },
+      { key: 'mfa', value: t('dropdown.authApp') }
+    ]"
     [disabled]="isCountdownRunning"
     (selectedOption)="changeMfaOption($event)"
     [defaultLabel]="t('dropdown.selectMfaOption')"
@@ -57,12 +57,13 @@
       <basic-link label="Microsoft Authenticator" [bold]="true" href="https://support.microsoft.com/en-us/account-billing/download-and-install-the-microsoft-authenticator-app-351498fc-850a-45da-b7b6-27e523b8702a"/>
       <span>{{ t('mfa.scanQr3') }}</span>
     </p>
-    <div *ngIf="qrCode" class="qr-code-wrapper">
-      <img [ngSrc]="qrCode" width="200" height="200" alt="qr">
-    </div>
-    <div class="qr-code-input-wrapper">
-      <basic-input-mfa (mfaCode)="code = $event" />
-    </div>
+
+    <basic-qr-mfa
+      [qrCode]="qrCode"
+      [twoFaToken]="twoFaToken"
+      [showQr]="showQr"
+      (code)="code = $event"
+    />
   </div>
 
   <div class="last-button">

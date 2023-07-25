@@ -15,8 +15,9 @@ export class SecuritySettingsComponent {
   set2faModal: boolean;
   disable2faModal: boolean;
   qrCode: string;
-  twoFaSecret: string;
+  twoFaToken: string;
   mfaCode: string;
+  showQr = true;
 
   setMobilePhoneModal: boolean;
   disableMobilePhoneModal: boolean;
@@ -34,7 +35,7 @@ export class SecuritySettingsComponent {
     this.mfaService.generateTwoFaQrCode().subscribe({
       next: ({ qr, secret }) => {
         this.qrCode = qr;
-        this.twoFaSecret = secret;
+        this.twoFaToken = secret;
       },
       error: () => this.refreshTokensService.handleLogout()
     });
@@ -44,7 +45,7 @@ export class SecuritySettingsComponent {
   async verifyTwoFaQrCode() {
     this.mfaService
       .verifyTwoFaQrCode({
-        twoFaToken: this.twoFaSecret,
+        twoFaToken: this.twoFaToken,
         code: this.mfaCode
       })
       .subscribe({

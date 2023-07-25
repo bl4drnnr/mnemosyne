@@ -1,18 +1,32 @@
 <div class="input-container">
   <p class="input-label" *ngIf="label">{{ label }}</p>
-  <input
-    class="input-field"
-    [ngClass]="{
-    'disabled': disabled || loaderService.getStatus(),
-    'error': showError,
-    'password-size': ['password-repeat', 'password'].includes(type) && value && value.length > 0
-    }"
-    [disabled]="disabled"
-    [(ngModel)]="value"
-    [type]="type === 'password-repeat' ? 'password' : type"
-    [placeholder]="placeholder"
-    (input)="onInput()"
-  />
+  <div
+    *ngIf="readOnly"
+    [copy-clipboard]="value"
+    (copied)="notifyClipboardCopy()"
+  >
+    <input
+      class="input-field read-only"
+      [disabled]="true"
+      [(ngModel)]="value"
+      [placeholder]="placeholder"
+    />
+  </div>
+  <div *ngIf="!readOnly">
+    <input
+      class="input-field"
+      [ngClass]="{
+        'disabled': disabled || loaderService.getStatus(),
+        'error': showError,
+        'password-size': ['password-repeat', 'password'].includes(type) && value && value.length > 0
+      }"
+      [disabled]="disabled"
+      [(ngModel)]="value"
+      [type]="type === 'password-repeat' ? 'password' : type"
+      [placeholder]="placeholder"
+      (input)="onInput()"
+    />
+  </div>
   <p
     class="error-message"
     *ngIf="showError"

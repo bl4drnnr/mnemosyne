@@ -13,8 +13,12 @@ import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/api/error-handler.service';
 import { LoaderService } from '@shared/loader.service';
 import { CONTROLLERS } from '@interfaces/controllers.type';
-import { ENDPOINTS_TYPE } from '@interfaces/endpoints.type';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
+import { AUTH_ENDPOINTS } from '@interfaces/auth.type';
+import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
+import { USERS_ENDPOINTS } from '@interfaces/users.type';
+
+type ENDPOINTS_TYPE = AUTH_ENDPOINTS | SECURITY_ENDPOINTS | USERS_ENDPOINTS;
 
 @Injectable({
   providedIn: 'root'
