@@ -9,6 +9,7 @@ import { Transaction } from 'sequelize';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { UsersService } from '@modules/users.service';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 
 @Injectable()
 export class ConfirmationHashService {
@@ -125,6 +126,9 @@ export class ConfirmationHashService {
 
     if (foundHash.confirmed && !user.isSecurityCompliant)
       return new MfaNotSetDto();
+
+    if (!user.userSettings.recoveryKeysFingerprint)
+      return new RecoveryKeysNotSetDto();
 
     await this.confirmationHashRepository.update(
       {

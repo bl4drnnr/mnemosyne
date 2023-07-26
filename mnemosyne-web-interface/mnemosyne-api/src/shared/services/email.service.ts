@@ -94,16 +94,14 @@ export class EmailService {
     trx?: Transaction;
   }) {
     const emailSettings = {
-      email: ['EMAIL_CHANGE', 'FORGOT_PASSWORD'].includes(
-        payload.confirmationType
-      )
+      email: [
+        CONFIRMATION_TYPE.EMAIL_CHANGE,
+        CONFIRMATION_TYPE.FORGOT_PASSWORD
+      ].includes(payload.confirmationType)
         ? payload.email
         : null,
       confirmationHash: payload.confirmationHash,
-      confirmationType: payload.confirmationType as
-        | 'EMAIL_CHANGE'
-        | 'REGISTRATION'
-        | 'FORGOT_PASSWORD'
+      confirmationType: payload.confirmationType
     };
 
     await this.confirmationHashService.createConfirmationHash({

@@ -3,10 +3,7 @@
     <input type="checkbox" [checked]="checked" (change)="toggleChecked()">
     <span class="checkmark"></span>
   </label>
-  <div class="label" *ngIf="label === 'tac'">
-    <span class="tac-box">
-      I accept&nbsp;<basic-link label="Terms & Conditions" href="/terms-and-conditions"/>
-    </span>
+  <div class="label">
+    <ng-content select="[content]"></ng-content>
   </div>
-  <div class="label" *ngIf="label !== 'tac'">{{label}}</div>
 </div>

@@ -6,7 +6,6 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./checkbox.component.scss']
 })
 export class CheckboxComponent {
-  @Input() label: string;
   @Input() checked: boolean;
   @Output() checkedChange = new EventEmitter<boolean>();
 
