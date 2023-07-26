@@ -73,4 +73,11 @@ export class ApiConfigService {
       bucketName: this.getString('AWS_S3_NAME')
     };
   }
+
+  get recoveryEncryptionData() {
+    return {
+      iterations: this.getNumber('RECOVERY_ENCRYPTION_ITERATIONS'),
+      recoveryKeySize: this.getNumber('RECOVERY_ENCRYPTION_KEY_SIZE')
+    };
+  }
 }

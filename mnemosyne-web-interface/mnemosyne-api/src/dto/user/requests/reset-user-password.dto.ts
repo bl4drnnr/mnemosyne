@@ -1,4 +1,4 @@
-import { IsOptional, Length, Matches } from 'class-validator';
+import { IsOptional, IsString, Length, Matches } from 'class-validator';
 
 export class ResetUserPasswordDto {
   @IsOptional()
@@ -7,6 +7,7 @@ export class ResetUserPasswordDto {
   })
   readonly password: string;
 
+  @IsString({ message: 'wrong-hash-format' })
   @Length(40, 40, { message: 'wrong-hash-length' })
   readonly hash: string;
 

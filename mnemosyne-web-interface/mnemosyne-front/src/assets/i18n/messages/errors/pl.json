@@ -27,6 +27,7 @@
     "mfa-code-should-be-6-digit-code": "Kod MFA powinien mieć 6 cyfr",
     "phone-code-should-be-6-digit-code": "Kod telefonu powinien składać się z 6 cyfr",
     "wrong-phone-format": "Niewłaściwy format telefonu",
+    "wrong-hash-format": "Niewłaściwy format skrótu",
     "wrong-hash-length": "Niewłaściwa długość skrótu",
     "wrong-first-name-length": "Minimalna długość imienia to 1 symbol, maksymalna to 64 symbole",
     "wrong-first-name-format": "Imię powinno być ciągiem znaków",
@@ -37,6 +38,10 @@
     "wrong-company-length": "Minimalna długość firmy to 2 symbole, maksymalna to 64 symbole",
     "wrong-company-format": "Firma powinna być ciągiem znaków",
     "wrong-fqdn": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)",
-    "user-photo-must-be-base64": "Zdjęcie profilowe użytkownika musi być PNG zakodowane w Base64"
+    "user-photo-must-be-base64": "Zdjęcie profilowe użytkownika musi być PNG zakodowane w Base64",
+    "wrong-passphrase-format": "Nieprawidłowy format hasła",
+    "wrong-passphrase-length": "Niewłaściwa długość hasła",
+    "wrong-phone-code-format": "Nieprawidłowy format kodu telefonu",
+    "wrong-mfa-code-format": "Niewłaściwy format kodu MFA"
   }
 }

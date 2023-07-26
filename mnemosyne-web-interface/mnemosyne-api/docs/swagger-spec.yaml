@@ -184,7 +184,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MfaLoginDto"
+              $ref: "#/components/schemas/LoginGenerate2faQrDto"
       responses:
         "201":
           description: ""
@@ -269,7 +269,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/MfaLoginDto"
+              $ref: "#/components/schemas/LoginSendSmsDto"
       responses:
         "201":
           description: ""
@@ -351,6 +351,58 @@ paths:
       responses:
         "200":
           description: ""
+  /api/recovery/registration-generate-recovery-keys:
+    post:
+      operationId: RecoveryController_registrationGenerateRecoveryKeys
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateRecoveryKeysDto"
+      responses:
+        "201":
+          description: ""
+  /api/recovery/login-generate-recovery-keys:
+    post:
+      operationId: RecoveryController_loginGenerateRecoveryKeys
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginGenerateRecoveryKeysDto"
+      responses:
+        "201":
+          description: ""
+  /api/recovery/generate-recovery-keys:
+    post:
+      operationId: RecoveryController_generateRecoveryKeys
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GenerateRecoveryKeysDto"
+      responses:
+        "201":
+          description: ""
+  /api/recovery/recover-account:
+    post:
+      operationId: RecoveryController_recoverUserAccount
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecoverAccountDto"
+      responses:
+        "201":
+          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.
@@ -387,7 +439,7 @@ components:
     RevokeRoleDto:
       type: object
       properties: {}
-    MfaLoginDto:
+    LoginGenerate2faQrDto:
       type: object
       properties: {}
     VerifyTwoFaDto:
@@ -399,9 +451,21 @@ components:
     RegistrationSendSmsCodeDto:
       type: object
       properties: {}
+    LoginSendSmsDto:
+      type: object
+      properties: {}
     VerifyMobilePhoneDto:
       type: object
       properties: {}
     DeleteAccountDto:
+      type: object
+      properties: {}
+    GenerateRecoveryKeysDto:
+      type: object
+      properties: {}
+    LoginGenerateRecoveryKeysDto:
+      type: object
+      properties: {}
+    RecoverAccountDto:
       type: object
       properties: {}

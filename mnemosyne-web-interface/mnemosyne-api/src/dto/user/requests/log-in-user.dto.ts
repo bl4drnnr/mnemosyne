@@ -1,4 +1,4 @@
-import { IsOptional, Length, Matches } from 'class-validator';
+import { IsOptional, IsString, Length, Matches } from 'class-validator';
 
 export class LogInUserDto {
   @Matches(
@@ -13,10 +13,12 @@ export class LogInUserDto {
   readonly password: string;
 
   @IsOptional()
+  @IsString({ message: 'wrong-phone-code-format' })
   @Length(6, 6, { message: 'phone-code-should-be-6-digit-code' })
   readonly phoneCode: string;
 
   @IsOptional()
+  @IsString({ message: 'wrong-mfa-code-format' })
   @Length(6, 6, { message: 'mfa-code-should-be-6-digit-code' })
   readonly mfaCode: string;
 }

@@ -45,8 +45,20 @@
       "@services/*": [
         "src/app/shared/services/*"
       ],
-      "@responses/*": ["src/libs/api/responses/*"],
-      "@payloads/*": ["src/libs/api/payloads/*"],
+      "@responses/*": [
+        "src/libs/api/responses/auth/*",
+        "src/libs/api/responses/mfa/*",
+        "src/libs/api/responses/phone/*",
+        "src/libs/api/responses/recovery/*",
+        "src/libs/api/responses/users/*",
+      ],
+      "@payloads/*": [
+        "src/libs/api/payloads/auth/*",
+        "src/libs/api/payloads/mfa/*",
+        "src/libs/api/payloads/phone/*",
+        "src/libs/api/payloads/recovery/*",
+        "src/libs/api/payloads/users/*"
+      ],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
       "@guards/*": ["src/app/guards/*"],
