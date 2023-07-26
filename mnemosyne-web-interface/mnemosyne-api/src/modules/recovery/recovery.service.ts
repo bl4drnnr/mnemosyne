@@ -5,13 +5,15 @@ import { RecoverAccountDto } from '@dto/recover-account.dto';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
 import { LoginGenerateRecoveryKeysDto } from '@dto/login-generate-recovery-keys.dto';
-import { RecoveryKeysGeneratedDto } from '@dto/recovery-keys-generated.dto';
 import { AccountRecoveredDto } from '@dto/account-recovered.dto';
+import { CryptographicService } from '@shared/cryptographic.service';
+import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 
 @Injectable()
 export class RecoveryService {
   constructor(
     private readonly confirmationHashService: ConfirmationHashService,
+    private readonly cryptographicService: CryptographicService,
     private readonly userService: UsersService
   ) {}
 
@@ -92,6 +94,46 @@ export class RecoveryService {
     payload: RecoverAccountDto;
     trx?: Transaction;
   }) {
+    const hashedPassphrase = this.cryptographicService.hashPassphrase({
+      passphrase: payload.passphrase
+    });
+
+    const encryptedRecoveryKeys = this.cryptographicService.encryptRecoveryKeys(
+      {
+        recoveryKeys: payload.recoveryKeys,
+        hashedPassphrase
+      }
+    );
+
+    const recoveryKeysFingerprint = this.cryptographicService.hash({
+      data: encryptedRecoveryKeys
+    });
+
+    const user = await this.userService.getUserByRecoveryKeysFingerprint({
+      recoveryKeysFingerprint,
+      trx
+    });
+
+    if (user.userSettings.recoveryKeysFingerprint !== recoveryKeysFingerprint)
+      throw new WrongRecoveryKeysException();
+
+    await this.userService.updateUserSettings({
+      payload: {
+        phone: null,
+        phoneCode: null,
+        codeSentAt: null,
+        twoFaToken: null
+      },
+      userId: user.id,
+      trx
+    });
+
+    await this.userService.updateUser({
+      payload: { isSecurityCompliant: false },
+      userId: user.id,
+      trx
+    });
+
     return new AccountRecoveredDto();
   }
 
@@ -104,6 +146,29 @@ export class RecoveryService {
     userId: string;
     trx?: Transaction;
   }) {
-    return new RecoveryKeysGeneratedDto();
+    const recoveryKeys = this.cryptographicService.generateRecoveryKey();
+
+    const hashedPassphrase = this.cryptographicService.hashPassphrase({
+      passphrase
+    });
+
+    const encryptedRecoveryKeys = this.cryptographicService.encryptRecoveryKeys(
+      {
+        recoveryKeys,
+        hashedPassphrase
+      }
+    );
+
+    const recoveryKeysFingerprint = this.cryptographicService.hash({
+      data: encryptedRecoveryKeys
+    });
+
+    await this.userService.updateUserSettings({
+      payload: { recoveryKeysFingerprint },
+      userId,
+      trx
+    });
+
+    return recoveryKeys;
   }
 }

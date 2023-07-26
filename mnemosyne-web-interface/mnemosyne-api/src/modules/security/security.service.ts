@@ -447,9 +447,9 @@ export class SecurityService {
     if (phoneCode === providedCode && dayjs(codeSentAt) < fiveMinutesAgo)
       throw new SmsExpiredException();
 
-    await this.userService.changeSecurityComplianceStatus({
+    await this.userService.updateUser({
+      payload: { isSecurityCompliant: true },
       userId,
-      isSecurityCompliant: true,
       trx
     });
 
@@ -516,8 +516,8 @@ export class SecurityService {
 
     if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
 
-    await this.userService.changeSecurityComplianceStatus({
-      isSecurityCompliant: true,
+    await this.userService.updateUser({
+      payload: { isSecurityCompliant: true },
       userId,
       trx
     });

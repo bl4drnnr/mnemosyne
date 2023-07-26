@@ -33,6 +33,7 @@ import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
 import { LinkExpiredException } from '@exceptions/link-expired.exception';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
+import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 
 @Injectable()
 export class UsersService {
@@ -119,23 +120,6 @@ export class UsersService {
     return await this.userRepository.update(
       {
         ...payload
-      },
-      { where: { id: userId }, transaction }
-    );
-  }
-
-  async changeSecurityComplianceStatus({
-    userId,
-    isSecurityCompliant,
-    trx: transaction
-  }: {
-    userId: string;
-    isSecurityCompliant: boolean;
-    trx?: Transaction;
-  }) {
-    return await this.userRepository.update(
-      {
-        isSecurityCompliant
       },
       { where: { id: userId }, transaction }
     );
@@ -410,6 +394,23 @@ export class UsersService {
     await this.updateUser({ payload, userId, trx });
 
     return new UserUpdatedDto();
+  }
+
+  async getUserByRecoveryKeysFingerprint({
+    recoveryKeysFingerprint,
+    trx: transaction
+  }: {
+    recoveryKeysFingerprint: string;
+    trx?: Transaction;
+  }) {
+    const userSettings = await this.userSettingsRepository.findOne({
+      where: { recoveryKeysFingerprint },
+      transaction
+    });
+
+    if (!userSettings) throw new WrongRecoveryKeysException();
+
+    return this.getUserById({ id: userSettings.userId, trx: transaction });
   }
 
   async deleteUserAccount({

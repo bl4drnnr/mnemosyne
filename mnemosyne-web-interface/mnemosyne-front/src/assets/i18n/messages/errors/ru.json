@@ -21,6 +21,7 @@
   "wrong-provided-phone": "Неправильно указан номер мобильного телефона",
   "two-fa-not-set-up": "MFA не настроен",
   "phone-not-set-up": "Мобильный телефон не настроен",
+  "wrong-recovery-keys": "Неверные ключи восстановления или кодовая фраза",
   "validation": {
     "wrong-email-format": "Неверный формат электронной почты",
     "wrong-password-format": "Неверный формат пароля",

@@ -9,7 +9,7 @@ import { GenerateRecoveryKeysPayload } from '@payloads/generate-recovery-keys.pa
 import { RecoverAccountPayload } from '@payloads/recover-account.payload';
 import { Observable } from 'rxjs';
 import { AccountRecoveredResponse } from '@responses/account-recovered.response';
-import { RecoveryKeysGeneratedResponse } from '@responses/recovery-keys-generated.response';
+import { RecoveryKeysResponse } from '@responses/recovery-keys.response';
 
 @Injectable({
   providedIn: 'root'
@@ -20,9 +20,7 @@ export class RecoveryService {
   registrationGenerateRecoveryKeys({
     hash,
     passphrase
-  }: RegistrationGenerateRecoveryKeysPayload): Observable<{
-    message: RecoveryKeysGeneratedResponse;
-  }> {
+  }: RegistrationGenerateRecoveryKeysPayload): Observable<RecoveryKeysResponse> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.RECOVERY,
@@ -36,9 +34,7 @@ export class RecoveryService {
     passphrase,
     email,
     password
-  }: LoginGenerateRecoveryKeysPayload): Observable<{
-    message: RecoveryKeysGeneratedResponse;
-  }> {
+  }: LoginGenerateRecoveryKeysPayload): Observable<RecoveryKeysResponse> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.RECOVERY,
@@ -49,9 +45,7 @@ export class RecoveryService {
 
   generateRecoveryKeys({
     passphrase
-  }: GenerateRecoveryKeysPayload): Observable<{
-    message: RecoveryKeysGeneratedResponse;
-  }> {
+  }: GenerateRecoveryKeysPayload): Observable<RecoveryKeysResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,

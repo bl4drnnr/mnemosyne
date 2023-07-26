@@ -77,7 +77,9 @@ export class ApiConfigService {
   get recoveryEncryptionData() {
     return {
       iterations: this.getNumber('RECOVERY_ENCRYPTION_ITERATIONS'),
-      recoveryKeySize: this.getNumber('RECOVERY_ENCRYPTION_KEY_SIZE')
+      recoveryKeySize: this.getNumber('RECOVERY_ENCRYPTION_KEY_SIZE'),
+      salt: this.getString('RECOVERY_ENCRYPTION_SALT'),
+      iv: this.getString('RECOVERY_ENCRYPTION_IV')
     };
   }
 }
