@@ -32,6 +32,7 @@ export class LoginComponent {
   isMfaSet: boolean;
   isPhoneRequired: boolean;
   isMfaRequired: boolean;
+  isRecoveryKeysSet: boolean;
 
   phoneCode: string;
   mfaCode: string;
@@ -97,6 +98,10 @@ export class LoginComponent {
             case LoginResponse.TWO_FA_REQUIRED:
               this.step = 2;
               this.isMfaRequired = true;
+              break;
+            case LoginResponse.RECOVERY_KEYS_NOT_SET:
+              this.step = 3;
+              this.isRecoveryKeysSet = true;
               break;
             default:
               localStorage.setItem('_at', _at);

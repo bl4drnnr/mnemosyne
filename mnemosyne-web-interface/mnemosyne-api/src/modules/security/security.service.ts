@@ -22,8 +22,8 @@ import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-c
 import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
 import { MfaDisabledDto } from '@dto/mfa-disabled.dto';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
-import { TwoFaNotSetUpException } from '@exceptions/two-fa-not-set-up.exception';
-import { PhoneNotSetUpException } from '@exceptions/phone-not-set-up.exception';
+import { TwoFaNotSetException } from '@exceptions/two-fa-not-set.exception';
+import { PhoneNotSetException } from '@exceptions/phone-not-set.exception';
 import { WrongProvidedPhoneException } from '@exceptions/wrong-provided-phone.exception';
 import { WrongMfaTokenException } from '@exceptions/wrong-mfa-token.exception';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
@@ -184,8 +184,8 @@ export class SecurityService {
       trx
     });
 
-    if (!userSettings.twoFaToken) throw new TwoFaNotSetUpException();
-    if (!userSettings.phone) throw new PhoneNotSetUpException();
+    if (!userSettings.twoFaToken) throw new TwoFaNotSetException();
+    if (!userSettings.phone) throw new PhoneNotSetException();
 
     try {
       await this.verifyQrCode({
@@ -358,8 +358,8 @@ export class SecurityService {
       trx
     });
 
-    if (!userSecurity.phone) throw new PhoneNotSetUpException();
-    if (!userSecurity.twoFaToken) throw new TwoFaNotSetUpException();
+    if (!userSecurity.phone) throw new PhoneNotSetException();
+    if (!userSecurity.twoFaToken) throw new TwoFaNotSetException();
 
     try {
       await this.verifySmsCode({

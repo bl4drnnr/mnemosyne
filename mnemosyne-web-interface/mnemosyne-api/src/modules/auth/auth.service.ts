@@ -30,6 +30,8 @@ import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { UserSettings } from '@models/user-settings.model';
 import { PhoneService } from '@shared/phone.service';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 
 @Injectable()
 export class AuthService {
@@ -57,6 +59,9 @@ export class AuthService {
     if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
 
     if (!user.isSecurityCompliant) return new MfaNotSetDto();
+
+    if (!user.userSettings.recoveryKeysFingerprint)
+      return new RecoveryKeysNotSetDto();
 
     try {
       const mfaStatusResponse = await this.checkUserMfaStatus({
@@ -109,7 +114,7 @@ export class AuthService {
     await this.emailService.sendVerificationEmail({
       payload: {
         confirmationHash,
-        confirmationType: 'REGISTRATION',
+        confirmationType: CONFIRMATION_TYPE.REGISTRATION,
         userId: createdUser.id,
         email: createdUser.email
       },

@@ -23,6 +23,7 @@ export class AccountConfirmationComponent implements OnInit {
 
   isAccountConfirmed = false;
   isMfaNotSet = true;
+  isRecoveryKeysNotSet = true;
   accountConfirmationError: boolean;
 
   hash: string;
@@ -42,9 +43,22 @@ export class AccountConfirmationComponent implements OnInit {
   async confirmUserAccount(hash: string) {
     this.authenticationService.confirmAccount({ hash }).subscribe({
       next: ({ message }) => {
-        this.isAccountConfirmed = true;
-        if (message !== ConfirmAccountResponse.ACCOUNT_CONFIRMED)
-          this.isMfaNotSet = message === ConfirmAccountResponse.MFA_NOT_SET;
+        switch (message) {
+          case ConfirmAccountResponse.MFA_NOT_SET:
+            this.isMfaNotSet = true;
+            this.isRecoveryKeysNotSet = false;
+            break;
+          case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
+            this.isMfaNotSet = false;
+            this.isRecoveryKeysNotSet = true;
+            break;
+          case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
+            this.isAccountConfirmed = true;
+            break;
+          default:
+            this.isAccountConfirmed = true;
+            break;
+        }
       },
       error: () => (this.accountConfirmationError = true)
     });
