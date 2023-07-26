@@ -5,13 +5,13 @@ import { CONTROLLERS } from '@interfaces/controllers.type';
 import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
 import { LoginPhonePayload } from '@payloads/login-phone.payload';
 import { Observable } from 'rxjs';
-import { SendSmsCodeResponse } from '@responses/send-sms-code.response';
 import { RegistrationPhonePayload } from '@payloads/registration-phone.payload';
 import { VerifyMobilePhonePayload } from '@payloads/verify-mobile-phone.payload';
 import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
 import { MfaDisabledResponse } from '@responses/mfa-disabled.response';
 import { DisableTwoFaPayload } from '@payloads/disable-two-fa.payload';
 import { SendSmsPayload } from '@payloads/send-sms.payload';
+import { SendSmsCodeResponse } from '@responses/send-sms-code.response';
 
 @Injectable({
   providedIn: 'root'

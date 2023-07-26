@@ -28,7 +28,8 @@
         "src/exceptions/auth/*",
         "src/exceptions/confirmation-hash/*",
         "src/exceptions/security/*",
-        "src/exceptions/validation/*"
+        "src/exceptions/validation/*",
+        "src/exceptions/recovery/*"
       ],
       "@dto/*": [
         "src/dto/*",
@@ -41,7 +42,9 @@
         "src/dto/confirmation-hash/requests/*",
         "src/dto/confirmation-hash/responses/*",
         "src/dto/auth/requests/*",
-        "src/dto/auth/responses/*"
+        "src/dto/auth/responses/*",
+        "src/dto/recovery/requests/*",
+        "src/dto/recovery/responses/*"
       ],
       "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],
@@ -53,7 +56,8 @@
         "src/modules/roles/*",
         "src/modules/auth/*",
         "src/modules/permissions/*",
-        "src/modules/confirmation-hash/*"
+        "src/modules/confirmation-hash/*",
+        "src/modules/recovery/*"
       ],
       "@interfaces/*": ["src/libs/interfaces/*"],
       "@interceptors/*": ["src/interceptors/*"]

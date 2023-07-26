@@ -28,6 +28,7 @@ import { Transaction } from 'sequelize';
 import TYPES = Transaction.TYPES;
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
+import { RecoveryModule } from '@modules/recovery.module';
 
 @Module({
   imports: [
@@ -63,7 +64,8 @@ import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
     SharedModule,
     PermissionsModule,
     ConfirmationHashModule,
-    SecurityModule
+    SecurityModule,
+    RecoveryModule
   ],
   providers: [
     {

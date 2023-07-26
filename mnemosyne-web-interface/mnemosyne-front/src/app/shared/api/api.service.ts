@@ -17,8 +17,13 @@ import { ALLOWED_METHODS } from '@interfaces/methods.type';
 import { AUTH_ENDPOINTS } from '@interfaces/auth.type';
 import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
 import { USERS_ENDPOINTS } from '@interfaces/users.type';
+import { RECOVERY_ENDPOINTS } from '@interfaces/recovery';
 
-type ENDPOINTS_TYPE = AUTH_ENDPOINTS | SECURITY_ENDPOINTS | USERS_ENDPOINTS;
+type ENDPOINTS_TYPE =
+  | AUTH_ENDPOINTS
+  | SECURITY_ENDPOINTS
+  | USERS_ENDPOINTS
+  | RECOVERY_ENDPOINTS;
 
 @Injectable({
   providedIn: 'root'

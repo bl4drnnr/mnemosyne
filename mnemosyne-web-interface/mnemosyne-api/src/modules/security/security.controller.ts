@@ -12,7 +12,7 @@ import { SecurityService } from '@modules/security/security.service';
 import { VerifyTwoFaDto } from '@dto/verify-two-fa.dto';
 import { RegistrationSendSmsCodeDto } from '@dto/registration-send-sms-code.dto';
 import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
-import { MfaLoginDto } from '@dto/mfa-login.dto';
+import { LoginSendSmsDto } from '@dto/login-send-sms.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
@@ -20,6 +20,7 @@ import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
 import { DeleteAccountDto } from '@dto/delete-account.dto';
 import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
+import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 
 @Controller('security')
 export class SecurityController {
@@ -39,7 +40,7 @@ export class SecurityController {
   @UsePipes(ValidationPipe)
   @Post('login-generate-2fa-qr')
   loginGenerateTwoFaQrCode(
-    @Body() payload: MfaLoginDto,
+    @Body() payload: LoginGenerate2faQrDto,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.loginGenerateTwoFaQrCode({ payload, trx });
@@ -116,7 +117,7 @@ export class SecurityController {
   @UsePipes(ValidationPipe)
   @Post('login-send-sms-code')
   loginSendSmsCode(
-    @Body() payload: MfaLoginDto,
+    @Body() payload: LoginSendSmsDto,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.loginSendSmsCode({ payload, trx });

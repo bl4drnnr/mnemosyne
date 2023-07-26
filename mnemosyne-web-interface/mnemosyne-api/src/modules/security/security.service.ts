@@ -12,7 +12,7 @@ import { PhoneService } from '@shared/phone.service';
 import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
 import { SmsCodeSentDto } from '@dto/sms-code-sent.dto';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
-import { MfaLoginDto } from '@dto/mfa-login.dto';
+import { LoginSendSmsDto } from '@dto/login-send-sms.dto';
 import { Transaction } from 'sequelize';
 import { DeleteAccountDto } from '@dto/delete-account.dto';
 import { AuthService } from '@modules/auth.service';
@@ -26,7 +26,7 @@ import { TwoFaNotSetUpException } from '@exceptions/two-fa-not-set-up.exception'
 import { PhoneNotSetUpException } from '@exceptions/phone-not-set-up.exception';
 import { WrongProvidedPhoneException } from '@exceptions/wrong-provided-phone.exception';
 import { WrongMfaTokenException } from '@exceptions/wrong-mfa-token.exception';
-import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
+import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 
 @Injectable()
 export class SecurityService {
@@ -63,7 +63,7 @@ export class SecurityService {
     payload,
     trx
   }: {
-    payload: MfaLoginDto;
+    payload: LoginGenerate2faQrDto;
     trx?: Transaction;
   }) {
     const user = await this.userService.verifyUserCredentials({
@@ -235,7 +235,7 @@ export class SecurityService {
     payload,
     trx
   }: {
-    payload: MfaLoginDto;
+    payload: LoginSendSmsDto;
     trx?: Transaction;
   }) {
     const user = await this.userService.verifyUserCredentials({
@@ -447,9 +447,9 @@ export class SecurityService {
     if (phoneCode === providedCode && dayjs(codeSentAt) < fiveMinutesAgo)
       throw new SmsExpiredException();
 
-    await this.userService.changeSecurityComplianceStatus({
+    await this.userService.updateUser({
+      payload: { isSecurityCompliant: true },
       userId,
-      isSecurityCompliant: true,
       trx
     });
 
@@ -516,8 +516,8 @@ export class SecurityService {
 
     if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
 
-    await this.userService.changeSecurityComplianceStatus({
-      isSecurityCompliant: true,
+    await this.userService.updateUser({
+      payload: { isSecurityCompliant: true },
       userId,
       trx
     });

@@ -21,12 +21,14 @@
   "wrong-provided-phone": "Неправильно указан номер мобильного телефона",
   "two-fa-not-set-up": "MFA не настроен",
   "phone-not-set-up": "Мобильный телефон не настроен",
+  "wrong-recovery-keys": "Неверные ключи восстановления или кодовая фраза",
   "validation": {
     "wrong-email-format": "Неверный формат электронной почты",
     "wrong-password-format": "Неверный формат пароля",
     "mfa-code-should-be-6-digit-code": "Код MFA должен состоять из 6 цифр",
     "phone-code-should-be-6-digit-code": "Телефонный код должен состоять из 6 цифр",
     "wrong-phone-format": "Неверный формат телефона",
+    "wrong-hash-format": "Неверная формат хеша",
     "wrong-hash-length": "Неверная длина хеша",
     "wrong-first-name-length": "Минимальная длина имени — 1 символ, максимальная — 64 символа",
     "wrong-first-name-format": "Имя должно быть строкой",
@@ -37,6 +39,10 @@
     "wrong-company-length": "Минимальная длина компании 2 символа, максимальная 64 символа",
     "wrong-company-format": "Компания должна быть строкой",
     "wrong-fqdn": "Неверное полное доменное имя (URL)",
-    "user-photo-must-be-base64": "Фото профиля пользователя должно быть PNG закодировано в формате Base64"
+    "user-photo-must-be-base64": "Фото профиля пользователя должно быть PNG закодировано в формате Base64",
+    "wrong-passphrase-format": "Неверный формат парольной фразы",
+    "wrong-passphrase-length": "Неверная длина парольной фразы",
+    "wrong-phone-code-format": "Неверный формат телефонного кода",
+    "wrong-mfa-code-format": "Неверный формат кода MFA"
   }
 }

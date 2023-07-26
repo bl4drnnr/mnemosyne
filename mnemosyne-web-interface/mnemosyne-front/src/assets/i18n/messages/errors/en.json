@@ -21,12 +21,14 @@
   "wrong-provided-phone": "Wrong provided mobile phone number",
   "two-fa-not-set-up": "MFA has not been set up",
   "phone-not-set-up": "Mobile phone has not been set up",
+  "wrong-recovery-keys": "Wrong recovery keys or passphrase",
   "validation": {
     "wrong-email-format": "Wrong email format",
     "wrong-password-format": "Wrong password format",
     "mfa-code-should-be-6-digit-code": "MFA code should be 6 digit code",
     "phone-code-should-be-6-digit-code": "Phone code should be 6 digit code",
     "wrong-phone-format": "Wrong phone format",
+    "wrong-hash-format": "Wrong hash format",
     "wrong-hash-length": "Wrong hash length",
     "wrong-first-name-length": "Min length of the first name is 1 symbol, max is 64 symbols",
     "wrong-first-name-format": "First name should be a string",
@@ -37,6 +39,10 @@
     "wrong-company-length": "Min length of the company is 2 symbols, max is 64 symbols",
     "wrong-company-format": "Company should be a string",
     "wrong-fqdn": "Wrong fully qualified domain name (URL)",
-    "user-photo-must-be-base64": "User profile photo must be PNG Base64-encoded"
+    "user-photo-must-be-base64": "User profile photo must be PNG Base64-encoded",
+    "wrong-passphrase-format": "Wrong passphrase format",
+    "wrong-passphrase-length": "Wrong passphrase length",
+    "wrong-phone-code-format": "Wrong phone code format",
+    "wrong-mfa-code-format": "Wrong MFA code format"
   }
 }
