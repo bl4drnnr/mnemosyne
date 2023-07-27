@@ -2,14 +2,14 @@
   <button
     class="btn"
     [ngClass]="{
-      'disabled': disabled || loaderService.getStatus(),
+      'disabled': disableButton(),
       'high-height': highHeight,
       'fill-button': fillButton,
       'danger': danger,
       'fill-danger': fillDanger,
       'on-white': onWhite
     }"
-    [disabled]="disabled || loaderService.getStatus()"
+    [disabled]="disableButton()"
     (click)="onClick()"
   >
     <p

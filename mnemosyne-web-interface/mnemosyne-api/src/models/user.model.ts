@@ -56,9 +56,9 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({
     type: DataType.BOOLEAN,
     allowNull: false,
-    field: 'is_security_compliant'
+    field: 'is_mfa_set'
   })
-  isSecurityCompliant: boolean;
+  isMfaSet: boolean;
 
   @HasMany(() => ConfirmationHash)
   confirmationHashes: ConfirmationHash[];

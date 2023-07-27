@@ -5,12 +5,14 @@ import { ConfirmationHashModule } from '@modules/confirmation-hash/confirmation-
 import { PhoneService } from '@shared/phone.service';
 import { UsersModule } from '@modules/users.module';
 import { CryptographicService } from '@shared/cryptographic.service';
+import { TimeService } from '@shared/time.service';
 
 const providers = [
   ApiConfigService,
   EmailService,
   PhoneService,
-  CryptographicService
+  CryptographicService,
+  TimeService
 ];
 
 @Global()

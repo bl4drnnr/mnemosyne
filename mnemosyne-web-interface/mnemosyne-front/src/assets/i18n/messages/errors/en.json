@@ -44,5 +44,6 @@
     "wrong-passphrase-length": "Wrong passphrase length",
     "wrong-phone-code-format": "Wrong phone code format",
     "wrong-mfa-code-format": "Wrong MFA code format"
-  }
+  },
+  "wrong-timeframe": "Wrong timeframe"
 }

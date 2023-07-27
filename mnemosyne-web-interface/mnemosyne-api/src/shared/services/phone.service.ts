@@ -1,21 +1,18 @@
-import {
-  BadRequestException,
-  forwardRef,
-  Inject,
-  Injectable
-} from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Twilio } from 'twilio';
 import { ApiConfigService } from '@shared/config.service';
 import { Transaction } from 'sequelize';
 import { UsersService } from '@modules/users.service';
-import * as dayjs from 'dayjs';
+import { TimeService } from '@shared/time.service';
+import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
 
 @Injectable()
 export class PhoneService {
   constructor(
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
-    private readonly configService: ApiConfigService
+    private readonly configService: ApiConfigService,
+    private readonly timeService: TimeService
   ) {}
 
   async sendSmsCode({ targetPhoneNumber }: { targetPhoneNumber: string }) {
@@ -49,10 +46,12 @@ export class PhoneService {
       trx
     });
 
-    const oneMinuteAgo = dayjs().subtract(1, 'minute');
+    const isWithinTwoMinutes = this.timeService.isWithinTimeframe({
+      time: codeSentAt,
+      seconds: 120
+    });
 
-    if (oneMinuteAgo.diff(dayjs(codeSentAt), 'minutes') < 1)
-      throw new BadRequestException();
+    if (isWithinTwoMinutes) throw new WrongTimeframeException();
 
     const sentSmsCode = await this.sendSmsCode({
       targetPhoneNumber: phone

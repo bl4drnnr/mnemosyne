@@ -1,0 +1,9 @@
+{
+  "recoveryKeysTitle": "Generate recovery keys",
+  "recoveryKeys1": "Once user account is created, it is required to set up recovery keys and passphrase for it. In case if you lose access to your phone/authenticator application, you will be able to reset them using recovery keys.",
+  "recoveryKeys2": "Usage of recovery keys deletes both 2FA and phone from your account so you can set them up from the scratch.",
+  "recoveryKeys3": "Keep in mind, that recovery keys are only for one-time use. Once they are used, you will be required to generate new ones. Here is how it works:",
+  "recoveryKeys4": "You are providing simple passphrase and get the set of recovery keys.",
+  "recoveryKeys5": "Once you want to recover your account and reset MFA/phone, you are providing passphrase and keys and resetting both MFA/phone.",
+  "recoveryKeys6": "When you log in to your account after reset, you will be prompted to set up MFA/phone from the scratch."
+}

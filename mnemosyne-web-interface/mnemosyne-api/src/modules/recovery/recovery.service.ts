@@ -129,7 +129,7 @@ export class RecoveryService {
     });
 
     await this.userService.updateUser({
-      payload: { isSecurityCompliant: false },
+      payload: { isMfaSet: false },
       userId: user.id,
       trx
     });
@@ -169,6 +169,6 @@ export class RecoveryService {
       trx
     });
 
-    return recoveryKeys;
+    return { recoveryKeys };
   }
 }

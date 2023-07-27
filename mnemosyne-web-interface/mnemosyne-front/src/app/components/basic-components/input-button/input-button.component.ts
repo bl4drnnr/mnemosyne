@@ -33,7 +33,13 @@ export class InputButtonComponent {
     this.inputValueChange.emit(inputValue);
   }
 
+  buttonDisable() {
+    return this.buttonDisabled || this.loaderService.getStatus();
+  }
+
   onClick() {
+    if (this.buttonDisable()) return;
+
     this.buttonClick.emit();
   }
 }

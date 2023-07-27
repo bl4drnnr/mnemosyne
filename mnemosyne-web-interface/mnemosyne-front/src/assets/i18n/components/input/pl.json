@@ -41,5 +41,10 @@
   "wrongFQDN": "Niewłaściwa w pełni kwalifikowana nazwa domeny (URL)",
   "emailChangeInfo": "Adres e-mail można zmienić w ustawieniach zabezpieczeń. Uważaj! Możesz zmienić e-mail tylko raz.",
   "mfaToken": "Token MFA",
-  "copied": "Wiadomość została pomyślnie skopiowana do schowka"
+  "copied": "Wiadomość została pomyślnie skopiowana do schowka",
+  "passphrase": "Hasło",
+  "providePassphrase": "Podaj hasło",
+  "passphraseDesc": "Hasło może być dowolne, zostanie użyte do zaszyfrowania kluczy odzyskiwania.",
+  "passphraseError": "Minimalna długość hasła to 8 znaków, maksymalna to 128",
+  "recoveryKey": "Klucz odzyskiwania {{ i }}"
 }

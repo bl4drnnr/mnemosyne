@@ -36,10 +36,6 @@ export class AccountConfirmationComponent implements OnInit {
     private router: Router
   ) {}
 
-  confirmUserMfa() {
-    this.step = 3;
-  }
-
   async confirmUserAccount(hash: string) {
     this.authenticationService.confirmAccount({ hash }).subscribe({
       next: ({ message }) => {
@@ -47,12 +43,16 @@ export class AccountConfirmationComponent implements OnInit {
           case ConfirmAccountResponse.MFA_NOT_SET:
             this.isMfaNotSet = true;
             this.isRecoveryKeysNotSet = false;
+            this.isAccountConfirmed = true;
             break;
           case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
             this.isMfaNotSet = false;
             this.isRecoveryKeysNotSet = true;
+            this.isAccountConfirmed = true;
             break;
           case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
+            this.isMfaNotSet = true;
+            this.isRecoveryKeysNotSet = false;
             this.isAccountConfirmed = true;
             break;
           default:

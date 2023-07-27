@@ -15,5 +15,7 @@
   "saveSettings": "Zapisz ustawienia",
   "close": "Zamknij",
   "disableMfa": "Deaktywuj MFA",
-  "disconnectPhone": "Deaktywuj telefon"
+  "disconnectPhone": "Deaktywuj telefon",
+  "keysSaved": "Skopiowałem/pobrałem/zapisałem klucze odzyskiwania",
+  "downloadRecoveryKeys": "Pobierz klucze odzyskiwania"
 }

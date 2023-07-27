@@ -38,7 +38,13 @@ export class InputMfaComponent implements OnInit {
     public loaderService: LoaderService
   ) {}
 
+  resendButtonDisabled() {
+    return this.isCountdownRunning || this.loaderService.getStatus();
+  }
+
   initResendSms() {
+    if (this.resendButtonDisabled()) return;
+
     this.resendSms.emit();
     this.startCountdown();
   }

@@ -1,5 +1,4 @@
 import * as node2fa from 'node-2fa';
-import * as dayjs from 'dayjs';
 import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
 import * as crypto from 'crypto';
@@ -32,6 +31,7 @@ import { UserSettings } from '@models/user-settings.model';
 import { PhoneService } from '@shared/phone.service';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
+import { TimeService } from '@shared/time.service';
 
 @Injectable()
 export class AuthService {
@@ -39,6 +39,7 @@ export class AuthService {
     private readonly sequelize: Sequelize,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
+    private readonly timeService: TimeService,
     private readonly emailService: EmailService,
     private readonly phoneService: PhoneService,
     @Inject(forwardRef(() => UsersService))
@@ -54,14 +55,18 @@ export class AuthService {
     });
 
     const registrationHash = user.confirmationHashes.find(
-      (hash) => hash.confirmationType === 'REGISTRATION'
+      (hash) => hash.confirmationType === CONFIRMATION_TYPE.REGISTRATION
     );
-    if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
 
-    if (!user.isSecurityCompliant) return new MfaNotSetDto();
+    const isAccConfirmed = registrationHash.confirmed;
+    const isMfaSet = user.isMfaSet;
+    const isRecoverySetUp = user.userSettings.recoveryKeysFingerprint;
 
-    if (!user.userSettings.recoveryKeysFingerprint)
-      return new RecoveryKeysNotSetDto();
+    if (!isAccConfirmed) throw new AccountNotConfirmedException();
+
+    if (!isMfaSet) return new MfaNotSetDto();
+
+    if (!isRecoverySetUp) return new RecoveryKeysNotSetDto();
 
     try {
       const mfaStatusResponse = await this.checkUserMfaStatus({
@@ -191,12 +196,12 @@ export class AuthService {
     if (phoneCode && phone) {
       if (userPhoneCode !== phoneCode) throw new WrongCodeException();
 
-      const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
+      const isWithinFiveMinutes = this.timeService.isWithinTimeframe({
+        time: phoneCodeSentAt,
+        seconds: 300
+      });
 
-      if (
-        userPhoneCode === phoneCode &&
-        dayjs(phoneCodeSentAt) < fiveMinutesAgo
-      )
+      if (userPhoneCode === phoneCode && isWithinFiveMinutes)
         throw new SmsExpiredException();
     }
 

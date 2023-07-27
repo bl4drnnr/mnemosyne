@@ -42,6 +42,8 @@ export class MfaComponent {
   ) {}
 
   async changeMfaOption({ key }: DropdownInterface) {
+    if (this.isCountdownRunning) return;
+
     if (key === 'phone') {
       this.selectedMfaOption = this.mfaOptions[0];
       this.qrCode = '';
@@ -54,6 +56,8 @@ export class MfaComponent {
   }
 
   async setUserMfa() {
+    if (!this.isAllFieldsCorrect()) return;
+
     if (this.selectedMfaOption.key === 'phone') {
       await this.verifyMobilePhone();
     } else if (this.selectedMfaOption.key === 'mfa') {

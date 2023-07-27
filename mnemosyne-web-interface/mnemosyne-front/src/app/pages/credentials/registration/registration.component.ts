@@ -65,6 +65,7 @@ export class RegistrationComponent {
   }
 
   nextStep() {
+    if (this.wrongCredentials({ includeAll: false })) return;
     this.step++;
   }
 
