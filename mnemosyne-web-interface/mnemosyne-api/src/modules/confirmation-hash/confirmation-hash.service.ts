@@ -68,38 +68,21 @@ export class ConfirmationHashService {
     return { userId: foundHash.userId };
   }
 
-  async getUserConfirmationHashes({
+  async getUserLastPasswordReset({
     userId,
-    hashType,
-    getOne = false,
-    getAll = false,
-    orderBy = 'created_at',
-    order = 'DESC'
+    trx: transaction
   }: {
     userId: string;
-    hashType?: CONFIRMATION_TYPE;
-    getOne?: boolean;
-    getAll?: boolean;
-    orderBy?: string;
-    order?: 'ASC' | 'DESC';
-  }): Promise<ConfirmationHash | Array<ConfirmationHash>> {
-    const where: Partial<ConfirmationHash> = { userId };
-
-    if (hashType) where.confirmationHash = hashType;
-
-    if (getOne) {
-      return await this.confirmationHashRepository.findOne({
-        where: { ...where },
-        order: [[orderBy, order]]
-      });
-    }
-
-    if (getAll) {
-      return await this.confirmationHashRepository.findAll({
-        where: { ...where },
-        order: [[orderBy, order]]
-      });
-    }
+    trx?: Transaction;
+  }) {
+    return this.confirmationHashRepository.findOne({
+      where: {
+        userId,
+        confirmationType: CONFIRMATION_TYPE.FORGOT_PASSWORD
+      },
+      order: [['created_at', 'DESC']],
+      transaction
+    });
   }
 
   async confirmAccount({

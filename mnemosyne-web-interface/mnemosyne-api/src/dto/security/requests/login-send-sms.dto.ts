@@ -1,10 +1,6 @@
-import { IsMobilePhone, IsOptional, IsString, Matches } from 'class-validator';
+import { Matches } from 'class-validator';
 
 export class LoginSendSmsDto {
-  @IsString({ message: 'wrong-phone-format' })
-  @IsMobilePhone()
-  readonly phone: string;
-
   @Matches(
     /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
     { message: 'wrong-email-format' }

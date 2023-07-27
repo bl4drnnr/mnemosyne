@@ -44,5 +44,6 @@
     "wrong-passphrase-length": "Неверная длина парольной фразы",
     "wrong-phone-code-format": "Неверный формат телефонного кода",
     "wrong-mfa-code-format": "Неверный формат кода MFA"
-  }
+  },
+  "wrong-timeframe": "Неверный таймфрейм"
 }

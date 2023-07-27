@@ -1,6 +1,5 @@
 import * as node2fa from 'node-2fa';
 import * as bcryptjs from 'bcryptjs';
-import * as dayjs from 'dayjs';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
@@ -27,6 +26,7 @@ import { PhoneNotSetException } from '@exceptions/phone-not-set.exception';
 import { WrongProvidedPhoneException } from '@exceptions/wrong-provided-phone.exception';
 import { WrongMfaTokenException } from '@exceptions/wrong-mfa-token.exception';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
+import { TimeService } from '@shared/time.service';
 
 @Injectable()
 export class SecurityService {
@@ -34,7 +34,8 @@ export class SecurityService {
     private readonly confirmationHashService: ConfirmationHashService,
     private readonly userService: UsersService,
     private readonly phoneService: PhoneService,
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    private readonly timeService: TimeService
   ) {}
 
   async registrationGenerateTwoFaQrCode({
@@ -246,7 +247,7 @@ export class SecurityService {
 
     await this.phoneService.verifyAndResendSmsCode({
       userId: user.id,
-      phone: user.userSettings.phone || payload.phone,
+      phone: user.userSettings.phone,
       trx
     });
 
@@ -442,9 +443,12 @@ export class SecurityService {
 
     if (phoneCode !== providedCode) throw new WrongCodeException();
 
-    const fiveMinutesAgo = dayjs().subtract(5, 'minutes');
+    const isWithinFiveMinutes = this.timeService.isWithinTimeframe({
+      time: codeSentAt,
+      seconds: 300
+    });
 
-    if (phoneCode === providedCode && dayjs(codeSentAt) < fiveMinutesAgo)
+    if (phoneCode === providedCode && isWithinFiveMinutes)
       throw new SmsExpiredException();
 
     await this.userService.updateUser({

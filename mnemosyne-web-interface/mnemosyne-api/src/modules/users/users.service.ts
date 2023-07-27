@@ -1,9 +1,7 @@
 import { S3 } from 'aws-sdk';
 import * as crypto from 'crypto';
 import * as bcryptjs from 'bcryptjs';
-import * as dayjs from 'dayjs';
 import {
-  BadRequestException,
   forwardRef,
   HttpException,
   Inject,
@@ -24,7 +22,6 @@ import { ApiConfigService } from '@shared/config.service';
 import { AuthService } from '@modules/auth.service';
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
-import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
@@ -35,6 +32,8 @@ import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { TimeService } from '@shared/time.service';
+import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
 
 @Injectable()
 export class UsersService {
@@ -43,6 +42,7 @@ export class UsersService {
     private readonly roleService: RolesService,
     private readonly emailService: EmailService,
     private readonly configService: ApiConfigService,
+    private readonly timeService: TimeService,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     @Inject(forwardRef(() => ConfirmationHashService))
@@ -185,19 +185,19 @@ export class UsersService {
     if (!user) return new ResetPasswordEmailDto();
 
     const userLastPasswordReset =
-      (await this.confirmationHashService.getUserConfirmationHashes({
+      await this.confirmationHashService.getUserLastPasswordReset({
         userId: user.id,
-        hashType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
-        getOne: true
-      })) as ConfirmationHash;
+        trx
+      });
 
-    const threeMinutesAgo = dayjs().subtract(3, 'minutes');
+    if (userLastPasswordReset) {
+      const isWithinThreeMinutes = this.timeService.isWithinTimeframe({
+        time: userLastPasswordReset.createdAt,
+        seconds: 180
+      });
 
-    if (
-      userLastPasswordReset &&
-      dayjs(userLastPasswordReset.createdAt) < threeMinutesAgo
-    )
-      throw new BadRequestException();
+      if (isWithinThreeMinutes) throw new WrongTimeframeException();
+    }
 
     const forgotPasswordHash = crypto.randomBytes(20).toString('hex');
 
@@ -236,9 +236,12 @@ export class UsersService {
         trx
       });
 
-    const oneDayAgo = dayjs().subtract(1, 'day');
+    const isWithinDay = this.timeService.isWithinTimeframe({
+      time: createdAt,
+      seconds: 86400
+    });
 
-    if (dayjs(createdAt) < oneDayAgo) throw new LinkExpiredException();
+    if (!isWithinDay) throw new LinkExpiredException();
 
     const user = await this.userRepository.findByPk(forgotPasswordHash.userId, {
       transaction: trx,
@@ -362,9 +365,11 @@ export class UsersService {
       trx
     });
 
-    const oneDay = dayjs().add(24, 'hours');
     const passwordCanBeChanged = userSettings.passwordChanged
-      ? oneDay.diff(dayjs(userSettings.passwordChanged), 'hours') < 0
+      ? this.timeService.isWithinTimeframe({
+          time: userSettings.passwordChanged,
+          seconds: 86400
+        })
       : true;
 
     const emailChanged = !!userSettings.emailChanged;
