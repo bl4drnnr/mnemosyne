@@ -35,7 +35,7 @@
       <div class="last-button">
         <basic-button
           [label]="t('button.continue')"
-          [disabled]="mfaCode.length !== 6"
+          [disabled]="disableVerifyTwoFaQr()"
           [onWhite]="true"
           (buttonClick)="verifyTwoFaQrCode()"
         />
@@ -66,7 +66,7 @@
         <basic-button
           [danger]="true"
           [onWhite]="true"
-          [disabled]="disableTwoFaCode.length !== 6"
+          [disabled]="twoFaButtonDisable()"
           [label]="t('button.disableMfa')"
           (buttonClick)="disableTwoFa()"
         />
@@ -101,7 +101,7 @@
       <div class="last-button">
         <basic-button
           [onWhite]="true"
-          [disabled]="!phoneCodeSent || phoneCode.length !== 6"
+          [disabled]="verifyPhoneDisable()"
           [label]="t('button.verifyCode')"
           (buttonClick)="verifyMobilePhone()"
         />

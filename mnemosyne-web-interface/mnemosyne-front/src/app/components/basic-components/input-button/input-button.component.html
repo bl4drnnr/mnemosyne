@@ -22,7 +22,7 @@
           [label]="buttonLabel"
           (buttonClick)="onClick()"
           [onWhite]="onWhite"
-          [disabled]="buttonDisabled || loaderService.getStatus()"
+          [disabled]="buttonDisable()"
           [buttonDescription]="buttonDescription"
         />
       </div>

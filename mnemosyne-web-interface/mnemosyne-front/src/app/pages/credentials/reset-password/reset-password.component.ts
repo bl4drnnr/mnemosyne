@@ -38,6 +38,9 @@ export class ResetPasswordComponent implements OnInit {
   ) {}
 
   async resetUserPassword() {
+    if (this.step === 1 && this.incorrectPassword) return;
+    else if (this.step === 2 && this.mfaButtonDisabled()) return;
+
     this.authenticationService
       .resetUserPassword({
         hash: this.hash,

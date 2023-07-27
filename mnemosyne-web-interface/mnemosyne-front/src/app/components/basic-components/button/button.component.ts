@@ -20,7 +20,13 @@ export class ButtonComponent {
 
   constructor(public loaderService: LoaderService) {}
 
+  disableButton() {
+    return this.disabled || this.loaderService.getStatus();
+  }
+
   onClick() {
+    if (this.disableButton()) return;
+
     this.buttonClick.emit();
   }
 }

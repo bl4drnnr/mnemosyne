@@ -55,7 +55,13 @@ export class SecuritySettingsComponent {
     this.set2faModal = true;
   }
 
+  disableVerifyTwoFaQr() {
+    return this.mfaCode.length !== 6;
+  }
+
   async verifyTwoFaQrCode() {
+    if (this.disableVerifyTwoFaQr()) return;
+
     this.mfaService
       .verifyTwoFaQrCode({
         twoFaToken: this.twoFaToken,
@@ -70,7 +76,13 @@ export class SecuritySettingsComponent {
       });
   }
 
+  twoFaButtonDisable() {
+    return this.disableTwoFaCode.length !== 6;
+  }
+
   async disableTwoFa() {
+    if (this.twoFaButtonDisable()) return;
+
     this.mfaService.disableTwoFa({ code: this.disableTwoFaCode }).subscribe({
       next: () => {
         this.disable2faModal = false;
@@ -92,7 +104,13 @@ export class SecuritySettingsComponent {
       });
   }
 
+  verifyPhoneDisable() {
+    return !this.phoneCodeSent || this.phoneCode.length !== 6;
+  }
+
   async verifyMobilePhone() {
+    if (this.verifyPhoneDisable()) return;
+
     this.phoneService
       .verifyMobilePhone({
         code: this.phoneCode,

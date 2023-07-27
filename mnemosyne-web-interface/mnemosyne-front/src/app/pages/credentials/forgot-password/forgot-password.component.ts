@@ -32,8 +32,17 @@ export class ForgotPasswordComponent {
     private readonly translocoService: TranslocoService
   ) {}
 
+  sendForgotPasswordEmailDisable() {
+    return this.incorrectEmail || !this.email;
+  }
+
+  forgotPasswordButtonDisable() {
+    return this.incorrectEmail || !this.email || this.isCountdownRunning;
+  }
+
   handleForgotPassword() {
-    if (this.incorrectEmail) return;
+    if (this.step === 1 && this.sendForgotPasswordEmailDisable()) return;
+    else if (this.step === 2 && this.forgotPasswordButtonDisable()) return;
 
     this.authenticationService
       .forgotPassword({

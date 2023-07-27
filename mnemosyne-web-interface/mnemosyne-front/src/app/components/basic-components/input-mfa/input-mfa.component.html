@@ -81,9 +81,9 @@
     <button
       class="resend-button"
       *ngIf="isPhone"
-      [disabled]="isCountdownRunning || loaderService.getStatus()"
+      [disabled]="resendButtonDisabled()"
       [ngClass]="{
-        'disabled': isCountdownRunning || loaderService.getStatus(),
+        'disabled': resendButtonDisabled(),
         'on-white': onWhite
       }"
       (click)="initResendSms()"

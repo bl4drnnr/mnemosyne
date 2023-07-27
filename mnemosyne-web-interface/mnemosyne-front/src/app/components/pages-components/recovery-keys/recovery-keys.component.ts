@@ -13,6 +13,8 @@ import { ValidationService } from '@services/validation.service';
 })
 export class RecoveryKeysComponent {
   @Input() hash: string;
+  @Input() email: string;
+  @Input() password: string;
   @Output() confirmRecoveryKeysSetup = new EventEmitter<void>();
 
   passphrase: string;
@@ -46,16 +48,31 @@ export class RecoveryKeysComponent {
   generateRecoveryKeys() {
     if (!this.isPassphraseValid()) return;
 
-    this.recoveryService
-      .registrationGenerateRecoveryKeys({
-        hash: this.hash,
-        passphrase: this.passphrase
-      })
-      .subscribe({
-        next: ({ recoveryKeys }) => {
-          this.recoveryKeys = recoveryKeys;
-          this.recoveryKeysGenerated = true;
-        }
-      });
+    if (this.hash) {
+      this.recoveryService
+        .registrationGenerateRecoveryKeys({
+          hash: this.hash,
+          passphrase: this.passphrase
+        })
+        .subscribe({
+          next: ({ recoveryKeys }) => {
+            this.recoveryKeys = recoveryKeys;
+            this.recoveryKeysGenerated = true;
+          }
+        });
+    } else if (this.email && this.password) {
+      this.recoveryService
+        .loginGenerateRecoveryKeys({
+          email: this.email,
+          password: this.password,
+          passphrase: this.passphrase
+        })
+        .subscribe({
+          next: ({ recoveryKeys }) => {
+            this.recoveryKeys = recoveryKeys;
+            this.recoveryKeysGenerated = true;
+          }
+        });
+    }
   }
 }

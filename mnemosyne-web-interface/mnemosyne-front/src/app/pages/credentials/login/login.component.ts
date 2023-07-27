@@ -29,10 +29,8 @@ export class LoginComponent {
   incorrectEmail: boolean;
   incorrectPassword: boolean;
 
-  isMfaSet: boolean;
   isPhoneRequired: boolean;
   isMfaRequired: boolean;
-  isRecoveryKeysSet: boolean;
 
   phoneCode: string;
   mfaCode: string;
@@ -44,7 +42,7 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  isAllCredentialsCorrect() {
+  incorrectCredentials() {
     return (
       !this.email ||
       !this.password ||
@@ -72,6 +70,9 @@ export class LoginComponent {
   }
 
   handleLogIn() {
+    if (this.step === 1 && this.incorrectCredentials()) return;
+    else if (this.step === 2 && this.loginMfaButtonDisabled()) return;
+
     this.authenticationService
       .login({
         email: this.email,
@@ -83,8 +84,10 @@ export class LoginComponent {
         next: async ({ message, _at }) => {
           switch (message) {
             case LoginResponse.MFA_NOT_SET:
+              this.step = -1;
+              break;
+            case LoginResponse.RECOVERY_KEYS_NOT_SET:
               this.step = 0;
-              this.isMfaSet = false;
               break;
             case LoginResponse.MFA_REQUIRED:
               this.step = 2;
@@ -99,20 +102,12 @@ export class LoginComponent {
               this.step = 2;
               this.isMfaRequired = true;
               break;
-            case LoginResponse.RECOVERY_KEYS_NOT_SET:
-              this.step = 3;
-              this.isRecoveryKeysSet = true;
-              break;
             default:
               localStorage.setItem('_at', _at);
               await this.router.navigate(['account/dashboard']);
           }
         }
       });
-  }
-
-  confirmUserMfa() {
-    this.step = 1;
   }
 
   mfaChangeHandler({

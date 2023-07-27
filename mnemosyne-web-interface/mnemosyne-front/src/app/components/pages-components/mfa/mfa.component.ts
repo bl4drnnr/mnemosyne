@@ -42,6 +42,8 @@ export class MfaComponent {
   ) {}
 
   async changeMfaOption({ key }: DropdownInterface) {
+    if (this.isCountdownRunning) return;
+
     if (key === 'phone') {
       this.selectedMfaOption = this.mfaOptions[0];
       this.qrCode = '';

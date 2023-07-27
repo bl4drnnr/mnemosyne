@@ -56,12 +56,16 @@ export class AuthService {
     const registrationHash = user.confirmationHashes.find(
       (hash) => hash.confirmationType === CONFIRMATION_TYPE.REGISTRATION
     );
-    if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
 
-    if (!user.isMfaSet) return new MfaNotSetDto();
+    const isAccConfirmed = registrationHash.confirmed;
+    const isMfaSet = user.isMfaSet;
+    const isRecoverySetUp = user.userSettings.recoveryKeysFingerprint;
 
-    if (!user.userSettings.recoveryKeysFingerprint)
-      return new RecoveryKeysNotSetDto();
+    if (!isAccConfirmed) throw new AccountNotConfirmedException();
+
+    if (!isMfaSet) return new MfaNotSetDto();
+
+    if (!isRecoverySetUp) return new RecoveryKeysNotSetDto();
 
     try {
       const mfaStatusResponse = await this.checkUserMfaStatus({
