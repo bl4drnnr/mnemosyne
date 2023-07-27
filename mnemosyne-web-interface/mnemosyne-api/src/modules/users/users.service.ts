@@ -34,6 +34,7 @@ import { LinkExpiredException } from '@exceptions/link-expired.exception';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 
 @Injectable()
 export class UsersService {
@@ -186,7 +187,7 @@ export class UsersService {
     const userLastPasswordReset =
       (await this.confirmationHashService.getUserConfirmationHashes({
         userId: user.id,
-        hashType: 'FORGOT_PASSWORD',
+        hashType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
         getOne: true
       })) as ConfirmationHash;
 
@@ -203,7 +204,7 @@ export class UsersService {
     await this.emailService.sendVerificationEmail({
       payload: {
         confirmationHash: forgotPasswordHash,
-        confirmationType: 'FORGOT_PASSWORD',
+        confirmationType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
         userId: user.id,
         email: user.email
       },

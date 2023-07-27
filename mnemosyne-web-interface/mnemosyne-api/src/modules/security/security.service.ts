@@ -448,7 +448,7 @@ export class SecurityService {
       throw new SmsExpiredException();
 
     await this.userService.updateUser({
-      payload: { isSecurityCompliant: true },
+      payload: { isMfaSet: true },
       userId,
       trx
     });
@@ -517,7 +517,7 @@ export class SecurityService {
     if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
 
     await this.userService.updateUser({
-      payload: { isSecurityCompliant: true },
+      payload: { isMfaSet: true },
       userId,
       trx
     });

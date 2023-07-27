@@ -5,6 +5,7 @@ import { CreatePasswordComponent } from '@components/create-password/create-pass
 import { MfaComponent } from '@components/mfa/mfa.component';
 import { BasicComponentsModule } from '@components/basic-components.module';
 import { TranslocoModule } from '@ngneat/transloco';
+import { RecoveryKeysComponent } from './recovery-keys/recovery-keys.component';
 
 const components = [
   AltRegistrationComponent,
@@ -13,13 +14,13 @@ const components = [
 ];
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, RecoveryKeysComponent],
   imports: [
     CommonModule,
     NgOptimizedImage,
     BasicComponentsModule,
     TranslocoModule
   ],
-  exports: [...components]
+  exports: [...components, RecoveryKeysComponent]
 })
 export class PagesComponentsModule {}

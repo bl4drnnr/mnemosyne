@@ -54,6 +54,8 @@ export class MfaComponent {
   }
 
   async setUserMfa() {
+    if (!this.isAllFieldsCorrect()) return;
+
     if (this.selectedMfaOption.key === 'phone') {
       await this.verifyMobilePhone();
     } else if (this.selectedMfaOption.key === 'mfa') {

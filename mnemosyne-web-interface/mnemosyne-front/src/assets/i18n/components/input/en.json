@@ -41,5 +41,10 @@
   "wrongFQDN": "Wrong fully qualified domain name (URL)",
   "emailChangeInfo": "Email can be changed from the security settings. Be careful! You are allowed to change the email only one time.",
   "mfaToken": "MFA Token",
-  "copied": "Message has been successfully copied to the clipboard"
+  "copied": "Message has been successfully copied to the clipboard",
+  "passphrase": "Passphrase",
+  "providePassphrase": "Provide the passphrase",
+  "passphraseDesc": "Passphrase can be anything, it will be used to encrypt recovery keys.",
+  "passphraseError": "Min length of passphrase is 8 symbols, max is 128",
+  "recoveryKey": "Recovery key {{ i }}"
 }

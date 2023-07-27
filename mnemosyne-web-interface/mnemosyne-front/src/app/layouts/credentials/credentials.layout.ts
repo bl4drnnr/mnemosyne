@@ -15,6 +15,7 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
         { scope: 'messages/errors', alias: 'errors' },
         { scope: 'messages/responses', alias: 'responses' },
         { scope: 'components/mfa', alias: 'mfa' },
+        { scope: 'components/recovery-keys', alias: 'keys' },
         { scope: 'components/dropdown', alias: 'dropdown' },
         { scope: 'components/link', alias: 'link' },
         { scope: 'components/button', alias: 'button' },

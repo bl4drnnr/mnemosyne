@@ -1,0 +1,9 @@
+{
+  "recoveryKeysTitle": "Wygeneruj klucze odzyskiwania",
+  "recoveryKeys1": "Po utworzeniu konta użytkownika wymagane jest skonfigurowanie kluczy odzyskiwania i hasła do niego. W przypadku utraty dostępu do telefonu/aplikacji uwierzytelniającej, będziesz mógł je zresetować za pomocą kluczy odzyskiwania.",
+  "recoveryKeys2": "Użycie kluczy odzyskiwania usuwa zarówno 2FA, jak i telefon z twojego konta, dzięki czemu możesz skonfigurować je od podstaw.",
+  "recoveryKeys3": "Pamiętaj, że klucze odzyskiwania są tylko do jednorazowego użytku. Po ich użyciu będziesz musiał wygenerować nowe. Oto jak to działa:",
+  "recoveryKeys4": "Podajesz proste hasło i otrzymujesz zestaw kluczy odzyskiwania.",
+  "recoveryKeys5": "Gdy chcesz odzyskać swoje konto i zresetować MFA/telefon, podajesz hasło i klucze oraz resetujesz oba MFA/telefon.",
+  "recoveryKeys6": "Kiedy zalogujesz się na swoje konto po zresetowaniu, zostaniesz poproszony o skonfigurowanie MFA/telefonu od podstaw."
+}

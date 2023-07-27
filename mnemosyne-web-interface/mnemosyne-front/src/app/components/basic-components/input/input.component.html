@@ -23,12 +23,12 @@
       [ngClass]="{
         'disabled': disabled || loaderService.getStatus(),
         'error': showError,
-        'password-size': ['password-repeat', 'password'].includes(type) && value && value.length > 0,
+        'password-size': passwordFontSize(),
         'on-white': onWhite
       }"
       [disabled]="disabled"
       [(ngModel)]="value"
-      [type]="type === 'password-repeat' ? 'password' : type"
+      [type]="passwordTypes.includes(type) ? 'password' : type"
       [placeholder]="placeholder"
       (input)="onInput()"
     />
@@ -44,7 +44,8 @@
   <p
     class="input-description"
     [ngClass]="{ 'on-white': onWhite }"
-    *ngIf="inputDescription"
+    [@descriptionAnimation]="true"
+    *ngIf="inputDescription && !showError"
   >
     {{ inputDescription }}
   </p>

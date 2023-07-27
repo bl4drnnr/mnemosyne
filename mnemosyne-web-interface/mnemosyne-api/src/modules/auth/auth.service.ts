@@ -54,11 +54,11 @@ export class AuthService {
     });
 
     const registrationHash = user.confirmationHashes.find(
-      (hash) => hash.confirmationType === 'REGISTRATION'
+      (hash) => hash.confirmationType === CONFIRMATION_TYPE.REGISTRATION
     );
     if (!registrationHash.confirmed) throw new AccountNotConfirmedException();
 
-    if (!user.isSecurityCompliant) return new MfaNotSetDto();
+    if (!user.isMfaSet) return new MfaNotSetDto();
 
     if (!user.userSettings.recoveryKeysFingerprint)
       return new RecoveryKeysNotSetDto();

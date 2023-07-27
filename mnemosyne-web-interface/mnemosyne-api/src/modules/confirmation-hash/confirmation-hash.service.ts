@@ -121,14 +121,16 @@ export class ConfirmationHashService {
       trx: transaction
     });
 
-    if (foundHash.confirmed && user.isSecurityCompliant)
+    const isAccConfirmed = foundHash.confirmed;
+    const isMfaSet = user.isMfaSet;
+    const isRecoverySetUp = user.userSettings.recoveryKeysFingerprint;
+
+    if (isAccConfirmed && isMfaSet && isRecoverySetUp)
       throw new AccountAlreadyConfirmedException();
 
-    if (foundHash.confirmed && !user.isSecurityCompliant)
-      return new MfaNotSetDto();
+    if (isAccConfirmed && !isMfaSet) return new MfaNotSetDto();
 
-    if (!user.userSettings.recoveryKeysFingerprint)
-      return new RecoveryKeysNotSetDto();
+    if (isAccConfirmed && !isRecoverySetUp) return new RecoveryKeysNotSetDto();
 
     await this.confirmationHashRepository.update(
       {

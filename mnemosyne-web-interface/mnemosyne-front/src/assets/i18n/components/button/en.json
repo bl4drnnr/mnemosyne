@@ -15,5 +15,7 @@
   "saveSettings": "Save settings",
   "close": "Close",
   "disableMfa": "Disable MFA",
-  "disconnectPhone": "Disconnect mobile phone"
+  "disconnectPhone": "Disconnect mobile phone",
+  "keysSaved": "I have copied/downloaded/saved recovery keys",
+  "downloadRecoveryKeys": "Download recovery keys"
 }

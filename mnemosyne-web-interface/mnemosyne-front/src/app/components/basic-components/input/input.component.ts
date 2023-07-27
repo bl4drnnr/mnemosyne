@@ -33,6 +33,12 @@ import { TranslocoService } from '@ngneat/transloco';
       ),
       transition('void => *', animate('0.3s')),
       transition('* => void', animate('0.3s'))
+    ]),
+    trigger('descriptionAnimation', [
+      state('void', style({ transform: 'translateY(-10px)' })),
+      state('*', style({ transform: 'translateY(0)' })),
+      transition('void => *', animate('0.3s')),
+      transition('* => void', animate('0.3s'))
     ])
   ]
 })
@@ -55,6 +61,8 @@ export class InputComponent {
   @Output() passwordErrors = new EventEmitter<
     Array<{ error: boolean; text: string }>
   >();
+
+  passwordTypes = ['password', 'password-repeat', 'passphrase'];
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
@@ -99,6 +107,14 @@ export class InputComponent {
       this.incorrectInput.emit(false);
       this.passwordErrors.emit([]);
     }
+  }
+
+  passwordFontSize() {
+    return (
+      this.passwordTypes.includes(this.type) &&
+      this.value &&
+      this.value.length > 0
+    );
   }
 
   notifyClipboardCopy() {
