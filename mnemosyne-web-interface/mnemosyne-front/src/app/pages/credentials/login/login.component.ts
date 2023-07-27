@@ -21,7 +21,7 @@ import { PhoneService } from '@services/phone.service';
   ]
 })
 export class LoginComponent {
-  step = 1;
+  step = 2;
 
   email: string;
   password: string;
@@ -34,6 +34,9 @@ export class LoginComponent {
 
   phoneCode: string;
   mfaCode: string;
+
+  isMfaNotSet = true;
+  isRecoveryKeysNotSet = true;
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -70,8 +73,8 @@ export class LoginComponent {
   }
 
   handleLogIn() {
-    if (this.step === 1 && this.incorrectCredentials()) return;
-    else if (this.step === 2 && this.loginMfaButtonDisabled()) return;
+    if (this.step === 2 && this.incorrectCredentials()) return;
+    else if (this.step === 3 && this.loginMfaButtonDisabled()) return;
 
     this.authenticationService
       .login({
@@ -84,22 +87,26 @@ export class LoginComponent {
         next: async ({ message, _at }) => {
           switch (message) {
             case LoginResponse.MFA_NOT_SET:
-              this.step = -1;
+              this.step = 1;
+              this.isMfaNotSet = true;
+              this.isRecoveryKeysNotSet = false;
               break;
             case LoginResponse.RECOVERY_KEYS_NOT_SET:
-              this.step = 0;
+              this.step = 1;
+              this.isMfaNotSet = false;
+              this.isRecoveryKeysNotSet = true;
               break;
             case LoginResponse.MFA_REQUIRED:
-              this.step = 2;
+              this.step = 3;
               this.isPhoneRequired = true;
               this.isMfaRequired = true;
               break;
             case LoginResponse.PHONE_REQUIRED:
-              this.step = 2;
+              this.step = 3;
               this.isPhoneRequired = true;
               break;
             case LoginResponse.TWO_FA_REQUIRED:
-              this.step = 2;
+              this.step = 3;
               this.isMfaRequired = true;
               break;
             default:
