@@ -207,6 +207,7 @@ export class UsersService {
         firstName: user.firstName,
         lastName: user.lastName
       },
+      language: payload.language,
       trx
     });
 

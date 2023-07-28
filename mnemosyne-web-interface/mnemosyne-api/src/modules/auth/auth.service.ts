@@ -127,6 +127,7 @@ export class AuthService {
         firstName: createdUser.firstName,
         lastName: createdUser.lastName
       },
+      language: payload.language,
       trx
     });
 

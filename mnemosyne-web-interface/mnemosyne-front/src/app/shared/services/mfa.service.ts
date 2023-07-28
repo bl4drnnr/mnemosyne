@@ -30,15 +30,14 @@ export class MfaService {
     });
   }
 
-  loginGenerateTwoFaQrCode({
-    email,
-    password
-  }: LoginPhonePayload): Observable<GenerateTwoFaResponse> {
+  loginGenerateTwoFaQrCode(
+    payload: LoginPhonePayload
+  ): Observable<GenerateTwoFaResponse> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.LOGIN_GENERATE_2FA_QR,
-      payload: { email, password }
+      payload
     });
   }
 
@@ -66,43 +65,39 @@ export class MfaService {
     });
   }
 
-  loginVerifyTwoFaQrCode({
-    email,
-    password,
-    twoFaToken,
-    code
-  }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
+  loginVerifyTwoFaQrCode(
+    payload: VerifyTwoFaPayload
+  ): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.LOGIN_VERIFY_2FA,
-      payload: { email, password, code, twoFaToken }
+      payload
     });
   }
 
-  verifyTwoFaQrCode({
-    twoFaToken,
-    code
-  }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
+  verifyTwoFaQrCode(
+    payload: VerifyTwoFaPayload
+  ): Observable<{ message: VerifyTwoFaResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.VERIFY_2FA,
-      payload: { twoFaToken, code },
+      payload,
       accessToken
     });
   }
 
-  disableTwoFa({
-    code
-  }: DisableTwoFaPayload): Observable<{ message: MfaDisabledResponse }> {
+  disableTwoFa(
+    payload: DisableTwoFaPayload
+  ): Observable<{ message: MfaDisabledResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.DISABLE_2FA,
-      payload: { code },
+      payload,
       accessToken
     });
   }

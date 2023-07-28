@@ -6,6 +6,7 @@ import { VerificationEmailInterface } from '@interfaces/verification-email.inter
 import { Transaction } from 'sequelize';
 import { EmailTemplatesService } from '@shared/email-templates.service';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Injectable()
 export class EmailService {
@@ -17,14 +18,15 @@ export class EmailService {
     SendGrid.setApiKey(this.configService.sendGridCredentials.api_key);
   }
 
-  // TODO Change the lang of the email based on what was in user's local storage
   async sendRegistrationConfirmationEmail({
     payload,
     userInfo,
+    language,
     trx: transaction
   }: {
     payload: VerificationEmailInterface;
     userInfo: UserInfoInterface;
+    language: LANGUAGE_TYPES | null;
     trx?: Transaction;
   }) {
     const emailSettings: VerificationEmailInterface = {
@@ -38,26 +40,29 @@ export class EmailService {
 
     const confirmationLink = `${this.configService.frontEndUrl}/account-confirmation/${payload.confirmationHash}`;
 
-    const registrationConfirmationEmail =
+    const { htmlPayload, subject } =
       this.emailTemplatesService.registrationEmailTemplate({
         userInfo,
-        confirmationLink
+        confirmationLink,
+        language
       });
 
     await this.sendEmail({
       target: payload.email,
-      emailHtml: registrationConfirmationEmail,
-      emailSubject: ''
+      emailHtml: htmlPayload,
+      emailSubject: subject
     });
   }
 
   async sendForgotPasswordEmail({
     payload,
     userInfo,
+    language,
     trx: transaction
   }: {
     payload: VerificationEmailInterface;
     userInfo: UserInfoInterface;
+    language: LANGUAGE_TYPES | null;
     trx?: Transaction;
   }) {
     const emailSettings = {
@@ -71,26 +76,29 @@ export class EmailService {
 
     const confirmationLink = `${this.configService.frontEndUrl}/reset-password/${payload.confirmationHash}`;
 
-    const forgotPasswordEmail =
-      this.emailTemplatesService.registrationEmailTemplate({
+    const { htmlPayload, subject } =
+      this.emailTemplatesService.forgotPasswordEmailTemplate({
         userInfo,
-        confirmationLink
+        confirmationLink,
+        language
       });
 
     await this.sendEmail({
       target: payload.email,
-      emailHtml: forgotPasswordEmail,
-      emailSubject: ''
+      emailHtml: htmlPayload,
+      emailSubject: subject
     });
   }
 
   async sendEmailChangeEmail({
     payload,
     userInfo,
+    language,
     trx: transaction
   }: {
     payload: VerificationEmailInterface;
     userInfo: UserInfoInterface;
+    language: LANGUAGE_TYPES | null;
     trx?: Transaction;
   }) {
     const emailSettings = {
@@ -104,16 +112,17 @@ export class EmailService {
 
     const confirmationLink = `${this.configService.frontEndUrl}/email-change-confirmation/${payload.confirmationHash}`;
 
-    const changeEmailEmail =
+    const { htmlPayload, subject } =
       this.emailTemplatesService.registrationEmailTemplate({
         userInfo,
-        confirmationLink
+        confirmationLink,
+        language
       });
 
     await this.sendEmail({
       target: payload.email,
-      emailHtml: changeEmailEmail,
-      emailSubject: ''
+      emailHtml: htmlPayload,
+      emailSubject: subject
     });
   }
 

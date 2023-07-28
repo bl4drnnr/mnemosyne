@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthenticationService } from '@services/authentication.service';
+import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
 
 @Component({
   selector: 'page-forgot-password',
@@ -44,10 +45,16 @@ export class ForgotPasswordComponent {
     if (this.step === 1 && this.sendForgotPasswordEmailDisable()) return;
     else if (this.step === 2 && this.forgotPasswordButtonDisable()) return;
 
+    const forgotPasswordPayload: ForgotPasswordPayload = {
+      email: this.email
+    };
+
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) forgotPasswordPayload.language = language;
+
     this.authenticationService
-      .forgotPassword({
-        email: this.email
-      })
+      .forgotPassword({ ...forgotPasswordPayload })
       .subscribe({
         next: () => {
           this.step = 2;

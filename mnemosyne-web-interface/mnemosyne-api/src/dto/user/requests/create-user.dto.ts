@@ -1,11 +1,14 @@
 import {
   IsBoolean,
+  IsEnum,
   IsFQDN,
   IsOptional,
   IsString,
   Length,
   Matches
 } from 'class-validator';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { IsNull } from 'sequelize-typescript';
 
 export class CreateUserDto {
   @Matches(
@@ -44,4 +47,8 @@ export class CreateUserDto {
 
   @IsBoolean()
   readonly tac: boolean;
+
+  @IsOptional()
+  @IsEnum(LANGUAGE_TYPES)
+  readonly language: LANGUAGE_TYPES;
 }

@@ -30,41 +30,38 @@ export class RecoveryService {
     });
   }
 
-  loginGenerateRecoveryKeys({
-    passphrase,
-    email,
-    password
-  }: LoginGenerateRecoveryKeysPayload): Observable<RecoveryKeysResponse> {
+  loginGenerateRecoveryKeys(
+    payload: LoginGenerateRecoveryKeysPayload
+  ): Observable<RecoveryKeysResponse> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.RECOVERY,
       action: RECOVERY_ENDPOINTS.LOGIN_GENERATE_RECOVERY_KEYS,
-      payload: { passphrase, email, password }
+      payload
     });
   }
 
-  generateRecoveryKeys({
-    passphrase
-  }: GenerateRecoveryKeysPayload): Observable<RecoveryKeysResponse> {
+  generateRecoveryKeys(
+    payload: GenerateRecoveryKeysPayload
+  ): Observable<RecoveryKeysResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.RECOVERY,
       action: RECOVERY_ENDPOINTS.LOGIN_GENERATE_RECOVERY_KEYS,
-      payload: { passphrase },
+      payload,
       accessToken
     });
   }
 
-  recoverUserAccount({
-    passphrase,
-    recoveryKeys
-  }: RecoverAccountPayload): Observable<{ message: AccountRecoveredResponse }> {
+  recoverUserAccount(
+    payload: RecoverAccountPayload
+  ): Observable<{ message: AccountRecoveredResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.RECOVERY,
       action: RECOVERY_ENDPOINTS.LOGIN_GENERATE_RECOVERY_KEYS,
-      payload: { passphrase, recoveryKeys }
+      payload
     });
   }
 }

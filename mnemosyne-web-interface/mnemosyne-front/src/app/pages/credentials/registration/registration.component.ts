@@ -3,6 +3,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
+import { RegistrationPayload } from '@payloads/registration.payload';
 
 @Component({
   selector: 'page-registration',
@@ -47,14 +48,23 @@ export class RegistrationComponent {
   handleRegistration() {
     if (this.wrongCredentials({ includeAll: true })) return;
 
+    const registrationPayload: RegistrationPayload = {
+      email: this.email,
+      password: this.password,
+      tac: this.tac,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      website: this.website,
+      location: this.location,
+      company: this.company
+    };
+
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) registrationPayload.language = language;
+
     this.authenticationService
-      .registration({
-        email: this.email,
-        password: this.password,
-        tac: this.tac,
-        firstName: this.firstName,
-        lastName: this.lastName
-      })
+      .registration({ ...registrationPayload })
       .subscribe({
         next: () => (this.step = 3)
       });

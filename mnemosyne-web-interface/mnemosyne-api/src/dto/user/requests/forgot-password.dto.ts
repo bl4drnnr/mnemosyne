@@ -1,4 +1,5 @@
-import { Matches } from 'class-validator';
+import { IsEnum, IsOptional, Matches } from 'class-validator';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 export class ForgotPasswordDto {
   @Matches(
@@ -6,4 +7,8 @@ export class ForgotPasswordDto {
     { message: 'wrong-email-format' }
   )
   readonly email: string;
+
+  @IsOptional()
+  @IsEnum(LANGUAGE_TYPES)
+  readonly language: LANGUAGE_TYPES;
 }

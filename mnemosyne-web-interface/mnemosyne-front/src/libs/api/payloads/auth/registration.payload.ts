@@ -4,4 +4,8 @@ export interface RegistrationPayload {
   tac: boolean;
   firstName: string;
   lastName: string;
+  location?: string;
+  company?: string;
+  website?: string;
+  language?: string;
 }
