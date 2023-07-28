@@ -59,7 +59,11 @@
         "src/modules/confirmation-hash/*",
         "src/modules/recovery/*"
       ],
-      "@interfaces/*": ["src/libs/interfaces/*"],
+      "@interfaces/*": [
+        "src/libs/interfaces/*",
+        "src/libs/types/*"
+      ],
+      "@email-templates/*": ["src/libs/email-templates/*"],
       "@interceptors/*": ["src/interceptors/*"]
     }
   }

@@ -19,16 +19,14 @@ import { SendSmsCodeResponse } from '@responses/send-sms-code.response';
 export class PhoneService {
   constructor(private apiService: ApiService) {}
 
-  loginSendSmsCode({
-    email,
-    password,
-    phone
-  }: LoginPhonePayload): Observable<{ message: SendSmsCodeResponse }> {
+  loginSendSmsCode(
+    payload: LoginPhonePayload
+  ): Observable<{ message: SendSmsCodeResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.LOGIN_SEND_SMS_CODE,
-      payload: { email, password, phone }
+      payload
     });
   }
 
@@ -45,30 +43,27 @@ export class PhoneService {
     });
   }
 
-  sendSmsCode({
-    phone
-  }: SendSmsPayload): Observable<{ message: SendSmsCodeResponse }> {
+  sendSmsCode(
+    payload: SendSmsPayload
+  ): Observable<{ message: SendSmsCodeResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.GET,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.SEND_SMS_CODE,
-      payload: { phone },
+      payload,
       accessToken
     });
   }
 
-  loginVerifyMobilePhone({
-    phone,
-    code,
-    password,
-    email
-  }: VerifyMobilePhonePayload): Observable<{ message: VerifyTwoFaResponse }> {
+  loginVerifyMobilePhone(
+    payload: VerifyMobilePhonePayload
+  ): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.LOGIN_VERIFY_MOBILE_PHONE,
-      payload: { phone, code, password, email }
+      payload
     });
   }
 
@@ -86,29 +81,28 @@ export class PhoneService {
     });
   }
 
-  verifyMobilePhone({
-    code,
-    phone
-  }: VerifyMobilePhonePayload): Observable<{ message: VerifyTwoFaResponse }> {
+  verifyMobilePhone(
+    payload: VerifyMobilePhonePayload
+  ): Observable<{ message: VerifyTwoFaResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.VERIFY_MOBILE_PHONE,
-      payload: { phone, code },
+      payload,
       accessToken
     });
   }
 
-  disablePhone({
-    code
-  }: DisableTwoFaPayload): Observable<{ message: MfaDisabledResponse }> {
+  disablePhone(
+    payload: DisableTwoFaPayload
+  ): Observable<{ message: MfaDisabledResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.DISABLE_PHONE,
-      payload: { code },
+      payload,
       accessToken
     });
   }

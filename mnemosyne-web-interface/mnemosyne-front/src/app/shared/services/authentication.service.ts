@@ -21,32 +21,25 @@ import { LogoutResponse } from '@responses/logout.response';
 export class AuthenticationService {
   constructor(private readonly apiService: ApiService) {}
 
-  login({
-    email,
-    password,
-    phoneCode,
-    mfaCode
-  }: LoginPayload): Observable<{ message: LoginResponse; _at: string }> {
+  login(
+    payload: LoginPayload
+  ): Observable<{ message: LoginResponse; _at: string }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.AUTH,
       action: AUTH_ENDPOINTS.LOGIN,
-      payload: { email, password, phoneCode, mfaCode }
+      payload
     });
   }
 
-  registration({
-    email,
-    password,
-    tac,
-    firstName,
-    lastName
-  }: RegistrationPayload): Observable<{ message: RegistrationResponse }> {
+  registration(
+    payload: RegistrationPayload
+  ): Observable<{ message: RegistrationResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.AUTH,
       action: AUTH_ENDPOINTS.REGISTRATION,
-      payload: { email, password, firstName, lastName, tac }
+      payload
     });
   }
 
@@ -63,30 +56,25 @@ export class AuthenticationService {
     });
   }
 
-  forgotPassword({
-    email
-  }: ForgotPasswordPayload): Observable<{ message: ForgotPasswordResponse }> {
+  forgotPassword(
+    payload: ForgotPasswordPayload
+  ): Observable<{ message: ForgotPasswordResponse }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.USERS,
       action: AUTH_ENDPOINTS.FORGOT_PASSWORD,
-      payload: { email }
+      payload
     });
   }
 
-  resetUserPassword({
-    hash,
-    password,
-    phoneCode,
-    mfaCode
-  }: ResetUserPasswordPayload): Observable<{
+  resetUserPassword(payload: ResetUserPasswordPayload): Observable<{
     message: ResetUserPasswordResponse;
   }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.USERS,
       action: AUTH_ENDPOINTS.RESET_USER_PASSWORD,
-      payload: { hash, password, phoneCode, mfaCode }
+      payload
     });
   }
 

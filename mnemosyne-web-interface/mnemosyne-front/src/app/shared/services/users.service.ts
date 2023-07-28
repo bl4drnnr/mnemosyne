@@ -19,15 +19,15 @@ import { AccountDeletedResponse } from '@responses/account-deleted.response';
 export class UsersService {
   constructor(private readonly apiService: ApiService) {}
 
-  uploadUserPhoto({
-    userPhoto
-  }: UploadUserPhotoPayload): Observable<{ message: PhotoUploadedResponse }> {
+  uploadUserPhoto(
+    payload: UploadUserPhotoPayload
+  ): Observable<{ message: PhotoUploadedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.USERS,
       action: USERS_ENDPOINTS.UPLOAD_USER_PHOTO,
-      payload: { userPhoto },
+      payload,
       accessToken
     });
   }
@@ -67,18 +67,15 @@ export class UsersService {
     });
   }
 
-  deleteAccount({
-    password,
-    mfaCode,
-    phoneCode,
-    fullName
-  }: DeleteAccountPayload): Observable<{ message: AccountDeletedResponse }> {
+  deleteAccount(
+    payload: DeleteAccountPayload
+  ): Observable<{ message: AccountDeletedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.DELETE,
       controller: CONTROLLERS.USERS,
       action: USERS_ENDPOINTS.DELETE_ACCOUNT,
-      payload: { password, mfaCode, phoneCode, fullName },
+      payload,
       accessToken
     });
   }

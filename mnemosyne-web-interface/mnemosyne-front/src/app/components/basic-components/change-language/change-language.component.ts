@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
 import { EnvService } from '@shared/env.service';
-import { ChangeLanguages } from '@components/change-language/change-language.model';
+import { CHANGE_LANGUAGES } from '@components/change-language/change-language.model';
 
 @Component({
   selector: 'basic-change-language',
@@ -13,15 +13,15 @@ export class ChangeLanguageComponent implements OnInit {
   showLanguages: boolean;
   languages = [
     {
-      name: ChangeLanguages.PL,
+      name: CHANGE_LANGUAGES.PL,
       link: `${this.envService.getStaticStorageLink}/icons/pl.png`
     },
     {
-      name: ChangeLanguages.RU,
+      name: CHANGE_LANGUAGES.RU,
       link: `${this.envService.getStaticStorageLink}/icons/ru.png`
     },
     {
-      name: ChangeLanguages.EN,
+      name: CHANGE_LANGUAGES.EN,
       link: `${this.envService.getStaticStorageLink}/icons/en.png`
     }
   ];
@@ -42,8 +42,8 @@ export class ChangeLanguageComponent implements OnInit {
 
     if (
       currentLang &&
-      [ChangeLanguages.PL, ChangeLanguages.RU, ChangeLanguages.EN].includes(
-        currentLang as ChangeLanguages
+      [CHANGE_LANGUAGES.PL, CHANGE_LANGUAGES.RU, CHANGE_LANGUAGES.EN].includes(
+        currentLang as CHANGE_LANGUAGES
       )
     ) {
       this.currentLanguage = this.languages.find(
@@ -51,7 +51,7 @@ export class ChangeLanguageComponent implements OnInit {
       )!;
     } else {
       this.currentLanguage = {
-        name: ChangeLanguages.EN,
+        name: CHANGE_LANGUAGES.EN,
         link: `${this.envService.getStaticStorageLink}/icons/en.png`
       };
     }
