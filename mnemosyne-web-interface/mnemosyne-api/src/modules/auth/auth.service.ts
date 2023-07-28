@@ -116,12 +116,16 @@ export class AuthService {
 
     const confirmationHash = crypto.randomBytes(20).toString('hex');
 
-    await this.emailService.sendVerificationEmail({
+    await this.emailService.sendRegistrationConfirmationEmail({
       payload: {
         confirmationHash,
         confirmationType: CONFIRMATION_TYPE.REGISTRATION,
         userId: createdUser.id,
         email: createdUser.email
+      },
+      userInfo: {
+        firstName: createdUser.firstName,
+        lastName: createdUser.lastName
       },
       trx
     });

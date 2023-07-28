@@ -6,13 +6,15 @@ import { PhoneService } from '@shared/phone.service';
 import { UsersModule } from '@modules/users.module';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { TimeService } from '@shared/time.service';
+import { EmailTemplatesService } from '@shared/email-templates.service';
 
 const providers = [
   ApiConfigService,
   EmailService,
   PhoneService,
   CryptographicService,
-  TimeService
+  TimeService,
+  EmailTemplatesService
 ];
 
 @Global()

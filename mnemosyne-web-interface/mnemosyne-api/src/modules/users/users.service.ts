@@ -1,12 +1,7 @@
 import { S3 } from 'aws-sdk';
 import * as crypto from 'crypto';
 import * as bcryptjs from 'bcryptjs';
-import {
-  forwardRef,
-  HttpException,
-  Inject,
-  Injectable
-} from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@models/user.model';
 import { CreateUserDto } from '@dto/create-user.dto';
@@ -201,12 +196,16 @@ export class UsersService {
 
     const forgotPasswordHash = crypto.randomBytes(20).toString('hex');
 
-    await this.emailService.sendVerificationEmail({
+    await this.emailService.sendForgotPasswordEmail({
       payload: {
         confirmationHash: forgotPasswordHash,
         confirmationType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
         userId: user.id,
         email: user.email
+      },
+      userInfo: {
+        firstName: user.firstName,
+        lastName: user.lastName
       },
       trx
     });
