@@ -141,4 +141,13 @@ export class ValidationService {
     }
     return phone === '';
   }
+
+  checkRecoveryKeys(recoveryKeys: Array<string>) {
+    let corruptedKey = false;
+
+    if (recoveryKeys.length !== 5) return false;
+    else recoveryKeys.forEach((key) => (corruptedKey = key.length !== 1024));
+
+    return !corruptedKey;
+  }
 }

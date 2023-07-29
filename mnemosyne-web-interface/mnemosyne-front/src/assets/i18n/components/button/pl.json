@@ -17,5 +17,7 @@
   "disableMfa": "Deaktywuj MFA",
   "disconnectPhone": "Deaktywuj telefon",
   "keysSaved": "Skopiowałem/pobrałem/zapisałem klucze odzyskiwania",
-  "downloadRecoveryKeys": "Pobierz klucze odzyskiwania"
+  "downloadRecoveryKeys": "Pobierz klucze odzyskiwania",
+  "uploadRecoveryKeys": "Prześlij klucze odzyskiwania",
+  "recoverAcc": "Odzyskaj konto"
 }

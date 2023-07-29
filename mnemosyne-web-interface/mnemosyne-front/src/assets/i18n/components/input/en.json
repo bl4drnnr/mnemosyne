@@ -46,5 +46,6 @@
   "providePassphrase": "Provide the passphrase",
   "passphraseDesc": "Passphrase can be anything, it will be used to encrypt recovery keys.",
   "passphraseError": "Min length of passphrase is 8 symbols, max is 128",
+  "providePassphraseDesc": "Provide the passphrase that was used while generating recovery keys (not the account password)",
   "recoveryKey": "Recovery key {{ i }}"
 }

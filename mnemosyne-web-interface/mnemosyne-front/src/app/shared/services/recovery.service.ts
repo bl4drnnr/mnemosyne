@@ -48,7 +48,7 @@ export class RecoveryService {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.RECOVERY,
-      action: RECOVERY_ENDPOINTS.LOGIN_GENERATE_RECOVERY_KEYS,
+      action: RECOVERY_ENDPOINTS.GENERATE_RECOVERY_KEYS,
       payload,
       accessToken
     });
@@ -60,7 +60,7 @@ export class RecoveryService {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.RECOVERY,
-      action: RECOVERY_ENDPOINTS.LOGIN_GENERATE_RECOVERY_KEYS,
+      action: RECOVERY_ENDPOINTS.RECOVER_ACCOUNT,
       payload
     });
   }

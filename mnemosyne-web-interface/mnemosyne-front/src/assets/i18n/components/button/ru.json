@@ -17,5 +17,7 @@
   "disableMfa": "Отключить MFA",
   "disconnectPhone": "Отключить мобильный телефон",
   "keysSaved": "Я скопировал/загрузил/сохранил ключи восстановления",
-  "downloadRecoveryKeys": "Скачать ключи восстановления"
+  "downloadRecoveryKeys": "Скачать ключи восстановления",
+  "uploadRecoveryKeys": "Загрузить ключи восстановления",
+  "recoverAcc": "Восстановить аккаунт"
 }

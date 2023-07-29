@@ -25,7 +25,8 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
         { scope: 'credentials/account-confirmation', alias: 'acc-conf' },
         { scope: 'credentials/forgot-password', alias: 'forg-pass' },
         { scope: 'credentials/registration', alias: 'reg' },
-        { scope: 'credentials/reset-password', alias: 'res-pass' }
+        { scope: 'credentials/reset-password', alias: 'res-pass' },
+        { scope: 'credentials/recover-account', alias: 'rec-acc' }
       ]
     }
   ]

@@ -195,7 +195,7 @@ export const registrationTemplate = ({
                                                                                                             <table class="wrapper" role="module" data-type="image" border="0" cellpadding="0" cellspacing="0" width="100%" style="table-layout: fixed;" data-muid="a169501c-69eb-4f62-ad93-ac0150abdf03">
                                                                                                                 <tbody>
                                                                                                                     <tr>
-                                                                                                                        <td style="font-size:18px; line-height:10px; padding:0px 0px 0px 0px;" valign="top" align="left">
+                                                                                                                        <td style="font-size:18px; line-height:10px; padding:0px 0px 0px 0px;color:#000" valign="top" align="left">
                                                                                                                            Mnemosyne
                                                                                                                         </td>
                                                                                                                     </tr>
@@ -278,7 +278,7 @@ export const registrationTemplate = ({
                                                                             </table>
                                                                             <div data-role="module-unsubscribe" class="module" role="module" data-type="unsubscribe" style="color:#444444; font-size:12px; line-height:20px; padding:16px 16px 16px 16px; text-align:Center;" data-muid="4e838cf3-9892-4a6d-94d6-170e474d21e5">
                                                                                 <div class="Unsubscribe--addressLine">
-                                                                                    <p class="Unsubscribe--senderName" style="font-size:12px; line-height:20px;">Mnemosyne</p>
+                                                                                    <p class="Unsubscribe--senderName" style="font-size:12px; line-height:20px;color: #000">Mnemosyne</p>
 <!--                                                                                    <p style="font-size:12px; line-height:20px;"><span class="Unsubscribe&#45;&#45;senderAddress">{{Sender_Address}}</span>, <span class="Unsubscribe&#45;&#45;senderCity">{{Sender_City}}</span>, <span class="Unsubscribe&#45;&#45;senderState">{{Sender_State}}</span> <span class="Unsubscribe&#45;&#45;senderZip">{{Sender_Zip}}</span></p>-->
                                                                                 </div>
                                                                             </div>

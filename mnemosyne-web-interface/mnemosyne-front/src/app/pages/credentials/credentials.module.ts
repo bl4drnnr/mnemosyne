@@ -8,13 +8,15 @@ import { AccountConfirmationComponent } from './account-confirmation/account-con
 import { LayoutsModule } from '@layouts/layouts.module';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { TranslocoModule } from '@ngneat/transloco';
+import { RecoverAccountComponent } from './recover-account/recover-account.component';
 
 const components = [
   ForgotPasswordComponent,
   LoginComponent,
   RegistrationComponent,
   AccountConfirmationComponent,
-  ResetPasswordComponent
+  ResetPasswordComponent,
+  RecoverAccountComponent
 ];
 
 @NgModule({

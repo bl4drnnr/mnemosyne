@@ -46,5 +46,6 @@
   "providePassphrase": "Podaj hasło",
   "passphraseDesc": "Hasło może być dowolne, zostanie użyte do zaszyfrowania kluczy odzyskiwania.",
   "passphraseError": "Minimalna długość hasła to 8 znaków, maksymalna to 128",
+  "providePassphraseDesc": "Podaj hasło użyte podczas generowania kluczy odzyskiwania (nie hasło do konta)",
   "recoveryKey": "Klucz odzyskiwania {{ i }}"
 }

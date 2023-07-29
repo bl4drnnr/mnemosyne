@@ -45,5 +45,6 @@
     "wrong-phone-code-format": "Неверный формат телефонного кода",
     "wrong-mfa-code-format": "Неверный формат кода MFA"
   },
-  "wrong-timeframe": "Неверный таймфрейм"
+  "wrong-timeframe": "Неверный таймфрейм",
+  "invalid-recovery-keys": "Недействительные ключи восстановления"
 }
