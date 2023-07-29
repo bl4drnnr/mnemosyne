@@ -50,12 +50,11 @@
   }
 }
 
-.description {
-  letter-spacing: 0;
-  color: $black;
-  width: 85%;
-  text-align: center;
-  margin-bottom: 25px;
+.modal-p {
+  margin: 0 25px;
+  font-size: 14px;
+  opacity: .75;
+  color: $color-black;
 }
 
 .child-wrapper {

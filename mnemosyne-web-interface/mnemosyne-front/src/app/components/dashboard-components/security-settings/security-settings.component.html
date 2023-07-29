@@ -58,10 +58,12 @@
       [showModal]="disable2faModal"
       (closeModal)="disable2faModal = false"
     >
-      <basic-input-mfa
-        [onWhite]="true"
-        (mfaCode)="disableTwoFaCode = $event"
-      />
+      <div class="input-mfa-wrapper">
+        <basic-input-mfa
+          [onWhite]="true"
+          (mfaCode)="disableTwoFaCode = $event"
+        />
+      </div>
       <div class="last-button">
         <basic-button
           [danger]="true"
@@ -188,6 +190,35 @@
       [showModal]="deleteAccountModal"
       (closeModal)="deleteAccountModal = false"
     ></basic-modal>
-  </div>
 
+    <h3>{{ t('settings.recoveryKeys.title') }}</h3>
+    <ul class="rules-list">
+      <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys1') }}</li>
+      <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys2') }}</li>
+      <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys3') }} <b>{{ t('settings.recoveryKeys.recoveryKeys4') }}</b></li>
+    </ul>
+
+    <div class="dived-line no-bottom"></div>
+
+    <security-setting-section
+      [showSection]="true"
+      [title]="t('settings.recoveryKeys.sectionTitle')"
+      [description]="t('settings.recoveryKeys.sectionDesc')"
+      [buttonLabel]="t('settings.recoveryKeys.sectionTitle')"
+      (onButtonClick)="generateRecoveryKeysModal = true"
+    />
+
+    <basic-modal
+      [header]="t('settings.recoveryKeys.sectionTitle')"
+      [showModal]="generateRecoveryKeysModal"
+      (closeModal)="generateRecoveryKeysModal = false"
+    >
+      <page-recovery-keys
+        [hideHeader]="true"
+        [onWhite]="true"
+        (confirmRecoveryKeysSetup)="confirmRecoveryKeysSetup()"
+      />
+    </basic-modal>
+
+  </div>
 </ng-container>

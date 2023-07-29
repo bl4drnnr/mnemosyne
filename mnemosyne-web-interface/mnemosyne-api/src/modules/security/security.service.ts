@@ -448,7 +448,7 @@ export class SecurityService {
       seconds: 300
     });
 
-    if (phoneCode === providedCode && isWithinFiveMinutes)
+    if (phoneCode === providedCode && !isWithinFiveMinutes)
       throw new SmsExpiredException();
 
     await this.userService.updateUser({

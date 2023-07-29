@@ -7,5 +7,9 @@
     color: var(--text-color);
     font-size: 14px;
     padding-bottom: 10px;
+
+    &.on-white {
+      color: $color-black;
+    }
   }
 }

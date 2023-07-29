@@ -10,17 +10,18 @@ import { RecoveryKeysComponent } from './recovery-keys/recovery-keys.component';
 const components = [
   AltRegistrationComponent,
   CreatePasswordComponent,
-  MfaComponent
+  MfaComponent,
+  RecoveryKeysComponent
 ];
 
 @NgModule({
-  declarations: [...components, RecoveryKeysComponent],
+  declarations: [...components],
   imports: [
     CommonModule,
     NgOptimizedImage,
     BasicComponentsModule,
     TranslocoModule
   ],
-  exports: [...components, RecoveryKeysComponent]
+  exports: [...components]
 })
 export class PagesComponentsModule {}

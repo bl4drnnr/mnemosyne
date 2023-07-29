@@ -125,7 +125,7 @@ export class SecurityController {
 
   @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe)
-  @Get('send-sms-code')
+  @Post('send-sms-code')
   sendSmsCode(
     @Body() payload: RegistrationSendSmsCodeDto,
     @UserId() userId: string,

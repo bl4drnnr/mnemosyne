@@ -48,7 +48,7 @@ export class PhoneService {
   ): Observable<{ message: SendSmsCodeResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
+      method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.SEND_SMS_CODE,
       payload,

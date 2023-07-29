@@ -1,7 +1,7 @@
-import { IsMobilePhone, IsString } from 'class-validator';
+import { IsString, Matches } from 'class-validator';
 
 export class RegistrationSendSmsCodeDto {
   @IsString({ message: 'wrong-phone-format' })
-  @IsMobilePhone()
+  @Matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, { message: 'wrong-phone-format' })
   readonly phone: string;
 }

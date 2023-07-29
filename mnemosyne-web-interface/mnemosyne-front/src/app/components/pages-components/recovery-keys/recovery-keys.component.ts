@@ -15,6 +15,9 @@ export class RecoveryKeysComponent {
   @Input() hash: string;
   @Input() email: string;
   @Input() password: string;
+  @Input() onWhite = false;
+  @Input() hideHeader = false;
+
   @Output() confirmRecoveryKeysSetup = new EventEmitter<void>();
 
   passphrase: string;
@@ -36,6 +39,9 @@ export class RecoveryKeysComponent {
 
   keysCopied() {
     this.confirmRecoveryKeysSetup.emit();
+    this.passphrase = '';
+    this.recoveryKeysGenerated = false;
+    this.recoveryKeys = [];
   }
 
   downloadRecoveryKeys() {
@@ -43,6 +49,11 @@ export class RecoveryKeysComponent {
     const fileName = 'Mnemosyne - Recovery Keys.txt';
     const blob = new Blob([recoveryKeysStr], { type: 'text/plain' });
     saveAs(blob, fileName);
+  }
+
+  keyAreGenerated(recoveryKeys: Array<string>) {
+    this.recoveryKeys = recoveryKeys;
+    this.recoveryKeysGenerated = true;
   }
 
   generateRecoveryKeys() {
@@ -55,10 +66,7 @@ export class RecoveryKeysComponent {
           passphrase: this.passphrase
         })
         .subscribe({
-          next: ({ recoveryKeys }) => {
-            this.recoveryKeys = recoveryKeys;
-            this.recoveryKeysGenerated = true;
-          }
+          next: ({ recoveryKeys }) => this.keyAreGenerated(recoveryKeys)
         });
     } else if (this.email && this.password) {
       this.recoveryService
@@ -68,10 +76,15 @@ export class RecoveryKeysComponent {
           passphrase: this.passphrase
         })
         .subscribe({
-          next: ({ recoveryKeys }) => {
-            this.recoveryKeys = recoveryKeys;
-            this.recoveryKeysGenerated = true;
-          }
+          next: ({ recoveryKeys }) => this.keyAreGenerated(recoveryKeys)
+        });
+    } else {
+      this.recoveryService
+        .generateRecoveryKeys({
+          passphrase: this.passphrase
+        })
+        .subscribe({
+          next: ({ recoveryKeys }) => this.keyAreGenerated(recoveryKeys)
         });
     }
   }

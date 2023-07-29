@@ -44,7 +44,13 @@ export class ApiConfigService {
   }
 
   get allowedEndpoints() {
-    return this.getArray('ALLOWED_ENDPOINTS');
+    return {
+      authEndpoints: this.getArray('ALLOWED_ENDPOINTS_AUTH'),
+      hashEndpoints: this.getArray('ALLOWED_ENDPOINTS_HASH'),
+      recoveryEndpoints: this.getArray('ALLOWED_ENDPOINTS_RECOVERY'),
+      securityEndpoints: this.getArray('ALLOWED_ENDPOINTS_SECURITY'),
+      usersEndpoints: this.getArray('ALLOWED_ENDPOINTS_USERS')
+    };
   }
 
   get originApiUrl() {

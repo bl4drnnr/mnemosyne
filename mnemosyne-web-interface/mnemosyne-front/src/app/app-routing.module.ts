@@ -14,48 +14,39 @@ import { RecoverAccountComponent } from '@pages/recover-account/recover-account.
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent,
-    title: 'Mnemosyne | Login'
+    component: LoginComponent
   },
   {
     path: 'registration',
-    component: RegistrationComponent,
-    title: 'Mnemosyne | Registration'
+    component: RegistrationComponent
   },
   {
     path: 'forgot-password',
-    component: ForgotPasswordComponent,
-    title: 'Mnemosyne | Forgot Password'
+    component: ForgotPasswordComponent
   },
   {
     path: 'account-confirmation/:hash',
-    component: AccountConfirmationComponent,
-    title: 'Mnemosyne | Account Confirmation'
+    component: AccountConfirmationComponent
   },
   {
     path: 'terms-and-conditions',
-    component: TermsAndConditionsComponent,
-    title: 'Mnemosyne | T&C'
+    component: TermsAndConditionsComponent
   },
   {
     path: 'account/dashboard',
-    component: DashboardComponent,
-    title: 'Mnemosyne | Dashboard'
+    component: DashboardComponent
   },
   {
     path: 'account/settings',
-    component: SettingsComponent,
-    title: 'Mnemosyne | Settings'
+    component: SettingsComponent
   },
   {
     path: 'reset-password/:hash',
-    component: ResetPasswordComponent,
-    title: 'Mnemosyne | Reset Password'
+    component: ResetPasswordComponent
   },
   {
     path: 'recover-account',
-    component: RecoverAccountComponent,
-    title: 'Mnemosyne | Recover Account'
+    component: RecoverAccountComponent
   },
   {
     path: 'account',
@@ -63,8 +54,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: HomeComponent,
-    title: 'Mnemosyne | Home'
+    component: HomeComponent
   },
   {
     path: 'home',

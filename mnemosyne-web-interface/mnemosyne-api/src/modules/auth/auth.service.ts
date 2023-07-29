@@ -206,7 +206,7 @@ export class AuthService {
         seconds: 300
       });
 
-      if (userPhoneCode === phoneCode && isWithinFiveMinutes)
+      if (userPhoneCode === phoneCode && !isWithinFiveMinutes)
         throw new SmsExpiredException();
     }
 

@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserSecurityResponse } from '@responses/user-security.response';
 import { MfaService } from '@services/mfa.service';
-import { Router } from '@angular/router';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { PhoneService } from '@services/phone.service';
+import { RecoveryService } from '@services/recovery.service';
+import { GlobalMessageService } from '@shared/global-message.service';
+import { TranslocoService } from '@ngneat/transloco';
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -38,10 +40,15 @@ export class SecuritySettingsComponent {
   changePasswordModal: boolean;
   deleteAccountModal: boolean;
 
+  generateRecoveryKeysModal: boolean;
+
   constructor(
     private readonly mfaService: MfaService,
     private readonly phoneService: PhoneService,
-    private readonly refreshTokensService: RefreshTokensService
+    private readonly recoveryService: RecoveryService,
+    private readonly translocoService: TranslocoService,
+    private readonly refreshTokensService: RefreshTokensService,
+    private readonly globalMessageService: GlobalMessageService
   ) {}
 
   async generateTwoFaQrCode() {
@@ -95,13 +102,9 @@ export class SecuritySettingsComponent {
   async sendSmsCode(phone: string) {
     this.phone = phone;
 
-    this.phoneService
-      .sendSmsCode({
-        phone: this.phone
-      })
-      .subscribe({
-        next: () => (this.phoneCodeSent = true)
-      });
+    this.phoneService.sendSmsCode({ phone: this.phone }).subscribe({
+      next: () => (this.phoneCodeSent = true)
+    });
   }
 
   verifyPhoneDisable() {
@@ -137,5 +140,12 @@ export class SecuritySettingsComponent {
           this.userSettingsReInit.emit();
         }
       });
+  }
+
+  confirmRecoveryKeysSetup() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate('successSetup', {}, 'settings'),
+      isError: false
+    });
   }
 }
