@@ -2,7 +2,7 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Get, Patch,
   Post,
   Query,
   UseGuards,
@@ -21,6 +21,8 @@ import { UserId } from '@decorators/user-id.decorator';
 import { DeleteAccountDto } from '@dto/delete-account.dto';
 import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
+import {ChangePasswordDto} from "@dto/change-password.dto";
+import {VerifySmsCode} from "@dto/verify-sms-code";
 
 @Controller('security')
 export class SecurityController {
@@ -134,6 +136,15 @@ export class SecurityController {
     return this.securityService.sendSmsCode({ payload, userId, trx });
   }
 
+  @UseGuards(AuthGuard)
+  @Get('get-sms-code')
+  getSmsCode(
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.getSmsCode({ userId, trx });
+  }
+
   @UsePipes(ValidationPipe)
   @Post('registration-verify-mobile-phone')
   registrationVerifyMobilePhone(
@@ -190,6 +201,21 @@ export class SecurityController {
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.deleteUserAccount({
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @UseGuards(AuthGuard)
+  @UsePipes(ValidationPipe)
+  @Patch('change-password')
+  changePassword(
+    @UserId() userId: string,
+    @Body() payload: ChangePasswordDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.changePassword({
       userId,
       payload,
       trx

@@ -19,5 +19,6 @@
   "keysSaved": "I have copied/downloaded/saved recovery keys",
   "downloadRecoveryKeys": "Download recovery keys",
   "uploadRecoveryKeys": "Upload recovery keys",
-  "recoverAcc": "Recover account"
+  "recoverAcc": "Recover account",
+  "changePassword": "Change password"
 }

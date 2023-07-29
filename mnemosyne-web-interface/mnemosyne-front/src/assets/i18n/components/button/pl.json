@@ -19,5 +19,6 @@
   "keysSaved": "Skopiowałem/pobrałem/zapisałem klucze odzyskiwania",
   "downloadRecoveryKeys": "Pobierz klucze odzyskiwania",
   "uploadRecoveryKeys": "Prześlij klucze odzyskiwania",
-  "recoverAcc": "Odzyskaj konto"
+  "recoverAcc": "Odzyskaj konto",
+  "changePassword": "Zmień hasło"
 }

@@ -7,9 +7,11 @@ import { TranslocoService } from '@ngneat/transloco';
   templateUrl: './phone.component.html'
 })
 export class PhoneComponent {
+  @Input() phoneInput: string | null;
+  @Input() readOnly = false;
   @Input() phoneCodeSent: boolean;
   @Input() onWhite = false;
-  @Output() sendSmsCode = new EventEmitter<string>();
+  @Output() sendSmsCode = new EventEmitter<string | null>();
   @Output() runningCountdown = new EventEmitter<boolean>();
 
   phone: string;
@@ -24,12 +26,13 @@ export class PhoneComponent {
   ) {}
 
   sendSms() {
-    this.sendSmsCode.emit(this.phone);
+    this.sendSmsCode.emit(this.readOnly ? null : this.phone);
     this.startCountdown();
   }
 
   isMobilePhoneCorrect(phone: string) {
     this.phone = phone;
+
     if (phone.length)
       this.isPhoneCorrect = this.validationService.checkPhoneFormat(phone);
   }

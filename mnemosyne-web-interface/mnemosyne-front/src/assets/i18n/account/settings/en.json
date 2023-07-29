@@ -31,7 +31,8 @@
   },
   "password": {
     "changePassword": "Change password",
-    "changePasswordDesc": "Change your password by providing the current password and the new password. Consider in mind that after successful password change you will be logged out from your account."
+    "changePasswordDesc": "Change your password by providing the current password and the new password. Consider in mind that after successful password change you will be logged out from your account.",
+    "passwordChanged": "Password has been successfully changed"
   },
   "email": {
     "changeEmail": "Change email",

@@ -65,7 +65,9 @@ export class MfaComponent {
     }
   }
 
-  async sendSmsCode(phone: string) {
+  async sendSmsCode(phone: string | null) {
+    if (!phone) return;
+
     this.phone = phone;
 
     if (this.hash) {

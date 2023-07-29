@@ -190,6 +190,7 @@ export class AuthService {
 
     if (!mfaCode && userTwoFaToken)
       return new MfaRequiredDto('two-fa-required');
+
     if (!phoneCode && phone) {
       await this.phoneService.verifyAndResendSmsCode({
         userId,

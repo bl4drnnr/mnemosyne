@@ -12,5 +12,7 @@ export enum SECURITY_ENDPOINTS {
   LOGIN_SEND_SMS_CODE = 'login-send-sms-code',
   SEND_SMS_CODE = 'send-sms-code',
   VERIFY_MOBILE_PHONE = 'verify-mobile-phone',
-  DISABLE_PHONE = 'disable-phone'
+  DISABLE_PHONE = 'disable-phone',
+  CHANGE_PASSWORD = 'change-password',
+  GET_SMS_CODE = 'get-sms-code'
 }

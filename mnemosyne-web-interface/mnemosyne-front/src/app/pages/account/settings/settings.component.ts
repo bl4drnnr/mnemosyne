@@ -74,6 +74,17 @@ export class SettingsComponent {
     });
   }
 
+  passwordChanged() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate(
+        'password.passwordChanged',
+        {},
+        'settings'
+      ),
+      isError: false
+    })
+  }
+
   getUserSecuritySettings() {
     this.usersService.getUserSecuritySettings().subscribe({
       next: (userSecurity) => (this.userSecurity = userSecurity)

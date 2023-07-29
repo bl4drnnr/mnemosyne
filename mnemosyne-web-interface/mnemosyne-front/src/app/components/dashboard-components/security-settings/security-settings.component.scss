@@ -36,3 +36,13 @@
   border-top: 1px solid $color-lightgray-third;
 }
 
+.paragraph {
+  font-size: 14px;
+  margin-top: 20px;
+  opacity: .75;
+
+  &.on-white {
+    color: $color-black;
+  }
+}
+

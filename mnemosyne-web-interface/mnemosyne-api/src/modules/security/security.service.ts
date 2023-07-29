@@ -27,11 +27,17 @@ import { WrongProvidedPhoneException } from '@exceptions/wrong-provided-phone.ex
 import { WrongMfaTokenException } from '@exceptions/wrong-mfa-token.exception';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { TimeService } from '@shared/time.service';
+import {ChangePasswordDto} from "@dto/change-password.dto";
+import {PasswordChangedDto} from "@dto/password-changed.dto";
+import {PreviousPasswordException} from "@exceptions/previous-password.exception";
+import {ApiConfigService} from "@shared/config.service";
+import {VerifySmsCode} from "@dto/verify-sms-code";
 
 @Injectable()
 export class SecurityService {
   constructor(
     private readonly confirmationHashService: ConfirmationHashService,
+    private readonly configService: ApiConfigService,
     private readonly userService: UsersService,
     private readonly phoneService: PhoneService,
     private readonly authService: AuthService,
@@ -272,6 +278,26 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
+  async getSmsCode({
+    userId, trx
+                   }: {
+    userId: string; trx?: Transaction;
+  }) {
+    const user = await this.userService.getUserById({
+      id: userId, trx
+    });
+
+    if (!user.userSettings.phone) throw new PhoneNotSetException();
+
+    await this.phoneService.verifyAndResendSmsCode({
+      userId,
+      phone: user.userSettings.phone,
+      trx
+    });
+
+    return new SmsCodeSentDto();
+  }
+
   async registrationVerifyMobilePhone({
     payload,
     confirmationHash,
@@ -343,6 +369,33 @@ export class SecurityService {
     } catch (e: any) {
       throw new HttpException(e.response.message, e.status);
     }
+  }
+
+  private async verifySms({
+                        payload,
+                        userId,
+                        trx
+                      }: {
+    payload: VerifySmsCode;
+    userId: string;
+    trx?: Transaction;
+  }) {
+    const { userSettings } = await this.userService.getUserById({
+      id: userId,
+      trx
+    });
+    const phoneCode = userSettings.phoneCode;
+    const codeSentAt = userSettings.codeSentAt;
+
+    if (phoneCode !== payload.phoneCode) throw new WrongCodeException();
+
+    const isWithinFiveMinutes = this.timeService.isWithinTimeframe({
+      time: codeSentAt,
+      seconds: 300
+    });
+
+    if (phoneCode === payload.phoneCode && !isWithinFiveMinutes)
+      throw new SmsExpiredException();
   }
 
   async disablePhone({
@@ -423,6 +476,61 @@ export class SecurityService {
     await this.userService.deleteUserAccount({ userId, trx });
 
     return new AccountDeletedDto();
+  }
+
+  async changePassword({
+                         userId,
+                         payload,
+                         trx
+                       }: {
+    userId: string;
+    payload: ChangePasswordDto;
+    trx?: Transaction;
+  }) {
+    const user = await this.userService.getUserById({
+      id: userId,
+      trx
+    });
+
+    const passwordEquals = await bcryptjs.compare(
+      payload.currentPassword,
+      user.password
+    );
+
+    if (!passwordEquals) throw new WrongCredentialsException();
+
+    const samePassword = await bcryptjs.compare(
+      payload.newPassword,
+      user.password
+    );
+
+    if (samePassword) throw new PreviousPasswordException();
+
+    try {
+      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
+        mfaCode: payload.mfaCode,
+        phoneCode: payload.phoneCode,
+        userSettings: user.userSettings,
+        userId: user.id
+      });
+
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.message, e.status);
+    }
+
+    const hashedPassword = await bcryptjs.hash(
+      payload.newPassword,
+      this.configService.hashPasswordRounds
+    );
+
+    await this.userService.updateUser({
+      payload: { password: hashedPassword },
+      userId,
+      trx
+    });
+
+    return new PasswordChangedDto();
   }
 
   private async verifySmsCode({

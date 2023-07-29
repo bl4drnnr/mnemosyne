@@ -31,7 +31,8 @@
   },
   "password": {
     "changePassword": "Zmień hasło",
-    "changePasswordDesc": "Zmień swoje hasło, podając aktualne hasło i nowe hasło. Pamiętaj, że po pomyślnej zmianie hasła zostaniesz wylogowany ze swojego konta."
+    "changePasswordDesc": "Zmień swoje hasło, podając aktualne hasło i nowe hasło. Pamiętaj, że po pomyślnej zmianie hasła zostaniesz wylogowany ze swojego konta.",
+    "passwordChanged": "Hasło zostało pomyślnie zmienione"
   },
   "email": {
     "changeEmail": "Zmień email",
