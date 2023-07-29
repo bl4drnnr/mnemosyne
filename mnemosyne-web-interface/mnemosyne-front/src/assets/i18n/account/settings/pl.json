@@ -17,17 +17,22 @@
     "setup2fa": "Ustaw 2FA",
     "disable2fa": "Wyłącz 2FA",
     "setup2faDesc": "Zabezpiecz swoje konto za pomocą aplikacji mobilnej Two-Factor Authentication (2FA), która wygeneruje jednorazowy 6-cyfrowy kod do dodatkowej weryfikacji.",
-    "disable2faDesc": "Wyłączenie 2FA zwiększy niepewność twojego konta. Zdecydowanie zalecamy zachowanie go, chyba że zaakceptujesz ryzyko. Ponadto, zgodnie z zasadami, jesteś zobowiązany do posiadania co najmniej jednego sposobu MFA."
+    "disable2faDesc": "Wyłączenie 2FA zwiększy niepewność twojego konta. Zdecydowanie zalecamy zachowanie go, chyba że zaakceptujesz ryzyko. Ponadto, zgodnie z zasadami, jesteś zobowiązany do posiadania co najmniej jednego sposobu MFA.",
+    "mfaSetUp": "MFA zostało pomyślnie skonfigurowane!",
+    "mfaDisabled": "MFA zostało pomyślnie wyłączone."
   },
   "phone": {
     "setupPhone": "Skonfiguruj telefon komórkowy",
     "disablePhone": "Wyłącz telefon komórkowy",
     "setupPhoneDesc": "Zabezpiecz swoje konto jednorazowym kodem, który otrzymasz za każdym razem, gdy logujesz się na swoje konto. Alternatywny sposób uwierzytelniania dwuetapowego. Zalecane użycie obu.",
-    "disablePhoneDesc": "Odłączenie telefonu od konta zwiększy poziom niepewności twojego konta. Nie zalecamy tego ze względów bezpieczeństwa. Pamiętaj, że zgodnie z zasadami musisz mieć co najmniej jeden sposób MFA."
+    "disablePhoneDesc": "Odłączenie telefonu od konta zwiększy poziom niepewności twojego konta. Nie zalecamy tego ze względów bezpieczeństwa. Pamiętaj, że zgodnie z zasadami musisz mieć co najmniej jeden sposób MFA.",
+    "phoneSetUp": "Telefon komórkowy został pomyślnie skonfigurowany!",
+    "phoneDisabled": "Telefon komórkowy został pomyślnie wyłączony."
   },
   "password": {
     "changePassword": "Zmień hasło",
-    "changePasswordDesc": "Zmień swoje hasło, podając aktualne hasło i nowe hasło. Pamiętaj, że po pomyślnej zmianie hasła zostaniesz wylogowany ze swojego konta."
+    "changePasswordDesc": "Zmień swoje hasło, podając aktualne hasło i nowe hasło. Pamiętaj, że po pomyślnej zmianie hasła zostaniesz wylogowany ze swojego konta.",
+    "passwordChanged": "Hasło zostało pomyślnie zmienione"
   },
   "email": {
     "changeEmail": "Zmień email",
@@ -38,8 +43,14 @@
     "deleteAcc": "Usuń konto",
     "deleteAccDesc": "Nie ma odwrotu. Dane zostaną utracone bez możliwości ich odzyskania. Zgodnie z polityką bezpieczeństwa i prywatności Mnemosyne oraz prawem wszystkie dane zostaną natychmiast usunięte z systemów."
   },
-  "mfaSetUp": "MFA zostało pomyślnie skonfigurowane!",
-  "mfaDisabled": "MFA zostało pomyślnie wyłączone.",
-  "phoneSetUp": "Telefon komórkowy został pomyślnie skonfigurowany!",
-  "phoneDisabled": "Telefon komórkowy został pomyślnie wyłączony."
+  "recoveryKeys": {
+    "title": "Zarządzaj kluczami odzyskiwania ze swojego konta",
+    "recoveryKeys1": "Klucze odzyskiwania służą do resetowania zarówno MFA, jak i numeru telefonu komórkowego, jeśli nie masz do nich dostępu, a chciałbyś przywrócić dostęp do swojego konta. Po pierwszym zalogowaniu po resecie będziesz mieć skonfigurować zarówno MFA/telefon, jak i nowy zestaw kluczy odzyskiwania.",
+    "recoveryKeys2": "Klucze odzyskiwania są generowane do jednorazowego użytku. Po ich użyciu będziesz musiał skonfigurować nowy zestaw.",
+    "recoveryKeys3": "Tutaj możesz ponownie wygenerować i pobrać klucze odzyskiwania. Możesz je zobaczyć i pobrać tylko wtedy, gdy zostaną wygenerowane.",
+    "recoveryKeys4": "Po zamknięciu okna nie będziesz ich więcej widzieć.",
+    "sectionTitle": "Generuj klucze odzyskiwania",
+    "sectionDesc": "Wygenerowane klucze są używane, gdy nie masz dostępu do MFA/telefonu komórkowego i chcesz przywrócić dostęp do konta.",
+    "successSetup": "Klucze odzyskiwania zostały pomyślnie skonfigurowane"
+  }
 }

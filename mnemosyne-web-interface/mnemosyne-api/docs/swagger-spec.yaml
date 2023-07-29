@@ -274,7 +274,7 @@ paths:
         "201":
           description: ""
   /api/security/send-sms-code:
-    get:
+    post:
       operationId: SecurityController_sendSmsCode
       parameters: []
       requestBody:
@@ -283,6 +283,13 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/RegistrationSendSmsCodeDto"
+      responses:
+        "201":
+          description: ""
+  /api/security/get-sms-code:
+    get:
+      operationId: SecurityController_getSmsCode
+      parameters: []
       responses:
         "200":
           description: ""
@@ -325,6 +332,19 @@ paths:
       responses:
         "201":
           description: ""
+  /api/security/verify-sms-code:
+    post:
+      operationId: SecurityController_verifySmsCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VerifySmsCode"
+      responses:
+        "201":
+          description: ""
   /api/security/disable-phone:
     post:
       operationId: SecurityController_disablePhone
@@ -348,6 +368,19 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/DeleteAccountDto"
+      responses:
+        "200":
+          description: ""
+  /api/security/change-password:
+    patch:
+      operationId: SecurityController_changePassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordDto"
       responses:
         "200":
           description: ""
@@ -457,7 +490,13 @@ components:
     VerifyMobilePhoneDto:
       type: object
       properties: {}
+    VerifySmsCode:
+      type: object
+      properties: {}
     DeleteAccountDto:
+      type: object
+      properties: {}
+    ChangePasswordDto:
       type: object
       properties: {}
     GenerateRecoveryKeysDto:

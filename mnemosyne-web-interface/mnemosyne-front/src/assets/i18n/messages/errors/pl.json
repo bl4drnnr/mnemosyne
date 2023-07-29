@@ -45,5 +45,6 @@
     "wrong-phone-code-format": "Nieprawidłowy format kodu telefonu",
     "wrong-mfa-code-format": "Niewłaściwy format kodu MFA"
   },
-  "wrong-timeframe": "Niewłaściwy przedział czasowy"
+  "wrong-timeframe": "Niewłaściwy przedział czasowy",
+  "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania"
 }

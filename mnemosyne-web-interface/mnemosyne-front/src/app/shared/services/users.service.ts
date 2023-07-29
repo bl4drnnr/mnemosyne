@@ -1,17 +1,20 @@
-import { ApiService } from '@shared/api.service';
-import { Injectable } from '@angular/core';
-import { ALLOWED_METHODS } from '@interfaces/methods.type';
-import { CONTROLLERS } from '@interfaces/controllers.type';
-import { USERS_ENDPOINTS } from '@interfaces/users.type';
-import { UploadUserPhotoPayload } from '@payloads/upload-user-photo.payload';
-import { Observable } from 'rxjs';
-import { UserInfoResponse } from '@responses/user-info.response';
-import { PhotoUploadedResponse } from '@responses/photo-uploaded.response';
-import { UpdateUserInfoPayload } from '@payloads/update-user-info.payload';
-import { UserUpdatedResponse } from '@responses/user-updated.response';
-import { UserSecurityResponse } from '@responses/user-security.response';
-import { DeleteAccountPayload } from '@payloads/delete-account.payload';
-import { AccountDeletedResponse } from '@responses/account-deleted.response';
+import {ApiService} from '@shared/api.service';
+import {Injectable} from '@angular/core';
+import {ALLOWED_METHODS} from '@interfaces/methods.type';
+import {CONTROLLERS} from '@interfaces/controllers.type';
+import {USERS_ENDPOINTS} from '@interfaces/users.type';
+import {UploadUserPhotoPayload} from '@payloads/upload-user-photo.payload';
+import {Observable} from 'rxjs';
+import {UserInfoResponse} from '@responses/user-info.response';
+import {PhotoUploadedResponse} from '@responses/photo-uploaded.response';
+import {UpdateUserInfoPayload} from '@payloads/update-user-info.payload';
+import {UserUpdatedResponse} from '@responses/user-updated.response';
+import {UserSecurityResponse} from '@responses/user-security.response';
+import {DeleteAccountPayload} from '@payloads/delete-account.payload';
+import {AccountDeletedResponse} from '@responses/account-deleted.response';
+import {SECURITY_ENDPOINTS} from "@interfaces/security.type";
+import {ChangePasswordPayload} from "@payloads/change-password.payload";
+import {PasswordChangedResponse} from "@responses/password-changed.response";
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +78,19 @@ export class UsersService {
       method: ALLOWED_METHODS.DELETE,
       controller: CONTROLLERS.USERS,
       action: USERS_ENDPOINTS.DELETE_ACCOUNT,
+      payload,
+      accessToken
+    });
+  }
+
+  changePassword(
+    payload: ChangePasswordPayload
+  ): Observable<{ message: PasswordChangedResponse }> {
+    const accessToken = localStorage.getItem('_at')!;
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS.PATCH,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.CHANGE_PASSWORD,
       payload,
       accessToken
     });

@@ -39,10 +39,10 @@ export class LoginComponent {
   isRecoveryKeysNotSet = true;
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private smsService: PhoneService,
-    private validationService: ValidationService,
-    private router: Router
+    private readonly authenticationService: AuthenticationService,
+    private readonly validationService: ValidationService,
+    private readonly smsService: PhoneService,
+    private readonly router: Router
   ) {}
 
   incorrectCredentials() {

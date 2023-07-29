@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges
+} from '@angular/core';
 import { EnvService } from '@shared/env.service';
 
 @Component({
@@ -6,7 +13,7 @@ import { EnvService } from '@shared/env.service';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent {
+export class ModalComponent implements OnChanges {
   @Input() header: string;
   @Input() description: string;
   @Input() showModal: boolean;
@@ -16,4 +23,11 @@ export class ModalComponent {
   constructor(private readonly envService: EnvService) {}
 
   staticStorageLink = this.envService.getStaticStorageLink;
+
+  ngOnChanges(changes: SimpleChanges) {
+    document.body.style.overflow =
+      changes['showModal'] && changes['showModal'].currentValue === true
+        ? 'hidden'
+        : 'auto';
+  }
 }

@@ -5,7 +5,7 @@
 }
 
 .btn {
-  height: 36px;
+  min-height: 36px;
   width: 100%;
   border-radius: 5px;
   cursor: pointer;
@@ -92,10 +92,9 @@
 }
 
 .button-label {
-  margin: 0;
+  margin: 5px;
   font-size: 14px;
   font-weight: 400;
-  padding: 0 5px;
 
   &.on-white {
     color: $color-black;

@@ -1,8 +1,8 @@
-import { IsMobilePhone, IsOptional, IsString, Matches } from 'class-validator';
+import { IsOptional, IsString, Matches } from 'class-validator';
 
 export class VerifyMobilePhoneDto {
   @IsString({ message: 'wrong-phone-format' })
-  @IsMobilePhone()
+  @Matches(/^(\+\d{1,3}[- ]?)?\d{10}$/, { message: 'wrong-phone-format' })
   readonly phone: string;
 
   @IsString({ message: 'mfa-code-should-be-6-digit-code' })

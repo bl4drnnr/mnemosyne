@@ -15,6 +15,8 @@
   "provideLastName": "Podaj swoje nazwisko",
   "passRulesNotFollowed": "Zły format hasła. Nie wszystkie zasady są przestrzegane!",
   "wrongPassFormatOrMiss": "Niewłaściwy format hasła lub niezgodność hasła",
+  "currentPass": "Aktualne hasło",
+  "provideCurrentPass": "Podaj aktualne hasło",
   "passwordRules": {
     "eightChars": "Długość hasła powinna być dłuższa niż 8 znaków",
     "lower": "Hasło powinno zawierać co najmniej jedną małą literę",
@@ -46,5 +48,6 @@
   "providePassphrase": "Podaj hasło",
   "passphraseDesc": "Hasło może być dowolne, zostanie użyte do zaszyfrowania kluczy odzyskiwania.",
   "passphraseError": "Minimalna długość hasła to 8 znaków, maksymalna to 128",
+  "providePassphraseDesc": "Podaj hasło użyte podczas generowania kluczy odzyskiwania (nie hasło do konta)",
   "recoveryKey": "Klucz odzyskiwania {{ i }}"
 }

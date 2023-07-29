@@ -8,9 +8,9 @@
         (click)="closeModal.emit()"
         alt="close"
       >
-      <h3 class="modal-title">{{ header }}</h3>
+      <h3 class="modal-title" *ngIf="header">{{ header }}</h3>
     </div>
-    <div class="description">{{ description }}</div>
+    <p class="modal-p" *ngIf="description">{{ description }}</p>
     <div class="child-wrapper">
       <ng-content></ng-content>
     </div>

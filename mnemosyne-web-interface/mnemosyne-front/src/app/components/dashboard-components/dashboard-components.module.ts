@@ -7,6 +7,7 @@ import { UserInfoSettingsComponent } from '@components/user-info-settings/user-i
 import { UserPhotoComponent } from '@components/user-photo/user-photo.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { BasicComponentsModule } from '@components/basic-components.module';
+import { PagesComponentsModule } from '@components/pages-components.module';
 
 const components = [
   SecuritySettingsComponent,
@@ -22,7 +23,8 @@ const components = [
     CommonModule,
     TranslocoModule,
     BasicComponentsModule,
-    NgOptimizedImage
+    NgOptimizedImage,
+    PagesComponentsModule
   ],
   exports: [...components]
 })

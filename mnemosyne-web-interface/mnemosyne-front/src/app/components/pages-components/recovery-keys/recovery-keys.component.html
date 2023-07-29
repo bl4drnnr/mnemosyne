@@ -1,17 +1,29 @@
 <ng-container *transloco="let t">
-  <h2 class="third-title flex">
+  <h2 class="third-title flex" *ngIf="!hideHeader">
     <span>{{ t('keys.recoveryKeysTitle') }}&nbsp;</span>
     <basic-emoji emoji="old-key.png" [width]="32" [height]="32"/>
   </h2>
 
-  <p class="paragraph">{{ t('keys.recoveryKeys1') }}</p>
-  <p class="paragraph">{{ t('keys.recoveryKeys2') }}</p>
-  <p class="paragraph">{{ t('keys.recoveryKeys3') }}</p>
+  <p class="paragraph" [ngClass]="{ 'on-white': onWhite }">
+    {{ t('keys.recoveryKeys1') }}
+  </p>
+  <p class="paragraph" [ngClass]="{ 'on-white': onWhite }">
+    {{ t('keys.recoveryKeys2') }}
+  </p>
+  <p class="paragraph" [ngClass]="{ 'on-white': onWhite }">
+    {{ t('keys.recoveryKeys3') }}
+  </p>
 
   <ol class="options-list">
-    <li class="option-item">{{ t('keys.recoveryKeys4') }}</li>
-    <li class="option-item">{{ t('keys.recoveryKeys5') }}</li>
-    <li class="option-item">{{ t('keys.recoveryKeys6') }}</li>
+    <li class="option-item" [ngClass]="{ 'on-white': onWhite }">
+      {{ t('keys.recoveryKeys4') }}
+    </li>
+    <li class="option-item" [ngClass]="{ 'on-white': onWhite }">
+      {{ t('keys.recoveryKeys5') }}
+    </li>
+    <li class="option-item" [ngClass]="{ 'on-white': onWhite }">
+      {{ t('keys.recoveryKeys6') }}
+    </li>
   </ol>
 
   <div *ngIf="!recoveryKeysGenerated">
@@ -24,12 +36,14 @@
       [showError]="!isPassphraseValid()"
       [minLength]="8"
       [maxLength]="128"
+      [onWhite]="onWhite"
       [value]="passphrase"
       (valueChange)="passphrase = $event"
     />
 
     <div class="last-button">
       <basic-button
+        [onWhite]="onWhite"
         [label]="t('button.continue')"
         [disabled]="!isPassphraseValid()"
         (buttonClick)="generateRecoveryKeys()"
@@ -40,18 +54,21 @@
   <div *ngIf="recoveryKeysGenerated">
     <basic-input
       *ngFor="let key of recoveryKeys; let i = index"
+      [onWhite]="onWhite"
       [label]="t('input.recoveryKey', { i: i + 1 })"
       [value]="key"
       [readOnly]="true"
     />
 
     <basic-button
+      [onWhite]="onWhite"
       [label]="t('button.downloadRecoveryKeys')"
       (buttonClick)="downloadRecoveryKeys()"
     />
 
     <div class="last-button">
       <basic-button
+        [onWhite]="onWhite"
         [label]="t('button.keysSaved')"
         [fillButton]="true"
         (buttonClick)="keysCopied()"

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ValidationService } from '@services/validation.service';
 
@@ -17,13 +17,14 @@ import { ValidationService } from '@services/validation.service';
   ]
 })
 export class CreatePasswordComponent {
+  @Input() onWhite = false;
+  @Output() passwordChange = new EventEmitter<string>();
+  @Output() incorrectInput = new EventEmitter<boolean>();
+
   password = '';
   passwordRepeat = '';
   incorrectPassword = true;
   passwordErrors: Array<{ error: boolean; text: string }>;
-
-  @Output() passwordChange = new EventEmitter<string>();
-  @Output() incorrectInput = new EventEmitter<boolean>();
 
   constructor(private readonly validationService: ValidationService) {}
 

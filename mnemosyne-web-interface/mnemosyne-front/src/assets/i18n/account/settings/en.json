@@ -17,17 +17,22 @@
     "setup2fa": "Set up 2FA",
     "disable2fa": "Disable 2FA",
     "setup2faDesc": "Secure your account with Two-Factor Authentication (2FA) mobile application that will be generating one-time 6-digit code for the additional verification.",
-    "disable2faDesc": "Disabling of 2FA will increase the insecurity of your account. We would highly recommend to keep it unless you accept the risk. Also, according to policies, you are obliged to have at least one way of MFA."
+    "disable2faDesc": "Disabling of 2FA will increase the insecurity of your account. We would highly recommend to keep it unless you accept the risk. Also, according to policies, you are obliged to have at least one way of MFA.",
+    "mfaSetUp": "MFA has been successfully set up!",
+    "mfaDisabled": "MFA has been successfully disabled."
   },
   "phone": {
     "setupPhone": "Set up mobile phone",
     "disablePhone": "Disable mobile phone",
     "setupPhoneDesc": "Secure your account with one-time code that you will be receiving every time you are logging in to your account. Alternative way of Two-Factor Authentication. Recommended to use both.",
-    "disablePhoneDesc": "Disconnecting the phone from your account will increase the level of insecurity of your account. We would not recommend to that because of security reasons. Keep in mind that according to policies, you are obliged to have at least one way of MFA."
+    "disablePhoneDesc": "Disconnecting the phone from your account will increase the level of insecurity of your account. We would not recommend to that because of security reasons. Keep in mind that according to policies, you are obliged to have at least one way of MFA.",
+    "phoneSetUp": "Mobile phone has been successfully set up!",
+    "phoneDisabled": "Mobile phone has been successfully disabled."
   },
   "password": {
     "changePassword": "Change password",
-    "changePasswordDesc": "Change your password by providing the current password and the new password. Consider in mind that after successful password change you will be logged out from your account."
+    "changePasswordDesc": "Change your password by providing the current password and the new password. Consider in mind that after successful password change you will be logged out from your account.",
+    "passwordChanged": "Password has been successfully changed"
   },
   "email": {
     "changeEmail": "Change email",
@@ -38,8 +43,14 @@
     "deleteAcc": "Delete account",
     "deleteAccDesc": "There is no way back. Data will be lost without way to recover it. According to Mnemosyne's Security & Privacy policies and law enforcement all data will be immediately removed from systems."
   },
-  "mfaSetUp": "MFA has been successfully set up!",
-  "mfaDisabled": "MFA has been successfully disabled.",
-  "phoneSetUp": "Mobile phone has been successfully set up!",
-  "phoneDisabled": "Mobile phone has been successfully disabled."
+  "recoveryKeys": {
+    "title": "Manage recovery keys from your account",
+    "recoveryKeys1": "Recovery keys are used in order to reset both MFA and mobile phone number if you don't have access to them and would like to restore the access to your account. After the first log in after the reset you will have to set up both MFA/phone and new set of recovery keys.",
+    "recoveryKeys2": "Recovery keys are generated for one-time usage. Once they are used, you will have to set up the new set.",
+    "recoveryKeys3": "Here you can regenerate and download your recovery keys. You can see and download them only when they are generated.",
+    "recoveryKeys4": "After you close the window, you won't see them anymore.",
+    "sectionTitle": "Generate recovery keys",
+    "sectionDesc": "Generated keys are used when you don't have access to MFA/mobile phone, and want to restore the access to the account.",
+    "successSetup": "Recovery keys have been successfully set up"
+  }
 }

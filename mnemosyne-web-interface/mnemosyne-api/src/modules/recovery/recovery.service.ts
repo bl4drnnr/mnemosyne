@@ -122,7 +122,8 @@ export class RecoveryService {
         phone: null,
         phoneCode: null,
         codeSentAt: null,
-        twoFaToken: null
+        twoFaToken: null,
+        recoveryKeysFingerprint: null
       },
       userId: user.id,
       trx

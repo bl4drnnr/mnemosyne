@@ -23,7 +23,7 @@
       [header]="t('settings.mfa.setup2fa')"
       [description]="t('settings.mfa.setup2faDesc')"
       [showModal]="set2faModal"
-      (closeModal)="set2faModal = false"
+      (closeModal)="closeSet2faModal()"
     >
       <basic-qr-mfa
         [qrCode]="qrCode"
@@ -56,12 +56,14 @@
       [header]="t('settings.mfa.disable2fa')"
       [description]="t('settings.mfa.disable2faDesc')"
       [showModal]="disable2faModal"
-      (closeModal)="disable2faModal = false"
+      (closeModal)="closeDisable2faModal()"
     >
-      <basic-input-mfa
-        [onWhite]="true"
-        (mfaCode)="disableTwoFaCode = $event"
-      />
+      <div class="input-mfa-wrapper">
+        <basic-input-mfa
+          [onWhite]="true"
+          (mfaCode)="disableTwoFaCode = $event"
+        />
+      </div>
       <div class="last-button">
         <basic-button
           [danger]="true"
@@ -85,7 +87,7 @@
       [header]="t('settings.phone.setupPhone')"
       [description]="t('settings.phone.setupPhoneDesc')"
       [showModal]="setMobilePhoneModal"
-      (closeModal)="setMobilePhoneModal = false"
+      (closeModal)="closeSetMobilePhoneModal()"
     >
       <basic-phone
         [phoneCodeSent]="phoneCodeSent"
@@ -122,7 +124,7 @@
       [header]="t('settings.phone.disablePhone')"
       [description]="t('settings.phone.disablePhoneDesc')"
       [showModal]="disableMobilePhoneModal"
-      (closeModal)="disableMobilePhoneModal = false"
+      (closeModal)="closeDisableMobilePhoneModal()"
     >
       <div class="last-button">
         <basic-button
@@ -147,8 +149,68 @@
       [header]="t('settings.password.changePassword')"
       [description]="t('settings.password.changePasswordDesc')"
       [showModal]="changePasswordModal"
-      (closeModal)="changePasswordModal = false"
-    ></basic-modal>
+      (closeModal)="closeChangePasswordModal()"
+    >
+      <div *ngIf="!changePassMfaRequired || !changePassPhoneRequired">
+        <basic-input
+          type="password"
+          [onWhite]="true"
+          [label]="t('input.currentPass')"
+          [placeholder]="t('input.provideCurrentPass')"
+          [errorMessage]="t('input.passRulesNotFollowed')"
+          [value]="currentPassword"
+          (valueChange)="currentPassword = $event"
+          (incorrectInput)="incorrectPassword = $event"
+        />
+        <page-component-create-password
+          [onWhite]="true"
+          (passwordChange)="newPassword = $event"
+          (incorrectInput)="incorrectNewPassword = $event"
+        />
+        <div class="last-button">
+          <basic-button
+            [onWhite]="true"
+            [label]="t('button.changePassword')"
+            (buttonClick)="changePassword()"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="changePassMfaRequired">
+        <p class="paragraph on-white">Provide the code from the authenticator application</p>
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="changePassMfaCode = $event"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="changePassPhoneRequired">
+        <p class="paragraph on-white">Send the SMS message with the code your mobile phone number and confirm it by providing in the field below</p>
+        <basic-phone
+          [readOnly]="true"
+          [onWhite]="true"
+          [phoneInput]="userSecurity.phoneStatus.twoLastDigit"
+          [phoneCodeSent]="phoneCodeSent"
+          (sendSmsCode)="sendSmsCode($event)"
+        />
+        <basic-input-mfa
+          [onWhite]="true"
+          (mfaCode)="changePassPhoneCode = $event"
+        />
+      </div>
+
+      <div *ngIf="changePassMfaRequired || changePassPhoneRequired">
+        <div class="last-button">
+          <basic-button
+            [onWhite]="true"
+            [label]="t('button.continue')"
+            (buttonClick)="changePassword()"
+          />
+        </div>
+      </div>
+    </basic-modal>
 
     <security-setting-section
       [showSection]="!userSecurity.emailChanged"
@@ -162,7 +224,7 @@
       [header]="t('settings.email.changeEmail')"
       [description]="t('settings.email.changeEmailDesc')"
       [showModal]="changeEmailModal"
-      (closeModal)="changeEmailModal = false"
+      (closeModal)="closeChangeEmailModal()"
     ></basic-modal>
 
     <security-setting-section
@@ -186,8 +248,37 @@
       [header]="t('settings.deleteAcc.deleteAcc')"
       [description]="t('settings.deleteAcc.deleteAccDesc')"
       [showModal]="deleteAccountModal"
-      (closeModal)="deleteAccountModal = false"
+      (closeModal)="closeDeleteAccountModal()"
     ></basic-modal>
-  </div>
 
+    <h3>{{ t('settings.recoveryKeys.title') }}</h3>
+    <ul class="rules-list">
+      <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys1') }}</li>
+      <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys2') }}</li>
+      <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys3') }} <b>{{ t('settings.recoveryKeys.recoveryKeys4') }}</b></li>
+    </ul>
+
+    <div class="dived-line no-bottom"></div>
+
+    <security-setting-section
+      [showSection]="true"
+      [title]="t('settings.recoveryKeys.sectionTitle')"
+      [description]="t('settings.recoveryKeys.sectionDesc')"
+      [buttonLabel]="t('settings.recoveryKeys.sectionTitle')"
+      (onButtonClick)="generateRecoveryKeysModal = true"
+    />
+
+    <basic-modal
+      [header]="t('settings.recoveryKeys.sectionTitle')"
+      [showModal]="generateRecoveryKeysModal"
+      (closeModal)="closeGenerateRecoveryKeysModal()"
+    >
+      <page-recovery-keys
+        [hideHeader]="true"
+        [onWhite]="true"
+        (confirmRecoveryKeysSetup)="confirmRecoveryKeysSetup()"
+      />
+    </basic-modal>
+
+  </div>
 </ng-container>

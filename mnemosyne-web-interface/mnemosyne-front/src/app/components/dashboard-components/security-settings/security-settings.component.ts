@@ -1,9 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserSecurityResponse } from '@responses/user-security.response';
 import { MfaService } from '@services/mfa.service';
-import { Router } from '@angular/router';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { PhoneService } from '@services/phone.service';
+import { RecoveryService } from '@services/recovery.service';
+import { GlobalMessageService } from '@shared/global-message.service';
+import { TranslocoService } from '@ngneat/transloco';
+import {UsersService} from "@services/users.service";
+import {PasswordChangedResponse} from "@responses/password-changed.response";
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -16,32 +20,49 @@ export class SecuritySettingsComponent {
   @Output() unsetTwoFa = new EventEmitter<void>();
   @Output() setPhone = new EventEmitter<void>();
   @Output() unsetPhone = new EventEmitter<void>();
+  @Output() passwordChanged = new EventEmitter<void>();
   @Output() userSettingsReInit = new EventEmitter<void>();
 
   set2faModal: boolean;
   qrCode: string;
   twoFaToken: string;
-  mfaCode = '';
+  mfaCode: string;
   showQr = true;
 
   disable2faModal: boolean;
-  disableTwoFaCode = '';
+  disableTwoFaCode: string;
 
   setMobilePhoneModal: boolean;
   phone: string;
-  phoneCode = '';
+  phoneCode: string;
   phoneCodeSent = false;
 
   disableMobilePhoneModal: boolean;
 
   changeEmailModal: boolean;
+
   changePasswordModal: boolean;
+  currentPassword: string;
+  incorrectPassword: boolean;
+  newPassword: string;
+  incorrectNewPassword: boolean;
+  changePassMfaRequired: boolean;
+  changePassMfaCode: string;
+  changePassPhoneRequired: boolean;
+  changePassPhoneCode: string;
+
   deleteAccountModal: boolean;
+
+  generateRecoveryKeysModal: boolean;
 
   constructor(
     private readonly mfaService: MfaService,
     private readonly phoneService: PhoneService,
-    private readonly refreshTokensService: RefreshTokensService
+    private readonly usersService: UsersService,
+    private readonly recoveryService: RecoveryService,
+    private readonly translocoService: TranslocoService,
+    private readonly refreshTokensService: RefreshTokensService,
+    private readonly globalMessageService: GlobalMessageService
   ) {}
 
   async generateTwoFaQrCode() {
@@ -92,16 +113,18 @@ export class SecuritySettingsComponent {
     });
   }
 
-  async sendSmsCode(phone: string) {
-    this.phone = phone;
+  async sendSmsCode(phone: string | null) {
+    if (phone) {
+      this.phone = phone;
 
-    this.phoneService
-      .sendSmsCode({
-        phone: this.phone
-      })
-      .subscribe({
-        next: () => (this.phoneCodeSent = true)
+      this.phoneService.sendSmsCode({ phone: this.phone }).subscribe({
+        next: () => this.phoneCodeSent = true
       });
+    } else {
+      this.phoneService.getSmsCode().subscribe({
+        next: () => this.phoneCodeSent = true
+      })
+    }
   }
 
   verifyPhoneDisable() {
@@ -137,5 +160,90 @@ export class SecuritySettingsComponent {
           this.userSettingsReInit.emit();
         }
       });
+  }
+
+  changePassword() {
+    this.usersService.changePassword({
+      currentPassword: this.currentPassword,
+      newPassword: this.newPassword,
+      mfaCode: this.changePassMfaCode,
+      phoneCode: this.changePassPhoneCode
+    })
+      .subscribe({
+        next: ({ message }) => {
+          switch (message) {
+            case PasswordChangedResponse.MFA_REQUIRED:
+              this.changePassMfaRequired = true;
+              this.changePassPhoneRequired = true;
+              break;
+            case PasswordChangedResponse.PHONE_REQUIRED:
+              this.changePassPhoneRequired = true;
+              break;
+            case PasswordChangedResponse.TWO_FA_REQUIRED:
+              this.changePassMfaRequired = true;
+              break;
+            case PasswordChangedResponse.PASSWORD_CHANGED:
+              this.changePasswordModal = false;
+              this.passwordChanged.emit();
+              this.userSettingsReInit.emit();
+              break;
+          }
+        }
+      })
+  }
+
+  confirmRecoveryKeysSetup() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate('successSetup', {}, 'settings'),
+      isError: false
+    });
+  }
+
+  closeSet2faModal() {
+    this.set2faModal = false;
+    this.qrCode = '';
+    this.twoFaToken = '';
+    this.mfaCode = '';
+    this.showQr = true;
+  }
+
+  closeDisable2faModal() {
+    this.disable2faModal = false;
+    this.disableTwoFaCode = '';
+  }
+
+  closeSetMobilePhoneModal() {
+    this.setMobilePhoneModal = false;
+    this.phone = '';
+    this.phoneCode = '';
+    this.phoneCodeSent = false;
+  }
+
+  closeDisableMobilePhoneModal() {
+    this.disableMobilePhoneModal = false;
+  }
+
+  closeChangePasswordModal() {
+    this.changePasswordModal = false;
+    this.currentPassword = '';
+    this.incorrectPassword = false;
+    this.newPassword = '';
+    this.incorrectNewPassword = false;
+    this.changePassMfaRequired = false;
+    this.changePassMfaCode = '';
+    this.changePassPhoneRequired = false;
+    this.changePassPhoneCode = '';
+  }
+
+  closeChangeEmailModal() {
+    this.changeEmailModal = false;
+  }
+
+  closeDeleteAccountModal() {
+    this.deleteAccountModal = false
+  }
+
+  closeGenerateRecoveryKeysModal() {
+    this.generateRecoveryKeysModal = false;
   }
 }

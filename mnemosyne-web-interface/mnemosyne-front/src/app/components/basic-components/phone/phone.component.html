@@ -1,5 +1,6 @@
 <ng-container *transloco="let t">
   <basic-input-button
+    *ngIf="!readOnly"
     (buttonClick)="sendSms()"
     (inputValueChange)="isMobilePhoneCorrect($event)"
     [inputShowError]="!isPhoneCorrect && phone.length > 0"
@@ -11,6 +12,17 @@
     [placeholder]="t('input.providePhone')"
     [inputPlaceholder]="t('input.phone')"
     [inputDescription]="t('input.phoneInputDescription')"
+    [onWhite]="onWhite"
+  />
+  <basic-input-button
+    *ngIf="readOnly"
+    (buttonClick)="sendSms()"
+    [inputValue]="'*******' + phoneInput"
+    [inputDisabled]="true"
+    [placeholder]="t('input.phone')"
+    [buttonLabel]="!phoneCodeSent ? t('button.sendCode') : t('button.resendCode')"
+    [buttonDisabled]="isCountdownRunning"
+    [buttonDescription]="isCountdownRunning ? resendMessage : null"
     [onWhite]="onWhite"
   />
 </ng-container>

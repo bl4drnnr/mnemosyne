@@ -36,30 +36,53 @@ export class SettingsComponent {
 
   setTwoFa() {
     this.globalMessageService.handle({
-      message: this.translocoService.translate('mfaSetUp', {}, 'settings'),
+      message: this.translocoService.translate('mfa.mfaSetUp', {}, 'settings'),
       isError: false
     });
   }
 
   disableTwoFa() {
     this.globalMessageService.handle({
-      message: this.translocoService.translate('mfaDisabled', {}, 'settings'),
+      message: this.translocoService.translate(
+        'mfa.mfaDisabled',
+        {},
+        'settings'
+      ),
       isError: false
     });
   }
 
   setPhone() {
     this.globalMessageService.handle({
-      message: this.translocoService.translate('phoneSetUp', {}, 'settings'),
+      message: this.translocoService.translate(
+        'phone.phoneSetUp',
+        {},
+        'settings'
+      ),
       isError: false
     });
   }
 
   disableMobilePhone() {
     this.globalMessageService.handle({
-      message: this.translocoService.translate('phoneDisabled', {}, 'settings'),
+      message: this.translocoService.translate(
+        'phone.phoneDisabled',
+        {},
+        'settings'
+      ),
       isError: false
     });
+  }
+
+  passwordChanged() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate(
+        'password.passwordChanged',
+        {},
+        'settings'
+      ),
+      isError: false
+    })
   }
 
   getUserSecuritySettings() {
