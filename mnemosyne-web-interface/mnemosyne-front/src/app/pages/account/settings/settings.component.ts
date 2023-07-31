@@ -82,7 +82,7 @@ export class SettingsComponent {
         'settings'
       ),
       isError: false
-    })
+    });
   }
 
   getUserSecuritySettings() {

@@ -1,5 +1,9 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UsePipes } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
+import { TransactionParam } from '@decorators/transaction.decorator';
+import { Transaction } from 'sequelize';
+import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
+import { ValidationPipe } from '@pipes/validation.pipe';
 
 @Controller('confirmation-hash')
 export class ConfirmationHashController {
@@ -8,7 +12,27 @@ export class ConfirmationHashController {
   ) {}
 
   @Get('account-confirmation')
-  confirmAccount(@Query('confirmationHash') confirmationHash: string) {
-    return this.confirmationHashService.confirmAccount({ confirmationHash });
+  confirmAccount(
+    @Query('confirmationHash') confirmationHash: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.confirmationHashService.confirmAccount({
+      confirmationHash,
+      trx
+    });
+  }
+
+  @UsePipes(ValidationPipe)
+  @Post('email-change-confirmation')
+  confirmEmailChange(
+    @Query('confirmationHash') confirmationHash: string,
+    @Body() payload: ConfirmEmailChangeDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.confirmationHashService.confirmEmailChange({
+      confirmationHash,
+      payload,
+      trx
+    });
   }
 }

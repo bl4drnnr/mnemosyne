@@ -30,7 +30,6 @@ export class EmailService {
     trx?: Transaction;
   }) {
     const emailSettings: VerificationEmailInterface = {
-      email: null,
       confirmationHash: payload.confirmationHash,
       confirmationType: payload.confirmationType,
       userId: payload.userId
@@ -65,8 +64,7 @@ export class EmailService {
     language: LANGUAGE_TYPES | null;
     trx?: Transaction;
   }) {
-    const emailSettings = {
-      email: payload.email,
+    const emailSettings: VerificationEmailInterface = {
       confirmationHash: payload.confirmationHash,
       confirmationType: payload.confirmationType,
       userId: payload.userId
@@ -101,8 +99,8 @@ export class EmailService {
     language: LANGUAGE_TYPES | null;
     trx?: Transaction;
   }) {
-    const emailSettings = {
-      email: payload.email,
+    const emailSettings: VerificationEmailInterface = {
+      changingEmail: payload.changingEmail,
       confirmationHash: payload.confirmationHash,
       confirmationType: payload.confirmationType,
       userId: payload.userId
@@ -120,7 +118,7 @@ export class EmailService {
       });
 
     await this.sendEmail({
-      target: payload.email,
+      target: payload.changingEmail,
       emailHtml: htmlPayload,
       emailSubject: subject
     });

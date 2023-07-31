@@ -46,5 +46,7 @@
     "wrong-mfa-code-format": "Niewłaściwy format kodu MFA"
   },
   "wrong-timeframe": "Niewłaściwy przedział czasowy",
-  "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania"
+  "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania",
+  "email-already-changed": "Adres e-mail został już zmieniony",
+  "email-already-taken": "Podany adres e-mail został już zajęty"
 }

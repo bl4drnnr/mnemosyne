@@ -14,6 +14,7 @@ import { ConfirmAccountResponse } from '@responses/confirm-account.response';
 import { ForgotPasswordResponse } from '@responses/forgot-password.response';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
 import { LogoutResponse } from '@responses/logout.response';
+import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.type';
 
 @Injectable({
   providedIn: 'root'
@@ -51,7 +52,7 @@ export class AuthenticationService {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.GET,
       controller: CONTROLLERS.CONFIRMATION_HASH,
-      action: AUTH_ENDPOINTS.ACCOUNT_CONFIRMATION,
+      action: CONFIRMATION_ENDPOINTS.ACCOUNT_CONFIRMATION,
       params: { confirmationHash: hash }
     });
   }

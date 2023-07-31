@@ -1,5 +1,6 @@
 import * as node2fa from 'node-2fa';
 import * as bcryptjs from 'bcryptjs';
+import * as crypto from 'crypto';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
@@ -24,14 +25,19 @@ import { WrongCredentialsException } from '@exceptions/wrong-credentials.excepti
 import { TwoFaNotSetException } from '@exceptions/two-fa-not-set.exception';
 import { PhoneNotSetException } from '@exceptions/phone-not-set.exception';
 import { WrongProvidedPhoneException } from '@exceptions/wrong-provided-phone.exception';
-import { WrongMfaTokenException } from '@exceptions/wrong-mfa-token.exception';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { TimeService } from '@shared/time.service';
-import {ChangePasswordDto} from "@dto/change-password.dto";
-import {PasswordChangedDto} from "@dto/password-changed.dto";
-import {PreviousPasswordException} from "@exceptions/previous-password.exception";
-import {ApiConfigService} from "@shared/config.service";
-import {VerifySmsCode} from "@dto/verify-sms-code";
+import { ChangePasswordDto } from '@dto/change-password.dto';
+import { PasswordChangedDto } from '@dto/password-changed.dto';
+import { PreviousPasswordException } from '@exceptions/previous-password.exception';
+import { ApiConfigService } from '@shared/config.service';
+import { SmsClearedDto } from '@dto/sms-cleared.dto';
+import { ChangeEmailDto } from '@dto/change-email.dto';
+import { EmailAlreadyChangedException } from '@exceptions/email-already-changed.exception';
+import { EmailAlreadyTakenException } from '@exceptions/email-already-taken.exception';
+import { EmailService } from '@shared/email.service';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { EmailChangeEmailSentDto } from '@dto/email-change-email-sent.dto';
 
 @Injectable()
 export class SecurityService {
@@ -41,7 +47,8 @@ export class SecurityService {
     private readonly userService: UsersService,
     private readonly phoneService: PhoneService,
     private readonly authService: AuthService,
-    private readonly timeService: TimeService
+    private readonly timeService: TimeService,
+    private readonly emailService: EmailService
   ) {}
 
   async registrationGenerateTwoFaQrCode({
@@ -59,11 +66,7 @@ export class SecurityService {
 
     const user = await this.userService.getUserById({ id: userId, trx });
 
-    return await this.generateQrCode({
-      email: user.email,
-      userId: user.id,
-      trx
-    });
+    return await this.generateQrCode({ email: user.email });
   }
 
   async loginGenerateTwoFaQrCode({
@@ -79,11 +82,7 @@ export class SecurityService {
       trx
     });
 
-    return await this.generateQrCode({
-      email: user.email,
-      userId: user.id,
-      trx
-    });
+    return await this.generateQrCode({ email: user.email });
   }
 
   async generateTwoFaQrCode({
@@ -95,12 +94,7 @@ export class SecurityService {
   }) {
     const user = await this.userService.getUserById({ id: userId, trx });
 
-    return await this.generateQrCode({
-      writeToken: false,
-      email: user.email,
-      userId: user.id,
-      trx
-    });
+    return await this.generateQrCode({ email: user.email });
   }
 
   async registrationVerifyTwoFaQrCode({
@@ -168,7 +162,6 @@ export class SecurityService {
       return await this.verifyQrCode({
         token: payload.twoFaToken,
         code: payload.code,
-        checkDbToken: false,
         userId,
         trx
       });
@@ -278,13 +271,10 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async getSmsCode({
-    userId, trx
-                   }: {
-    userId: string; trx?: Transaction;
-  }) {
+  async getSmsCode({ userId, trx }: { userId: string; trx?: Transaction }) {
     const user = await this.userService.getUserById({
-      id: userId, trx
+      id: userId,
+      trx
     });
 
     if (!user.userSettings.phone) throw new PhoneNotSetException();
@@ -296,6 +286,26 @@ export class SecurityService {
     });
 
     return new SmsCodeSentDto();
+  }
+
+  async clearSmsCode({ userId, trx }: { userId: string; trx?: Transaction }) {
+    const user = await this.userService.getUserById({
+      id: userId,
+      trx
+    });
+
+    if (!user.userSettings.phone) throw new PhoneNotSetException();
+
+    await this.userService.updateUserSettings({
+      payload: {
+        phoneCode: null,
+        codeSentAt: null
+      },
+      userId,
+      trx
+    });
+
+    return new SmsClearedDto();
   }
 
   async registrationVerifyMobilePhone({
@@ -371,33 +381,6 @@ export class SecurityService {
     }
   }
 
-  private async verifySms({
-                        payload,
-                        userId,
-                        trx
-                      }: {
-    payload: VerifySmsCode;
-    userId: string;
-    trx?: Transaction;
-  }) {
-    const { userSettings } = await this.userService.getUserById({
-      id: userId,
-      trx
-    });
-    const phoneCode = userSettings.phoneCode;
-    const codeSentAt = userSettings.codeSentAt;
-
-    if (phoneCode !== payload.phoneCode) throw new WrongCodeException();
-
-    const isWithinFiveMinutes = this.timeService.isWithinTimeframe({
-      time: codeSentAt,
-      seconds: 300
-    });
-
-    if (phoneCode === payload.phoneCode && !isWithinFiveMinutes)
-      throw new SmsExpiredException();
-  }
-
   async disablePhone({
     payload,
     userId,
@@ -460,7 +443,8 @@ export class SecurityService {
         mfaCode: payload.mfaCode,
         phoneCode: payload.phoneCode,
         userSettings: user.userSettings,
-        userId
+        userId,
+        trx
       });
 
       if (mfaStatusResponse) return mfaStatusResponse;
@@ -479,10 +463,10 @@ export class SecurityService {
   }
 
   async changePassword({
-                         userId,
-                         payload,
-                         trx
-                       }: {
+    userId,
+    payload,
+    trx
+  }: {
     userId: string;
     payload: ChangePasswordDto;
     trx?: Transaction;
@@ -511,7 +495,8 @@ export class SecurityService {
         mfaCode: payload.mfaCode,
         phoneCode: payload.phoneCode,
         userSettings: user.userSettings,
-        userId: user.id
+        userId: user.id,
+        trx
       });
 
       if (mfaStatusResponse) return mfaStatusResponse;
@@ -531,6 +516,47 @@ export class SecurityService {
     });
 
     return new PasswordChangedDto();
+  }
+
+  async changeEmail({
+    userId,
+    payload,
+    trx
+  }: {
+    userId: string;
+    payload: ChangeEmailDto;
+    trx?: Transaction;
+  }) {
+    const { firstName, lastName, userSettings } =
+      await this.userService.getUserById({
+        id: userId,
+        trx
+      });
+
+    if (userSettings.emailChanged) throw new EmailAlreadyChangedException();
+
+    const existingUser = await this.userService.getUserByEmail({
+      email: payload.newEmail,
+      trx
+    });
+
+    if (existingUser) throw new EmailAlreadyTakenException();
+
+    const confirmationHash = crypto.randomBytes(20).toString('hex');
+
+    await this.emailService.sendEmailChangeEmail({
+      payload: {
+        changingEmail: payload.newEmail,
+        confirmationType: CONFIRMATION_TYPE.EMAIL_CHANGE,
+        confirmationHash,
+        userId
+      },
+      userInfo: { firstName, lastName },
+      language: payload.language,
+      trx
+    });
+
+    return new EmailChangeEmailSentDto();
   }
 
   private async verifySmsCode({
@@ -565,38 +591,16 @@ export class SecurityService {
       trx
     });
 
-    await this.userService.updateUserSettings({
-      payload: { phoneCode: null, codeSentAt: null },
-      userId,
-      trx
-    });
+    await this.clearSmsCode({ userId, trx });
 
     return new MfaSetDto();
   }
 
-  private async generateQrCode({
-    email,
-    userId,
-    writeToken = true,
-    trx
-  }: {
-    email: string;
-    userId: string;
-    writeToken?: boolean;
-    trx?: Transaction;
-  }) {
+  private async generateQrCode({ email }: { email: string }) {
     const { qr, secret } = node2fa.generateSecret({
       name: 'Mnemosyne',
       account: email
     });
-
-    if (writeToken) {
-      await this.userService.updateUserSettings({
-        payload: { twoFaToken: secret },
-        userId,
-        trx
-      });
-    }
 
     return { qr, secret };
   }
@@ -605,26 +609,14 @@ export class SecurityService {
     userId,
     code,
     token,
-    checkDbToken = true,
     trx
   }: {
     userId: string;
     code: string;
     token: string;
-    checkDbToken?: boolean;
     trx?: Transaction;
   }) {
-    const { twoFaToken } = await this.userService.getUserSettingsByUserId({
-      userId,
-      trx
-    });
-
-    if (token !== twoFaToken && checkDbToken)
-      throw new WrongMfaTokenException();
-
-    const delta = checkDbToken
-      ? node2fa.verifyToken(twoFaToken, code)
-      : node2fa.verifyToken(token, code);
+    const delta = node2fa.verifyToken(token, code);
 
     if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
 
@@ -634,13 +626,11 @@ export class SecurityService {
       trx
     });
 
-    if (!checkDbToken) {
-      await this.userService.updateUserSettings({
-        payload: { twoFaToken: token },
-        userId,
-        trx
-      });
-    }
+    await this.userService.updateUserSettings({
+      payload: { twoFaToken: token },
+      userId,
+      trx
+    });
 
     return new MfaSetDto();
   }

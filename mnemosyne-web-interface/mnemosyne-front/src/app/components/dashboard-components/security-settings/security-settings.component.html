@@ -191,14 +191,17 @@
         <basic-phone
           [readOnly]="true"
           [onWhite]="true"
+          [startCountdownManually]="true"
           [phoneInput]="userSecurity.phoneStatus.twoLastDigit"
           [phoneCodeSent]="phoneCodeSent"
           (sendSmsCode)="sendSmsCode($event)"
         />
-        <basic-input-mfa
-          [onWhite]="true"
-          (mfaCode)="changePassPhoneCode = $event"
-        />
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="changePassPhoneCode = $event"
+          />
+        </div>
       </div>
 
       <div *ngIf="changePassMfaRequired || changePassPhoneRequired">

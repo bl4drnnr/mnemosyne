@@ -6,8 +6,9 @@ import { PhoneService } from '@services/phone.service';
 import { RecoveryService } from '@services/recovery.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
-import {UsersService} from "@services/users.service";
-import {PasswordChangedResponse} from "@responses/password-changed.response";
+import { UsersService } from '@services/users.service';
+import { PasswordChangedResponse } from '@responses/password-changed.response';
+import { ChangePasswordPayload } from '@payloads/change-password.payload';
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -26,15 +27,15 @@ export class SecuritySettingsComponent {
   set2faModal: boolean;
   qrCode: string;
   twoFaToken: string;
-  mfaCode: string;
+  mfaCode = '';
   showQr = true;
 
   disable2faModal: boolean;
-  disableTwoFaCode: string;
+  disableTwoFaCode = '';
 
   setMobilePhoneModal: boolean;
   phone: string;
-  phoneCode: string;
+  phoneCode = '';
   phoneCodeSent = false;
 
   disableMobilePhoneModal: boolean;
@@ -118,12 +119,12 @@ export class SecuritySettingsComponent {
       this.phone = phone;
 
       this.phoneService.sendSmsCode({ phone: this.phone }).subscribe({
-        next: () => this.phoneCodeSent = true
+        next: () => (this.phoneCodeSent = true)
       });
     } else {
       this.phoneService.getSmsCode().subscribe({
-        next: () => this.phoneCodeSent = true
-      })
+        next: () => (this.phoneCodeSent = true)
+      });
     }
   }
 
@@ -163,14 +164,25 @@ export class SecuritySettingsComponent {
   }
 
   changePassword() {
-    this.usersService.changePassword({
+    const changePasswordPayload: ChangePasswordPayload = {
       currentPassword: this.currentPassword,
-      newPassword: this.newPassword,
-      mfaCode: this.changePassMfaCode,
-      phoneCode: this.changePassPhoneCode
-    })
+      newPassword: this.newPassword
+    };
+
+    if (this.changePassMfaCode)
+      changePasswordPayload.mfaCode = this.changePassMfaCode;
+    if (this.changePassPhoneCode)
+      changePasswordPayload.phoneCode = this.changePassPhoneCode;
+
+    this.usersService
+      .changePassword({
+        currentPassword: this.currentPassword,
+        newPassword: this.newPassword,
+        mfaCode: this.changePassMfaCode,
+        phoneCode: this.changePassPhoneCode
+      })
       .subscribe({
-        next: ({ message }) => {
+        next: async ({ message }) => {
           switch (message) {
             case PasswordChangedResponse.MFA_REQUIRED:
               this.changePassMfaRequired = true;
@@ -178,6 +190,7 @@ export class SecuritySettingsComponent {
               break;
             case PasswordChangedResponse.PHONE_REQUIRED:
               this.changePassPhoneRequired = true;
+              this.phoneCodeSent = true;
               break;
             case PasswordChangedResponse.TWO_FA_REQUIRED:
               this.changePassMfaRequired = true;
@@ -189,7 +202,7 @@ export class SecuritySettingsComponent {
               break;
           }
         }
-      })
+      });
   }
 
   confirmRecoveryKeysSetup() {
@@ -197,6 +210,10 @@ export class SecuritySettingsComponent {
       message: this.translocoService.translate('successSetup', {}, 'settings'),
       isError: false
     });
+  }
+
+  clearSmsCode() {
+    this.phoneService.clearSmsCode().subscribe();
   }
 
   closeSet2faModal() {
@@ -224,6 +241,8 @@ export class SecuritySettingsComponent {
   }
 
   closeChangePasswordModal() {
+    if (this.changePassPhoneRequired) this.clearSmsCode();
+
     this.changePasswordModal = false;
     this.currentPassword = '';
     this.incorrectPassword = false;
@@ -240,7 +259,7 @@ export class SecuritySettingsComponent {
   }
 
   closeDeleteAccountModal() {
-    this.deleteAccountModal = false
+    this.deleteAccountModal = false;
   }
 
   closeGenerateRecoveryKeysModal() {

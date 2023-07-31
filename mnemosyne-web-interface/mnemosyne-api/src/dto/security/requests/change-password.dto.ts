@@ -1,4 +1,4 @@
-import {IsOptional, Matches} from "class-validator";
+import { IsOptional, Matches } from 'class-validator';
 
 export class ChangePasswordDto {
   @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
@@ -18,5 +18,4 @@ export class ChangePasswordDto {
   @IsOptional()
   @Matches(/^\d{6}$/, { message: 'phone-code-should-be-6-digit-code' })
   readonly phoneCode: string;
-
 }

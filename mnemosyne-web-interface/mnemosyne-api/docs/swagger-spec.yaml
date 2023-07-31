@@ -293,6 +293,13 @@ paths:
       responses:
         "200":
           description: ""
+  /api/security/clear-sms-code:
+    post:
+      operationId: SecurityController_clearSmsCode
+      parameters: []
+      responses:
+        "201":
+          description: ""
   /api/security/registration-verify-mobile-phone:
     post:
       operationId: SecurityController_registrationVerifyMobilePhone
@@ -329,19 +336,6 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyMobilePhoneDto"
-      responses:
-        "201":
-          description: ""
-  /api/security/verify-sms-code:
-    post:
-      operationId: SecurityController_verifySmsCode
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/VerifySmsCode"
       responses:
         "201":
           description: ""
@@ -383,6 +377,19 @@ paths:
               $ref: "#/components/schemas/ChangePasswordDto"
       responses:
         "200":
+          description: ""
+  /api/security/change-email:
+    post:
+      operationId: SecurityController_changeEmail
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangeEmailDto"
+      responses:
+        "201":
           description: ""
   /api/recovery/registration-generate-recovery-keys:
     post:
@@ -490,13 +497,13 @@ components:
     VerifyMobilePhoneDto:
       type: object
       properties: {}
-    VerifySmsCode:
-      type: object
-      properties: {}
     DeleteAccountDto:
       type: object
       properties: {}
     ChangePasswordDto:
+      type: object
+      properties: {}
+    ChangeEmailDto:
       type: object
       properties: {}
     GenerateRecoveryKeysDto:

@@ -116,36 +116,4 @@ export class LoginComponent {
         }
       });
   }
-
-  mfaChangeHandler({
-    phoneCode,
-    mfaCode
-  }: {
-    phoneCode?: string;
-    mfaCode?: string;
-  }) {
-    this.mfaCode = mfaCode as string;
-    this.phoneCode = phoneCode as string;
-
-    if (
-      this.isMfaRequired &&
-      !this.isPhoneRequired &&
-      this.mfaCode.length === 6
-    ) {
-      this.handleLogIn();
-    } else if (
-      !this.isMfaRequired &&
-      this.isPhoneRequired &&
-      this.phoneCode.length === 6
-    ) {
-      this.handleLogIn();
-    } else if (
-      this.isMfaRequired &&
-      this.isPhoneRequired &&
-      this.phoneCode.length === 6 &&
-      this.mfaCode.length === 6
-    ) {
-      this.handleLogIn();
-    }
-  }
 }

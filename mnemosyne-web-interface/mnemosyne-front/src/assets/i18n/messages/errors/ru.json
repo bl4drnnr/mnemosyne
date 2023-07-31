@@ -46,5 +46,7 @@
     "wrong-mfa-code-format": "Неверный формат кода MFA"
   },
   "wrong-timeframe": "Неверный таймфрейм",
-  "invalid-recovery-keys": "Недействительные ключи восстановления"
+  "invalid-recovery-keys": "Недействительные ключи восстановления",
+  "email-already-changed": "Электронная почта уже изменена",
+  "email-already-taken": "Указанный адрес электронной почты уже занят"
 }

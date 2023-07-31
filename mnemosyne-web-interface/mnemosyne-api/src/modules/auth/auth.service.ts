@@ -73,7 +73,8 @@ export class AuthService {
         mfaCode: payload.mfaCode,
         phoneCode: payload.phoneCode,
         userSettings: user.userSettings,
-        userId: user.id
+        userId: user.id,
+        trx
       });
 
       if (mfaStatusResponse) return mfaStatusResponse;
@@ -171,12 +172,14 @@ export class AuthService {
     mfaCode,
     phoneCode,
     userSettings,
-    userId
+    userId,
+    trx
   }: {
     mfaCode: string;
     phoneCode: string;
     userSettings: UserSettings;
     userId: string;
+    trx?: Transaction;
   }) {
     const {
       twoFaToken: userTwoFaToken,
@@ -185,8 +188,13 @@ export class AuthService {
       phone
     } = userSettings;
 
-    if (!mfaCode && userTwoFaToken && !phoneCode && phone)
+    if (!mfaCode && userTwoFaToken && !phoneCode && phone) {
+      await this.phoneService.verifyAndResendSmsCode({
+        userId,
+        phone
+      });
       return new MfaRequiredDto();
+    }
 
     if (!mfaCode && userTwoFaToken)
       return new MfaRequiredDto('two-fa-required');
@@ -209,6 +217,15 @@ export class AuthService {
 
       if (userPhoneCode === phoneCode && !isWithinFiveMinutes)
         throw new SmsExpiredException();
+
+      await this.usersService.updateUserSettings({
+        payload: {
+          phoneCode: null,
+          codeSentAt: null
+        },
+        userId,
+        trx
+      });
     }
 
     if (mfaCode && userTwoFaToken) {
