@@ -43,7 +43,10 @@
     "wrong-passphrase-format": "Неверный формат парольной фразы",
     "wrong-passphrase-length": "Неверная длина парольной фразы",
     "wrong-phone-code-format": "Неверный формат телефонного кода",
-    "wrong-mfa-code-format": "Неверный формат кода MFA"
+    "wrong-mfa-code-format": "Неверный формат кода MFA",
+    "wrong-two-fa-token-format": "Неверный формат токена MFA",
+    "wrong-two-fa-token-length": "Неправильная длина токена MFA",
+    "corrupted-recovery-keys": "Поврежденные ключи восстановления"
   },
   "wrong-timeframe": "Неверный таймфрейм",
   "invalid-recovery-keys": "Недействительные ключи восстановления",

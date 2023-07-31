@@ -1,3 +1,5 @@
 export interface ConfirmEmailChangePayload {
-  password: string;
+  password?: string;
+  phoneCode?: string;
+  mfaCode?: string;
 }

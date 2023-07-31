@@ -43,7 +43,10 @@
     "wrong-passphrase-format": "Wrong passphrase format",
     "wrong-passphrase-length": "Wrong passphrase length",
     "wrong-phone-code-format": "Wrong phone code format",
-    "wrong-mfa-code-format": "Wrong MFA code format"
+    "wrong-mfa-code-format": "Wrong MFA code format",
+    "wrong-two-fa-token-format": "Wrong MFA token format",
+    "wrong-two-fa-token-length": "Wrong MFA token length",
+    "corrupted-recovery-keys": "Corrupted recovery keys"
   },
   "wrong-timeframe": "Wrong timeframe",
   "invalid-recovery-keys": "Invalid recovery keys",

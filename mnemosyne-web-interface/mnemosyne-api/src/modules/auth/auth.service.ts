@@ -40,6 +40,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
     private readonly timeService: TimeService,
+    @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
     private readonly phoneService: PhoneService,
     @Inject(forwardRef(() => UsersService))

@@ -4,13 +4,15 @@ import { ConfirmationHashService } from './confirmation-hash.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { UsersModule } from '@modules/users.module';
+import { AuthModule } from '@modules/auth.module';
 
 @Module({
   controllers: [ConfirmationHashController],
   providers: [ConfirmationHashService],
   imports: [
     SequelizeModule.forFeature([ConfirmationHash]),
-    forwardRef(() => UsersModule)
+    forwardRef(() => UsersModule),
+    AuthModule
   ],
   exports: [ConfirmationHashService]
 })
