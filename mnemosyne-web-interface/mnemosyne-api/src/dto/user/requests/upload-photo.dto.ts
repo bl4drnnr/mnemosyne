@@ -1,8 +1,7 @@
 import { Matches } from 'class-validator';
+import { ImageRegex } from '@regex/image.regex';
 
 export class UploadPhotoDto {
-  @Matches(/data:image\/png;base64,([^\"]*)/, {
-    message: 'user-photo-must-be-base64'
-  })
+  @Matches(ImageRegex, { message: 'user-photo-must-be-base64' })
   readonly userPhoto: string;
 }

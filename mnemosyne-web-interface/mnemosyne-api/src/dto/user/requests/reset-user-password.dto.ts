@@ -1,10 +1,10 @@
 import { IsOptional, IsString, Length, Matches } from 'class-validator';
+import { PasswordRegex } from '@regex/password.regex';
+import { MfaCodeRegex } from '@regex/mfa-code.regex';
 
 export class ResetUserPasswordDto {
   @IsOptional()
-  @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
-    message: 'wrong-password-format'
-  })
+  @Matches(PasswordRegex, { message: 'wrong-password-format' })
   readonly password: string;
 
   @IsString({ message: 'wrong-hash-format' })
@@ -12,10 +12,10 @@ export class ResetUserPasswordDto {
   readonly hash: string;
 
   @IsOptional()
-  @Matches(/^\d{6}$/, { message: 'mfa-code-should-be-6-digit-code' })
+  @Matches(MfaCodeRegex, { message: 'mfa-code-should-be-6-digit-code' })
   readonly mfaCode: string;
 
   @IsOptional()
-  @Matches(/^\d{6}$/, { message: 'phone-code-should-be-6-digit-code' })
+  @Matches(MfaCodeRegex, { message: 'phone-code-should-be-6-digit-code' })
   readonly phoneCode: string;
 }

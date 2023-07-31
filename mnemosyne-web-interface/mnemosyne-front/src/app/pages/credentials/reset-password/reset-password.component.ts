@@ -31,10 +31,10 @@ export class ResetPasswordComponent implements OnInit {
   isMfaRequired: boolean;
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private validationService: ValidationService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly authenticationService: AuthenticationService,
+    private readonly validationService: ValidationService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   async resetUserPassword() {

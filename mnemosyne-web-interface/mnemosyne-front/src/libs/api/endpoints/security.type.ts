@@ -14,5 +14,7 @@ export enum SECURITY_ENDPOINTS {
   VERIFY_MOBILE_PHONE = 'verify-mobile-phone',
   DISABLE_PHONE = 'disable-phone',
   CHANGE_PASSWORD = 'change-password',
-  GET_SMS_CODE = 'get-sms-code'
+  GET_SMS_CODE = 'get-sms-code',
+  CLEAR_SMS_CODE = 'clear-sms-code',
+  CHANGE_EMAIL = 'change-email'
 }

@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from '@pages/reset-password/reset-password.com
 import { HomeComponent } from '@pages/home/home.component';
 import { SettingsComponent } from '@pages/settings/settings.component';
 import { RecoverAccountComponent } from '@pages/recover-account/recover-account.component';
+import { EmailChangeConfirmationComponent } from '@pages/email-change-confirmation/email-change-confirmation.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,10 @@ const routes: Routes = [
   {
     path: 'recover-account',
     component: RecoverAccountComponent
+  },
+  {
+    path: 'email-change-confirmation/:hash',
+    component: EmailChangeConfirmationComponent
   },
   {
     path: 'account',

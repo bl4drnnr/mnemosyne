@@ -1,17 +1,19 @@
 import { IsOptional, IsString, Matches } from 'class-validator';
+import { PasswordRegex } from '@regex/password.regex';
+import { MfaCodeRegex } from '@regex/mfa-code.regex';
 
 export class DeleteAccountDto {
-  @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
+  @Matches(PasswordRegex, {
     message: 'wrong-password-format'
   })
   readonly password: string;
 
   @IsOptional()
-  @Matches(/^\d{6}$/, { message: 'mfa-code-should-be-6-digit-code' })
+  @Matches(MfaCodeRegex, { message: 'mfa-code-should-be-6-digit-code' })
   readonly mfaCode: string;
 
   @IsOptional()
-  @Matches(/^\d{6}$/, { message: 'phone-code-should-be-6-digit-code' })
+  @Matches(MfaCodeRegex, { message: 'phone-code-should-be-6-digit-code' })
   readonly phoneCode: string;
 
   @IsOptional()

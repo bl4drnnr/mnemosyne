@@ -8,18 +8,14 @@ import {
   Matches
 } from 'class-validator';
 import { LANGUAGE_TYPES } from '@interfaces/language.types';
-import { IsNull } from 'sequelize-typescript';
+import { EmailRegex } from '@regex/email.regex';
+import { PasswordRegex } from '@regex/password.regex';
 
 export class CreateUserDto {
-  @Matches(
-    /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/,
-    { message: 'wrong-email-format' }
-  )
+  @Matches(EmailRegex, { message: 'wrong-email-format' })
   readonly email: string;
 
-  @Matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
-    message: 'wrong-password-format'
-  })
+  @Matches(PasswordRegex, { message: 'wrong-password-format' })
   readonly password: string;
 
   @IsString({ message: 'wrong-first-name-format' })

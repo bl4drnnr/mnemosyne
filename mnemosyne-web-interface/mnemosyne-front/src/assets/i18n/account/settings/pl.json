@@ -37,7 +37,8 @@
   "email": {
     "changeEmail": "Zmień email",
     "changeEmailDesc": "Zmień adres e-mail, ale bądź ostrożny! Możesz zmienić swój adres e-mail tylko raz! Aby zmienić adres e-mail swojego konta, musisz kliknąć link w wiadomości e-mail.",
-    "emailAlreadyChanged": "E-mail został już zmieniony. Możesz zmienić swój e-mail tylko raz!"
+    "emailAlreadyChanged": "E-mail został już zmieniony. Możesz zmienić swój e-mail tylko raz!",
+    "emailChangeSent": "E-mail potwierdzający zmianę adresu e-mail został wysłany"
   },
   "deleteAcc": {
     "deleteAcc": "Usuń konto",

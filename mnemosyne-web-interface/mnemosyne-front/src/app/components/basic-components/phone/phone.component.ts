@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ValidationService } from '@services/validation.service';
 import { TranslocoService } from '@ngneat/transloco';
 
@@ -6,11 +6,12 @@ import { TranslocoService } from '@ngneat/transloco';
   selector: 'basic-phone',
   templateUrl: './phone.component.html'
 })
-export class PhoneComponent {
+export class PhoneComponent implements OnInit {
   @Input() phoneInput: string | null;
   @Input() readOnly = false;
   @Input() phoneCodeSent: boolean;
   @Input() onWhite = false;
+  @Input() startCountdownManually = false;
   @Output() sendSmsCode = new EventEmitter<string | null>();
   @Output() runningCountdown = new EventEmitter<boolean>();
 
@@ -54,5 +55,9 @@ export class PhoneComponent {
         'components/input'
       );
     }, 1000);
+  }
+
+  ngOnInit(): void {
+    if (this.startCountdownManually) this.startCountdown();
   }
 }

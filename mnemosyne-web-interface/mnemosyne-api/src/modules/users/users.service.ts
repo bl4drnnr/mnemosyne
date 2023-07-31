@@ -253,7 +253,8 @@ export class UsersService {
         mfaCode,
         phoneCode,
         userSettings: user.userSettings,
-        userId: user.id
+        userId: user.id,
+        trx
       });
 
       if (mfaStatusResponse) return mfaStatusResponse;

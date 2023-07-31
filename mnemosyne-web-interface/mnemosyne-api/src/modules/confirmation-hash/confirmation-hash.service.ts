@@ -1,7 +1,6 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
-import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { HashNotFoundException } from '@exceptions/hash-not-found.exception';
 import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
 import { AccountConfirmedDto } from '@dto/account-confirmed.dto';
@@ -10,10 +9,15 @@ import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { UsersService } from '@modules/users.service';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
+import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
+import { EmailChangedDto } from '@dto/email-changed.dto';
+import { AuthService } from '@modules/auth.service';
 
 @Injectable()
 export class ConfirmationHashService {
   constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     @InjectModel(ConfirmationHash)
@@ -24,7 +28,7 @@ export class ConfirmationHashService {
     payload,
     trx: transaction
   }: {
-    payload: VerificationEmailInterface;
+    payload: Partial<ConfirmationHash>;
     trx?: Transaction;
   }) {
     await this.confirmationHashRepository.create(
@@ -32,7 +36,7 @@ export class ConfirmationHashService {
         userId: payload.userId,
         confirmationHash: payload.confirmationHash,
         confirmationType: payload.confirmationType,
-        changingEmail: payload.email
+        changingEmail: payload.changingEmail
       },
       { transaction }
     );
@@ -123,5 +127,65 @@ export class ConfirmationHashService {
     );
 
     return new AccountConfirmedDto();
+  }
+
+  async confirmEmailChange({
+    confirmationHash,
+    payload,
+    trx
+  }: {
+    confirmationHash: string;
+    payload: ConfirmEmailChangeDto;
+    trx?: Transaction;
+  }) {
+    const foundHash = await this.confirmationHashRepository.findOne({
+      where: { confirmationHash },
+      transaction: trx
+    });
+
+    if (!foundHash) throw new HashNotFoundException();
+
+    const user = await this.userService.getUserById({
+      id: foundHash.userId,
+      trx
+    });
+
+    try {
+      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
+        mfaCode: payload.mfaCode,
+        phoneCode: payload.phoneCode,
+        userSettings: user.userSettings,
+        userId: user.id,
+        trx
+      });
+
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.message, e.status);
+    }
+
+    await this.userService.verifyUserCredentials({
+      email: user.email,
+      password: payload.password,
+      trx
+    });
+
+    await this.userService.updateUser({
+      payload: { email: foundHash.changingEmail },
+      userId: user.id,
+      trx
+    });
+
+    await this.confirmationHashRepository.update(
+      {
+        confirmed: true
+      },
+      {
+        where: { id: foundHash.id },
+        transaction: trx
+      }
+    );
+
+    return new EmailChangedDto();
   }
 }

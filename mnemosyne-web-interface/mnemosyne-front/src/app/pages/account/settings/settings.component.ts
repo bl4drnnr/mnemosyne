@@ -82,7 +82,18 @@ export class SettingsComponent {
         'settings'
       ),
       isError: false
-    })
+    });
+  }
+
+  changeEmailSent() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate(
+        'email.emailChangeSent',
+        {},
+        'settings'
+      ),
+      isError: false
+    });
   }
 
   getUserSecuritySettings() {

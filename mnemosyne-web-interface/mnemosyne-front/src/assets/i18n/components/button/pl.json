@@ -20,5 +20,6 @@
   "downloadRecoveryKeys": "Pobierz klucze odzyskiwania",
   "uploadRecoveryKeys": "Prześlij klucze odzyskiwania",
   "recoverAcc": "Odzyskaj konto",
-  "changePassword": "Zmień hasło"
+  "changePassword": "Zmień hasło",
+  "changeEmail": "Zmień e-mail"
 }

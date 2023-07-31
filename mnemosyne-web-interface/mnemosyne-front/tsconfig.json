@@ -51,13 +51,15 @@
         "src/libs/api/responses/phone/*",
         "src/libs/api/responses/recovery/*",
         "src/libs/api/responses/users/*",
+        "src/libs/api/responses/email/*"
       ],
       "@payloads/*": [
         "src/libs/api/payloads/auth/*",
         "src/libs/api/payloads/mfa/*",
         "src/libs/api/payloads/phone/*",
         "src/libs/api/payloads/recovery/*",
-        "src/libs/api/payloads/users/*"
+        "src/libs/api/payloads/users/*",
+        "src/libs/api/payloads/email/*"
       ],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
