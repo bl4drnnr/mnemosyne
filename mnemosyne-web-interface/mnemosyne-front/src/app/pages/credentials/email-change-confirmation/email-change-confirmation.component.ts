@@ -3,11 +3,21 @@ import { EmailService } from '@services/email.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEmailChangePayload } from '@payloads/confirm-email-change.payload';
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
+import { animate, style, transition, trigger } from '@angular/animations';
 
 @Component({
   selector: 'app-email-change-confirmation',
   templateUrl: './email-change-confirmation.component.html',
-  styleUrls: ['./email-change-confirmation.component.scss']
+  styleUrls: ['../shared/credentials.component.scss'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('0s', style({ opacity: 0 })),
+        animate('0.5s ease-in-out', style({ opacity: 1 }))
+      ])
+    ])
+  ]
 })
 export class EmailChangeConfirmationComponent implements OnInit {
   step = 1;
