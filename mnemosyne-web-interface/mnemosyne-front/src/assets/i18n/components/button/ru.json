@@ -20,5 +20,6 @@
   "downloadRecoveryKeys": "Скачать ключи восстановления",
   "uploadRecoveryKeys": "Загрузить ключи восстановления",
   "recoverAcc": "Восстановить аккаунт",
-  "changePassword": "Изменить пароль"
+  "changePassword": "Изменить пароль",
+  "changeEmail": "Изменить адрес электронной почты"
 }

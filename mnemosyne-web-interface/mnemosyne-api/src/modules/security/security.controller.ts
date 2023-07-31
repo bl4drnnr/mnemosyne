@@ -23,7 +23,6 @@ import { DeleteAccountDto } from '@dto/delete-account.dto';
 import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { ChangePasswordDto } from '@dto/change-password.dto';
-import { VerifySmsCode } from '@dto/verify-sms-code';
 import { ChangeEmailDto } from '@dto/change-email.dto';
 
 @Controller('security')

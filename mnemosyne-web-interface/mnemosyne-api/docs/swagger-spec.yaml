@@ -77,6 +77,24 @@ paths:
       responses:
         "200":
           description: ""
+  /api/confirmation-hash/email-change-confirmation:
+    post:
+      operationId: ConfirmationHashController_confirmEmailChange
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmEmailChangeDto"
+      responses:
+        "201":
+          description: ""
   /api/auth/login:
     post:
       operationId: AuthController_login
@@ -462,6 +480,9 @@ components:
       type: object
       properties: {}
     UpdateUserInfoDto:
+      type: object
+      properties: {}
+    ConfirmEmailChangeDto:
       type: object
       properties: {}
     LogInUserDto:

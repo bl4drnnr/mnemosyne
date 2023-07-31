@@ -6,9 +6,10 @@ import { RegistrationComponent } from '@pages/registration/registration.componen
 import { ComponentsModule } from '@components/components.module';
 import { AccountConfirmationComponent } from './account-confirmation/account-confirmation.component';
 import { LayoutsModule } from '@layouts/layouts.module';
-import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordComponent } from '@pages/reset-password/reset-password.component';
 import { TranslocoModule } from '@ngneat/transloco';
-import { RecoverAccountComponent } from './recover-account/recover-account.component';
+import { RecoverAccountComponent } from '@pages/recover-account/recover-account.component';
+import { EmailChangeConfirmationComponent } from '@pages/email-change-confirmation/email-change-confirmation.component';
 
 const components = [
   ForgotPasswordComponent,
@@ -16,7 +17,8 @@ const components = [
   RegistrationComponent,
   AccountConfirmationComponent,
   ResetPasswordComponent,
-  RecoverAccountComponent
+  RecoverAccountComponent,
+  EmailChangeConfirmationComponent
 ];
 
 @NgModule({

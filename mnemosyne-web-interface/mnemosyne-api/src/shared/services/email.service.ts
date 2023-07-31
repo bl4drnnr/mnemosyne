@@ -111,7 +111,7 @@ export class EmailService {
     const confirmationLink = `${this.configService.frontEndUrl}/email-change-confirmation/${payload.confirmationHash}`;
 
     const { htmlPayload, subject } =
-      this.emailTemplatesService.registrationEmailTemplate({
+      this.emailTemplatesService.emailChangeEmailTemplate({
         userInfo,
         confirmationLink,
         language

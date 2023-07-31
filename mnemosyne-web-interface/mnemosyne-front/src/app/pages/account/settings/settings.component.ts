@@ -85,6 +85,17 @@ export class SettingsComponent {
     });
   }
 
+  changeEmailSent() {
+    this.globalMessageService.handle({
+      message: this.translocoService.translate(
+        'email.emailChangeSent',
+        {},
+        'settings'
+      ),
+      isError: false
+    });
+  }
+
   getUserSecuritySettings() {
     this.usersService.getUserSecuritySettings().subscribe({
       next: (userSecurity) => (this.userSecurity = userSecurity)

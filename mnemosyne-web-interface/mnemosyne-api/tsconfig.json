@@ -63,8 +63,12 @@
         "src/libs/interfaces/*",
         "src/libs/types/*"
       ],
-      "@email-templates/*": ["src/libs/email-templates/*"],
-      "@interceptors/*": ["src/interceptors/*"]
+      "@email-templates/*": [
+        "src/libs/email-templates/*",
+        "src/libs/email-templates/security/*"
+      ],
+      "@interceptors/*": ["src/interceptors/*"],
+      "@regex/*": ["src/libs/regex/*"]
     }
   }
 }

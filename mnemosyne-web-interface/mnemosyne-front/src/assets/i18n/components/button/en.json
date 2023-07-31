@@ -20,5 +20,6 @@
   "downloadRecoveryKeys": "Download recovery keys",
   "uploadRecoveryKeys": "Upload recovery keys",
   "recoverAcc": "Recover account",
-  "changePassword": "Change password"
+  "changePassword": "Change password",
+  "changeEmail": "Change email"
 }

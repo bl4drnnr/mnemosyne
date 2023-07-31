@@ -9,6 +9,8 @@ import { TranslocoService } from '@ngneat/transloco';
 import { UsersService } from '@services/users.service';
 import { PasswordChangedResponse } from '@responses/password-changed.response';
 import { ChangePasswordPayload } from '@payloads/change-password.payload';
+import { EmailService } from '@services/email.service';
+import { ChangeEmailPayload } from '@payloads/change-email.payload';
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -23,6 +25,7 @@ export class SecuritySettingsComponent {
   @Output() unsetPhone = new EventEmitter<void>();
   @Output() passwordChanged = new EventEmitter<void>();
   @Output() userSettingsReInit = new EventEmitter<void>();
+  @Output() changeEmailSent = new EventEmitter<void>();
 
   set2faModal: boolean;
   qrCode: string;
@@ -41,6 +44,8 @@ export class SecuritySettingsComponent {
   disableMobilePhoneModal: boolean;
 
   changeEmailModal: boolean;
+  newEmail: string;
+  incorrectNewEmail: boolean;
 
   changePasswordModal: boolean;
   currentPassword: string;
@@ -62,11 +67,12 @@ export class SecuritySettingsComponent {
     private readonly usersService: UsersService,
     private readonly recoveryService: RecoveryService,
     private readonly translocoService: TranslocoService,
+    private readonly emailService: EmailService,
     private readonly refreshTokensService: RefreshTokensService,
     private readonly globalMessageService: GlobalMessageService
   ) {}
 
-  async generateTwoFaQrCode() {
+  generateTwoFaQrCode() {
     this.mfaService.generateTwoFaQrCode().subscribe({
       next: ({ qr, secret }) => {
         this.qrCode = qr;
@@ -81,7 +87,7 @@ export class SecuritySettingsComponent {
     return this.mfaCode.length !== 6;
   }
 
-  async verifyTwoFaQrCode() {
+  verifyTwoFaQrCode() {
     if (this.disableVerifyTwoFaQr()) return;
 
     this.mfaService
@@ -91,7 +97,7 @@ export class SecuritySettingsComponent {
       })
       .subscribe({
         next: () => {
-          this.set2faModal = false;
+          this.closeSet2faModal();
           this.setTwoFa.emit();
           this.userSettingsReInit.emit();
         }
@@ -102,19 +108,19 @@ export class SecuritySettingsComponent {
     return this.disableTwoFaCode.length !== 6;
   }
 
-  async disableTwoFa() {
+  disableTwoFa() {
     if (this.twoFaButtonDisable()) return;
 
     this.mfaService.disableTwoFa({ code: this.disableTwoFaCode }).subscribe({
       next: () => {
-        this.disable2faModal = false;
+        this.closeDisable2faModal();
         this.unsetTwoFa.emit();
         this.userSettingsReInit.emit();
       }
     });
   }
 
-  async sendSmsCode(phone: string | null) {
+  sendSmsCode(phone: string | null) {
     if (phone) {
       this.phone = phone;
 
@@ -132,7 +138,7 @@ export class SecuritySettingsComponent {
     return !this.phoneCodeSent || this.phoneCode.length !== 6;
   }
 
-  async verifyMobilePhone() {
+  verifyMobilePhone() {
     if (this.verifyPhoneDisable()) return;
 
     this.phoneService
@@ -142,7 +148,7 @@ export class SecuritySettingsComponent {
       })
       .subscribe({
         next: () => {
-          this.setMobilePhoneModal = false;
+          this.closeSetMobilePhoneModal();
           this.setPhone.emit();
           this.userSettingsReInit.emit();
         }
@@ -156,7 +162,7 @@ export class SecuritySettingsComponent {
       })
       .subscribe({
         next: () => {
-          this.disableMobilePhoneModal = false;
+          this.closeDisableMobilePhoneModal();
           this.unsetPhone.emit();
           this.userSettingsReInit.emit();
         }
@@ -196,13 +202,30 @@ export class SecuritySettingsComponent {
               this.changePassMfaRequired = true;
               break;
             case PasswordChangedResponse.PASSWORD_CHANGED:
-              this.changePasswordModal = false;
+              this.closeChangePasswordModal();
               this.passwordChanged.emit();
               this.userSettingsReInit.emit();
               break;
           }
         }
       });
+  }
+
+  changeEmail() {
+    if (!this.newEmail || this.incorrectNewEmail) return;
+
+    const changeEmailPayload: ChangeEmailPayload = { newEmail: this.newEmail };
+
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) changeEmailPayload.language = language;
+
+    this.emailService.changeEmail(changeEmailPayload).subscribe({
+      next: () => {
+        this.closeChangeEmailModal();
+        this.changeEmailSent.emit();
+      }
+    });
   }
 
   confirmRecoveryKeysSetup() {
@@ -256,6 +279,7 @@ export class SecuritySettingsComponent {
 
   closeChangeEmailModal() {
     this.changeEmailModal = false;
+    this.newEmail = '';
   }
 
   closeDeleteAccountModal() {

@@ -228,7 +228,25 @@
       [description]="t('settings.email.changeEmailDesc')"
       [showModal]="changeEmailModal"
       (closeModal)="closeChangeEmailModal()"
-    ></basic-modal>
+    >
+      <basic-input
+        type="email"
+        [label]="t('input.provideEmail')"
+        [placeholder]="t('input.email')"
+        [errorMessage]="t('input.wrongEmailFormat')"
+        [value]="newEmail"
+        (valueChange)="newEmail = $event"
+        (incorrectInput)="incorrectNewEmail = $event"
+      />
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [disabled]="!newEmail || incorrectNewEmail"
+          [label]="t('button.changeEmail')"
+          (buttonClick)="changeEmail()"
+        />
+      </div>
+    </basic-modal>
 
     <security-setting-section
       [showSection]="userSecurity.emailChanged"

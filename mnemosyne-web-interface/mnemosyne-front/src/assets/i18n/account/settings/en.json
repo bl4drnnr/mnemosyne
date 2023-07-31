@@ -37,7 +37,8 @@
   "email": {
     "changeEmail": "Change email",
     "changeEmailDesc": "Change your email, but be careful! You are allowed to change your email address only one time! In order to change email address of your account you will need to click in the link in the email.",
-    "emailAlreadyChanged": "Email has already been changed. You are allowed to change your email only one time!"
+    "emailAlreadyChanged": "Email has already been changed. You are allowed to change your email only one time!",
+    "emailChangeSent": "Confirmation email for the email change has been sent"
   },
   "deleteAcc": {
     "deleteAcc": "Delete account",
