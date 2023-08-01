@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { Router } from '@angular/router';
 import {
@@ -8,7 +8,8 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'basic-home',
@@ -44,19 +45,14 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
         )
       ])
     ])
-  ],
-  providers: [
-    {
-      provide: TRANSLOCO_SCOPE,
-      useValue: [{ scope: 'credentials/registration', alias: 'reg' }]
-    }
   ]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   currentTypingText = 1;
 
   constructor(
     private readonly envService: EnvService,
+    private readonly pageTitleService: PageTitleService,
     private readonly router: Router
   ) {}
 
@@ -66,5 +62,9 @@ export class HomeComponent {
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.HOME);
   }
 }

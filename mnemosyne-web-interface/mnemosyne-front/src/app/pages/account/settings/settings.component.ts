@@ -1,24 +1,35 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserInfoResponse } from '@responses/user-info.response';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { UsersService } from '@services/users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
 import { UserSecurityResponse } from '@responses/user-security.response';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'component-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent {
-  userInfo: UserInfoResponse;
+export class SettingsComponent implements OnInit {
+  userId: string;
+  firstName: string;
+  lastName: string;
+  location: string;
+  company: string;
+  website: string;
+  email: string;
+  isProfilePicPresent: boolean;
+
   userSecurity: UserSecurityResponse;
   currentSection: 'personal' | 'security' = 'personal';
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
     private readonly refreshTokensService: RefreshTokensService,
+    private readonly pageTitleService: PageTitleService,
     private readonly translocoService: TranslocoService,
     private readonly usersService: UsersService
   ) {}
@@ -103,11 +114,22 @@ export class SettingsComponent {
   }
 
   async ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.SETTINGS);
+
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
 
     if (userInfoRequest)
       userInfoRequest.subscribe({
-        next: (userInfo) => (this.userInfo = userInfo)
+        next: (userInfo) => {
+          this.userId = userInfo.userId;
+          this.firstName = userInfo.firstName;
+          this.lastName = userInfo.lastName;
+          this.location = userInfo.location;
+          this.company = userInfo.company;
+          this.website = userInfo.website;
+          this.email = userInfo.email;
+          this.isProfilePicPresent = userInfo.isProfilePicPresent;
+        }
       });
 
     this.getUserSecuritySettings();

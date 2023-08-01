@@ -1,8 +1,8 @@
 <ng-container *transloco="let t">
   <div class="personal-settings-container">
     <dashboard-user-photo
-      [isProfilePicPresent]="userInfo.isProfilePicPresent"
-      [userId]="userInfo.userId"
+      [isProfilePicPresent]="isProfilePicPresent"
+      [userId]="userId"
     />
     <div class="personal-settings-inputs">
       <h3>{{ t('settings.managePersonalSettings') }}</h3>
@@ -13,26 +13,26 @@
         [label]="t('input.provideFirstName')"
         [placeholder]="t('input.firstName')"
         [inputDescription]="t('input.fieldRequired')"
-        [value]="userInfo.firstName"
+        [value]="firstName"
         [minLength]="1"
         [maxLength]="64"
-        (valueChange)="userInfo.firstName = $event"
+        (valueChange)="firstName = $event"
         (incorrectInput)="incorrectFirstName = $event"
       />
       <basic-input
         [label]="t('input.provideLastName')"
         [placeholder]="t('input.lastName')"
         [inputDescription]="t('input.fieldRequired')"
-        [value]="userInfo.lastName"
+        [value]="lastName"
         [minLength]="1"
         [maxLength]="64"
-        (valueChange)="userInfo.lastName = $event"
+        (valueChange)="lastName = $event"
         (incorrectInput)="incorrectLastName = $event"
       />
 
       <basic-input
         [label]="t('input.email')"
-        [value]="userInfo.email"
+        [value]="email"
         [disabled]="true"
         [inputDescription]="t('input.emailChangeInfo')"
       />
@@ -44,10 +44,10 @@
         [placeholder]="t('input.provideLocation')"
         [inputDescription]="t('input.locationDesc')"
         [errorMessage]="t('input.locationError')"
-        [value]="userInfo.location"
+        [value]="location"
         [minLength]="8"
         [maxLength]="128"
-        (valueChange)="userInfo.location = $event"
+        (valueChange)="location = $event"
         (incorrectInput)="incorrectLocationName = $event"
       />
       <basic-input
@@ -55,20 +55,20 @@
         [placeholder]="t('input.provideCompany')"
         [inputDescription]="t('input.companyDesc')"
         [errorMessage]="t('input.companyError')"
-        [value]="userInfo.company"
+        [value]="company"
         [minLength]="2"
         [maxLength]="64"
-        (valueChange)="userInfo.company = $event"
+        (valueChange)="company = $event"
         (incorrectInput)="incorrectCompanyName = $event"
       />
       <basic-input
         [label]="t('input.website')"
         [placeholder]="t('input.provideWebsite')"
         [inputDescription]="t('input.websiteDesc')"
-        [showError]="!validationService.isFQDN(userInfo.website)"
+        [showError]="!validationService.isFQDN(website)"
         [errorMessage]="t('input.wrongFQDN')"
-        [value]="userInfo.website"
-        (valueChange)="userInfo.website = $event"
+        [value]="website"
+        (valueChange)="website = $event"
       />
 
       <div class="dived-line"></div>

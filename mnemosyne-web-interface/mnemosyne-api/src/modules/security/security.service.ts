@@ -38,6 +38,7 @@ import { EmailAlreadyTakenException } from '@exceptions/email-already-taken.exce
 import { EmailService } from '@shared/email.service';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { EmailChangeEmailSentDto } from '@dto/email-change-email-sent.dto';
+import { PasswordChangedException } from '@exceptions/password-changed.exception';
 
 @Injectable()
 export class SecurityService {
@@ -59,7 +60,7 @@ export class SecurityService {
     trx?: Transaction;
   }) {
     const { userId } =
-      await this.confirmationHashService.getUserByConfirmationHash({
+      await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
         trx
       });
@@ -107,7 +108,7 @@ export class SecurityService {
     trx?: Transaction;
   }) {
     const { userId } =
-      await this.confirmationHashService.getUserByConfirmationHash({
+      await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
         trx
       });
@@ -217,7 +218,7 @@ export class SecurityService {
     trx?: Transaction;
   }) {
     const { userId } =
-      await this.confirmationHashService.getUserByConfirmationHash({
+      await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
         trx
       });
@@ -271,6 +272,27 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
+  async hashSendSmsCode({
+    confirmationHash,
+    trx
+  }: {
+    confirmationHash: string;
+    trx?: Transaction;
+  }) {
+    const user = await this.confirmationHashService.getUserByConfirmationHash({
+      confirmationHash,
+      trx
+    });
+
+    await this.phoneService.verifyAndResendSmsCode({
+      phone: user.userSettings.phone,
+      userId: user.id,
+      trx
+    });
+
+    return new SmsCodeSentDto();
+  }
+
   async getSmsCode({ userId, trx }: { userId: string; trx?: Transaction }) {
     const user = await this.userService.getUserById({
       id: userId,
@@ -318,7 +340,7 @@ export class SecurityService {
     trx?: Transaction;
   }) {
     const { userId } =
-      await this.confirmationHashService.getUserByConfirmationHash({
+      await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
         trx
       });
@@ -475,6 +497,13 @@ export class SecurityService {
       id: userId,
       trx
     });
+
+    const isWithinDay = this.timeService.isWithinTimeframe({
+      time: user.userSettings.passwordChanged,
+      seconds: 86400
+    });
+
+    if (isWithinDay) throw new PasswordChangedException();
 
     const passwordEquals = await bcryptjs.compare(
       payload.currentPassword,

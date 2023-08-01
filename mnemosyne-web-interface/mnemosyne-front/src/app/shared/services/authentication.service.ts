@@ -73,8 +73,8 @@ export class AuthenticationService {
   }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.USERS,
-      action: AUTH_ENDPOINTS.RESET_USER_PASSWORD,
+      controller: CONTROLLERS.CONFIRMATION_HASH,
+      action: CONFIRMATION_ENDPOINTS.RESET_USER_PASSWORD_CONFIRMATION,
       payload
     });
   }

@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { RecoveryService } from '@services/recovery.service';
 import { Router } from '@angular/router';
 import { ValidationService } from '@services/validation.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'page-recover-account',
@@ -20,7 +22,7 @@ import { TranslocoService } from '@ngneat/transloco';
     ])
   ]
 })
-export class RecoverAccountComponent {
+export class RecoverAccountComponent implements OnInit {
   step = 1;
   passphrase: string;
   recoveryKey1: string;
@@ -34,8 +36,13 @@ export class RecoverAccountComponent {
     private readonly translocoService: TranslocoService,
     private readonly validationService: ValidationService,
     private readonly globalMessageService: GlobalMessageService,
+    private readonly pageTitleService: PageTitleService,
     private readonly router: Router
   ) {}
+
+  ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.RECOVER_ACCOUNT);
+  }
 
   recoverAccount() {
     this.recoveryService

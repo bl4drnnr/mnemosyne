@@ -1,10 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { LoginResponse } from '@responses/login.response';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { PhoneService } from '@services/phone.service';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'page-login',
@@ -20,7 +22,7 @@ import { PhoneService } from '@services/phone.service';
     ])
   ]
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   step = 2;
 
   email: string;
@@ -41,6 +43,7 @@ export class LoginComponent {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly validationService: ValidationService,
+    private readonly pageTitleService: PageTitleService,
     private readonly smsService: PhoneService,
     private readonly router: Router
   ) {}
@@ -115,5 +118,17 @@ export class LoginComponent {
           }
         }
       });
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
+  }
+
+  async ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.LOGIN);
+
+    const accessToken = localStorage.getItem('_at');
+
+    if (accessToken) await this.handleRedirect('account/dashboard');
   }
 }

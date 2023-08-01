@@ -1,7 +1,7 @@
 import { S3 } from 'aws-sdk';
 import * as crypto from 'crypto';
 import * as bcryptjs from 'bcryptjs';
-import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@models/user.model';
 import { CreateUserDto } from '@dto/create-user.dto';
@@ -11,24 +11,21 @@ import { UserSettings } from '@models/user-settings.model';
 import { ForgotPasswordDto } from '@dto/forgot-password.dto';
 import { EmailService } from '@shared/email.service';
 import { Sequelize } from 'sequelize-typescript';
-import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { ApiConfigService } from '@shared/config.service';
 import { AuthService } from '@modules/auth.service';
-import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
-import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
-import { LinkExpiredException } from '@exceptions/link-expired.exception';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { TimeService } from '@shared/time.service';
 import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
+import { PasswordChangedException } from '@exceptions/password-changed.exception';
 
 @Injectable()
 export class UsersService {
@@ -172,22 +169,29 @@ export class UsersService {
     payload: ForgotPasswordDto;
     trx?: Transaction;
   }) {
-    const user = await this.userRepository.findOne({
-      where: { email: payload.email },
-      transaction: trx
+    const user = await this.getUserByEmail({
+      email: payload.email,
+      trx
     });
 
     if (!user) return new ResetPasswordEmailDto();
 
-    const userLastPasswordReset =
-      await this.confirmationHashService.getUserLastPasswordReset({
+    const isWithinDay = this.timeService.isWithinTimeframe({
+      time: user.userSettings.passwordChanged,
+      seconds: 86400
+    });
+
+    if (isWithinDay) throw new PasswordChangedException();
+
+    const userLastPasswordResent =
+      await this.confirmationHashService.getUserLastPasswordResetHash({
         userId: user.id,
         trx
       });
 
-    if (userLastPasswordReset) {
+    if (userLastPasswordResent) {
       const isWithinThreeMinutes = this.timeService.isWithinTimeframe({
-        time: userLastPasswordReset.createdAt,
+        time: userLastPasswordResent.createdAt,
         seconds: 180
       });
 
@@ -212,75 +216,6 @@ export class UsersService {
     });
 
     return new ResetPasswordEmailDto();
-  }
-
-  async resetUserPassword({
-    payload,
-    trx
-  }: {
-    payload: ResetUserPasswordDto;
-    trx?: Transaction;
-  }) {
-    const { password, hash, phoneCode, mfaCode } = payload;
-
-    const forgotPasswordHash =
-      await this.confirmationHashService.getUserByConfirmationHash({
-        confirmationHash: hash
-      });
-
-    if (forgotPasswordHash && !password) return;
-
-    const { createdAt } =
-      await this.confirmationHashService.getConfirmationHash({
-        confirmationHash: hash,
-        trx
-      });
-
-    const isWithinDay = this.timeService.isWithinTimeframe({
-      time: createdAt,
-      seconds: 86400
-    });
-
-    if (!isWithinDay) throw new LinkExpiredException();
-
-    const user = await this.userRepository.findByPk(forgotPasswordHash.userId, {
-      transaction: trx,
-      include: [{ all: true }]
-    });
-
-    try {
-      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
-        mfaCode,
-        phoneCode,
-        userSettings: user.userSettings,
-        userId: user.id,
-        trx
-      });
-
-      if (mfaStatusResponse) return mfaStatusResponse;
-    } catch (e: any) {
-      throw new HttpException(e.response.message, e.status);
-    }
-
-    const hashedPassword = await bcryptjs.hash(
-      password,
-      this.configService.hashPasswordRounds
-    );
-
-    const isPreviousPassword = await bcryptjs.compare(
-      hashedPassword,
-      user.password
-    );
-
-    if (isPreviousPassword) throw new PreviousPasswordException();
-
-    await this.updateUser({
-      payload: { password: hashedPassword },
-      userId: forgotPasswordHash.userId,
-      trx
-    });
-
-    return new PasswordResetDto();
   }
 
   async uploadUserPhoto({
@@ -366,16 +301,17 @@ export class UsersService {
       trx
     });
 
-    const passwordCanBeChanged = userSettings.passwordChanged
-      ? this.timeService.isWithinTimeframe({
-          time: userSettings.passwordChanged,
-          seconds: 86400
-        })
-      : true;
+    const isWithinDay = this.timeService.isWithinTimeframe({
+      time: userSettings.passwordChanged,
+      seconds: 86400
+    });
 
     const emailChanged = !!userSettings.emailChanged;
     const isTwoFaSetUp = !!userSettings.twoFaToken;
     const isSetUp = !!userSettings.phone;
+    const passwordCanBeChanged = userSettings.passwordChanged
+      ? !isWithinDay
+      : true;
     const twoLastDigit = !!userSettings.phone
       ? userSettings.phone.slice(-2)
       : null;

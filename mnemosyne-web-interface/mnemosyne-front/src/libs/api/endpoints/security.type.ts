@@ -16,5 +16,6 @@ export enum SECURITY_ENDPOINTS {
   CHANGE_PASSWORD = 'change-password',
   GET_SMS_CODE = 'get-sms-code',
   CLEAR_SMS_CODE = 'clear-sms-code',
-  CHANGE_EMAIL = 'change-email'
+  CHANGE_EMAIL = 'change-email',
+  HASH_SEND_SMS_CODE = 'hash-send-sms-code'
 }

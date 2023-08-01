@@ -27,7 +27,7 @@ export class RecoveryService {
     trx?: Transaction;
   }) {
     const { userId } =
-      await this.confirmationHashService.getUserByConfirmationHash({
+      await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
         trx
       });

@@ -4,6 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmEmailChangePayload } from '@payloads/confirm-email-change.payload';
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'app-email-change-confirmation',
@@ -32,7 +34,8 @@ export class EmailChangeConfirmationComponent implements OnInit {
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly emailService: EmailService
+    private readonly emailService: EmailService,
+    private readonly pageTitleService: PageTitleService
   ) {}
 
   confirmEmailChange(hash: string) {
@@ -76,6 +79,8 @@ export class EmailChangeConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.EMAIL_CHANGE_CONFIRMATION);
+
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');
 
