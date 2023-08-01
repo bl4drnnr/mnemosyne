@@ -69,6 +69,7 @@
       "@interceptors/*": ["src/app/interceptors/*"],
       "@interfaces/*": [
         "src/libs/interfaces/components/*",
+        "src/libs/interfaces/pages/*",
         "src/libs/interfaces/*",
         "src/libs/api/controllers/*",
         "src/libs/api/endpoints/*",

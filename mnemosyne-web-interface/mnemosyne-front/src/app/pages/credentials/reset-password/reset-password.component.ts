@@ -5,6 +5,8 @@ import { ResetUserPasswordResponse } from '@responses/reset-user-password.respon
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { PhoneService } from '@services/phone.service';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'page-reset-password',
@@ -34,6 +36,7 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly validationService: ValidationService,
+    private readonly pageTitleService: PageTitleService,
     private readonly phoneService: PhoneService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
@@ -101,6 +104,8 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.RESET_PASSWORD);
+
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');
       if (!hash) await this.handleRedirect('login');

@@ -1,0 +1,13 @@
+{
+  "дом": "Mnemosyne | Домашняя",
+  "tac": "Mnemosyne | Условия и положения",
+  "resetPassword": "Mnemosyne | Сбросить пароль",
+  "registration": "Mnemosyne | Регистрация",
+  "forgotPassword": "Mnemosyne | Забыли пароль",
+  "accConfirm": "Mnemosyne | Подтверждение учетной записи",
+  "dashboard": "Mnemosyne | Панель управления",
+  "settings": "Mnemosyne | Настройки",
+  "recoverAccount": "Mnemosyne | Восстановить аккаунт",
+  "emailChangeConfirm": "Mnemosyne | Подтверждение изменения по электронной почте",
+  "login": "Mnemosyne | Войти"
+}

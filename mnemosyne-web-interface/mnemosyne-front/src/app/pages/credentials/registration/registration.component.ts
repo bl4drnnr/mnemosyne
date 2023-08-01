@@ -1,9 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { RegistrationPayload } from '@payloads/registration.payload';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'page-registration',
@@ -19,7 +21,7 @@ import { RegistrationPayload } from '@payloads/registration.payload';
     ])
   ]
 })
-export class RegistrationComponent {
+export class RegistrationComponent implements OnInit {
   step = 1;
   tac = false;
 
@@ -41,9 +43,14 @@ export class RegistrationComponent {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
-    public validationService: ValidationService,
-    private readonly router: Router
+    private readonly pageTitleService: PageTitleService,
+    private readonly router: Router,
+    public validationService: ValidationService
   ) {}
+
+  ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.REGISTRATION);
+  }
 
   handleRegistration() {
     if (this.wrongCredentials({ includeAll: true })) return;

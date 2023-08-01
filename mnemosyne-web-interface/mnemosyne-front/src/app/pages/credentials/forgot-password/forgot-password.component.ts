@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthenticationService } from '@services/authentication.service';
 import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'page-forgot-password',
@@ -18,7 +20,7 @@ import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
     ])
   ]
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
   step = 1;
 
   email: string;
@@ -30,6 +32,7 @@ export class ForgotPasswordComponent {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
+    private readonly pageTitleService: PageTitleService,
     private readonly translocoService: TranslocoService
   ) {}
 
@@ -78,5 +81,9 @@ export class ForgotPasswordComponent {
         'components/input'
       );
     }, 1000);
+  }
+
+  ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.FORGOT_PASSWORD);
   }
 }

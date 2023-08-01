@@ -57,7 +57,7 @@ export class PhoneComponent implements OnInit {
     }, 1000);
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     if (this.startCountdownManually) this.startCountdown();
   }
 }

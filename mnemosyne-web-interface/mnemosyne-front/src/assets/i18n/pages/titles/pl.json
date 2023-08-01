@@ -1,0 +1,13 @@
+{
+  "dom": "Mnemosyne | Domowa",
+  "tac": "Mnemosyne | Regulamin",
+  "resetPassword": "Mnemosyne | Resetuj hasło",
+  "registration": "Mnemosyne | Rejestracja",
+  "forgotPassword": "Mnemosyne | Zapomniałem hasła",
+  "accConfirm": "Mnemosyne | Potwierdzenie konta",
+  "dashboard": "Mnemosyne | Pulpit nawigacyjny",
+  "ustawienia": "Mnemosyne | Ustawienia",
+  "recoverAccount": "Mnemosyne | Odzyskaj konto",
+  "emailChangeConfirm": "Mnemosyne | Potwierdzenie zmiany adresu e-mail",
+  "login": "Mnemosyne | Logowanie"
+}

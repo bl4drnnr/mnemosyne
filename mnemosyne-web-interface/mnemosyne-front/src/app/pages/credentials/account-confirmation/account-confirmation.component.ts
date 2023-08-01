@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ConfirmAccountResponse } from '@responses/confirm-account.response';
 import { AuthenticationService } from '@services/authentication.service';
+import { PageTitleService } from '@services/page-title.service';
+import { TitlesPages } from '@interfaces/titles.pages';
 
 @Component({
   selector: 'page-account-confirmation',
@@ -31,9 +33,10 @@ export class AccountConfirmationComponent implements OnInit {
   code: string;
 
   constructor(
-    private authenticationService: AuthenticationService,
-    private route: ActivatedRoute,
-    private router: Router
+    private readonly authenticationService: AuthenticationService,
+    private readonly pageTitleService: PageTitleService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
   ) {}
 
   async confirmUserAccount(hash: string) {
@@ -69,6 +72,8 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.ACCOUNT_CONFIRMATION);
+
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');
       if (!hash) {
