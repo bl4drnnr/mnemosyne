@@ -17,9 +17,16 @@
       </div>
     </div>
 
-    <div *ngIf="currentSection === 'personal' && userInfo">
+    <div *ngIf="currentSection === 'personal'">
       <dashboard-user-info-settings
-        [userInfo]="userInfo"
+        [userId]="userId"
+        [firstName]="firstName"
+        [lastName]="lastName"
+        [location]="location"
+        [company]="company"
+        [website]="website"
+        [email]="email"
+        [isProfilePicPresent]="isProfilePicPresent"
         (saveUserInfoEvent)="saveUserInfo($event)"
       />
     </div>

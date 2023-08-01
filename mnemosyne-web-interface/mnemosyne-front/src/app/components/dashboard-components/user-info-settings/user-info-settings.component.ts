@@ -8,7 +8,14 @@ import { ValidationService } from '@services/validation.service';
   styleUrls: ['./user-info-settings.component.scss']
 })
 export class UserInfoSettingsComponent {
-  @Input() userInfo: UserInfoResponse;
+  @Input() userId: string;
+  @Input() firstName: string;
+  @Input() lastName: string;
+  @Input() location: string;
+  @Input() company: string;
+  @Input() website: string;
+  @Input() email: string;
+  @Input() isProfilePicPresent: boolean;
   @Output() saveUserInfoEvent = new EventEmitter<UserInfoResponse>();
 
   incorrectFirstName: boolean;
@@ -19,6 +26,15 @@ export class UserInfoSettingsComponent {
   constructor(public validationService: ValidationService) {}
 
   saveUserInfo() {
-    this.saveUserInfoEvent.emit(this.userInfo);
+    this.saveUserInfoEvent.emit({
+      userId: this.userId,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      location: this.location,
+      company: this.company,
+      website: this.website,
+      email: this.email,
+      isProfilePicPresent: this.isProfilePicPresent
+    });
   }
 }

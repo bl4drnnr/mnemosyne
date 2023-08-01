@@ -120,7 +120,15 @@ export class LoginComponent implements OnInit {
       });
   }
 
-  ngOnInit() {
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
+  }
+
+  async ngOnInit() {
     this.pageTitleService.setPageTitle(TitlesPages.LOGIN);
+
+    const accessToken = localStorage.getItem('_at');
+
+    if (accessToken) await this.handleRedirect('account/dashboard');
   }
 }

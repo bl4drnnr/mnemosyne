@@ -14,7 +14,15 @@ import { TitlesPages } from '@interfaces/titles.pages';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  userInfo: UserInfoResponse;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  location: string;
+  company: string;
+  website: string;
+  email: string;
+  isProfilePicPresent: boolean;
+
   userSecurity: UserSecurityResponse;
   currentSection: 'personal' | 'security' = 'personal';
 
@@ -112,7 +120,16 @@ export class SettingsComponent implements OnInit {
 
     if (userInfoRequest)
       userInfoRequest.subscribe({
-        next: (userInfo) => (this.userInfo = userInfo)
+        next: (userInfo) => {
+          this.userId = userInfo.userId;
+          this.firstName = userInfo.firstName;
+          this.lastName = userInfo.lastName;
+          this.location = userInfo.location;
+          this.company = userInfo.company;
+          this.website = userInfo.website;
+          this.email = userInfo.email;
+          this.isProfilePicPresent = userInfo.isProfilePicPresent;
+        }
       });
 
     this.getUserSecuritySettings();
