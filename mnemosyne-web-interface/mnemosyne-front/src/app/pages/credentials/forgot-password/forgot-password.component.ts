@@ -73,7 +73,7 @@ export class ForgotPasswordComponent {
         this.time = 180;
       }
       this.resendMessage = this.translocoService.translate(
-        'resendCodeIn',
+        'resendEmailIn',
         { time: this.time, s: this.time !== 1 ? 's' : '' },
         'components/input'
       );

@@ -137,6 +137,14 @@ export class SecurityController {
     return this.securityService.sendSmsCode({ payload, userId, trx });
   }
 
+  @Get('hash-send-sms-code')
+  hashSendSmsCode(
+    @Query() { confirmationHash }: { confirmationHash: string },
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.hashSendSmsCode({ confirmationHash, trx });
+  }
+
   @UseGuards(AuthGuard)
   @Get('get-sms-code')
   getSmsCode(@UserId() userId: string, @TransactionParam() trx: Transaction) {

@@ -4,6 +4,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
+import { PhoneService } from '@services/phone.service';
 
 @Component({
   selector: 'page-reset-password',
@@ -33,11 +34,20 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly validationService: ValidationService,
+    private readonly phoneService: PhoneService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {}
 
-  async resetUserPassword() {
+  resendSmsCode() {
+    this.phoneService
+      .hashSendSmsCode({
+        hash: this.hash
+      })
+      .subscribe();
+  }
+
+  resetUserPassword() {
     if (this.step === 1 && this.incorrectPassword) return;
     else if (this.step === 2 && this.mfaButtonDisabled()) return;
 
@@ -53,13 +63,16 @@ export class ResetPasswordComponent implements OnInit {
           if (response && response.message) {
             switch (response.message) {
               case ResetUserPasswordResponse.MFA_REQUIRED:
+                this.step = 2;
                 this.isPhoneRequired = true;
                 this.isMfaRequired = true;
                 break;
               case ResetUserPasswordResponse.PHONE_REQUIRED:
+                this.step = 2;
                 this.isPhoneRequired = true;
                 break;
               case ResetUserPasswordResponse.TWO_FA_REQUIRED:
+                this.step = 2;
                 this.isMfaRequired = true;
                 break;
               case ResetUserPasswordResponse.PASSWORD_RESET:
@@ -70,9 +83,6 @@ export class ResetPasswordComponent implements OnInit {
                 break;
             }
           }
-        },
-        error: async () => {
-          await this.handleRedirect('login');
         }
       });
   }

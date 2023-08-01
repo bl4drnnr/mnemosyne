@@ -57,6 +57,19 @@ export class PhoneService {
     });
   }
 
+  hashSendSmsCode({
+    hash
+  }: {
+    hash: string;
+  }): Observable<{ message: SendSmsCodeResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: ALLOWED_METHODS.GET,
+      controller: CONTROLLERS.SECURITY,
+      action: SECURITY_ENDPOINTS.HASH_SEND_SMS_CODE,
+      params: { confirmationHash: hash }
+    });
+  }
+
   getSmsCode(): Observable<{ message: SendSmsCodeResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({

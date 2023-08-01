@@ -51,5 +51,6 @@
   "wrong-timeframe": "Wrong timeframe",
   "invalid-recovery-keys": "Invalid recovery keys",
   "email-already-changed": "Email has already been changed",
-  "email-already-taken": "Provided email address has already been taken"
+  "email-already-taken": "Provided email address has already been taken",
+  "password-already-changed": "Password was changed less than 24h ago"
 }

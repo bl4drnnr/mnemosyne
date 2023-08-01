@@ -13,19 +13,6 @@ paths:
       responses:
         "201":
           description: ""
-  /api/users/reset-user-password:
-    post:
-      operationId: UsersController_resetUserPassword
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/ResetUserPasswordDto"
-      responses:
-        "201":
-          description: ""
   /api/users/upload-user-photo:
     post:
       operationId: UsersController_uploadUserPhoto
@@ -92,6 +79,19 @@ paths:
           application/json:
             schema:
               $ref: "#/components/schemas/ConfirmEmailChangeDto"
+      responses:
+        "201":
+          description: ""
+  /api/confirmation-hash/reset-user-password-confirmation:
+    post:
+      operationId: ConfirmationHashController_resetUserPassword
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetUserPasswordDto"
       responses:
         "201":
           description: ""
@@ -304,6 +304,13 @@ paths:
       responses:
         "201":
           description: ""
+  /api/security/hash-send-sms-code:
+    get:
+      operationId: SecurityController_hashSendSmsCode
+      parameters: []
+      responses:
+        "200":
+          description: ""
   /api/security/get-sms-code:
     get:
       operationId: SecurityController_getSmsCode
@@ -473,9 +480,6 @@ components:
     ForgotPasswordDto:
       type: object
       properties: {}
-    ResetUserPasswordDto:
-      type: object
-      properties: {}
     UploadPhotoDto:
       type: object
       properties: {}
@@ -483,6 +487,9 @@ components:
       type: object
       properties: {}
     ConfirmEmailChangeDto:
+      type: object
+      properties: {}
+    ResetUserPasswordDto:
       type: object
       properties: {}
     LogInUserDto:

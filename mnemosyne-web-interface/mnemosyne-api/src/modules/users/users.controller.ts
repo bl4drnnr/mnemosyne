@@ -9,7 +9,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from '@modules/users.service';
 import { ForgotPasswordDto } from '@dto/forgot-password.dto';
-import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
@@ -29,15 +28,6 @@ export class UsersController {
     @TransactionParam() trx: Transaction
   ) {
     return this.usersService.forgotPassword({ payload, trx });
-  }
-
-  @UsePipes(ValidationPipe)
-  @Post('reset-user-password')
-  async resetUserPassword(
-    @Body() payload: ResetUserPasswordDto,
-    @TransactionParam() trx: Transaction
-  ) {
-    return this.usersService.resetUserPassword({ payload, trx });
   }
 
   @UsePipes(ValidationPipe)
