@@ -23,7 +23,7 @@ export class RecoveryController {
   @UsePipes(ValidationPipe)
   @Post('registration-generate-recovery-keys')
   registrationGenerateRecoveryKeys(
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @Body() payload: GenerateRecoveryKeysDto,
     @TransactionParam() trx: Transaction
   ) {

@@ -53,11 +53,18 @@ export class AuthenticationService {
   }: {
     hash: string;
   }): Observable<{ message: ConfirmAccountResponse }> {
+    const payload: { confirmationHash: string; language?: string } = {
+      confirmationHash: hash
+    };
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.GET,
       controller: CONTROLLERS.CONFIRMATION_HASH,
       action: CONFIRMATION_ENDPOINTS.ACCOUNT_CONFIRMATION,
-      params: { confirmationHash: hash }
+      params: payload
     });
   }
 

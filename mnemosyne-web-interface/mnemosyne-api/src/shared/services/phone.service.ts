@@ -23,7 +23,7 @@ export class PhoneService {
     language
   }: {
     targetPhoneNumber: string;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
   }) {
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
@@ -52,7 +52,7 @@ export class PhoneService {
     phone,
     trx
   }: {
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
     userId: string;
     phone: string;
     trx?: Transaction;

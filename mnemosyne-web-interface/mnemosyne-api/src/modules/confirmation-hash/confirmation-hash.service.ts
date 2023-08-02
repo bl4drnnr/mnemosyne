@@ -19,11 +19,15 @@ import { PreviousPasswordException } from '@exceptions/previous-password.excepti
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ApiConfigService } from '@shared/config.service';
 import { TimeService } from '@shared/time.service';
+import { EmailService } from '@shared/email.service';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Injectable()
 export class ConfirmationHashService {
   constructor(
     private readonly configService: ApiConfigService,
+    @Inject(forwardRef(() => EmailService))
+    private readonly emailService: EmailService,
     private readonly timeService: TimeService,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
@@ -106,9 +110,11 @@ export class ConfirmationHashService {
 
   async confirmAccount({
     confirmationHash,
+    language,
     trx: transaction
   }: {
     confirmationHash: string;
+    language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
     const foundHash = await this.confirmationHashRepository.findOne({
@@ -141,6 +147,12 @@ export class ConfirmationHashService {
       { where: { id: foundHash.id }, transaction }
     );
 
+    await this.emailService.sendRegistrationCompleteEmail({
+      userInfo: { firstName: user.firstName, lastName: user.lastName },
+      email: user.email,
+      language
+    });
+
     return new AccountConfirmedDto();
   }
 
@@ -172,13 +184,15 @@ export class ConfirmationHashService {
       trx
     });
 
+    const { mfaCode, phoneCode, password, language } = payload;
+
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
-        mfaCode: payload.mfaCode,
-        phoneCode: payload.phoneCode,
         userSettings: user.userSettings,
         userId: user.id,
-        language: payload.language,
+        mfaCode,
+        phoneCode,
+        language,
         trx
       });
 
@@ -189,7 +203,7 @@ export class ConfirmationHashService {
 
     await this.userService.verifyUserCredentials({
       email: user.email,
-      password: payload.password,
+      password,
       trx
     });
 
@@ -203,6 +217,12 @@ export class ConfirmationHashService {
       payload: { emailChanged: true },
       userId: user.id,
       trx
+    });
+
+    await this.emailService.sendEmailChangeCompleteEmail({
+      userInfo: { firstName: user.firstName, lastName: user.lastName },
+      email: user.email,
+      language
     });
 
     await this.confirmationHashRepository.update(
@@ -284,6 +304,12 @@ export class ConfirmationHashService {
       payload: { passwordChanged: new Date() },
       userId: user.id,
       trx
+    });
+
+    await this.emailService.sendResetPasswordCompleteEmail({
+      userInfo: { firstName: user.firstName, lastName: user.lastName },
+      email: user.email,
+      language
     });
 
     await this.confirmationHashRepository.update(

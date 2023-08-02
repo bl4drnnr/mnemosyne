@@ -8,7 +8,7 @@ export class SmsTemplatesService {
     language
   }: {
     verificationCode: number;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
   }) {
     switch (language) {
       case LANGUAGE_TYPES.EN:

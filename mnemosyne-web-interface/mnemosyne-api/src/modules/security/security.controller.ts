@@ -32,7 +32,7 @@ export class SecurityController {
 
   @Get('registration-generate-2fa-qr')
   registrationGenerateTwoFaQrCode(
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationGenerateTwoFaQrCode({
@@ -63,7 +63,7 @@ export class SecurityController {
   @Post('registration-verify-2fa')
   registrationVerifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationVerifyTwoFaQrCode({
@@ -108,7 +108,7 @@ export class SecurityController {
   @Post('registration-send-sms-code')
   registrationSendSmsCode(
     @Body() payload: RegistrationSendSmsCodeDto,
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationSendSmsCode({
@@ -140,12 +140,9 @@ export class SecurityController {
 
   @Get('hash-send-sms-code')
   hashSendSmsCode(
-    @Query()
-    {
-      confirmationHash,
-      language
-    }: { confirmationHash: string; language?: LANGUAGE_TYPES },
-    @TransactionParam() trx: Transaction
+    @TransactionParam() trx: Transaction,
+    @Query('confirmationHash') confirmationHash: string,
+    @Query('language') language?: LANGUAGE_TYPES
   ) {
     return this.securityService.hashSendSmsCode({
       confirmationHash,
@@ -157,7 +154,7 @@ export class SecurityController {
   @UseGuards(AuthGuard)
   @Get('get-sms-code')
   getSmsCode(
-    @Query() { language }: { language?: LANGUAGE_TYPES },
+    @Query('language') language: LANGUAGE_TYPES,
     @UserId() userId: string,
     @TransactionParam() trx: Transaction
   ) {
@@ -174,7 +171,7 @@ export class SecurityController {
   @Post('registration-verify-mobile-phone')
   registrationVerifyMobilePhone(
     @Body() payload: VerifyMobilePhoneDto,
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationVerifyMobilePhone({

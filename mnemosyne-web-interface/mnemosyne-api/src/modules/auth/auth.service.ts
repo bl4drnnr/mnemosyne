@@ -40,10 +40,10 @@ export class AuthService {
     private readonly sequelize: Sequelize,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
+    private readonly phoneService: PhoneService,
     private readonly timeService: TimeService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
-    private readonly phoneService: PhoneService,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     @InjectModel(Session) private readonly sessionRepository: typeof Session

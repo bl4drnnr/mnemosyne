@@ -14,7 +14,7 @@ export class EmailTemplatesService {
   }: {
     userInfo: UserInfoInterface;
     confirmationLink: string;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
   }): { htmlPayload: string; subject: string } {
     switch (language) {
       case LANGUAGE_TYPES.EN:
@@ -56,6 +56,37 @@ export class EmailTemplatesService {
     }
   }
 
+  registrationComplete({
+    userInfo,
+    language
+  }: {
+    userInfo: UserInfoInterface;
+    language?: LANGUAGE_TYPES;
+  }): { htmlPayload: string; subject: string } {
+    switch (language) {
+      case LANGUAGE_TYPES.EN:
+        return {
+          htmlPayload: '',
+          subject: 'Mnemosyne - Welcome'
+        };
+      case LANGUAGE_TYPES.RU:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      case LANGUAGE_TYPES.PL:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      default:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+    }
+  }
+
   forgotPasswordEmailTemplate({
     userInfo,
     confirmationLink,
@@ -63,7 +94,7 @@ export class EmailTemplatesService {
   }: {
     userInfo: UserInfoInterface;
     confirmationLink: string;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
   }): { htmlPayload: string; subject: string } {
     switch (language) {
       case LANGUAGE_TYPES.EN:
@@ -105,6 +136,37 @@ export class EmailTemplatesService {
     }
   }
 
+  resetPasswordComplete({
+    userInfo,
+    language
+  }: {
+    userInfo: UserInfoInterface;
+    language?: LANGUAGE_TYPES;
+  }): { htmlPayload: string; subject: string } {
+    switch (language) {
+      case LANGUAGE_TYPES.EN:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      case LANGUAGE_TYPES.RU:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      case LANGUAGE_TYPES.PL:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      default:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+    }
+  }
+
   emailChangeEmailTemplate({
     userInfo,
     confirmationLink,
@@ -112,7 +174,7 @@ export class EmailTemplatesService {
   }: {
     userInfo: UserInfoInterface;
     confirmationLink: string;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
   }): { htmlPayload: string; subject: string } {
     switch (language) {
       case LANGUAGE_TYPES.EN:
@@ -150,6 +212,37 @@ export class EmailTemplatesService {
             language: LANGUAGE_TYPES.EN
           }),
           subject: 'Mnemosyne - Email change'
+        };
+    }
+  }
+
+  emailChangeComplete({
+    userInfo,
+    language
+  }: {
+    userInfo: UserInfoInterface;
+    language?: LANGUAGE_TYPES;
+  }): { htmlPayload: string; subject: string } {
+    switch (language) {
+      case LANGUAGE_TYPES.EN:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      case LANGUAGE_TYPES.RU:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      case LANGUAGE_TYPES.PL:
+        return {
+          htmlPayload: '',
+          subject: ''
+        };
+      default:
+        return {
+          htmlPayload: '',
+          subject: ''
         };
     }
   }
