@@ -160,6 +160,13 @@ export class ConfirmationHashService {
 
     if (!foundHash) throw new HashNotFoundException();
 
+    const isWithinDay = this.timeService.isWithinTimeframe({
+      time: foundHash.createdAt,
+      seconds: 86400
+    });
+
+    if (!isWithinDay) throw new LinkExpiredException();
+
     const user = await this.userService.getUserById({
       id: foundHash.userId,
       trx
@@ -187,6 +194,12 @@ export class ConfirmationHashService {
 
     await this.userService.updateUser({
       payload: { email: foundHash.changingEmail },
+      userId: user.id,
+      trx
+    });
+
+    await this.userService.updateUserSettings({
+      payload: { emailChanged: true },
       userId: user.id,
       trx
     });

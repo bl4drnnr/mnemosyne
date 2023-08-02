@@ -6,6 +6,10 @@ import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.resp
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PageTitleService } from '@services/page-title.service';
 import { TitlesPages } from '@interfaces/titles.pages';
+import { ValidationService } from '@services/validation.service';
+import { PhoneService } from '@services/phone.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { ERROR_STATUSES } from '../../../../libs/api/errors/statuses.type';
 
 @Component({
   selector: 'app-email-change-confirmation',
@@ -23,31 +27,39 @@ import { TitlesPages } from '@interfaces/titles.pages';
 })
 export class EmailChangeConfirmationComponent implements OnInit {
   step = 1;
+  hash: string;
 
   password: string;
+  incorrectPassword: boolean;
   phoneCode: string;
   mfaCode: string;
 
   isPhoneRequired: boolean;
   isMfaRequired: boolean;
 
+  emailChangeError: boolean;
+
   constructor(
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly emailService: EmailService,
-    private readonly pageTitleService: PageTitleService
+    private readonly phoneService: PhoneService,
+    private readonly pageTitleService: PageTitleService,
+    private readonly validationService: ValidationService
   ) {}
 
-  confirmEmailChange(hash: string) {
+  confirmEmailChange() {
     const confirmEmailChangePayload: ConfirmEmailChangePayload | null = {};
 
     if (this.password) confirmEmailChangePayload.password = this.password;
     if (this.phoneCode) confirmEmailChangePayload.phoneCode = this.phoneCode;
     if (this.mfaCode) confirmEmailChangePayload.mfaCode = this.mfaCode;
 
+    if (this.disableContinueButton() && this.step === 2) return;
+
     this.emailService
       .confirmEmailChange({
-        hash,
+        hash: this.hash,
         payload: confirmEmailChangePayload
       })
       .subscribe({
@@ -70,8 +82,31 @@ export class EmailChangeConfirmationComponent implements OnInit {
               this.step = 3;
               break;
           }
+        },
+        error: (err: HttpErrorResponse) => {
+          this.emailChangeError = err.status === ERROR_STATUSES.NOT_FOUND;
         }
       });
+  }
+
+  resendSmsCode() {
+    this.phoneService
+      .hashSendSmsCode({
+        hash: this.hash
+      })
+      .subscribe();
+  }
+
+  disableContinueButton() {
+    return (
+      this.incorrectPassword ||
+      this.validationService.mfaButtonDisable({
+        isPhoneRequired: this.isPhoneRequired,
+        isMfaRequired: this.isMfaRequired,
+        phoneCode: this.phoneCode,
+        mfaCode: this.mfaCode
+      })
+    );
   }
 
   async handleRedirect(path: string) {
@@ -85,7 +120,10 @@ export class EmailChangeConfirmationComponent implements OnInit {
       const hash = params.get('hash');
 
       if (!hash) await this.handleRedirect('login');
-      else this.confirmEmailChange(hash);
+      else {
+        this.hash = hash;
+        this.confirmEmailChange();
+      }
     });
   }
 }
