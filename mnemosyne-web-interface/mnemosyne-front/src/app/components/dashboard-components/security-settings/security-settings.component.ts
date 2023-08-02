@@ -214,13 +214,7 @@ export class SecuritySettingsComponent {
   changeEmail() {
     if (!this.newEmail || this.incorrectNewEmail) return;
 
-    const changeEmailPayload: ChangeEmailPayload = { newEmail: this.newEmail };
-
-    const language = localStorage.getItem('translocoLang');
-
-    if (language) changeEmailPayload.language = language;
-
-    this.emailService.changeEmail(changeEmailPayload).subscribe({
+    this.emailService.changeEmail({ newEmail: this.newEmail }).subscribe({
       next: () => {
         this.closeChangeEmailModal();
         this.changeEmailSent.emit();

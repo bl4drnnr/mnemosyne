@@ -48,22 +48,12 @@ export class ForgotPasswordComponent implements OnInit {
     if (this.step === 1 && this.sendForgotPasswordEmailDisable()) return;
     else if (this.step === 2 && this.forgotPasswordButtonDisable()) return;
 
-    const forgotPasswordPayload: ForgotPasswordPayload = {
-      email: this.email
-    };
-
-    const language = localStorage.getItem('translocoLang');
-
-    if (language) forgotPasswordPayload.language = language;
-
-    this.authenticationService
-      .forgotPassword({ ...forgotPasswordPayload })
-      .subscribe({
-        next: () => {
-          this.step = 2;
-          this.startCountdown();
-        }
-      });
+    this.authenticationService.forgotPassword({ email: this.email }).subscribe({
+      next: () => {
+        this.step = 2;
+        this.startCountdown();
+      }
+    });
   }
 
   private startCountdown() {

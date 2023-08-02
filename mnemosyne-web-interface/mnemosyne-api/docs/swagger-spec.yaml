@@ -61,6 +61,11 @@ paths:
           in: query
           schema:
             type: string
+        - name: language
+          required: true
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: ""
@@ -189,7 +194,12 @@ paths:
   /api/security/registration-generate-2fa-qr:
     get:
       operationId: SecurityController_registrationGenerateTwoFaQrCode
-      parameters: []
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: ""
@@ -216,7 +226,12 @@ paths:
   /api/security/registration-verify-2fa:
     post:
       operationId: SecurityController_registrationVerifyTwoFaQrCode
-      parameters: []
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -268,7 +283,12 @@ paths:
   /api/security/registration-send-sms-code:
     post:
       operationId: SecurityController_registrationSendSmsCode
-      parameters: []
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -307,14 +327,29 @@ paths:
   /api/security/hash-send-sms-code:
     get:
       operationId: SecurityController_hashSendSmsCode
-      parameters: []
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: language
+          required: true
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: ""
   /api/security/get-sms-code:
     get:
       operationId: SecurityController_getSmsCode
-      parameters: []
+      parameters:
+        - name: language
+          required: true
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: ""
@@ -328,7 +363,12 @@ paths:
   /api/security/registration-verify-mobile-phone:
     post:
       operationId: SecurityController_registrationVerifyMobilePhone
-      parameters: []
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
       requestBody:
         required: true
         content:
@@ -419,7 +459,12 @@ paths:
   /api/recovery/registration-generate-recovery-keys:
     post:
       operationId: RecoveryController_registrationGenerateRecoveryKeys
-      parameters: []
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
       requestBody:
         required: true
         content:

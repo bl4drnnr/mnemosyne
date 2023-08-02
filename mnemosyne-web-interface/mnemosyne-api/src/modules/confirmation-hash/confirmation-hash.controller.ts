@@ -5,6 +5,7 @@ import { Transaction } from 'sequelize';
 import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Controller('confirmation-hash')
 export class ConfirmationHashController {
@@ -14,11 +15,13 @@ export class ConfirmationHashController {
 
   @Get('account-confirmation')
   confirmAccount(
+    @TransactionParam() trx: Transaction,
     @Query('confirmationHash') confirmationHash: string,
-    @TransactionParam() trx: Transaction
+    @Query('language') language?: LANGUAGE_TYPES
   ) {
     return this.confirmationHashService.confirmAccount({
       confirmationHash,
+      language,
       trx
     });
   }

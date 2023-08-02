@@ -3,4 +3,5 @@ export interface ResetUserPasswordPayload {
   hash: string;
   phoneCode: string;
   mfaCode: string;
+  language?: string;
 }

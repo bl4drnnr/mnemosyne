@@ -23,6 +23,7 @@ export class SettingsComponent implements OnInit {
   email: string;
   isProfilePicPresent: boolean;
 
+  userInfo: UserInfoResponse;
   userSecurity: UserSecurityResponse;
   currentSection: 'personal' | 'security' = 'personal';
 
@@ -121,6 +122,7 @@ export class SettingsComponent implements OnInit {
     if (userInfoRequest)
       userInfoRequest.subscribe({
         next: (userInfo) => {
+          this.userInfo = userInfo;
           this.userId = userInfo.userId;
           this.firstName = userInfo.firstName;
           this.lastName = userInfo.lastName;

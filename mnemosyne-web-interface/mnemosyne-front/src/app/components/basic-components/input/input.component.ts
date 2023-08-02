@@ -21,7 +21,7 @@ import { TranslocoService } from '@ngneat/transloco';
         'void',
         style({
           opacity: 0,
-          transform: 'translateY(-10px)'
+          transform: 'translateY(-5px)'
         })
       ),
       state(
@@ -31,14 +31,14 @@ import { TranslocoService } from '@ngneat/transloco';
           transform: 'translateY(0)'
         })
       ),
-      transition('void => *', animate('0.3s')),
-      transition('* => void', animate('0.3s'))
+      transition('void => *', animate('0.5s')),
+      transition('* => void', animate('0.5s'))
     ]),
     trigger('descriptionAnimation', [
-      state('void', style({ transform: 'translateY(-10px)' })),
-      state('*', style({ transform: 'translateY(0)' })),
-      transition('void => *', animate('0.3s')),
-      transition('* => void', animate('0.3s'))
+      state('void', style({ transform: 'translateY(-5px)', opacity: 0 })),
+      state('*', style({ transform: 'translateY(0)', opacity: 1 })),
+      transition('void => *', animate('0.5s')),
+      transition('* => void', animate('0.5s'))
     ])
   ]
 })

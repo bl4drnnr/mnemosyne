@@ -36,6 +36,10 @@ export class AuthenticationService {
   registration(
     payload: RegistrationPayload
   ): Observable<{ message: RegistrationResponse }> {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.AUTH,
@@ -49,17 +53,28 @@ export class AuthenticationService {
   }: {
     hash: string;
   }): Observable<{ message: ConfirmAccountResponse }> {
+    const payload: { confirmationHash: string; language?: string } = {
+      confirmationHash: hash
+    };
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.GET,
       controller: CONTROLLERS.CONFIRMATION_HASH,
       action: CONFIRMATION_ENDPOINTS.ACCOUNT_CONFIRMATION,
-      params: { confirmationHash: hash }
+      params: payload
     });
   }
 
   forgotPassword(
     payload: ForgotPasswordPayload
   ): Observable<{ message: ForgotPasswordResponse }> {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.USERS,
@@ -71,6 +86,10 @@ export class AuthenticationService {
   resetUserPassword(payload: ResetUserPasswordPayload): Observable<{
     message: ResetUserPasswordResponse;
   }> {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.CONFIRMATION_HASH,

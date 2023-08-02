@@ -24,6 +24,7 @@ import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { ChangePasswordDto } from '@dto/change-password.dto';
 import { ChangeEmailDto } from '@dto/change-email.dto';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Controller('security')
 export class SecurityController {
@@ -31,7 +32,7 @@ export class SecurityController {
 
   @Get('registration-generate-2fa-qr')
   registrationGenerateTwoFaQrCode(
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationGenerateTwoFaQrCode({
@@ -62,7 +63,7 @@ export class SecurityController {
   @Post('registration-verify-2fa')
   registrationVerifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationVerifyTwoFaQrCode({
@@ -107,7 +108,7 @@ export class SecurityController {
   @Post('registration-send-sms-code')
   registrationSendSmsCode(
     @Body() payload: RegistrationSendSmsCodeDto,
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationSendSmsCode({
@@ -139,16 +140,25 @@ export class SecurityController {
 
   @Get('hash-send-sms-code')
   hashSendSmsCode(
-    @Query() { confirmationHash }: { confirmationHash: string },
-    @TransactionParam() trx: Transaction
+    @TransactionParam() trx: Transaction,
+    @Query('confirmationHash') confirmationHash: string,
+    @Query('language') language?: LANGUAGE_TYPES
   ) {
-    return this.securityService.hashSendSmsCode({ confirmationHash, trx });
+    return this.securityService.hashSendSmsCode({
+      confirmationHash,
+      language,
+      trx
+    });
   }
 
   @UseGuards(AuthGuard)
   @Get('get-sms-code')
-  getSmsCode(@UserId() userId: string, @TransactionParam() trx: Transaction) {
-    return this.securityService.getSmsCode({ userId, trx });
+  getSmsCode(
+    @Query('language') language: LANGUAGE_TYPES,
+    @UserId() userId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.securityService.getSmsCode({ userId, language, trx });
   }
 
   @UseGuards(AuthGuard)
@@ -161,7 +171,7 @@ export class SecurityController {
   @Post('registration-verify-mobile-phone')
   registrationVerifyMobilePhone(
     @Body() payload: VerifyMobilePhoneDto,
-    @Query() { confirmationHash }: { confirmationHash: string },
+    @Query('confirmationHash') confirmationHash: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.securityService.registrationVerifyMobilePhone({

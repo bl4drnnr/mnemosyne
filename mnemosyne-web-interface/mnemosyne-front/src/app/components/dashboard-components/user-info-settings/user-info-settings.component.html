@@ -69,11 +69,21 @@
         [errorMessage]="t('input.wrongFQDN')"
         [value]="website"
         (valueChange)="website = $event"
+        (incorrectInput)="incorrectWebsite = $event"
       />
 
       <div class="dived-line"></div>
 
+      <div
+        class="info-changed"
+        *ngIf="wasInfoChanged()"
+        [@infoChangedAnimation]="true"
+      >
+        <p class="info-changed-text">{{ t('settings.infoNotSaved') }}</p>
+      </div>
+
       <basic-button
+        [disabled]="!wasInfoChanged() || incorrectData()"
         [label]="t('button.saveSettings')"
         (buttonClick)="saveUserInfo()"
       />

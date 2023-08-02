@@ -32,6 +32,7 @@ import { PhoneService } from '@shared/phone.service';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { TimeService } from '@shared/time.service';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Injectable()
 export class AuthService {
@@ -39,10 +40,10 @@ export class AuthService {
     private readonly sequelize: Sequelize,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
+    private readonly phoneService: PhoneService,
     private readonly timeService: TimeService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
-    private readonly phoneService: PhoneService,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     @InjectModel(Session) private readonly sessionRepository: typeof Session
@@ -174,12 +175,14 @@ export class AuthService {
     phoneCode,
     userSettings,
     userId,
+    language,
     trx
   }: {
     mfaCode: string;
     phoneCode: string;
     userSettings: UserSettings;
     userId: string;
+    language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
     const {
@@ -191,6 +194,7 @@ export class AuthService {
 
     if (!mfaCode && userTwoFaToken && !phoneCode && phone) {
       await this.phoneService.verifyAndResendSmsCode({
+        language,
         userId,
         phone
       });
@@ -202,6 +206,7 @@ export class AuthService {
 
     if (!phoneCode && phone) {
       await this.phoneService.verifyAndResendSmsCode({
+        language,
         userId,
         phone
       });

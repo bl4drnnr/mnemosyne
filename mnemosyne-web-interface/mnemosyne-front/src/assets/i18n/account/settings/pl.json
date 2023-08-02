@@ -31,7 +31,7 @@
   },
   "password": {
     "changePassword": "Zmień hasło",
-    "changePasswordDesc": "Zmień swoje hasło, podając aktualne hasło i nowe hasło. Pamiętaj, że po pomyślnej zmianie hasła zostaniesz wylogowany ze swojego konta.",
+    "changePasswordDesc": "Zmień swoje hasło, podając aktualne hasło i nowe hasło. Pamiętaj, że po pomyślnym wprowadzeniu hasła nie będziesz mógł zmienić hasła do konta przez 24 godziny.",
     "passwordChanged": "Hasło zostało pomyślnie zmienione"
   },
   "email": {
@@ -53,5 +53,6 @@
     "sectionTitle": "Generuj klucze odzyskiwania",
     "sectionDesc": "Wygenerowane klucze są używane, gdy nie masz dostępu do MFA/telefonu komórkowego i chcesz przywrócić dostęp do konta.",
     "successSetup": "Klucze odzyskiwania zostały pomyślnie skonfigurowane"
-  }
+  },
+  "infoNotSaved": "Informacje o użytkowniku zostały zmienione, ale nie zostały zapisane."
 }

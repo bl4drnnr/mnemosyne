@@ -26,7 +26,7 @@ export class EmailService {
   }: {
     payload: VerificationEmailInterface;
     userInfo: UserInfoInterface;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
     const emailSettings: VerificationEmailInterface = {
@@ -53,6 +53,28 @@ export class EmailService {
     });
   }
 
+  async sendRegistrationCompleteEmail({
+    email,
+    userInfo,
+    language
+  }: {
+    email: string;
+    userInfo: UserInfoInterface;
+    language?: LANGUAGE_TYPES;
+  }) {
+    const { htmlPayload, subject } =
+      this.emailTemplatesService.registrationComplete({
+        userInfo,
+        language
+      });
+
+    await this.sendEmail({
+      target: email,
+      emailHtml: htmlPayload,
+      emailSubject: subject
+    });
+  }
+
   async sendForgotPasswordEmail({
     payload,
     userInfo,
@@ -61,7 +83,7 @@ export class EmailService {
   }: {
     payload: VerificationEmailInterface;
     userInfo: UserInfoInterface;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
     const emailSettings: VerificationEmailInterface = {
@@ -88,6 +110,28 @@ export class EmailService {
     });
   }
 
+  async sendResetPasswordCompleteEmail({
+    email,
+    userInfo,
+    language
+  }: {
+    email: string;
+    userInfo: UserInfoInterface;
+    language?: LANGUAGE_TYPES;
+  }) {
+    const { htmlPayload, subject } =
+      this.emailTemplatesService.resetPasswordComplete({
+        userInfo,
+        language
+      });
+
+    await this.sendEmail({
+      target: email,
+      emailHtml: htmlPayload,
+      emailSubject: subject
+    });
+  }
+
   async sendEmailChangeEmail({
     payload,
     userInfo,
@@ -96,7 +140,7 @@ export class EmailService {
   }: {
     payload: VerificationEmailInterface;
     userInfo: UserInfoInterface;
-    language: LANGUAGE_TYPES | null;
+    language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
     const emailSettings: VerificationEmailInterface = {
@@ -119,6 +163,28 @@ export class EmailService {
 
     await this.sendEmail({
       target: payload.changingEmail,
+      emailHtml: htmlPayload,
+      emailSubject: subject
+    });
+  }
+
+  async sendEmailChangeCompleteEmail({
+    email,
+    userInfo,
+    language
+  }: {
+    email: string;
+    userInfo: UserInfoInterface;
+    language?: LANGUAGE_TYPES;
+  }) {
+    const { htmlPayload, subject } =
+      this.emailTemplatesService.emailChangeComplete({
+        userInfo,
+        language
+      });
+
+    await this.sendEmail({
+      target: email,
       emailHtml: htmlPayload,
       emailSubject: subject
     });

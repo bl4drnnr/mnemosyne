@@ -39,6 +39,7 @@ import { EmailService } from '@shared/email.service';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { EmailChangeEmailSentDto } from '@dto/email-change-email-sent.dto';
 import { PasswordChangedException } from '@exceptions/password-changed.exception';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Injectable()
 export class SecurityService {
@@ -224,8 +225,9 @@ export class SecurityService {
       });
 
     await this.phoneService.verifyAndResendSmsCode({
-      userId,
+      language: payload.language,
       phone: payload.phone,
+      userId,
       trx
     });
 
@@ -246,8 +248,9 @@ export class SecurityService {
     });
 
     await this.phoneService.verifyAndResendSmsCode({
-      userId: user.id,
       phone: user.userSettings.phone,
+      language: payload.language,
+      userId: user.id,
       trx
     });
 
@@ -264,6 +267,7 @@ export class SecurityService {
     trx?: Transaction;
   }) {
     await this.phoneService.verifyAndResendSmsCode({
+      language: payload.language,
       phone: payload.phone,
       userId,
       trx
@@ -274,9 +278,11 @@ export class SecurityService {
 
   async hashSendSmsCode({
     confirmationHash,
+    language,
     trx
   }: {
     confirmationHash: string;
+    language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
     const user = await this.confirmationHashService.getUserByConfirmationHash({
@@ -287,13 +293,22 @@ export class SecurityService {
     await this.phoneService.verifyAndResendSmsCode({
       phone: user.userSettings.phone,
       userId: user.id,
+      language,
       trx
     });
 
     return new SmsCodeSentDto();
   }
 
-  async getSmsCode({ userId, trx }: { userId: string; trx?: Transaction }) {
+  async getSmsCode({
+    userId,
+    language,
+    trx
+  }: {
+    userId: string;
+    language?: LANGUAGE_TYPES;
+    trx?: Transaction;
+  }) {
     const user = await this.userService.getUserById({
       id: userId,
       trx
@@ -302,8 +317,9 @@ export class SecurityService {
     if (!user.userSettings.phone) throw new PhoneNotSetException();
 
     await this.phoneService.verifyAndResendSmsCode({
-      userId,
       phone: user.userSettings.phone,
+      language,
+      userId,
       trx
     });
 
