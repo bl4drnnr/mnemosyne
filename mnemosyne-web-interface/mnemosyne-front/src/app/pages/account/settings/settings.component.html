@@ -19,6 +19,7 @@
 
     <div *ngIf="currentSection === 'personal'">
       <dashboard-user-info-settings
+        [userInfo]="userInfo"
         [userId]="userId"
         [firstName]="firstName"
         [lastName]="lastName"

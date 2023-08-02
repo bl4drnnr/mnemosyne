@@ -53,5 +53,6 @@
     "sectionTitle": "Generuj klucze odzyskiwania",
     "sectionDesc": "Wygenerowane klucze są używane, gdy nie masz dostępu do MFA/telefonu komórkowego i chcesz przywrócić dostęp do konta.",
     "successSetup": "Klucze odzyskiwania zostały pomyślnie skonfigurowane"
-  }
+  },
+  "infoNotSaved": "Informacje o użytkowniku zostały zmienione, ale nie zostały zapisane."
 }

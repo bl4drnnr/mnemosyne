@@ -16,3 +16,13 @@
   background-color: var(--border-color);
   margin: 20px 0;
 }
+
+.info-changed {
+  margin-bottom: 20px;
+}
+
+.info-changed-text {
+  color: var(--error-color);
+  font-size: 12px;
+  font-weight: 400;
+}

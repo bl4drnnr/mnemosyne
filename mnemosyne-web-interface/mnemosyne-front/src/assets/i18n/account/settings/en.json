@@ -53,5 +53,6 @@
     "sectionTitle": "Generate recovery keys",
     "sectionDesc": "Generated keys are used when you don't have access to MFA/mobile phone, and want to restore the access to the account.",
     "successSetup": "Recovery keys have been successfully set up"
-  }
+  },
+  "infoNotSaved": "User information has been changed but not saved."
 }
