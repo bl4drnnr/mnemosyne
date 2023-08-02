@@ -20,6 +20,10 @@ export class EmailService {
     payload: ChangeEmailPayload
   ): Observable<{ message: ChangeEmailResponse }> {
     const accessToken = localStorage.getItem('_at')!;
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
@@ -36,6 +40,10 @@ export class EmailService {
     hash: string;
     payload: ConfirmEmailChangePayload;
   }): Observable<{ message: ConfirmEmailChangeResponse }> {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.CONFIRMATION_HASH,

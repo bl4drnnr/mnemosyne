@@ -55,23 +55,17 @@ export class RegistrationComponent implements OnInit {
   handleRegistration() {
     if (this.wrongCredentials({ includeAll: true })) return;
 
-    const registrationPayload: RegistrationPayload = {
-      email: this.email,
-      password: this.password,
-      tac: this.tac,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      website: this.website,
-      location: this.location,
-      company: this.company
-    };
-
-    const language = localStorage.getItem('translocoLang');
-
-    if (language) registrationPayload.language = language;
-
     this.authenticationService
-      .registration({ ...registrationPayload })
+      .registration({
+        email: this.email,
+        password: this.password,
+        tac: this.tac,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        website: this.website,
+        location: this.location,
+        company: this.company
+      })
       .subscribe({
         next: () => (this.step = 3)
       });

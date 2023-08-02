@@ -5,6 +5,8 @@ import { Transaction } from 'sequelize';
 import { UsersService } from '@modules/users.service';
 import { TimeService } from '@shared/time.service';
 import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
+import { SmsTemplatesService } from '@shared/sms-templates.service';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Injectable()
 export class PhoneService {
@@ -12,10 +14,17 @@ export class PhoneService {
     @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly configService: ApiConfigService,
-    private readonly timeService: TimeService
+    private readonly timeService: TimeService,
+    private readonly smsTemplateService: SmsTemplatesService
   ) {}
 
-  async sendSmsCode({ targetPhoneNumber }: { targetPhoneNumber: string }) {
+  async sendSmsCode({
+    targetPhoneNumber,
+    language
+  }: {
+    targetPhoneNumber: string;
+    language: LANGUAGE_TYPES | null;
+  }) {
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
     const { twilio_auth_phone, twilio_auth_token, twilio_account_sid } =
@@ -23,8 +32,13 @@ export class PhoneService {
 
     const client = new Twilio(twilio_account_sid, twilio_auth_token);
 
+    const smsBody = this.smsTemplateService.verificationCodeTemplate({
+      verificationCode,
+      language
+    });
+
     await client.messages.create({
-      body: `Mnemosyne verification code: ${verificationCode}.\nWill be valid for 5 minutes.`,
+      body: smsBody,
       from: twilio_auth_phone,
       to: targetPhoneNumber
     });
@@ -33,10 +47,12 @@ export class PhoneService {
   }
 
   async verifyAndResendSmsCode({
+    language,
     userId,
     phone,
     trx
   }: {
+    language: LANGUAGE_TYPES | null;
     userId: string;
     phone: string;
     trx?: Transaction;
@@ -54,7 +70,8 @@ export class PhoneService {
     if (isWithinTwoMinutes) throw new WrongTimeframeException();
 
     const sentSmsCode = await this.sendSmsCode({
-      targetPhoneNumber: phone
+      targetPhoneNumber: phone,
+      language
     });
 
     await this.userService.updateUserSettings({

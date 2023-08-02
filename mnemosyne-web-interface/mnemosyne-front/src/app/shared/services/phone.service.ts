@@ -23,6 +23,9 @@ export class PhoneService {
   loginSendSmsCode(
     payload: LoginPhonePayload
   ): Observable<{ message: SendSmsCodeResponse }> {
+    const language = localStorage.getItem('translocoLang');
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
@@ -35,6 +38,10 @@ export class PhoneService {
     hash,
     phone
   }: RegistrationPhonePayload): Observable<{ message: SendSmsCodeResponse }> {
+    const payload: { phone: string; language?: string } = { phone };
+    const language = localStorage.getItem('translocoLang');
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
@@ -48,6 +55,9 @@ export class PhoneService {
     payload: SendSmsPayload
   ): Observable<{ message: SendSmsCodeResponse }> {
     const accessToken = localStorage.getItem('_at')!;
+    const language = localStorage.getItem('translocoLang');
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.POST,
       controller: CONTROLLERS.SECURITY,
@@ -62,20 +72,29 @@ export class PhoneService {
   }: {
     hash: string;
   }): Observable<{ message: SendSmsCodeResponse }> {
+    const payload: { confirmationHash: string; language?: string } = {
+      confirmationHash: hash
+    };
+    const language = localStorage.getItem('translocoLang');
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.GET,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.HASH_SEND_SMS_CODE,
-      params: { confirmationHash: hash }
+      params: payload
     });
   }
 
   getSmsCode(): Observable<{ message: SendSmsCodeResponse }> {
     const accessToken = localStorage.getItem('_at')!;
+    const language = localStorage.getItem('translocoLang');
+
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.GET,
       controller: CONTROLLERS.SECURITY,
       action: SECURITY_ENDPOINTS.GET_SMS_CODE,
+      params: { language },
       accessToken
     });
   }

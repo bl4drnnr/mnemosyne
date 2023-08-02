@@ -178,6 +178,7 @@ export class ConfirmationHashService {
         phoneCode: payload.phoneCode,
         userSettings: user.userSettings,
         userId: user.id,
+        language: payload.language,
         trx
       });
 
@@ -224,7 +225,7 @@ export class ConfirmationHashService {
     payload: ResetUserPasswordDto;
     trx?: Transaction;
   }) {
-    const { password, hash, phoneCode, mfaCode } = payload;
+    const { password, hash, phoneCode, mfaCode, language } = payload;
 
     const forgotPasswordHash = await this.confirmationHashRepository.findOne({
       where: { confirmationHash: hash },
@@ -252,6 +253,7 @@ export class ConfirmationHashService {
         phoneCode,
         userSettings: user.userSettings,
         userId: user.id,
+        language,
         trx
       });
 

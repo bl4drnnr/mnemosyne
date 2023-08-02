@@ -32,6 +32,7 @@ import { PhoneService } from '@shared/phone.service';
 import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { TimeService } from '@shared/time.service';
+import { LANGUAGE_TYPES } from '@interfaces/language.types';
 
 @Injectable()
 export class AuthService {
@@ -174,12 +175,14 @@ export class AuthService {
     phoneCode,
     userSettings,
     userId,
+    language,
     trx
   }: {
     mfaCode: string;
     phoneCode: string;
     userSettings: UserSettings;
     userId: string;
+    language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
     const {
@@ -191,6 +194,7 @@ export class AuthService {
 
     if (!mfaCode && userTwoFaToken && !phoneCode && phone) {
       await this.phoneService.verifyAndResendSmsCode({
+        language,
         userId,
         phone
       });
@@ -202,6 +206,7 @@ export class AuthService {
 
     if (!phoneCode && phone) {
       await this.phoneService.verifyAndResendSmsCode({
+        language,
         userId,
         phone
       });
