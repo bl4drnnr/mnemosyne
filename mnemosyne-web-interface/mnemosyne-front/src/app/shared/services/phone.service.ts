@@ -13,6 +13,7 @@ import { DisableTwoFaPayload } from '@payloads/disable-two-fa.payload';
 import { SendSmsPayload } from '@payloads/send-sms.payload';
 import { SendSmsCodeResponse } from '@responses/send-sms-code.response';
 import { SmsClearedResponse } from '@responses/sms-cleared.response';
+import { HashSendSmsInterface } from '@interfaces/services/phone/hash-send-sms.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -69,9 +70,7 @@ export class PhoneService {
 
   hashSendSmsCode({
     hash
-  }: {
-    hash: string;
-  }): Observable<{ message: SendSmsCodeResponse }> {
+  }: HashSendSmsInterface): Observable<{ message: SendSmsCodeResponse }> {
     const payload: { confirmationHash: string; language?: string } = {
       confirmationHash: hash
     };

@@ -55,11 +55,9 @@ export class UsersService {
     });
   }
 
-  updateUserInfo({
-    payload
-  }: {
-    payload: UpdateUserInfoPayload;
-  }): Observable<{ message: UserUpdatedResponse }> {
+  updateUserInfo(
+    payload: UpdateUserInfoPayload
+  ): Observable<{ message: UserUpdatedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.PATCH,

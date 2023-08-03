@@ -161,7 +161,7 @@ export class AuthService {
   async refreshToken({ refreshToken, trx }: RefreshTokenInterface) {
     if (!refreshToken) throw new CorruptedTokenException();
 
-    const { id: tokenId }: { id: string } = this.verifyToken({
+    const { id: tokenId } = this.verifyToken({
       token: refreshToken
     });
 
