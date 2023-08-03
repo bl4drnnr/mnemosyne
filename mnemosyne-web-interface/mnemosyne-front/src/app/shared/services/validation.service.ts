@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
+import { CheckLengthInterface } from '@interfaces/services/validation/check-length.interface';
+import { MfaButtonDisableInterface } from '@interfaces/services/validation/mfa-button-disable.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +23,7 @@ export class ValidationService {
     isMfaRequired,
     phoneCode,
     mfaCode
-  }: {
-    isPhoneRequired: boolean;
-    isMfaRequired: boolean;
-    phoneCode: string | undefined;
-    mfaCode: string | undefined;
-  }) {
+  }: MfaButtonDisableInterface) {
     return (
       (isPhoneRequired && phoneCode?.length !== 6) ||
       (isMfaRequired && mfaCode?.length !== 6) ||
@@ -110,7 +107,7 @@ export class ValidationService {
     } else return domain === '' || domain === undefined || domain === null;
   }
 
-  checkLength({ str, min, max }: { str: string; min?: number; max?: number }) {
+  checkLength({ str, min, max }: CheckLengthInterface) {
     if (!str) return true;
 
     const length = str.length;

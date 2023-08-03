@@ -31,5 +31,5 @@ export class Endpoint extends Model<Endpoint> {
   updatedAt: Date;
 
   @BelongsToMany(() => AccessControlList, () => AclEndpoint)
-  acl: AccessControlList[];
+  acl: Array<AccessControlList>;
 }

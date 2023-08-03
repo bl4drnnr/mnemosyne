@@ -9,6 +9,7 @@ import { ChangeEmailResponse } from '@responses/change-email.response';
 import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.type';
 import { ConfirmEmailChangePayload } from '@payloads/confirm-email-change.payload';
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
+import { ConfirmEmailChangeInterface } from '@interfaces/services/email/confirm-email-change.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -36,10 +37,9 @@ export class EmailService {
   confirmEmailChange({
     hash,
     payload
-  }: {
-    hash: string;
-    payload: ConfirmEmailChangePayload;
-  }): Observable<{ message: ConfirmEmailChangeResponse }> {
+  }: ConfirmEmailChangeInterface): Observable<{
+    message: ConfirmEmailChangeResponse;
+  }> {
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;

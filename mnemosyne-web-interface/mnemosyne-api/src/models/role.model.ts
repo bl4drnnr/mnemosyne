@@ -41,8 +41,8 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   updatedAt: Date;
 
   @BelongsToMany(() => User, () => UserRole)
-  users: User[];
+  users: Array<User>;
 
   @BelongsToMany(() => AccessControlList, () => AclRole)
-  acl: AccessControlList[];
+  acl: Array<AccessControlList>;
 }

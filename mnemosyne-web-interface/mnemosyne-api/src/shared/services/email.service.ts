@@ -3,10 +3,11 @@ import { ApiConfigService } from '@shared/config.service';
 import * as SendGrid from '@sendgrid/mail';
 import { ConfirmationHashService } from '@modules/confirmation-hash/confirmation-hash.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
-import { Transaction } from 'sequelize';
 import { EmailTemplatesService } from '@shared/email-templates.service';
-import { UserInfoInterface } from '@interfaces/user-info.interface';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { SecurityInitEmailInterface } from '@interfaces/security-init-email.interface';
+import { CompletedSecurityEmailInterface } from '@interfaces/completed-security-email.interface';
+import { SendEmailInterface } from '@interfaces/send-email.interface';
+import { EmailConfirmHashInterface } from '@interfaces/email-confirm-hash.interface';
 
 @Injectable()
 export class EmailService {
@@ -23,55 +24,50 @@ export class EmailService {
     userInfo,
     language,
     trx: transaction
-  }: {
-    payload: VerificationEmailInterface;
-    userInfo: UserInfoInterface;
-    language?: LANGUAGE_TYPES;
-    trx?: Transaction;
-  }) {
+  }: SecurityInitEmailInterface) {
+    const { confirmationHash, confirmationType, userId, to } = payload;
+
     const emailSettings: VerificationEmailInterface = {
-      confirmationHash: payload.confirmationHash,
-      confirmationType: payload.confirmationType,
-      userId: payload.userId
+      confirmationHash,
+      confirmationType,
+      userId
     };
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const confirmationLink = `${this.configService.frontEndUrl}/account-confirmation/${payload.confirmationHash}`;
+    const link = `${this.configService.frontEndUrl}/account-confirmation/${confirmationHash}`;
 
-    const { htmlPayload, subject } =
+    const { html, subject } =
       this.emailTemplatesService.registrationEmailTemplate({
         userInfo,
-        confirmationLink,
+        link,
         language
       });
 
     await this.sendEmail({
-      target: payload.email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
   async sendRegistrationCompleteEmail({
-    email,
+    to,
     userInfo,
     language
-  }: {
-    email: string;
-    userInfo: UserInfoInterface;
-    language?: LANGUAGE_TYPES;
-  }) {
-    const { htmlPayload, subject } =
-      this.emailTemplatesService.registrationComplete({
-        userInfo,
-        language
-      });
+  }: CompletedSecurityEmailInterface) {
+    const link = `${this.configService.frontEndUrl}/login`;
+
+    const { html, subject } = this.emailTemplatesService.registrationComplete({
+      userInfo,
+      link,
+      language
+    });
 
     await this.sendEmail({
-      target: email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
@@ -80,55 +76,50 @@ export class EmailService {
     userInfo,
     language,
     trx: transaction
-  }: {
-    payload: VerificationEmailInterface;
-    userInfo: UserInfoInterface;
-    language?: LANGUAGE_TYPES;
-    trx?: Transaction;
-  }) {
+  }: SecurityInitEmailInterface) {
+    const { confirmationHash, confirmationType, userId, to } = payload;
+
     const emailSettings: VerificationEmailInterface = {
-      confirmationHash: payload.confirmationHash,
-      confirmationType: payload.confirmationType,
-      userId: payload.userId
+      confirmationHash,
+      confirmationType,
+      userId
     };
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const confirmationLink = `${this.configService.frontEndUrl}/reset-password/${payload.confirmationHash}`;
+    const link = `${this.configService.frontEndUrl}/reset-password/${confirmationHash}`;
 
-    const { htmlPayload, subject } =
+    const { html, subject } =
       this.emailTemplatesService.forgotPasswordEmailTemplate({
         userInfo,
-        confirmationLink,
+        link,
         language
       });
 
     await this.sendEmail({
-      target: payload.email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
   async sendResetPasswordCompleteEmail({
-    email,
+    to,
     userInfo,
     language
-  }: {
-    email: string;
-    userInfo: UserInfoInterface;
-    language?: LANGUAGE_TYPES;
-  }) {
-    const { htmlPayload, subject } =
-      this.emailTemplatesService.resetPasswordComplete({
-        userInfo,
-        language
-      });
+  }: CompletedSecurityEmailInterface) {
+    const link = `${this.configService.frontEndUrl}/login`;
+
+    const { html, subject } = this.emailTemplatesService.resetPasswordComplete({
+      userInfo,
+      link,
+      language
+    });
 
     await this.sendEmail({
-      target: email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
@@ -137,83 +128,68 @@ export class EmailService {
     userInfo,
     language,
     trx: transaction
-  }: {
-    payload: VerificationEmailInterface;
-    userInfo: UserInfoInterface;
-    language?: LANGUAGE_TYPES;
-    trx?: Transaction;
-  }) {
+  }: SecurityInitEmailInterface) {
+    const { confirmationHash, confirmationType, userId, to, changingEmail } =
+      payload;
+
     const emailSettings: VerificationEmailInterface = {
-      changingEmail: payload.changingEmail,
-      confirmationHash: payload.confirmationHash,
-      confirmationType: payload.confirmationType,
-      userId: payload.userId
+      changingEmail,
+      confirmationHash,
+      confirmationType,
+      userId
     };
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const confirmationLink = `${this.configService.frontEndUrl}/email-change-confirmation/${payload.confirmationHash}`;
+    const link = `${this.configService.frontEndUrl}/email-change-confirmation/${payload.confirmationHash}`;
 
-    const { htmlPayload, subject } =
+    const { html, subject } =
       this.emailTemplatesService.emailChangeEmailTemplate({
         userInfo,
-        confirmationLink,
+        link,
         language
       });
 
     await this.sendEmail({
-      target: payload.changingEmail,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
   async sendEmailChangeCompleteEmail({
-    email,
+    to,
     userInfo,
     language
-  }: {
-    email: string;
-    userInfo: UserInfoInterface;
-    language?: LANGUAGE_TYPES;
-  }) {
-    const { htmlPayload, subject } =
-      this.emailTemplatesService.emailChangeComplete({
-        userInfo,
-        language
-      });
+  }: CompletedSecurityEmailInterface) {
+    const link = `${this.configService.frontEndUrl}/login`;
+
+    const { html, subject } = this.emailTemplatesService.emailChangeComplete({
+      userInfo,
+      link,
+      language
+    });
 
     await this.sendEmail({
-      target: email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
-  private async sendEmail({
-    target,
-    emailSubject,
-    emailHtml
-  }: {
-    target: string;
-    emailSubject: string;
-    emailHtml: string;
-  }) {
+  private async sendEmail({ to, subject, html }: SendEmailInterface) {
     return await SendGrid.send({
-      to: target,
       from: this.configService.sendGridCredentials.sender_email,
-      subject: emailSubject,
-      html: emailHtml
+      to,
+      subject,
+      html
     });
   }
 
   private async createConfirmationHash({
     emailSettings,
     trx
-  }: {
-    emailSettings: VerificationEmailInterface;
-    trx?: Transaction;
-  }) {
+  }: EmailConfirmHashInterface) {
     await this.confirmationHashService.createConfirmationHash({
       payload: { ...emailSettings },
       trx

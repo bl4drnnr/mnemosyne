@@ -3,9 +3,9 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
-import { RegistrationPayload } from '@payloads/registration.payload';
 import { PageTitleService } from '@services/page-title.service';
 import { TitlesPages } from '@interfaces/titles.pages';
+import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
 
 @Component({
   selector: 'page-registration',
@@ -84,7 +84,7 @@ export class RegistrationComponent implements OnInit {
     this.step--;
   }
 
-  wrongCredentials({ includeAll }: { includeAll?: boolean }) {
+  wrongCredentials({ includeAll }: WrongCredentialsInterface) {
     if (!includeAll) {
       return this.incorrectPassword || this.incorrectEmail;
     } else {

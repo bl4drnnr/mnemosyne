@@ -4,11 +4,8 @@ import * as bcryptjs from 'bcryptjs';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@models/user.model';
-import { CreateUserDto } from '@dto/create-user.dto';
 import { RolesService } from '@modules/roles.service';
-import { Transaction } from 'sequelize';
 import { UserSettings } from '@models/user-settings.model';
-import { ForgotPasswordDto } from '@dto/forgot-password.dto';
 import { EmailService } from '@shared/email.service';
 import { Sequelize } from 'sequelize-typescript';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
@@ -16,16 +13,29 @@ import { ApiConfigService } from '@shared/config.service';
 import { AuthService } from '@modules/auth.service';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
-import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
-import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
-import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.types';
 import { TimeService } from '@shared/time.service';
 import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
 import { PasswordChangedException } from '@exceptions/password-changed.exception';
+import { GetUserByEmailInterface } from '@interfaces/get-user-by-email.interface';
+import { CreateUserInterface } from '@interfaces/create-user.interface';
+import { CreateUserSettingsInterface } from '@interfaces/create-user-settings.interface';
+import { UpdateUserSettingsInterface } from '@interfaces/update-user-settings.interface';
+import { UpdateUserInterface } from '@interfaces/update-user.interface';
+import { GetUserSettingsInterface } from '@interfaces/get-user-settings.interface';
+import { GetUserByIdInterface } from '@interfaces/get-user-by-id.interface';
+import { VerifyUserCredentialsInterface } from '@interfaces/verify-user-credentials.interface';
+import { ForgotPasswordInterface } from '@interfaces/forgot-password.interface';
+import { UploadPhotoInterface } from '@interfaces/upload-photo.interface';
+import { GetUserInfoInterface } from '@interfaces/get-user-info.interface';
+import { GetUserSecuritySettingsInterface } from '@interfaces/get-user-security-settings.interface';
+import { UpdateUserInfoInterface } from '@interfaces/update-user-info.interface';
+import { GetUserByRecoveryKeysInterface } from '@interfaces/get-user-by-recovery-keys.interface';
+import { DeleteUserAccountInterface } from '@interfaces/delete-user-account.interface';
 
 @Injectable()
 export class UsersService {
@@ -44,13 +54,7 @@ export class UsersService {
     private readonly userSettingsRepository: typeof UserSettings
   ) {}
 
-  async getUserByEmail({
-    email,
-    trx: transaction
-  }: {
-    email: string;
-    trx?: Transaction;
-  }) {
+  async getUserByEmail({ email, trx: transaction }: GetUserByEmailInterface) {
     return await this.userRepository.findOne({
       where: { email },
       include: [{ all: true }],
@@ -58,13 +62,7 @@ export class UsersService {
     });
   }
 
-  async createUser({
-    payload,
-    trx: transaction
-  }: {
-    payload: CreateUserDto;
-    trx?: Transaction;
-  }) {
+  async createUser({ payload, trx: transaction }: CreateUserInterface) {
     const defaultRole = await this.roleService.getRoleByValue('AUTH_USER');
     const user = await this.userRepository.create(payload, { transaction });
     await user.$set('roles', [defaultRole.id], { transaction });
@@ -74,10 +72,7 @@ export class UsersService {
   async createUserSettings({
     userId,
     trx: transaction
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: CreateUserSettingsInterface) {
     return await this.userSettingsRepository.create(
       { userId },
       { transaction }
@@ -88,11 +83,7 @@ export class UsersService {
     payload,
     userId,
     trx: transaction
-  }: {
-    payload: Partial<UserSettings>;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: UpdateUserSettingsInterface) {
     return await this.userSettingsRepository.update(
       {
         ...payload
@@ -101,15 +92,7 @@ export class UsersService {
     );
   }
 
-  async updateUser({
-    payload,
-    userId,
-    trx: transaction
-  }: {
-    payload: Partial<User>;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async updateUser({ payload, userId, trx: transaction }: UpdateUserInterface) {
     return await this.userRepository.update(
       {
         ...payload
@@ -121,23 +104,14 @@ export class UsersService {
   async getUserSettingsByUserId({
     userId,
     trx: transaction
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: GetUserSettingsInterface) {
     return await this.userSettingsRepository.findOne({
       where: { userId },
       transaction
     });
   }
 
-  async getUserById({
-    id,
-    trx: transaction
-  }: {
-    id: string;
-    trx?: Transaction;
-  }) {
+  async getUserById({ id, trx: transaction }: GetUserByIdInterface) {
     return await this.userRepository.findByPk(id, {
       include: { all: true },
       transaction
@@ -148,11 +122,7 @@ export class UsersService {
     email,
     password,
     trx: transaction
-  }: {
-    email: string;
-    password: string;
-    trx?: Transaction;
-  }) {
+  }: VerifyUserCredentialsInterface) {
     const user = await this.getUserByEmail({ email, trx: transaction });
     if (!user) throw new WrongCredentialsException();
 
@@ -162,13 +132,9 @@ export class UsersService {
     return user;
   }
 
-  async forgotPassword({
-    payload,
-    trx
-  }: {
-    payload: ForgotPasswordDto;
-    trx?: Transaction;
-  }) {
+  async forgotPassword({ payload, trx }: ForgotPasswordInterface) {
+    const { language } = payload;
+
     const user = await this.getUserByEmail({
       email: payload.email,
       trx
@@ -176,8 +142,10 @@ export class UsersService {
 
     if (!user) return new ResetPasswordEmailDto();
 
+    const { id: userId, email, firstName, lastName, userSettings } = user;
+
     const isWithinDay = this.timeService.isWithinTimeframe({
-      time: user.userSettings.passwordChanged,
+      time: userSettings.passwordChanged,
       seconds: 86400
     });
 
@@ -185,7 +153,7 @@ export class UsersService {
 
     const userLastPasswordResent =
       await this.confirmationHashService.getUserLastPasswordResetHash({
-        userId: user.id,
+        userId,
         trx
       });
 
@@ -198,44 +166,40 @@ export class UsersService {
       if (isWithinThreeMinutes) throw new WrongTimeframeException();
     }
 
-    const forgotPasswordHash = crypto.randomBytes(20).toString('hex');
+    const confirmationHash = crypto.randomBytes(20).toString('hex');
 
     await this.emailService.sendForgotPasswordEmail({
       payload: {
-        confirmationHash: forgotPasswordHash,
+        to: email,
         confirmationType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
-        userId: user.id,
-        email: user.email
+        confirmationHash,
+        userId
       },
       userInfo: {
-        firstName: user.firstName,
-        lastName: user.lastName
+        firstName,
+        lastName
       },
-      language: payload.language,
+      language,
       trx
     });
 
     return new ResetPasswordEmailDto();
   }
 
-  async uploadUserPhoto({
-    payload,
-    userId
-  }: {
-    payload: UploadPhotoDto;
-    userId: string;
-  }) {
+  async uploadUserPhoto({ payload, userId }: UploadPhotoInterface) {
+    const { userPhoto } = payload;
+
     const { accessKeyId, secretAccessKey, bucketName } =
       this.configService.awsSdkCredentials;
 
     const s3 = new S3({ accessKeyId, secretAccessKey });
 
     const base64Data = Buffer.from(
-      payload.userPhoto.replace(/^data:image\/\w+;base64,/, ''),
+      userPhoto.replace(/^data:image\/\w+;base64,/, ''),
       'base64'
     );
 
-    const type = payload.userPhoto.split(';')[0].split('/')[1];
+    const type = userPhoto.split(';')[0].split('/')[1];
 
     if (type !== 'png') throw new WrongPictureException();
 
@@ -254,7 +218,7 @@ export class UsersService {
     return new PhotoUploadedDto();
   }
 
-  async getUserInfo({ userId, trx }: { userId: string; trx?: Transaction }) {
+  async getUserInfo({ userId, trx }: GetUserInfoInterface) {
     const { accessKeyId, secretAccessKey, bucketName } =
       this.configService.awsSdkCredentials;
 
@@ -275,16 +239,17 @@ export class UsersService {
       isProfilePicPresent = false;
     }
 
-    const userData = await this.getUserById({ id: userId, trx });
+    const { firstName, lastName, location, company, website, email } =
+      await this.getUserById({ id: userId, trx });
 
     return {
       userId: userIdHash,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      location: userData.location,
-      company: userData.company,
-      website: userData.website,
-      email: userData.email,
+      firstName,
+      lastName,
+      location,
+      company,
+      website,
+      email,
       isProfilePicPresent
     };
   }
@@ -292,29 +257,24 @@ export class UsersService {
   async getUserSecuritySettings({
     userId,
     trx
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
-    const { userSettings, email } = await this.getUserById({
+  }: GetUserSecuritySettingsInterface) {
+    const {
+      userSettings: { passwordChanged, emailChanged, twoFaToken, phone },
+      email
+    } = await this.getUserById({
       id: userId,
       trx
     });
 
     const isWithinDay = this.timeService.isWithinTimeframe({
-      time: userSettings.passwordChanged,
+      time: passwordChanged,
       seconds: 86400
     });
 
-    const emailChanged = !!userSettings.emailChanged;
-    const isTwoFaSetUp = !!userSettings.twoFaToken;
-    const isSetUp = !!userSettings.phone;
-    const passwordCanBeChanged = userSettings.passwordChanged
-      ? !isWithinDay
-      : true;
-    const twoLastDigit = !!userSettings.phone
-      ? userSettings.phone.slice(-2)
-      : null;
+    const isTwoFaSetUp = !!twoFaToken;
+    const isSetUp = !!phone;
+    const passwordCanBeChanged = passwordChanged ? !isWithinDay : true;
+    const twoLastDigit = !!phone ? phone.slice(-2) : null;
 
     return {
       phoneStatus: { isSetUp, twoLastDigit },
@@ -325,15 +285,7 @@ export class UsersService {
     };
   }
 
-  async updateUserInfo({
-    userId,
-    payload,
-    trx
-  }: {
-    userId: string;
-    payload: UpdateUserInfoDto;
-    trx?: Transaction;
-  }) {
+  async updateUserInfo({ userId, payload, trx }: UpdateUserInfoInterface) {
     await this.updateUser({ payload, userId, trx });
 
     return new UserUpdatedDto();
@@ -342,10 +294,7 @@ export class UsersService {
   async getUserByRecoveryKeysFingerprint({
     recoveryKeysFingerprint,
     trx: transaction
-  }: {
-    recoveryKeysFingerprint: string;
-    trx?: Transaction;
-  }) {
+  }: GetUserByRecoveryKeysInterface) {
     const userSettings = await this.userSettingsRepository.findOne({
       where: { recoveryKeysFingerprint },
       transaction
@@ -356,13 +305,7 @@ export class UsersService {
     return this.getUserById({ id: userSettings.userId, trx: transaction });
   }
 
-  async deleteUserAccount({
-    userId,
-    trx
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async deleteUserAccount({ userId, trx }: DeleteUserAccountInterface) {
     // @TODO Think about either make it soft or hard delete
   }
 }

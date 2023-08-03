@@ -12,20 +12,8 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/api/error-handler.service';
 import { LoaderService } from '@shared/loader.service';
-import { CONTROLLERS } from '@interfaces/controllers.type';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
-import { AUTH_ENDPOINTS } from '@interfaces/auth.type';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
-import { USERS_ENDPOINTS } from '@interfaces/users.type';
-import { RECOVERY_ENDPOINTS } from '@interfaces/recovery';
-import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.type';
-
-type ENDPOINTS_TYPE =
-  | AUTH_ENDPOINTS
-  | SECURITY_ENDPOINTS
-  | USERS_ENDPOINTS
-  | RECOVERY_ENDPOINTS
-  | CONFIRMATION_ENDPOINTS;
+import { ProxyRequestInterface } from '@interfaces/proxy-request.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -48,14 +36,7 @@ export class ApiService {
     payload,
     params,
     accessToken
-  }: {
-    controller: CONTROLLERS;
-    action: ENDPOINTS_TYPE;
-    method: ALLOWED_METHODS;
-    payload?: object;
-    params?: object;
-    accessToken?: string;
-  }): Observable<any> {
+  }: ProxyRequestInterface): Observable<any> {
     const requestUrl = `${this.frontProxyUrl}/${controller}/${action}`;
     const requestBody: {
       method: ALLOWED_METHODS;

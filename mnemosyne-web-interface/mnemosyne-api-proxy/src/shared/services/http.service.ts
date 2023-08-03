@@ -7,6 +7,7 @@ import { ACTION_CONTROLLER_TYPE } from '@interfaces/action-controller.type';
 import { STATUS_TYPE } from '@interfaces/status.type';
 import { METHODS_TYPE } from '@interfaces/method.type';
 import { UnhandledEndpointException } from '@exceptions/unhandled-endpoint.exception';
+import { ProxyActionPayloadInterface } from '@interfaces/proxy-action-payload.interface';
 
 @Injectable()
 export class ProxyHttpService {
@@ -24,15 +25,7 @@ export class ProxyHttpService {
     params,
     accessToken,
     cookies
-  }: {
-    controller: string;
-    action: string;
-    payload?: object;
-    method: string;
-    params?: object;
-    accessToken?: string;
-    cookies?: string;
-  }): Promise<object> {
+  }: ProxyActionPayloadInterface): Promise<object> {
     const allowedMethods = this.configService.allowedRequestMethods;
     const allowedControllers = this.configService.allowedControllers;
     const allowedEndpoints = [

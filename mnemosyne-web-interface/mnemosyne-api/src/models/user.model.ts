@@ -61,7 +61,7 @@ export class User extends Model<User, UserCreationAttributes> {
   isMfaSet: boolean;
 
   @HasMany(() => ConfirmationHash)
-  confirmationHashes: ConfirmationHash[];
+  confirmationHashes: Array<ConfirmationHash>;
 
   @HasOne(() => Session)
   session: Session;
@@ -78,5 +78,5 @@ export class User extends Model<User, UserCreationAttributes> {
   updatedAt: Date;
 
   @BelongsToMany(() => Role, () => UserRole)
-  roles: Role[];
+  roles: Array<Role>;
 }

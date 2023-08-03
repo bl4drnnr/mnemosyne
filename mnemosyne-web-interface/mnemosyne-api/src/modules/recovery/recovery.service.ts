@@ -1,13 +1,14 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { GenerateRecoveryKeysDto } from '@dto/generate-recovery-keys.dto';
-import { Transaction } from 'sequelize';
-import { RecoverAccountDto } from '@dto/recover-account.dto';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
-import { LoginGenerateRecoveryKeysDto } from '@dto/login-generate-recovery-keys.dto';
 import { AccountRecoveredDto } from '@dto/account-recovered.dto';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
+import { RegistrationKeysInterface } from '@interfaces/registration-keys.interface';
+import { LoginKeysInterface } from '@interfaces/login-keys.interface';
+import { GenerateKeysInterface } from '@interfaces/generate-keys.interface';
+import { RecoverAccountInterface } from '@interfaces/recover-account.interface';
+import { GenerateAndSaveKeysInterface } from '@interfaces/generate-and-save-keys.interface';
 
 @Injectable()
 export class RecoveryService {
@@ -21,11 +22,9 @@ export class RecoveryService {
     confirmationHash,
     payload,
     trx
-  }: {
-    confirmationHash: string;
-    payload: GenerateRecoveryKeysDto;
-    trx?: Transaction;
-  }) {
+  }: RegistrationKeysInterface) {
+    const { passphrase } = payload;
+
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
@@ -34,7 +33,7 @@ export class RecoveryService {
 
     try {
       return await this.generateAndSaveRecoveryKeys({
-        passphrase: payload.passphrase,
+        passphrase,
         userId,
         trx
       });
@@ -43,42 +42,18 @@ export class RecoveryService {
     }
   }
 
-  async loginGenerateRecoveryKeys({
-    payload,
-    trx
-  }: {
-    payload: LoginGenerateRecoveryKeysDto;
-    trx?: Transaction;
-  }) {
-    const user = await this.userService.verifyUserCredentials({
-      email: payload.email,
-      password: payload.password,
+  async loginGenerateRecoveryKeys({ payload, trx }: LoginKeysInterface) {
+    const { email, password, passphrase } = payload;
+
+    const { id: userId } = await this.userService.verifyUserCredentials({
+      email,
+      password,
       trx
     });
 
     try {
       return await this.generateAndSaveRecoveryKeys({
-        passphrase: payload.passphrase,
-        userId: user.id,
-        trx
-      });
-    } catch (e: any) {
-      throw new HttpException(e.response.message, e.status);
-    }
-  }
-
-  async generateRecoveryKeys({
-    payload,
-    userId,
-    trx
-  }: {
-    payload: GenerateRecoveryKeysDto;
-    userId: string;
-    trx?: Transaction;
-  }) {
-    try {
-      return await this.generateAndSaveRecoveryKeys({
-        passphrase: payload.passphrase,
+        passphrase,
         userId,
         trx
       });
@@ -87,20 +62,30 @@ export class RecoveryService {
     }
   }
 
-  async recoverUserAccount({
-    payload,
-    trx
-  }: {
-    payload: RecoverAccountDto;
-    trx?: Transaction;
-  }) {
+  async generateRecoveryKeys({ payload, userId, trx }: GenerateKeysInterface) {
+    const { passphrase } = payload;
+
+    try {
+      return await this.generateAndSaveRecoveryKeys({
+        passphrase,
+        userId,
+        trx
+      });
+    } catch (e: any) {
+      throw new HttpException(e.response.message, e.status);
+    }
+  }
+
+  async recoverUserAccount({ payload, trx }: RecoverAccountInterface) {
+    const { passphrase, recoveryKeys } = payload;
+
     const hashedPassphrase = this.cryptographicService.hashPassphrase({
-      passphrase: payload.passphrase
+      passphrase
     });
 
     const encryptedRecoveryKeys = this.cryptographicService.encryptRecoveryKeys(
       {
-        recoveryKeys: payload.recoveryKeys,
+        recoveryKeys,
         hashedPassphrase
       }
     );
@@ -109,12 +94,13 @@ export class RecoveryService {
       data: encryptedRecoveryKeys
     });
 
-    const user = await this.userService.getUserByRecoveryKeysFingerprint({
-      recoveryKeysFingerprint,
-      trx
-    });
+    const { id: userId, userSettings } =
+      await this.userService.getUserByRecoveryKeysFingerprint({
+        recoveryKeysFingerprint,
+        trx
+      });
 
-    if (user.userSettings.recoveryKeysFingerprint !== recoveryKeysFingerprint)
+    if (userSettings.recoveryKeysFingerprint !== recoveryKeysFingerprint)
       throw new WrongRecoveryKeysException();
 
     await this.userService.updateUserSettings({
@@ -125,13 +111,13 @@ export class RecoveryService {
         twoFaToken: null,
         recoveryKeysFingerprint: null
       },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.userService.updateUser({
       payload: { isMfaSet: false },
-      userId: user.id,
+      userId,
       trx
     });
 
@@ -142,11 +128,7 @@ export class RecoveryService {
     passphrase,
     userId,
     trx
-  }: {
-    passphrase: string;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: GenerateAndSaveKeysInterface) {
     const recoveryKeys = this.cryptographicService.generateRecoveryKey();
 
     const hashedPassphrase = this.cryptographicService.hashPassphrase({

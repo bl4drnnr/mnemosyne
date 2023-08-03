@@ -3,36 +3,40 @@ import * as jwt from 'jsonwebtoken';
 import * as bcryptjs from 'bcryptjs';
 import * as crypto from 'crypto';
 import * as uuid from 'uuid';
-import { User } from '@models/user.model';
 import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
-import { CreateUserDto } from '@dto/create-user.dto';
 import { UsersService } from '@modules/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { UserAlreadyExistsException } from '@exceptions/user/user-already-exists.exception';
+import { UserAlreadyExistsException } from '@exceptions/user-already-exists.exception';
 import { ApiConfigService } from '@shared/config.service';
 import { UserCreatedDto } from '@dto/user-created.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Session } from '@models/session.model';
-import { CorruptedTokenException } from '@exceptions/auth/corrupted-token.exception';
-import { InvalidTokenException } from '@exceptions/auth/invalid-token.exception';
-import { ExpiredTokenException } from '@exceptions/auth/expired-token.exception';
+import { CorruptedTokenException } from '@exceptions/corrupted-token.exception';
+import { InvalidTokenException } from '@exceptions/invalid-token.exception';
+import { ExpiredTokenException } from '@exceptions/expired-token.exception';
 import { LoggedOutDto } from '@dto/logged-out.dto';
-import { TacNotAcceptedException } from '@exceptions/user/tac-not-accepted.exception';
+import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
-import { LogInUserDto } from '@dto/log-in-user.dto';
 import { Sequelize } from 'sequelize-typescript';
-import { Transaction } from 'sequelize';
 import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
 import { MfaRequiredDto } from '@dto/mfa-required.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
-import { UserSettings } from '@models/user-settings.model';
 import { PhoneService } from '@shared/phone.service';
-import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.types';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { TimeService } from '@shared/time.service';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LoginInterface } from '@interfaces/login.interface';
+import { RegistrationInterface } from '@interfaces/registration.interface';
+import { LogoutInterface } from '@interfaces/logout.interface';
+import { RefreshTokenInterface } from '@interfaces/refresh-token.interface';
+import { CheckMfaStatusInterface } from '@interfaces/check-mfa-status.interface';
+import { VerifyTokenInterface } from '@interfaces/verify-token.interface';
+import { GenerateAccessTokenInterface } from '@interfaces/generate-access-token.interface';
+import { UpdateRefreshTokenInterface } from '@interfaces/update-refresh-token.interface';
+import { GenerateTokensInterface } from '@interfaces/generate-tokens.interface';
+import { GetTokenInterface } from '@interfaces/get-token.interface';
 
 @Injectable()
 export class AuthService {
@@ -49,20 +53,27 @@ export class AuthService {
     @InjectModel(Session) private readonly sessionRepository: typeof Session
   ) {}
 
-  async login({ payload, trx }: { payload: LogInUserDto; trx: Transaction }) {
-    const user = await this.usersService.verifyUserCredentials({
-      email: payload.email,
-      password: payload.password,
+  async login({ payload, trx }: LoginInterface) {
+    const { email, password, mfaCode, phoneCode } = payload;
+
+    const {
+      id: userId,
+      confirmationHashes,
+      isMfaSet,
+      userSettings,
+      roles
+    } = await this.usersService.verifyUserCredentials({
+      email,
+      password,
       trx
     });
 
-    const registrationHash = user.confirmationHashes.find(
+    const registrationHash = confirmationHashes.find(
       (hash) => hash.confirmationType === CONFIRMATION_TYPE.REGISTRATION
     );
 
     const isAccConfirmed = registrationHash.confirmed;
-    const isMfaSet = user.isMfaSet;
-    const isRecoverySetUp = user.userSettings.recoveryKeysFingerprint;
+    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
 
     if (!isAccConfirmed) throw new AccountNotConfirmedException();
 
@@ -72,10 +83,10 @@ export class AuthService {
 
     try {
       const mfaStatusResponse = await this.checkUserMfaStatus({
-        mfaCode: payload.mfaCode,
-        phoneCode: payload.phoneCode,
-        userSettings: user.userSettings,
-        userId: user.id,
+        mfaCode,
+        phoneCode,
+        userSettings,
+        userId,
         trx
       });
 
@@ -84,18 +95,12 @@ export class AuthService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    const { _rt, _at } = await this.generateTokens({ user, trx });
+    const { _rt, _at } = await this.generateTokens({ userId, roles, trx });
 
     return { _rt, _at };
   }
 
-  async registration({
-    payload,
-    trx
-  }: {
-    payload: CreateUserDto;
-    trx?: Transaction;
-  }) {
+  async registration({ payload, trx }: RegistrationInterface) {
     const existingUser = await this.usersService.getUserByEmail({
       email: payload.email,
       trx
@@ -109,7 +114,12 @@ export class AuthService {
       this.configService.hashPasswordRounds
     );
 
-    const createdUser = await this.usersService.createUser({
+    const {
+      id: userId,
+      email,
+      firstName,
+      lastName
+    } = await this.usersService.createUser({
       payload: {
         ...payload,
         password: hashedPassword
@@ -121,25 +131,25 @@ export class AuthService {
 
     await this.emailService.sendRegistrationConfirmationEmail({
       payload: {
-        confirmationHash,
+        to: email,
         confirmationType: CONFIRMATION_TYPE.REGISTRATION,
-        userId: createdUser.id,
-        email: createdUser.email
+        confirmationHash,
+        userId
       },
       userInfo: {
-        firstName: createdUser.firstName,
-        lastName: createdUser.lastName
+        firstName,
+        lastName
       },
       language: payload.language,
       trx
     });
 
-    await this.usersService.createUserSettings({ userId: createdUser.id, trx });
+    await this.usersService.createUserSettings({ userId, trx });
 
     return new UserCreatedDto();
   }
 
-  async logout({ userId, trx }: { userId: string; trx: Transaction }) {
+  async logout({ userId, trx }: LogoutInterface) {
     await this.sessionRepository.destroy({
       where: { userId },
       transaction: trx
@@ -148,24 +158,23 @@ export class AuthService {
     return new LoggedOutDto();
   }
 
-  async refreshToken({
-    refreshToken,
-    trx
-  }: {
-    refreshToken: string;
-    trx?: Transaction;
-  }) {
+  async refreshToken({ refreshToken, trx }: RefreshTokenInterface) {
     if (!refreshToken) throw new CorruptedTokenException();
 
-    const payload: { id: string } = this.verifyToken({ token: refreshToken });
+    const { id: tokenId } = this.verifyToken({
+      token: refreshToken
+    });
 
-    const token = await this.getTokenById({ tokenId: payload.id, trx });
+    const token = await this.getTokenById({ tokenId, trx });
 
     if (!token) throw new InvalidTokenException();
 
-    const user = await this.usersService.getUserById({ id: token.userId, trx });
+    const { id: userId, roles } = await this.usersService.getUserById({
+      id: token.userId,
+      trx
+    });
 
-    const { _at, _rt } = await this.generateTokens({ user, trx });
+    const { _at, _rt } = await this.generateTokens({ userId, roles, trx });
 
     return { _at, _rt };
   }
@@ -177,14 +186,7 @@ export class AuthService {
     userId,
     language,
     trx
-  }: {
-    mfaCode: string;
-    phoneCode: string;
-    userSettings: UserSettings;
-    userId: string;
-    language?: LANGUAGE_TYPES;
-    trx?: Transaction;
-  }) {
+  }: CheckMfaStatusInterface) {
     const {
       twoFaToken: userTwoFaToken,
       phoneCode: userPhoneCode,
@@ -242,7 +244,7 @@ export class AuthService {
     }
   }
 
-  private verifyToken({ token }: { token: string }) {
+  private verifyToken({ token }: VerifyTokenInterface) {
     try {
       return this.jwtService.verify(token, {
         secret: this.configService.jwtAuthConfig.secret
@@ -255,13 +257,7 @@ export class AuthService {
     }
   }
 
-  private generateAccessToken({
-    userId,
-    roles
-  }: {
-    userId: string;
-    roles: Array<string>;
-  }) {
+  private generateAccessToken({ userId, roles }: GenerateAccessTokenInterface) {
     const payload = { roles, userId, type: 'access' };
 
     const options = {
@@ -287,11 +283,7 @@ export class AuthService {
     userId,
     tokenId,
     trx: transaction
-  }: {
-    userId: string;
-    tokenId: string;
-    trx?: Transaction;
-  }) {
+  }: UpdateRefreshTokenInterface) {
     const currentSession = await this.sessionRepository.findOne({
       where: { userId },
       transaction
@@ -314,34 +306,26 @@ export class AuthService {
   }
 
   private async generateTokens({
-    user,
+    roles,
+    userId,
     trx: transaction
-  }: {
-    user: User;
-    trx?: Transaction;
-  }) {
-    const accessToken = this.generateAccessToken({
-      roles: user.roles.map((role) => role.value),
-      userId: user.id
+  }: GenerateTokensInterface) {
+    const _at = this.generateAccessToken({
+      roles: roles.map((role) => role.value),
+      userId
     });
-    const refreshToken = this.generateRefreshToken();
+    const { id: tokenId, token: _rt } = this.generateRefreshToken();
 
     await this.updateRefreshToken({
-      userId: user.id,
-      tokenId: refreshToken.id,
+      userId,
+      tokenId,
       trx: transaction
     });
 
-    return { _at: accessToken, _rt: refreshToken.token };
+    return { _at, _rt };
   }
 
-  private async getTokenById({
-    tokenId,
-    trx: transaction
-  }: {
-    tokenId: string;
-    trx?: Transaction;
-  }) {
+  private async getTokenById({ tokenId, trx: transaction }: GetTokenInterface) {
     return this.sessionRepository.findOne({
       where: { tokenId },
       transaction

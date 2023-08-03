@@ -40,6 +40,7 @@ export class UserSettings extends Model<
   @Column({ type: DataType.STRING, allowNull: true, field: 'two_fa_token' })
   twoFaToken: string;
 
+  @Default(false)
   @Column({ type: DataType.BOOLEAN, allowNull: true, field: 'email_changed' })
   emailChanged: boolean;
 

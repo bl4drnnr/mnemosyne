@@ -60,7 +60,15 @@
         "src/modules/recovery/*"
       ],
       "@interfaces/*": [
-        "src/libs/interfaces/*",
+        "src/libs/interfaces/auth/*",
+        "src/libs/interfaces/confirmation-hash/*",
+        "src/libs/interfaces/email/*",
+        "src/libs/interfaces/recovery/*",
+        "src/libs/interfaces/security/*",
+        "src/libs/interfaces/users/*",
+        "src/libs/interfaces/cryptography/*",
+        "src/libs/interfaces/phone/*",
+        "src/libs/interfaces/time/*",
         "src/libs/types/*"
       ],
       "@email-templates/*": [

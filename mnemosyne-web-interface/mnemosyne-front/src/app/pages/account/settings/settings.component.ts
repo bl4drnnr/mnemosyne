@@ -36,7 +36,7 @@ export class SettingsComponent implements OnInit {
   ) {}
 
   saveUserInfo(userInfo: UserInfoResponse) {
-    this.usersService.updateUserInfo({ payload: userInfo }).subscribe({
+    this.usersService.updateUserInfo(userInfo).subscribe({
       next: ({ message }) =>
         this.globalMessageService.handle({
           message: this.translocoService.translate(message, {}, 'responses'),

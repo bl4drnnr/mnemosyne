@@ -5,30 +5,32 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { HashNotFoundException } from '@exceptions/hash-not-found.exception';
 import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
 import { AccountConfirmedDto } from '@dto/account-confirmed.dto';
-import { Transaction } from 'sequelize';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { UsersService } from '@modules/users.service';
-import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.types';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
-import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
 import { EmailChangedDto } from '@dto/email-changed.dto';
 import { AuthService } from '@modules/auth.service';
-import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { LinkExpiredException } from '@exceptions/link-expired.exception';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { ApiConfigService } from '@shared/config.service';
 import { TimeService } from '@shared/time.service';
 import { EmailService } from '@shared/email.service';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { CreateConfirmHashInterface } from '@interfaces/create-confirm-hash.interface';
+import { GetByHashInterface } from '@interfaces/get-by-hash.interface';
+import { LastPassResetHashInterface } from '@interfaces/last-pass-reset-hash.interface';
+import { ConfirmAccountInterface } from '@interfaces/confirm-account.interface';
+import { ConfirmEmailInterface } from '@interfaces/confirm-email.interface';
+import { ConfirmPasswordResetInterface } from '@interfaces/confirm-password-reset.interface';
 
 @Injectable()
 export class ConfirmationHashService {
   constructor(
     private readonly configService: ApiConfigService,
+    private readonly timeService: TimeService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
-    private readonly timeService: TimeService,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     @Inject(forwardRef(() => UsersService))
@@ -40,16 +42,16 @@ export class ConfirmationHashService {
   async createConfirmationHash({
     payload,
     trx: transaction
-  }: {
-    payload: Partial<ConfirmationHash>;
-    trx?: Transaction;
-  }) {
+  }: CreateConfirmHashInterface) {
+    const { userId, confirmationType, confirmationHash, changingEmail } =
+      payload;
+
     await this.confirmationHashRepository.create(
       {
-        userId: payload.userId,
-        confirmationHash: payload.confirmationHash,
-        confirmationType: payload.confirmationType,
-        changingEmail: payload.changingEmail
+        userId,
+        confirmationHash,
+        confirmationType,
+        changingEmail
       },
       { transaction }
     );
@@ -58,10 +60,7 @@ export class ConfirmationHashService {
   async getUserIdByConfirmationHash({
     confirmationHash,
     trx: transaction
-  }: {
-    confirmationHash: string;
-    trx?: Transaction;
-  }) {
+  }: GetByHashInterface) {
     const foundHash = await this.confirmationHashRepository.findOne({
       where: { confirmationHash },
       transaction
@@ -75,10 +74,7 @@ export class ConfirmationHashService {
   async getUserByConfirmationHash({
     confirmationHash,
     trx: transaction
-  }: {
-    confirmationHash: string;
-    trx?: Transaction;
-  }) {
+  }: GetByHashInterface) {
     const foundHash = await this.confirmationHashRepository.findOne({
       where: { confirmationHash },
       transaction
@@ -94,10 +90,7 @@ export class ConfirmationHashService {
   async getUserLastPasswordResetHash({
     userId,
     trx: transaction
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: LastPassResetHashInterface) {
     return this.confirmationHashRepository.findOne({
       where: {
         userId,
@@ -112,11 +105,7 @@ export class ConfirmationHashService {
     confirmationHash,
     language,
     trx: transaction
-  }: {
-    confirmationHash: string;
-    language?: LANGUAGE_TYPES;
-    trx?: Transaction;
-  }) {
+  }: ConfirmAccountInterface) {
     const foundHash = await this.confirmationHashRepository.findOne({
       where: { confirmationHash },
       transaction
@@ -124,14 +113,14 @@ export class ConfirmationHashService {
 
     if (!foundHash) throw new HashNotFoundException();
 
-    const user = await this.userService.getUserById({
-      id: foundHash.userId,
-      trx: transaction
-    });
+    const { isMfaSet, userSettings, firstName, lastName, email } =
+      await this.userService.getUserById({
+        id: foundHash.userId,
+        trx: transaction
+      });
 
     const isAccConfirmed = foundHash.confirmed;
-    const isMfaSet = user.isMfaSet;
-    const isRecoverySetUp = user.userSettings.recoveryKeysFingerprint;
+    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
 
     if (isAccConfirmed && isMfaSet && isRecoverySetUp)
       throw new AccountAlreadyConfirmedException();
@@ -148,8 +137,8 @@ export class ConfirmationHashService {
     );
 
     await this.emailService.sendRegistrationCompleteEmail({
-      userInfo: { firstName: user.firstName, lastName: user.lastName },
-      email: user.email,
+      userInfo: { firstName, lastName },
+      to: email,
       language
     });
 
@@ -160,11 +149,7 @@ export class ConfirmationHashService {
     confirmationHash,
     payload,
     trx
-  }: {
-    confirmationHash: string;
-    payload: ConfirmEmailChangeDto;
-    trx?: Transaction;
-  }) {
+  }: ConfirmEmailInterface) {
     const foundHash = await this.confirmationHashRepository.findOne({
       where: { confirmationHash },
       transaction: trx
@@ -179,7 +164,13 @@ export class ConfirmationHashService {
 
     if (!isWithinDay) throw new LinkExpiredException();
 
-    const user = await this.userService.getUserById({
+    const {
+      id: userId,
+      userSettings,
+      email,
+      firstName,
+      lastName
+    } = await this.userService.getUserById({
       id: foundHash.userId,
       trx
     });
@@ -188,8 +179,8 @@ export class ConfirmationHashService {
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
-        userSettings: user.userSettings,
-        userId: user.id,
+        userSettings,
+        userId,
         mfaCode,
         phoneCode,
         language,
@@ -202,26 +193,26 @@ export class ConfirmationHashService {
     }
 
     await this.userService.verifyUserCredentials({
-      email: user.email,
+      email,
       password,
       trx
     });
 
     await this.userService.updateUser({
       payload: { email: foundHash.changingEmail },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.userService.updateUserSettings({
       payload: { emailChanged: true },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.emailService.sendEmailChangeCompleteEmail({
-      userInfo: { firstName: user.firstName, lastName: user.lastName },
-      email: user.email,
+      userInfo: { firstName, lastName },
+      to: email,
       language
     });
 
@@ -241,10 +232,7 @@ export class ConfirmationHashService {
   async confirmResetUserPassword({
     payload,
     trx
-  }: {
-    payload: ResetUserPasswordDto;
-    trx?: Transaction;
-  }) {
+  }: ConfirmPasswordResetInterface) {
     const { password, hash, phoneCode, mfaCode, language } = payload;
 
     const forgotPasswordHash = await this.confirmationHashRepository.findOne({
@@ -262,7 +250,14 @@ export class ConfirmationHashService {
 
     if (!isWithinDay) throw new LinkExpiredException();
 
-    const user = await this.userService.getUserById({
+    const {
+      id: userId,
+      userSettings,
+      password: userPassword,
+      email,
+      firstName,
+      lastName
+    } = await this.userService.getUserById({
       id: forgotPasswordHash.userId,
       trx
     });
@@ -271,8 +266,8 @@ export class ConfirmationHashService {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
         mfaCode,
         phoneCode,
-        userSettings: user.userSettings,
-        userId: user.id,
+        userSettings,
+        userId,
         language,
         trx
       });
@@ -289,26 +284,26 @@ export class ConfirmationHashService {
 
     const isPreviousPassword = await bcryptjs.compare(
       hashedPassword,
-      user.password
+      userPassword
     );
 
     if (isPreviousPassword) throw new PreviousPasswordException();
 
     await this.userService.updateUser({
       payload: { password: hashedPassword },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.userService.updateUserSettings({
       payload: { passwordChanged: new Date() },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.emailService.sendResetPasswordCompleteEmail({
-      userInfo: { firstName: user.firstName, lastName: user.lastName },
-      email: user.email,
+      userInfo: { firstName, lastName },
+      to: email,
       language
     });
 

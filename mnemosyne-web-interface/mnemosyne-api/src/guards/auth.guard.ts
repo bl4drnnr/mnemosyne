@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as jwt from 'jsonwebtoken';
-import { InvalidTokenException } from '@exceptions/auth/invalid-token.exception';
-import { CorruptedTokenException } from '@exceptions/auth/corrupted-token.exception';
-import { ExpiredTokenException } from '@exceptions/auth/expired-token.exception';
+import { InvalidTokenException } from '@exceptions/invalid-token.exception';
+import { CorruptedTokenException } from '@exceptions/corrupted-token.exception';
+import { ExpiredTokenException } from '@exceptions/expired-token.exception';
 
 @Injectable()
 export class AuthGuard implements CanActivate {

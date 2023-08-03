@@ -15,6 +15,8 @@ import { ForgotPasswordResponse } from '@responses/forgot-password.response';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
 import { LogoutResponse } from '@responses/logout.response';
 import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.type';
+import { RefreshTokensInterface } from '@interfaces/services/auth/refresh-tokens.interface';
+import { ConfirmAccountInterface } from '@interfaces/services/auth/confirm-account.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -50,9 +52,7 @@ export class AuthenticationService {
 
   confirmAccount({
     hash
-  }: {
-    hash: string;
-  }): Observable<{ message: ConfirmAccountResponse }> {
+  }: ConfirmAccountInterface): Observable<{ message: ConfirmAccountResponse }> {
     const payload: { confirmationHash: string; language?: string } = {
       confirmationHash: hash
     };
@@ -100,9 +100,7 @@ export class AuthenticationService {
 
   refreshTokens({
     accessToken
-  }: {
-    accessToken: string;
-  }): Observable<{ _at: string }> {
+  }: RefreshTokensInterface): Observable<{ _at: string }> {
     return this.apiService.apiProxyRequest({
       method: ALLOWED_METHODS.GET,
       controller: CONTROLLERS.AUTH,
