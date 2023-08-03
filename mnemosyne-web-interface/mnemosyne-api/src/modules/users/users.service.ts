@@ -176,8 +176,10 @@ export class UsersService {
 
     if (!user) return new ResetPasswordEmailDto();
 
+    const { id: userId, email, firstName, lastName, userSettings } = user;
+
     const isWithinDay = this.timeService.isWithinTimeframe({
-      time: user.userSettings.passwordChanged,
+      time: userSettings.passwordChanged,
       seconds: 86400
     });
 
@@ -185,7 +187,7 @@ export class UsersService {
 
     const userLastPasswordResent =
       await this.confirmationHashService.getUserLastPasswordResetHash({
-        userId: user.id,
+        userId,
         trx
       });
 
@@ -204,12 +206,12 @@ export class UsersService {
       payload: {
         confirmationHash: forgotPasswordHash,
         confirmationType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
-        userId: user.id,
-        email: user.email
+        to: email,
+        userId
       },
       userInfo: {
-        firstName: user.firstName,
-        lastName: user.lastName
+        firstName,
+        lastName
       },
       language: payload.language,
       trx

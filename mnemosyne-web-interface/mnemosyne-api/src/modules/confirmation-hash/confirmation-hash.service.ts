@@ -124,14 +124,14 @@ export class ConfirmationHashService {
 
     if (!foundHash) throw new HashNotFoundException();
 
-    const user = await this.userService.getUserById({
-      id: foundHash.userId,
-      trx: transaction
-    });
+    const { isMfaSet, userSettings, firstName, lastName, email } =
+      await this.userService.getUserById({
+        id: foundHash.userId,
+        trx: transaction
+      });
 
     const isAccConfirmed = foundHash.confirmed;
-    const isMfaSet = user.isMfaSet;
-    const isRecoverySetUp = user.userSettings.recoveryKeysFingerprint;
+    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
 
     if (isAccConfirmed && isMfaSet && isRecoverySetUp)
       throw new AccountAlreadyConfirmedException();
@@ -148,8 +148,8 @@ export class ConfirmationHashService {
     );
 
     await this.emailService.sendRegistrationCompleteEmail({
-      userInfo: { firstName: user.firstName, lastName: user.lastName },
-      email: user.email,
+      userInfo: { firstName, lastName },
+      to: email,
       language
     });
 
@@ -179,7 +179,13 @@ export class ConfirmationHashService {
 
     if (!isWithinDay) throw new LinkExpiredException();
 
-    const user = await this.userService.getUserById({
+    const {
+      id: userId,
+      userSettings,
+      email,
+      firstName,
+      lastName
+    } = await this.userService.getUserById({
       id: foundHash.userId,
       trx
     });
@@ -188,8 +194,8 @@ export class ConfirmationHashService {
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
-        userSettings: user.userSettings,
-        userId: user.id,
+        userSettings,
+        userId,
         mfaCode,
         phoneCode,
         language,
@@ -202,26 +208,26 @@ export class ConfirmationHashService {
     }
 
     await this.userService.verifyUserCredentials({
-      email: user.email,
+      email,
       password,
       trx
     });
 
     await this.userService.updateUser({
       payload: { email: foundHash.changingEmail },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.userService.updateUserSettings({
       payload: { emailChanged: true },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.emailService.sendEmailChangeCompleteEmail({
-      userInfo: { firstName: user.firstName, lastName: user.lastName },
-      email: user.email,
+      userInfo: { firstName, lastName },
+      to: email,
       language
     });
 
@@ -262,7 +268,14 @@ export class ConfirmationHashService {
 
     if (!isWithinDay) throw new LinkExpiredException();
 
-    const user = await this.userService.getUserById({
+    const {
+      id: userId,
+      userSettings,
+      password: userPassword,
+      email,
+      firstName,
+      lastName
+    } = await this.userService.getUserById({
       id: forgotPasswordHash.userId,
       trx
     });
@@ -271,8 +284,8 @@ export class ConfirmationHashService {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
         mfaCode,
         phoneCode,
-        userSettings: user.userSettings,
-        userId: user.id,
+        userSettings,
+        userId,
         language,
         trx
       });
@@ -289,26 +302,26 @@ export class ConfirmationHashService {
 
     const isPreviousPassword = await bcryptjs.compare(
       hashedPassword,
-      user.password
+      userPassword
     );
 
     if (isPreviousPassword) throw new PreviousPasswordException();
 
     await this.userService.updateUser({
       payload: { password: hashedPassword },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.userService.updateUserSettings({
       payload: { passwordChanged: new Date() },
-      userId: user.id,
+      userId,
       trx
     });
 
     await this.emailService.sendResetPasswordCompleteEmail({
-      userInfo: { firstName: user.firstName, lastName: user.lastName },
-      email: user.email,
+      userInfo: { firstName, lastName },
+      to: email,
       language
     });
 

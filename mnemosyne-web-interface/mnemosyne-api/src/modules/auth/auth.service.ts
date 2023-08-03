@@ -109,7 +109,12 @@ export class AuthService {
       this.configService.hashPasswordRounds
     );
 
-    const createdUser = await this.usersService.createUser({
+    const {
+      id: userId,
+      email,
+      firstName,
+      lastName
+    } = await this.usersService.createUser({
       payload: {
         ...payload,
         password: hashedPassword
@@ -121,20 +126,20 @@ export class AuthService {
 
     await this.emailService.sendRegistrationConfirmationEmail({
       payload: {
-        confirmationHash,
+        to: email,
         confirmationType: CONFIRMATION_TYPE.REGISTRATION,
-        userId: createdUser.id,
-        email: createdUser.email
+        confirmationHash,
+        userId
       },
       userInfo: {
-        firstName: createdUser.firstName,
-        lastName: createdUser.lastName
+        firstName,
+        lastName
       },
       language: payload.language,
       trx
     });
 
-    await this.usersService.createUserSettings({ userId: createdUser.id, trx });
+    await this.usersService.createUserSettings({ userId, trx });
 
     return new UserCreatedDto();
   }

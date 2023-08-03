@@ -29,49 +29,53 @@ export class EmailService {
     language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
+    const { confirmationHash, confirmationType, userId, to } = payload;
+
     const emailSettings: VerificationEmailInterface = {
-      confirmationHash: payload.confirmationHash,
-      confirmationType: payload.confirmationType,
-      userId: payload.userId
+      confirmationHash,
+      confirmationType,
+      userId
     };
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const confirmationLink = `${this.configService.frontEndUrl}/account-confirmation/${payload.confirmationHash}`;
+    const link = `${this.configService.frontEndUrl}/account-confirmation/${confirmationHash}`;
 
-    const { htmlPayload, subject } =
+    const { html, subject } =
       this.emailTemplatesService.registrationEmailTemplate({
         userInfo,
-        confirmationLink,
+        link,
         language
       });
 
     await this.sendEmail({
-      target: payload.email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
   async sendRegistrationCompleteEmail({
-    email,
+    to,
     userInfo,
     language
   }: {
-    email: string;
+    to: string;
     userInfo: UserInfoInterface;
     language?: LANGUAGE_TYPES;
   }) {
-    const { htmlPayload, subject } =
-      this.emailTemplatesService.registrationComplete({
-        userInfo,
-        language
-      });
+    const link = `${this.configService.frontEndUrl}/login`;
+
+    const { html, subject } = this.emailTemplatesService.registrationComplete({
+      userInfo,
+      link,
+      language
+    });
 
     await this.sendEmail({
-      target: email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
@@ -86,49 +90,53 @@ export class EmailService {
     language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
+    const { confirmationHash, confirmationType, userId, to } = payload;
+
     const emailSettings: VerificationEmailInterface = {
-      confirmationHash: payload.confirmationHash,
-      confirmationType: payload.confirmationType,
-      userId: payload.userId
+      confirmationHash,
+      confirmationType,
+      userId
     };
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const confirmationLink = `${this.configService.frontEndUrl}/reset-password/${payload.confirmationHash}`;
+    const link = `${this.configService.frontEndUrl}/reset-password/${confirmationHash}`;
 
-    const { htmlPayload, subject } =
+    const { html, subject } =
       this.emailTemplatesService.forgotPasswordEmailTemplate({
         userInfo,
-        confirmationLink,
+        link,
         language
       });
 
     await this.sendEmail({
-      target: payload.email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
   async sendResetPasswordCompleteEmail({
-    email,
+    to,
     userInfo,
     language
   }: {
-    email: string;
+    to: string;
     userInfo: UserInfoInterface;
     language?: LANGUAGE_TYPES;
   }) {
-    const { htmlPayload, subject } =
-      this.emailTemplatesService.resetPasswordComplete({
-        userInfo,
-        language
-      });
+    const link = `${this.configService.frontEndUrl}/login`;
+
+    const { html, subject } = this.emailTemplatesService.resetPasswordComplete({
+      userInfo,
+      link,
+      language
+    });
 
     await this.sendEmail({
-      target: email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
@@ -143,67 +151,72 @@ export class EmailService {
     language?: LANGUAGE_TYPES;
     trx?: Transaction;
   }) {
+    const { confirmationHash, confirmationType, userId, to, changingEmail } =
+      payload;
+
     const emailSettings: VerificationEmailInterface = {
-      changingEmail: payload.changingEmail,
-      confirmationHash: payload.confirmationHash,
-      confirmationType: payload.confirmationType,
-      userId: payload.userId
+      changingEmail,
+      confirmationHash,
+      confirmationType,
+      userId
     };
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const confirmationLink = `${this.configService.frontEndUrl}/email-change-confirmation/${payload.confirmationHash}`;
+    const link = `${this.configService.frontEndUrl}/email-change-confirmation/${payload.confirmationHash}`;
 
-    const { htmlPayload, subject } =
+    const { html, subject } =
       this.emailTemplatesService.emailChangeEmailTemplate({
         userInfo,
-        confirmationLink,
+        link,
         language
       });
 
     await this.sendEmail({
-      target: payload.changingEmail,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
   async sendEmailChangeCompleteEmail({
-    email,
+    to,
     userInfo,
     language
   }: {
-    email: string;
+    to: string;
     userInfo: UserInfoInterface;
     language?: LANGUAGE_TYPES;
   }) {
-    const { htmlPayload, subject } =
-      this.emailTemplatesService.emailChangeComplete({
-        userInfo,
-        language
-      });
+    const link = `${this.configService.frontEndUrl}/login`;
+
+    const { html, subject } = this.emailTemplatesService.emailChangeComplete({
+      userInfo,
+      link,
+      language
+    });
 
     await this.sendEmail({
-      target: email,
-      emailHtml: htmlPayload,
-      emailSubject: subject
+      to,
+      html,
+      subject
     });
   }
 
   private async sendEmail({
-    target,
-    emailSubject,
-    emailHtml
+    to,
+    subject,
+    html
   }: {
-    target: string;
-    emailSubject: string;
-    emailHtml: string;
+    to: string;
+    subject: string;
+    html: string;
   }) {
     return await SendGrid.send({
-      to: target,
       from: this.configService.sendGridCredentials.sender_email,
-      subject: emailSubject,
-      html: emailHtml
+      to,
+      subject,
+      html
     });
   }
 

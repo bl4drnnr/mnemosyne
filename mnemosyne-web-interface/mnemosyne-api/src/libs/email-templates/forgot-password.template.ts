@@ -4,48 +4,48 @@ import { defaultSecurityTemplate } from '@email-templates/default-security.templ
 
 export const forgotPasswordTemplate = ({
   userInfo,
-  confirmationLink,
+  link,
   language
 }: {
   userInfo: UserInfoInterface;
-  confirmationLink: string;
+  link: string;
   language: LANGUAGE_TYPES;
 }) => {
-  let welcomeTitle: string;
-  let forgotPasswordPayload: string;
-  let resetPasswordButton: string;
+  let title: string;
+  let content: string;
+  let button: string;
 
   switch (language) {
     case LANGUAGE_TYPES.EN:
-      welcomeTitle = `Hello, ${userInfo.firstName} ${userInfo.lastName}!`;
-      forgotPasswordPayload =
+      title = `Hello, ${userInfo.firstName} ${userInfo.lastName}!`;
+      content =
         'In order to reset your password, please, click the button below. You will have to provide not only the new password, but also confirm the change using MFA. Link will be valid for 24h.';
-      resetPasswordButton = 'Reset password';
+      button = 'Reset password';
       break;
     case LANGUAGE_TYPES.RU:
-      welcomeTitle = `Здравствуйте, ${userInfo.firstName} ${userInfo.lastName}!`;
-      forgotPasswordPayload =
+      title = `Здравствуйте, ${userInfo.firstName} ${userInfo.lastName}!`;
+      content =
         'Для того, чтобы сбросить пароль, пожалуйста, нажмите на кнопку ниже. Вам придется указать не только новый пароль, но и подтвердить изменение с помощью MFA. Ссылка будет действительна в течение 24 часов.';
-      resetPasswordButton = 'Сбросить пароль';
+      button = 'Сбросить пароль';
       break;
     case LANGUAGE_TYPES.PL:
-      welcomeTitle = `Cześć, ${userInfo.firstName} ${userInfo.lastName}!`;
-      forgotPasswordPayload =
+      title = `Cześć, ${userInfo.firstName} ${userInfo.lastName}!`;
+      content =
         'Aby zresetować hasło, kliknij przycisk poniżej. Będziesz musiał podać nie tylko nowe hasło, ale również potwierdzić zmianę za pomocą MFA. Link będzie ważny przez 24h.';
-      resetPasswordButton = 'Resetuj hasło';
+      button = 'Resetuj hasło';
       break;
     default:
-      welcomeTitle = `Hello, ${userInfo.firstName} ${userInfo.lastName}!`;
-      forgotPasswordPayload =
+      title = `Hello, ${userInfo.firstName} ${userInfo.lastName}!`;
+      content =
         'In order to reset your password, please, click the button below. You will have to provide not only the new password, but also confirm the change using MFA. Link will be valid for 24h.';
-      resetPasswordButton = 'Reset password';
+      button = 'Reset password';
       break;
   }
 
   return defaultSecurityTemplate({
-    title: welcomeTitle,
-    content: forgotPasswordPayload,
-    button: resetPasswordButton,
-    link: confirmationLink
+    title,
+    content,
+    button,
+    link
   });
 };

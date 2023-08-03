@@ -4,246 +4,219 @@ import { LANGUAGE_TYPES } from '@interfaces/language.types';
 import { registrationTemplate } from '@email-templates/registration.template';
 import { emailChangeTemplate } from '@email-templates/email-change.template';
 import { forgotPasswordTemplate } from '@email-templates/forgot-password.template';
+import { registrationCompletedTemplate } from '@email-templates/registration-completed.template';
+import { resetPasswordCompletedTemplate } from '@email-templates/reset-password-completed.template';
+import { emailChangedTemplate } from '@email-templates/email-changed.template';
 
 @Injectable()
 export class EmailTemplatesService {
   registrationEmailTemplate({
     userInfo,
-    confirmationLink,
+    link,
     language
   }: {
     userInfo: UserInfoInterface;
-    confirmationLink: string;
+    link: string;
     language?: LANGUAGE_TYPES;
-  }): { htmlPayload: string; subject: string } {
+  }): { html: string; subject: string } {
+    let subject: string;
+
     switch (language) {
       case LANGUAGE_TYPES.EN:
-        return {
-          htmlPayload: registrationTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.EN
-          }),
-          subject: 'Mnemosyne - Registration confirmation'
-        };
+        subject = 'Mnemosyne - Registration confirmation';
+        break;
       case LANGUAGE_TYPES.RU:
-        return {
-          htmlPayload: registrationTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.RU
-          }),
-          subject: 'Mnemosyne - Подтверждение регистрации'
-        };
+        subject = 'Mnemosyne - Подтверждение регистрации';
+        break;
       case LANGUAGE_TYPES.PL:
-        return {
-          htmlPayload: registrationTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.PL
-          }),
-          subject: 'Mnemosyne - Potwierdzenie rejestracji'
-        };
+        subject = 'Mnemosyne - Potwierdzenie rejestracji';
+        break;
       default:
-        return {
-          htmlPayload: registrationTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.EN
-          }),
-          subject: 'Mnemosyne - Registration confirmation'
-        };
+        subject = 'Mnemosyne - Registration confirmation';
+        break;
     }
+
+    const html = registrationTemplate({
+      userInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
   }
 
   registrationComplete({
     userInfo,
+    link,
     language
   }: {
     userInfo: UserInfoInterface;
+    link: string;
     language?: LANGUAGE_TYPES;
-  }): { htmlPayload: string; subject: string } {
+  }): { html: string; subject: string } {
+    let subject: string;
+
     switch (language) {
       case LANGUAGE_TYPES.EN:
-        return {
-          htmlPayload: '',
-          subject: 'Mnemosyne - Welcome'
-        };
+        subject = 'Mnemosyne - Welcome';
+        break;
       case LANGUAGE_TYPES.RU:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Доборо пожаловать';
+        break;
       case LANGUAGE_TYPES.PL:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Witamy';
+        break;
       default:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Welcome';
+        break;
     }
+
+    const html = registrationCompletedTemplate({
+      link,
+      userInfo,
+      language
+    });
+
+    return { html, subject };
   }
 
   forgotPasswordEmailTemplate({
     userInfo,
-    confirmationLink,
+    link,
     language
   }: {
     userInfo: UserInfoInterface;
-    confirmationLink: string;
+    link: string;
     language?: LANGUAGE_TYPES;
-  }): { htmlPayload: string; subject: string } {
+  }): { html: string; subject: string } {
+    let subject: string;
+
     switch (language) {
       case LANGUAGE_TYPES.EN:
-        return {
-          htmlPayload: forgotPasswordTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.EN
-          }),
-          subject: 'Mnemosyne - Password reset'
-        };
+        subject = 'Mnemosyne - Password reset';
+        break;
       case LANGUAGE_TYPES.RU:
-        return {
-          htmlPayload: forgotPasswordTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.RU
-          }),
-          subject: 'Mnemosyne - Восстановление пароля'
-        };
+        subject = 'Mnemosyne - Восстановление пароля';
+        break;
       case LANGUAGE_TYPES.PL:
-        return {
-          htmlPayload: forgotPasswordTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.PL
-          }),
-          subject: 'Mnemosyne - Przypomnienie hasła'
-        };
+        subject = 'Mnemosyne - Przypomnienie hasła';
+        break;
       default:
-        return {
-          htmlPayload: forgotPasswordTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.EN
-          }),
-          subject: 'Mnemosyne - Password reset'
-        };
+        subject = 'Mnemosyne - Password reset';
+        break;
     }
+
+    const html = forgotPasswordTemplate({
+      userInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
   }
 
   resetPasswordComplete({
     userInfo,
+    link,
     language
   }: {
     userInfo: UserInfoInterface;
+    link: string;
     language?: LANGUAGE_TYPES;
-  }): { htmlPayload: string; subject: string } {
+  }): { html: string; subject: string } {
+    let subject: string;
+
     switch (language) {
       case LANGUAGE_TYPES.EN:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Password successfully reset';
+        break;
       case LANGUAGE_TYPES.RU:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Пароль сброшен';
+        break;
       case LANGUAGE_TYPES.PL:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Hasło zresetowane';
+        break;
       default:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Password successfully reset';
+        break;
     }
+
+    const html = resetPasswordCompletedTemplate({
+      userInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
   }
 
   emailChangeEmailTemplate({
     userInfo,
-    confirmationLink,
+    link,
     language
   }: {
     userInfo: UserInfoInterface;
-    confirmationLink: string;
+    link: string;
     language?: LANGUAGE_TYPES;
-  }): { htmlPayload: string; subject: string } {
+  }): { html: string; subject: string } {
+    let subject: string;
+
     switch (language) {
       case LANGUAGE_TYPES.EN:
-        return {
-          htmlPayload: emailChangeTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.EN
-          }),
-          subject: 'Mnemosyne - Email change'
-        };
+        subject = 'Mnemosyne - Email change';
+        break;
       case LANGUAGE_TYPES.RU:
-        return {
-          htmlPayload: emailChangeTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.RU
-          }),
-          subject: 'Mnemosyne - Изменение адреса электронной почты'
-        };
+        subject = 'Mnemosyne - Изменение адреса электронной почты';
+        break;
       case LANGUAGE_TYPES.PL:
-        return {
-          htmlPayload: emailChangeTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.PL
-          }),
-          subject: 'Mnemosyne - Zmiana adresu e-mail'
-        };
+        subject = 'Mnemosyne - Zmiana adresu e-mail';
+        break;
       default:
-        return {
-          htmlPayload: emailChangeTemplate({
-            userInfo,
-            confirmationLink,
-            language: LANGUAGE_TYPES.EN
-          }),
-          subject: 'Mnemosyne - Email change'
-        };
+        subject = 'Mnemosyne - Email change';
+        break;
     }
+
+    const html = emailChangeTemplate({
+      userInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
   }
 
   emailChangeComplete({
     userInfo,
+    link,
     language
   }: {
     userInfo: UserInfoInterface;
+    link: string;
     language?: LANGUAGE_TYPES;
-  }): { htmlPayload: string; subject: string } {
+  }): { html: string; subject: string } {
+    let subject: string;
+
     switch (language) {
       case LANGUAGE_TYPES.EN:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Email changed';
+        break;
       case LANGUAGE_TYPES.RU:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Адреса электронной почты изменен';
+        break;
       case LANGUAGE_TYPES.PL:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne -  Adres e-mail został zmieniony';
+        break;
       default:
-        return {
-          htmlPayload: '',
-          subject: ''
-        };
+        subject = 'Mnemosyne - Email changed';
+        break;
     }
+
+    const html = emailChangedTemplate({
+      userInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
   }
 }
