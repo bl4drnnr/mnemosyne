@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { JwtService } from '@nestjs/jwt';
 import { Reflector } from '@nestjs/core';
 import { ROLES_KEY } from '@decorators/roles.decorator';
-import { ForbiddenResourceException } from '@exceptions/auth/forbidden-resource.exception';
-import { CorruptedTokenException } from '@exceptions/auth/corrupted-token.exception';
-import { InvalidTokenException } from '@exceptions/auth/invalid-token.exception';
+import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
+import { CorruptedTokenException } from '@exceptions/corrupted-token.exception';
+import { InvalidTokenException } from '@exceptions/invalid-token.exception';
 
 @Injectable()
 export class RoleGuard implements CanActivate {

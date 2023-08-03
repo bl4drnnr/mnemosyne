@@ -1,6 +1,12 @@
 import * as CryptoJS from 'crypto-js';
 import { Injectable } from '@nestjs/common';
 import { ApiConfigService } from '@shared/config.service';
+import { HashInterface } from '@interfaces/hash.interface';
+import { HashPassphraseInterface } from '@interfaces/hash-passphrase.interface';
+import { EncryptInterface } from '@interfaces/encrypt.interface';
+import { DecryptInterface } from '@interfaces/decrypt.interface';
+import { EncryptRecoveryKeysInterface } from '@interfaces/encrypt-recovery-keys.interface';
+import { DecryptRecoveryKeysInterface } from '@interfaces/decrypt-recovery-keys.interface';
 
 @Injectable()
 export class CryptographicService {
@@ -11,33 +17,27 @@ export class CryptographicService {
 
   constructor(private readonly configService: ApiConfigService) {}
 
-  hash({ data }: { data: string }) {
+  hash({ data }: HashInterface) {
     return CryptoJS.SHA512(data, {
       iterations: this.iterations
     }).toString();
   }
 
-  hashPassphrase({ passphrase }: { passphrase: string }) {
+  hashPassphrase({ passphrase }: HashPassphraseInterface) {
     return CryptoJS.PBKDF2(passphrase, this.salt, {
       keySize: this.recoveryKeySize / 32,
       iterations: this.iterations
     }).toString();
   }
 
-  encrypt({ data, passphrase }: { data: string; passphrase: string }) {
+  encrypt({ data, passphrase }: EncryptInterface) {
     const key = CryptoJS.enc.Base64.parse(passphrase);
     const iv = CryptoJS.enc.Base64.parse(this.iv);
 
     return CryptoJS.AES.encrypt(data, key, { iv }).toString();
   }
 
-  decrypt({
-    ciphertext,
-    passphrase
-  }: {
-    ciphertext: string;
-    passphrase: string;
-  }) {
+  decrypt({ ciphertext, passphrase }: DecryptInterface) {
     const key = CryptoJS.enc.Base64.parse(passphrase);
     const iv = CryptoJS.enc.Base64.parse(this.iv);
 
@@ -60,10 +60,7 @@ export class CryptographicService {
   encryptRecoveryKeys({
     recoveryKeys,
     hashedPassphrase
-  }: {
-    recoveryKeys: Array<string>;
-    hashedPassphrase: string;
-  }) {
+  }: EncryptRecoveryKeysInterface) {
     const recoveryKeysStr = recoveryKeys.join(',');
     return this.encrypt({
       data: recoveryKeysStr,
@@ -74,10 +71,7 @@ export class CryptographicService {
   decryptRecoveryKeys({
     encryptedRecoveryKeys,
     hashedPassphrase
-  }: {
-    encryptedRecoveryKeys: string;
-    hashedPassphrase: string;
-  }) {
+  }: DecryptRecoveryKeysInterface) {
     return this.decrypt({
       ciphertext: encryptedRecoveryKeys,
       passphrase: hashedPassphrase

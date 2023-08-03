@@ -1,4 +1,4 @@
-import { CONFIRMATION_TYPE } from './confirmation-type.interface';
+import { CONFIRMATION_TYPE } from './confirmation-type.types';
 
 export interface VerificationEmailInterface {
   changingEmail?: string;

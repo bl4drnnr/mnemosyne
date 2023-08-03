@@ -4,11 +4,8 @@ import * as bcryptjs from 'bcryptjs';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@models/user.model';
-import { CreateUserDto } from '@dto/create-user.dto';
 import { RolesService } from '@modules/roles.service';
-import { Transaction } from 'sequelize';
 import { UserSettings } from '@models/user-settings.model';
-import { ForgotPasswordDto } from '@dto/forgot-password.dto';
 import { EmailService } from '@shared/email.service';
 import { Sequelize } from 'sequelize-typescript';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
@@ -16,16 +13,29 @@ import { ApiConfigService } from '@shared/config.service';
 import { AuthService } from '@modules/auth.service';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
-import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
-import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
-import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.types';
 import { TimeService } from '@shared/time.service';
 import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
 import { PasswordChangedException } from '@exceptions/password-changed.exception';
+import { GetUserByEmailInterface } from '@interfaces/get-user-by-email.interface';
+import { CreateUserInterface } from '@interfaces/create-user.interface';
+import { CreateUserSettingsInterface } from '@interfaces/create-user-settings.interface';
+import { UpdateUserSettingsInterface } from '@interfaces/update-user-settings.interface';
+import { UpdateUserInterface } from '@interfaces/update-user.interface';
+import { GetUserSettingsInterface } from '@interfaces/get-user-settings.interface';
+import { GetUserByIdInterface } from '@interfaces/get-user-by-id.interface';
+import { VerifyUserCredentialsInterface } from '@interfaces/verify-user-credentials.interface';
+import { ForgotPasswordInterface } from '@interfaces/forgot-password.interface';
+import { UploadPhotoInterface } from '@interfaces/upload-photo.interface';
+import { GetUserInfoInterface } from '@interfaces/get-user-info.interface';
+import { GetUserSecuritySettingsInterface } from '@interfaces/get-user-security-settings.interface';
+import { UpdateUserInfoInterface } from '@interfaces/update-user-info.interface';
+import { GetUserByRecoveryKeysInterface } from '@interfaces/get-user-by-recovery-keys.interface';
+import { DeleteUserAccountInterface } from '@interfaces/delete-user-account.interface';
 
 @Injectable()
 export class UsersService {
@@ -44,13 +54,7 @@ export class UsersService {
     private readonly userSettingsRepository: typeof UserSettings
   ) {}
 
-  async getUserByEmail({
-    email,
-    trx: transaction
-  }: {
-    email: string;
-    trx?: Transaction;
-  }) {
+  async getUserByEmail({ email, trx: transaction }: GetUserByEmailInterface) {
     return await this.userRepository.findOne({
       where: { email },
       include: [{ all: true }],
@@ -58,13 +62,7 @@ export class UsersService {
     });
   }
 
-  async createUser({
-    payload,
-    trx: transaction
-  }: {
-    payload: CreateUserDto;
-    trx?: Transaction;
-  }) {
+  async createUser({ payload, trx: transaction }: CreateUserInterface) {
     const defaultRole = await this.roleService.getRoleByValue('AUTH_USER');
     const user = await this.userRepository.create(payload, { transaction });
     await user.$set('roles', [defaultRole.id], { transaction });
@@ -74,10 +72,7 @@ export class UsersService {
   async createUserSettings({
     userId,
     trx: transaction
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: CreateUserSettingsInterface) {
     return await this.userSettingsRepository.create(
       { userId },
       { transaction }
@@ -88,11 +83,7 @@ export class UsersService {
     payload,
     userId,
     trx: transaction
-  }: {
-    payload: Partial<UserSettings>;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: UpdateUserSettingsInterface) {
     return await this.userSettingsRepository.update(
       {
         ...payload
@@ -101,15 +92,7 @@ export class UsersService {
     );
   }
 
-  async updateUser({
-    payload,
-    userId,
-    trx: transaction
-  }: {
-    payload: Partial<User>;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async updateUser({ payload, userId, trx: transaction }: UpdateUserInterface) {
     return await this.userRepository.update(
       {
         ...payload
@@ -121,23 +104,14 @@ export class UsersService {
   async getUserSettingsByUserId({
     userId,
     trx: transaction
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: GetUserSettingsInterface) {
     return await this.userSettingsRepository.findOne({
       where: { userId },
       transaction
     });
   }
 
-  async getUserById({
-    id,
-    trx: transaction
-  }: {
-    id: string;
-    trx?: Transaction;
-  }) {
+  async getUserById({ id, trx: transaction }: GetUserByIdInterface) {
     return await this.userRepository.findByPk(id, {
       include: { all: true },
       transaction
@@ -148,11 +122,7 @@ export class UsersService {
     email,
     password,
     trx: transaction
-  }: {
-    email: string;
-    password: string;
-    trx?: Transaction;
-  }) {
+  }: VerifyUserCredentialsInterface) {
     const user = await this.getUserByEmail({ email, trx: transaction });
     if (!user) throw new WrongCredentialsException();
 
@@ -162,13 +132,7 @@ export class UsersService {
     return user;
   }
 
-  async forgotPassword({
-    payload,
-    trx
-  }: {
-    payload: ForgotPasswordDto;
-    trx?: Transaction;
-  }) {
+  async forgotPassword({ payload, trx }: ForgotPasswordInterface) {
     const { language } = payload;
 
     const user = await this.getUserByEmail({
@@ -222,13 +186,7 @@ export class UsersService {
     return new ResetPasswordEmailDto();
   }
 
-  async uploadUserPhoto({
-    payload,
-    userId
-  }: {
-    payload: UploadPhotoDto;
-    userId: string;
-  }) {
+  async uploadUserPhoto({ payload, userId }: UploadPhotoInterface) {
     const { userPhoto } = payload;
 
     const { accessKeyId, secretAccessKey, bucketName } =
@@ -260,7 +218,7 @@ export class UsersService {
     return new PhotoUploadedDto();
   }
 
-  async getUserInfo({ userId, trx }: { userId: string; trx?: Transaction }) {
+  async getUserInfo({ userId, trx }: GetUserInfoInterface) {
     const { accessKeyId, secretAccessKey, bucketName } =
       this.configService.awsSdkCredentials;
 
@@ -299,10 +257,7 @@ export class UsersService {
   async getUserSecuritySettings({
     userId,
     trx
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: GetUserSecuritySettingsInterface) {
     const {
       userSettings: { passwordChanged, emailChanged, twoFaToken, phone },
       email
@@ -330,15 +285,7 @@ export class UsersService {
     };
   }
 
-  async updateUserInfo({
-    userId,
-    payload,
-    trx
-  }: {
-    userId: string;
-    payload: UpdateUserInfoDto;
-    trx?: Transaction;
-  }) {
+  async updateUserInfo({ userId, payload, trx }: UpdateUserInfoInterface) {
     await this.updateUser({ payload, userId, trx });
 
     return new UserUpdatedDto();
@@ -347,10 +294,7 @@ export class UsersService {
   async getUserByRecoveryKeysFingerprint({
     recoveryKeysFingerprint,
     trx: transaction
-  }: {
-    recoveryKeysFingerprint: string;
-    trx?: Transaction;
-  }) {
+  }: GetUserByRecoveryKeysInterface) {
     const userSettings = await this.userSettingsRepository.findOne({
       where: { recoveryKeysFingerprint },
       transaction
@@ -361,13 +305,7 @@ export class UsersService {
     return this.getUserById({ id: userSettings.userId, trx: transaction });
   }
 
-  async deleteUserAccount({
-    userId,
-    trx
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async deleteUserAccount({ userId, trx }: DeleteUserAccountInterface) {
     // @TODO Think about either make it soft or hard delete
   }
 }

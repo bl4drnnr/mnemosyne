@@ -1,12 +1,12 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Twilio } from 'twilio';
 import { ApiConfigService } from '@shared/config.service';
-import { Transaction } from 'sequelize';
 import { UsersService } from '@modules/users.service';
 import { TimeService } from '@shared/time.service';
 import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
 import { SmsTemplatesService } from '@shared/sms-templates.service';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { VerifyAndResendInterface } from '@interfaces/verify-and-resend.interface';
+import { SendSmsInterface } from '@interfaces/send-sms.interface';
 
 @Injectable()
 export class PhoneService {
@@ -18,13 +18,7 @@ export class PhoneService {
     private readonly smsTemplateService: SmsTemplatesService
   ) {}
 
-  async sendSmsCode({
-    targetPhoneNumber,
-    language
-  }: {
-    targetPhoneNumber: string;
-    language?: LANGUAGE_TYPES;
-  }) {
+  async sendSmsCode({ to, language }: SendSmsInterface) {
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
     const { twilio_auth_phone, twilio_auth_token, twilio_account_sid } =
@@ -32,18 +26,18 @@ export class PhoneService {
 
     const client = new Twilio(twilio_account_sid, twilio_auth_token);
 
-    const smsBody = this.smsTemplateService.verificationCodeTemplate({
+    const body = this.smsTemplateService.verificationCodeTemplate({
       verificationCode,
       language
     });
 
     await client.messages.create({
-      body: smsBody,
-      from: twilio_auth_phone,
-      to: targetPhoneNumber
+      body,
+      to,
+      from: twilio_auth_phone
     });
 
-    return verificationCode;
+    return verificationCode.toString();
   }
 
   async verifyAndResendSmsCode({
@@ -51,12 +45,7 @@ export class PhoneService {
     userId,
     phone,
     trx
-  }: {
-    language?: LANGUAGE_TYPES;
-    userId: string;
-    phone: string;
-    trx?: Transaction;
-  }) {
+  }: VerifyAndResendInterface) {
     const { codeSentAt } = await this.userService.getUserSettingsByUserId({
       userId,
       trx
@@ -69,15 +58,15 @@ export class PhoneService {
 
     if (isWithinTwoMinutes) throw new WrongTimeframeException();
 
-    const sentSmsCode = await this.sendSmsCode({
-      targetPhoneNumber: phone,
+    const phoneCode = await this.sendSmsCode({
+      to: phone,
       language
     });
 
     await this.userService.updateUserSettings({
       payload: {
         phone,
-        phoneCode: sentSmsCode.toString(),
+        phoneCode,
         codeSentAt: new Date()
       },
       userId,

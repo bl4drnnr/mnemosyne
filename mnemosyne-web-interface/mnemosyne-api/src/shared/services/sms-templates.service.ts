@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { SmsTemplateInterface } from '@interfaces/sms-template.interface';
 
 @Injectable()
 export class SmsTemplatesService {
   verificationCodeTemplate({
     verificationCode,
     language
-  }: {
-    verificationCode: number;
-    language?: LANGUAGE_TYPES;
-  }) {
+  }: SmsTemplateInterface) {
     switch (language) {
       case LANGUAGE_TYPES.EN:
         return `Mnemosyne verification code: ${verificationCode}.\nWill be valid for 5 minutes.`;

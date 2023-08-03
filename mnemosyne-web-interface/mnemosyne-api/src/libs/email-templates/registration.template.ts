@@ -1,16 +1,12 @@
-import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { LANGUAGE_TYPES } from '@interfaces/language.types';
 import { defaultSecurityTemplate } from '@email-templates/default-security.template';
+import { SecurityEmailPayloadInterface } from '@interfaces/security-email-payload.interface';
 
 export const registrationTemplate = ({
   userInfo,
   link,
   language
-}: {
-  userInfo: UserInfoInterface;
-  link: string;
-  language: LANGUAGE_TYPES;
-}) => {
+}: SecurityEmailPayloadInterface) => {
   let title: string;
   let content: string;
   let button: string;

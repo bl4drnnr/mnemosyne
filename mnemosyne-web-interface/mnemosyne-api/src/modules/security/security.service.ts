@@ -4,42 +4,54 @@ import * as crypto from 'crypto';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
-import { VerifyTwoFaDto } from '@dto/verify-two-fa.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { MfaSetDto } from '@dto/mfa-set.dto';
-import { RegistrationSendSmsCodeDto } from '@dto/registration-send-sms-code.dto';
 import { PhoneService } from '@shared/phone.service';
-import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
 import { SmsCodeSentDto } from '@dto/sms-code-sent.dto';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
-import { LoginSendSmsDto } from '@dto/login-send-sms.dto';
-import { Transaction } from 'sequelize';
-import { DeleteAccountDto } from '@dto/delete-account.dto';
 import { AuthService } from '@modules/auth.service';
 import { AccountDeletedDto } from '@dto/account-deleted.dto';
 import { DeleteConfirmationRequiredDto } from '@dto/delete-confirmation-required.dto';
 import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-confirmation.exception';
-import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
 import { MfaDisabledDto } from '@dto/mfa-disabled.dto';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { TwoFaNotSetException } from '@exceptions/two-fa-not-set.exception';
 import { PhoneNotSetException } from '@exceptions/phone-not-set.exception';
 import { WrongProvidedPhoneException } from '@exceptions/wrong-provided-phone.exception';
-import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { TimeService } from '@shared/time.service';
-import { ChangePasswordDto } from '@dto/change-password.dto';
 import { PasswordChangedDto } from '@dto/password-changed.dto';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 import { ApiConfigService } from '@shared/config.service';
 import { SmsClearedDto } from '@dto/sms-cleared.dto';
-import { ChangeEmailDto } from '@dto/change-email.dto';
 import { EmailAlreadyChangedException } from '@exceptions/email-already-changed.exception';
 import { EmailAlreadyTakenException } from '@exceptions/email-already-taken.exception';
 import { EmailService } from '@shared/email.service';
-import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
+import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.types';
 import { EmailChangeEmailSentDto } from '@dto/email-change-email-sent.dto';
 import { PasswordChangedException } from '@exceptions/password-changed.exception';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LoginGenerate2faInterface } from '@interfaces/login-generate-2fa.interface';
+import { RegistrationGenerate2faInterface } from '@interfaces/registration-generate-2fa.interface';
+import { Generate2faInterface } from '@interfaces/generate-2fa.interface';
+import { RegistrationVerify2faInterface } from '@interfaces/registration-verify-2fa.interface';
+import { LoginVerify2faInterface } from '@interfaces/login-verify-2fa.interface';
+import { Verify2faInterface } from '@interfaces/verify-2fa.interface';
+import { Disable2faInterface } from '@interfaces/disable-2fa.interface';
+import { RegistrationSendSmsInterface } from '@interfaces/registration-send-sms.interface';
+import { LoginSendSmsInterface } from '@interfaces/login-send-sms.interface';
+import { SendSmsInterface } from '@interfaces/send-sms.interface';
+import { HashSendSmsInterface } from '@interfaces/hash-send-sms.interface';
+import { GetSmsInterface } from '@interfaces/get-sms.interface';
+import { ClearSmsInterface } from '@interfaces/clear-sms.interface';
+import { RegistrationVerifyPhoneInterface } from '@interfaces/registration-verify-phone.interface';
+import { LoginVerifyPhoneInterface } from '@interfaces/login-verify-phone.interface';
+import { VerifyPhoneInterface } from '@interfaces/verify-phone.interface';
+import { DisablePhoneInterface } from '@interfaces/disable-phone.interface';
+import { DeleteAccountInterface } from '@interfaces/delete-account.interface';
+import { ChangePasswordInterface } from '@interfaces/change-password.interface';
+import { ChangeEmailInterface } from '@interfaces/change-email.interface';
+import { VerifySmsCodeInterface } from '@interfaces/verify-sms-code.interface';
+import { VerifyQrCodeInterface } from '@interfaces/verify-qr-code.interface';
+import { GenerateQrCodeInterface } from '@interfaces/generate-qr-code.interface';
 
 @Injectable()
 export class SecurityService {
@@ -56,10 +68,7 @@ export class SecurityService {
   async registrationGenerateTwoFaQrCode({
     confirmationHash,
     trx
-  }: {
-    confirmationHash: string;
-    trx?: Transaction;
-  }) {
+  }: RegistrationGenerate2faInterface) {
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
@@ -71,13 +80,7 @@ export class SecurityService {
     return await this.generateQrCode({ email });
   }
 
-  async loginGenerateTwoFaQrCode({
-    payload,
-    trx
-  }: {
-    payload: LoginGenerate2faQrDto;
-    trx?: Transaction;
-  }) {
+  async loginGenerateTwoFaQrCode({ payload, trx }: LoginGenerate2faInterface) {
     const { email, password } = payload;
 
     await this.userService.verifyUserCredentials({
@@ -89,13 +92,7 @@ export class SecurityService {
     return await this.generateQrCode({ email });
   }
 
-  async generateTwoFaQrCode({
-    userId,
-    trx
-  }: {
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async generateTwoFaQrCode({ userId, trx }: Generate2faInterface) {
     const { email } = await this.userService.getUserById({ id: userId, trx });
 
     return await this.generateQrCode({ email });
@@ -105,11 +102,7 @@ export class SecurityService {
     payload,
     confirmationHash,
     trx
-  }: {
-    payload: VerifyTwoFaDto;
-    confirmationHash: string;
-    trx?: Transaction;
-  }) {
+  }: RegistrationVerify2faInterface) {
     const { code, twoFaToken } = payload;
 
     const { userId } =
@@ -130,13 +123,7 @@ export class SecurityService {
     }
   }
 
-  async loginVerifyTwoFaQrCode({
-    payload,
-    trx
-  }: {
-    payload: VerifyTwoFaDto;
-    trx?: Transaction;
-  }) {
+  async loginVerifyTwoFaQrCode({ payload, trx }: LoginVerify2faInterface) {
     const { code, twoFaToken, email, password } = payload;
 
     const { id: userId } = await this.userService.verifyUserCredentials({
@@ -157,15 +144,7 @@ export class SecurityService {
     }
   }
 
-  async verifyTwoFaQrCode({
-    payload,
-    userId,
-    trx
-  }: {
-    payload: VerifyTwoFaDto;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async verifyTwoFaQrCode({ payload, userId, trx }: Verify2faInterface) {
     const { code, twoFaToken } = payload;
 
     try {
@@ -180,15 +159,7 @@ export class SecurityService {
     }
   }
 
-  async disableTwoFa({
-    payload,
-    userId,
-    trx
-  }: {
-    payload: DisableTwoFaDto;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async disableTwoFa({ payload, userId, trx }: Disable2faInterface) {
     const { code } = payload;
 
     const { twoFaToken, phone } =
@@ -224,11 +195,7 @@ export class SecurityService {
     payload,
     confirmationHash,
     trx
-  }: {
-    payload: RegistrationSendSmsCodeDto;
-    confirmationHash: string;
-    trx?: Transaction;
-  }) {
+  }: RegistrationSendSmsInterface) {
     const { language, phone } = payload;
 
     const { userId } =
@@ -247,13 +214,7 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async loginSendSmsCode({
-    payload,
-    trx
-  }: {
-    payload: LoginSendSmsDto;
-    trx?: Transaction;
-  }) {
+  async loginSendSmsCode({ payload, trx }: LoginSendSmsInterface) {
     const { email, password, language } = payload;
 
     const { id: userId, userSettings } =
@@ -273,15 +234,7 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async sendSmsCode({
-    payload,
-    userId,
-    trx
-  }: {
-    payload: RegistrationSendSmsCodeDto;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async sendSmsCode({ payload, userId, trx }: SendSmsInterface) {
     const { language, phone } = payload;
 
     await this.phoneService.verifyAndResendSmsCode({
@@ -298,11 +251,7 @@ export class SecurityService {
     confirmationHash,
     language,
     trx
-  }: {
-    confirmationHash: string;
-    language?: LANGUAGE_TYPES;
-    trx?: Transaction;
-  }) {
+  }: HashSendSmsInterface) {
     const {
       id: userId,
       userSettings: { phone }
@@ -321,15 +270,7 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async getSmsCode({
-    userId,
-    language,
-    trx
-  }: {
-    userId: string;
-    language?: LANGUAGE_TYPES;
-    trx?: Transaction;
-  }) {
+  async getSmsCode({ userId, language, trx }: GetSmsInterface) {
     const {
       userSettings: { phone }
     } = await this.userService.getUserById({
@@ -349,7 +290,7 @@ export class SecurityService {
     return new SmsCodeSentDto();
   }
 
-  async clearSmsCode({ userId, trx }: { userId: string; trx?: Transaction }) {
+  async clearSmsCode({ userId, trx }: ClearSmsInterface) {
     const {
       userSettings: { phone }
     } = await this.userService.getUserById({
@@ -375,11 +316,7 @@ export class SecurityService {
     payload,
     confirmationHash,
     trx
-  }: {
-    payload: VerifyMobilePhoneDto;
-    confirmationHash: string;
-    trx?: Transaction;
-  }) {
+  }: RegistrationVerifyPhoneInterface) {
     const { phone: providedPhone, code: providedCode } = payload;
 
     const { userId } =
@@ -400,13 +337,7 @@ export class SecurityService {
     }
   }
 
-  async loginVerifyMobilePhone({
-    payload,
-    trx
-  }: {
-    payload: VerifyMobilePhoneDto;
-    trx?: Transaction;
-  }) {
+  async loginVerifyMobilePhone({ payload, trx }: LoginVerifyPhoneInterface) {
     const {
       email,
       password,
@@ -432,15 +363,7 @@ export class SecurityService {
     }
   }
 
-  async verifyMobilePhone({
-    payload,
-    userId,
-    trx
-  }: {
-    payload: VerifyMobilePhoneDto;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async verifyMobilePhone({ payload, userId, trx }: VerifyPhoneInterface) {
     const { phone: providedPhone, code: providedCode } = payload;
 
     try {
@@ -455,15 +378,7 @@ export class SecurityService {
     }
   }
 
-  async disablePhone({
-    payload,
-    userId,
-    trx
-  }: {
-    payload: DisableTwoFaDto;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  async disablePhone({ payload, userId, trx }: DisablePhoneInterface) {
     const { code: providedCode } = payload;
 
     const { phone: providedPhone, twoFaToken } =
@@ -495,15 +410,7 @@ export class SecurityService {
     return new MfaDisabledDto();
   }
 
-  async deleteUserAccount({
-    userId,
-    payload,
-    trx
-  }: {
-    userId: string;
-    payload: DeleteAccountDto;
-    trx?: Transaction;
-  }) {
+  async deleteUserAccount({ userId, payload, trx }: DeleteAccountInterface) {
     const { password, phoneCode, mfaCode, fullName } = payload;
 
     const {
@@ -543,15 +450,7 @@ export class SecurityService {
     return new AccountDeletedDto();
   }
 
-  async changePassword({
-    userId,
-    payload,
-    trx
-  }: {
-    userId: string;
-    payload: ChangePasswordDto;
-    trx?: Transaction;
-  }) {
+  async changePassword({ userId, payload, trx }: ChangePasswordInterface) {
     const { currentPassword, newPassword, phoneCode, mfaCode } = payload;
 
     const { password, userSettings } = await this.userService.getUserById({
@@ -602,15 +501,7 @@ export class SecurityService {
     return new PasswordChangedDto();
   }
 
-  async changeEmail({
-    userId,
-    payload,
-    trx
-  }: {
-    userId: string;
-    payload: ChangeEmailDto;
-    trx?: Transaction;
-  }) {
+  async changeEmail({ userId, payload, trx }: ChangeEmailInterface) {
     const { newEmail, language } = payload;
 
     const {
@@ -653,12 +544,7 @@ export class SecurityService {
     providedCode,
     userId,
     trx
-  }: {
-    providedPhone: string;
-    providedCode: string;
-    userId: string;
-    trx?: Transaction;
-  }) {
+  }: VerifySmsCodeInterface) {
     const { codeSentAt, phoneCode, phone } =
       await this.userService.getUserSettingsByUserId({ userId, trx });
 
@@ -685,7 +571,7 @@ export class SecurityService {
     return new MfaSetDto();
   }
 
-  private async generateQrCode({ email }: { email: string }) {
+  private async generateQrCode({ email }: GenerateQrCodeInterface) {
     const { qr, secret } = node2fa.generateSecret({
       name: 'Mnemosyne',
       account: email
@@ -699,12 +585,7 @@ export class SecurityService {
     code,
     twoFaToken,
     trx
-  }: {
-    userId: string;
-    code: string;
-    twoFaToken: string;
-    trx?: Transaction;
-  }) {
+  }: VerifyQrCodeInterface) {
     const delta = node2fa.verifyToken(twoFaToken, code);
 
     if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();

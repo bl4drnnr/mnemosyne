@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { LANGUAGE_TYPES } from '@interfaces/language.types';
 import { registrationTemplate } from '@email-templates/registration.template';
 import { emailChangeTemplate } from '@email-templates/email-change.template';
@@ -7,6 +6,8 @@ import { forgotPasswordTemplate } from '@email-templates/forgot-password.templat
 import { registrationCompletedTemplate } from '@email-templates/registration-completed.template';
 import { resetPasswordCompletedTemplate } from '@email-templates/reset-password-completed.template';
 import { emailChangedTemplate } from '@email-templates/email-changed.template';
+import { SecurityEmailPayloadInterface } from '@interfaces/security-email-payload.interface';
+import { EmailTemplateInterface } from '@interfaces/email-template.interface';
 
 @Injectable()
 export class EmailTemplatesService {
@@ -14,11 +15,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: {
-    userInfo: UserInfoInterface;
-    link: string;
-    language?: LANGUAGE_TYPES;
-  }): { html: string; subject: string } {
+  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -49,11 +46,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: {
-    userInfo: UserInfoInterface;
-    link: string;
-    language?: LANGUAGE_TYPES;
-  }): { html: string; subject: string } {
+  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -84,11 +77,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: {
-    userInfo: UserInfoInterface;
-    link: string;
-    language?: LANGUAGE_TYPES;
-  }): { html: string; subject: string } {
+  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -119,11 +108,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: {
-    userInfo: UserInfoInterface;
-    link: string;
-    language?: LANGUAGE_TYPES;
-  }): { html: string; subject: string } {
+  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -154,11 +139,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: {
-    userInfo: UserInfoInterface;
-    link: string;
-    language?: LANGUAGE_TYPES;
-  }): { html: string; subject: string } {
+  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -189,11 +170,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: {
-    userInfo: UserInfoInterface;
-    link: string;
-    language?: LANGUAGE_TYPES;
-  }): { html: string; subject: string } {
+  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
