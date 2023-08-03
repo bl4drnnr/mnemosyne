@@ -169,6 +169,8 @@ export class UsersService {
     payload: ForgotPasswordDto;
     trx?: Transaction;
   }) {
+    const { language } = payload;
+
     const user = await this.getUserByEmail({
       email: payload.email,
       trx
@@ -200,20 +202,20 @@ export class UsersService {
       if (isWithinThreeMinutes) throw new WrongTimeframeException();
     }
 
-    const forgotPasswordHash = crypto.randomBytes(20).toString('hex');
+    const confirmationHash = crypto.randomBytes(20).toString('hex');
 
     await this.emailService.sendForgotPasswordEmail({
       payload: {
-        confirmationHash: forgotPasswordHash,
-        confirmationType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
         to: email,
+        confirmationType: CONFIRMATION_TYPE.FORGOT_PASSWORD,
+        confirmationHash,
         userId
       },
       userInfo: {
         firstName,
         lastName
       },
-      language: payload.language,
+      language,
       trx
     });
 
@@ -227,17 +229,19 @@ export class UsersService {
     payload: UploadPhotoDto;
     userId: string;
   }) {
+    const { userPhoto } = payload;
+
     const { accessKeyId, secretAccessKey, bucketName } =
       this.configService.awsSdkCredentials;
 
     const s3 = new S3({ accessKeyId, secretAccessKey });
 
     const base64Data = Buffer.from(
-      payload.userPhoto.replace(/^data:image\/\w+;base64,/, ''),
+      userPhoto.replace(/^data:image\/\w+;base64,/, ''),
       'base64'
     );
 
-    const type = payload.userPhoto.split(';')[0].split('/')[1];
+    const type = userPhoto.split(';')[0].split('/')[1];
 
     if (type !== 'png') throw new WrongPictureException();
 
@@ -277,16 +281,17 @@ export class UsersService {
       isProfilePicPresent = false;
     }
 
-    const userData = await this.getUserById({ id: userId, trx });
+    const { firstName, lastName, location, company, website, email } =
+      await this.getUserById({ id: userId, trx });
 
     return {
       userId: userIdHash,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      location: userData.location,
-      company: userData.company,
-      website: userData.website,
-      email: userData.email,
+      firstName,
+      lastName,
+      location,
+      company,
+      website,
+      email,
       isProfilePicPresent
     };
   }
@@ -298,25 +303,23 @@ export class UsersService {
     userId: string;
     trx?: Transaction;
   }) {
-    const { userSettings, email } = await this.getUserById({
+    const {
+      userSettings: { passwordChanged, emailChanged, twoFaToken, phone },
+      email
+    } = await this.getUserById({
       id: userId,
       trx
     });
 
     const isWithinDay = this.timeService.isWithinTimeframe({
-      time: userSettings.passwordChanged,
+      time: passwordChanged,
       seconds: 86400
     });
 
-    const emailChanged = !!userSettings.emailChanged;
-    const isTwoFaSetUp = !!userSettings.twoFaToken;
-    const isSetUp = !!userSettings.phone;
-    const passwordCanBeChanged = userSettings.passwordChanged
-      ? !isWithinDay
-      : true;
-    const twoLastDigit = !!userSettings.phone
-      ? userSettings.phone.slice(-2)
-      : null;
+    const isTwoFaSetUp = !!twoFaToken;
+    const isSetUp = !!phone;
+    const passwordCanBeChanged = passwordChanged ? !isWithinDay : true;
+    const twoLastDigit = !!phone ? phone.slice(-2) : null;
 
     return {
       phoneStatus: { isSetUp, twoLastDigit },

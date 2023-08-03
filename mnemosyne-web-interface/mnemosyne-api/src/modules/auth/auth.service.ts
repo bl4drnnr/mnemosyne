@@ -33,6 +33,7 @@ import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.interface';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { TimeService } from '@shared/time.service';
 import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { Role } from '@models/role.model';
 
 @Injectable()
 export class AuthService {
@@ -50,19 +51,26 @@ export class AuthService {
   ) {}
 
   async login({ payload, trx }: { payload: LogInUserDto; trx: Transaction }) {
-    const user = await this.usersService.verifyUserCredentials({
-      email: payload.email,
-      password: payload.password,
+    const { email, password, mfaCode, phoneCode } = payload;
+
+    const {
+      id: userId,
+      confirmationHashes,
+      isMfaSet,
+      userSettings,
+      roles
+    } = await this.usersService.verifyUserCredentials({
+      email,
+      password,
       trx
     });
 
-    const registrationHash = user.confirmationHashes.find(
+    const registrationHash = confirmationHashes.find(
       (hash) => hash.confirmationType === CONFIRMATION_TYPE.REGISTRATION
     );
 
     const isAccConfirmed = registrationHash.confirmed;
-    const isMfaSet = user.isMfaSet;
-    const isRecoverySetUp = user.userSettings.recoveryKeysFingerprint;
+    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
 
     if (!isAccConfirmed) throw new AccountNotConfirmedException();
 
@@ -72,10 +80,10 @@ export class AuthService {
 
     try {
       const mfaStatusResponse = await this.checkUserMfaStatus({
-        mfaCode: payload.mfaCode,
-        phoneCode: payload.phoneCode,
-        userSettings: user.userSettings,
-        userId: user.id,
+        mfaCode,
+        phoneCode,
+        userSettings,
+        userId,
         trx
       });
 
@@ -84,7 +92,7 @@ export class AuthService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    const { _rt, _at } = await this.generateTokens({ user, trx });
+    const { _rt, _at } = await this.generateTokens({ userId, roles, trx });
 
     return { _rt, _at };
   }
@@ -162,15 +170,20 @@ export class AuthService {
   }) {
     if (!refreshToken) throw new CorruptedTokenException();
 
-    const payload: { id: string } = this.verifyToken({ token: refreshToken });
+    const { id: tokenId }: { id: string } = this.verifyToken({
+      token: refreshToken
+    });
 
-    const token = await this.getTokenById({ tokenId: payload.id, trx });
+    const token = await this.getTokenById({ tokenId, trx });
 
     if (!token) throw new InvalidTokenException();
 
-    const user = await this.usersService.getUserById({ id: token.userId, trx });
+    const { id: userId, roles } = await this.usersService.getUserById({
+      id: token.userId,
+      trx
+    });
 
-    const { _at, _rt } = await this.generateTokens({ user, trx });
+    const { _at, _rt } = await this.generateTokens({ userId, roles, trx });
 
     return { _at, _rt };
   }
@@ -319,25 +332,27 @@ export class AuthService {
   }
 
   private async generateTokens({
-    user,
+    roles,
+    userId,
     trx: transaction
   }: {
-    user: User;
+    roles: Array<Role>;
+    userId: string;
     trx?: Transaction;
   }) {
-    const accessToken = this.generateAccessToken({
-      roles: user.roles.map((role) => role.value),
-      userId: user.id
+    const _at = this.generateAccessToken({
+      roles: roles.map((role) => role.value),
+      userId
     });
-    const refreshToken = this.generateRefreshToken();
+    const { id: tokenId, token: _rt } = this.generateRefreshToken();
 
     await this.updateRefreshToken({
-      userId: user.id,
-      tokenId: refreshToken.id,
+      userId,
+      tokenId,
       trx: transaction
     });
 
-    return { _at: accessToken, _rt: refreshToken.token };
+    return { _at, _rt };
   }
 
   private async getTokenById({

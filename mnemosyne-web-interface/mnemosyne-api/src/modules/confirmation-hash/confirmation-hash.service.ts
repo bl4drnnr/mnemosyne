@@ -44,12 +44,15 @@ export class ConfirmationHashService {
     payload: Partial<ConfirmationHash>;
     trx?: Transaction;
   }) {
+    const { userId, confirmationType, confirmationHash, changingEmail } =
+      payload;
+
     await this.confirmationHashRepository.create(
       {
-        userId: payload.userId,
-        confirmationHash: payload.confirmationHash,
-        confirmationType: payload.confirmationType,
-        changingEmail: payload.changingEmail
+        userId,
+        confirmationHash,
+        confirmationType,
+        changingEmail
       },
       { transaction }
     );
