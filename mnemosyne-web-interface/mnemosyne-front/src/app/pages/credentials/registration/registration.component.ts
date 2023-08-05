@@ -6,6 +6,7 @@ import { ValidationService } from '@services/validation.service';
 import { PageTitleService } from '@services/page-title.service';
 import { TitlesPages } from '@interfaces/titles.pages';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
+import {RegistrationTypeInterface} from "@interfaces/registration-type.interface";
 
 @Component({
   selector: 'page-registration',
@@ -22,6 +23,8 @@ import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interfa
   ]
 })
 export class RegistrationComponent implements OnInit {
+  accRegistrationType: RegistrationTypeInterface = 'start';
+
   step = 1;
   tac = false;
 
@@ -47,10 +50,6 @@ export class RegistrationComponent implements OnInit {
     private readonly router: Router,
     public validationService: ValidationService
   ) {}
-
-  ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.REGISTRATION);
-  }
 
   handleRegistration() {
     if (this.wrongCredentials({ includeAll: true })) return;
@@ -84,6 +83,11 @@ export class RegistrationComponent implements OnInit {
     this.step--;
   }
 
+  getOnStart() {
+    this.accRegistrationType = 'start';
+    this.step = 1;
+  }
+
   wrongCredentials({ includeAll }: WrongCredentialsInterface) {
     if (!includeAll) {
       return this.incorrectPassword || this.incorrectEmail;
@@ -103,5 +107,9 @@ export class RegistrationComponent implements OnInit {
         wrongWebsite
       );
     }
+  }
+
+  ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesPages.REGISTRATION);
   }
 }

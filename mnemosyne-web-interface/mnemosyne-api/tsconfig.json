@@ -29,7 +29,8 @@
         "src/exceptions/confirmation-hash/*",
         "src/exceptions/security/*",
         "src/exceptions/validation/*",
-        "src/exceptions/recovery/*"
+        "src/exceptions/recovery/*",
+        "src/exceptions/company/*"
       ],
       "@dto/*": [
         "src/dto/*",
@@ -44,7 +45,9 @@
         "src/dto/auth/requests/*",
         "src/dto/auth/responses/*",
         "src/dto/recovery/requests/*",
-        "src/dto/recovery/responses/*"
+        "src/dto/recovery/responses/*",
+        "src/dto/company/requests/*",
+        "src/dto/company/responses/*"
       ],
       "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],
@@ -57,7 +60,8 @@
         "src/modules/auth/*",
         "src/modules/permissions/*",
         "src/modules/confirmation-hash/*",
-        "src/modules/recovery/*"
+        "src/modules/recovery/*",
+        "src/modules/company/*"
       ],
       "@interfaces/*": [
         "src/libs/interfaces/auth/*",
@@ -69,7 +73,8 @@
         "src/libs/interfaces/cryptography/*",
         "src/libs/interfaces/phone/*",
         "src/libs/interfaces/time/*",
-        "src/libs/types/*"
+        "src/libs/types/*",
+        "src/libs/interfaces/company/*"
       ],
       "@email-templates/*": [
         "src/libs/email-templates/*",

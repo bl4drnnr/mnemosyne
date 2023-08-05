@@ -27,10 +27,12 @@ export class ValidationService {
     return (
       (isPhoneRequired && phoneCode?.length !== 6) ||
       (isMfaRequired && mfaCode?.length !== 6) ||
-      (isPhoneRequired &&
+      (
+        isPhoneRequired &&
         isMfaRequired &&
         phoneCode?.length !== 6 &&
-        mfaCode?.length !== 6)
+        mfaCode?.length !== 6
+      )
     );
   }
 
