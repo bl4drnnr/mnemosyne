@@ -7,6 +7,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { UserSecurityResponse } from '@responses/user-security.response';
 import { PageTitleService } from '@services/page-title.service';
 import { TitlesPages } from '@interfaces/titles.pages';
+import {SettingSectionInterface} from "@interfaces/setting-section.interface";
 
 @Component({
   selector: 'component-settings',
@@ -25,7 +26,7 @@ export class SettingsComponent implements OnInit {
 
   userInfo: UserInfoResponse;
   userSecurity: UserSecurityResponse;
-  currentSection: 'personal' | 'security' = 'personal';
+  currentSection: SettingSectionInterface = 'personal';
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
