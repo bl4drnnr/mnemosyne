@@ -7,7 +7,7 @@ import { TranslocoService } from '@ngneat/transloco';
 import { UserSecurityResponse } from '@responses/user-security.response';
 import { PageTitleService } from '@services/page-title.service';
 import { TitlesPages } from '@interfaces/titles.pages';
-import {SettingSectionInterface} from "@interfaces/setting-section.interface";
+import { SettingSectionInterface } from '@interfaces/setting-section.interface';
 
 @Component({
   selector: 'component-settings',

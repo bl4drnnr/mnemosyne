@@ -34,17 +34,19 @@ export class CreatePasswordComponent {
 
     this.passwordChange.emit(password);
     this.incorrectInput.emit(
-      this.incorrectPassword || this.showPasswordRepeatError()
+      this.incorrectPassword || this.passwordRepeatError()
     );
   }
 
-  showPasswordRepeatError() {
+  passwordRepeatError() {
     const passwordPresent = this.password.length > 0;
     const passwordRepeatPresent = this.passwordRepeat.length > 0;
 
-    if (passwordRepeatPresent)
+    if (passwordRepeatPresent) {
       return !this.isPasswordsMatch() || this.isRepeatPasswordIncorrect();
-    else return passwordPresent && !passwordRepeatPresent;
+    } else {
+      return passwordPresent && !passwordRepeatPresent;
+    }
   }
 
   isRepeatPasswordIncorrect() {

@@ -7,7 +7,6 @@ import { ChangeEmailPayload } from '@payloads/change-email.payload';
 import { Observable } from 'rxjs';
 import { ChangeEmailResponse } from '@responses/change-email.response';
 import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.type';
-import { ConfirmEmailChangePayload } from '@payloads/confirm-email-change.payload';
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
 import { ConfirmEmailChangeInterface } from '@interfaces/services/email/confirm-email-change.interface';
 

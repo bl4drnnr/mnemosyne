@@ -71,10 +71,14 @@ export class InputComponent {
     public loaderService: LoaderService
   ) {}
 
+  isValuePresent() {
+    return !!(this.value && this.value.length);
+  }
+
   onInput() {
     this.valueChange.emit(this.value);
 
-    if (this.type === 'email' && this.value.length) {
+    if (this.type === 'email' && this.isValuePresent()) {
       const isEmailIncorrect = !this.validationService.isEmailCorrect(
         this.value
       );
@@ -82,7 +86,7 @@ export class InputComponent {
       this.incorrectInput.emit(isEmailIncorrect);
 
       if (isEmailIncorrect) this.showError = true;
-    } else if (this.type === 'password' && this.value.length) {
+    } else if (this.type === 'password' && this.isValuePresent()) {
       const isPasswordIncorrect = this.validationService.checkPasswordsRules(
         this.value
       );
@@ -102,7 +106,7 @@ export class InputComponent {
 
       this.showError = hasError;
       this.incorrectInput.emit(hasError);
-    } else if (!this.value.length) {
+    } else if (!this.isValuePresent()) {
       this.showError = false;
       this.incorrectInput.emit(false);
       this.passwordErrors.emit([]);

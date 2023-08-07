@@ -6,7 +6,7 @@ import { ValidationService } from '@services/validation.service';
 import { PageTitleService } from '@services/page-title.service';
 import { TitlesPages } from '@interfaces/titles.pages';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
-import {RegistrationTypeInterface} from "@interfaces/registration-type.interface";
+import { RegistrationTypeInterface } from '@interfaces/registration-type.interface';
 
 @Component({
   selector: 'page-registration',
@@ -81,11 +81,6 @@ export class RegistrationComponent implements OnInit {
 
   backStep() {
     this.step--;
-  }
-
-  getOnStart() {
-    this.accRegistrationType = 'start';
-    this.step = 1;
   }
 
   wrongCredentials({ includeAll }: WrongCredentialsInterface) {
