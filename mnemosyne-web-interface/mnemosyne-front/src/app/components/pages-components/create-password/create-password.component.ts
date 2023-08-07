@@ -21,8 +21,8 @@ export class CreatePasswordComponent {
   @Output() passwordChange = new EventEmitter<string>();
   @Output() incorrectInput = new EventEmitter<boolean>();
 
-  password: string;
-  passwordRepeat: string;
+  password = '';
+  passwordRepeat = '';
   incorrectPassword = true;
   passwordErrors: Array<{ error: boolean; text: string }>;
 
@@ -34,19 +34,19 @@ export class CreatePasswordComponent {
 
     this.passwordChange.emit(password);
     this.incorrectInput.emit(
-      this.incorrectPassword || this.showPasswordRepeatError()
+      this.incorrectPassword || this.passwordRepeatError()
     );
   }
 
-  showPasswordRepeatError() {
-    const passwordPresent = !!(this.password && this.password.length > 0);
-    const passwordRepeatPresent = !!(
-      this.passwordRepeat && this.passwordRepeat.length > 0
-    );
+  passwordRepeatError() {
+    const passwordPresent = this.password.length > 0;
+    const passwordRepeatPresent = this.passwordRepeat.length > 0;
 
-    if (passwordRepeatPresent)
+    if (passwordRepeatPresent) {
       return !this.isPasswordsMatch() || this.isRepeatPasswordIncorrect();
-    else return passwordPresent && !passwordRepeatPresent;
+    } else {
+      return passwordPresent && !passwordRepeatPresent;
+    }
   }
 
   isRepeatPasswordIncorrect() {
