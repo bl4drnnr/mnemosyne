@@ -10,7 +10,6 @@ import { UsersService } from '@services/users.service';
 import { PasswordChangedResponse } from '@responses/password-changed.response';
 import { ChangePasswordPayload } from '@payloads/change-password.payload';
 import { EmailService } from '@services/email.service';
-import { ChangeEmailPayload } from '@payloads/change-email.payload';
 
 @Component({
   selector: 'dashboard-security-settings',
