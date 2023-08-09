@@ -17,7 +17,6 @@ import { ExpiredTokenException } from '@exceptions/expired-token.exception';
 import { LoggedOutDto } from '@dto/logged-out.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
-import { Sequelize } from 'sequelize-typescript';
 import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
 import { MfaRequiredDto } from '@dto/mfa-required.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
@@ -41,7 +40,6 @@ import { GetTokenInterface } from '@interfaces/get-token.interface';
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly sequelize: Sequelize,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
     private readonly phoneService: PhoneService,
@@ -101,25 +99,22 @@ export class AuthService {
   }
 
   async registration({ payload, trx }: RegistrationInterface) {
+    const { email, password, firstName, lastName, tac, language } = payload;
+
     const existingUser = await this.usersService.getUserByEmail({
-      email: payload.email,
+      email,
       trx
     });
 
     if (existingUser) throw new UserAlreadyExistsException();
-    if (!payload.tac) throw new TacNotAcceptedException();
+    if (!tac) throw new TacNotAcceptedException();
 
     const hashedPassword = await bcryptjs.hash(
-      payload.password,
+      password,
       this.configService.hashPasswordRounds
     );
 
-    const {
-      id: userId,
-      email,
-      firstName,
-      lastName
-    } = await this.usersService.createUser({
+    const { id: userId } = await this.usersService.createUser({
       payload: {
         ...payload,
         password: hashedPassword
@@ -140,7 +135,7 @@ export class AuthService {
         firstName,
         lastName
       },
-      language: payload.language,
+      language,
       trx
     });
 

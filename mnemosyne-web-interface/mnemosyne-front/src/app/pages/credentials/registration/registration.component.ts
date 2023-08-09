@@ -7,6 +7,7 @@ import { PageTitleService } from '@services/page-title.service';
 import { TitlesPages } from '@interfaces/titles.pages';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
 import { RegistrationTypeInterface } from '@interfaces/registration-type.interface';
+import { CompanyService } from '@services/company.service';
 
 @Component({
   selector: 'page-registration',
@@ -33,23 +34,40 @@ export class RegistrationComponent implements OnInit {
 
   firstName: string;
   lastName: string;
-  location: string;
-  company: string;
-  website: string;
+
+  companyLocation: string;
+  companyName: string;
+  companyWebsite: string;
+  accountOwnerEmail: string;
+  incorrectCompanyName = true;
+  incorrectLocationName = true;
+  incorrectAccountOwnerEmail = true;
 
   incorrectEmail = true;
   incorrectPassword = true;
   incorrectFirstName: boolean;
   incorrectLastName: boolean;
-  incorrectCompanyName: boolean;
-  incorrectLocationName: boolean;
 
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly pageTitleService: PageTitleService,
+    private readonly companyService: CompanyService,
     private readonly router: Router,
     public validationService: ValidationService
   ) {}
+
+  handleCompanyRegistration() {
+    this.companyService
+      .createCompanyAccount({
+        companyName: this.companyName,
+        companyLocation: this.companyLocation,
+        companyWebsite: this.companyWebsite,
+        accountOwnerEmail: this.accountOwnerEmail
+      })
+      .subscribe({
+        next: () => (this.step = 3)
+      });
+  }
 
   handleRegistration() {
     if (this.wrongCredentials({ includeAll: true })) return;
@@ -60,10 +78,7 @@ export class RegistrationComponent implements OnInit {
         password: this.password,
         tac: this.tac,
         firstName: this.firstName,
-        lastName: this.lastName,
-        website: this.website,
-        location: this.location,
-        company: this.company
+        lastName: this.lastName
       })
       .subscribe({
         next: () => (this.step = 3)
@@ -72,6 +87,11 @@ export class RegistrationComponent implements OnInit {
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  nextCompanyStep() {
+    if (this.wrongCompanyCredentials({ includeAll: false })) return;
+    this.step++;
   }
 
   nextStep() {
@@ -83,12 +103,25 @@ export class RegistrationComponent implements OnInit {
     this.step--;
   }
 
+  wrongCompanyCredentials({ includeAll }: WrongCredentialsInterface) {
+    if (!includeAll) {
+      const wrongWebsite = !this.validationService.isFQDN(this.companyWebsite);
+
+      return (
+        this.incorrectCompanyName ||
+        this.incorrectLocationName ||
+        !this.companyWebsite ||
+        wrongWebsite
+      );
+    } else {
+      return true;
+    }
+  }
+
   wrongCredentials({ includeAll }: WrongCredentialsInterface) {
     if (!includeAll) {
       return this.incorrectPassword || this.incorrectEmail;
     } else {
-      const wrongWebsite = !this.validationService.isFQDN(this.website);
-
       return (
         this.incorrectPassword ||
         this.incorrectEmail ||
@@ -96,10 +129,7 @@ export class RegistrationComponent implements OnInit {
         this.lastName.length < 1 ||
         this.firstName.length < 1 ||
         this.incorrectFirstName ||
-        this.incorrectLastName ||
-        this.incorrectCompanyName ||
-        this.incorrectLocationName ||
-        wrongWebsite
+        this.incorrectLastName
       );
     }
   }

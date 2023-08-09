@@ -2,7 +2,7 @@ import { ApiService } from '@shared/api.service';
 import { Injectable } from '@angular/core';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
 import { CONTROLLERS } from '@interfaces/controllers.type';
-import { USERS_ENDPOINTS } from '@interfaces/users.type';
+import { USERS_ENDPOINTS } from '@interfaces/users.endpoints';
 import { UploadUserPhotoPayload } from '@payloads/upload-user-photo.payload';
 import { Observable } from 'rxjs';
 import { UserInfoResponse } from '@responses/user-info.response';
@@ -12,7 +12,7 @@ import { UserUpdatedResponse } from '@responses/user-updated.response';
 import { UserSecurityResponse } from '@responses/user-security.response';
 import { DeleteAccountPayload } from '@payloads/delete-account.payload';
 import { AccountDeletedResponse } from '@responses/account-deleted.response';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
+import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
 import { ChangePasswordPayload } from '@payloads/change-password.payload';
 import { PasswordChangedResponse } from '@responses/password-changed.response';
 

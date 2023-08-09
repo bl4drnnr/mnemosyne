@@ -1,7 +1,8 @@
 {
   "logIn": "Log In",
   "logOut": "Log Out",
-  "createAcc": "Create an account",
+  "createAcc": "Create account",
+  "createCompanyAcc": "Create company account",
   "goBack": "Go back",
   "sendCode": "Send code",
   "resendCode": "Resend code",

@@ -2,11 +2,11 @@ import { ApiService } from '@shared/api.service';
 import { Injectable } from '@angular/core';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
 import { CONTROLLERS } from '@interfaces/controllers.type';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
+import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
 import { ChangeEmailPayload } from '@payloads/change-email.payload';
 import { Observable } from 'rxjs';
 import { ChangeEmailResponse } from '@responses/change-email.response';
-import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.type';
+import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.endpoints';
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
 import { ConfirmEmailChangeInterface } from '@interfaces/services/email/confirm-email-change.interface';
 

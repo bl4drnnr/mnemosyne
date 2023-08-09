@@ -30,7 +30,7 @@ import { APP_INTERCEPTOR } from '@nestjs/core';
 import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
 import { RecoveryModule } from '@modules/recovery.module';
 import { CompanyModule } from '@modules/company.module';
-import {Company} from "@models/company.model";
+import { Company } from '@models/company.model';
 
 @Module({
   imports: [

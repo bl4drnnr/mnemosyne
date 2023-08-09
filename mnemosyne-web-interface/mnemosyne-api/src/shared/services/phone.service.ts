@@ -6,7 +6,7 @@ import { TimeService } from '@shared/time.service';
 import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
 import { SmsTemplatesService } from '@shared/sms-templates.service';
 import { VerifyAndResendInterface } from '@interfaces/verify-and-resend.interface';
-import { SendSmsInterface } from '@interfaces/send-sms.interface';
+import { SendPhoneSmsInterface } from '@interfaces/send-phone-sms.interface';
 
 @Injectable()
 export class PhoneService {
@@ -18,7 +18,7 @@ export class PhoneService {
     private readonly smsTemplateService: SmsTemplatesService
   ) {}
 
-  async sendSmsCode({ to, language }: SendSmsInterface) {
+  async sendSmsCode({ to, language }: SendPhoneSmsInterface) {
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
     const { twilio_auth_phone, twilio_auth_token, twilio_account_sid } =

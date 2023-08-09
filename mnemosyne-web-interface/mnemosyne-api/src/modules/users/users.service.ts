@@ -239,16 +239,15 @@ export class UsersService {
       isProfilePicPresent = false;
     }
 
-    const { firstName, lastName, location, company, website, email } =
-      await this.getUserById({ id: userId, trx });
+    const { firstName, lastName, email } = await this.getUserById({
+      id: userId,
+      trx
+    });
 
     return {
       userId: userIdHash,
       firstName,
       lastName,
-      location,
-      company,
-      website,
       email,
       isProfilePicPresent
     };

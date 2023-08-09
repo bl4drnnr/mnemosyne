@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
 import { CONTROLLERS } from '@interfaces/controllers.type';
-import { RECOVERY_ENDPOINTS } from '@interfaces/recovery';
+import { RECOVERY_ENDPOINTS } from '@interfaces/recovery.endpoints';
 import { RegistrationGenerateRecoveryKeysPayload } from '@payloads/registration-generate-recovery-keys.payload';
 import { LoginGenerateRecoveryKeysPayload } from '@payloads/login-generate-recovery-keys.payload';
 import { GenerateRecoveryKeysPayload } from '@payloads/generate-recovery-keys.payload';

@@ -27,9 +27,6 @@ export class UserInfoSettingsComponent {
   @Input() userId: string;
   @Input() firstName: string;
   @Input() lastName: string;
-  @Input() location: string;
-  @Input() company: string;
-  @Input() website: string;
   @Input() email: string;
   @Input() isProfilePicPresent: boolean;
   @Output() saveUserInfoEvent = new EventEmitter<UserInfoResponse>();
@@ -45,10 +42,7 @@ export class UserInfoSettingsComponent {
   wasInfoChanged() {
     return (
       (this.firstName && this.firstName !== this.userInfo.firstName) ||
-      (this.lastName && this.lastName !== this.userInfo.lastName) ||
-      (this.company && this.company !== this.userInfo.company) ||
-      (this.website && this.website !== this.userInfo.website) ||
-      (this.location && this.location !== this.userInfo.location)
+      (this.lastName && this.lastName !== this.userInfo.lastName)
     );
   }
 
@@ -67,9 +61,6 @@ export class UserInfoSettingsComponent {
       userId: this.userId,
       firstName: this.firstName,
       lastName: this.lastName,
-      location: this.location,
-      company: this.company,
-      website: this.website,
       email: this.email,
       isProfilePicPresent: this.isProfilePicPresent
     });

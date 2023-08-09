@@ -18,9 +18,6 @@ export class SettingsComponent implements OnInit {
   userId: string;
   firstName: string;
   lastName: string;
-  location: string;
-  company: string;
-  website: string;
   email: string;
   isProfilePicPresent: boolean;
 
@@ -127,9 +124,6 @@ export class SettingsComponent implements OnInit {
           this.userId = userInfo.userId;
           this.firstName = userInfo.firstName;
           this.lastName = userInfo.lastName;
-          this.location = userInfo.location;
-          this.company = userInfo.company;
-          this.website = userInfo.website;
           this.email = userInfo.email;
           this.isProfilePicPresent = userInfo.isProfilePicPresent;
         }
