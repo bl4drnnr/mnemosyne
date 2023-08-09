@@ -3,7 +3,7 @@ import { ApiService } from '@shared/api.service';
 import { Observable } from 'rxjs';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
 import { CONTROLLERS } from '@interfaces/controllers.type';
-import { AUTH_ENDPOINTS } from '@interfaces/auth.type';
+import { AUTH_ENDPOINTS } from '@interfaces/auth.endpoints';
 import { LoginPayload } from '@payloads/login.payload';
 import { RegistrationPayload } from '@payloads/registration.payload';
 import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
@@ -14,7 +14,7 @@ import { ConfirmAccountResponse } from '@responses/confirm-account.response';
 import { ForgotPasswordResponse } from '@responses/forgot-password.response';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
 import { LogoutResponse } from '@responses/logout.response';
-import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.type';
+import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.endpoints';
 import { RefreshTokensInterface } from '@interfaces/services/auth/refresh-tokens.interface';
 import { ConfirmAccountInterface } from '@interfaces/services/auth/confirm-account.interface';
 

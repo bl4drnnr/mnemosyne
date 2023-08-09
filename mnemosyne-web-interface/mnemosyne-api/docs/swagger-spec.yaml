@@ -513,6 +513,13 @@ paths:
       responses:
         "201":
           description: ""
+  /api/company/create-company:
+    post:
+      operationId: CompanyController_createCompany
+      parameters: []
+      responses:
+        "201":
+          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.

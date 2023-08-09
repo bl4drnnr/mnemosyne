@@ -51,7 +51,8 @@
         "src/libs/api/responses/phone/*",
         "src/libs/api/responses/recovery/*",
         "src/libs/api/responses/users/*",
-        "src/libs/api/responses/email/*"
+        "src/libs/api/responses/email/*",
+        "src/libs/api/responses/company/*"
       ],
       "@payloads/*": [
         "src/libs/api/payloads/auth/*",
@@ -59,7 +60,8 @@
         "src/libs/api/payloads/phone/*",
         "src/libs/api/payloads/recovery/*",
         "src/libs/api/payloads/users/*",
-        "src/libs/api/payloads/email/*"
+        "src/libs/api/payloads/email/*",
+        "src/libs/api/payloads/company/*"
       ],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
@@ -74,7 +76,7 @@
         "src/libs/interfaces/*",
         "src/libs/api/controllers/*",
         "src/libs/api/endpoints/*",
-        "src/libs/api/methods/*",
+        "src/libs/api/methods/*"
       ],
       "@directives/*": ["src/app/directives/*"]
     }

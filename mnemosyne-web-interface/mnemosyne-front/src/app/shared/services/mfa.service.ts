@@ -3,7 +3,7 @@ import { ApiService } from '@shared/api.service';
 import { Observable } from 'rxjs';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
 import { CONTROLLERS } from '@interfaces/controllers.type';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
+import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
 import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
 import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
 import { LoginPhonePayload } from '@payloads/login-phone.payload';

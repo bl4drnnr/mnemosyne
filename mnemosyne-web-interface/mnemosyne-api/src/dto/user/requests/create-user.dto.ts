@@ -1,7 +1,6 @@
 import {
   IsBoolean,
   IsEnum,
-  IsFQDN,
   IsOptional,
   IsString,
   Length,
@@ -25,21 +24,6 @@ export class CreateUserDto {
   @IsString({ message: 'wrong-last-name-format' })
   @Length(1, 64, { message: 'wrong-last-name-length' })
   readonly lastName: string;
-
-  @IsOptional()
-  @IsString({ message: 'wrong-location-format' })
-  @Length(8, 128, { message: 'wrong-location-length' })
-  readonly location: string;
-
-  @IsOptional()
-  @IsString({ message: 'wrong-company-format' })
-  @Length(2, 64, { message: 'wrong-company-length' })
-  readonly company: string;
-
-  @IsOptional()
-  @IsString({ message: 'wrong-fqdn' })
-  @IsFQDN()
-  readonly website: string;
 
   @IsBoolean()
   readonly tac: boolean;

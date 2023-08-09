@@ -39,41 +39,6 @@
 
       <div class="dived-line"></div>
 
-      <basic-input
-        [label]="t('input.location')"
-        [placeholder]="t('input.provideLocation')"
-        [inputDescription]="t('input.locationDesc')"
-        [errorMessage]="t('input.locationError')"
-        [value]="location"
-        [minLength]="8"
-        [maxLength]="128"
-        (valueChange)="location = $event"
-        (incorrectInput)="incorrectLocationName = $event"
-      />
-      <basic-input
-        [label]="t('input.company')"
-        [placeholder]="t('input.provideCompany')"
-        [inputDescription]="t('input.companyDesc')"
-        [errorMessage]="t('input.companyError')"
-        [value]="company"
-        [minLength]="2"
-        [maxLength]="64"
-        (valueChange)="company = $event"
-        (incorrectInput)="incorrectCompanyName = $event"
-      />
-      <basic-input
-        [label]="t('input.website')"
-        [placeholder]="t('input.provideWebsite')"
-        [inputDescription]="t('input.websiteDesc')"
-        [showError]="!validationService.isFQDN(website)"
-        [errorMessage]="t('input.wrongFQDN')"
-        [value]="website"
-        (valueChange)="website = $event"
-        (incorrectInput)="incorrectWebsite = $event"
-      />
-
-      <div class="dived-line"></div>
-
       <div
         class="info-changed"
         *ngIf="wasInfoChanged()"

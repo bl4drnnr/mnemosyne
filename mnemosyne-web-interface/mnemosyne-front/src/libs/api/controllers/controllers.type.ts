@@ -3,5 +3,6 @@ export enum CONTROLLERS {
   SECURITY = 'security',
   CONFIRMATION_HASH = 'confirmation-hash',
   USERS = 'users',
-  RECOVERY = 'recovery'
+  RECOVERY = 'recovery',
+  COMPANY = 'company'
 }

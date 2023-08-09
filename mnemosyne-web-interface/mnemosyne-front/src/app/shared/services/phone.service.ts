@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
 import { ALLOWED_METHODS } from '@interfaces/methods.type';
 import { CONTROLLERS } from '@interfaces/controllers.type';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.type';
+import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
 import { LoginPhonePayload } from '@payloads/login-phone.payload';
 import { Observable } from 'rxjs';
 import { RegistrationPhonePayload } from '@payloads/registration-phone.payload';

@@ -1,9 +1,11 @@
 import {
+  BelongsTo,
   BelongsToMany,
   Column,
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   HasMany,
   HasOne,
   Model,
@@ -16,6 +18,7 @@ import { UserRole } from '@models/user-role.model';
 import { Session } from '@models/session.model';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { UserSettings } from '@models/user-settings.model';
+import { Company } from '@models/company.model';
 
 interface UserCreationAttributes {
   email: string;
@@ -43,15 +46,6 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false, field: 'last_name' })
   lastName: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
-  location: string;
-
-  @Column({ type: DataType.STRING, allowNull: true })
-  company: string;
-
-  @Column({ type: DataType.STRING, allowNull: true })
-  website: string;
-
   @Default(false)
   @Column({
     type: DataType.BOOLEAN,
@@ -59,6 +53,13 @@ export class User extends Model<User, UserCreationAttributes> {
     field: 'is_mfa_set'
   })
   isMfaSet: boolean;
+
+  @ForeignKey(() => Company)
+  @Column({ type: DataType.UUID, allowNull: true, field: 'company_id' })
+  companyId: string;
+
+  @BelongsTo(() => Company)
+  company: Company;
 
   @HasMany(() => ConfirmationHash)
   confirmationHashes: Array<ConfirmationHash>;

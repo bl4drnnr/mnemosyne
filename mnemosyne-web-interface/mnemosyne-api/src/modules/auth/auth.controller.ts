@@ -44,7 +44,7 @@ export class AuthController {
   @Get('logout')
   async logout(
     @UserId() userId: string,
-    @Res() res,
+    @Res() res: any,
     @TransactionParam() trx: Transaction
   ) {
     res.clearCookie('_rt');
@@ -57,7 +57,6 @@ export class AuthController {
   @Get('refresh')
   async refreshTokens(
     @CookieRefreshToken() refreshToken: string,
-    @Res({ passthrough: true }) res,
     @TransactionParam() trx: Transaction
   ) {
     return this.authService.refreshToken({
