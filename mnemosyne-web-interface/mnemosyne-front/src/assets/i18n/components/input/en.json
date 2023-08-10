@@ -1,8 +1,11 @@
 {
   "email": "Email",
+  "companyOwnerEmail": "Company owner email",
   "pass": "Password",
   "phone": "Mobile phone number",
   "provideEmail": "Provide your email address",
+  "provideCompanyOwnerEmail": "Provide email of company owner",
+  "companyOwnerEmailDesc": "Provide the email address of the account which will be the primary administrator of the company account.",
   "providePass": "Provide your password",
   "providePhone": "Provide your phone number",
   "wrongPassFormat": "Wrong password format",

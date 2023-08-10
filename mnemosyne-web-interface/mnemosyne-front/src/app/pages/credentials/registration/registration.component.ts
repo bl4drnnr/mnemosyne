@@ -38,6 +38,8 @@ export class RegistrationComponent implements OnInit {
   companyLocation: string;
   companyName: string;
   companyWebsite: string;
+  companyMembers: Array<string> = [];
+  companyMember: string;
   accountOwnerEmail: string;
   incorrectCompanyName = true;
   incorrectLocationName = true;
@@ -57,6 +59,8 @@ export class RegistrationComponent implements OnInit {
   ) {}
 
   handleCompanyRegistration() {
+    if (this.wrongCompanyCredentials({ includeAll: true })) return;
+
     this.companyService
       .createCompanyAccount({
         companyName: this.companyName,
@@ -104,34 +108,35 @@ export class RegistrationComponent implements OnInit {
   }
 
   wrongCompanyCredentials({ includeAll }: WrongCredentialsInterface) {
-    if (!includeAll) {
-      const wrongWebsite = !this.validationService.isFQDN(this.companyWebsite);
+    const wrongWebsite = !this.validationService.isFQDN(this.companyWebsite);
+    const incorrectCompanyData =
+      wrongWebsite ||
+      this.incorrectCompanyName ||
+      this.incorrectLocationName ||
+      !this.companyWebsite;
 
-      return (
-        this.incorrectCompanyName ||
-        this.incorrectLocationName ||
-        !this.companyWebsite ||
-        wrongWebsite
-      );
-    } else {
-      return true;
-    }
+    const incorrectAllCompanyData =
+      incorrectCompanyData || this.incorrectAccountOwnerEmail;
+
+    return !includeAll ? incorrectCompanyData : incorrectAllCompanyData;
   }
 
   wrongCredentials({ includeAll }: WrongCredentialsInterface) {
-    if (!includeAll) {
-      return this.incorrectPassword || this.incorrectEmail;
-    } else {
-      return (
-        this.incorrectPassword ||
-        this.incorrectEmail ||
-        !this.tac ||
-        this.lastName.length < 1 ||
-        this.firstName.length < 1 ||
-        this.incorrectFirstName ||
-        this.incorrectLastName
-      );
-    }
+    const incorrectCredentials = this.incorrectPassword || this.incorrectEmail;
+    const incorrectAllCredentials =
+      incorrectCredentials ||
+      !this.tac ||
+      this.lastName.length < 1 ||
+      this.firstName.length < 1 ||
+      this.incorrectFirstName ||
+      this.incorrectLastName;
+
+    return !includeAll ? incorrectCredentials : incorrectAllCredentials;
+  }
+
+  addCompanyMember() {
+    this.companyMembers.push(this.companyMember);
+    this.companyMember = '';
   }
 
   ngOnInit() {

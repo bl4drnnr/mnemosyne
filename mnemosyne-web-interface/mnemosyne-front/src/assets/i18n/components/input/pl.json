@@ -1,8 +1,11 @@
 {
   "email": "E-mail",
+  "companyOwnerEmail": "E-mail właściciela konta firmowego",
   "pass": "Hasło",
   "phone": "Numer telefonu komórkowego",
   "provideEmail": "Podaj swój adres e-mail",
+  "provideCompanyOwnerEmail": "Podaj email właściciela firmy",
+  "companyOwnerEmailDesc": "Podaj adres e-mail konta, które będzie głównym administratorem konta firmowego.",
   "providePass": "Podaj swoje hasło",
   "providePhone": "Podaj swój numer telefonu",
   "wrongPassFormat": "Nieprawidłowy format hasła",
