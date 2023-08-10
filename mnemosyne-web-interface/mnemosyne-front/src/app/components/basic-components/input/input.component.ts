@@ -61,6 +61,7 @@ export class InputComponent {
   @Output() passwordErrors = new EventEmitter<
     Array<{ error: boolean; text: string }>
   >();
+  @Output() onSpace = new EventEmitter<boolean>();
 
   passwordTypes = ['password', 'password-repeat', 'passphrase'];
 
@@ -111,6 +112,10 @@ export class InputComponent {
       this.incorrectInput.emit(false);
       this.passwordErrors.emit([]);
     }
+  }
+
+  onSpaceClick() {
+    this.onSpace.emit();
   }
 
   passwordFontSize() {

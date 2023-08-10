@@ -31,6 +31,7 @@
       [type]="passwordTypes.includes(type) ? 'password' : type"
       [placeholder]="placeholder"
       (input)="onInput()"
+      (keyup.space)="onSpaceClick()"
     />
   </div>
   <p
