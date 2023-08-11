@@ -1,6 +1,6 @@
 export enum PasswordChangedResponse {
   PHONE_REQUIRED = 'phone-required',
-  TWO_FA_REQUIRED = 'two-fa-required',
-  MFA_REQUIRED = 'mfa-required',
+  TOKEN_TWO_FA_REQUIRED = 'token-two-fa-required',
+  FULL_MFA_REQUIRED = 'full-mfa-required',
   PASSWORD_CHANGED = 'password-changed'
 }

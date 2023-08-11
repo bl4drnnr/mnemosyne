@@ -189,7 +189,7 @@ export class SecuritySettingsComponent {
       .subscribe({
         next: async ({ message }) => {
           switch (message) {
-            case PasswordChangedResponse.MFA_REQUIRED:
+            case PasswordChangedResponse.FULL_MFA_REQUIRED:
               this.changePassMfaRequired = true;
               this.changePassPhoneRequired = true;
               break;
@@ -197,7 +197,7 @@ export class SecuritySettingsComponent {
               this.changePassPhoneRequired = true;
               this.phoneCodeSent = true;
               break;
-            case PasswordChangedResponse.TWO_FA_REQUIRED:
+            case PasswordChangedResponse.TOKEN_TWO_FA_REQUIRED:
               this.changePassMfaRequired = true;
               break;
             case PasswordChangedResponse.PASSWORD_CHANGED:

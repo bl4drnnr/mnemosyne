@@ -18,7 +18,7 @@ import { LoggedOutDto } from '@dto/logged-out.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
 import { EmailService } from '@shared/email.service';
 import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
-import { MfaRequiredDto } from '@dto/mfa-required.dto';
+import { FullMfaRequiredDto } from '@dto/full-mfa-required.dto';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
@@ -36,6 +36,8 @@ import { GenerateAccessTokenInterface } from '@interfaces/generate-access-token.
 import { UpdateRefreshTokenInterface } from '@interfaces/update-refresh-token.interface';
 import { GenerateTokensInterface } from '@interfaces/generate-tokens.interface';
 import { GetTokenInterface } from '@interfaces/get-token.interface';
+import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
+import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
 
 @Injectable()
 export class AuthService {
@@ -195,11 +197,10 @@ export class AuthService {
         userId,
         phone
       });
-      return new MfaRequiredDto();
+      return new FullMfaRequiredDto();
     }
 
-    if (!mfaCode && userTwoFaToken)
-      return new MfaRequiredDto('two-fa-required');
+    if (!mfaCode && userTwoFaToken) return new TokenTwoFaRequiredDto();
 
     if (!phoneCode && phone) {
       await this.phoneService.verifyAndResendSmsCode({
@@ -207,7 +208,7 @@ export class AuthService {
         userId,
         phone
       });
-      return new MfaRequiredDto('phone-required');
+      return new PhoneMfaRequiredDto();
     }
 
     if (phoneCode && phone) {

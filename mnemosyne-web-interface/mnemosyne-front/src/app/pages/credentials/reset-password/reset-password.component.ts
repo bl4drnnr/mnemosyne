@@ -65,7 +65,7 @@ export class ResetPasswordComponent implements OnInit {
         next: async (response) => {
           if (response && response.message) {
             switch (response.message) {
-              case ResetUserPasswordResponse.MFA_REQUIRED:
+              case ResetUserPasswordResponse.FULL_MFA_REQUIRED:
                 this.step = 2;
                 this.isPhoneRequired = true;
                 this.isMfaRequired = true;
@@ -74,7 +74,7 @@ export class ResetPasswordComponent implements OnInit {
                 this.step = 2;
                 this.isPhoneRequired = true;
                 break;
-              case ResetUserPasswordResponse.TWO_FA_REQUIRED:
+              case ResetUserPasswordResponse.TOKEN_TWO_FA_REQUIRED:
                 this.step = 2;
                 this.isMfaRequired = true;
                 break;
