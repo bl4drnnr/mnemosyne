@@ -8,6 +8,7 @@ import { TitlesPages } from '@interfaces/titles.pages';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
 import { RegistrationTypeInterface } from '@interfaces/registration-type.interface';
 import { CompanyService } from '@services/company.service';
+import { EnvService } from '@shared/env.service';
 
 @Component({
   selector: 'page-registration',
@@ -24,9 +25,9 @@ import { CompanyService } from '@services/company.service';
   ]
 })
 export class RegistrationComponent implements OnInit {
-  accRegistrationType: RegistrationTypeInterface = 'start';
+  accRegistrationType: RegistrationTypeInterface = 'company';
 
-  step = 1;
+  step = 2;
   tac = false;
 
   email: string;
@@ -38,9 +39,24 @@ export class RegistrationComponent implements OnInit {
   companyLocation: string;
   companyName: string;
   companyWebsite: string;
-  companyMembers: Array<string> = [];
+  companyMembers: Array<{ email: string; role: string }> = [];
+  companyRoles: Array<{ key: string; value: string }> = [
+    {
+      key: 'ADMIN',
+      value: 'Admin'
+    },
+    {
+      key: 'USER',
+      value: 'User'
+    },
+    {
+      key: 'READ_ONLY',
+      value: 'Read-only'
+    }
+  ];
   companyMember: string;
   accountOwnerEmail: string;
+  incorrectMemberEmail: boolean;
   incorrectCompanyName = true;
   incorrectLocationName = true;
   incorrectAccountOwnerEmail = true;
@@ -54,9 +70,12 @@ export class RegistrationComponent implements OnInit {
     private readonly authenticationService: AuthenticationService,
     private readonly pageTitleService: PageTitleService,
     private readonly companyService: CompanyService,
+    private readonly envService: EnvService,
     private readonly router: Router,
     public validationService: ValidationService
   ) {}
+
+  closeButtonUrl = `${this.envService.getStaticStorageLink}/icons/close.svg`;
 
   handleCompanyRegistration() {
     if (this.wrongCompanyCredentials({ includeAll: true })) return;
@@ -135,8 +154,23 @@ export class RegistrationComponent implements OnInit {
   }
 
   addCompanyMember() {
-    this.companyMembers.push(this.companyMember);
+    const isEmailPresent = this.companyMembers.find(
+      ({ email }) => email === this.companyMember
+    );
+
+    if (!this.incorrectMemberEmail && !isEmailPresent)
+      this.companyMembers.push({
+        email: this.companyMember,
+        role: 'Read-only'
+      });
+
     this.companyMember = '';
+  }
+
+  removeMember(memberEmail: string) {
+    this.companyMembers = this.companyMembers.filter(
+      ({ email }) => email !== memberEmail
+    );
   }
 
   ngOnInit() {

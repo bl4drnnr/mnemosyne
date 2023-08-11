@@ -1,10 +1,13 @@
 {
   "email": "Email",
   "companyOwnerEmail": "Company owner email",
+  "companyMemberEmail": "Company member email",
   "pass": "Password",
   "phone": "Mobile phone number",
   "provideEmail": "Provide your email address",
   "provideCompanyOwnerEmail": "Provide email of company owner",
+  "provideCompanyMemberEmail": "Provide email of the company member",
+  "companyMemberEmailDesc": "Provide the email address of the company member you would like to invite and press Space bar to add.",
   "companyOwnerEmailDesc": "Provide the email address of the account which will be the primary administrator of the company account.",
   "providePass": "Provide your password",
   "providePhone": "Provide your phone number",

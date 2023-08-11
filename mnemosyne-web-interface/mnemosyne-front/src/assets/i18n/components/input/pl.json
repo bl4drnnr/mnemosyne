@@ -1,10 +1,13 @@
 {
   "email": "E-mail",
   "companyOwnerEmail": "E-mail właściciela konta firmowego",
+  "companyMemberEmail": "E-mail członka firmy",
   "pass": "Hasło",
   "phone": "Numer telefonu komórkowego",
   "provideEmail": "Podaj swój adres e-mail",
   "provideCompanyOwnerEmail": "Podaj email właściciela firmy",
+  "provideCompanyMemberEmail": "Podaj adres e-mail członka firmy",
+  "companyMemberEmailDesc": "Podaj adres e-mail członka firmy, którego chcesz zaprosić, i naciśnij spację, aby dodać.",
   "companyOwnerEmailDesc": "Podaj adres e-mail konta, które będzie głównym administratorem konta firmowego.",
   "providePass": "Podaj swoje hasło",
   "providePhone": "Podaj swój numer telefonu",

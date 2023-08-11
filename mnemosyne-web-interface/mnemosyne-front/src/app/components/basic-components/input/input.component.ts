@@ -36,7 +36,7 @@ import { TranslocoService } from '@ngneat/transloco';
     ]),
     trigger('descriptionAnimation', [
       state('void', style({ transform: 'translateY(-5px)', opacity: 0 })),
-      state('*', style({ transform: 'translateY(0)', opacity: 1 })),
+      state('*', style({ transform: 'translateY(0)', opacity: 0.5 })),
       transition('void => *', animate('0.5s')),
       transition('* => void', animate('0.5s'))
     ])
