@@ -8,7 +8,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { TRANSLOCO_SCOPE, TranslocoService } from '@ngneat/transloco';
+import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
 
 @Component({
   selector: 'layout-global-message',
@@ -31,20 +31,17 @@ import { TRANSLOCO_SCOPE, TranslocoService } from '@ngneat/transloco';
   ]
 })
 export class GlobalMessageComponent implements OnInit {
-  closeButtonUrl: string;
   successIcon: string;
   errorIcon: string;
 
   constructor(
     public globalMessageService: GlobalMessageService,
-    private readonly translocoService: TranslocoService,
     private readonly envService: EnvService
   ) {}
 
   staticStorageLink: string = this.envService.getStaticStorageLink;
 
   ngOnInit() {
-    this.closeButtonUrl = `${this.staticStorageLink}/icons/close.svg`;
     this.successIcon = `${this.staticStorageLink}/icons/check-circle.svg`;
     this.errorIcon = `${this.staticStorageLink}/icons/error.svg`;
   }

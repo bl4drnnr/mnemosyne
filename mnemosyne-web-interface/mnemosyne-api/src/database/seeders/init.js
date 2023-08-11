@@ -8,6 +8,13 @@ module.exports = {
       await queryInterface.bulkInsert('roles', [
         {
           id: uuid.v4(),
+          value: 'PRIMARY_ADMIN',
+          description: 'Primary company owner email address.',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          id: uuid.v4(),
           value: 'ADMIN',
           description:
             'The highest level of permissions. Created by default and cannot be deleted.',
@@ -16,8 +23,15 @@ module.exports = {
         },
         {
           id: uuid.v4(),
-          value: 'AUTH_USER',
-          description: 'Default role of authorized user.',
+          value: 'USER',
+          description: 'Default role of user.',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          id: uuid.v4(),
+          value: 'READ_ONLY',
+          description: 'Read only access.',
           created_at: new Date(),
           updated_at: new Date()
         }

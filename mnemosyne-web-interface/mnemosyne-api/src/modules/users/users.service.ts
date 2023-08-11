@@ -63,7 +63,7 @@ export class UsersService {
   }
 
   async createUser({ payload, trx: transaction }: CreateUserInterface) {
-    const defaultRole = await this.roleService.getRoleByValue('AUTH_USER');
+    const defaultRole = await this.roleService.getRoleByValue('USER');
     const user = await this.userRepository.create(payload, { transaction });
     await user.$set('roles', [defaultRole.id], { transaction });
     return user;
