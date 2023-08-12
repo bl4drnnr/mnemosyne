@@ -99,7 +99,7 @@ export class LoginComponent implements OnInit {
               this.isMfaNotSet = false;
               this.isRecoveryKeysNotSet = true;
               break;
-            case LoginResponse.MFA_REQUIRED:
+            case LoginResponse.FULL_MFA_REQUIRED:
               this.step = 3;
               this.isPhoneRequired = true;
               this.isMfaRequired = true;
@@ -108,7 +108,7 @@ export class LoginComponent implements OnInit {
               this.step = 3;
               this.isPhoneRequired = true;
               break;
-            case LoginResponse.TWO_FA_REQUIRED:
+            case LoginResponse.TOKEN_TWO_FA_REQUIRED:
               this.step = 3;
               this.isMfaRequired = true;
               break;

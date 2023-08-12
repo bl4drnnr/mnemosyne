@@ -16,8 +16,7 @@ module.exports = {
         {
           id: uuid.v4(),
           value: 'ADMIN',
-          description:
-            'The highest level of permissions. Created by default and cannot be deleted.',
+          description: 'Allows to control users\' access',
           created_at: new Date(),
           updated_at: new Date()
         },

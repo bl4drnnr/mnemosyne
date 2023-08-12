@@ -65,12 +65,12 @@ export class EmailChangeConfirmationComponent implements OnInit {
       .subscribe({
         next: ({ message }) => {
           switch (message) {
-            case ConfirmEmailChangeResponse.MFA_REQUIRED:
+            case ConfirmEmailChangeResponse.FULL_MFA_REQUIRED:
               this.step = 2;
               this.isPhoneRequired = true;
               this.isMfaRequired = true;
               break;
-            case ConfirmEmailChangeResponse.TWO_FA_REQUIRED:
+            case ConfirmEmailChangeResponse.TOKEN_TWO_FA_REQUIRED:
               this.step = 2;
               this.isMfaRequired = true;
               break;
