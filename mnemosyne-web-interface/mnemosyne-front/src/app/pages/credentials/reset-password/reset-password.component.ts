@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
+import { ResetUserPasswordEnum } from '@responses/reset-user-password.enum';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { PhoneService } from '@services/phone.service';
-import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TranslationService } from '@services/translation.service';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-reset-password',
@@ -36,7 +36,7 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly validationService: ValidationService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly phoneService: PhoneService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
@@ -65,20 +65,20 @@ export class ResetPasswordComponent implements OnInit {
         next: async (response) => {
           if (response && response.message) {
             switch (response.message) {
-              case ResetUserPasswordResponse.FULL_MFA_REQUIRED:
+              case ResetUserPasswordEnum.FULL_MFA_REQUIRED:
                 this.step = 2;
                 this.isPhoneRequired = true;
                 this.isMfaRequired = true;
                 break;
-              case ResetUserPasswordResponse.PHONE_REQUIRED:
+              case ResetUserPasswordEnum.PHONE_REQUIRED:
                 this.step = 2;
                 this.isPhoneRequired = true;
                 break;
-              case ResetUserPasswordResponse.TOKEN_TWO_FA_REQUIRED:
+              case ResetUserPasswordEnum.TOKEN_TWO_FA_REQUIRED:
                 this.step = 2;
                 this.isMfaRequired = true;
                 break;
-              case ResetUserPasswordResponse.PASSWORD_RESET:
+              case ResetUserPasswordEnum.PASSWORD_RESET:
                 this.step = 3;
                 break;
               default:
@@ -104,7 +104,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.RESET_PASSWORD);
+    this.pageTitleService.setPageTitle(TitlesEnum.RESET_PASSWORD);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

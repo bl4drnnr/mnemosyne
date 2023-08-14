@@ -1,6 +1,6 @@
 import { IsEnum, IsOptional, IsString, Matches } from 'class-validator';
 import { PhoneRegex } from '@regex/phone.regex';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LanguageEnum } from '@interfaces/language.enum';
 
 export class RegistrationSendSmsCodeDto {
   @IsString({ message: 'wrong-phone-format' })
@@ -8,6 +8,6 @@ export class RegistrationSendSmsCodeDto {
   readonly phone: string;
 
   @IsOptional()
-  @IsEnum(LANGUAGE_TYPES)
-  readonly language: LANGUAGE_TYPES;
+  @IsEnum(LanguageEnum)
+  readonly language: LanguageEnum;
 }

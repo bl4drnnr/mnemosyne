@@ -517,6 +517,12 @@ paths:
     post:
       operationId: CompanyController_createCompany
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCompanyDto"
       responses:
         "201":
           description: ""
@@ -593,5 +599,8 @@ components:
       type: object
       properties: {}
     RecoverAccountDto:
+      type: object
+      properties: {}
+    CreateCompanyDto:
       type: object
       properties: {}

@@ -1,24 +1,24 @@
-import { CONTROLLERS } from '@interfaces/controllers.type';
-import { ALLOWED_METHODS } from '@interfaces/methods.type';
-import { AUTH_ENDPOINTS } from '@interfaces/auth.endpoints';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
-import { USERS_ENDPOINTS } from '@interfaces/users.endpoints';
-import { RECOVERY_ENDPOINTS } from '@interfaces/recovery.endpoints';
-import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.endpoints';
-import { COMPANY_ENDPOINTS } from '@interfaces/company.endpoints';
+import { ControllersEnum } from '@interfaces/controllers.enum';
+import { MethodsEnum } from '@interfaces/methods.enum';
+import { AuthEnum } from '@interfaces/auth.enum';
+import { SecurityEnum } from '@interfaces/security.enum';
+import { UsersEnum } from '@interfaces/users.enum';
+import { RecoveryEnum } from '@interfaces/recovery.enum';
+import { ConfirmationHashEnum } from '@interfaces/confirmation-hash.enum';
+import { CompanyEnum } from '@interfaces/company.enum';
 
-type ENDPOINTS_TYPE =
-  | AUTH_ENDPOINTS
-  | SECURITY_ENDPOINTS
-  | USERS_ENDPOINTS
-  | RECOVERY_ENDPOINTS
-  | CONFIRMATION_ENDPOINTS
-  | COMPANY_ENDPOINTS;
+type EndpointsType =
+  | AuthEnum
+  | SecurityEnum
+  | UsersEnum
+  | RecoveryEnum
+  | ConfirmationHashEnum
+  | CompanyEnum;
 
 export interface ProxyRequestInterface {
-  controller: CONTROLLERS;
-  action: ENDPOINTS_TYPE;
-  method: ALLOWED_METHODS;
+  controller: ControllersEnum;
+  action: EndpointsType;
+  method: MethodsEnum;
   payload?: object;
   params?: object;
   accessToken?: string;

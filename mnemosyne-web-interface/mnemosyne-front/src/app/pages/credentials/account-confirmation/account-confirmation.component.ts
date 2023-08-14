@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ConfirmAccountResponse } from '@responses/confirm-account.response';
+import { ConfirmAccountEnum } from '@responses/confirm-account.enum';
 import { AuthenticationService } from '@services/authentication.service';
-import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TranslationService } from '@services/translation.service';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-account-confirmation',
@@ -34,7 +34,7 @@ export class AccountConfirmationComponent implements OnInit {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {}
@@ -43,17 +43,17 @@ export class AccountConfirmationComponent implements OnInit {
     this.authenticationService.confirmAccount({ hash }).subscribe({
       next: ({ message }) => {
         switch (message) {
-          case ConfirmAccountResponse.MFA_NOT_SET:
+          case ConfirmAccountEnum.MFA_NOT_SET:
             this.isMfaNotSet = true;
             this.isRecoveryKeysNotSet = false;
             this.isAccountConfirmed = true;
             break;
-          case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
+          case ConfirmAccountEnum.RECOVERY_KEYS_NOT_SET:
             this.isMfaNotSet = false;
             this.isRecoveryKeysNotSet = true;
             this.isAccountConfirmed = true;
             break;
-          case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
+          case ConfirmAccountEnum.ACCOUNT_CONFIRMED:
             this.isMfaNotSet = true;
             this.isRecoveryKeysNotSet = false;
             this.isAccountConfirmed = true;
@@ -72,7 +72,7 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.ACCOUNT_CONFIRMATION);
+    this.pageTitleService.setPageTitle(TitlesEnum.ACCOUNT_CONFIRMATION);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

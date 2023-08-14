@@ -22,8 +22,8 @@ module.exports = {
         },
         {
           id: uuid.v4(),
-          value: 'USER',
-          description: 'Default role of user.',
+          value: 'DEFAULT',
+          description: 'Default role of user. Read and write.',
           created_at: new Date(),
           updated_at: new Date()
         },

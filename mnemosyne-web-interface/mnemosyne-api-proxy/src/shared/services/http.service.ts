@@ -3,9 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
 import { LoggerService } from '@shared/logger.service';
-import { ACTION_CONTROLLER_TYPE } from '@interfaces/action-controller.type';
-import { STATUS_TYPE } from '@interfaces/status.type';
-import { METHODS_TYPE } from '@interfaces/method.type';
+import { ActionControllerEnum } from '@interfaces/action-controller.enum';
+import { StatusesEnum } from '@interfaces/statuses.enum';
+import { MethodsEnum } from '@interfaces/methods.enum';
 import { UnhandledEndpointException } from '@exceptions/unhandled-endpoint.exception';
 import { ProxyActionPayloadInterface } from '@interfaces/proxy-action-payload.interface';
 
@@ -45,8 +45,8 @@ export class ProxyHttpService {
     ) {
       const logMessage = { method, action, controller, payload };
       await this.loggerService.log({
-        logType: ACTION_CONTROLLER_TYPE.PROXY_SERVICE,
-        status: STATUS_TYPE.ERROR,
+        logType: ActionControllerEnum.PROXY_SERVICE,
+        status: StatusesEnum.ERROR,
         message: `Proxy tried to handle unsupported endpoint: ${logMessage.toString()}`
       });
       throw new UnhandledEndpointException();
@@ -75,11 +75,11 @@ export class ProxyHttpService {
     if (cookies) requestConfig.headers.cookie = cookies;
 
     await this.loggerService.log({
-      logType: ACTION_CONTROLLER_TYPE.LOGGER_SERVICE,
-      method: method as METHODS_TYPE,
+      logType: ActionControllerEnum.LOGGER_SERVICE,
+      method: method as MethodsEnum,
       controller,
       endpoint: action,
-      status: STATUS_TYPE.INFO,
+      status: StatusesEnum.INFO,
       payload: { body: payload, params }
     });
 
@@ -90,8 +90,8 @@ export class ProxyHttpService {
         },
         error: async (error: any) => {
           await this.loggerService.log({
-            logType: ACTION_CONTROLLER_TYPE.PROXY_SERVICE,
-            status: STATUS_TYPE.ERROR,
+            logType: ActionControllerEnum.PROXY_SERVICE,
+            status: StatusesEnum.ERROR,
             message: 'Error occurs while handling response from the API.',
             error: error.response?.data,
             payload: { body: payload, params }

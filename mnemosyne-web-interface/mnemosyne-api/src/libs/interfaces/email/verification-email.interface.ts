@@ -1,9 +1,9 @@
-import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.types';
+import { ConfirmationEnum } from '@interfaces/confirmation-type.enum';
 
 export interface VerificationEmailInterface {
   changingEmail?: string;
   to?: string;
   confirmationHash: string;
-  confirmationType: CONFIRMATION_TYPE;
+  confirmationType: ConfirmationEnum;
   userId: string;
 }

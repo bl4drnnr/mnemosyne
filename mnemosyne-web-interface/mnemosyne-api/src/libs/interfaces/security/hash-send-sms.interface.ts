@@ -1,8 +1,8 @@
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LanguageEnum } from '@interfaces/language.enum';
 import { Transaction } from 'sequelize';
 
 export interface HashSendSmsInterface {
   confirmationHash: string;
-  language?: LANGUAGE_TYPES;
+  language?: LanguageEnum;
   trx?: Transaction;
 }

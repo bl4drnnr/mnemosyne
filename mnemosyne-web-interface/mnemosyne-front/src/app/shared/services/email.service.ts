@@ -1,13 +1,13 @@
 import { ApiService } from '@shared/api.service';
 import { Injectable } from '@angular/core';
-import { ALLOWED_METHODS } from '@interfaces/methods.type';
-import { CONTROLLERS } from '@interfaces/controllers.type';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
-import { ChangeEmailPayload } from '@payloads/change-email.payload';
+import { MethodsEnum } from '@interfaces/methods.enum';
+import { ControllersEnum } from '@interfaces/controllers.enum';
+import { SecurityEnum } from '@interfaces/security.enum';
+import { ChangeEmailInterface } from '@payloads/change-email.interface';
 import { Observable } from 'rxjs';
-import { ChangeEmailResponse } from '@responses/change-email.response';
-import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.endpoints';
-import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
+import { ChangeEmailEnum } from '@responses/change-email.enum';
+import { ConfirmationHashEnum } from '@interfaces/confirmation-hash.enum';
+import { ConfirmEmailChangeEnum } from '@responses/confirm-email-change.enum';
 import { ConfirmEmailChangeInterface } from '@interfaces/services/email/confirm-email-change.interface';
 
 @Injectable({
@@ -17,17 +17,17 @@ export class EmailService {
   constructor(private readonly apiService: ApiService) {}
 
   changeEmail(
-    payload: ChangeEmailPayload
-  ): Observable<{ message: ChangeEmailResponse }> {
+    payload: ChangeEmailInterface
+  ): Observable<{ message: ChangeEmailEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.CHANGE_EMAIL,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.CHANGE_EMAIL,
       payload,
       accessToken
     });
@@ -37,16 +37,16 @@ export class EmailService {
     hash,
     payload
   }: ConfirmEmailChangeInterface): Observable<{
-    message: ConfirmEmailChangeResponse;
+    message: ConfirmEmailChangeEnum;
   }> {
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.CONFIRMATION_HASH,
-      action: CONFIRMATION_ENDPOINTS.EMAIL_CONFIRMATION,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.CONFIRMATION_HASH,
+      action: ConfirmationHashEnum.EMAIL_CONFIRMATION,
       params: { confirmationHash: hash },
       payload
     });

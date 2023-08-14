@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { LoginResponse } from '@responses/login.response';
+import { LoginEnum } from '@responses/login.enum';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { PhoneService } from '@services/phone.service';
-import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TranslationService } from '@services/translation.service';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-login',
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly validationService: ValidationService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly smsService: PhoneService,
     private readonly router: Router
   ) {}
@@ -89,26 +89,26 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: async ({ message, _at }) => {
           switch (message) {
-            case LoginResponse.MFA_NOT_SET:
+            case LoginEnum.MFA_NOT_SET:
               this.step = 1;
               this.isMfaNotSet = true;
               this.isRecoveryKeysNotSet = false;
               break;
-            case LoginResponse.RECOVERY_KEYS_NOT_SET:
+            case LoginEnum.RECOVERY_KEYS_NOT_SET:
               this.step = 1;
               this.isMfaNotSet = false;
               this.isRecoveryKeysNotSet = true;
               break;
-            case LoginResponse.FULL_MFA_REQUIRED:
+            case LoginEnum.FULL_MFA_REQUIRED:
               this.step = 3;
               this.isPhoneRequired = true;
               this.isMfaRequired = true;
               break;
-            case LoginResponse.PHONE_REQUIRED:
+            case LoginEnum.PHONE_REQUIRED:
               this.step = 3;
               this.isPhoneRequired = true;
               break;
-            case LoginResponse.TOKEN_TWO_FA_REQUIRED:
+            case LoginEnum.TOKEN_TWO_FA_REQUIRED:
               this.step = 3;
               this.isMfaRequired = true;
               break;
@@ -125,7 +125,7 @@ export class LoginComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.LOGIN);
+    this.pageTitleService.setPageTitle(TitlesEnum.LOGIN);
 
     const accessToken = localStorage.getItem('_at');
 

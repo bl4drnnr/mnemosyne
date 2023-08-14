@@ -3,12 +3,13 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
-import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TranslationService } from '@services/translation.service';
+import { TitlesEnum } from '@interfaces/titles.enum';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
-import { RegistrationTypeInterface } from '@interfaces/registration-type.interface';
+import { RegistrationType } from '@interfaces/registration.type';
 import { CompanyService } from '@services/company.service';
 import { EnvService } from '@shared/env.service';
+import { RolesEnum } from '@interfaces/roles.enum';
 
 @Component({
   selector: 'page-registration',
@@ -25,9 +26,9 @@ import { EnvService } from '@shared/env.service';
   ]
 })
 export class RegistrationComponent implements OnInit {
-  accRegistrationType: RegistrationTypeInterface = 'company';
+  accRegistrationType: RegistrationType = 'start';
 
-  step = 2;
+  step = 1;
   tac = false;
 
   email: string;
@@ -40,20 +41,7 @@ export class RegistrationComponent implements OnInit {
   companyName: string;
   companyWebsite: string;
   companyMembers: Array<{ email: string; role: string }> = [];
-  companyRoles: Array<{ key: string; value: string }> = [
-    {
-      key: 'ADMIN',
-      value: 'Admin'
-    },
-    {
-      key: 'USER',
-      value: 'User'
-    },
-    {
-      key: 'READ_ONLY',
-      value: 'Read-only'
-    }
-  ];
+  companyRoles: Array<{ key: string; value: RolesEnum }>;
   companyMember: string;
   accountOwnerEmail: string;
   incorrectMemberEmail: boolean;
@@ -68,7 +56,8 @@ export class RegistrationComponent implements OnInit {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly translationService: TranslationService,
+    private readonly pageTitleService: TranslationService,
     private readonly companyService: CompanyService,
     private readonly envService: EnvService,
     private readonly router: Router,
@@ -173,7 +162,9 @@ export class RegistrationComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.REGISTRATION);
+  async ngOnInit() {
+    this.pageTitleService.setPageTitle(TitlesEnum.REGISTRATION);
+
+    const t = await this.translationService.translateObject('roles');
   }
 }

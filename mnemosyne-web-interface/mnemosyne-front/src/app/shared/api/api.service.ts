@@ -8,11 +8,10 @@ import {
   throwError,
   timer
 } from 'rxjs';
-import { GlobalMessageService } from '@shared/global-message.service';
 import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/api/error-handler.service';
 import { LoaderService } from '@shared/loader.service';
-import { ALLOWED_METHODS } from '@interfaces/methods.type';
+import { MethodsEnum } from '@interfaces/methods.enum';
 import { ProxyRequestInterface } from '@interfaces/proxy-request.interface';
 
 @Injectable({
@@ -21,7 +20,6 @@ import { ProxyRequestInterface } from '@interfaces/proxy-request.interface';
 export class ApiService {
   constructor(
     private readonly http: HttpClient,
-    private readonly globalMessageService: GlobalMessageService,
     private readonly loaderService: LoaderService,
     private readonly envService: EnvService,
     private readonly errorHandler: ErrorHandlerService
@@ -39,7 +37,7 @@ export class ApiService {
   }: ProxyRequestInterface): Observable<any> {
     const requestUrl = `${this.frontProxyUrl}/${controller}/${action}`;
     const requestBody: {
-      method: ALLOWED_METHODS;
+      method: MethodsEnum;
       params?: object;
       payload?: object;
     } = { method };

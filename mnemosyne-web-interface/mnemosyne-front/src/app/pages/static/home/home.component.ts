@@ -8,8 +8,8 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TranslationService } from '@services/translation.service';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'basic-home',
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private readonly envService: EnvService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly router: Router
   ) {}
 
@@ -65,6 +65,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.HOME);
+    this.pageTitleService.setPageTitle(TitlesEnum.HOME);
   }
 }

@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional, Matches } from 'class-validator';
 import { PasswordRegex } from '@regex/password.regex';
 import { MfaCodeRegex } from '@regex/mfa-code.regex';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LanguageEnum } from '@interfaces/language.enum';
 
 export class ConfirmEmailChangeDto {
   @IsOptional()
@@ -17,6 +17,6 @@ export class ConfirmEmailChangeDto {
   readonly phoneCode: string;
 
   @IsOptional()
-  @IsEnum(LANGUAGE_TYPES)
-  readonly language: LANGUAGE_TYPES;
+  @IsEnum(LanguageEnum)
+  readonly language: LanguageEnum;
 }

@@ -26,7 +26,7 @@ import { SmsClearedDto } from '@dto/sms-cleared.dto';
 import { EmailAlreadyChangedException } from '@exceptions/email-already-changed.exception';
 import { EmailAlreadyTakenException } from '@exceptions/email-already-taken.exception';
 import { EmailService } from '@shared/email.service';
-import { CONFIRMATION_TYPE } from '@interfaces/confirmation-type.types';
+import { ConfirmationEnum } from '@interfaces/confirmation-type.enum';
 import { EmailChangeEmailSentDto } from '@dto/email-change-email-sent.dto';
 import { PasswordChangedException } from '@exceptions/password-changed.exception';
 import { LoginGenerate2faInterface } from '@interfaces/login-generate-2fa.interface';
@@ -527,7 +527,7 @@ export class SecurityService {
     await this.emailService.sendEmailChangeEmail({
       payload: {
         changingEmail: newEmail,
-        confirmationType: CONFIRMATION_TYPE.EMAIL_CHANGE,
+        confirmationType: ConfirmationEnum.EMAIL_CHANGE,
         confirmationHash,
         userId
       },

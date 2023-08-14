@@ -58,7 +58,6 @@
         "src/modules/users/*",
         "src/modules/roles/*",
         "src/modules/auth/*",
-        "src/modules/permissions/*",
         "src/modules/confirmation-hash/*",
         "src/modules/recovery/*",
         "src/modules/company/*"
@@ -73,7 +72,7 @@
         "src/libs/interfaces/cryptography/*",
         "src/libs/interfaces/phone/*",
         "src/libs/interfaces/time/*",
-        "src/libs/types/*",
+        "src/libs/enums/*",
         "src/libs/interfaces/company/*"
       ],
       "@email-templates/*": [

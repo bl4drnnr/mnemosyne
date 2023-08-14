@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthenticationService } from '@services/authentication.service';
-import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TranslationService } from '@services/translation.service';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-forgot-password',
@@ -31,7 +31,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly translocoService: TranslocoService
   ) {}
 
@@ -73,6 +73,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.FORGOT_PASSWORD);
+    this.pageTitleService.setPageTitle(TitlesEnum.FORGOT_PASSWORD);
   }
 }

@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInfoResponse } from '@responses/user-info.response';
+import { UserInfoInterface } from '@responses/user-info.interface';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { UsersService } from '@services/users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
-import { UserSecurityResponse } from '@responses/user-security.response';
-import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
-import { SettingSectionInterface } from '@interfaces/setting-section.interface';
+import { UserSecurityInterface } from '@responses/user-security.interface';
+import { TranslationService } from '@services/translation.service';
+import { TitlesEnum } from '@interfaces/titles.enum';
+import { SettingSectionType } from '@interfaces/setting-section.type';
 
 @Component({
   selector: 'component-settings',
@@ -21,19 +21,19 @@ export class SettingsComponent implements OnInit {
   email: string;
   isProfilePicPresent: boolean;
 
-  userInfo: UserInfoResponse;
-  userSecurity: UserSecurityResponse;
-  currentSection: SettingSectionInterface = 'personal';
+  userInfo: UserInfoInterface;
+  userSecurity: UserSecurityInterface;
+  currentSection: SettingSectionType = 'personal';
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
     private readonly refreshTokensService: RefreshTokensService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly translocoService: TranslocoService,
     private readonly usersService: UsersService
   ) {}
 
-  saveUserInfo(userInfo: UserInfoResponse) {
+  saveUserInfo(userInfo: UserInfoInterface) {
     this.usersService.updateUserInfo(userInfo).subscribe({
       next: ({ message }) =>
         this.globalMessageService.handle({
@@ -113,7 +113,7 @@ export class SettingsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.SETTINGS);
+    this.pageTitleService.setPageTitle(TitlesEnum.SETTINGS);
 
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
 
