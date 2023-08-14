@@ -1,5 +1,5 @@
 import { IsEnum, IsOptional, Matches } from 'class-validator';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LanguageEnum } from '@interfaces/language.enum';
 import { EmailRegex } from '@regex/email.regex';
 
 export class ForgotPasswordDto {
@@ -7,6 +7,6 @@ export class ForgotPasswordDto {
   readonly email: string;
 
   @IsOptional()
-  @IsEnum(LANGUAGE_TYPES)
-  readonly language: LANGUAGE_TYPES;
+  @IsEnum(LanguageEnum)
+  readonly language: LanguageEnum;
 }

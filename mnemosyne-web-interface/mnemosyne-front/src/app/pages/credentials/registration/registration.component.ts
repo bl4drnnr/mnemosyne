@@ -3,7 +3,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
-import { PageTitleService } from '@services/page-title.service';
+import { TranslationService } from '@services/translation.service';
 import { TitlesEnum } from '@interfaces/titles.enum';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
 import { RegistrationType } from '@interfaces/registration.type';
@@ -56,7 +56,8 @@ export class RegistrationComponent implements OnInit {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly translationService: TranslationService,
+    private readonly pageTitleService: TranslationService,
     private readonly companyService: CompanyService,
     private readonly envService: EnvService,
     private readonly router: Router,
@@ -161,7 +162,9 @@ export class RegistrationComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.pageTitleService.setPageTitle(TitlesEnum.REGISTRATION);
+
+    const t = await this.translationService.translateObject('roles');
   }
 }

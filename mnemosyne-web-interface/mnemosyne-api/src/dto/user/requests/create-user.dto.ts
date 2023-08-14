@@ -6,7 +6,7 @@ import {
   Length,
   Matches
 } from 'class-validator';
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LanguageEnum } from '@interfaces/language.enum';
 import { EmailRegex } from '@regex/email.regex';
 import { PasswordRegex } from '@regex/password.regex';
 
@@ -29,6 +29,6 @@ export class CreateUserDto {
   readonly tac: boolean;
 
   @IsOptional()
-  @IsEnum(LANGUAGE_TYPES)
-  readonly language: LANGUAGE_TYPES;
+  @IsEnum(LanguageEnum)
+  readonly language: LanguageEnum;
 }

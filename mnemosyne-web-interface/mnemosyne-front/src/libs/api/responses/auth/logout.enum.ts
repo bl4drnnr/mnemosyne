@@ -1,0 +1,3 @@
+export enum LogoutEnum {
+  USER_LOGGED_OUT = 'user-logged-out'
+}

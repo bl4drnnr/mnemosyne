@@ -1,9 +1,9 @@
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LanguageEnum } from '@interfaces/language.enum';
 import { Transaction } from 'sequelize';
 
 export interface VerifyAndResendInterface {
   userId: string;
   phone: string;
-  language?: LANGUAGE_TYPES;
+  language?: LanguageEnum;
   trx?: Transaction;
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInfoResponse } from '@responses/user-info.response';
+import { UserInfoInterface } from '@responses/user-info.interface';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
-import { PageTitleService } from '@services/page-title.service';
+import { TranslationService } from '@services/translation.service';
 import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
@@ -10,11 +10,11 @@ import { TitlesEnum } from '@interfaces/titles.enum';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  userInfo: UserInfoResponse;
+  userInfo: UserInfoInterface;
 
   constructor(
     private readonly refreshTokensService: RefreshTokensService,
-    private readonly pageTitleService: PageTitleService
+    private readonly pageTitleService: TranslationService
   ) {}
 
   async ngOnInit() {

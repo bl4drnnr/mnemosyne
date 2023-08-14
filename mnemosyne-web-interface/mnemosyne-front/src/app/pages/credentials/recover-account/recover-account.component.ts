@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { ValidationService } from '@services/validation.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
-import { PageTitleService } from '@services/page-title.service';
+import { TranslationService } from '@services/translation.service';
 import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
@@ -36,7 +36,7 @@ export class RecoverAccountComponent implements OnInit {
     private readonly translocoService: TranslocoService,
     private readonly validationService: ValidationService,
     private readonly globalMessageService: GlobalMessageService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly router: Router
   ) {}
 

@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import { MethodsEnum } from '@interfaces/methods.enum';
 import { ControllersEnum } from '@interfaces/controllers.enum';
 import { SecurityEnum } from '@interfaces/security.enum';
-import { ChangeEmailPayload } from '@payloads/change-email.payload';
+import { ChangeEmailInterface } from '@payloads/change-email.interface';
 import { Observable } from 'rxjs';
-import { ChangeEmailResponse } from '@responses/change-email.response';
+import { ChangeEmailEnum } from '@responses/change-email.enum';
 import { ConfirmationHashEnum } from '@interfaces/confirmation-hash.enum';
-import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
+import { ConfirmEmailChangeEnum } from '@responses/confirm-email-change.enum';
 import { ConfirmEmailChangeInterface } from '@interfaces/services/email/confirm-email-change.interface';
 
 @Injectable({
@@ -17,8 +17,8 @@ export class EmailService {
   constructor(private readonly apiService: ApiService) {}
 
   changeEmail(
-    payload: ChangeEmailPayload
-  ): Observable<{ message: ChangeEmailResponse }> {
+    payload: ChangeEmailInterface
+  ): Observable<{ message: ChangeEmailEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
 
@@ -37,7 +37,7 @@ export class EmailService {
     hash,
     payload
   }: ConfirmEmailChangeInterface): Observable<{
-    message: ConfirmEmailChangeResponse;
+    message: ConfirmEmailChangeEnum;
   }> {
     const language = localStorage.getItem('translocoLang');
 

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { EmailService } from '@services/email.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmEmailChangePayload } from '@payloads/confirm-email-change.payload';
-import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
+import { ConfirmEmailChangePayloadInterface } from '@payloads/confirm-email-change-payload.interface';
+import { ConfirmEmailChangeEnum } from '@responses/confirm-email-change.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { PageTitleService } from '@services/page-title.service';
+import { TranslationService } from '@services/translation.service';
 import { TitlesEnum } from '@interfaces/titles.enum';
 import { ValidationService } from '@services/validation.service';
 import { PhoneService } from '@services/phone.service';
@@ -44,12 +44,13 @@ export class EmailChangeConfirmationComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly emailService: EmailService,
     private readonly phoneService: PhoneService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly validationService: ValidationService
   ) {}
 
   confirmEmailChange() {
-    const confirmEmailChangePayload: ConfirmEmailChangePayload | null = {};
+    const confirmEmailChangePayload: ConfirmEmailChangePayloadInterface | null =
+      {};
 
     if (this.password) confirmEmailChangePayload.password = this.password;
     if (this.phoneCode) confirmEmailChangePayload.phoneCode = this.phoneCode;
@@ -65,20 +66,20 @@ export class EmailChangeConfirmationComponent implements OnInit {
       .subscribe({
         next: ({ message }) => {
           switch (message) {
-            case ConfirmEmailChangeResponse.FULL_MFA_REQUIRED:
+            case ConfirmEmailChangeEnum.FULL_MFA_REQUIRED:
               this.step = 2;
               this.isPhoneRequired = true;
               this.isMfaRequired = true;
               break;
-            case ConfirmEmailChangeResponse.TOKEN_TWO_FA_REQUIRED:
+            case ConfirmEmailChangeEnum.TOKEN_TWO_FA_REQUIRED:
               this.step = 2;
               this.isMfaRequired = true;
               break;
-            case ConfirmEmailChangeResponse.PHONE_REQUIRED:
+            case ConfirmEmailChangeEnum.PHONE_REQUIRED:
               this.step = 2;
               this.isPhoneRequired = true;
               break;
-            case ConfirmEmailChangeResponse.EMAIL_CHANGED:
+            case ConfirmEmailChangeEnum.EMAIL_CHANGED:
               this.step = 3;
               break;
           }

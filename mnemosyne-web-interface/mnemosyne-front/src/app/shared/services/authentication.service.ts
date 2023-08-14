@@ -4,16 +4,16 @@ import { Observable } from 'rxjs';
 import { MethodsEnum } from '@interfaces/methods.enum';
 import { ControllersEnum } from '@interfaces/controllers.enum';
 import { AuthEnum } from '@interfaces/auth.enum';
-import { LoginPayload } from '@payloads/login.payload';
-import { RegistrationPayload } from '@payloads/registration.payload';
-import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
-import { ResetUserPasswordPayload } from '@payloads/reset-user-password.payload';
-import { LoginResponse } from '@responses/login.response';
-import { RegistrationResponse } from '@responses/registration.response';
-import { ConfirmAccountResponse } from '@responses/confirm-account.response';
-import { ForgotPasswordResponse } from '@responses/forgot-password.response';
-import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
-import { LogoutResponse } from '@responses/logout.response';
+import { LoginInterface } from '@payloads/login.interface';
+import { RegistrationInterface } from '@payloads/registration.interface';
+import { ForgotPasswordInterface } from '@payloads/forgot-password.interface';
+import { ResetUserPasswordInterface } from '@payloads/reset-user-password.interface';
+import { LoginEnum } from '@responses/login.enum';
+import { RegistrationEnum } from '@responses/registration.enum';
+import { ConfirmAccountEnum } from '@responses/confirm-account.enum';
+import { ForgotPasswordEnum } from '@responses/forgot-password.enum';
+import { ResetUserPasswordEnum } from '@responses/reset-user-password.enum';
+import { LogoutEnum } from '@responses/logout.enum';
 import { ConfirmationHashEnum } from '@interfaces/confirmation-hash.enum';
 import { RefreshTokensInterface } from '@interfaces/services/auth/refresh-tokens.interface';
 import { ConfirmAccountInterface } from '@interfaces/services/auth/confirm-account.interface';
@@ -25,8 +25,8 @@ export class AuthenticationService {
   constructor(private readonly apiService: ApiService) {}
 
   login(
-    payload: LoginPayload
-  ): Observable<{ message: LoginResponse; _at: string }> {
+    payload: LoginInterface
+  ): Observable<{ message: LoginEnum; _at: string }> {
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.POST,
       controller: ControllersEnum.AUTH,
@@ -36,8 +36,8 @@ export class AuthenticationService {
   }
 
   registration(
-    payload: RegistrationPayload
-  ): Observable<{ message: RegistrationResponse }> {
+    payload: RegistrationInterface
+  ): Observable<{ message: RegistrationEnum }> {
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -52,7 +52,7 @@ export class AuthenticationService {
 
   confirmAccount({
     hash
-  }: ConfirmAccountInterface): Observable<{ message: ConfirmAccountResponse }> {
+  }: ConfirmAccountInterface): Observable<{ message: ConfirmAccountEnum }> {
     const payload: { confirmationHash: string; language?: string } = {
       confirmationHash: hash
     };
@@ -69,8 +69,8 @@ export class AuthenticationService {
   }
 
   forgotPassword(
-    payload: ForgotPasswordPayload
-  ): Observable<{ message: ForgotPasswordResponse }> {
+    payload: ForgotPasswordInterface
+  ): Observable<{ message: ForgotPasswordEnum }> {
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -83,8 +83,8 @@ export class AuthenticationService {
     });
   }
 
-  resetUserPassword(payload: ResetUserPasswordPayload): Observable<{
-    message: ResetUserPasswordResponse;
+  resetUserPassword(payload: ResetUserPasswordInterface): Observable<{
+    message: ResetUserPasswordEnum;
   }> {
     const language = localStorage.getItem('translocoLang');
 
@@ -109,7 +109,7 @@ export class AuthenticationService {
     });
   }
 
-  logout(): Observable<{ message: LogoutResponse }> {
+  logout(): Observable<{ message: LogoutEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.GET,

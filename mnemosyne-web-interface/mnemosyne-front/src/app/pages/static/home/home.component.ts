@@ -8,7 +8,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { PageTitleService } from '@services/page-title.service';
+import { TranslationService } from '@services/translation.service';
 import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private readonly envService: EnvService,
-    private readonly pageTitleService: PageTitleService,
+    private readonly pageTitleService: TranslationService,
     private readonly router: Router
   ) {}
 

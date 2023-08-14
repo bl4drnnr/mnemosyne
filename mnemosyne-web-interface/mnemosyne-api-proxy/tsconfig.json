@@ -22,7 +22,7 @@
       "@proxy/*": ["src/modules/proxy/*"],
       "@schemas/*": ["src/schemas/*"],
       "@interfaces/*": [
-        "src/libs/types/*",
+        "src/libs/enums/*",
         "src/libs/interfaces/*"
       ],
       "@exceptions/*": ["src/exceptions/*"],

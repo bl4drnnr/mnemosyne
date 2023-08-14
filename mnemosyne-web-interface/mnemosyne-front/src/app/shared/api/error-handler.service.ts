@@ -3,6 +3,8 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { TranslocoService } from '@ngneat/transloco';
+import { ErrorPayloadInterface } from '@interfaces/error-payload.interface';
+import { ErrorMessagesInterface } from '@interfaces/error-messages.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class ErrorHandlerService {
   ) {}
 
   errorHandler(error: HttpErrorResponse) {
-    const errorPayload = error.error;
+    const errorPayload: ErrorPayloadInterface = error.error;
     let displayErrorMessage = '';
 
     if (errorPayload.message) {
@@ -24,17 +26,15 @@ export class ErrorHandlerService {
         'messages/errors'
       );
     } else if (errorPayload.messages) {
-      errorPayload.messages.forEach(
-        (messageItem: { property: string; error: Array<string> }) => {
-          messageItem.error.forEach((message: string) => {
-            displayErrorMessage += `${this.translocoService.translate(
-              `validation.${message}`,
-              {},
-              'messages/errors'
-            )}<br>`;
-          });
-        }
-      );
+      errorPayload.messages.forEach((messageItem: ErrorMessagesInterface) => {
+        messageItem.error.forEach((message: string) => {
+          displayErrorMessage += `${this.translocoService.translate(
+            `validation.${message}`,
+            {},
+            'messages/errors'
+          )}<br>`;
+        });
+      });
     }
 
     this.globalMessageService.handle({

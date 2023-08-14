@@ -1,4 +1,4 @@
-export enum CHANGE_LANGUAGES {
+export enum ChangeLanguageModel {
   EN = 'en',
   PL = 'pl',
   RU = 'ru'

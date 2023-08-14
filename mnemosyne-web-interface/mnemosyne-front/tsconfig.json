@@ -70,16 +70,17 @@
       "@modules/*": ["src/app/modules/*"],
       "@interceptors/*": ["src/app/interceptors/*"],
       "@interfaces/*": [
+        "src/libs/interfaces/*",
         "src/libs/interfaces/components/*",
         "src/libs/interfaces/pages/*",
         "src/libs/interfaces/api/*",
         "src/libs/types/components/*",
         "src/libs/types/api/*",
-        "src/libs/interfaces/*",
         "src/libs/api/controllers/*",
         "src/libs/api/endpoints/*",
         "src/libs/api/methods/*",
-        "src/libs/api/errors/*"
+        "src/libs/api/errors/*",
+        "src/libs/enums/api/*"
       ],
       "@directives/*": ["src/app/directives/*"]
     }

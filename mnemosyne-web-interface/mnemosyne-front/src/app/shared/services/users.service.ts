@@ -3,18 +3,18 @@ import { Injectable } from '@angular/core';
 import { MethodsEnum } from '@interfaces/methods.enum';
 import { ControllersEnum } from '@interfaces/controllers.enum';
 import { UsersEnum } from '@interfaces/users.enum';
-import { UploadUserPhotoPayload } from '@payloads/upload-user-photo.payload';
+import { UploadUserPhotoInterface } from '@payloads/upload-user-photo.interface';
 import { Observable } from 'rxjs';
-import { UserInfoResponse } from '@responses/user-info.response';
-import { PhotoUploadedResponse } from '@responses/photo-uploaded.response';
-import { UpdateUserInfoPayload } from '@payloads/update-user-info.payload';
-import { UserUpdatedResponse } from '@responses/user-updated.response';
-import { UserSecurityResponse } from '@responses/user-security.response';
-import { DeleteAccountPayload } from '@payloads/delete-account.payload';
-import { AccountDeletedResponse } from '@responses/account-deleted.response';
+import { UserInfoInterface } from '@responses/user-info.interface';
+import { PhotoUploadedEnum } from '@responses/photo-uploaded.enum';
+import { UpdateUserInfoInterface } from '@payloads/update-user-info.interface';
+import { UserUpdatedEnum } from '@responses/user-updated.enum';
+import { UserSecurityInterface } from '@responses/user-security.interface';
+import { DeleteAccountInterface } from '@payloads/delete-account.interface';
+import { AccountDeletedEnum } from '@responses/account-deleted.enum';
 import { SecurityEnum } from '@interfaces/security.enum';
-import { ChangePasswordPayload } from '@payloads/change-password.payload';
-import { PasswordChangedResponse } from '@responses/password-changed.response';
+import { ChangePasswordInterface } from '@payloads/change-password.interface';
+import { PasswordChangedEnum } from '@responses/password-changed.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -23,8 +23,8 @@ export class UsersService {
   constructor(private readonly apiService: ApiService) {}
 
   uploadUserPhoto(
-    payload: UploadUserPhotoPayload
-  ): Observable<{ message: PhotoUploadedResponse }> {
+    payload: UploadUserPhotoInterface
+  ): Observable<{ message: PhotoUploadedEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.POST,
@@ -35,7 +35,7 @@ export class UsersService {
     });
   }
 
-  getUserInfo(): Observable<UserInfoResponse> {
+  getUserInfo(): Observable<UserInfoInterface> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.GET,
@@ -45,7 +45,7 @@ export class UsersService {
     });
   }
 
-  getUserSecuritySettings(): Observable<UserSecurityResponse> {
+  getUserSecuritySettings(): Observable<UserSecurityInterface> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.GET,
@@ -56,8 +56,8 @@ export class UsersService {
   }
 
   updateUserInfo(
-    payload: UpdateUserInfoPayload
-  ): Observable<{ message: UserUpdatedResponse }> {
+    payload: UpdateUserInfoInterface
+  ): Observable<{ message: UserUpdatedEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.PATCH,
@@ -69,8 +69,8 @@ export class UsersService {
   }
 
   deleteAccount(
-    payload: DeleteAccountPayload
-  ): Observable<{ message: AccountDeletedResponse }> {
+    payload: DeleteAccountInterface
+  ): Observable<{ message: AccountDeletedEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.DELETE,
@@ -82,8 +82,8 @@ export class UsersService {
   }
 
   changePassword(
-    payload: ChangePasswordPayload
-  ): Observable<{ message: PasswordChangedResponse }> {
+    payload: ChangePasswordInterface
+  ): Observable<{ message: PasswordChangedEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.PATCH,

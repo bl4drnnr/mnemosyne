@@ -4,12 +4,12 @@ import { Observable } from 'rxjs';
 import { MethodsEnum } from '@interfaces/methods.enum';
 import { ControllersEnum } from '@interfaces/controllers.enum';
 import { SecurityEnum } from '@interfaces/security.enum';
-import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
-import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
-import { LoginPhonePayload } from '@payloads/login-phone.payload';
-import { GenerateTwoFaResponse } from '@responses/generate-two-fa.response';
-import { DisableTwoFaPayload } from '@payloads/disable-two-fa.payload';
-import { MfaDisabledResponse } from '@responses/mfa-disabled.response';
+import { VerifyTwoFaInterface } from '@payloads/verify-two-fa.interface';
+import { VerifyTwoFaEnum } from '@responses/verify-two-fa.enum';
+import { LoginPhoneInterface } from '@payloads/login-phone.interface';
+import { GenerateTwoFaInterface } from '@responses/generate-two-fa.interface';
+import { DisableTwoFaInterface } from '@payloads/disable-two-fa.interface';
+import { MfaDisabledEnum } from '@responses/mfa-disabled.enum';
 import { RegistrationGenerate2faInterface } from '@interfaces/services/mfa/registration-generate-2fa.interface';
 
 @Injectable({
@@ -20,7 +20,7 @@ export class MfaService {
 
   registrationGenerateTwoFaQrCode({
     hash
-  }: RegistrationGenerate2faInterface): Observable<GenerateTwoFaResponse> {
+  }: RegistrationGenerate2faInterface): Observable<GenerateTwoFaInterface> {
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.GET,
       controller: ControllersEnum.SECURITY,
@@ -30,8 +30,8 @@ export class MfaService {
   }
 
   loginGenerateTwoFaQrCode(
-    payload: LoginPhonePayload
-  ): Observable<GenerateTwoFaResponse> {
+    payload: LoginPhoneInterface
+  ): Observable<GenerateTwoFaInterface> {
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.POST,
       controller: ControllersEnum.SECURITY,
@@ -40,7 +40,7 @@ export class MfaService {
     });
   }
 
-  generateTwoFaQrCode(): Observable<GenerateTwoFaResponse> {
+  generateTwoFaQrCode(): Observable<GenerateTwoFaInterface> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.GET,
@@ -54,7 +54,7 @@ export class MfaService {
     hash,
     twoFaToken,
     code
-  }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
+  }: VerifyTwoFaInterface): Observable<{ message: VerifyTwoFaEnum }> {
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.POST,
       controller: ControllersEnum.SECURITY,
@@ -65,8 +65,8 @@ export class MfaService {
   }
 
   loginVerifyTwoFaQrCode(
-    payload: VerifyTwoFaPayload
-  ): Observable<{ message: VerifyTwoFaResponse }> {
+    payload: VerifyTwoFaInterface
+  ): Observable<{ message: VerifyTwoFaEnum }> {
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.POST,
       controller: ControllersEnum.SECURITY,
@@ -76,8 +76,8 @@ export class MfaService {
   }
 
   verifyTwoFaQrCode(
-    payload: VerifyTwoFaPayload
-  ): Observable<{ message: VerifyTwoFaResponse }> {
+    payload: VerifyTwoFaInterface
+  ): Observable<{ message: VerifyTwoFaEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.POST,
@@ -89,8 +89,8 @@ export class MfaService {
   }
 
   disableTwoFa(
-    payload: DisableTwoFaPayload
-  ): Observable<{ message: MfaDisabledResponse }> {
+    payload: DisableTwoFaInterface
+  ): Observable<{ message: MfaDisabledEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: MethodsEnum.POST,

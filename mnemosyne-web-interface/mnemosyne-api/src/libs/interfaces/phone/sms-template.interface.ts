@@ -1,6 +1,6 @@
-import { LANGUAGE_TYPES } from '@interfaces/language.types';
+import { LanguageEnum } from '@interfaces/language.enum';
 
 export interface SmsTemplateInterface {
   verificationCode: number;
-  language?: LANGUAGE_TYPES;
+  language?: LanguageEnum;
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { PageTitleService } from '@services/page-title.service';
+import { TranslationService } from '@services/translation.service';
 import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
@@ -8,7 +8,7 @@ import { TitlesEnum } from '@interfaces/titles.enum';
   styleUrls: ['./terms-and-conditions.component.scss']
 })
 export class TermsAndConditionsComponent implements OnInit {
-  constructor(private readonly pageTitleService: PageTitleService) {}
+  constructor(private readonly pageTitleService: TranslationService) {}
 
   ngOnInit() {
     this.pageTitleService.setPageTitle(TitlesEnum.TAC);

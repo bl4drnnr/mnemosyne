@@ -72,7 +72,7 @@
         "src/libs/interfaces/cryptography/*",
         "src/libs/interfaces/phone/*",
         "src/libs/interfaces/time/*",
-        "src/libs/types/*",
+        "src/libs/enums/*",
         "src/libs/interfaces/company/*"
       ],
       "@email-templates/*": [
