@@ -4,7 +4,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { ConfirmAccountResponse } from '@responses/confirm-account.response';
 import { AuthenticationService } from '@services/authentication.service';
 import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-account-confirmation',
@@ -72,7 +72,7 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.ACCOUNT_CONFIRMATION);
+    this.pageTitleService.setPageTitle(TitlesEnum.ACCOUNT_CONFIRMATION);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

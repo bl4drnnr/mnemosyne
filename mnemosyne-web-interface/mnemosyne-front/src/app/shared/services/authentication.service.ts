@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
 import { Observable } from 'rxjs';
-import { ALLOWED_METHODS } from '@interfaces/methods.type';
-import { CONTROLLERS } from '@interfaces/controllers.type';
-import { AUTH_ENDPOINTS } from '@interfaces/auth.endpoints';
+import { MethodsEnum } from '@interfaces/methods.enum';
+import { ControllersEnum } from '@interfaces/controllers.enum';
+import { AuthEnum } from '@interfaces/auth.enum';
 import { LoginPayload } from '@payloads/login.payload';
 import { RegistrationPayload } from '@payloads/registration.payload';
 import { ForgotPasswordPayload } from '@payloads/forgot-password.payload';
@@ -14,7 +14,7 @@ import { ConfirmAccountResponse } from '@responses/confirm-account.response';
 import { ForgotPasswordResponse } from '@responses/forgot-password.response';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.response';
 import { LogoutResponse } from '@responses/logout.response';
-import { CONFIRMATION_ENDPOINTS } from '@interfaces/confirmation-hash.endpoints';
+import { ConfirmationHashEnum } from '@interfaces/confirmation-hash.enum';
 import { RefreshTokensInterface } from '@interfaces/services/auth/refresh-tokens.interface';
 import { ConfirmAccountInterface } from '@interfaces/services/auth/confirm-account.interface';
 
@@ -28,9 +28,9 @@ export class AuthenticationService {
     payload: LoginPayload
   ): Observable<{ message: LoginResponse; _at: string }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.AUTH,
-      action: AUTH_ENDPOINTS.LOGIN,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.AUTH,
+      action: AuthEnum.LOGIN,
       payload
     });
   }
@@ -43,9 +43,9 @@ export class AuthenticationService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.AUTH,
-      action: AUTH_ENDPOINTS.REGISTRATION,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.AUTH,
+      action: AuthEnum.REGISTRATION,
       payload
     });
   }
@@ -61,9 +61,9 @@ export class AuthenticationService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
-      controller: CONTROLLERS.CONFIRMATION_HASH,
-      action: CONFIRMATION_ENDPOINTS.ACCOUNT_CONFIRMATION,
+      method: MethodsEnum.GET,
+      controller: ControllersEnum.CONFIRMATION_HASH,
+      action: ConfirmationHashEnum.ACCOUNT_CONFIRMATION,
       params: payload
     });
   }
@@ -76,9 +76,9 @@ export class AuthenticationService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.USERS,
-      action: AUTH_ENDPOINTS.FORGOT_PASSWORD,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.USERS,
+      action: AuthEnum.FORGOT_PASSWORD,
       payload
     });
   }
@@ -91,9 +91,9 @@ export class AuthenticationService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.CONFIRMATION_HASH,
-      action: CONFIRMATION_ENDPOINTS.RESET_USER_PASSWORD_CONFIRMATION,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.CONFIRMATION_HASH,
+      action: ConfirmationHashEnum.RESET_USER_PASSWORD_CONFIRMATION,
       payload
     });
   }
@@ -102,9 +102,9 @@ export class AuthenticationService {
     accessToken
   }: RefreshTokensInterface): Observable<{ _at: string }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
-      controller: CONTROLLERS.AUTH,
-      action: AUTH_ENDPOINTS.REFRESH,
+      method: MethodsEnum.GET,
+      controller: ControllersEnum.AUTH,
+      action: AuthEnum.REFRESH,
       accessToken
     });
   }
@@ -112,9 +112,9 @@ export class AuthenticationService {
   logout(): Observable<{ message: LogoutResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
-      controller: CONTROLLERS.AUTH,
-      action: AUTH_ENDPOINTS.LOGOUT,
+      method: MethodsEnum.GET,
+      controller: ControllersEnum.AUTH,
+      action: AuthEnum.LOGOUT,
       accessToken
     });
   }

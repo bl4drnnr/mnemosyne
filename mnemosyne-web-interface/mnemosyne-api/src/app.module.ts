@@ -10,16 +10,10 @@ import { UsersModule } from '@modules/users.module';
 import { User } from '@models/user.model';
 import { RolesModule } from '@modules/roles.module';
 import { Role } from '@models/role.model';
-import { UserRole } from '@models/user-role.model';
 import { AuthModule } from '@modules/auth.module';
 import { SharedModule } from '@shared/shared.module';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
 import { Session } from '@models/session.model';
-import { Endpoint } from '@models/endpoint.model';
-import { AccessControlList } from '@models/access-control-list.model';
-import { AclEndpoint } from '@models/acl-endpoint.model';
-import { AclRole } from '@models/acl-role.model';
-import { PermissionsModule } from '@modules/permissions.module';
 import { ConfirmationHashModule } from '@modules/confirmation-hash.module';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { SecurityModule } from '@modules/security/security.module';
@@ -31,6 +25,7 @@ import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
 import { RecoveryModule } from '@modules/recovery.module';
 import { CompanyModule } from '@modules/company.module';
 import { Company } from '@models/company.model';
+import { UserRole } from '@models/user-role.model';
 
 @Module({
   imports: [
@@ -51,11 +46,7 @@ import { Company } from '@models/company.model';
         Role,
         UserRole,
         Session,
-        Endpoint,
-        AccessControlList,
         ConfirmationHash,
-        AclEndpoint,
-        AclRole,
         UserSettings,
         Company
       ],
@@ -65,7 +56,6 @@ import { Company } from '@models/company.model';
     RolesModule,
     AuthModule,
     SharedModule,
-    PermissionsModule,
     ConfirmationHashModule,
     SecurityModule,
     RecoveryModule,

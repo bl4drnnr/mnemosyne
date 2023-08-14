@@ -5,11 +5,11 @@ import { ConfirmEmailChangePayload } from '@payloads/confirm-email-change.payloa
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.response';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TitlesEnum } from '@interfaces/titles.enum';
 import { ValidationService } from '@services/validation.service';
 import { PhoneService } from '@services/phone.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ERROR_STATUSES } from '../../../../libs/api/errors/statuses.type';
+import { StatusesEnum } from '@interfaces/statuses.enum';
 
 @Component({
   selector: 'app-email-change-confirmation',
@@ -84,7 +84,7 @@ export class EmailChangeConfirmationComponent implements OnInit {
           }
         },
         error: (err: HttpErrorResponse) => {
-          this.emailChangeError = err.status === ERROR_STATUSES.NOT_FOUND;
+          this.emailChangeError = err.status === StatusesEnum.NOT_FOUND;
         }
       });
   }
@@ -114,7 +114,7 @@ export class EmailChangeConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.EMAIL_CHANGE_CONFIRMATION);
+    this.pageTitleService.setPageTitle(TitlesEnum.EMAIL_CHANGE_CONFIRMATION);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

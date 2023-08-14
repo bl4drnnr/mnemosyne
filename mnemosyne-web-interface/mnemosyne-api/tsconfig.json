@@ -58,7 +58,6 @@
         "src/modules/users/*",
         "src/modules/roles/*",
         "src/modules/auth/*",
-        "src/modules/permissions/*",
         "src/modules/confirmation-hash/*",
         "src/modules/recovery/*",
         "src/modules/company/*"

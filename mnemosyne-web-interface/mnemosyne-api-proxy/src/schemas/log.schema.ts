@@ -1,15 +1,15 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { ACTION_CONTROLLER_TYPE } from '@interfaces/action-controller.type';
-import { METHODS_TYPE } from '@interfaces/method.type';
-import { STATUS_TYPE } from '@interfaces/status.type';
+import { ActionControllerEnum } from '@interfaces/action-controller.enum';
+import { MethodsEnum } from '@interfaces/methods.enum';
+import { StatusesEnum } from '@interfaces/statuses.enum';
 
 @Schema()
 export class InformationLog {
   @Prop()
-  logType: ACTION_CONTROLLER_TYPE;
+  logType: ActionControllerEnum;
 
   @Prop({ required: false })
-  method?: METHODS_TYPE;
+  method?: MethodsEnum;
 
   @Prop({ required: false })
   controller?: string;
@@ -21,7 +21,7 @@ export class InformationLog {
   message?: string;
 
   @Prop()
-  status: STATUS_TYPE;
+  status: StatusesEnum;
 
   @Prop({ type: Object, required: false })
   payload?: object;

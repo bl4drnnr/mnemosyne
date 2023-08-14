@@ -1,3 +1,3 @@
-export enum COMPANY_ENDPOINTS {
+export enum CompanyEnum {
   CREATE_COMPANY_ACCOUNT = 'create-company'
 }

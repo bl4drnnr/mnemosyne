@@ -1,4 +1,4 @@
-export enum CONTROLLERS {
+export enum ControllersEnum {
   AUTH = 'auth',
   SECURITY = 'security',
   CONFIRMATION_HASH = 'confirmation-hash',

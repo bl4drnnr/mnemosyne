@@ -1,4 +1,4 @@
-export enum AUTH_ENDPOINTS {
+export enum AuthEnum {
   REGISTRATION = 'registration',
   LOGIN = 'login',
   FORGOT_PASSWORD = 'forgot-password',

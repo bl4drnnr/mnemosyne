@@ -1,4 +1,4 @@
-export enum RECOVERY_ENDPOINTS {
+export enum RecoveryEnum {
   REGISTRATION_GENERATE_RECOVERY_KEYS = 'registration-generate-recovery-keys',
   LOGIN_GENERATE_RECOVERY_KEYS = 'login-generate-recovery-keys',
   GENERATE_RECOVERY_KEYS = 'generate-recovery-keys',

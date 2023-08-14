@@ -1,4 +1,4 @@
-export enum ACTION_CONTROLLER_TYPE {
+export enum ActionControllerEnum {
   LOGGER_SERVICE = 'LOGGER_SERVICE',
   PROXY_SERVICE = 'PROXY_SERVICE'
 }

@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserInfoResponse } from '@responses/user-info.response';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'component-dashboard',
@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.DASHBOARD);
+    this.pageTitleService.setPageTitle(TitlesEnum.DASHBOARD);
 
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
     if (userInfoRequest)

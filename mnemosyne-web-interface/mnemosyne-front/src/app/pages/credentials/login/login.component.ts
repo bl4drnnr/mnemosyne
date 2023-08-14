@@ -6,7 +6,7 @@ import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { PhoneService } from '@services/phone.service';
 import { PageTitleService } from '@services/page-title.service';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-login',
@@ -125,7 +125,7 @@ export class LoginComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesPages.LOGIN);
+    this.pageTitleService.setPageTitle(TitlesEnum.LOGIN);
 
     const accessToken = localStorage.getItem('_at');
 

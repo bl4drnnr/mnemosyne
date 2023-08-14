@@ -73,10 +73,13 @@
         "src/libs/interfaces/components/*",
         "src/libs/interfaces/pages/*",
         "src/libs/interfaces/api/*",
+        "src/libs/types/components/*",
+        "src/libs/types/api/*",
         "src/libs/interfaces/*",
         "src/libs/api/controllers/*",
         "src/libs/api/endpoints/*",
-        "src/libs/api/methods/*"
+        "src/libs/api/methods/*",
+        "src/libs/api/errors/*"
       ],
       "@directives/*": ["src/app/directives/*"]
     }

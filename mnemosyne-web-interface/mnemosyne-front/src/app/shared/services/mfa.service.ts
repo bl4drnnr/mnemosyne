@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
 import { Observable } from 'rxjs';
-import { ALLOWED_METHODS } from '@interfaces/methods.type';
-import { CONTROLLERS } from '@interfaces/controllers.type';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
+import { MethodsEnum } from '@interfaces/methods.enum';
+import { ControllersEnum } from '@interfaces/controllers.enum';
+import { SecurityEnum } from '@interfaces/security.enum';
 import { VerifyTwoFaPayload } from '@payloads/verify-two-fa.payload';
 import { VerifyTwoFaResponse } from '@responses/verify-two-fa.response';
 import { LoginPhonePayload } from '@payloads/login-phone.payload';
@@ -22,9 +22,9 @@ export class MfaService {
     hash
   }: RegistrationGenerate2faInterface): Observable<GenerateTwoFaResponse> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.REGISTRATION_GENERATE_2FA_QR,
+      method: MethodsEnum.GET,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.REGISTRATION_GENERATE_2FA_QR,
       params: { confirmationHash: hash }
     });
   }
@@ -33,9 +33,9 @@ export class MfaService {
     payload: LoginPhonePayload
   ): Observable<GenerateTwoFaResponse> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.LOGIN_GENERATE_2FA_QR,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.LOGIN_GENERATE_2FA_QR,
       payload
     });
   }
@@ -43,9 +43,9 @@ export class MfaService {
   generateTwoFaQrCode(): Observable<GenerateTwoFaResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.GENERATE_2FA_QR,
+      method: MethodsEnum.GET,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.GENERATE_2FA_QR,
       accessToken
     });
   }
@@ -56,9 +56,9 @@ export class MfaService {
     code
   }: VerifyTwoFaPayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.REGISTRATION_VERIFY_2FA,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.REGISTRATION_VERIFY_2FA,
       params: { confirmationHash: hash },
       payload: { code, twoFaToken }
     });
@@ -68,9 +68,9 @@ export class MfaService {
     payload: VerifyTwoFaPayload
   ): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.LOGIN_VERIFY_2FA,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.LOGIN_VERIFY_2FA,
       payload
     });
   }
@@ -80,9 +80,9 @@ export class MfaService {
   ): Observable<{ message: VerifyTwoFaResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.VERIFY_2FA,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.VERIFY_2FA,
       payload,
       accessToken
     });
@@ -93,9 +93,9 @@ export class MfaService {
   ): Observable<{ message: MfaDisabledResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.DISABLE_2FA,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.DISABLE_2FA,
       payload,
       accessToken
     });

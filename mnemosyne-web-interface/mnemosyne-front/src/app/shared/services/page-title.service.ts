@@ -1,7 +1,7 @@
 import { TranslocoService } from '@ngneat/transloco';
 import { Title } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
-import { TitlesPages } from '@interfaces/titles.pages';
+import { TitlesEnum } from '@interfaces/titles.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class PageTitleService {
     private readonly titleService: Title
   ) {}
 
-  setPageTitle(title: TitlesPages) {
+  setPageTitle(title: TitlesEnum) {
     const pageTitle = this.translocoService.selectTranslate(
       title,
       {},

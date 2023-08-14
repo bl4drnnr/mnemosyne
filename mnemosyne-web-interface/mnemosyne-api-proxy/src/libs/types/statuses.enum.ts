@@ -1,4 +1,4 @@
-export enum STATUS_TYPE {
+export enum StatusesEnum {
   SUCCESS = 'SUCCESS',
   ERROR = 'ERROR',
   INFO = 'INFO'

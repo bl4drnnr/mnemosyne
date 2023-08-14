@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
-import { ALLOWED_METHODS } from '@interfaces/methods.type';
-import { CONTROLLERS } from '@interfaces/controllers.type';
-import { SECURITY_ENDPOINTS } from '@interfaces/security.endpoints';
+import { MethodsEnum } from '@interfaces/methods.enum';
+import { ControllersEnum } from '@interfaces/controllers.enum';
+import { SecurityEnum } from '@interfaces/security.enum';
 import { LoginPhonePayload } from '@payloads/login-phone.payload';
 import { Observable } from 'rxjs';
 import { RegistrationPhonePayload } from '@payloads/registration-phone.payload';
@@ -28,9 +28,9 @@ export class PhoneService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.LOGIN_SEND_SMS_CODE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.LOGIN_SEND_SMS_CODE,
       payload
     });
   }
@@ -44,9 +44,9 @@ export class PhoneService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.REGISTRATION_SEND_SMS_CODE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.REGISTRATION_SEND_SMS_CODE,
       params: { confirmationHash: hash },
       payload: { phone }
     });
@@ -60,9 +60,9 @@ export class PhoneService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.SEND_SMS_CODE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.SEND_SMS_CODE,
       payload,
       accessToken
     });
@@ -78,9 +78,9 @@ export class PhoneService {
     if (language) payload.language = language;
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.HASH_SEND_SMS_CODE,
+      method: MethodsEnum.GET,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.HASH_SEND_SMS_CODE,
       params: payload
     });
   }
@@ -90,9 +90,9 @@ export class PhoneService {
     const language = localStorage.getItem('translocoLang');
 
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.GET,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.GET_SMS_CODE,
+      method: MethodsEnum.GET,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.GET_SMS_CODE,
       params: { language },
       accessToken
     });
@@ -101,9 +101,9 @@ export class PhoneService {
   clearSmsCode(): Observable<{ message: SmsClearedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.CLEAR_SMS_CODE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.CLEAR_SMS_CODE,
       accessToken
     });
   }
@@ -112,9 +112,9 @@ export class PhoneService {
     payload: VerifyMobilePhonePayload
   ): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.LOGIN_VERIFY_MOBILE_PHONE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.LOGIN_VERIFY_MOBILE_PHONE,
       payload
     });
   }
@@ -125,9 +125,9 @@ export class PhoneService {
     code
   }: VerifyMobilePhonePayload): Observable<{ message: VerifyTwoFaResponse }> {
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.REGISTRATION_VERIFY_MOBILE_PHONE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.REGISTRATION_VERIFY_MOBILE_PHONE,
       params: { confirmationHash: hash },
       payload: { phone, code }
     });
@@ -138,9 +138,9 @@ export class PhoneService {
   ): Observable<{ message: VerifyTwoFaResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.VERIFY_MOBILE_PHONE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.VERIFY_MOBILE_PHONE,
       payload,
       accessToken
     });
@@ -151,9 +151,9 @@ export class PhoneService {
   ): Observable<{ message: MfaDisabledResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: ALLOWED_METHODS.POST,
-      controller: CONTROLLERS.SECURITY,
-      action: SECURITY_ENDPOINTS.DISABLE_PHONE,
+      method: MethodsEnum.POST,
+      controller: ControllersEnum.SECURITY,
+      action: SecurityEnum.DISABLE_PHONE,
       payload,
       accessToken
     });

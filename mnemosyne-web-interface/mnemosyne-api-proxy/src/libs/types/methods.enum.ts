@@ -1,4 +1,4 @@
-export enum METHODS_TYPE {
+export enum MethodsEnum {
   POST = 'POST',
   GET = 'GET',
   PATCH = 'PATCH',

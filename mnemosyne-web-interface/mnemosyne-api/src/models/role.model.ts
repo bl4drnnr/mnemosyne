@@ -1,5 +1,4 @@
 import {
-  BelongsToMany,
   Column,
   CreatedAt,
   DataType,
@@ -9,10 +8,6 @@ import {
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
-import { User } from '@models/user.model';
-import { UserRole } from '@models/user-role.model';
-import { AccessControlList } from '@models/access-control-list.model';
-import { AclRole } from '@models/acl-role.model';
 
 interface RoleCreationAttributes {
   value: string;
@@ -39,10 +34,4 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   @UpdatedAt
   @Column({ field: 'updated_at' })
   updatedAt: Date;
-
-  @BelongsToMany(() => User, () => UserRole)
-  users: Array<User>;
-
-  @BelongsToMany(() => AccessControlList, () => AclRole)
-  acl: Array<AccessControlList>;
 }
