@@ -18,7 +18,7 @@ export class TranslationService {
     key: string,
     scope: TranslationType,
     params?: { [key: string]: string | number }
-  ): Promise<{ [key: string]: string }> {
+  ): Promise<any> {
     const translatedText = this.translocoService.selectTranslateObject(
       key,
       params,

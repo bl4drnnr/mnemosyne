@@ -7,10 +7,8 @@ import { User } from '@models/user.model';
 import { RolesService } from '@modules/roles.service';
 import { UserSettings } from '@models/user-settings.model';
 import { EmailService } from '@shared/email.service';
-import { Sequelize } from 'sequelize-typescript';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { ApiConfigService } from '@shared/config.service';
-import { AuthService } from '@modules/auth.service';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { WrongPictureException } from '@exceptions/wrong-picture.exception';
@@ -40,13 +38,10 @@ import { DeleteUserAccountInterface } from '@interfaces/delete-user-account.inte
 @Injectable()
 export class UsersService {
   constructor(
-    private readonly sequelize: Sequelize,
     private readonly roleService: RolesService,
     private readonly emailService: EmailService,
     private readonly configService: ApiConfigService,
     private readonly timeService: TimeService,
-    @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService,
     @Inject(forwardRef(() => ConfirmationHashService))
     private readonly confirmationHashService: ConfirmationHashService,
     @InjectModel(User) private readonly userRepository: typeof User,

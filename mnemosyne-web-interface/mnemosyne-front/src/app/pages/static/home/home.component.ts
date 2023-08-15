@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private readonly envService: EnvService,
-    private readonly pageTitleService: TranslationService,
+    private readonly translationService: TranslationService,
     private readonly router: Router
   ) {}
 
@@ -65,6 +65,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.HOME);
+    this.translationService.setPageTitle(Titles.HOME);
   }
 }

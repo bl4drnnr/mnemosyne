@@ -2,8 +2,9 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { UsersService } from '@services/users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
-import { TranslocoService } from '@ngneat/transloco';
 import { ValidationService } from '@services/validation.service';
+import { TranslationService } from '@services/translation.service';
+import { MessagesTranslation } from '@translations/messages.enum';
 
 @Component({
   selector: 'dashboard-user-photo',
@@ -26,7 +27,7 @@ export class UserPhotoComponent implements OnInit {
     private readonly envService: EnvService,
     private readonly usersService: UsersService,
     private readonly globalMessageService: GlobalMessageService,
-    private readonly translocoService: TranslocoService,
+    private readonly translationService: TranslationService,
     private readonly validationService: ValidationService
   ) {}
 
@@ -46,29 +47,30 @@ export class UserPhotoComponent implements OnInit {
     };
   }
 
-  upload() {
+  async upload() {
     if (!this.selectedFiles) return;
 
-    if (!this.isImageValid())
+    if (!this.isImageValid()) {
+      const message = await this.translationService.translateText(
+        'validation.user-photo-must-be-base64',
+        MessagesTranslation.ERRORS
+      );
       return this.globalMessageService.handle({
-        message: this.translocoService.translate(
-          'validation.user-photo-must-be-base64',
-          {},
-          'errors'
-        ),
+        message,
         isError: true
       });
+    }
 
     this.usersService.uploadUserPhoto({ userPhoto: this.preview }).subscribe({
-      next: ({ message }) =>
+      next: async ({ message }) => {
+        const globalMessage = await this.translationService.translateText(
+          message,
+          MessagesTranslation.RESPONSES
+        );
         this.globalMessageService.handle({
-          message: this.translocoService.translate(
-            message,
-            {},
-            'messages/responses'
-          ),
-          isError: false
-        })
+          message: globalMessage
+        });
+      }
     });
 
     this.selectedFiles = undefined;

@@ -34,7 +34,7 @@ export class AccountConfirmationComponent implements OnInit {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly pageTitleService: TranslationService,
+    private readonly translationService: TranslationService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {}
@@ -72,7 +72,7 @@ export class AccountConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.ACCOUNT_CONFIRMATION);
+    this.translationService.setPageTitle(Titles.ACCOUNT_CONFIRMATION);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

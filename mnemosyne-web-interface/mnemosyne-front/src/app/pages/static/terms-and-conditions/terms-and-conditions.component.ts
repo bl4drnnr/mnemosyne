@@ -8,9 +8,9 @@ import { Titles } from '@interfaces/titles.enum';
   styleUrls: ['./terms-and-conditions.component.scss']
 })
 export class TermsAndConditionsComponent implements OnInit {
-  constructor(private readonly pageTitleService: TranslationService) {}
+  constructor(private readonly translationService: TranslationService) {}
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.TAC);
+    this.translationService.setPageTitle(Titles.TAC);
   }
 }

@@ -14,13 +14,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private readonly refreshTokensService: RefreshTokensService,
-    private readonly pageTitleService: TranslationService
+    private readonly translationService: TranslationService
   ) {}
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.DASHBOARD);
+    this.translationService.setPageTitle(Titles.DASHBOARD);
 
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
+
     if (userInfoRequest)
       userInfoRequest.subscribe({
         next: (userInfo) => (this.userInfo = userInfo)

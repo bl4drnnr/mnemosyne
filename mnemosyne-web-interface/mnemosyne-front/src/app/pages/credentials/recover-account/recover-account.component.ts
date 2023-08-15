@@ -4,9 +4,9 @@ import { RecoveryService } from '@services/recovery.service';
 import { Router } from '@angular/router';
 import { ValidationService } from '@services/validation.service';
 import { GlobalMessageService } from '@shared/global-message.service';
-import { TranslocoService } from '@ngneat/transloco';
 import { TranslationService } from '@services/translation.service';
 import { Titles } from '@interfaces/titles.enum';
+import { MessagesTranslation } from '@translations/messages.enum';
 
 @Component({
   selector: 'page-recover-account',
@@ -33,16 +33,11 @@ export class RecoverAccountComponent implements OnInit {
 
   constructor(
     private readonly recoveryService: RecoveryService,
-    private readonly translocoService: TranslocoService,
     private readonly validationService: ValidationService,
     private readonly globalMessageService: GlobalMessageService,
-    private readonly pageTitleService: TranslationService,
+    private readonly translationService: TranslationService,
     private readonly router: Router
   ) {}
-
-  ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.RECOVER_ACCOUNT);
-  }
 
   recoverAccount() {
     this.recoveryService
@@ -66,7 +61,7 @@ export class RecoverAccountComponent implements OnInit {
 
     const fileReader = new FileReader();
 
-    fileReader.onload = () => {
+    fileReader.onload = async () => {
       const recoveryKeysStr = fileReader.result;
       if (!recoveryKeysStr) return;
 
@@ -75,13 +70,12 @@ export class RecoverAccountComponent implements OnInit {
         this.validationService.checkRecoveryKeys(recoveryKeys);
 
       if (!areKeyValid) {
-        const errorMessage = this.translocoService.translate(
+        const message = await this.translationService.translateText(
           'invalid-recovery-keys',
-          {},
-          'errors'
+          MessagesTranslation.ERRORS
         );
         this.globalMessageService.handle({
-          message: errorMessage,
+          message,
           isError: true
         });
       } else {
@@ -106,5 +100,9 @@ export class RecoverAccountComponent implements OnInit {
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  ngOnInit() {
+    this.translationService.setPageTitle(Titles.RECOVER_ACCOUNT);
   }
 }

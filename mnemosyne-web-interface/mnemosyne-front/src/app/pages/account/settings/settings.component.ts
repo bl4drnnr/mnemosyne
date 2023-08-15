@@ -3,11 +3,12 @@ import { UserInfoResponse } from '@responses/user-info.interface';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { UsersService } from '@services/users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
-import { TranslocoService } from '@ngneat/transloco';
 import { UserSecurityResponse } from '@responses/user-security.interface';
 import { TranslationService } from '@services/translation.service';
 import { Titles } from '@interfaces/titles.enum';
 import { SettingSectionType } from '@interfaces/setting-section.type';
+import { AccountTranslation } from '@translations/account.enum';
+import { MessagesTranslation } from '@translations/messages.enum';
 
 @Component({
   selector: 'component-settings',
@@ -28,82 +29,71 @@ export class SettingsComponent implements OnInit {
   constructor(
     private readonly globalMessageService: GlobalMessageService,
     private readonly refreshTokensService: RefreshTokensService,
-    private readonly pageTitleService: TranslationService,
-    private readonly translocoService: TranslocoService,
+    private readonly translationService: TranslationService,
     private readonly usersService: UsersService
   ) {}
 
   saveUserInfo(userInfo: UserInfoResponse) {
     this.usersService.updateUserInfo(userInfo).subscribe({
-      next: ({ message }) =>
+      next: async ({ message }) => {
+        const globalMessage = await this.translationService.translateText(
+          message,
+          MessagesTranslation.RESPONSES
+        );
         this.globalMessageService.handle({
-          message: this.translocoService.translate(message, {}, 'responses'),
-          isError: false
-        }),
+          message: globalMessage
+        });
+      },
       error: () => this.refreshTokensService.handleLogout()
     });
   }
 
-  setTwoFa() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate('mfa.mfaSetUp', {}, 'settings'),
-      isError: false
-    });
+  async setTwoFa() {
+    const message = await this.translationService.translateText(
+      'mfa.mfaSetUp',
+      AccountTranslation.SETTINGS
+    );
+    this.globalMessageService.handle({ message });
   }
 
-  disableTwoFa() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate(
-        'mfa.mfaDisabled',
-        {},
-        'settings'
-      ),
-      isError: false
-    });
+  async disableTwoFa() {
+    const message = await this.translationService.translateText(
+      'mfa.mfaDisabled',
+      AccountTranslation.SETTINGS
+    );
+    this.globalMessageService.handle({ message });
   }
 
-  setPhone() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate(
-        'phone.phoneSetUp',
-        {},
-        'settings'
-      ),
-      isError: false
-    });
+  async setPhone() {
+    const message = await this.translationService.translateText(
+      'phone.phoneSetUp',
+      AccountTranslation.SETTINGS
+    );
+    this.globalMessageService.handle({ message });
   }
 
-  disableMobilePhone() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate(
-        'phone.phoneDisabled',
-        {},
-        'settings'
-      ),
-      isError: false
-    });
+  async disableMobilePhone() {
+    const message = await this.translationService.translateText(
+      'phone.phoneDisabled',
+      AccountTranslation.SETTINGS
+    );
+    this.globalMessageService.handle({ message });
   }
 
-  passwordChanged() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate(
-        'password.passwordChanged',
-        {},
-        'settings'
-      ),
-      isError: false
-    });
+  async passwordChanged() {
+    const message = await this.translationService.translateText(
+      'password.passwordChanged',
+      AccountTranslation.SETTINGS
+    );
+    this.globalMessageService.handle({ message });
   }
 
-  changeEmailSent() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate(
-        'email.emailChangeSent',
-        {},
-        'settings'
-      ),
-      isError: false
-    });
+  async changeEmailSent() {
+    const message = await this.translationService.translateText(
+      'email.emailChangeSent',
+      AccountTranslation.SETTINGS
+    );
+    this.globalMessageService.handle({ message });
   }
 
   getUserSecuritySettings() {
@@ -113,7 +103,7 @@ export class SettingsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.SETTINGS);
+    this.translationService.setPageTitle(Titles.SETTINGS);
 
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
 

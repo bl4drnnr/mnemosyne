@@ -44,7 +44,7 @@ export class EmailChangeConfirmationComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly emailService: EmailService,
     private readonly phoneService: PhoneService,
-    private readonly pageTitleService: TranslationService,
+    private readonly translationService: TranslationService,
     private readonly validationService: ValidationService
   ) {}
 
@@ -114,7 +114,7 @@ export class EmailChangeConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.EMAIL_CHANGE_CONFIRMATION);
+    this.translationService.setPageTitle(Titles.EMAIL_CHANGE_CONFIRMATION);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

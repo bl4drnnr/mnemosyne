@@ -36,7 +36,7 @@ export class ResetPasswordComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly validationService: ValidationService,
-    private readonly pageTitleService: TranslationService,
+    private readonly translationService: TranslationService,
     private readonly phoneService: PhoneService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
@@ -104,7 +104,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.RESET_PASSWORD);
+    this.translationService.setPageTitle(Titles.RESET_PASSWORD);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

@@ -3,13 +3,13 @@ import { UserSecurityResponse } from '@responses/user-security.interface';
 import { MfaService } from '@services/mfa.service';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { PhoneService } from '@services/phone.service';
-import { RecoveryService } from '@services/recovery.service';
 import { GlobalMessageService } from '@shared/global-message.service';
-import { TranslocoService } from '@ngneat/transloco';
 import { UsersService } from '@services/users.service';
 import { PasswordChangedResponse } from '@responses/password-changed.enum';
 import { ChangePasswordPayload } from '@payloads/change-password.interface';
 import { EmailService } from '@services/email.service';
+import { TranslationService } from '@services/translation.service';
+import { AccountTranslation } from '@translations/account.enum';
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -64,9 +64,8 @@ export class SecuritySettingsComponent {
     private readonly mfaService: MfaService,
     private readonly phoneService: PhoneService,
     private readonly usersService: UsersService,
-    private readonly recoveryService: RecoveryService,
-    private readonly translocoService: TranslocoService,
     private readonly emailService: EmailService,
+    private readonly translationService: TranslationService,
     private readonly refreshTokensService: RefreshTokensService,
     private readonly globalMessageService: GlobalMessageService
   ) {}
@@ -221,11 +220,12 @@ export class SecuritySettingsComponent {
     });
   }
 
-  confirmRecoveryKeysSetup() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate('successSetup', {}, 'settings'),
-      isError: false
-    });
+  async confirmRecoveryKeysSetup() {
+    const message = await this.translationService.translateText(
+      'successSetup',
+      AccountTranslation.SETTINGS
+    );
+    this.globalMessageService.handle({ message });
   }
 
   clearSmsCode() {

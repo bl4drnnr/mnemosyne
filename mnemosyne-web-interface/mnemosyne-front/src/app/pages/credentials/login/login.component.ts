@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly validationService: ValidationService,
-    private readonly pageTitleService: TranslationService,
+    private readonly translationService: TranslationService,
     private readonly smsService: PhoneService,
     private readonly router: Router
   ) {}
@@ -113,8 +113,10 @@ export class LoginComponent implements OnInit {
               this.isMfaRequired = true;
               break;
             default:
-              localStorage.setItem('_at', _at);
-              await this.router.navigate(['account/dashboard']);
+              if (_at) {
+                localStorage.setItem('_at', _at);
+                await this.router.navigate(['account/dashboard']);
+              }
           }
         }
       });
@@ -125,7 +127,7 @@ export class LoginComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.LOGIN);
+    this.translationService.setPageTitle(Titles.LOGIN);
 
     const accessToken = localStorage.getItem('_at');
 

@@ -57,7 +57,6 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,
-    private readonly pageTitleService: TranslationService,
     private readonly companyService: CompanyService,
     private readonly envService: EnvService,
     private readonly router: Router,
@@ -163,6 +162,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(Titles.REGISTRATION);
+    this.translationService.setPageTitle(Titles.REGISTRATION);
   }
 }
