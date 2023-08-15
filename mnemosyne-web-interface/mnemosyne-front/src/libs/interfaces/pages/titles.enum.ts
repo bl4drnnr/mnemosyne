@@ -1,4 +1,4 @@
-export enum TitlesEnum {
+export enum Titles {
   HOME = 'home',
   TAC = 'tac',
   RESET_PASSWORD = 'resetPassword',

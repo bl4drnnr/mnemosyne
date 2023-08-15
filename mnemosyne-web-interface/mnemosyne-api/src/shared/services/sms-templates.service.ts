@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LanguageEnum } from '@interfaces/language.enum';
+import { Language } from '@interfaces/language.enum';
 import { SmsTemplateInterface } from '@interfaces/sms-template.interface';
 
 @Injectable()
@@ -9,11 +9,11 @@ export class SmsTemplatesService {
     language
   }: SmsTemplateInterface) {
     switch (language) {
-      case LanguageEnum.EN:
+      case Language.EN:
         return `Mnemosyne verification code: ${verificationCode}.\nWill be valid for 5 minutes.`;
-      case LanguageEnum.RU:
+      case Language.RU:
         return `Код подтверждения Mnemosyne: ${verificationCode}.\nДействителен в течение 5 минут.`;
-      case LanguageEnum.PL:
+      case Language.PL:
         return `Kod weryfikacyjny Mnemosyne: ${verificationCode}.\nBędzie ważny przez 5 minut.`;
       default:
         return `Mnemosyne verification code: ${verificationCode}.\nWill be valid for 5 minutes.`;

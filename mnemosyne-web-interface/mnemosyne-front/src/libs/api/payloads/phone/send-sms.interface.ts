@@ -1,4 +1,4 @@
-export interface SendSmsInterface {
+export interface SendSmsPayload {
   phone: string;
   language?: string;
 }

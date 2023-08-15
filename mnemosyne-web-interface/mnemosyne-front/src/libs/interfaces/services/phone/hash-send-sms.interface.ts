@@ -1,3 +1,3 @@
-export interface HashSendSmsInterface {
+export interface HashSendSmsPayload {
   hash: string;
 }

@@ -4,12 +4,12 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
 import { RegistrationType } from '@interfaces/registration.type';
 import { CompanyService } from '@services/company.service';
 import { EnvService } from '@shared/env.service';
-import { RolesEnum } from '@interfaces/roles.enum';
+import { Role } from '@interfaces/role.enum';
 
 @Component({
   selector: 'page-registration',
@@ -41,7 +41,7 @@ export class RegistrationComponent implements OnInit {
   companyName: string;
   companyWebsite: string;
   companyMembers: Array<{ email: string; role: string }> = [];
-  companyRoles: Array<{ key: string; value: RolesEnum }>;
+  companyRoles: Array<{ key: string; value: Role }>;
   companyMember: string;
   accountOwnerEmail: string;
   incorrectMemberEmail: boolean;
@@ -57,7 +57,6 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,
-    private readonly pageTitleService: TranslationService,
     private readonly companyService: CompanyService,
     private readonly envService: EnvService,
     private readonly router: Router,
@@ -163,8 +162,6 @@ export class RegistrationComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.REGISTRATION);
-
-    const t = await this.translationService.translateObject('roles');
+    this.translationService.setPageTitle(Titles.REGISTRATION);
   }
 }

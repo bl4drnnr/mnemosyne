@@ -1,4 +1,4 @@
-export interface UserSecurityInterface {
+export interface UserSecurityResponse {
   emailChanged: boolean;
   passwordCanBeChanged: boolean;
   phoneStatus: {

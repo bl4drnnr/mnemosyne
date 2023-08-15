@@ -1,4 +1,4 @@
-export interface ForgotPasswordInterface {
+export interface ForgotPasswordPayload {
   email: string;
   language?: string;
 }

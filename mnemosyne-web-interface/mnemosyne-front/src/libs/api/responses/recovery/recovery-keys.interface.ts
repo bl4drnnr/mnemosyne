@@ -1,3 +1,3 @@
-export interface RecoveryKeysInterface {
+export interface RecoveryKeysResponse {
   recoveryKeys: Array<string>;
 }

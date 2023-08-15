@@ -9,7 +9,7 @@ import {
   trigger
 } from '@angular/animations';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'basic-home',
@@ -52,7 +52,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private readonly envService: EnvService,
-    private readonly pageTitleService: TranslationService,
+    private readonly translationService: TranslationService,
     private readonly router: Router
   ) {}
 
@@ -65,6 +65,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.HOME);
+    this.translationService.setPageTitle(Titles.HOME);
   }
 }

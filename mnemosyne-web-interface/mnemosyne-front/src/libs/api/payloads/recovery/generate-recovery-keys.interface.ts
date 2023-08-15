@@ -1,3 +1,3 @@
-export interface GenerateRecoveryKeysInterface {
+export interface GenerateRecoveryKeysPayload {
   passphrase: string;
 }

@@ -1,4 +1,4 @@
-export interface LoginPhoneInterface {
+export interface LoginPhonePayload {
   email: string;
   password: string;
   phone?: string;

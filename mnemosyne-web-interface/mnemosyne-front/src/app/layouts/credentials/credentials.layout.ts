@@ -2,38 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { Router } from '@angular/router';
 import { AnimationOptions } from 'ngx-lottie';
-import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
+import { CredentialsTranslationProvider } from '@layouts/credentials/credentials.translation';
 
 @Component({
   selector: 'layout-credentials',
   templateUrl: './credentials.layout.html',
   styleUrls: ['./credentials.layout.scss'],
-  providers: [
-    {
-      provide: TRANSLOCO_SCOPE,
-      useValue: [
-        { scope: 'messages/errors', alias: 'errors' },
-        { scope: 'messages/responses', alias: 'responses' },
-        { scope: 'components/mfa', alias: 'mfa' },
-        { scope: 'components/recovery-keys', alias: 'keys' },
-        { scope: 'components/dropdown', alias: 'dropdown' },
-        { scope: 'components/link', alias: 'link' },
-        { scope: 'components/button', alias: 'button' },
-        { scope: 'components/input', alias: 'input' },
-        { scope: 'credentials/header', alias: 'header' },
-        { scope: 'credentials/login', alias: 'login' },
-        { scope: 'credentials/account-confirmation', alias: 'acc-conf' },
-        { scope: 'credentials/forgot-password', alias: 'forg-pass' },
-        { scope: 'credentials/registration', alias: 'reg' },
-        { scope: 'credentials/reset-password', alias: 'res-pass' },
-        { scope: 'credentials/recover-account', alias: 'rec-acc' },
-        {
-          scope: 'credentials/email-change-confirmation',
-          alias: 'email-change'
-        }
-      ]
-    }
-  ]
+  providers: [CredentialsTranslationProvider]
 })
 export class CredentialsLayout implements OnInit {
   @Input() renderSide: 'right' | 'left';

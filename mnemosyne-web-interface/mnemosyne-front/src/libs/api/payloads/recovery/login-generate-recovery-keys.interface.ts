@@ -1,4 +1,4 @@
-export interface LoginGenerateRecoveryKeysInterface {
+export interface LoginGenerateRecoveryKeysPayload {
   passphrase: string;
   email: string;
   password: string;

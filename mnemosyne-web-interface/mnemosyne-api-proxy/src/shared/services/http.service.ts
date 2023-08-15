@@ -3,9 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import { ApiConfigService } from '@shared/config.service';
 import { AxiosRequestConfig } from 'axios';
 import { LoggerService } from '@shared/logger.service';
-import { ActionControllerEnum } from '@interfaces/action-controller.enum';
-import { StatusesEnum } from '@interfaces/statuses.enum';
-import { MethodsEnum } from '@interfaces/methods.enum';
+import { ActionController } from '@interfaces/action-controller.enum';
+import { Status } from '@interfaces/statuses.enum';
+import { Method } from '@interfaces/methods.enum';
 import { UnhandledEndpointException } from '@exceptions/unhandled-endpoint.exception';
 import { ProxyActionPayloadInterface } from '@interfaces/proxy-action-payload.interface';
 
@@ -45,8 +45,8 @@ export class ProxyHttpService {
     ) {
       const logMessage = { method, action, controller, payload };
       await this.loggerService.log({
-        logType: ActionControllerEnum.PROXY_SERVICE,
-        status: StatusesEnum.ERROR,
+        logType: ActionController.PROXY_SERVICE,
+        status: Status.ERROR,
         message: `Proxy tried to handle unsupported endpoint: ${logMessage.toString()}`
       });
       throw new UnhandledEndpointException();
@@ -75,11 +75,11 @@ export class ProxyHttpService {
     if (cookies) requestConfig.headers.cookie = cookies;
 
     await this.loggerService.log({
-      logType: ActionControllerEnum.LOGGER_SERVICE,
-      method: method as MethodsEnum,
+      logType: ActionController.LOGGER_SERVICE,
+      method: method as Method,
       controller,
       endpoint: action,
-      status: StatusesEnum.INFO,
+      status: Status.INFO,
       payload: { body: payload, params }
     });
 
@@ -90,8 +90,8 @@ export class ProxyHttpService {
         },
         error: async (error: any) => {
           await this.loggerService.log({
-            logType: ActionControllerEnum.PROXY_SERVICE,
-            status: StatusesEnum.ERROR,
+            logType: ActionController.PROXY_SERVICE,
+            status: Status.ERROR,
             message: 'Error occurs while handling response from the API.',
             error: error.response?.data,
             payload: { body: payload, params }

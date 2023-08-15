@@ -1,3 +1,3 @@
-export interface UploadUserPhotoInterface {
+export interface UploadUserPhotoPayload {
   userPhoto: string | ArrayBuffer | null;
 }

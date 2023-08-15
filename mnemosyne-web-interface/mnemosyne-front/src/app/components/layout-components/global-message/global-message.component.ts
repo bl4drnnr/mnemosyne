@@ -8,7 +8,7 @@ import {
   animate,
   transition
 } from '@angular/animations';
-import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
+import { GlobalMessageTranslation } from '@components/global-message/global-message.translation';
 
 @Component({
   selector: 'layout-global-message',
@@ -20,15 +20,7 @@ import { TRANSLOCO_SCOPE } from '@ngneat/transloco';
       transition('void <=> *', animate('300ms ease-in-out'))
     ])
   ],
-  providers: [
-    {
-      provide: TRANSLOCO_SCOPE,
-      useValue: [
-        { scope: 'messages/errors', alias: 'errors' },
-        { scope: 'messages/responses', alias: 'responses' }
-      ]
-    }
-  ]
+  providers: [GlobalMessageTranslation]
 })
 export class GlobalMessageComponent implements OnInit {
   successIcon: string;

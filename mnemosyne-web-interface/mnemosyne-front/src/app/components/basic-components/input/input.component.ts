@@ -9,7 +9,8 @@ import {
 import { ValidationService } from '@services/validation.service';
 import { LoaderService } from '@shared/loader.service';
 import { GlobalMessageService } from '@shared/global-message.service';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslationService } from '@services/translation.service';
+import { ComponentsTranslation } from '@translations/components.enum';
 
 @Component({
   selector: 'basic-input',
@@ -68,7 +69,7 @@ export class InputComponent {
   constructor(
     private readonly globalMessageService: GlobalMessageService,
     private readonly validationService: ValidationService,
-    private readonly translocoService: TranslocoService,
+    private readonly translationService: TranslationService,
     public loaderService: LoaderService
   ) {}
 
@@ -76,7 +77,7 @@ export class InputComponent {
     return !!(this.value && this.value.length);
   }
 
-  onInput() {
+  async onInput() {
     this.valueChange.emit(this.value);
 
     if (this.type === 'email' && this.isValuePresent()) {
@@ -88,9 +89,8 @@ export class InputComponent {
 
       if (isEmailIncorrect) this.showError = true;
     } else if (this.type === 'password' && this.isValuePresent()) {
-      const isPasswordIncorrect = this.validationService.checkPasswordsRules(
-        this.value
-      );
+      const isPasswordIncorrect =
+        await this.validationService.checkPasswordsRules(this.value);
       const hasError = isPasswordIncorrect.some((rule) => rule.error);
       this.passwordErrors.emit(isPasswordIncorrect);
 
@@ -126,10 +126,11 @@ export class InputComponent {
     );
   }
 
-  notifyClipboardCopy() {
-    this.globalMessageService.handle({
-      message: this.translocoService.translate('copied', {}, 'input'),
-      isError: false
-    });
+  async notifyClipboardCopy() {
+    const message = await this.translationService.translateText(
+      'copied',
+      ComponentsTranslation.INPUT
+    );
+    this.globalMessageService.handle({ message });
   }
 }

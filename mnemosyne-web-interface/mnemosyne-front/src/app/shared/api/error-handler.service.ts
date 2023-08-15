@@ -2,9 +2,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { ErrorPayloadInterface } from '@interfaces/error-payload.interface';
 import { ErrorMessagesInterface } from '@interfaces/error-messages.interface';
+import { TranslationService } from '@services/translation.service';
+import { MessagesTranslation } from '@translations/messages.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -12,27 +13,27 @@ import { ErrorMessagesInterface } from '@interfaces/error-messages.interface';
 export class ErrorHandlerService {
   constructor(
     private readonly globalMessageService: GlobalMessageService,
-    private readonly translocoService: TranslocoService
+    private readonly translationService: TranslationService
   ) {}
 
-  errorHandler(error: HttpErrorResponse) {
+  async errorHandler(error: HttpErrorResponse) {
     const errorPayload: ErrorPayloadInterface = error.error;
     let displayErrorMessage = '';
 
     if (errorPayload.message) {
-      displayErrorMessage = this.translocoService.translate(
+      displayErrorMessage = await this.translationService.translateText(
         errorPayload.message,
-        {},
-        'messages/errors'
+        MessagesTranslation.ERRORS
       );
     } else if (errorPayload.messages) {
       errorPayload.messages.forEach((messageItem: ErrorMessagesInterface) => {
         messageItem.error.forEach((message: string) => {
-          displayErrorMessage += `${this.translocoService.translate(
+          const errorText = this.translationService.translateText(
             `validation.${message}`,
-            {},
-            'messages/errors'
-          )}<br>`;
+            MessagesTranslation.ERRORS
+          );
+
+          displayErrorMessage += `${errorText}<br>`;
         });
       });
     }

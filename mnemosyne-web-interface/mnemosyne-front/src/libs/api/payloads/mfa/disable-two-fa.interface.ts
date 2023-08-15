@@ -1,3 +1,3 @@
-export interface DisableTwoFaInterface {
+export interface DisableTwoFaPayload {
   code: string;
 }

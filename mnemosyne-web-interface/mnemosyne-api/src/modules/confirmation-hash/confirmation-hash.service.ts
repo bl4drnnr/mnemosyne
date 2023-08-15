@@ -7,7 +7,7 @@ import { AccountAlreadyConfirmedException } from '@exceptions/account-already-co
 import { AccountConfirmedDto } from '@dto/account-confirmed.dto';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { UsersService } from '@modules/users.service';
-import { ConfirmationEnum } from '@interfaces/confirmation-type.enum';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { EmailChangedDto } from '@dto/email-changed.dto';
 import { AuthService } from '@modules/auth.service';
@@ -94,7 +94,7 @@ export class ConfirmationHashService {
     return this.confirmationHashRepository.findOne({
       where: {
         userId,
-        confirmationType: ConfirmationEnum.FORGOT_PASSWORD
+        confirmationType: Confirmation.FORGOT_PASSWORD
       },
       order: [['created_at', 'DESC']],
       transaction

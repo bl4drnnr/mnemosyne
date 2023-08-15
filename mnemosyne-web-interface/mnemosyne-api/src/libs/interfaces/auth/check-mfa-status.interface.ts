@@ -1,5 +1,5 @@
 import { UserSettings } from '@models/user-settings.model';
-import { LanguageEnum } from '@interfaces/language.enum';
+import { Language } from '@interfaces/language.enum';
 import { Transaction } from 'sequelize';
 
 export interface CheckMfaStatusInterface {
@@ -7,6 +7,6 @@ export interface CheckMfaStatusInterface {
   phoneCode: string;
   userSettings: UserSettings;
   userId: string;
-  language?: LanguageEnum;
+  language?: Language;
   trx?: Transaction;
 }

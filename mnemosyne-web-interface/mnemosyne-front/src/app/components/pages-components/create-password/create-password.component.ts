@@ -24,35 +24,38 @@ export class CreatePasswordComponent {
   password = '';
   passwordRepeat = '';
   incorrectPassword = true;
+  showPasswordRepeatError: boolean;
   passwordErrors: Array<{ error: boolean; text: string }>;
 
   constructor(private readonly validationService: ValidationService) {}
 
-  onInput(password: string, passwordRepeat: string) {
+  async onInput(password: string, passwordRepeat: string) {
     this.password = password;
     this.passwordRepeat = passwordRepeat;
 
     this.passwordChange.emit(password);
     this.incorrectInput.emit(
-      this.incorrectPassword || this.passwordRepeatError()
+      this.incorrectPassword || (await this.passwordRepeatError())
     );
   }
 
-  passwordRepeatError() {
+  async passwordRepeatError() {
     const passwordPresent = this.password.length > 0;
     const passwordRepeatPresent = this.passwordRepeat.length > 0;
+    const isRepeatPassIncorrect = await this.isRepeatPasswordIncorrect();
+    const isPasswordsMatch = !this.isPasswordsMatch();
 
-    if (passwordRepeatPresent) {
-      return !this.isPasswordsMatch() || this.isRepeatPasswordIncorrect();
-    } else {
-      return passwordPresent && !passwordRepeatPresent;
-    }
+    const passwordError = passwordRepeatPresent
+      ? isPasswordsMatch || isRepeatPassIncorrect
+      : passwordPresent && !passwordRepeatPresent;
+
+    this.showPasswordRepeatError = passwordError;
+    return passwordError;
   }
 
-  isRepeatPasswordIncorrect() {
-    const isPasswordIncorrect = this.validationService.checkPasswordsRules(
-      this.passwordRepeat
-    );
+  async isRepeatPasswordIncorrect() {
+    const isPasswordIncorrect =
+      await this.validationService.checkPasswordsRules(this.passwordRepeat);
     return isPasswordIncorrect.some((rule) => rule.error);
   }
 

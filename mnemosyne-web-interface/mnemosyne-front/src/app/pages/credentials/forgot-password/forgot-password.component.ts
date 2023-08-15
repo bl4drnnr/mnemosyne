@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { TranslocoService } from '@ngneat/transloco';
 import { AuthenticationService } from '@services/authentication.service';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
+import { ComponentsTranslation } from '@translations/components.enum';
 
 @Component({
   selector: 'page-forgot-password',
@@ -31,8 +31,7 @@ export class ForgotPasswordComponent implements OnInit {
 
   constructor(
     private readonly authenticationService: AuthenticationService,
-    private readonly pageTitleService: TranslationService,
-    private readonly translocoService: TranslocoService
+    private readonly translationService: TranslationService
   ) {}
 
   sendForgotPasswordEmailDisable() {
@@ -57,22 +56,22 @@ export class ForgotPasswordComponent implements OnInit {
 
   private startCountdown() {
     this.isCountdownRunning = true;
-    const countdownInterval = setInterval(() => {
+    const countdownInterval = setInterval(async () => {
       this.time -= 1;
       if (this.time <= 0) {
         clearInterval(countdownInterval);
         this.isCountdownRunning = false;
         this.time = 180;
       }
-      this.resendMessage = this.translocoService.translate(
+      this.resendMessage = await this.translationService.translateText(
         'resendEmailIn',
-        { time: this.time, s: this.time !== 1 ? 's' : '' },
-        'components/input'
+        ComponentsTranslation.INPUT,
+        { time: this.time, s: this.time !== 1 ? 's' : '' }
       );
     }, 1000);
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.FORGOT_PASSWORD);
+    this.translationService.setPageTitle(Titles.FORGOT_PASSWORD);
   }
 }

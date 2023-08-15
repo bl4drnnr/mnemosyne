@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ValidationService } from '@services/validation.service';
-import { TranslocoService } from '@ngneat/transloco';
+import { TranslationService } from '@services/translation.service';
+import { ComponentsTranslation } from '@translations/components.enum';
 
 @Component({
   selector: 'basic-phone',
@@ -23,7 +24,7 @@ export class PhoneComponent implements OnInit {
 
   constructor(
     private readonly validationService: ValidationService,
-    private readonly translocoService: TranslocoService
+    private readonly translationService: TranslationService
   ) {}
 
   sendSms() {
@@ -41,7 +42,7 @@ export class PhoneComponent implements OnInit {
   private startCountdown() {
     this.isCountdownRunning = true;
     this.runningCountdown.emit(true);
-    const countdownInterval = setInterval(() => {
+    const countdownInterval = setInterval(async () => {
       this.time -= 1;
       if (this.time <= 0) {
         clearInterval(countdownInterval);
@@ -49,10 +50,10 @@ export class PhoneComponent implements OnInit {
         this.runningCountdown.emit(false);
         this.time = 120;
       }
-      this.resendMessage = this.translocoService.translate(
+      this.resendMessage = await this.translationService.translateText(
         'resendCodeIn',
-        { time: this.time, s: this.time !== 1 ? 's' : '' },
-        'components/input'
+        ComponentsTranslation.INPUT,
+        { time: this.time, s: this.time !== 1 ? 's' : '' }
       );
     }, 1000);
   }

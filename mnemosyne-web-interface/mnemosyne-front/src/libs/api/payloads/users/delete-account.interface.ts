@@ -1,4 +1,4 @@
-export interface DeleteAccountInterface {
+export interface DeleteAccountPayload {
   password: string;
   mfaCode?: string;
   phoneCode?: string;

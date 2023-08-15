@@ -24,7 +24,7 @@ import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { ChangePasswordDto } from '@dto/change-password.dto';
 import { ChangeEmailDto } from '@dto/change-email.dto';
-import { LanguageEnum } from '@interfaces/language.enum';
+import { Language } from '@interfaces/language.enum';
 
 @Controller('security')
 export class SecurityController {
@@ -142,7 +142,7 @@ export class SecurityController {
   hashSendSmsCode(
     @TransactionParam() trx: Transaction,
     @Query('confirmationHash') confirmationHash: string,
-    @Query('language') language?: LanguageEnum
+    @Query('language') language?: Language
   ) {
     return this.securityService.hashSendSmsCode({
       confirmationHash,
@@ -154,7 +154,7 @@ export class SecurityController {
   @UseGuards(AuthGuard)
   @Get('get-sms-code')
   getSmsCode(
-    @Query('language') language: LanguageEnum,
+    @Query('language') language: Language,
     @UserId() userId: string,
     @TransactionParam() trx: Transaction
   ) {

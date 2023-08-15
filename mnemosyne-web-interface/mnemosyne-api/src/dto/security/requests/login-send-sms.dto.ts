@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional, Matches } from 'class-validator';
 import { EmailRegex } from '@regex/email.regex';
 import { PasswordRegex } from '@regex/password.regex';
-import { LanguageEnum } from '@interfaces/language.enum';
+import { Language } from '@interfaces/language.enum';
 
 export class LoginSendSmsDto {
   @Matches(EmailRegex, { message: 'wrong-email-format' })
@@ -11,6 +11,6 @@ export class LoginSendSmsDto {
   readonly password: string;
 
   @IsOptional()
-  @IsEnum(LanguageEnum)
-  readonly language: LanguageEnum;
+  @IsEnum(Language)
+  readonly language: Language;
 }

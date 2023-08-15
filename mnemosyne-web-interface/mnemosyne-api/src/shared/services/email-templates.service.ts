@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { LanguageEnum } from '@interfaces/language.enum';
+import { Language } from '@interfaces/language.enum';
 import { registrationTemplate } from '@email-templates/registration.template';
 import { emailChangeTemplate } from '@email-templates/email-change.template';
 import { forgotPasswordTemplate } from '@email-templates/forgot-password.template';
@@ -19,13 +19,13 @@ export class EmailTemplatesService {
     let subject: string;
 
     switch (language) {
-      case LanguageEnum.EN:
+      case Language.EN:
         subject = 'Mnemosyne - Registration confirmation';
         break;
-      case LanguageEnum.RU:
+      case Language.RU:
         subject = 'Mnemosyne - Подтверждение регистрации';
         break;
-      case LanguageEnum.PL:
+      case Language.PL:
         subject = 'Mnemosyne - Potwierdzenie rejestracji';
         break;
       default:
@@ -50,13 +50,13 @@ export class EmailTemplatesService {
     let subject: string;
 
     switch (language) {
-      case LanguageEnum.EN:
+      case Language.EN:
         subject = 'Mnemosyne - Welcome';
         break;
-      case LanguageEnum.RU:
+      case Language.RU:
         subject = 'Mnemosyne - Доборо пожаловать';
         break;
-      case LanguageEnum.PL:
+      case Language.PL:
         subject = 'Mnemosyne - Witamy';
         break;
       default:
@@ -81,13 +81,13 @@ export class EmailTemplatesService {
     let subject: string;
 
     switch (language) {
-      case LanguageEnum.EN:
+      case Language.EN:
         subject = 'Mnemosyne - Password reset';
         break;
-      case LanguageEnum.RU:
+      case Language.RU:
         subject = 'Mnemosyne - Восстановление пароля';
         break;
-      case LanguageEnum.PL:
+      case Language.PL:
         subject = 'Mnemosyne - Przypomnienie hasła';
         break;
       default:
@@ -112,13 +112,13 @@ export class EmailTemplatesService {
     let subject: string;
 
     switch (language) {
-      case LanguageEnum.EN:
+      case Language.EN:
         subject = 'Mnemosyne - Password successfully reset';
         break;
-      case LanguageEnum.RU:
+      case Language.RU:
         subject = 'Mnemosyne - Пароль сброшен';
         break;
-      case LanguageEnum.PL:
+      case Language.PL:
         subject = 'Mnemosyne - Hasło zresetowane';
         break;
       default:
@@ -143,13 +143,13 @@ export class EmailTemplatesService {
     let subject: string;
 
     switch (language) {
-      case LanguageEnum.EN:
+      case Language.EN:
         subject = 'Mnemosyne - Email change';
         break;
-      case LanguageEnum.RU:
+      case Language.RU:
         subject = 'Mnemosyne - Изменение адреса электронной почты';
         break;
-      case LanguageEnum.PL:
+      case Language.PL:
         subject = 'Mnemosyne - Zmiana adresu e-mail';
         break;
       default:
@@ -174,13 +174,13 @@ export class EmailTemplatesService {
     let subject: string;
 
     switch (language) {
-      case LanguageEnum.EN:
+      case Language.EN:
         subject = 'Mnemosyne - Email changed';
         break;
-      case LanguageEnum.RU:
+      case Language.RU:
         subject = 'Mnemosyne - Адреса электронной почты изменен';
         break;
-      case LanguageEnum.PL:
+      case Language.PL:
         subject = 'Mnemosyne -  Adres e-mail został zmieniony';
         break;
       default:

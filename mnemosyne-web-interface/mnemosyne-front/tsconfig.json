@@ -76,13 +76,15 @@
         "src/libs/interfaces/api/*",
         "src/libs/types/components/*",
         "src/libs/types/api/*",
+        "src/libs/types/translations/*",
         "src/libs/api/controllers/*",
         "src/libs/api/endpoints/*",
         "src/libs/api/methods/*",
         "src/libs/api/errors/*",
         "src/libs/enums/api/*"
       ],
-      "@directives/*": ["src/app/directives/*"]
+      "@directives/*": ["src/app/directives/*"],
+      "@translations/*": ["src/libs/enums/translations/*"]
     }
   },
   "angularCompilerOptions": {

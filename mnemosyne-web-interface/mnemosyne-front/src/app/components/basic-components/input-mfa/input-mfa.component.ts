@@ -7,8 +7,9 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { LoaderService } from '@shared/loader.service';
+import { TranslationService } from '@services/translation.service';
+import { ComponentsTranslation } from '@translations/components.enum';
 
 @Component({
   selector: 'basic-input-mfa',
@@ -34,7 +35,7 @@ export class InputMfaComponent implements OnInit {
   isCountdownRunning = false;
 
   constructor(
-    private readonly translocoService: TranslocoService,
+    private readonly translationService: TranslationService,
     public loaderService: LoaderService
   ) {}
 
@@ -64,9 +65,9 @@ export class InputMfaComponent implements OnInit {
 
   private startCountdown() {
     this.isCountdownRunning = true;
-    const countdownInterval = setInterval(() => {
+    const countdownInterval = setInterval(async () => {
       this.time -= 1;
-      this.updateResendMessage(this.time);
+      await this.updateResendMessage(this.time);
       if (this.time <= 0) {
         clearInterval(countdownInterval);
         this.isCountdownRunning = false;
@@ -75,11 +76,11 @@ export class InputMfaComponent implements OnInit {
     }, 1000);
   }
 
-  private updateResendMessage(time: number) {
-    this.resendMessage = this.translocoService.translate(
+  private async updateResendMessage(time: number) {
+    this.resendMessage = await this.translationService.translateText(
       'resendCodeIn',
-      { time, s: time !== 1 ? 's' : '' },
-      'components/input'
+      ComponentsTranslation.INPUT,
+      { time, s: time !== 1 ? 's' : '' }
     );
   }
 

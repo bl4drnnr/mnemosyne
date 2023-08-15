@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core';
-import { TranslocoService } from '@ngneat/transloco';
 import { CheckLengthInterface } from '@interfaces/services/validation/check-length.interface';
 import { MfaButtonDisableInterface } from '@interfaces/services/validation/mfa-button-disable.interface';
+import { TranslationService } from '@services/translation.service';
+import { ComponentsTranslation } from '@translations/components.enum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ValidationService {
-  constructor(private readonly translocoService: TranslocoService) {}
+  constructor(private readonly translationService: TranslationService) {}
 
   isEmailCorrect(email: string) {
     if (email) {
@@ -34,48 +35,24 @@ export class ValidationService {
     );
   }
 
-  checkPasswordsRules(password: string) {
+  async checkPasswordsRules(password: string) {
+    const rules: {
+      eightChars: string;
+      lower: string;
+      spec: string;
+      digit: string;
+      upper: string;
+    } = await this.translationService.translateObject(
+      'passwordRules',
+      ComponentsTranslation.INPUT
+    );
+
     const passwordRules = [
-      {
-        error: true,
-        text: this.translocoService.translate(
-          'passwordRules.eightChars',
-          {},
-          'components/input'
-        )
-      },
-      {
-        error: true,
-        text: this.translocoService.translate(
-          'passwordRules.lower',
-          {},
-          'components/input'
-        )
-      },
-      {
-        error: true,
-        text: this.translocoService.translate(
-          'passwordRules.spec',
-          {},
-          'components/input'
-        )
-      },
-      {
-        error: true,
-        text: this.translocoService.translate(
-          'passwordRules.digit',
-          {},
-          'components/input'
-        )
-      },
-      {
-        error: true,
-        text: this.translocoService.translate(
-          'passwordRules.upper',
-          {},
-          'components/input'
-        )
-      }
+      { error: true, text: rules.eightChars },
+      { error: true, text: rules.lower },
+      { error: true, text: rules.spec },
+      { error: true, text: rules.digit },
+      { error: true, text: rules.upper }
     ];
 
     if (password) {

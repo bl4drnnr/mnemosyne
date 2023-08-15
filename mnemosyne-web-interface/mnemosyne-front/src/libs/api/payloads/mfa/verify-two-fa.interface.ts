@@ -1,4 +1,4 @@
-export interface VerifyTwoFaInterface {
+export interface VerifyTwoFaPayload {
   hash?: string;
   password?: string;
   twoFaToken: string;
