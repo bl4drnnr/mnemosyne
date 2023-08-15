@@ -1,4 +1,4 @@
-export interface ResetUserPasswordInterface {
+export interface ResetUserPasswordPayload {
   password: string;
   hash: string;
   phoneCode: string;

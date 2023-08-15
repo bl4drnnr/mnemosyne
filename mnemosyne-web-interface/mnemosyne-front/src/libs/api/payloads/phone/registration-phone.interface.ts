@@ -1,4 +1,4 @@
-export interface RegistrationPhoneInterface {
+export interface RegistrationPhonePayload {
   hash: string;
   phone: string;
 }

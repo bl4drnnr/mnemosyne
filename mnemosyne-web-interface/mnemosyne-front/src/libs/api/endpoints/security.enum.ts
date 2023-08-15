@@ -1,4 +1,4 @@
-export enum SecurityEnum {
+export enum SecurityEndpoint {
   REGISTRATION_GENERATE_2FA_QR = 'registration-generate-2fa-qr',
   LOGIN_GENERATE_2FA_QR = 'login-generate-2fa-qr',
   GENERATE_2FA_QR = 'generate-2fa-qr',

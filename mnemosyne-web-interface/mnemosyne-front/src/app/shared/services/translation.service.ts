@@ -1,7 +1,9 @@
 import { TranslocoService } from '@ngneat/transloco';
 import { Title } from '@angular/platform-browser';
 import { Injectable } from '@angular/core';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
+import { TranslationType } from '@interfaces/translation.type';
+import { PageTranslation } from '@translations/pages.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -14,49 +16,45 @@ export class TranslationService {
 
   async translateObject(
     key: string,
+    scope: TranslationType,
     params?: { [key: string]: string | number }
   ): Promise<{ [key: string]: string }> {
     const translatedText = this.translocoService.selectTranslateObject(
       key,
       params,
-      'credentials/registration'
+      scope
     );
 
-    const object: Promise<{ [key: string]: string }> = new Promise(
-      (resolve) => {
-        translatedText.subscribe({
-          next: (textObject) => resolve(textObject)
-        });
-      }
-    );
-
-    return await object;
+    return await new Promise((resolve) => {
+      translatedText.subscribe({
+        next: (textObject) => resolve(textObject)
+      });
+    });
   }
 
   async translateText(
     key: string,
+    scope: TranslationType,
     params?: { [key: string]: string | number }
   ): Promise<string> {
     const translatedText = this.translocoService.selectTranslate(
       key,
       params,
-      'credentials/registration'
+      scope
     );
 
-    const text: Promise<string> = new Promise((resolve) => {
+    return await new Promise((resolve) => {
       translatedText.subscribe({
         next: (text) => resolve(text)
       });
     });
-
-    return await text;
   }
 
-  setPageTitle(title: TitlesEnum) {
+  setPageTitle(title: Titles, params?: { [key: string]: string | number }) {
     const pageTitle = this.translocoService.selectTranslate(
       title,
-      {},
-      'pages/titles'
+      params,
+      PageTranslation.TITLES
     );
 
     pageTitle.subscribe({

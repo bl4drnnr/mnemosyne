@@ -1,4 +1,4 @@
-export interface GenerateTwoFaInterface {
+export interface GenerateTwoFaResponse {
   qr: string;
   secret: string;
 }

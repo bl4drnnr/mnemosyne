@@ -1,4 +1,4 @@
-export interface RegistrationInterface {
+export interface RegistrationPayload {
   email: string;
   password: string;
   tac: boolean;

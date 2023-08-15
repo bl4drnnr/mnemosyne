@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UserInfoInterface } from '@responses/user-info.interface';
+import { UserInfoResponse } from '@responses/user-info.interface';
 import { ValidationService } from '@services/validation.service';
 import {
   animate,
@@ -23,13 +23,13 @@ import {
   ]
 })
 export class UserInfoSettingsComponent {
-  @Input() userInfo: UserInfoInterface;
+  @Input() userInfo: UserInfoResponse;
   @Input() userId: string;
   @Input() firstName: string;
   @Input() lastName: string;
   @Input() email: string;
   @Input() isProfilePicPresent: boolean;
-  @Output() saveUserInfoEvent = new EventEmitter<UserInfoInterface>();
+  @Output() saveUserInfoEvent = new EventEmitter<UserInfoResponse>();
 
   incorrectFirstName: boolean;
   incorrectLastName: boolean;

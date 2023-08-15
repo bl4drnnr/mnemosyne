@@ -1,4 +1,4 @@
-export interface CreateCompanyInterface {
+export interface CreateCompanyPayload {
   companyLocation: string;
   companyName: string;
   companyWebsite: string;

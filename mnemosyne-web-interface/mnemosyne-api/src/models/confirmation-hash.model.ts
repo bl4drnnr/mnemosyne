@@ -11,12 +11,12 @@ import {
   UpdatedAt
 } from 'sequelize-typescript';
 import { User } from '@models/user.model';
-import { ConfirmationEnum } from '@interfaces/confirmation-type.enum';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
 
 interface ConfirmationHashCreationAttributes {
   userId: string;
   confirmationHash: string;
-  confirmationType: ConfirmationEnum;
+  confirmationType: Confirmation;
   changingEmail?: string;
 }
 
@@ -46,9 +46,9 @@ export class ConfirmationHash extends Model<
   @Column({
     type: DataType.ENUM('EMAIL_CHANGE', 'REGISTRATION', 'FORGOT_PASSWORD'),
     allowNull: false,
-    field: 'ConfirmationEnum'
+    field: 'Confirmation'
   })
-  confirmationType: ConfirmationEnum;
+  confirmationType: Confirmation;
 
   @Default(null)
   @Column({

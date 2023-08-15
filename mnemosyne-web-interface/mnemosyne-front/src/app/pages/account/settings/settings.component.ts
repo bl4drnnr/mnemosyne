@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInfoInterface } from '@responses/user-info.interface';
+import { UserInfoResponse } from '@responses/user-info.interface';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { UsersService } from '@services/users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
-import { UserSecurityInterface } from '@responses/user-security.interface';
+import { UserSecurityResponse } from '@responses/user-security.interface';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
 import { SettingSectionType } from '@interfaces/setting-section.type';
 
 @Component({
@@ -21,8 +21,8 @@ export class SettingsComponent implements OnInit {
   email: string;
   isProfilePicPresent: boolean;
 
-  userInfo: UserInfoInterface;
-  userSecurity: UserSecurityInterface;
+  userInfo: UserInfoResponse;
+  userSecurity: UserSecurityResponse;
   currentSection: SettingSectionType = 'personal';
 
   constructor(
@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit {
     private readonly usersService: UsersService
   ) {}
 
-  saveUserInfo(userInfo: UserInfoInterface) {
+  saveUserInfo(userInfo: UserInfoResponse) {
     this.usersService.updateUserInfo(userInfo).subscribe({
       next: ({ message }) =>
         this.globalMessageService.handle({
@@ -113,7 +113,7 @@ export class SettingsComponent implements OnInit {
   }
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.SETTINGS);
+    this.pageTitleService.setPageTitle(Titles.SETTINGS);
 
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
 

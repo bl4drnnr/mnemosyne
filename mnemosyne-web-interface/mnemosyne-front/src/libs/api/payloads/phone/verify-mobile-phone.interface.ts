@@ -1,4 +1,4 @@
-export interface VerifyMobilePhoneInterface {
+export interface VerifyMobilePhonePayload {
   hash?: string;
   password?: string;
   email?: string;

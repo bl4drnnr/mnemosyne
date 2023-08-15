@@ -1,20 +1,20 @@
 import { ApiService } from '@shared/api.service';
 import { Injectable } from '@angular/core';
-import { MethodsEnum } from '@interfaces/methods.enum';
-import { ControllersEnum } from '@interfaces/controllers.enum';
-import { UsersEnum } from '@interfaces/users.enum';
-import { UploadUserPhotoInterface } from '@payloads/upload-user-photo.interface';
+import { Method } from '@interfaces/methods.enum';
+import { Controller } from '@interfaces/controller.enum';
+import { UsersEndpoint } from '@interfaces/users.enum';
+import { UploadUserPhotoPayload } from '@payloads/upload-user-photo.interface';
 import { Observable } from 'rxjs';
-import { UserInfoInterface } from '@responses/user-info.interface';
-import { PhotoUploadedEnum } from '@responses/photo-uploaded.enum';
-import { UpdateUserInfoInterface } from '@payloads/update-user-info.interface';
-import { UserUpdatedEnum } from '@responses/user-updated.enum';
-import { UserSecurityInterface } from '@responses/user-security.interface';
-import { DeleteAccountInterface } from '@payloads/delete-account.interface';
-import { AccountDeletedEnum } from '@responses/account-deleted.enum';
-import { SecurityEnum } from '@interfaces/security.enum';
-import { ChangePasswordInterface } from '@payloads/change-password.interface';
-import { PasswordChangedEnum } from '@responses/password-changed.enum';
+import { UserInfoResponse } from '@responses/user-info.interface';
+import { PhotoUploadedResponse } from '@responses/photo-uploaded.enum';
+import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
+import { UserUpdatedResponse } from '@responses/user-updated.enum';
+import { UserSecurityResponse } from '@responses/user-security.interface';
+import { DeleteAccountPayload } from '@payloads/delete-account.interface';
+import { AccountDeletedResponse } from '@responses/account-deleted.enum';
+import { SecurityEndpoint } from '@interfaces/security.enum';
+import { ChangePasswordPayload } from '@payloads/change-password.interface';
+import { PasswordChangedResponse } from '@responses/password-changed.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -23,72 +23,72 @@ export class UsersService {
   constructor(private readonly apiService: ApiService) {}
 
   uploadUserPhoto(
-    payload: UploadUserPhotoInterface
-  ): Observable<{ message: PhotoUploadedEnum }> {
+    payload: UploadUserPhotoPayload
+  ): Observable<{ message: PhotoUploadedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.POST,
-      controller: ControllersEnum.USERS,
-      action: UsersEnum.UPLOAD_USER_PHOTO,
+      method: Method.POST,
+      controller: Controller.USERS,
+      action: UsersEndpoint.UPLOAD_USER_PHOTO,
       payload,
       accessToken
     });
   }
 
-  getUserInfo(): Observable<UserInfoInterface> {
+  getUserInfo(): Observable<UserInfoResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.GET,
-      controller: ControllersEnum.USERS,
-      action: UsersEnum.USER_INFO,
+      method: Method.GET,
+      controller: Controller.USERS,
+      action: UsersEndpoint.USER_INFO,
       accessToken
     });
   }
 
-  getUserSecuritySettings(): Observable<UserSecurityInterface> {
+  getUserSecuritySettings(): Observable<UserSecurityResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.GET,
-      controller: ControllersEnum.USERS,
-      action: UsersEnum.USER_SECURITY,
+      method: Method.GET,
+      controller: Controller.USERS,
+      action: UsersEndpoint.USER_SECURITY,
       accessToken
     });
   }
 
   updateUserInfo(
-    payload: UpdateUserInfoInterface
-  ): Observable<{ message: UserUpdatedEnum }> {
+    payload: UpdateUserInfoPayload
+  ): Observable<{ message: UserUpdatedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.PATCH,
-      controller: ControllersEnum.USERS,
-      action: UsersEnum.USER_INFO,
+      method: Method.PATCH,
+      controller: Controller.USERS,
+      action: UsersEndpoint.USER_INFO,
       payload,
       accessToken
     });
   }
 
   deleteAccount(
-    payload: DeleteAccountInterface
-  ): Observable<{ message: AccountDeletedEnum }> {
+    payload: DeleteAccountPayload
+  ): Observable<{ message: AccountDeletedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.DELETE,
-      controller: ControllersEnum.USERS,
-      action: UsersEnum.DELETE_ACCOUNT,
+      method: Method.DELETE,
+      controller: Controller.USERS,
+      action: UsersEndpoint.DELETE_ACCOUNT,
       payload,
       accessToken
     });
   }
 
   changePassword(
-    payload: ChangePasswordInterface
-  ): Observable<{ message: PasswordChangedEnum }> {
+    payload: ChangePasswordPayload
+  ): Observable<{ message: PasswordChangedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.PATCH,
-      controller: ControllersEnum.SECURITY,
-      action: SecurityEnum.CHANGE_PASSWORD,
+      method: Method.PATCH,
+      controller: Controller.SECURITY,
+      action: SecurityEndpoint.CHANGE_PASSWORD,
       payload,
       accessToken
     });

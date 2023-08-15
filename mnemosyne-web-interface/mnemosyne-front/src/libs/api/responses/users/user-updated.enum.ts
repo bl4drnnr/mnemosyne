@@ -1,3 +1,3 @@
-export enum UserUpdatedEnum {
+export enum UserUpdatedResponse {
   USER_UPDATED = 'user-updated'
 }

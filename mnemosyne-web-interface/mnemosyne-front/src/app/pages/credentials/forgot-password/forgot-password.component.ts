@@ -3,7 +3,7 @@ import { animate, style, transition, trigger } from '@angular/animations';
 import { TranslocoService } from '@ngneat/transloco';
 import { AuthenticationService } from '@services/authentication.service';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-forgot-password',
@@ -73,6 +73,6 @@ export class ForgotPasswordComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.FORGOT_PASSWORD);
+    this.pageTitleService.setPageTitle(Titles.FORGOT_PASSWORD);
   }
 }

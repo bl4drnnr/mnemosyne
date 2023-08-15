@@ -1,7 +1,7 @@
 import { IsEnum, IsOptional, IsString, Length, Matches } from 'class-validator';
 import { PasswordRegex } from '@regex/password.regex';
 import { MfaCodeRegex } from '@regex/mfa-code.regex';
-import { LanguageEnum } from '@interfaces/language.enum';
+import { Language } from '@interfaces/language.enum';
 
 export class ResetUserPasswordDto {
   @IsOptional()
@@ -21,6 +21,6 @@ export class ResetUserPasswordDto {
   readonly phoneCode: string;
 
   @IsOptional()
-  @IsEnum(LanguageEnum)
-  readonly language: LanguageEnum;
+  @IsEnum(Language)
+  readonly language: Language;
 }

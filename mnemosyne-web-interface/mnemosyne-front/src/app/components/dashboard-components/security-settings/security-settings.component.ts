@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { UserSecurityInterface } from '@responses/user-security.interface';
+import { UserSecurityResponse } from '@responses/user-security.interface';
 import { MfaService } from '@services/mfa.service';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { PhoneService } from '@services/phone.service';
@@ -7,8 +7,8 @@ import { RecoveryService } from '@services/recovery.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
 import { UsersService } from '@services/users.service';
-import { PasswordChangedEnum } from '@responses/password-changed.enum';
-import { ChangePasswordInterface } from '@payloads/change-password.interface';
+import { PasswordChangedResponse } from '@responses/password-changed.enum';
+import { ChangePasswordPayload } from '@payloads/change-password.interface';
 import { EmailService } from '@services/email.service';
 
 @Component({
@@ -17,7 +17,7 @@ import { EmailService } from '@services/email.service';
   styleUrls: ['./security-settings.component.scss']
 })
 export class SecuritySettingsComponent {
-  @Input() userSecurity: UserSecurityInterface;
+  @Input() userSecurity: UserSecurityResponse;
   @Output() setTwoFa = new EventEmitter<void>();
   @Output() unsetTwoFa = new EventEmitter<void>();
   @Output() setPhone = new EventEmitter<void>();
@@ -169,7 +169,7 @@ export class SecuritySettingsComponent {
   }
 
   changePassword() {
-    const changePasswordPayload: ChangePasswordInterface = {
+    const changePasswordPayload: ChangePasswordPayload = {
       currentPassword: this.currentPassword,
       newPassword: this.newPassword
     };
@@ -189,18 +189,18 @@ export class SecuritySettingsComponent {
       .subscribe({
         next: async ({ message }) => {
           switch (message) {
-            case PasswordChangedEnum.FULL_MFA_REQUIRED:
+            case PasswordChangedResponse.FULL_MFA_REQUIRED:
               this.changePassMfaRequired = true;
               this.changePassPhoneRequired = true;
               break;
-            case PasswordChangedEnum.PHONE_REQUIRED:
+            case PasswordChangedResponse.PHONE_REQUIRED:
               this.changePassPhoneRequired = true;
               this.phoneCodeSent = true;
               break;
-            case PasswordChangedEnum.TOKEN_TWO_FA_REQUIRED:
+            case PasswordChangedResponse.TOKEN_TWO_FA_REQUIRED:
               this.changePassMfaRequired = true;
               break;
-            case PasswordChangedEnum.PASSWORD_CHANGED:
+            case PasswordChangedResponse.PASSWORD_CHANGED:
               this.closeChangePasswordModal();
               this.passwordChanged.emit();
               this.userSettingsReInit.emit();

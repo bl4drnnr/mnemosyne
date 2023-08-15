@@ -9,7 +9,7 @@ import {
   trigger
 } from '@angular/animations';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'basic-home',
@@ -65,6 +65,6 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.HOME);
+    this.pageTitleService.setPageTitle(Titles.HOME);
   }
 }

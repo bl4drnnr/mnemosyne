@@ -17,7 +17,7 @@ import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { PhotoUploadedDto } from '@dto/photo-uploaded.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
-import { ConfirmationEnum } from '@interfaces/confirmation-type.enum';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { TimeService } from '@shared/time.service';
 import { WrongTimeframeException } from '@exceptions/wrong-timeframe.exception';
 import { PasswordChangedException } from '@exceptions/password-changed.exception';
@@ -171,7 +171,7 @@ export class UsersService {
     await this.emailService.sendForgotPasswordEmail({
       payload: {
         to: email,
-        confirmationType: ConfirmationEnum.FORGOT_PASSWORD,
+        confirmationType: Confirmation.FORGOT_PASSWORD,
         confirmationHash,
         userId
       },

@@ -1,14 +1,14 @@
-import { ActionControllerEnum } from '@interfaces/action-controller.enum';
-import { MethodsEnum } from '@interfaces/methods.enum';
-import { StatusesEnum } from '@interfaces/statuses.enum';
+import { ActionController } from '@interfaces/action-controller.enum';
+import { Method } from '@interfaces/methods.enum';
+import { Status } from '@interfaces/statuses.enum';
 
 export interface LogActionInterface {
-  logType: ActionControllerEnum;
-  method?: MethodsEnum;
+  logType: ActionController;
+  method?: Method;
   controller?: string;
   endpoint?: string;
   message?: string;
-  status: StatusesEnum;
+  status: Status;
   payload?: { body?: object; params?: object };
   error?: object;
 }

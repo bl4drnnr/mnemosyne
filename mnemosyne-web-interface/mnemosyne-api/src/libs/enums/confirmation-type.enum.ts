@@ -1,4 +1,4 @@
-export enum ConfirmationEnum {
+export enum Confirmation {
   EMAIL_CHANGE = 'EMAIL_CHANGE',
   REGISTRATION = 'REGISTRATION',
   FORGOT_PASSWORD = 'FORGOT_PASSWORD'

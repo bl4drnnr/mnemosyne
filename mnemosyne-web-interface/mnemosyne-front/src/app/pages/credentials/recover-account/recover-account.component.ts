@@ -6,7 +6,7 @@ import { ValidationService } from '@services/validation.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslocoService } from '@ngneat/transloco';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'page-recover-account',
@@ -41,7 +41,7 @@ export class RecoverAccountComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.RECOVER_ACCOUNT);
+    this.pageTitleService.setPageTitle(Titles.RECOVER_ACCOUNT);
   }
 
   recoverAccount() {

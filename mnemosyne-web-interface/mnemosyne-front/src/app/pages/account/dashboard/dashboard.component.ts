@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { UserInfoInterface } from '@responses/user-info.interface';
+import { UserInfoResponse } from '@responses/user-info.interface';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { TranslationService } from '@services/translation.service';
-import { TitlesEnum } from '@interfaces/titles.enum';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'component-dashboard',
@@ -10,7 +10,7 @@ import { TitlesEnum } from '@interfaces/titles.enum';
   styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
-  userInfo: UserInfoInterface;
+  userInfo: UserInfoResponse;
 
   constructor(
     private readonly refreshTokensService: RefreshTokensService,
@@ -18,7 +18,7 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    this.pageTitleService.setPageTitle(TitlesEnum.DASHBOARD);
+    this.pageTitleService.setPageTitle(Titles.DASHBOARD);
 
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
     if (userInfoRequest)

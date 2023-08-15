@@ -5,7 +5,7 @@ import { Transaction } from 'sequelize';
 import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
-import { LanguageEnum } from '@interfaces/language.enum';
+import { Language } from '@interfaces/language.enum';
 
 @Controller('confirmation-hash')
 export class ConfirmationHashController {
@@ -17,7 +17,7 @@ export class ConfirmationHashController {
   confirmAccount(
     @TransactionParam() trx: Transaction,
     @Query('confirmationHash') confirmationHash: string,
-    @Query('language') language?: LanguageEnum
+    @Query('language') language?: Language
   ) {
     return this.confirmationHashService.confirmAccount({
       confirmationHash,

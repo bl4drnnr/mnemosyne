@@ -23,7 +23,7 @@ import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { PhoneService } from '@shared/phone.service';
-import { ConfirmationEnum } from '@interfaces/confirmation-type.enum';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { TimeService } from '@shared/time.service';
 import { LoginInterface } from '@interfaces/login.interface';
@@ -69,7 +69,7 @@ export class AuthService {
     });
 
     const registrationHash = confirmationHashes.find(
-      (hash) => hash.confirmationType === ConfirmationEnum.REGISTRATION
+      (hash) => hash.confirmationType === Confirmation.REGISTRATION
     );
 
     const isAccConfirmed = registrationHash.confirmed;
@@ -129,7 +129,7 @@ export class AuthService {
     await this.emailService.sendRegistrationConfirmationEmail({
       payload: {
         to: email,
-        confirmationType: ConfirmationEnum.REGISTRATION,
+        confirmationType: Confirmation.REGISTRATION,
         confirmationHash,
         userId
       },

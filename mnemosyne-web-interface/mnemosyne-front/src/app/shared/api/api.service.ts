@@ -11,7 +11,7 @@ import {
 import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/api/error-handler.service';
 import { LoaderService } from '@shared/loader.service';
-import { MethodsEnum } from '@interfaces/methods.enum';
+import { Method } from '@interfaces/methods.enum';
 import { ProxyRequestInterface } from '@interfaces/proxy-request.interface';
 
 @Injectable({
@@ -37,7 +37,7 @@ export class ApiService {
   }: ProxyRequestInterface): Observable<any> {
     const requestUrl = `${this.frontProxyUrl}/${controller}/${action}`;
     const requestBody: {
-      method: MethodsEnum;
+      method: Method;
       params?: object;
       payload?: object;
     } = { method };

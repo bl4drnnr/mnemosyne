@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@shared/api.service';
-import { MethodsEnum } from '@interfaces/methods.enum';
-import { ControllersEnum } from '@interfaces/controllers.enum';
-import { RecoveryEnum } from '@interfaces/recovery.enum';
-import { RegistrationGenerateRecoveryKeysInterface } from '@payloads/registration-generate-recovery-keys.interface';
-import { LoginGenerateRecoveryKeysInterface } from '@payloads/login-generate-recovery-keys.interface';
-import { GenerateRecoveryKeysInterface } from '@payloads/generate-recovery-keys.interface';
-import { RecoverAccountInterface } from '@payloads/recover-account.interface';
+import { Method } from '@interfaces/methods.enum';
+import { Controller } from '@interfaces/controller.enum';
+import { RecoveryEndpoint } from '@interfaces/recovery.enum';
+import { RegistrationGenerateRecoveryKeysPayload } from '@payloads/registration-generate-recovery-keys.interface';
+import { LoginGenerateRecoveryKeysPayload } from '@payloads/login-generate-recovery-keys.interface';
+import { GenerateRecoveryKeysPayload } from '@payloads/generate-recovery-keys.interface';
+import { RecoverAccountPayload } from '@payloads/recover-account.interface';
 import { Observable } from 'rxjs';
-import { AccountRecoveredEnum } from '@responses/account-recovered.enum';
-import { RecoveryKeysInterface } from '@responses/recovery-keys.interface';
+import { AccountRecoveredResponse } from '@responses/account-recovered.enum';
+import { RecoveryKeysResponse } from '@responses/recovery-keys.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,47 +20,47 @@ export class RecoveryService {
   registrationGenerateRecoveryKeys({
     hash,
     passphrase
-  }: RegistrationGenerateRecoveryKeysInterface): Observable<RecoveryKeysInterface> {
+  }: RegistrationGenerateRecoveryKeysPayload): Observable<RecoveryKeysResponse> {
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.POST,
-      controller: ControllersEnum.RECOVERY,
-      action: RecoveryEnum.REGISTRATION_GENERATE_RECOVERY_KEYS,
+      method: Method.POST,
+      controller: Controller.RECOVERY,
+      action: RecoveryEndpoint.REGISTRATION_GENERATE_RECOVERY_KEYS,
       params: { confirmationHash: hash },
       payload: { passphrase }
     });
   }
 
   loginGenerateRecoveryKeys(
-    payload: LoginGenerateRecoveryKeysInterface
-  ): Observable<RecoveryKeysInterface> {
+    payload: LoginGenerateRecoveryKeysPayload
+  ): Observable<RecoveryKeysResponse> {
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.POST,
-      controller: ControllersEnum.RECOVERY,
-      action: RecoveryEnum.LOGIN_GENERATE_RECOVERY_KEYS,
+      method: Method.POST,
+      controller: Controller.RECOVERY,
+      action: RecoveryEndpoint.LOGIN_GENERATE_RECOVERY_KEYS,
       payload
     });
   }
 
   generateRecoveryKeys(
-    payload: GenerateRecoveryKeysInterface
-  ): Observable<RecoveryKeysInterface> {
+    payload: GenerateRecoveryKeysPayload
+  ): Observable<RecoveryKeysResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.POST,
-      controller: ControllersEnum.RECOVERY,
-      action: RecoveryEnum.GENERATE_RECOVERY_KEYS,
+      method: Method.POST,
+      controller: Controller.RECOVERY,
+      action: RecoveryEndpoint.GENERATE_RECOVERY_KEYS,
       payload,
       accessToken
     });
   }
 
   recoverUserAccount(
-    payload: RecoverAccountInterface
-  ): Observable<{ message: AccountRecoveredEnum }> {
+    payload: RecoverAccountPayload
+  ): Observable<{ message: AccountRecoveredResponse }> {
     return this.apiService.apiProxyRequest({
-      method: MethodsEnum.POST,
-      controller: ControllersEnum.RECOVERY,
-      action: RecoveryEnum.RECOVER_ACCOUNT,
+      method: Method.POST,
+      controller: Controller.RECOVERY,
+      action: RecoveryEndpoint.RECOVER_ACCOUNT,
       payload
     });
   }
