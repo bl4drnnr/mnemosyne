@@ -17,6 +17,7 @@ import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
 import { CopyClipboardDirective } from '@directives/clipboard.directive';
 import { QrMfaComponent } from './qr-mfa/qr-mfa.component';
 import { PhoneComponent } from './phone/phone.component';
+import { ArrowComponent } from './arrow/arrow.component';
 
 const components = [
   ButtonComponent,
@@ -37,7 +38,8 @@ const components = [
     ...components,
     CopyClipboardDirective,
     QrMfaComponent,
-    PhoneComponent
+    PhoneComponent,
+    ArrowComponent
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,6 @@ const components = [
     TranslocoModule,
     ModeToggleModule
   ],
-  exports: [...components, QrMfaComponent, PhoneComponent]
+  exports: [...components, QrMfaComponent, PhoneComponent, ArrowComponent]
 })
 export class BasicComponentsModule {}

@@ -1,19 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
-import { TranslocoService } from '@ngneat/transloco';
-import { AuthenticationService } from '@services/authentication.service';
 import { PhoneService } from '@services/phone.service';
 import { MfaService } from '@services/mfa.service';
 
 @Component({
   selector: 'page-component-mfa',
-  templateUrl: './mfa.component.html',
+  templateUrl: './create-mfa.component.html',
   styleUrls: [
-    './mfa.component.scss',
+    './create-mfa.component.scss',
     '../../../pages/credentials/shared/credentials.component.scss'
   ]
 })
-export class MfaComponent {
+export class CreateMfaComponent {
   @Input() hash: string;
   @Input() email: string;
   @Input() password: string;
@@ -35,8 +33,6 @@ export class MfaComponent {
   ];
 
   constructor(
-    private readonly authenticationService: AuthenticationService,
-    private readonly translocoService: TranslocoService,
     private readonly smsService: PhoneService,
     private readonly mfaService: MfaService
   ) {}

@@ -8,8 +8,8 @@ import { Titles } from '@interfaces/titles.enum';
 import { WrongCredentialsInterface } from '@interfaces/wrong-credentials.interface';
 import { RegistrationType } from '@interfaces/registration.type';
 import { CompanyService } from '@services/company.service';
-import { EnvService } from '@shared/env.service';
-import { Role } from '@interfaces/role.enum';
+import { CredentialsTranslation } from '@translations/credentials.enum';
+import { Role } from '@interfaces/role.type';
 
 @Component({
   selector: 'page-registration',
@@ -26,9 +26,9 @@ import { Role } from '@interfaces/role.enum';
   ]
 })
 export class RegistrationComponent implements OnInit {
-  accRegistrationType: RegistrationType = 'start';
+  accRegistrationType: RegistrationType = 'company';
 
-  step = 1;
+  step = 2;
   tac = false;
 
   email: string;
@@ -41,8 +41,9 @@ export class RegistrationComponent implements OnInit {
   companyName: string;
   companyWebsite: string;
   companyMembers: Array<{ email: string; role: string }> = [];
-  companyRoles: Array<{ key: string; value: Role }>;
+  companyRoles: Array<{ value: string; key: Role }>;
   companyMember: string;
+  companyMemberDefaultRole: string;
   accountOwnerEmail: string;
   incorrectMemberEmail: boolean;
   incorrectCompanyName = true;
@@ -58,12 +59,9 @@ export class RegistrationComponent implements OnInit {
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,
     private readonly companyService: CompanyService,
-    private readonly envService: EnvService,
     private readonly router: Router,
     public validationService: ValidationService
   ) {}
-
-  closeButtonUrl = `${this.envService.getStaticStorageLink}/icons/close.svg`;
 
   handleCompanyRegistration() {
     if (this.wrongCompanyCredentials({ includeAll: true })) return;
@@ -116,14 +114,17 @@ export class RegistrationComponent implements OnInit {
 
   wrongCompanyCredentials({ includeAll }: WrongCredentialsInterface) {
     const wrongWebsite = !this.validationService.isFQDN(this.companyWebsite);
+
     const incorrectCompanyData =
       wrongWebsite ||
       this.incorrectCompanyName ||
       this.incorrectLocationName ||
       !this.companyWebsite;
 
-    const incorrectAllCompanyData =
-      incorrectCompanyData || this.incorrectAccountOwnerEmail;
+    const incorrectOwnerData =
+      !this.accountOwnerEmail || this.incorrectAccountOwnerEmail;
+
+    const incorrectAllCompanyData = incorrectCompanyData || incorrectOwnerData;
 
     return !includeAll ? incorrectCompanyData : incorrectAllCompanyData;
   }
@@ -149,7 +150,7 @@ export class RegistrationComponent implements OnInit {
     if (!this.incorrectMemberEmail && !isEmailPresent)
       this.companyMembers.push({
         email: this.companyMember,
-        role: 'Read-only'
+        role: this.companyMemberDefaultRole
       });
 
     this.companyMember = '';
@@ -161,7 +162,50 @@ export class RegistrationComponent implements OnInit {
     );
   }
 
+  changeUserRole({
+    memberEmail: email,
+    role
+  }: {
+    memberEmail: string;
+    role: Role;
+  }) {
+    this.companyMembers[
+      this.companyMembers.findIndex((m) => m.email === email)
+    ] = { email, role };
+  }
+
   async ngOnInit() {
     this.translationService.setPageTitle(Titles.REGISTRATION);
+
+    const roles: {
+      PRIMARY_ADMIN: string;
+      ADMIN: string;
+      DEFAULT: string;
+      READ_ONLY: string;
+    } = await this.translationService.translateObject(
+      'roles',
+      CredentialsTranslation.REGISTRATION
+    );
+
+    this.companyRoles = [
+      {
+        key: 'PRIMARY_ADMIN',
+        value: roles.PRIMARY_ADMIN
+      },
+      {
+        key: 'ADMIN',
+        value: roles.ADMIN
+      },
+      {
+        key: 'DEFAULT',
+        value: roles.DEFAULT
+      },
+      {
+        key: 'READ_ONLY',
+        value: roles.READ_ONLY
+      }
+    ];
+
+    this.companyMemberDefaultRole = roles.DEFAULT;
   }
 }
