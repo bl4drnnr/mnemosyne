@@ -14,6 +14,7 @@ import { Roles } from '@interfaces/roles.enum';
 import { CompanyMembersType } from '@interfaces/company-members.type';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
+import { GlobalMessageService } from '@shared/global-message.service';
 
 @Component({
   selector: 'page-registration',
@@ -49,6 +50,7 @@ export class RegistrationComponent implements OnInit {
   companyMember: string;
   companyMemberDefaultRoleValue: string;
   companyMemberDefaultRoleKey: Role;
+  companyMembersLimit = 5;
   accountOwnerEmail: string;
   incorrectMemberEmail: boolean;
   incorrectCompanyName = true;
@@ -61,6 +63,7 @@ export class RegistrationComponent implements OnInit {
   incorrectLastName: boolean;
 
   constructor(
+    private readonly globalMessageService: GlobalMessageService,
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,
     private readonly companyService: CompanyService,
@@ -71,12 +74,17 @@ export class RegistrationComponent implements OnInit {
   handleCompanyRegistration() {
     if (this.wrongCompanyCredentials({ includeAll: true })) return;
 
+    const companyMembers = this.companyMembers.map((member) => {
+      return { email: member.email, role: member.roleKey };
+    });
+
     this.companyService
       .createCompanyAccount({
         companyName: this.companyName,
         companyLocation: this.companyLocation,
         companyWebsite: this.companyWebsite,
-        accountOwnerEmail: this.accountOwnerEmail
+        accountOwnerEmail: this.accountOwnerEmail,
+        companyMembers
       })
       .subscribe({
         next: () => (this.step = 3)
@@ -99,10 +107,6 @@ export class RegistrationComponent implements OnInit {
       });
   }
 
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
-  }
-
   nextCompanyStep() {
     if (this.wrongCompanyCredentials({ includeAll: false })) return;
     this.step++;
@@ -115,6 +119,85 @@ export class RegistrationComponent implements OnInit {
 
   backStep() {
     this.step--;
+  }
+
+  async addCompanyMember() {
+    if (this.companyMembersLimit === this.companyMembers.length) {
+      return await this.companyMembersLimitReached();
+    }
+
+    const isEmailPresent = this.isMemberEmailPresent(this.companyMember);
+
+    if (isEmailPresent) {
+      return await this.memberAlreadyOnList();
+    }
+
+    if (!this.incorrectMemberEmail) {
+      this.companyMembers.push({
+        email: this.companyMember,
+        roleKey: this.companyMemberDefaultRoleKey,
+        roleValue: this.companyMemberDefaultRoleValue
+      });
+    }
+
+    this.companyMember = '';
+  }
+
+  removeMember(memberEmail: string) {
+    this.companyMembers = this.companyMembers.filter(
+      ({ email }) => email !== memberEmail
+    );
+  }
+
+  async assignAccountOwner(accountOwnerEmail: string) {
+    this.accountOwnerEmail = accountOwnerEmail;
+
+    const isEmailPresent = this.isMemberEmailPresent(accountOwnerEmail);
+
+    if (isEmailPresent) {
+      this.accountOwnerEmail = '';
+      return await this.memberAlreadyOnList();
+    }
+  }
+
+  async changeUserRole({
+    email,
+    roleKey,
+    roleValue
+  }: RegistrationCompanyMemberInterface) {
+    const companyMemberIdx = this.companyMembers.findIndex(
+      (m) => m.email === email
+    );
+    this.companyMembers[companyMemberIdx] = { email, roleKey, roleValue };
+    await this.setRoles();
+  }
+
+  async companyMembersLimitReached() {
+    const message = await this.translationService.translateText(
+      'companyMembersLimitReached',
+      CredentialsTranslation.REGISTRATION
+    );
+
+    this.globalMessageService.handle({
+      message,
+      isError: true
+    });
+  }
+
+  async memberAlreadyOnList() {
+    const message = await this.translationService.translateText(
+      'memberAlreadyOnList',
+      CredentialsTranslation.REGISTRATION
+    );
+
+    this.globalMessageService.handle({
+      message,
+      isError: true
+    });
+  }
+
+  isMemberEmailPresent(memberEmail: string) {
+    return this.companyMembers.find(({ email }) => email === memberEmail);
   }
 
   wrongCompanyCredentials({ includeAll }: WrongCredentialsInterface) {
@@ -147,38 +230,6 @@ export class RegistrationComponent implements OnInit {
     return !includeAll ? incorrectCredentials : incorrectAllCredentials;
   }
 
-  addCompanyMember() {
-    const isEmailPresent = this.companyMembers.find(
-      ({ email }) => email === this.companyMember
-    );
-
-    if (!this.incorrectMemberEmail && !isEmailPresent)
-      this.companyMembers.push({
-        email: this.companyMember,
-        roleKey: this.companyMemberDefaultRoleKey,
-        roleValue: this.companyMemberDefaultRoleValue
-      });
-
-    this.companyMember = '';
-  }
-
-  removeMember(memberEmail: string) {
-    this.companyMembers = this.companyMembers.filter(
-      ({ email }) => email !== memberEmail
-    );
-  }
-
-  async changeUserRole({
-    email,
-    roleKey,
-    roleValue
-  }: RegistrationCompanyMemberInterface) {
-    this.companyMembers[
-      this.companyMembers.findIndex((m) => m.email === email)
-    ] = { email, roleKey, roleValue };
-    await this.setRoles();
-  }
-
   async setRoles() {
     const roles: {
       primaryAdmin: string;
@@ -207,6 +258,10 @@ export class RegistrationComponent implements OnInit {
 
     this.companyMemberDefaultRoleValue = roles.default;
     this.companyMemberDefaultRoleKey = Roles.DEFAULT;
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
   }
 
   async ngOnInit() {

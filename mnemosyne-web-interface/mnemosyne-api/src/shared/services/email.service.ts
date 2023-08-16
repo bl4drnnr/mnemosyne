@@ -16,7 +16,54 @@ export class EmailService {
     private readonly emailTemplatesService: EmailTemplatesService,
     private readonly confirmationHashService: ConfirmationHashService
   ) {
-    SendGrid.setApiKey(this.configService.sendGridCredentials.api_key);
+    SendGrid.setApiKey(this.configService.sendGridCredentials.apiKey);
+  }
+
+  async sendCompanyRegistrationEmail({
+    payload,
+    companyInfo,
+    language,
+    trx: transaction
+  }: SecurityInitEmailInterface) {
+    const { confirmationHash, confirmationType, userId, to } = payload;
+
+    const emailSettings: VerificationEmailInterface = {
+      confirmationHash,
+      confirmationType,
+      userId
+    };
+
+    await this.createConfirmationHash({ emailSettings, trx: transaction });
+
+    const link = `${this.configService.frontEndUrl}/company-account-confirmation/${confirmationHash}`;
+
+    const { html, subject } =
+      this.emailTemplatesService.companyRegistrationEmailTemplate({
+        companyInfo,
+        link,
+        language
+      });
+
+    await this.sendEmail({ to, html, subject });
+  }
+
+  async sendCompanyMemberEmail({
+    payload,
+    userInfo,
+    language,
+    trx: transaction
+  }: SecurityInitEmailInterface) {
+    const { confirmationHash, confirmationType, userId, to } = payload;
+
+    const emailSettings: VerificationEmailInterface = {
+      confirmationHash,
+      confirmationType,
+      userId
+    };
+
+    await this.createConfirmationHash({ emailSettings, trx: transaction });
+
+    const link = `${this.configService.frontEndUrl}//${confirmationHash}`;
   }
 
   async sendRegistrationConfirmationEmail({
@@ -44,11 +91,7 @@ export class EmailService {
         language
       });
 
-    await this.sendEmail({
-      to,
-      html,
-      subject
-    });
+    await this.sendEmail({ to, html, subject });
   }
 
   async sendRegistrationCompleteEmail({
@@ -64,11 +107,7 @@ export class EmailService {
       language
     });
 
-    await this.sendEmail({
-      to,
-      html,
-      subject
-    });
+    await this.sendEmail({ to, html, subject });
   }
 
   async sendForgotPasswordEmail({
@@ -96,11 +135,7 @@ export class EmailService {
         language
       });
 
-    await this.sendEmail({
-      to,
-      html,
-      subject
-    });
+    await this.sendEmail({ to, html, subject });
   }
 
   async sendResetPasswordCompleteEmail({
@@ -116,11 +151,7 @@ export class EmailService {
       language
     });
 
-    await this.sendEmail({
-      to,
-      html,
-      subject
-    });
+    await this.sendEmail({ to, html, subject });
   }
 
   async sendEmailChangeEmail({
@@ -150,11 +181,7 @@ export class EmailService {
         language
       });
 
-    await this.sendEmail({
-      to,
-      html,
-      subject
-    });
+    await this.sendEmail({ to, html, subject });
   }
 
   async sendEmailChangeCompleteEmail({
@@ -170,20 +197,12 @@ export class EmailService {
       language
     });
 
-    await this.sendEmail({
-      to,
-      html,
-      subject
-    });
+    await this.sendEmail({ to, html, subject });
   }
 
   private async sendEmail({ to, subject, html }: SendEmailInterface) {
-    return await SendGrid.send({
-      from: this.configService.sendGridCredentials.sender_email,
-      to,
-      subject,
-      html
-    });
+    const from = this.configService.sendGridCredentials.senderEmail;
+    return await SendGrid.send({ from, to, subject, html });
   }
 
   private async createConfirmationHash({

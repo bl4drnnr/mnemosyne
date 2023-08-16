@@ -49,8 +49,8 @@ export class ApiConfigService {
 
   get sendGridCredentials() {
     return {
-      api_key: this.getString('SENDGRID_API_KEY'),
-      sender_email: this.getString('SENDGRID_SENDER_EMAIL')
+      apiKey: this.getString('SENDGRID_API_KEY'),
+      senderEmail: this.getString('SENDGRID_SENDER_EMAIL')
     };
   }
 
@@ -60,9 +60,9 @@ export class ApiConfigService {
 
   get twilioCredentials() {
     return {
-      twilio_auth_phone: this.getString('TWILIO_AUTH_PHONE'),
-      twilio_account_sid: this.getString('TWILIO_ACCOUNT_SID'),
-      twilio_auth_token: this.getString('TWILIO_AUTH_TOKEN')
+      twilioAuthPhone: this.getString('TWILIO_AUTH_PHONE'),
+      twilioAccountSid: this.getString('TWILIO_ACCOUNT_SID'),
+      twilioAuthToken: this.getString('TWILIO_AUTH_TOKEN')
     };
   }
 

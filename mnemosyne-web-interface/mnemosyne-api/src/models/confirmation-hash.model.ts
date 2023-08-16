@@ -44,7 +44,12 @@ export class ConfirmationHash extends Model<
   confirmed: boolean;
 
   @Column({
-    type: DataType.ENUM('EMAIL_CHANGE', 'REGISTRATION', 'FORGOT_PASSWORD'),
+    type: DataType.ENUM(
+      'EMAIL_CHANGE',
+      'REGISTRATION',
+      'FORGOT_PASSWORD',
+      'COMPANY_REGISTRATION'
+    ),
     allowNull: false,
     field: 'Confirmation'
   })

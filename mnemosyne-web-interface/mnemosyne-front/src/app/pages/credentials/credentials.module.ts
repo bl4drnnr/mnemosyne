@@ -10,6 +10,8 @@ import { ResetPasswordComponent } from '@pages/reset-password/reset-password.com
 import { TranslocoModule } from '@ngneat/transloco';
 import { RecoverAccountComponent } from '@pages/recover-account/recover-account.component';
 import { EmailChangeConfirmationComponent } from '@pages/email-change-confirmation/email-change-confirmation.component';
+import { CompanyAccountConfirmationComponent } from './company-account-confirmation/company-account-confirmation.component';
+import { RouterModule, Routes } from '@angular/router';
 
 const components = [
   ForgotPasswordComponent,
@@ -21,9 +23,45 @@ const components = [
   EmailChangeConfirmationComponent
 ];
 
+const routes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'registration',
+    component: RegistrationComponent
+  },
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent
+  },
+  {
+    path: 'account-confirmation/:hash',
+    component: AccountConfirmationComponent
+  },
+  {
+    path: 'company-account-confirmation/:hash',
+    component: CompanyAccountConfirmationComponent
+  },
+  {
+    path: 'reset-password/:hash',
+    component: ResetPasswordComponent
+  },
+  {
+    path: 'recover-account',
+    component: RecoverAccountComponent
+  },
+  {
+    path: 'email-change-confirmation/:hash',
+    component: EmailChangeConfirmationComponent
+  }
+];
+
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, CompanyAccountConfirmationComponent],
   imports: [
+    RouterModule.forRoot(routes),
     CommonModule,
     ComponentsModule,
     NgOptimizedImage,
