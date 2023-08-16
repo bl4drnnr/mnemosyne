@@ -4,7 +4,7 @@
     (click)="toggleDropdown()"
     [disabled]="disabled"
   >
-    <span class="arrow" [ngClass]="{ 'arrow-open': isDropdownOpen }"></span>
+    <basic-arrow [isArrowOpen]="isDropdownOpen" />
     {{ currentOption || defaultLabel }}
   </button>
   <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">

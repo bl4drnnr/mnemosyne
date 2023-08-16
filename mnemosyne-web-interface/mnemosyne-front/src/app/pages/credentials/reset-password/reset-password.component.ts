@@ -111,7 +111,7 @@ export class ResetPasswordComponent implements OnInit {
       if (!hash) await this.handleRedirect('login');
       else {
         this.hash = hash;
-        await this.resetUserPassword();
+        this.resetUserPassword();
       }
     });
   }

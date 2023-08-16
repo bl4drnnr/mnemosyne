@@ -1,0 +1,43 @@
+@import 'variables';
+
+.member-container {
+  margin-bottom: 15px;
+}
+
+.member-box {
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.member-right-side {
+  display: flex;
+  width: 50%;
+  justify-content: space-between;
+}
+
+.member-email {
+  padding-left: 8px;
+}
+
+.role-box {
+  width: 100%;
+  border-left: 1px solid var(--border-color);
+  cursor: pointer;
+  position: relative;
+  display: flex;
+}
+
+.role-value {
+  padding: 0 32px 20px 8px;
+}
+
+.member-remove {
+  border-left: 1px solid var(--border-color);
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

@@ -16,6 +16,10 @@ export class CompanyService {
   createCompanyAccount(
     payload: CreateCompanyPayload
   ): Observable<{ message: CompanyCreatedResponse }> {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.COMPANY,

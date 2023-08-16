@@ -1,0 +1,35 @@
+<div class="member-container" *ngIf="companyMembers.length > 0">
+  <div class="member-box" *ngFor="let member of companyMembers">
+    <div class="member-email">
+      <p class="paragraph">{{ member.email }}</p>
+    </div>
+
+    <div class="member-right-side">
+
+      <div class="role-box" (click)="toggleDropdown(member.email)">
+        <basic-arrow [isArrowOpen]="member.isRoleDropDownOpen" />
+        <p class="paragraph role-value">{{ member.roleValue }}</p>
+      </div>
+
+      <div class="dropdown-menu" [ngClass]="{ 'show': member.isRoleDropDownOpen }">
+        <button
+          *ngFor="let role of companyRoles"
+          [ngClass]="role.key === member.roleKey ? 'dropdown-item active' : 'dropdown-item'"
+          (click)="changeUserRole(member.email, role.key, role.value)"
+        >
+          {{ role.value }}
+        </button>
+      </div>
+
+      <div class="member-remove" (click)="removeMember(member.email)">
+        <img
+          [ngSrc]="closeButtonUrl"
+          [width]="15"
+          [height]="15"
+          alt="close"
+        >
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -8,17 +8,27 @@ import { CompanyAlreadyExistsException } from '@exceptions/company-already-exist
 import { GetCompanyByNameInterface } from '@interfaces/get-company-by-name.interface';
 import { CreateCompanyInterface } from '@interfaces/create-company.interface';
 import { UsersService } from '@modules/users.service';
+import { EmailService } from '@shared/email.service';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
 
 @Injectable()
 export class CompanyService {
   constructor(
     private readonly userService: UsersService,
+    private readonly emailService: EmailService,
     @InjectModel(Company)
     private readonly companyRepository: typeof Company
   ) {}
 
   async createCompany({ payload, trx }: RegistrationCompanyInterface) {
-    const { companyName, accountOwnerEmail } = payload;
+    const {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      accountOwnerEmail,
+      companyMembers,
+      language
+    } = payload;
 
     const existingCompany = await this.getCompanyByName({
       companyName,
@@ -36,6 +46,29 @@ export class CompanyService {
 
     const existingUser = await this.userService.getUserByEmail({
       email: accountOwnerEmail,
+      trx
+    });
+
+    if (companyMembers.length) {
+      for (const companyMember in companyMembers) {
+        //
+      }
+    }
+
+    await this.emailService.sendCompanyRegistrationEmail({
+      payload: {
+        to: existingUser.email,
+        confirmationType: Confirmation.COMPANY_REGISTRATION,
+        confirmationHash,
+        userId: existingUser.id
+      },
+      companyInfo: {
+        companyName,
+        companyLocation,
+        companyWebsite,
+        accountOwnerEmail
+      },
+      language,
       trx
     });
 

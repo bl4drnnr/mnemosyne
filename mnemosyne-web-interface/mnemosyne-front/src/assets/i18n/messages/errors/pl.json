@@ -46,7 +46,8 @@
     "wrong-mfa-code-format": "Niewłaściwy format kodu MFA",
     "wrong-two-fa-token-format": "Niewłaściwy format tokena MFA",
     "wrong-two-fa-token-length": "Niewłaściwa długość tokena MFA",
-    "corrupted-recovery-keys": "Uszkodzone klucze odzyskiwania"
+    "corrupted-recovery-keys": "Uszkodzone klucze odzyskiwania",
+    "wrong-role-value": "Nieprawidłowa wartość roli członka"
   },
   "wrong-timeframe": "Niewłaściwy przedział czasowy",
   "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania",

@@ -62,6 +62,10 @@
         "src/modules/recovery/*",
         "src/modules/company/*"
       ],
+      "@custom-types/*": [
+        "src/libs/types/company/*",
+        "src/libs/types/roles/*"
+      ],
       "@interfaces/*": [
         "src/libs/interfaces/auth/*",
         "src/libs/interfaces/confirmation-hash/*",

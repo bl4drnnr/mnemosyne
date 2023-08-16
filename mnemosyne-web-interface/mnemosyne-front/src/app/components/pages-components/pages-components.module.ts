@@ -2,26 +2,27 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { AltRegistrationComponent } from '@components/alt-registration/alt-registration.component';
 import { CreatePasswordComponent } from '@components/create-password/create-password.component';
-import { MfaComponent } from '@components/mfa/mfa.component';
+import { CreateMfaComponent } from '@components/create-mfa/create-mfa.component';
 import { BasicComponentsModule } from '@components/basic-components.module';
 import { TranslocoModule } from '@ngneat/transloco';
 import { RecoveryKeysComponent } from './recovery-keys/recovery-keys.component';
+import { InviteCompanyUsersComponent } from './invite-company-users/invite-company-users.component';
 
 const components = [
   AltRegistrationComponent,
   CreatePasswordComponent,
-  MfaComponent,
+  CreateMfaComponent,
   RecoveryKeysComponent
 ];
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, InviteCompanyUsersComponent],
   imports: [
     CommonModule,
     NgOptimizedImage,
     BasicComponentsModule,
     TranslocoModule
   ],
-  exports: [...components]
+  exports: [...components, InviteCompanyUsersComponent]
 })
 export class PagesComponentsModule {}

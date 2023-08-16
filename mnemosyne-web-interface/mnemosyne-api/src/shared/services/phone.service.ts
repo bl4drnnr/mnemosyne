@@ -21,10 +21,10 @@ export class PhoneService {
   async sendSmsCode({ to, language }: SendPhoneSmsInterface) {
     const verificationCode = Math.floor(100000 + Math.random() * 900000);
 
-    const { twilio_auth_phone, twilio_auth_token, twilio_account_sid } =
+    const { twilioAuthPhone, twilioAuthToken, twilioAccountSid } =
       this.configService.twilioCredentials;
 
-    const client = new Twilio(twilio_account_sid, twilio_auth_token);
+    const client = new Twilio(twilioAccountSid, twilioAuthToken);
 
     const body = this.smsTemplateService.verificationCodeTemplate({
       verificationCode,
@@ -34,7 +34,7 @@ export class PhoneService {
     await client.messages.create({
       body,
       to,
-      from: twilio_auth_phone
+      from: twilioAuthPhone
     });
 
     return verificationCode.toString();
