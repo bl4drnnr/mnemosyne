@@ -10,6 +10,10 @@ import { RegistrationType } from '@interfaces/registration.type';
 import { CompanyService } from '@services/company.service';
 import { CredentialsTranslation } from '@translations/credentials.enum';
 import { Role } from '@interfaces/role.type';
+import { Roles } from '@interfaces/roles.enum';
+import { CompanyMembersType } from '@interfaces/company-members.type';
+import { CompanyRolesType } from '@interfaces/company-roles.type';
+import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
 
 @Component({
   selector: 'page-registration',
@@ -26,9 +30,9 @@ import { Role } from '@interfaces/role.type';
   ]
 })
 export class RegistrationComponent implements OnInit {
-  accRegistrationType: RegistrationType = 'company';
+  accRegistrationType: RegistrationType = 'start';
 
-  step = 2;
+  step = 1;
   tac = false;
 
   email: string;
@@ -40,10 +44,11 @@ export class RegistrationComponent implements OnInit {
   companyLocation: string;
   companyName: string;
   companyWebsite: string;
-  companyMembers: Array<{ email: string; role: string }> = [];
-  companyRoles: Array<{ value: string; key: Role }>;
+  companyMembers: CompanyMembersType = [];
+  companyRoles: CompanyRolesType;
   companyMember: string;
-  companyMemberDefaultRole: string;
+  companyMemberDefaultRoleValue: string;
+  companyMemberDefaultRoleKey: Role;
   accountOwnerEmail: string;
   incorrectMemberEmail: boolean;
   incorrectCompanyName = true;
@@ -150,7 +155,8 @@ export class RegistrationComponent implements OnInit {
     if (!this.incorrectMemberEmail && !isEmailPresent)
       this.companyMembers.push({
         email: this.companyMember,
-        role: this.companyMemberDefaultRole
+        roleKey: this.companyMemberDefaultRoleKey,
+        roleValue: this.companyMemberDefaultRoleValue
       });
 
     this.companyMember = '';
@@ -162,26 +168,23 @@ export class RegistrationComponent implements OnInit {
     );
   }
 
-  changeUserRole({
-    memberEmail: email,
-    role
-  }: {
-    memberEmail: string;
-    role: Role;
-  }) {
+  async changeUserRole({
+    email,
+    roleKey,
+    roleValue
+  }: RegistrationCompanyMemberInterface) {
     this.companyMembers[
       this.companyMembers.findIndex((m) => m.email === email)
-    ] = { email, role };
+    ] = { email, roleKey, roleValue };
+    await this.setRoles();
   }
 
-  async ngOnInit() {
-    this.translationService.setPageTitle(Titles.REGISTRATION);
-
+  async setRoles() {
     const roles: {
-      PRIMARY_ADMIN: string;
-      ADMIN: string;
-      DEFAULT: string;
-      READ_ONLY: string;
+      primaryAdmin: string;
+      admin: string;
+      default: string;
+      readOnly: string;
     } = await this.translationService.translateObject(
       'roles',
       CredentialsTranslation.REGISTRATION
@@ -189,23 +192,25 @@ export class RegistrationComponent implements OnInit {
 
     this.companyRoles = [
       {
-        key: 'PRIMARY_ADMIN',
-        value: roles.PRIMARY_ADMIN
+        key: Roles.ADMIN,
+        value: roles.admin
       },
       {
-        key: 'ADMIN',
-        value: roles.ADMIN
+        key: Roles.DEFAULT,
+        value: roles.default
       },
       {
-        key: 'DEFAULT',
-        value: roles.DEFAULT
-      },
-      {
-        key: 'READ_ONLY',
-        value: roles.READ_ONLY
+        key: Roles.READ_ONLY,
+        value: roles.readOnly
       }
     ];
 
-    this.companyMemberDefaultRole = roles.DEFAULT;
+    this.companyMemberDefaultRoleValue = roles.default;
+    this.companyMemberDefaultRoleKey = Roles.DEFAULT;
+  }
+
+  async ngOnInit() {
+    this.translationService.setPageTitle(Titles.REGISTRATION);
+    await this.setRoles();
   }
 }

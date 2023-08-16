@@ -1,25 +1,25 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { Role } from '@interfaces/role.type';
+import { CompanyMembersType } from '@interfaces/company-members.type';
+import { CompanyRolesType } from '@interfaces/company-roles.type';
+import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
 
 @Component({
   selector: 'page-component-invite-company-users',
   templateUrl: './invite-company-users.component.html',
   styleUrls: [
     './invite-company-users.component.scss',
-    '../../../pages/credentials/shared/credentials.component.scss'
+    '../../../pages/credentials/shared/credentials.component.scss',
+    '../../../components/basic-components/dropdown/dropdown.component.scss'
   ]
 })
 export class InviteCompanyUsersComponent {
-  @Input() companyRoles: Array<{ value: string; key: Role }>;
-  @Input() companyMembers: Array<{ email: string; role: string }>;
+  @Input() companyRoles: CompanyRolesType;
+  @Input() companyMembers: CompanyMembersType;
   @Output() removeCompanyMember = new EventEmitter<string>();
-  @Output() changeCompanyMemberRole = new EventEmitter<{
-    memberEmail: string;
-    role: Role;
-  }>();
-
-  isDropdownOpen = false;
+  @Output() changeCompanyMemberRole =
+    new EventEmitter<RegistrationCompanyMemberInterface>();
 
   constructor(private readonly envService: EnvService) {}
 
@@ -29,11 +29,19 @@ export class InviteCompanyUsersComponent {
     this.removeCompanyMember.emit(memberEmail);
   }
 
-  changeUserRole(memberEmail: string, role: Role) {
-    this.changeCompanyMemberRole.emit({ memberEmail, role });
+  changeUserRole(email: string, roleKey: Role, roleValue: string) {
+    this.changeCompanyMemberRole.emit({ email, roleKey, roleValue });
+
+    this.companyMembers.forEach((member) => {
+      if (member.email === email) member.isRoleDropDownOpen = false;
+    });
   }
 
-  toggleDropdown() {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  toggleDropdown(memberEmail: string) {
+    this.companyMembers.forEach((member) => {
+      if (member.email === memberEmail) {
+        member.isRoleDropDownOpen = !member.isRoleDropDownOpen;
+      }
+    });
   }
 }

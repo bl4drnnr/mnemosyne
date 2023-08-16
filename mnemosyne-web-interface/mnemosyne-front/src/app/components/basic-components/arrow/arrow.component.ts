@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./arrow.component.scss']
 })
 export class ArrowComponent {
-  @Input() isArrowOpen: boolean;
+  @Input() isArrowOpen: boolean | undefined;
 }
