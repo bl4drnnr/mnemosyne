@@ -21,16 +21,16 @@ export class EmailTemplatesService {
 
     switch (language) {
       case Language.EN:
-        subject = '';
+        subject = 'Mnemosyne - Company registration confirmation';
         break;
       case Language.RU:
-        subject = '';
+        subject = 'Mnemosyne - Подтверждение регистрации компании';
         break;
       case Language.PL:
-        subject = '';
+        subject = 'Mnemosyne - Potwierdzenie rejestracji firmy';
         break;
       default:
-        subject = '';
+        subject = 'Mnemosyne - Company registration confirmation';
         break;
     }
 
@@ -49,31 +49,32 @@ export class EmailTemplatesService {
     link,
     language
   }: SecurityPayloadInterface): EmailTemplateInterface {
+    const companyName = companyInfo.companyName;
     let subject: string;
 
     switch (language) {
       case Language.EN:
-        subject = '';
+        subject = `Mnemosyne - You have been invited to join ${companyName}`;
         break;
       case Language.RU:
-        subject = '';
+        subject = `Mnemosyne - Вы были приглашены вступить в ${companyName}`;
         break;
       case Language.PL:
-        subject = '';
+        subject = `Mnemosyne - Zaproszono Cię do dołączenia do ${companyName}`;
         break;
       default:
-        subject = '';
+        subject = `Mnemosyne - You have been invited to join ${companyName}`;
         break;
     }
 
-    const html = companyRegistrationTemplate({
-      userInfo,
-      companyInfo,
-      link,
-      language
-    });
+    // const html = companyRegistrationTemplate({
+    //   userInfo,
+    //   companyInfo,
+    //   link,
+    //   language
+    // });
 
-    return { html, subject };
+    return { html: '', subject };
   }
 
   registrationEmailTemplate({
