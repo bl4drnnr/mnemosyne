@@ -1,4 +1,4 @@
-export interface SecurityEmailTemplateInterface {
+export interface PrivateSecTemplateInterface {
   title: string;
   content: string;
   button: string;

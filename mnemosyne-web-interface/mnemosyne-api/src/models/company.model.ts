@@ -15,7 +15,7 @@ interface CompanyCreationAttributes {
   companyName: string;
   companyLocation: string;
   companyWebsite: string;
-  accountOwnerEmail: string;
+  companyOwnerEmail: string;
 }
 
 @Table({ tableName: 'companies' })
@@ -44,7 +44,15 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
   companyWebsite: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  accountOwnerEmail: string;
+  companyOwnerEmail: string;
+
+  @Default(false)
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    field: 'is_confirmed'
+  })
+  isConfirmed: boolean;
 
   @HasMany(() => User)
   users: Array<User>;

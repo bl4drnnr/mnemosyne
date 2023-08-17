@@ -1,12 +1,13 @@
 import { Language } from '@interfaces/language.enum';
-import { defaultSecurityTemplate } from '@email-templates/default-security.template';
-import { SecurityEmailPayloadInterface } from '@interfaces/security-email-payload.interface';
+import { SecurityPayloadInterface } from '@interfaces/security-payload.interface';
+import { companySecurityTemplate } from '@email-templates/company/company-security.template';
 
 export const companyRegistrationTemplate = ({
   companyInfo,
+  userInfo,
   link,
   language
-}: SecurityEmailPayloadInterface) => {
+}: SecurityPayloadInterface) => {
   let title: string;
   let content: string;
   let button: string;
@@ -34,10 +35,11 @@ export const companyRegistrationTemplate = ({
       break;
   }
 
-  return defaultSecurityTemplate({
+  return companySecurityTemplate({
     title,
     content,
     button,
-    link
+    link,
+    companyInfo
   });
 };

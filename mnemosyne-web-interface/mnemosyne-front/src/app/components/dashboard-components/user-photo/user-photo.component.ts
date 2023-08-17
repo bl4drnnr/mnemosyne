@@ -51,13 +51,8 @@ export class UserPhotoComponent implements OnInit {
     if (!this.selectedFiles) return;
 
     if (!this.isImageValid()) {
-      const message = await this.translationService.translateText(
-        'validation.user-photo-must-be-base64',
-        MessagesTranslation.ERRORS
-      );
-      return this.globalMessageService.handle({
-        message,
-        isError: true
+      await this.globalMessageService.handleError({
+        message: 'validation.user-photo-must-be-base64'
       });
     }
 

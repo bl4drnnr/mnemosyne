@@ -1,12 +1,12 @@
 import { Language } from '@interfaces/language.enum';
 import { defaultSecurityTemplate } from '@email-templates/default-security.template';
-import { SecurityEmailPayloadInterface } from '@interfaces/security-email-payload.interface';
+import { SecurityPayloadInterface } from '@interfaces/security-payload.interface';
 
 export const resetPasswordCompletedTemplate = ({
   userInfo,
   link,
   language
-}: SecurityEmailPayloadInterface) => {
+}: SecurityPayloadInterface) => {
   let title: string;
   let content: string;
   let button: string;

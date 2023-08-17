@@ -70,13 +70,8 @@ export class RecoverAccountComponent implements OnInit {
         this.validationService.checkRecoveryKeys(recoveryKeys);
 
       if (!areKeyValid) {
-        const message = await this.translationService.translateText(
-          'invalid-recovery-keys',
-          MessagesTranslation.ERRORS
-        );
-        this.globalMessageService.handle({
-          message,
-          isError: true
+        await this.globalMessageService.handleError({
+          message: 'invalid-recovery-keys'
         });
       } else {
         this.recoveryKey1 = recoveryKeys[0];

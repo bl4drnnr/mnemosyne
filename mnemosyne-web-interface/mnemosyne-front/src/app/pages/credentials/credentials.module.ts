@@ -12,6 +12,7 @@ import { RecoverAccountComponent } from '@pages/recover-account/recover-account.
 import { EmailChangeConfirmationComponent } from '@pages/email-change-confirmation/email-change-confirmation.component';
 import { CompanyAccountConfirmationComponent } from './company-account-confirmation/company-account-confirmation.component';
 import { RouterModule, Routes } from '@angular/router';
+import { CompanyMemberAccountConfirmationComponent } from './company-member-account-confirmation/company-member-account-confirmation.component';
 
 const components = [
   ForgotPasswordComponent,
@@ -20,7 +21,9 @@ const components = [
   AccountConfirmationComponent,
   ResetPasswordComponent,
   RecoverAccountComponent,
-  EmailChangeConfirmationComponent
+  EmailChangeConfirmationComponent,
+  CompanyAccountConfirmationComponent,
+  CompanyMemberAccountConfirmationComponent
 ];
 
 const routes: Routes = [
@@ -59,7 +62,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [...components, CompanyAccountConfirmationComponent],
+  declarations: [...components],
   imports: [
     RouterModule.forRoot(routes),
     CommonModule,

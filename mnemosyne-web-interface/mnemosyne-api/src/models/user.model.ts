@@ -22,9 +22,6 @@ import { Company } from '@models/company.model';
 
 interface UserCreationAttributes {
   email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
 }
 
 @Table({ tableName: 'users' })
@@ -37,13 +34,13 @@ export class User extends Model<User, UserCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   email: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.STRING, allowNull: true })
   password: string;
 
-  @Column({ type: DataType.STRING, allowNull: false, field: 'first_name' })
+  @Column({ type: DataType.STRING, allowNull: true, field: 'first_name' })
   firstName: string;
 
-  @Column({ type: DataType.STRING, allowNull: false, field: 'last_name' })
+  @Column({ type: DataType.STRING, allowNull: true, field: 'last_name' })
   lastName: string;
 
   @Default(false)
@@ -70,6 +67,9 @@ export class User extends Model<User, UserCreationAttributes> {
   @HasOne(() => UserSettings)
   userSettings: UserSettings;
 
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Array<Role>;
+
   @CreatedAt
   @Column({ field: 'created_at' })
   createdAt: Date;
@@ -77,7 +77,4 @@ export class User extends Model<User, UserCreationAttributes> {
   @UpdatedAt
   @Column({ field: 'updated_at' })
   updatedAt: Date;
-
-  @BelongsToMany(() => Role, () => UserRole)
-  roles: Array<Role>;
 }

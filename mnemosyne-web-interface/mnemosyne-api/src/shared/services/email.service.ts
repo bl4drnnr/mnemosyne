@@ -8,6 +8,7 @@ import { SecurityInitEmailInterface } from '@interfaces/security-init-email.inte
 import { CompletedSecurityEmailInterface } from '@interfaces/completed-security-email.interface';
 import { SendEmailInterface } from '@interfaces/send-email.interface';
 import { EmailConfirmHashInterface } from '@interfaces/email-confirm-hash.interface';
+import { GetConfirmationLinkInterface } from '@interfaces/get-confirmation-link.interface';
 
 @Injectable()
 export class EmailService {
@@ -35,7 +36,10 @@ export class EmailService {
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const link = `${this.configService.frontEndUrl}/company-account-confirmation/${confirmationHash}`;
+    const link = this.getConfirmationLink({
+      hash: confirmationHash,
+      route: 'company-account-confirmation'
+    });
 
     const { html, subject } =
       this.emailTemplatesService.companyRegistrationEmailTemplate({
@@ -48,6 +52,7 @@ export class EmailService {
   }
 
   async sendCompanyMemberEmail({
+    companyInfo,
     payload,
     userInfo,
     language,
@@ -63,7 +68,20 @@ export class EmailService {
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const link = `${this.configService.frontEndUrl}//${confirmationHash}`;
+    const link = this.getConfirmationLink({
+      hash: confirmationHash,
+      route: 'company-member-account-confirmation'
+    });
+
+    const { html, subject } =
+      this.emailTemplatesService.companyMemberInviteEmailTemplate({
+        companyInfo,
+        userInfo,
+        language,
+        link
+      });
+
+    await this.sendEmail({ to, html, subject });
   }
 
   async sendRegistrationConfirmationEmail({
@@ -82,7 +100,10 @@ export class EmailService {
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const link = `${this.configService.frontEndUrl}/account-confirmation/${confirmationHash}`;
+    const link = this.getConfirmationLink({
+      hash: confirmationHash,
+      route: 'account-confirmation'
+    });
 
     const { html, subject } =
       this.emailTemplatesService.registrationEmailTemplate({
@@ -99,7 +120,7 @@ export class EmailService {
     userInfo,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = `${this.configService.frontEndUrl}/login`;
+    const link = this.getConfirmationLink({ route: 'login' });
 
     const { html, subject } = this.emailTemplatesService.registrationComplete({
       userInfo,
@@ -126,7 +147,10 @@ export class EmailService {
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const link = `${this.configService.frontEndUrl}/reset-password/${confirmationHash}`;
+    const link = this.getConfirmationLink({
+      hash: confirmationHash,
+      route: 'reset-password'
+    });
 
     const { html, subject } =
       this.emailTemplatesService.forgotPasswordEmailTemplate({
@@ -143,7 +167,7 @@ export class EmailService {
     userInfo,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = `${this.configService.frontEndUrl}/login`;
+    const link = this.getConfirmationLink({ route: 'login' });
 
     const { html, subject } = this.emailTemplatesService.resetPasswordComplete({
       userInfo,
@@ -172,7 +196,10 @@ export class EmailService {
 
     await this.createConfirmationHash({ emailSettings, trx: transaction });
 
-    const link = `${this.configService.frontEndUrl}/email-change-confirmation/${payload.confirmationHash}`;
+    const link = this.getConfirmationLink({
+      hash: payload.confirmationHash,
+      route: 'email-change-confirmation'
+    });
 
     const { html, subject } =
       this.emailTemplatesService.emailChangeEmailTemplate({
@@ -189,7 +216,7 @@ export class EmailService {
     userInfo,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = `${this.configService.frontEndUrl}/login`;
+    const link = this.getConfirmationLink({ route: 'login' });
 
     const { html, subject } = this.emailTemplatesService.emailChangeComplete({
       userInfo,
@@ -198,6 +225,12 @@ export class EmailService {
     });
 
     await this.sendEmail({ to, html, subject });
+  }
+
+  private getConfirmationLink({ hash, route }: GetConfirmationLinkInterface) {
+    return `${this.configService.frontEndUrl}/${route}${
+      hash ? `/${hash}` : ''
+    }`;
   }
 
   private async sendEmail({ to, subject, html }: SendEmailInterface) {

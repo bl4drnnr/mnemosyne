@@ -21,10 +21,9 @@ export class ErrorHandlerService {
     let displayErrorMessage = '';
 
     if (errorPayload.message) {
-      displayErrorMessage = await this.translationService.translateText(
-        errorPayload.message,
-        MessagesTranslation.ERRORS
-      );
+      await this.globalMessageService.handleError({
+        message: errorPayload.message
+      });
     } else if (errorPayload.messages) {
       errorPayload.messages.forEach((messageItem: ErrorMessagesInterface) => {
         messageItem.error.forEach((message: string) => {
@@ -36,12 +35,12 @@ export class ErrorHandlerService {
           displayErrorMessage += `${errorText}<br>`;
         });
       });
-    }
 
-    this.globalMessageService.handle({
-      message: displayErrorMessage,
-      isError: true
-    });
+      this.globalMessageService.handle({
+        message: displayErrorMessage,
+        isError: true
+      });
+    }
 
     setTimeout(() => {
       this.globalMessageService.clear();

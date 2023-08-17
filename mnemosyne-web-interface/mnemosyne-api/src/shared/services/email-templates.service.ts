@@ -6,7 +6,7 @@ import { forgotPasswordTemplate } from '@email-templates/forgot-password.templat
 import { registrationCompletedTemplate } from '@email-templates/registration-completed.template';
 import { resetPasswordCompletedTemplate } from '@email-templates/reset-password-completed.template';
 import { emailChangedTemplate } from '@email-templates/email-changed.template';
-import { SecurityEmailPayloadInterface } from '@interfaces/security-email-payload.interface';
+import { SecurityPayloadInterface } from '@interfaces/security-payload.interface';
 import { EmailTemplateInterface } from '@interfaces/email-template.interface';
 import { companyRegistrationTemplate } from '@email-templates/company-registration.template';
 
@@ -16,7 +16,7 @@ export class EmailTemplatesService {
     companyInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -43,11 +43,44 @@ export class EmailTemplatesService {
     return { html, subject };
   }
 
+  companyMemberInviteEmailTemplate({
+    companyInfo,
+    userInfo,
+    link,
+    language
+  }: SecurityPayloadInterface): EmailTemplateInterface {
+    let subject: string;
+
+    switch (language) {
+      case Language.EN:
+        subject = '';
+        break;
+      case Language.RU:
+        subject = '';
+        break;
+      case Language.PL:
+        subject = '';
+        break;
+      default:
+        subject = '';
+        break;
+    }
+
+    const html = companyRegistrationTemplate({
+      userInfo,
+      companyInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
+  }
+
   registrationEmailTemplate({
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -78,7 +111,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -109,7 +142,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -140,7 +173,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -171,7 +204,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -202,7 +235,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {

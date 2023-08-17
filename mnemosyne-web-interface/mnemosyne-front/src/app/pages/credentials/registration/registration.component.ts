@@ -51,11 +51,11 @@ export class RegistrationComponent implements OnInit {
   companyMemberDefaultRoleValue: string;
   companyMemberDefaultRoleKey: Role;
   companyMembersLimit = 5;
-  accountOwnerEmail: string;
+  companyOwnerEmail: string;
   incorrectMemberEmail: boolean;
   incorrectCompanyName = true;
   incorrectLocationName = true;
-  incorrectAccountOwnerEmail = true;
+  incorrectCompanyOwnerEmail = true;
 
   incorrectEmail = true;
   incorrectPassword = true;
@@ -83,7 +83,7 @@ export class RegistrationComponent implements OnInit {
         companyName: this.companyName,
         companyLocation: this.companyLocation,
         companyWebsite: this.companyWebsite,
-        accountOwnerEmail: this.accountOwnerEmail,
+        companyOwnerEmail: this.companyOwnerEmail,
         companyMembers
       })
       .subscribe({
@@ -149,13 +149,13 @@ export class RegistrationComponent implements OnInit {
     );
   }
 
-  async assignAccountOwner(accountOwnerEmail: string) {
-    this.accountOwnerEmail = accountOwnerEmail;
+  async assignAccountOwner(companyOwnerEmail: string) {
+    this.companyOwnerEmail = companyOwnerEmail;
 
-    const isEmailPresent = this.isMemberEmailPresent(accountOwnerEmail);
+    const isEmailPresent = this.isMemberEmailPresent(companyOwnerEmail);
 
     if (isEmailPresent) {
-      this.accountOwnerEmail = '';
+      this.companyOwnerEmail = '';
       return await this.memberAlreadyOnList();
     }
   }
@@ -173,26 +173,14 @@ export class RegistrationComponent implements OnInit {
   }
 
   async companyMembersLimitReached() {
-    const message = await this.translationService.translateText(
-      'companyMembersLimitReached',
-      CredentialsTranslation.REGISTRATION
-    );
-
-    this.globalMessageService.handle({
-      message,
-      isError: true
+    await this.globalMessageService.handleError({
+      message: 'company-members-limit-reached'
     });
   }
 
   async memberAlreadyOnList() {
-    const message = await this.translationService.translateText(
-      'memberAlreadyOnList',
-      CredentialsTranslation.REGISTRATION
-    );
-
-    this.globalMessageService.handle({
-      message,
-      isError: true
+    await this.globalMessageService.handleError({
+      message: 'member-already-on-list'
     });
   }
 
@@ -210,7 +198,7 @@ export class RegistrationComponent implements OnInit {
       !this.companyWebsite;
 
     const incorrectOwnerData =
-      !this.accountOwnerEmail || this.incorrectAccountOwnerEmail;
+      !this.companyOwnerEmail || this.incorrectCompanyOwnerEmail;
 
     const incorrectAllCompanyData = incorrectCompanyData || incorrectOwnerData;
 

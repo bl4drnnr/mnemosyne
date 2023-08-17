@@ -21,14 +21,8 @@ export class CompanyService {
   ) {}
 
   async createCompany({ payload, trx }: RegistrationCompanyInterface) {
-    const {
-      companyName,
-      companyLocation,
-      companyWebsite,
-      accountOwnerEmail,
-      companyMembers,
-      language
-    } = payload;
+    const { companyName, companyOwnerEmail, companyMembers, language } =
+      payload;
 
     const existingCompany = await this.getCompanyByName({
       companyName,
@@ -44,30 +38,42 @@ export class CompanyService {
 
     const confirmationHash = crypto.randomBytes(20).toString('hex');
 
-    const existingUser = await this.userService.getUserByEmail({
-      email: accountOwnerEmail,
+    let to: string;
+    let userId: string;
+
+    const ownerExistingAccount = await this.userService.getUserByEmail({
+      email: companyOwnerEmail,
       trx
     });
 
-    if (companyMembers.length) {
-      for (const companyMember in companyMembers) {
-        //
-      }
+    if (ownerExistingAccount) {
+      to = ownerExistingAccount.email;
+      userId = ownerExistingAccount.id;
+    } else {
+      const createdOwnerAccount = await this.userService.createUser({
+        payload: { email: companyOwnerEmail },
+        trx
+      });
+      to = companyOwnerEmail;
+      userId = createdOwnerAccount.id;
     }
 
+    // if (companyMembers.length) {
+    //   for (const companyMember in companyMembers) {
+    //
+    //   }
+    // }
+
+    const companyRegistrationEmailPayload = {
+      confirmationType: Confirmation.COMPANY_REGISTRATION,
+      confirmationHash,
+      userId,
+      to
+    };
+
     await this.emailService.sendCompanyRegistrationEmail({
-      payload: {
-        to: existingUser.email,
-        confirmationType: Confirmation.COMPANY_REGISTRATION,
-        confirmationHash,
-        userId: existingUser.id
-      },
-      companyInfo: {
-        companyName,
-        companyLocation,
-        companyWebsite,
-        accountOwnerEmail
-      },
+      payload: { ...companyRegistrationEmailPayload },
+      companyInfo: { ...payload },
       language,
       trx
     });
@@ -89,7 +95,7 @@ export class CompanyService {
     companyName,
     companyLocation,
     companyWebsite,
-    accountOwnerEmail,
+    companyOwnerEmail,
     trx: transaction
   }: CreateCompanyInterface) {
     return await this.companyRepository.create(
@@ -97,7 +103,7 @@ export class CompanyService {
         companyName,
         companyLocation,
         companyWebsite,
-        accountOwnerEmail
+        companyOwnerEmail
       },
       { transaction }
     );
