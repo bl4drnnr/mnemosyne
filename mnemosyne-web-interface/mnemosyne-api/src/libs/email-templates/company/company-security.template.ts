@@ -1,11 +1,16 @@
-import { PrivateSecTemplateInterface } from '@interfaces/private-sec-template.interface';
+import { CompanySecTemplateInterface } from '@interfaces/company-sec-template.interface';
 
-export const defaultSecurityTemplate = ({
+export const companySecurityTemplate = ({
   title,
   content,
   button,
-  link
-}: PrivateSecTemplateInterface) => {
+  link,
+  companyNameTitle,
+  companyLocationTitle,
+  companyWebsiteTitle,
+  companyOwnerTitle,
+  companyInfo
+}: CompanySecTemplateInterface) => {
   return `
   <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html data-editor-version="2" class="sg-campaigns" xmlns="http://www.w3.org/1999/xhtml">
@@ -193,13 +198,20 @@ export const defaultSecurityTemplate = ({
                                                                                         <td style="padding:18px 30px 18px 30px; line-height:22px; text-align:inherit; background-color:#fff;" height="100%" valign="top" bgcolor="#fff" role="module-content">
                                                                                             <div>
                                                                                                 <div style="font-family: inherit; text-align: inherit"><span style="color: #000; font-size: 15px">${content}</span></div>
-                                                                                                <div></div>
+                                                                                                <div>
+                                                                                                    <ul>
+                                                                                                        <li><b>${companyNameTitle}:</b> ${companyInfo.companyName}</li>
+                                                                                                        <li><b>${companyLocationTitle}:</b> ${companyInfo.companyLocation}</li>
+                                                                                                        <li><b>${companyWebsiteTitle}:</b> <a href="https://${companyInfo.companyWebsite}">${companyInfo.companyWebsite}</a></li>
+                                                                                                        <li><b>${companyOwnerTitle}:</b> <a href="mailto:${companyInfo.companyOwnerEmail}">${companyInfo.companyOwnerEmail}</a></li>
+                                                                                                    </ul>
+                                                                                                </div>
                                                                                             </div>
                                                                                         </td>
                                                                                     </tr>
                                                                                 </tbody>
                                                                             </table>
-                                                                            <table border="0" cellpadding="0" cellspacing="0" class="module" data-role="module-button" data-type="button" role="module" style="table-layout:fixed;" width="100%" data-muid="cd669415-360a-41a6-b4b4-ca9e149980b3">
+                                                                      <table border="0" cellpadding="0" cellspacing="0" class="module" data-role="module-button" data-type="button" role="module" style="table-layout:fixed;" width="100%" data-muid="cd669415-360a-41a6-b4b4-ca9e149980b3">
                                                                                 <tbody>
                                                                                     <tr>
                                                                                         <td align="center" bgcolor="#fff" class="outer-td" style="padding:10px 0px 40px 0px;">

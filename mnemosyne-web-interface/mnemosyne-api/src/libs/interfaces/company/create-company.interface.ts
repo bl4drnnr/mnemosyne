@@ -4,6 +4,6 @@ export interface CreateCompanyInterface {
   companyName: string;
   companyLocation: string;
   companyWebsite: string;
-  accountOwnerEmail: string;
+  companyOwnerEmail: string;
   trx?: Transaction;
 }

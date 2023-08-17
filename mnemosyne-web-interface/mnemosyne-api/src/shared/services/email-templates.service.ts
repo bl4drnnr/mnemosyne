@@ -6,9 +6,10 @@ import { forgotPasswordTemplate } from '@email-templates/forgot-password.templat
 import { registrationCompletedTemplate } from '@email-templates/registration-completed.template';
 import { resetPasswordCompletedTemplate } from '@email-templates/reset-password-completed.template';
 import { emailChangedTemplate } from '@email-templates/email-changed.template';
-import { SecurityEmailPayloadInterface } from '@interfaces/security-email-payload.interface';
+import { SecurityPayloadInterface } from '@interfaces/security-payload.interface';
 import { EmailTemplateInterface } from '@interfaces/email-template.interface';
 import { companyRegistrationTemplate } from '@email-templates/company-registration.template';
+import { companyMemberInviteTemplate } from '@email-templates/company-member-invite.template';
 
 @Injectable()
 export class EmailTemplatesService {
@@ -16,21 +17,21 @@ export class EmailTemplatesService {
     companyInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
       case Language.EN:
-        subject = '';
+        subject = 'Mnemosyne - Company registration confirmation';
         break;
       case Language.RU:
-        subject = '';
+        subject = 'Mnemosyne - Подтверждение регистрации компании';
         break;
       case Language.PL:
-        subject = '';
+        subject = 'Mnemosyne - Potwierdzenie rejestracji firmy';
         break;
       default:
-        subject = '';
+        subject = 'Mnemosyne - Company registration confirmation';
         break;
     }
 
@@ -43,11 +44,45 @@ export class EmailTemplatesService {
     return { html, subject };
   }
 
+  companyMemberInviteEmailTemplate({
+    companyInfo,
+    userInfo,
+    link,
+    language
+  }: SecurityPayloadInterface): EmailTemplateInterface {
+    const companyName = companyInfo.companyName;
+    let subject: string;
+
+    switch (language) {
+      case Language.EN:
+        subject = `Mnemosyne - You have been invited to join ${companyName}`;
+        break;
+      case Language.RU:
+        subject = `Mnemosyne - Вы были приглашены вступить в ${companyName}`;
+        break;
+      case Language.PL:
+        subject = `Mnemosyne - Zaproszono Cię do dołączenia do ${companyName}`;
+        break;
+      default:
+        subject = `Mnemosyne - You have been invited to join ${companyName}`;
+        break;
+    }
+
+    const html = companyMemberInviteTemplate({
+      userInfo,
+      companyInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
+  }
+
   registrationEmailTemplate({
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -78,7 +113,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -109,7 +144,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -140,7 +175,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -171,7 +206,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {
@@ -202,7 +237,7 @@ export class EmailTemplatesService {
     userInfo,
     link,
     language
-  }: SecurityEmailPayloadInterface): EmailTemplateInterface {
+  }: SecurityPayloadInterface): EmailTemplateInterface {
     let subject: string;
 
     switch (language) {

@@ -8,6 +8,8 @@ import { NgxTypedJsModule } from 'ngx-typed-js';
 import { LayoutsModule } from '@layouts/layouts.module';
 import { RouterModule, Routes } from '@angular/router';
 
+const components = [TermsAndConditionsComponent, HomeComponent];
+
 const routes: Routes = [
   {
     path: 'terms-and-conditions',
@@ -28,7 +30,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [TermsAndConditionsComponent, HomeComponent],
+  declarations: [...components],
   imports: [
     RouterModule.forRoot(routes),
     CommonModule,
@@ -38,6 +40,6 @@ const routes: Routes = [
     NgOptimizedImage,
     LayoutsModule
   ],
-  exports: [TermsAndConditionsComponent]
+  exports: [...components]
 })
 export class StaticModule {}

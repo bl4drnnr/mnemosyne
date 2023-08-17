@@ -29,7 +29,7 @@ export class CreateCompanyDto {
   readonly companyWebsite: string;
 
   @Matches(EmailRegex, { message: 'wrong-email-format' })
-  readonly accountOwnerEmail: string;
+  readonly companyOwnerEmail: string;
 
   @IsArray()
   @ValidateNested({ each: true })

@@ -4,7 +4,7 @@ export interface CreateCompanyPayload {
   companyLocation: string;
   companyName: string;
   companyWebsite: string;
-  accountOwnerEmail: string;
+  companyOwnerEmail: string;
   companyMembers: Array<{ email: string; role: Role }>;
   language?: string;
 }
