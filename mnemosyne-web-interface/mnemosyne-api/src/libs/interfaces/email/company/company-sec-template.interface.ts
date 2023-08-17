@@ -9,6 +9,7 @@ export interface CompanySecTemplateInterface {
   companyNameTitle: string;
   companyLocationTitle: string;
   companyWebsiteTitle: string;
-  companyOwnerTitle: string;
+  companyOwnerTitle?: string;
   companyInfo: CompanyInfoInterface;
+  userInfo?: UserInfoInterface;
 }

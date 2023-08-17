@@ -9,6 +9,7 @@ import { emailChangedTemplate } from '@email-templates/email-changed.template';
 import { SecurityPayloadInterface } from '@interfaces/security-payload.interface';
 import { EmailTemplateInterface } from '@interfaces/email-template.interface';
 import { companyRegistrationTemplate } from '@email-templates/company-registration.template';
+import { companyMemberInviteTemplate } from '@email-templates/company-member-invite.template';
 
 @Injectable()
 export class EmailTemplatesService {
@@ -67,14 +68,14 @@ export class EmailTemplatesService {
         break;
     }
 
-    // const html = companyRegistrationTemplate({
-    //   userInfo,
-    //   companyInfo,
-    //   link,
-    //   language
-    // });
+    const html = companyMemberInviteTemplate({
+      userInfo,
+      companyInfo,
+      link,
+      language
+    });
 
-    return { html: '', subject };
+    return { html, subject };
   }
 
   registrationEmailTemplate({
