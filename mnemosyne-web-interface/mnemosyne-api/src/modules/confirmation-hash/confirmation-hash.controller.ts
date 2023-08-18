@@ -32,13 +32,11 @@ export class ConfirmationHashController {
   confirmCompanyAccount(
     @TransactionParam() trx: Transaction,
     @Body() payload: ConfirmCompanyAccDto,
-    @Query('confirmationHash') confirmationHash: string,
-    @Query('language') language?: Language
+    @Query('confirmationHash') confirmationHash: string
   ) {
     return this.confirmationHashService.confirmCompanyAccount({
       payload,
       confirmationHash,
-      language,
       trx
     });
   }

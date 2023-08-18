@@ -151,9 +151,10 @@ export class ConfirmationHashService {
   async confirmCompanyAccount({
     payload,
     confirmationHash,
-    language,
     trx: transaction
   }: ConfirmCompanyAccInterface) {
+    const { language } = payload;
+
     const foundHash = await this.confirmationHashRepository.findOne({
       where: {
         confirmationHash,
@@ -177,12 +178,15 @@ export class ConfirmationHashService {
       trx: transaction
     });
 
+    const isCompanyAccConfirmed = foundHash.confirmed;
+    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
     const userDataSet = !!firstName && !!lastName;
     const userProvidedData = !!payload.firstName && !!payload.lastName;
     const passwordSet = !!password;
     const userProvidedPassword = !!payload.password;
 
-    if (!userDataSet && !userProvidedData) return new UserDataNotSetDto();
+    if (isCompanyAccConfirmed && !userDataSet && !userProvidedData)
+      return new UserDataNotSetDto();
 
     if (!userDataSet && userProvidedData) {
       await this.userService.updateUserInfo({
@@ -192,7 +196,8 @@ export class ConfirmationHashService {
       });
     }
 
-    if (!passwordSet && !userProvidedPassword) return new PasswordNotSetDto();
+    if (isCompanyAccConfirmed && !passwordSet && !userProvidedPassword)
+      return new PasswordNotSetDto();
 
     if (!passwordSet && userProvidedPassword) {
       const hashedPassword = await this.cryptographicService.hashPassword({
@@ -204,9 +209,6 @@ export class ConfirmationHashService {
         userId
       });
     }
-
-    const isCompanyAccConfirmed = foundHash.confirmed;
-    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
 
     if (isCompanyAccConfirmed && isMfaSet && isRecoverySetUp)
       throw new AccountAlreadyConfirmedException();

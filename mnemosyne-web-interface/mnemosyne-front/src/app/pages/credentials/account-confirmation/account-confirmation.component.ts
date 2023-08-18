@@ -39,7 +39,7 @@ export class AccountConfirmationComponent implements OnInit {
     private readonly router: Router
   ) {}
 
-  async confirmUserAccount(hash: string) {
+  confirmUserAccount(hash: string) {
     this.authenticationService
       .confirmAccount({
         confirmationHash: hash
@@ -48,19 +48,13 @@ export class AccountConfirmationComponent implements OnInit {
         next: ({ message }) => {
           switch (message) {
             case ConfirmAccountResponse.MFA_NOT_SET:
-              this.isMfaNotSet = true;
-              this.isRecoveryKeysNotSet = false;
-              this.isAccountConfirmed = true;
+              this.userMfaNotSet();
               break;
             case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
-              this.isMfaNotSet = false;
-              this.isRecoveryKeysNotSet = true;
-              this.isAccountConfirmed = true;
+              this.userRecoveryKeysNotSet();
               break;
             case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
-              this.isMfaNotSet = true;
-              this.isRecoveryKeysNotSet = false;
-              this.isAccountConfirmed = true;
+              this.accountConfirmed();
               break;
             default:
               this.isAccountConfirmed = true;
@@ -75,6 +69,24 @@ export class AccountConfirmationComponent implements OnInit {
     await this.router.navigate([path]);
   }
 
+  userMfaNotSet() {
+    this.isMfaNotSet = true;
+    this.isRecoveryKeysNotSet = false;
+    this.isAccountConfirmed = true;
+  }
+
+  userRecoveryKeysNotSet() {
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = true;
+    this.isAccountConfirmed = true;
+  }
+
+  accountConfirmed() {
+    this.isMfaNotSet = true;
+    this.isRecoveryKeysNotSet = false;
+    this.isAccountConfirmed = true;
+  }
+
   ngOnInit() {
     this.translationService.setPageTitle(Titles.ACCOUNT_CONFIRMATION);
 
@@ -84,7 +96,7 @@ export class AccountConfirmationComponent implements OnInit {
         await this.router.navigate(['login']);
       } else {
         this.hash = hash;
-        await this.confirmUserAccount(hash);
+        this.confirmUserAccount(hash);
       }
     });
   }

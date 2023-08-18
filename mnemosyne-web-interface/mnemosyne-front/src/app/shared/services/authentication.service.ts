@@ -18,6 +18,7 @@ import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
 import { ConfirmAccountInterface } from '@payloads/confirm-account.interface';
 import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
 import { RefreshTokensInterface } from '@payloads/refresh-tokens.interface';
+import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -54,20 +55,23 @@ export class AuthenticationService {
   confirmAccount({
     confirmationHash
   }: ConfirmAccountInterface): Observable<{ message: ConfirmAccountResponse }> {
-    const payload: ConfirmAccountInterface = { confirmationHash };
+    const params: ConfirmAccountInterface = { confirmationHash };
     const language = localStorage.getItem('translocoLang');
 
-    if (language) payload.language = language;
+    if (language) params.language = language;
 
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.CONFIRMATION_HASH,
       action: ConfirmationHashEndpoint.ACCOUNT_CONFIRMATION,
-      params: payload
+      params
     });
   }
 
-  confirmCompanyAccount(payload: ConfirmCompanyAccountInterface) {
+  confirmCompanyAccount(
+    payload: ConfirmCompanyAccountInterface
+  ): Observable<{ message: ConfirmCompanyAccountEnum }> {
+    const params = { confirmationHash: payload.confirmationHash };
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -75,7 +79,9 @@ export class AuthenticationService {
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.CONFIRMATION_HASH,
-      action: ConfirmationHashEndpoint.COMPANY_ACCOUNT_CONFIRMATION
+      action: ConfirmationHashEndpoint.COMPANY_ACCOUNT_CONFIRMATION,
+      params,
+      payload
     });
   }
 
