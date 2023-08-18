@@ -43,7 +43,11 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false, field: 'company_website' })
   companyWebsite: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+    field: 'company_owner_email'
+  })
   companyOwnerEmail: string;
 
   @Default(false)

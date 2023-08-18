@@ -1,6 +1,4 @@
 import * as node2fa from 'node-2fa';
-import * as bcryptjs from 'bcryptjs';
-import * as crypto from 'crypto';
 import { HttpException, Injectable } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
@@ -52,11 +50,13 @@ import { ChangeEmailInterface } from '@interfaces/change-email.interface';
 import { VerifySmsCodeInterface } from '@interfaces/verify-sms-code.interface';
 import { VerifyQrCodeInterface } from '@interfaces/verify-qr-code.interface';
 import { GenerateQrCodeInterface } from '@interfaces/generate-qr-code.interface';
+import { CryptographicService } from '@shared/cryptographic.service';
 
 @Injectable()
 export class SecurityService {
   constructor(
     private readonly confirmationHashService: ConfirmationHashService,
+    private readonly cryptographicService: CryptographicService,
     private readonly configService: ApiConfigService,
     private readonly userService: UsersService,
     private readonly phoneService: PhoneService,
@@ -414,7 +414,7 @@ export class SecurityService {
     const { password, phoneCode, mfaCode, fullName } = payload;
 
     const {
-      password: userPassword,
+      password: currentUserPassword,
       userSettings,
       firstName,
       lastName
@@ -423,7 +423,10 @@ export class SecurityService {
       trx
     });
 
-    const passwordEquals = await bcryptjs.compare(password, userPassword);
+    const passwordEquals = await this.cryptographicService.comparePasswords({
+      dataToCompare: password,
+      hash: currentUserPassword
+    });
     if (!passwordEquals) throw new WrongCredentialsException();
 
     try {
@@ -465,11 +468,17 @@ export class SecurityService {
 
     if (isWithinDay) throw new PasswordChangedException();
 
-    const passwordEquals = await bcryptjs.compare(currentPassword, password);
+    const passwordEquals = await this.cryptographicService.comparePasswords({
+      dataToCompare: currentPassword,
+      hash: password
+    });
 
     if (!passwordEquals) throw new WrongCredentialsException();
 
-    const samePassword = await bcryptjs.compare(newPassword, password);
+    const samePassword = await this.cryptographicService.comparePasswords({
+      dataToCompare: newPassword,
+      hash: password
+    });
 
     if (samePassword) throw new PreviousPasswordException();
 
@@ -487,10 +496,9 @@ export class SecurityService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    const hashedPassword = await bcryptjs.hash(
-      newPassword,
-      this.configService.hashPasswordRounds
-    );
+    const hashedPassword = await this.cryptographicService.hashPassword({
+      password: newPassword
+    });
 
     await this.userService.updateUser({
       payload: { password: hashedPassword },
@@ -522,7 +530,8 @@ export class SecurityService {
 
     if (existingUser) throw new EmailAlreadyTakenException();
 
-    const confirmationHash = crypto.randomBytes(20).toString('hex');
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
 
     await this.emailService.sendEmailChangeEmail({
       payload: {

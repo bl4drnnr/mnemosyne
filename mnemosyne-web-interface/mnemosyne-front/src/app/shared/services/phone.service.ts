@@ -13,7 +13,7 @@ import { DisableTwoFaPayload } from '@payloads/disable-two-fa.interface';
 import { SendSmsPayload } from '@payloads/send-sms.interface';
 import { SendSmsCodeResponse } from '@responses/send-sms-code.enum';
 import { SmsClearedResponse } from '@responses/sms-cleared.enum';
-import { HashSendSmsPayload } from '@interfaces/services/phone/hash-send-sms.interface';
+import { HashSendSmsPayload } from '@payloads/hash-send-sms.interface';
 
 @Injectable({
   providedIn: 'root'

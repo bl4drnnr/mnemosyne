@@ -39,36 +39,52 @@ export class AccountConfirmationComponent implements OnInit {
     private readonly router: Router
   ) {}
 
-  async confirmUserAccount(hash: string) {
-    this.authenticationService.confirmAccount({ hash }).subscribe({
-      next: ({ message }) => {
-        switch (message) {
-          case ConfirmAccountResponse.MFA_NOT_SET:
-            this.isMfaNotSet = true;
-            this.isRecoveryKeysNotSet = false;
-            this.isAccountConfirmed = true;
-            break;
-          case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
-            this.isMfaNotSet = false;
-            this.isRecoveryKeysNotSet = true;
-            this.isAccountConfirmed = true;
-            break;
-          case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
-            this.isMfaNotSet = true;
-            this.isRecoveryKeysNotSet = false;
-            this.isAccountConfirmed = true;
-            break;
-          default:
-            this.isAccountConfirmed = true;
-            break;
-        }
-      },
-      error: () => (this.accountConfirmationError = true)
-    });
+  confirmUserAccount(hash: string) {
+    this.authenticationService
+      .confirmAccount({
+        confirmationHash: hash
+      })
+      .subscribe({
+        next: ({ message }) => {
+          switch (message) {
+            case ConfirmAccountResponse.MFA_NOT_SET:
+              this.userMfaNotSet();
+              break;
+            case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
+              this.userRecoveryKeysNotSet();
+              break;
+            case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
+              this.accountConfirmed();
+              break;
+            default:
+              this.isAccountConfirmed = true;
+              break;
+          }
+        },
+        error: () => (this.accountConfirmationError = true)
+      });
   }
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  userMfaNotSet() {
+    this.isMfaNotSet = true;
+    this.isRecoveryKeysNotSet = false;
+    this.isAccountConfirmed = true;
+  }
+
+  userRecoveryKeysNotSet() {
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = true;
+    this.isAccountConfirmed = true;
+  }
+
+  accountConfirmed() {
+    this.isMfaNotSet = true;
+    this.isRecoveryKeysNotSet = false;
+    this.isAccountConfirmed = true;
   }
 
   ngOnInit() {
@@ -80,7 +96,7 @@ export class AccountConfirmationComponent implements OnInit {
         await this.router.navigate(['login']);
       } else {
         this.hash = hash;
-        await this.confirmUserAccount(hash);
+        this.confirmUserAccount(hash);
       }
     });
   }

@@ -3,13 +3,14 @@ import { Language } from '@interfaces/language.enum';
 import { registrationTemplate } from '@email-templates/registration.template';
 import { emailChangeTemplate } from '@email-templates/email-change.template';
 import { forgotPasswordTemplate } from '@email-templates/forgot-password.template';
-import { registrationCompletedTemplate } from '@email-templates/registration-completed.template';
-import { resetPasswordCompletedTemplate } from '@email-templates/reset-password-completed.template';
+import { regCompletedTemplate } from '@email-templates/reg-completed.template';
+import { resetPassCompletedTemplate } from '@email-templates/reset-pass-completed.template';
 import { emailChangedTemplate } from '@email-templates/email-changed.template';
 import { SecurityPayloadInterface } from '@interfaces/security-payload.interface';
 import { EmailTemplateInterface } from '@interfaces/email-template.interface';
 import { companyRegistrationTemplate } from '@email-templates/company-registration.template';
 import { companyMemberInviteTemplate } from '@email-templates/company-member-invite.template';
+import { companyRegCompleteTemplate } from '@email-templates/company-reg-complete.template';
 
 @Injectable()
 export class EmailTemplatesService {
@@ -131,7 +132,38 @@ export class EmailTemplatesService {
         break;
     }
 
-    const html = registrationCompletedTemplate({
+    const html = regCompletedTemplate({
+      link,
+      userInfo,
+      language
+    });
+
+    return { html, subject };
+  }
+
+  companyRegistrationComplete({
+    userInfo,
+    link,
+    language
+  }: SecurityPayloadInterface): EmailTemplateInterface {
+    let subject: string;
+
+    switch (language) {
+      case Language.EN:
+        subject = 'Mnemosyne - Welcome';
+        break;
+      case Language.RU:
+        subject = 'Mnemosyne - Доборо пожаловать';
+        break;
+      case Language.PL:
+        subject = 'Mnemosyne - Witamy';
+        break;
+      default:
+        subject = 'Mnemosyne - Welcome';
+        break;
+    }
+
+    const html = companyRegCompleteTemplate({
       link,
       userInfo,
       language
@@ -193,7 +225,7 @@ export class EmailTemplatesService {
         break;
     }
 
-    const html = resetPasswordCompletedTemplate({
+    const html = resetPassCompletedTemplate({
       userInfo,
       link,
       language

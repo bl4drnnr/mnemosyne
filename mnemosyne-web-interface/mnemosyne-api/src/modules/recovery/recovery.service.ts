@@ -9,6 +9,7 @@ import { LoginKeysInterface } from '@interfaces/login-keys.interface';
 import { GenerateKeysInterface } from '@interfaces/generate-keys.interface';
 import { RecoverAccountInterface } from '@interfaces/recover-account.interface';
 import { GenerateAndSaveKeysInterface } from '@interfaces/generate-and-save-keys.interface';
+import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 
 @Injectable()
 export class RecoveryService {
@@ -91,7 +92,8 @@ export class RecoveryService {
     );
 
     const recoveryKeysFingerprint = this.cryptographicService.hash({
-      data: encryptedRecoveryKeys
+      data: encryptedRecoveryKeys,
+      algorithm: CryptoHashAlgorithm.SHA512
     });
 
     const { id: userId, userSettings } =
@@ -143,7 +145,8 @@ export class RecoveryService {
     );
 
     const recoveryKeysFingerprint = this.cryptographicService.hash({
-      data: encryptedRecoveryKeys
+      data: encryptedRecoveryKeys,
+      algorithm: CryptoHashAlgorithm.SHA512
     });
 
     await this.userService.updateUserSettings({

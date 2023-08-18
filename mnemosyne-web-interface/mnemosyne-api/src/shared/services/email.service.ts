@@ -8,7 +8,7 @@ import { SecurityInitEmailInterface } from '@interfaces/security-init-email.inte
 import { CompletedSecurityEmailInterface } from '@interfaces/completed-security-email.interface';
 import { SendEmailInterface } from '@interfaces/send-email.interface';
 import { EmailConfirmHashInterface } from '@interfaces/email-confirm-hash.interface';
-import { GetConfirmationLinkInterface } from '@interfaces/get-confirmation-link.interface';
+import { GetConfirmLinkInterface } from '@interfaces/get-confirm-link.interface';
 
 @Injectable()
 export class EmailService {
@@ -131,6 +131,23 @@ export class EmailService {
     await this.sendEmail({ to, html, subject });
   }
 
+  async sendCompanyRegistrationCompleteEmail({
+    to,
+    userInfo,
+    language
+  }: CompletedSecurityEmailInterface) {
+    const link = this.getConfirmationLink({ route: 'login' });
+
+    const { html, subject } =
+      this.emailTemplatesService.companyRegistrationComplete({
+        userInfo,
+        link,
+        language
+      });
+
+    await this.sendEmail({ to, html, subject });
+  }
+
   async sendForgotPasswordEmail({
     payload,
     userInfo,
@@ -227,7 +244,7 @@ export class EmailService {
     await this.sendEmail({ to, html, subject });
   }
 
-  private getConfirmationLink({ hash, route }: GetConfirmationLinkInterface) {
+  private getConfirmationLink({ hash, route }: GetConfirmLinkInterface) {
     return `${this.configService.frontEndUrl}/${route}${
       hash ? `/${hash}` : ''
     }`;
