@@ -1,4 +1,6 @@
+import * as crypto from 'crypto';
 import * as CryptoJS from 'crypto-js';
+import * as bcryptjs from 'bcryptjs';
 import { Injectable } from '@nestjs/common';
 import { ApiConfigService } from '@shared/config.service';
 import { HashInterface } from '@interfaces/hash.interface';
@@ -7,6 +9,8 @@ import { EncryptInterface } from '@interfaces/encrypt.interface';
 import { DecryptInterface } from '@interfaces/decrypt.interface';
 import { EncryptRecoveryKeysInterface } from '@interfaces/encrypt-recovery-keys.interface';
 import { DecryptRecoveryKeysInterface } from '@interfaces/decrypt-recovery-keys.interface';
+import { HashPasswordInterface } from '@interfaces/hash-password.interface';
+import { ComparePasswordsInterface } from '@interfaces/compare-passwords.interface';
 
 @Injectable()
 export class CryptographicService {
@@ -17,10 +21,17 @@ export class CryptographicService {
 
   constructor(private readonly configService: ApiConfigService) {}
 
-  hash({ data }: HashInterface) {
-    return CryptoJS.SHA512(data, {
-      iterations: this.iterations
-    }).toString();
+  hash({ data, algorithm }: HashInterface) {
+    switch (algorithm) {
+      case 'SHA512':
+        return CryptoJS.SHA512(data, {
+          iterations: this.iterations
+        }).toString();
+      case 'MD5':
+        return CryptoJS.MD5(data, {
+          iterations: this.iterations
+        }).toString();
+    }
   }
 
   hashPassphrase({ passphrase }: HashPassphraseInterface) {
@@ -28,6 +39,14 @@ export class CryptographicService {
       keySize: this.recoveryKeySize / 32,
       iterations: this.iterations
     }).toString();
+  }
+
+  async hashPassword({ password }: HashPasswordInterface) {
+    return await bcryptjs.hash(password, this.configService.hashPasswordRounds);
+  }
+
+  async comparePasswords({ dataToCompare, hash }: ComparePasswordsInterface) {
+    return await bcryptjs.compare(dataToCompare, hash);
   }
 
   encrypt({ data, passphrase }: EncryptInterface) {
@@ -76,5 +95,9 @@ export class CryptographicService {
       ciphertext: encryptedRecoveryKeys,
       passphrase: hashedPassphrase
     });
+  }
+
+  generateConfirmationHash() {
+    return crypto.randomBytes(20).toString('hex');
   }
 }

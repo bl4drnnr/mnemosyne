@@ -1,19 +1,22 @@
-import * as crypto from 'crypto';
 import { Injectable } from '@nestjs/common';
 import { Company } from '@models/company.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { RegistrationCompanyInterface } from '@interfaces/registration-company.interface';
 import { CompanyCreatedDto } from '@dto/company-created.dto';
-import { CompanyAlreadyExistsException } from '@exceptions/company-already-exists.exception';
+import { CompanyExistsException } from '@exceptions/company-exists.exception';
 import { GetCompanyByNameInterface } from '@interfaces/get-company-by-name.interface';
 import { CreateCompanyInterface } from '@interfaces/create-company.interface';
 import { UsersService } from '@modules/users.service';
 import { EmailService } from '@shared/email.service';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
+import { UserInfoInterface } from '@interfaces/user-info.interface';
+import { CryptographicService } from '@shared/cryptographic.service';
+import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 
 @Injectable()
 export class CompanyService {
   constructor(
+    private readonly cryptographicService: CryptographicService,
     private readonly userService: UsersService,
     private readonly emailService: EmailService,
     @InjectModel(Company)
@@ -29,14 +32,12 @@ export class CompanyService {
       trx
     });
 
-    if (existingCompany) throw new CompanyAlreadyExistsException();
+    if (existingCompany) throw new CompanyExistsException();
 
     await this.createCompanyAccount({
       ...payload,
       trx
     });
-
-    const confirmationHash = crypto.randomBytes(20).toString('hex');
 
     let to: string;
     let userId: string;
@@ -58,13 +59,40 @@ export class CompanyService {
       userId = createdOwnerAccount.id;
     }
 
-    // if (companyMembers.length) {
-    //   for (const companyMember in companyMembers) {
-    //
-    //   }
-    // }
+    for (const companyMember of companyMembers) {
+      const userInfo: UserInfoInterface = {};
+      // let companyMemberRegEmailPayload: VerificationEmailInterface = {
+      //   confirmationHash: "",
+      //   confirmationType: undefined,
+      //   userId: ""
+      // };
 
-    const companyRegistrationEmailPayload = {
+      const existingCompanyMember = await this.userService.getUserByEmail({
+        email: companyMember.email,
+        trx
+      });
+
+      if (existingCompanyMember) {
+        userInfo.email = existingCompanyMember.email;
+        userInfo.firstName = existingCompanyMember.firstName;
+        userInfo.lastName = existingCompanyMember.lastName;
+      } else {
+        userInfo.email = companyMember.email;
+      }
+
+      // await this.emailService.sendCompanyMemberEmail({
+      //   companyInfo: { ...payload },
+      //   payload: {},
+      //   userInfo,
+      //   language,
+      //   trx
+      // });
+    }
+
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
+
+    const companyRegistrationEmailPayload: VerificationEmailInterface = {
       confirmationType: Confirmation.COMPANY_REGISTRATION,
       confirmationHash,
       userId,

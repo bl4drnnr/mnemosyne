@@ -32,7 +32,7 @@ export class TransactionInterceptor implements NestInterceptor {
         await transaction.rollback();
 
         const errorMessage = err.message || 'internal-server-error';
-        const errorStatus = err.getStatus() || HttpStatus.INTERNAL_SERVER_ERROR;
+        const errorStatus = HttpStatus.INTERNAL_SERVER_ERROR;
 
         throw new HttpException(errorMessage, errorStatus);
       })

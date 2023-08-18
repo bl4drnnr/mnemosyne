@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { ChangeEmailResponse } from '@responses/change-email.enum';
 import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.enum';
-import { ConfirmEmailChangeInterface } from '@interfaces/services/email/confirm-email-change.interface';
+import { ConfirmEmailChangeInterface } from '@payloads/confirm-email-change.interface';
 
 @Injectable({
   providedIn: 'root'

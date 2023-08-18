@@ -6,6 +6,7 @@ import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { Language } from '@interfaces/language.enum';
+import { ConfirmCompanyAccDto } from '@dto/confirm-company-acc.dto';
 
 @Controller('confirmation-hash')
 export class ConfirmationHashController {
@@ -20,6 +21,22 @@ export class ConfirmationHashController {
     @Query('language') language?: Language
   ) {
     return this.confirmationHashService.confirmAccount({
+      confirmationHash,
+      language,
+      trx
+    });
+  }
+
+  @UsePipes(ValidationPipe)
+  @Post('company-account-confirmation')
+  confirmCompanyAccount(
+    @TransactionParam() trx: Transaction,
+    @Body() payload: ConfirmCompanyAccDto,
+    @Query('confirmationHash') confirmationHash: string,
+    @Query('language') language?: Language
+  ) {
+    return this.confirmationHashService.confirmCompanyAccount({
+      payload,
       confirmationHash,
       language,
       trx

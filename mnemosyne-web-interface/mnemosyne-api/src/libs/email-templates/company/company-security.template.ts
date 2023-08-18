@@ -200,10 +200,10 @@ export const companySecurityTemplate = ({
                                                                                                 <div style="font-family: inherit; text-align: inherit"><span style="color: #000; font-size: 15px">${content}</span></div>
                                                                                                 <div>
                                                                                                     <ul>
-                                                                                                        <li><b>${companyNameTitle}:</b> ${companyInfo.companyName}</li>
-                                                                                                        <li><b>${companyLocationTitle}:</b> ${companyInfo.companyLocation}</li>
-                                                                                                        <li><b>${companyWebsiteTitle}:</b> <a href="https://${companyInfo.companyWebsite}">${companyInfo.companyWebsite}</a></li>
-                                                                                                        <li><b>${companyOwnerTitle}:</b> <a href="mailto:${companyInfo.companyOwnerEmail}">${companyInfo.companyOwnerEmail}</a></li>
+                                                                                                        <li style="color: #000"><b>${companyNameTitle}:</b> ${companyInfo.companyName}</li>
+                                                                                                        <li style="color: #000"><b>${companyLocationTitle}:</b> ${companyInfo.companyLocation}</li>
+                                                                                                        <li style="color: #000"><b>${companyWebsiteTitle}:</b> <a href="https://${companyInfo.companyWebsite}">${companyInfo.companyWebsite}</a></li>
+                                                                                                        <li style="color: #000"><b>${companyOwnerTitle}:</b> <a href="mailto:${companyInfo.companyOwnerEmail}">${companyInfo.companyOwnerEmail}</a></li>
                                                                                                     </ul>
                                                                                                 </div>
                                                                                             </div>

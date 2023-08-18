@@ -1,7 +1,5 @@
 import * as node2fa from 'node-2fa';
 import * as jwt from 'jsonwebtoken';
-import * as bcryptjs from 'bcryptjs';
-import * as crypto from 'crypto';
 import * as uuid from 'uuid';
 import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { UsersService } from '@modules/users.service';
@@ -38,10 +36,12 @@ import { GenerateTokensInterface } from '@interfaces/generate-tokens.interface';
 import { GetTokenInterface } from '@interfaces/get-token.interface';
 import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
 import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
+import { CryptographicService } from '@shared/cryptographic.service';
 
 @Injectable()
 export class AuthService {
   constructor(
+    private readonly cryptographicService: CryptographicService,
     private readonly jwtService: JwtService,
     private readonly configService: ApiConfigService,
     private readonly phoneService: PhoneService,
@@ -111,10 +111,9 @@ export class AuthService {
     if (existingUser) throw new UserAlreadyExistsException();
     if (!tac) throw new TacNotAcceptedException();
 
-    const hashedPassword = await bcryptjs.hash(
-      password,
-      this.configService.hashPasswordRounds
-    );
+    const hashedPassword = await this.cryptographicService.hashPassword({
+      password
+    });
 
     const { id: userId } = await this.usersService.createUser({
       payload: {
@@ -124,7 +123,8 @@ export class AuthService {
       trx
     });
 
-    const confirmationHash = crypto.randomBytes(20).toString('hex');
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
 
     await this.emailService.sendRegistrationConfirmationEmail({
       payload: {

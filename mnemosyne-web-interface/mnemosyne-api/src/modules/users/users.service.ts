@@ -1,6 +1,4 @@
 import { S3 } from 'aws-sdk';
-import * as crypto from 'crypto';
-import * as bcryptjs from 'bcryptjs';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@models/user.model';
@@ -34,10 +32,13 @@ import { GetUserSecuritySettingsInterface } from '@interfaces/get-user-security-
 import { UpdateUserInfoInterface } from '@interfaces/update-user-info.interface';
 import { GetUserByRecoveryKeysInterface } from '@interfaces/get-user-by-recovery-keys.interface';
 import { DeleteUserAccountInterface } from '@interfaces/delete-user-account.interface';
+import { CryptographicService } from '@shared/cryptographic.service';
+import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 
 @Injectable()
 export class UsersService {
   constructor(
+    private readonly cryptographicService: CryptographicService,
     private readonly roleService: RolesService,
     private readonly emailService: EmailService,
     private readonly configService: ApiConfigService,
@@ -121,7 +122,10 @@ export class UsersService {
     const user = await this.getUserByEmail({ email, trx: transaction });
     if (!user) throw new WrongCredentialsException();
 
-    const passwordEquals = await bcryptjs.compare(password, user.password);
+    const passwordEquals = await this.cryptographicService.comparePasswords({
+      dataToCompare: password,
+      hash: user.password
+    });
     if (!passwordEquals) throw new WrongCredentialsException();
 
     return user;
@@ -161,7 +165,8 @@ export class UsersService {
       if (isWithinThreeMinutes) throw new WrongTimeframeException();
     }
 
-    const confirmationHash = crypto.randomBytes(20).toString('hex');
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
 
     await this.emailService.sendForgotPasswordEmail({
       payload: {
@@ -198,7 +203,10 @@ export class UsersService {
 
     if (type !== 'png') throw new WrongPictureException();
 
-    const userIdHash = crypto.createHash('md5').update(userId).digest('hex');
+    const userIdHash = this.cryptographicService.hash({
+      data: userId,
+      algorithm: CryptoHashAlgorithm.MD5
+    });
 
     const params = {
       Bucket: bucketName,
@@ -219,7 +227,10 @@ export class UsersService {
 
     const s3 = new S3({ accessKeyId, secretAccessKey });
 
-    const userIdHash = crypto.createHash('md5').update(userId).digest('hex');
+    const userIdHash = this.cryptographicService.hash({
+      data: userId,
+      algorithm: CryptoHashAlgorithm.MD5
+    });
 
     let isProfilePicPresent = true;
 

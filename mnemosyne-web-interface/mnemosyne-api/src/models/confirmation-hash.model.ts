@@ -51,7 +51,7 @@ export class ConfirmationHash extends Model<
       'COMPANY_REGISTRATION'
     ),
     allowNull: false,
-    field: 'Confirmation'
+    field: 'confirmation'
   })
   confirmationType: Confirmation;
 

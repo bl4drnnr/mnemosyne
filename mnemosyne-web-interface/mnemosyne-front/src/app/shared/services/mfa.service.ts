@@ -10,7 +10,7 @@ import { LoginPhonePayload } from '@payloads/login-phone.interface';
 import { GenerateTwoFaResponse } from '@responses/generate-two-fa.interface';
 import { DisableTwoFaPayload } from '@payloads/disable-two-fa.interface';
 import { MfaDisabledResponse } from '@responses/mfa-disabled.enum';
-import { RegistrationGenerate2faInterface } from '@interfaces/services/mfa/registration-generate-2fa.interface';
+import { RegistrationGenerate2faInterface } from '@payloads/registration-generate-2fa.interface';
 
 @Injectable({
   providedIn: 'root'

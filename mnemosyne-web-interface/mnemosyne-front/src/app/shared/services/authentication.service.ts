@@ -15,8 +15,9 @@ import { ForgotPasswordResponse } from '@responses/forgot-password.enum';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.enum';
 import { LogoutResponse } from '@responses/logout.enum';
 import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
-import { RefreshTokensInterface } from '@interfaces/services/auth/refresh-tokens.interface';
-import { ConfirmAccountInterface } from '@interfaces/services/auth/confirm-account.interface';
+import { ConfirmAccountInterface } from '@payloads/confirm-account.interface';
+import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
+import { RefreshTokensInterface } from '@payloads/refresh-tokens.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -51,11 +52,9 @@ export class AuthenticationService {
   }
 
   confirmAccount({
-    hash
+    confirmationHash
   }: ConfirmAccountInterface): Observable<{ message: ConfirmAccountResponse }> {
-    const payload: { confirmationHash: string; language?: string } = {
-      confirmationHash: hash
-    };
+    const payload: ConfirmAccountInterface = { confirmationHash };
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -65,6 +64,18 @@ export class AuthenticationService {
       controller: Controller.CONFIRMATION_HASH,
       action: ConfirmationHashEndpoint.ACCOUNT_CONFIRMATION,
       params: payload
+    });
+  }
+
+  confirmCompanyAccount(payload: ConfirmCompanyAccountInterface) {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
+    return this.apiService.apiProxyRequest({
+      method: Method.POST,
+      controller: Controller.CONFIRMATION_HASH,
+      action: ConfirmationHashEndpoint.COMPANY_ACCOUNT_CONFIRMATION
     });
   }
 

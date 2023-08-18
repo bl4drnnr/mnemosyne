@@ -40,31 +40,35 @@ export class AccountConfirmationComponent implements OnInit {
   ) {}
 
   async confirmUserAccount(hash: string) {
-    this.authenticationService.confirmAccount({ hash }).subscribe({
-      next: ({ message }) => {
-        switch (message) {
-          case ConfirmAccountResponse.MFA_NOT_SET:
-            this.isMfaNotSet = true;
-            this.isRecoveryKeysNotSet = false;
-            this.isAccountConfirmed = true;
-            break;
-          case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
-            this.isMfaNotSet = false;
-            this.isRecoveryKeysNotSet = true;
-            this.isAccountConfirmed = true;
-            break;
-          case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
-            this.isMfaNotSet = true;
-            this.isRecoveryKeysNotSet = false;
-            this.isAccountConfirmed = true;
-            break;
-          default:
-            this.isAccountConfirmed = true;
-            break;
-        }
-      },
-      error: () => (this.accountConfirmationError = true)
-    });
+    this.authenticationService
+      .confirmAccount({
+        confirmationHash: hash
+      })
+      .subscribe({
+        next: ({ message }) => {
+          switch (message) {
+            case ConfirmAccountResponse.MFA_NOT_SET:
+              this.isMfaNotSet = true;
+              this.isRecoveryKeysNotSet = false;
+              this.isAccountConfirmed = true;
+              break;
+            case ConfirmAccountResponse.RECOVERY_KEYS_NOT_SET:
+              this.isMfaNotSet = false;
+              this.isRecoveryKeysNotSet = true;
+              this.isAccountConfirmed = true;
+              break;
+            case ConfirmAccountResponse.ACCOUNT_CONFIRMED:
+              this.isMfaNotSet = true;
+              this.isRecoveryKeysNotSet = false;
+              this.isAccountConfirmed = true;
+              break;
+            default:
+              this.isAccountConfirmed = true;
+              break;
+          }
+        },
+        error: () => (this.accountConfirmationError = true)
+      });
   }
 
   async handleRedirect(path: string) {
