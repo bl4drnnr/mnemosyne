@@ -19,14 +19,6 @@ export class ConfirmCompanyAccDto {
   readonly password: string;
 
   @IsOptional()
-  @Matches(MfaCodeRegex, { message: 'mfa-code-should-be-6-digit-code' })
-  readonly mfaCode: string;
-
-  @IsOptional()
-  @Matches(MfaCodeRegex, { message: 'phone-code-should-be-6-digit-code' })
-  readonly phoneCode: string;
-
-  @IsOptional()
   @IsEnum(Language)
   readonly language: Language;
 }

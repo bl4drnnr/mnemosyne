@@ -41,8 +41,11 @@ module.exports = {
   },
 
   async down(queryInterface) {
+    await queryInterface.bulkDelete('companies', null, {});
+    await queryInterface.bulkDelete('sessions', null, {});
     await queryInterface.bulkDelete('roles', null, {});
     await queryInterface.bulkDelete('users', null, {});
+    await queryInterface.bulkDelete('users_settings', null, {});
     await queryInterface.bulkDelete('confirmation_hashes', null, {});
   }
 };

@@ -62,6 +62,7 @@ export class UsersService {
     const defaultRole = await this.roleService.getRoleByValue('DEFAULT');
     const user = await this.userRepository.create(payload, { transaction });
     await user.$set('roles', [defaultRole.id], { transaction });
+    await this.createUserSettings({ userId: user.id, trx: transaction });
     return user;
   }
 
@@ -120,7 +121,8 @@ export class UsersService {
     trx: transaction
   }: VerifyUserCredentialsInterface) {
     const user = await this.getUserByEmail({ email, trx: transaction });
-    if (!user) throw new WrongCredentialsException();
+
+    if (!user || !user.password) throw new WrongCredentialsException();
 
     const passwordEquals = await this.cryptographicService.comparePasswords({
       dataToCompare: password,

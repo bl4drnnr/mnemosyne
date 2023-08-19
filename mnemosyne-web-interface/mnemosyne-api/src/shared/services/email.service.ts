@@ -133,14 +133,14 @@ export class EmailService {
 
   async sendCompanyRegistrationCompleteEmail({
     to,
-    userInfo,
+    companyInfo,
     language
   }: CompletedSecurityEmailInterface) {
     const link = this.getConfirmationLink({ route: 'login' });
 
     const { html, subject } =
       this.emailTemplatesService.companyRegistrationComplete({
-        userInfo,
+        companyInfo,
         link,
         language
       });

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { Company } from '@models/company.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { RegistrationCompanyInterface } from '@interfaces/registration-company.interface';
@@ -12,20 +12,29 @@ import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
+import { GetCompanyByOwnerIdInterface } from '@interfaces/get-company-by-owner-id.interface';
 
 @Injectable()
 export class CompanyService {
   constructor(
     private readonly cryptographicService: CryptographicService,
-    private readonly userService: UsersService,
+    @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
+    @Inject(forwardRef(() => UsersService))
+    private readonly usersService: UsersService,
     @InjectModel(Company)
     private readonly companyRepository: typeof Company
   ) {}
 
   async createCompany({ payload, trx }: RegistrationCompanyInterface) {
-    const { companyName, companyOwnerEmail, companyMembers, language } =
-      payload;
+    const {
+      companyName,
+      companyOwnerEmail,
+      companyWebsite,
+      companyLocation,
+      companyMembers,
+      language
+    } = payload;
 
     const existingCompany = await this.getCompanyByName({
       companyName,
@@ -34,15 +43,10 @@ export class CompanyService {
 
     if (existingCompany) throw new CompanyExistsException();
 
-    await this.createCompanyAccount({
-      ...payload,
-      trx
-    });
-
     let to: string;
     let userId: string;
 
-    const ownerExistingAccount = await this.userService.getUserByEmail({
+    const ownerExistingAccount = await this.usersService.getUserByEmail({
       email: companyOwnerEmail,
       trx
     });
@@ -51,13 +55,25 @@ export class CompanyService {
       to = ownerExistingAccount.email;
       userId = ownerExistingAccount.id;
     } else {
-      const createdOwnerAccount = await this.userService.createUser({
+      const createdOwnerAccount = await this.usersService.createUser({
         payload: { email: companyOwnerEmail },
         trx
       });
       to = companyOwnerEmail;
       userId = createdOwnerAccount.id;
     }
+
+    const companyCreationPayload = {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerId: userId,
+      trx
+    };
+
+    await this.createCompanyAccount({
+      ...companyCreationPayload
+    });
 
     for (const companyMember of companyMembers) {
       const userInfo: UserInfoInterface = {};
@@ -67,7 +83,7 @@ export class CompanyService {
       //   userId: ""
       // };
 
-      const existingCompanyMember = await this.userService.getUserByEmail({
+      const existingCompanyMember = await this.usersService.getUserByEmail({
         email: companyMember.email,
         trx
       });
@@ -119,11 +135,21 @@ export class CompanyService {
     });
   }
 
+  async getCompanyByOwnerId({
+    companyOwnerId,
+    trx: transaction
+  }: GetCompanyByOwnerIdInterface) {
+    return await this.companyRepository.findOne({
+      where: { companyOwnerId },
+      transaction
+    });
+  }
+
   private async createCompanyAccount({
     companyName,
     companyLocation,
     companyWebsite,
-    companyOwnerEmail,
+    companyOwnerId,
     trx: transaction
   }: CreateCompanyInterface) {
     return await this.companyRepository.create(
@@ -131,7 +157,7 @@ export class CompanyService {
         companyName,
         companyLocation,
         companyWebsite,
-        companyOwnerEmail
+        companyOwnerId
       },
       { transaction }
     );

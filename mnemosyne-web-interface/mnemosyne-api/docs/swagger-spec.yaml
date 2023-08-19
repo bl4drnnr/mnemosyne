@@ -209,6 +209,19 @@ paths:
       responses:
         "201":
           description: ""
+  /api/company/create-company:
+    post:
+      operationId: CompanyController_createCompany
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCompanyDto"
+      responses:
+        "201":
+          description: ""
   /api/security/registration-generate-2fa-qr:
     get:
       operationId: SecurityController_registrationGenerateTwoFaQrCode
@@ -531,19 +544,6 @@ paths:
       responses:
         "201":
           description: ""
-  /api/company/create-company:
-    post:
-      operationId: CompanyController_createCompany
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateCompanyDto"
-      responses:
-        "201":
-          description: ""
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.
@@ -586,6 +586,9 @@ components:
     RevokeRoleDto:
       type: object
       properties: {}
+    CreateCompanyDto:
+      type: object
+      properties: {}
     LoginGenerate2faQrDto:
       type: object
       properties: {}
@@ -620,8 +623,5 @@ components:
       type: object
       properties: {}
     RecoverAccountDto:
-      type: object
-      properties: {}
-    CreateCompanyDto:
       type: object
       properties: {}

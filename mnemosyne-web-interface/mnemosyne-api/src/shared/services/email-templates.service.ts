@@ -70,8 +70,8 @@ export class EmailTemplatesService {
     }
 
     const html = companyMemberInviteTemplate({
-      userInfo,
       companyInfo,
+      userInfo,
       link,
       language
     });
@@ -133,8 +133,8 @@ export class EmailTemplatesService {
     }
 
     const html = regCompletedTemplate({
-      link,
       userInfo,
+      link,
       language
     });
 
@@ -142,30 +142,31 @@ export class EmailTemplatesService {
   }
 
   companyRegistrationComplete({
-    userInfo,
+    companyInfo,
     link,
     language
   }: SecurityPayloadInterface): EmailTemplateInterface {
+    const companyName = companyInfo.companyName;
     let subject: string;
 
     switch (language) {
       case Language.EN:
-        subject = 'Mnemosyne - Welcome';
+        subject = `Mnemosyne - Welcome - ${companyName}`;
         break;
       case Language.RU:
-        subject = 'Mnemosyne - Доборо пожаловать';
+        subject = `Mnemosyne - Доборо пожаловать - ${companyName}`;
         break;
       case Language.PL:
-        subject = 'Mnemosyne - Witamy';
+        subject = `Mnemosyne - Witamy - ${companyName}`;
         break;
       default:
-        subject = 'Mnemosyne - Welcome';
+        subject = `Mnemosyne - Welcome - ${companyName}`;
         break;
     }
 
     const html = companyRegCompleteTemplate({
+      companyInfo,
       link,
-      userInfo,
       language
     });
 

@@ -55,5 +55,6 @@
   "email-already-taken": "Provided email address has already been taken",
   "password-already-changed": "Password was changed less than 24h ago",
   "company-members-limit-reached": "You've reached the limit of users you can invite while registration",
-  "member-already-on-list": "Company member is already on the list"
+  "member-already-on-list": "Company member is already on the list",
+  "company-already-exists": "Company with this name already exists"
 }
