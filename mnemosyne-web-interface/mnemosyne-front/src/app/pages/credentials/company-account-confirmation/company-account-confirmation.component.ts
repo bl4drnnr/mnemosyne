@@ -23,11 +23,18 @@ import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.en
 export class CompanyAccountConfirmationComponent implements OnInit {
   step = 1;
 
+  firstName: string;
+  lastName: string;
+  incorrectFirstName: boolean;
+  incorrectLastName: boolean;
+  password: string;
+  incorrectPassword: boolean;
+
   isCompanyAccConfirmed = false;
-  isMfaNotSet = true;
-  isRecoveryKeysNotSet = true;
   isUserDataNotSet = true;
   isPasswordNotSet = true;
+  isMfaNotSet = true;
+  isRecoveryKeysNotSet = true;
   accountConfirmationError: boolean;
 
   hash: string;
@@ -44,7 +51,10 @@ export class CompanyAccountConfirmationComponent implements OnInit {
   confirmCompanyAccount(hash: string) {
     this.authenticationService
       .confirmCompanyAccount({
-        confirmationHash: hash
+        confirmationHash: hash,
+        firstName: this.firstName,
+        lastName: this.lastName,
+        password: this.password
       })
       .subscribe({
         next: ({ message }) => {
@@ -74,22 +84,42 @@ export class CompanyAccountConfirmationComponent implements OnInit {
   }
 
   userDataNotSet() {
+    this.isUserDataNotSet = true;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = false;
     this.isCompanyAccConfirmed = true;
   }
 
   userPasswordNotSet() {
+    this.isUserDataNotSet = false;
+    this.isPasswordNotSet = true;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = false;
     this.isCompanyAccConfirmed = true;
   }
 
   userMfaNotSet() {
+    this.isUserDataNotSet = false;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = true;
+    this.isRecoveryKeysNotSet = false;
     this.isCompanyAccConfirmed = true;
   }
 
   userRecoveryNotSet() {
+    this.isUserDataNotSet = false;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = true;
     this.isCompanyAccConfirmed = true;
   }
 
   companyAccountConfirmed() {
+    this.isUserDataNotSet = true;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = false;
     this.isCompanyAccConfirmed = true;
   }
 

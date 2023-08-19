@@ -41,7 +41,7 @@ export const companyRegistrationTemplate = ({
     case Language.PL:
       title = `Witaj, ${username}`;
       content =
-        'Dziękujemy, że zdecydowałeś się być częścią naszej społeczności. Wygląda na to, że chcesz stworzyć firmę/organizację i mieć możliwość zapraszania innych użytkowników, co? Nic takiego! Kliknij przycisk poniżej, aby założyć konto firmowe. Zostaniesz poproszony o ustawienie hasła, danych osobowych i kluczy odzyskiwania konta właściciela. Dane firmy można później zmienić.';
+        'Dziękujemy, że zdecydowałeś się być częścią naszej społeczności. Wygląda na to, że chcesz stworzyć firmę/organizację i mieć możliwość zapraszania innych użytkowników, co nie? Spoko! Kliknij przycisk poniżej, aby założyć konto firmowe. Zostaniesz poproszony o ustawienie hasła, danych osobowych i kluczy odzyskiwania konta właściciela. Dane firmy można później zmienić.';
       button = 'Dokończ rejestrację';
       companyNameTitle = 'Nazwa firmy';
       companyLocationTitle = 'Lokalizacja firmy';

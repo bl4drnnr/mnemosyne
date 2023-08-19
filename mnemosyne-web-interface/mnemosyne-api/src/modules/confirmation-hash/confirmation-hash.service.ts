@@ -26,18 +26,22 @@ import { PasswordNotSetDto } from '@dto/password-not-set.dto';
 import { UserDataNotSetDto } from '@dto/user-data-not-set.dto';
 import { ConfirmCompanyAccInterface } from '@interfaces/confirm-company-acc.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
+import { CompanyService } from '@modules/company.service';
+import { CompanyInfoInterface } from '@interfaces/company-info.interface';
 
 @Injectable()
 export class ConfirmationHashService {
   constructor(
     private readonly cryptographicService: CryptographicService,
     private readonly timeService: TimeService,
+    @Inject(forwardRef(() => CompanyService))
+    private readonly companyService: CompanyService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     @Inject(forwardRef(() => UsersService))
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     @InjectModel(ConfirmationHash)
     private readonly confirmationHashRepository: typeof ConfirmationHash
   ) {}
@@ -85,7 +89,7 @@ export class ConfirmationHashService {
 
     if (!foundHash) throw new HashNotFoundException();
 
-    return await this.userService.getUserById({
+    return await this.usersService.getUserById({
       id: foundHash.userId
     });
   }
@@ -117,7 +121,7 @@ export class ConfirmationHashService {
     if (!foundHash) throw new HashNotFoundException();
 
     const { isMfaSet, userSettings, firstName, lastName, email } =
-      await this.userService.getUserById({
+      await this.usersService.getUserById({
         id: foundHash.userId,
         trx: transaction
       });
@@ -173,7 +177,7 @@ export class ConfirmationHashService {
       firstName,
       lastName,
       email
-    } = await this.userService.getUserById({
+    } = await this.usersService.getUserById({
       id: foundHash.userId,
       trx: transaction
     });
@@ -189,7 +193,7 @@ export class ConfirmationHashService {
       return new UserDataNotSetDto();
 
     if (!userDataSet && userProvidedData) {
-      await this.userService.updateUserInfo({
+      await this.usersService.updateUserInfo({
         payload: { firstName: payload.firstName, lastName: payload.lastName },
         userId,
         trx: transaction
@@ -204,7 +208,7 @@ export class ConfirmationHashService {
         password: payload.password
       });
 
-      await this.userService.updateUser({
+      await this.usersService.updateUser({
         payload: { password: hashedPassword },
         userId
       });
@@ -225,9 +229,22 @@ export class ConfirmationHashService {
       { where: { id: foundHash.id }, transaction }
     );
 
+    const { companyName, companyLocation, companyWebsite } =
+      await this.companyService.getCompanyByOwnerId({
+        companyOwnerId: foundHash.userId,
+        trx: transaction
+      });
+
+    const companyInfo: CompanyInfoInterface = {
+      companyOwnerEmail: email,
+      companyLocation,
+      companyWebsite,
+      companyName
+    };
+
     await this.emailService.sendCompanyRegistrationCompleteEmail({
-      userInfo: { firstName, lastName },
       to: email,
+      companyInfo,
       language
     });
 
@@ -259,7 +276,7 @@ export class ConfirmationHashService {
       email,
       firstName,
       lastName
-    } = await this.userService.getUserById({
+    } = await this.usersService.getUserById({
       id: foundHash.userId,
       trx
     });
@@ -281,19 +298,19 @@ export class ConfirmationHashService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    await this.userService.verifyUserCredentials({
+    await this.usersService.verifyUserCredentials({
       email,
       password,
       trx
     });
 
-    await this.userService.updateUser({
+    await this.usersService.updateUser({
       payload: { email: foundHash.changingEmail },
       userId,
       trx
     });
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: { emailChanged: true },
       userId,
       trx
@@ -349,7 +366,7 @@ export class ConfirmationHashService {
       email,
       firstName,
       lastName
-    } = await this.userService.getUserById({
+    } = await this.usersService.getUserById({
       id: forgotPasswordHash.userId,
       trx
     });
@@ -382,13 +399,13 @@ export class ConfirmationHashService {
 
     if (isPreviousPassword) throw new PreviousPasswordException();
 
-    await this.userService.updateUser({
+    await this.usersService.updateUser({
       payload: { password: hashedPassword },
       userId,
       trx
     });
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: { passwordChanged: new Date() },
       userId,
       trx

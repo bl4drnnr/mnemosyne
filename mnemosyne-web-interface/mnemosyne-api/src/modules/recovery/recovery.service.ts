@@ -16,7 +16,7 @@ export class RecoveryService {
   constructor(
     private readonly confirmationHashService: ConfirmationHashService,
     private readonly cryptographicService: CryptographicService,
-    private readonly userService: UsersService
+    private readonly usersService: UsersService
   ) {}
 
   async registrationGenerateRecoveryKeys({
@@ -46,7 +46,7 @@ export class RecoveryService {
   async loginGenerateRecoveryKeys({ payload, trx }: LoginKeysInterface) {
     const { email, password, passphrase } = payload;
 
-    const { id: userId } = await this.userService.verifyUserCredentials({
+    const { id: userId } = await this.usersService.verifyUserCredentials({
       email,
       password,
       trx
@@ -97,7 +97,7 @@ export class RecoveryService {
     });
 
     const { id: userId, userSettings } =
-      await this.userService.getUserByRecoveryKeysFingerprint({
+      await this.usersService.getUserByRecoveryKeysFingerprint({
         recoveryKeysFingerprint,
         trx
       });
@@ -105,7 +105,7 @@ export class RecoveryService {
     if (userSettings.recoveryKeysFingerprint !== recoveryKeysFingerprint)
       throw new WrongRecoveryKeysException();
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: {
         phone: null,
         phoneCode: null,
@@ -117,7 +117,7 @@ export class RecoveryService {
       trx
     });
 
-    await this.userService.updateUser({
+    await this.usersService.updateUser({
       payload: { isMfaSet: false },
       userId,
       trx
@@ -149,7 +149,7 @@ export class RecoveryService {
       algorithm: CryptoHashAlgorithm.SHA512
     });
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: { recoveryKeysFingerprint },
       userId,
       trx

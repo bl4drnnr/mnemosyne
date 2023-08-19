@@ -68,8 +68,13 @@ export class AuthService {
       trx
     });
 
-    const registrationHash = confirmationHashes.find(
-      (hash) => hash.confirmationType === Confirmation.REGISTRATION
+    const registrationHashes = [
+      Confirmation.REGISTRATION,
+      Confirmation.COMPANY_REGISTRATION
+    ];
+
+    const registrationHash = confirmationHashes.find((hash) =>
+      registrationHashes.includes(hash.confirmationType)
     );
 
     const isAccConfirmed = registrationHash.confirmed;
@@ -140,8 +145,6 @@ export class AuthService {
       language,
       trx
     });
-
-    await this.usersService.createUserSettings({ userId, trx });
 
     return new UserCreatedDto();
   }

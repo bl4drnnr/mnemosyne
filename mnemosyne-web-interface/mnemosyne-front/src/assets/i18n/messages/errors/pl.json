@@ -55,5 +55,6 @@
   "email-already-taken": "Podany adres e-mail został już zajęty",
   "password-already-changed": "Hasło zostało zmienione mniej niż 24 godziny temu",
   "company-members-limit-reached": "Osiągnąłeś limit użytkowników, których możesz zaprosić podczas rejestracji",
-  "member-already-on-list": "Członek firmy jest już na liście"
+  "member-already-on-list": "Członek firmy jest już na liście",
+  "company-already-exists": "Firma o takiej nazwie już istnieje"
 }

@@ -62,7 +62,7 @@ export class ApiService {
     return loaderTimeout$.pipe(
       catchError(async (error) => {
         await this.errorHandler.errorHandler(error);
-        return throwError(() => error);
+        throw error;
       }),
       finalize(() => {
         this.loaderService.stop();

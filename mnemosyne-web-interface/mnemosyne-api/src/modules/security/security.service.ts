@@ -57,8 +57,7 @@ export class SecurityService {
   constructor(
     private readonly confirmationHashService: ConfirmationHashService,
     private readonly cryptographicService: CryptographicService,
-    private readonly configService: ApiConfigService,
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     private readonly phoneService: PhoneService,
     private readonly authService: AuthService,
     private readonly timeService: TimeService,
@@ -75,7 +74,7 @@ export class SecurityService {
         trx
       });
 
-    const { email } = await this.userService.getUserById({ id: userId, trx });
+    const { email } = await this.usersService.getUserById({ id: userId, trx });
 
     return await this.generateQrCode({ email });
   }
@@ -83,7 +82,7 @@ export class SecurityService {
   async loginGenerateTwoFaQrCode({ payload, trx }: LoginGenerate2faInterface) {
     const { email, password } = payload;
 
-    await this.userService.verifyUserCredentials({
+    await this.usersService.verifyUserCredentials({
       email,
       password,
       trx
@@ -93,7 +92,7 @@ export class SecurityService {
   }
 
   async generateTwoFaQrCode({ userId, trx }: Generate2faInterface) {
-    const { email } = await this.userService.getUserById({ id: userId, trx });
+    const { email } = await this.usersService.getUserById({ id: userId, trx });
 
     return await this.generateQrCode({ email });
   }
@@ -126,7 +125,7 @@ export class SecurityService {
   async loginVerifyTwoFaQrCode({ payload, trx }: LoginVerify2faInterface) {
     const { code, twoFaToken, email, password } = payload;
 
-    const { id: userId } = await this.userService.verifyUserCredentials({
+    const { id: userId } = await this.usersService.verifyUserCredentials({
       email,
       password,
       trx
@@ -163,7 +162,7 @@ export class SecurityService {
     const { code } = payload;
 
     const { twoFaToken, phone } =
-      await this.userService.getUserSettingsByUserId({
+      await this.usersService.getUserSettingsByUserId({
         userId,
         trx
       });
@@ -182,7 +181,7 @@ export class SecurityService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: { twoFaToken: null },
       userId,
       trx
@@ -218,7 +217,7 @@ export class SecurityService {
     const { email, password, language } = payload;
 
     const { id: userId, userSettings } =
-      await this.userService.verifyUserCredentials({
+      await this.usersService.verifyUserCredentials({
         email,
         password,
         trx
@@ -273,7 +272,7 @@ export class SecurityService {
   async getSmsCode({ userId, language, trx }: GetSmsInterface) {
     const {
       userSettings: { phone }
-    } = await this.userService.getUserById({
+    } = await this.usersService.getUserById({
       id: userId,
       trx
     });
@@ -293,14 +292,14 @@ export class SecurityService {
   async clearSmsCode({ userId, trx }: ClearSmsInterface) {
     const {
       userSettings: { phone }
-    } = await this.userService.getUserById({
+    } = await this.usersService.getUserById({
       id: userId,
       trx
     });
 
     if (!phone) throw new PhoneNotSetException();
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: {
         phoneCode: null,
         codeSentAt: null
@@ -345,7 +344,7 @@ export class SecurityService {
       code: providedCode
     } = payload;
 
-    const { id: userId } = await this.userService.verifyUserCredentials({
+    const { id: userId } = await this.usersService.verifyUserCredentials({
       email,
       password,
       trx
@@ -382,7 +381,7 @@ export class SecurityService {
     const { code: providedCode } = payload;
 
     const { phone: providedPhone, twoFaToken } =
-      await this.userService.getUserSettingsByUserId({
+      await this.usersService.getUserSettingsByUserId({
         userId,
         trx
       });
@@ -401,7 +400,7 @@ export class SecurityService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: { phone: null, phoneCode: null, codeSentAt: null },
       userId,
       trx
@@ -418,7 +417,7 @@ export class SecurityService {
       userSettings,
       firstName,
       lastName
-    } = await this.userService.getUserById({
+    } = await this.usersService.getUserById({
       id: userId,
       trx
     });
@@ -448,7 +447,7 @@ export class SecurityService {
     if (fullName !== `${firstName} ${lastName}`)
       throw new WrongDeletionConfirmationException();
 
-    await this.userService.deleteUserAccount({ userId, trx });
+    await this.usersService.deleteUserAccount({ userId, trx });
 
     return new AccountDeletedDto();
   }
@@ -456,7 +455,7 @@ export class SecurityService {
   async changePassword({ userId, payload, trx }: ChangePasswordInterface) {
     const { currentPassword, newPassword, phoneCode, mfaCode } = payload;
 
-    const { password, userSettings } = await this.userService.getUserById({
+    const { password, userSettings } = await this.usersService.getUserById({
       id: userId,
       trx
     });
@@ -500,7 +499,7 @@ export class SecurityService {
       password: newPassword
     });
 
-    await this.userService.updateUser({
+    await this.usersService.updateUser({
       payload: { password: hashedPassword },
       userId,
       trx
@@ -516,14 +515,14 @@ export class SecurityService {
       firstName,
       lastName,
       userSettings: { emailChanged }
-    } = await this.userService.getUserById({
+    } = await this.usersService.getUserById({
       id: userId,
       trx
     });
 
     if (emailChanged) throw new EmailAlreadyChangedException();
 
-    const existingUser = await this.userService.getUserByEmail({
+    const existingUser = await this.usersService.getUserByEmail({
       email: newEmail,
       trx
     });
@@ -555,7 +554,7 @@ export class SecurityService {
     trx
   }: VerifySmsCodeInterface) {
     const { codeSentAt, phoneCode, phone } =
-      await this.userService.getUserSettingsByUserId({ userId, trx });
+      await this.usersService.getUserSettingsByUserId({ userId, trx });
 
     if (phone !== providedPhone) throw new WrongProvidedPhoneException();
 
@@ -569,7 +568,7 @@ export class SecurityService {
     if (phoneCode === providedCode && !isWithinFiveMinutes)
       throw new SmsExpiredException();
 
-    await this.userService.updateUser({
+    await this.usersService.updateUser({
       payload: { isMfaSet: true },
       userId,
       trx
@@ -599,13 +598,13 @@ export class SecurityService {
 
     if (!delta || (delta && delta.delta !== 0)) throw new WrongCodeException();
 
-    await this.userService.updateUser({
+    await this.usersService.updateUser({
       payload: { isMfaSet: true },
       userId,
       trx
     });
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: { twoFaToken },
       userId,
       trx

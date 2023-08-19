@@ -1,8 +1,10 @@
 import {
+  BelongsTo,
   Column,
   CreatedAt,
   DataType,
   Default,
+  ForeignKey,
   HasMany,
   Model,
   PrimaryKey,
@@ -15,7 +17,7 @@ interface CompanyCreationAttributes {
   companyName: string;
   companyLocation: string;
   companyWebsite: string;
-  companyOwnerEmail: string;
+  companyOwnerId: string;
 }
 
 @Table({ tableName: 'companies' })
@@ -43,12 +45,13 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false, field: 'company_website' })
   companyWebsite: string;
 
+  @ForeignKey(() => User)
   @Column({
-    type: DataType.STRING,
+    type: DataType.UUID,
     allowNull: false,
-    field: 'company_owner_email'
+    field: 'company_owner_id'
   })
-  companyOwnerEmail: string;
+  companyOwnerId: string;
 
   @Default(false)
   @Column({
@@ -57,6 +60,9 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
     field: 'is_confirmed'
   })
   isConfirmed: boolean;
+
+  @BelongsTo(() => User)
+  user: User;
 
   @HasMany(() => User)
   users: Array<User>;

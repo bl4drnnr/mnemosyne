@@ -12,7 +12,7 @@ import { SendPhoneSmsInterface } from '@interfaces/send-phone-sms.interface';
 export class PhoneService {
   constructor(
     @Inject(forwardRef(() => UsersService))
-    private readonly userService: UsersService,
+    private readonly usersService: UsersService,
     private readonly configService: ApiConfigService,
     private readonly timeService: TimeService,
     private readonly smsTemplateService: SmsTemplatesService
@@ -46,7 +46,7 @@ export class PhoneService {
     phone,
     trx
   }: VerifyAndResendInterface) {
-    const { codeSentAt } = await this.userService.getUserSettingsByUserId({
+    const { codeSentAt } = await this.usersService.getUserSettingsByUserId({
       userId,
       trx
     });
@@ -63,7 +63,7 @@ export class PhoneService {
       language
     });
 
-    await this.userService.updateUserSettings({
+    await this.usersService.updateUserSettings({
       payload: {
         phone,
         phoneCode,
