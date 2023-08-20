@@ -11,6 +11,7 @@ import {
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
+import { CompanyUser } from '@models/company-users.model';
 import { User } from '@models/user.model';
 
 interface CompanyCreationAttributes {
@@ -64,8 +65,8 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
   @BelongsTo(() => User)
   user: User;
 
-  @HasMany(() => User)
-  users: Array<User>;
+  @HasMany(() => CompanyUser)
+  companyUsers: Array<CompanyUser>;
 
   @CreatedAt
   @Column({ field: 'created_at' })

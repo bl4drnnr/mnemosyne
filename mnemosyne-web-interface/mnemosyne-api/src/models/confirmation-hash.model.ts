@@ -13,6 +13,14 @@ import {
 import { User } from '@models/user.model';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
 
+const confirmationTypes = [
+  Confirmation.EMAIL_CHANGE,
+  Confirmation.REGISTRATION,
+  Confirmation.FORGOT_PASSWORD,
+  Confirmation.COMPANY_REGISTRATION,
+  Confirmation.COMPANY_INVITATION
+];
+
 interface ConfirmationHashCreationAttributes {
   userId: string;
   confirmationHash: string;
@@ -44,12 +52,7 @@ export class ConfirmationHash extends Model<
   confirmed: boolean;
 
   @Column({
-    type: DataType.ENUM(
-      'EMAIL_CHANGE',
-      'REGISTRATION',
-      'FORGOT_PASSWORD',
-      'COMPANY_REGISTRATION'
-    ),
+    type: DataType.ENUM(...confirmationTypes),
     allowNull: false,
     field: 'confirmation'
   })

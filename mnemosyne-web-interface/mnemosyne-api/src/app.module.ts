@@ -26,6 +26,8 @@ import { RecoveryModule } from '@modules/recovery.module';
 import { CompanyModule } from '@modules/company.module';
 import { Company } from '@models/company.model';
 import { UserRole } from '@models/user-role.model';
+import { CompanyUser } from '@models/company-users.model';
+import { CompanyUsersModule } from '@modules/company-users.module';
 
 @Module({
   imports: [
@@ -48,7 +50,8 @@ import { UserRole } from '@models/user-role.model';
         Session,
         ConfirmationHash,
         UserSettings,
-        Company
+        Company,
+        CompanyUser
       ],
       autoLoadModels: true
     }),
@@ -59,7 +62,8 @@ import { UserRole } from '@models/user-role.model';
     ConfirmationHashModule,
     SecurityModule,
     RecoveryModule,
-    CompanyModule
+    CompanyModule,
+    CompanyUsersModule
   ],
   providers: [
     {

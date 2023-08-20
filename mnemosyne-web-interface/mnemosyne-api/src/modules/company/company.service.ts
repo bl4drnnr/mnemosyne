@@ -71,17 +71,19 @@ export class CompanyService {
       trx
     };
 
-    await this.createCompanyAccount({
+    const { id: companyId } = await this.createCompanyAccount({
       ...companyCreationPayload
     });
 
+    // await this.companyUserRepository.create({
+    //   userId,
+    //   companyId,
+    //   invitationSentAt: new Date()
+    // });
+
     for (const companyMember of companyMembers) {
+      let userId: string;
       const userInfo: UserInfoInterface = {};
-      // let companyMemberRegEmailPayload: VerificationEmailInterface = {
-      //   confirmationHash: "",
-      //   confirmationType: undefined,
-      //   userId: ""
-      // };
 
       const existingCompanyMember = await this.usersService.getUserByEmail({
         email: companyMember.email,
@@ -89,20 +91,35 @@ export class CompanyService {
       });
 
       if (existingCompanyMember) {
-        userInfo.email = existingCompanyMember.email;
-        userInfo.firstName = existingCompanyMember.firstName;
-        userInfo.lastName = existingCompanyMember.lastName;
+        const { email, firstName, lastName, id } = existingCompanyMember;
+        userInfo.email = email;
+        userInfo.firstName = firstName;
+        userInfo.lastName = lastName;
+        userId = id;
       } else {
+        const { id } = await this.usersService.createUser({
+          payload: { email: companyMember.email },
+          trx
+        });
         userInfo.email = companyMember.email;
+        userId = id;
       }
 
-      // await this.emailService.sendCompanyMemberEmail({
-      //   companyInfo: { ...payload },
-      //   payload: {},
-      //   userInfo,
-      //   language,
-      //   trx
-      // });
+      const confirmationHash =
+        this.cryptographicService.generateConfirmationHash();
+      const companyMemberRegEmailPayload: VerificationEmailInterface = {
+        confirmationType: Confirmation.COMPANY_INVITATION,
+        confirmationHash,
+        userId
+      };
+
+      await this.emailService.sendCompanyMemberEmail({
+        companyInfo: payload,
+        payload: companyMemberRegEmailPayload,
+        userInfo,
+        language,
+        trx
+      });
     }
 
     const confirmationHash =

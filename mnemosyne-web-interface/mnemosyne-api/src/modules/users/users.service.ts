@@ -66,16 +66,6 @@ export class UsersService {
     return user;
   }
 
-  async createUserSettings({
-    userId,
-    trx: transaction
-  }: CreateUserSettingsInterface) {
-    return await this.userSettingsRepository.create(
-      { userId },
-      { transaction }
-    );
-  }
-
   async updateUserSettings({
     payload,
     userId,
@@ -314,5 +304,15 @@ export class UsersService {
 
   async deleteUserAccount({ userId, trx }: DeleteUserAccountInterface) {
     // @TODO Think about either make it soft or hard delete
+  }
+
+  private async createUserSettings({
+    userId,
+    trx: transaction
+  }: CreateUserSettingsInterface) {
+    return await this.userSettingsRepository.create(
+      { userId },
+      { transaction }
+    );
   }
 }
