@@ -13,10 +13,12 @@ import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { GetCompanyByOwnerIdInterface } from '@interfaces/get-company-by-owner-id.interface';
+import { CompanyUsersService } from '@modules/company-users.service';
 
 @Injectable()
 export class CompanyService {
   constructor(
+    private readonly companyUsersService: CompanyUsersService,
     private readonly cryptographicService: CryptographicService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
@@ -75,11 +77,10 @@ export class CompanyService {
       ...companyCreationPayload
     });
 
-    // await this.companyUserRepository.create({
-    //   userId,
-    //   companyId,
-    //   invitationSentAt: new Date()
-    // });
+    await this.companyUsersService.createCompanyOwner({
+      userId,
+      companyId
+    });
 
     for (const companyMember of companyMembers) {
       let userId: string;
