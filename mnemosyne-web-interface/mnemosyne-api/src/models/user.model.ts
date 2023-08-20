@@ -1,11 +1,9 @@
 import {
-  BelongsTo,
   BelongsToMany,
   Column,
   CreatedAt,
   DataType,
   Default,
-  ForeignKey,
   HasMany,
   HasOne,
   Model,
@@ -51,18 +49,14 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   isMfaSet: boolean;
 
-  @ForeignKey(() => Company)
-  @Column({ type: DataType.UUID, allowNull: true, field: 'company_id' })
-  companyId: string;
-
-  @BelongsTo(() => Company)
-  company: Company;
-
   @HasMany(() => ConfirmationHash)
   confirmationHashes: Array<ConfirmationHash>;
 
   @HasOne(() => Session)
   session: Session;
+
+  @HasOne(() => Company)
+  company: Company;
 
   @HasOne(() => UserSettings)
   userSettings: UserSettings;

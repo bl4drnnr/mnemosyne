@@ -47,7 +47,9 @@
         "src/dto/recovery/requests/*",
         "src/dto/recovery/responses/*",
         "src/dto/company/requests/*",
-        "src/dto/company/responses/*"
+        "src/dto/company/responses/*",
+        "src/dto/company-users/requests/*",
+        "src/dto/company-users/responses/*"
       ],
       "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],
@@ -60,7 +62,8 @@
         "src/modules/auth/*",
         "src/modules/confirmation-hash/*",
         "src/modules/recovery/*",
-        "src/modules/company/*"
+        "src/modules/company/*",
+        "src/modules/company-users/*"
       ],
       "@custom-types/*": [
         "src/libs/types/company/*",
@@ -80,7 +83,8 @@
         "src/libs/interfaces/phone/*",
         "src/libs/interfaces/time/*",
         "src/libs/enums/*",
-        "src/libs/interfaces/company/*"
+        "src/libs/interfaces/company/*",
+        "src/libs/interfaces/company-users/*"
       ],
       "@email-templates/*": [
         "src/libs/email-templates/*",
