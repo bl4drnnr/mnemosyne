@@ -32,6 +32,11 @@ export class AccountConfirmationComponent implements OnInit {
   phone: string;
   code: string;
 
+  googleAuthenticatorAppLink =
+    'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pli=1';
+  microsoftAuthenticatorAppLink =
+    'https://support.microsoft.com/en-us/account-billing/download-and-install-the-microsoft-authenticator-app-351498fc-850a-45da-b7b6-27e523b8702a';
+
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,

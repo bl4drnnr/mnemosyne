@@ -1,5 +1,6 @@
 export enum CredentialsTranslation {
   ACCOUNT_CONFIRMATION = 'credentials/account-confirmation',
+  COMPANY_ACCOUNT_CONFIRMATION = 'credentials/company-account-confirmation',
   EMAIL_CHANGE_CONFIRM = 'credentials/email-change-confirmation',
   FORGOT_PASSWORD = 'credentials/forgot-password',
   HEADER = 'credentials/header',
@@ -8,6 +9,7 @@ export enum CredentialsTranslation {
   REGISTRATION = 'credentials/registration',
   RESET_PASSWORD = 'credentials/reset-password',
   ACCOUNT_CONFIRMATION_ALIAS = 'acc-conf',
+  COMPANY_CONFIRM_ACC_ALIAS = 'company-acc-conf',
   EMAIL_CHANGE_CONFIRM_ALIAS = 'email-change',
   FORGOT_PASSWORD_ALIAS = 'forg-pass',
   HEADER_ALIAS = 'header',

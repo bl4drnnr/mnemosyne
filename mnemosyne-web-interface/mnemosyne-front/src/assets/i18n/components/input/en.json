@@ -35,7 +35,7 @@
   "phoneInvalidFormat": "Phone invalid format. Make sure the phone number matches the format (+1234567890)",
   "phoneInputDescription": "Make sure you provided phone number with country code. Once you have got a message on your phone, provide the 6-digit code into the input field below.",
   "resetPassInputDesc": "Confirmation link will be sent to provided email address, if the account with this email address exists. Link will be valid for 24h, make sure you will reset password in this period of time.",
-  "fieldRequired": "Field is required",
+  "fieldRequired": "Field is required in order to continue",
   "companyLocation": "Company location",
   "provideCompanyLocation": "Provide company location",
   "companyLocationDesc": "Provide the physical (if possible) address of the company. Otherwise, provide the address where company is registered.",
