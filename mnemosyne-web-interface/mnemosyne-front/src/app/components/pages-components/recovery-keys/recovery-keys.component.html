@@ -45,7 +45,7 @@
       <basic-button
         [onWhite]="onWhite"
         [label]="t('button.continue')"
-        [disabled]="!isPassphraseValid()"
+        [disabled]="!passphrase || !isPassphraseValid()"
         (buttonClick)="generateRecoveryKeys()"
       />
     </div>

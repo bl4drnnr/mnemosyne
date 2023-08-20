@@ -19,7 +19,6 @@ import { WrongProvidedPhoneException } from '@exceptions/wrong-provided-phone.ex
 import { TimeService } from '@shared/time.service';
 import { PasswordChangedDto } from '@dto/password-changed.dto';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
-import { ApiConfigService } from '@shared/config.service';
 import { SmsClearedDto } from '@dto/sms-cleared.dto';
 import { EmailAlreadyChangedException } from '@exceptions/email-already-changed.exception';
 import { EmailAlreadyTakenException } from '@exceptions/email-already-taken.exception';

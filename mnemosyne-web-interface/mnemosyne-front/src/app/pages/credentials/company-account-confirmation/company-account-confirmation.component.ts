@@ -41,6 +41,11 @@ export class CompanyAccountConfirmationComponent implements OnInit {
   phone: string;
   code: string;
 
+  googleAuthenticatorAppLink =
+    'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pli=1';
+  microsoftAuthenticatorAppLink =
+    'https://support.microsoft.com/en-us/account-billing/download-and-install-the-microsoft-authenticator-app-351498fc-850a-45da-b7b6-27e523b8702a';
+
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,
@@ -91,12 +96,25 @@ export class CompanyAccountConfirmationComponent implements OnInit {
     this.isCompanyAccConfirmed = true;
   }
 
+  userDataButtonDisabled() {
+    return (
+      !this.firstName ||
+      !this.lastName ||
+      this.incorrectFirstName ||
+      this.incorrectLastName
+    );
+  }
+
   userPasswordNotSet() {
     this.isUserDataNotSet = false;
     this.isPasswordNotSet = true;
     this.isMfaNotSet = false;
     this.isRecoveryKeysNotSet = false;
     this.isCompanyAccConfirmed = true;
+  }
+
+  passwordButtonDisabled() {
+    return this.incorrectPassword;
   }
 
   userMfaNotSet() {
@@ -128,7 +146,7 @@ export class CompanyAccountConfirmationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.translationService.setPageTitle(Titles.ACCOUNT_CONFIRMATION);
+    this.translationService.setPageTitle(Titles.COMPANY_ACC_CONFIRMATION);
 
     this.route.paramMap.subscribe(async (params) => {
       const hash = params.get('hash');

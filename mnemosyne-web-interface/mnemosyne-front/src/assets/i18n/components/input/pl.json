@@ -35,7 +35,7 @@
   "phoneInvalidFormat": "Nieprawidłowy format telefonu. Upewnij się, że numer telefonu pasuje do formatu (+1234567890)",
   "phoneInputDescription": "Upewnij się, że podałeś numer telefonu z numerem kierunkowym kraju. Po odebraniu wiadomości na telefonie wprowadź 6-cyfrowy kod w poniższym polu wprowadzania.",
   "resetPassInputDesc": "Link potwierdzający zostanie wysłany na podany adres e-mail, jeśli istnieje konto z tym adresem e-mail. Link będzie ważny przez 24 godziny, upewnij się, że w tym czasie zresetujesz hasło.",
-  "fieldRequired": "Pole jest wymagane",
+  "fieldRequired": "Pole jest wymagane aby kontynuować",
   "companyLocation": "Lokalizacja firmy",
   "provideCompanyLocation": "Podaj lokalizację firmy",
   "companyLocationDesc": "Podaj fizyczny (jeśli to możliwe) adres firmy. W przeciwnym razie podaj adres, pod którym firma jest zarejestrowana.",
