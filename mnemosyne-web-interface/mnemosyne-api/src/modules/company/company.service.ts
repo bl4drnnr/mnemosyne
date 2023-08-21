@@ -14,12 +14,16 @@ import { CryptographicService } from '@shared/cryptographic.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { GetCompanyByOwnerIdInterface } from '@interfaces/get-company-by-owner-id.interface';
 import { CompanyUsersService } from '@modules/company-users.service';
+import { Roles } from '@interfaces/roles.enum';
+import { ConfirmCompanyAccountInterface } from '@interfaces/confirm-company-account.interface';
+import { ConfirmCompanyMembershipInterface } from '@interfaces/confirm-company-membership.interface';
 
 @Injectable()
 export class CompanyService {
   constructor(
-    private readonly companyUsersService: CompanyUsersService,
     private readonly cryptographicService: CryptographicService,
+    @Inject(forwardRef(() => CompanyUsersService))
+    private readonly companyUsersService: CompanyUsersService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
     @Inject(forwardRef(() => UsersService))
@@ -59,6 +63,7 @@ export class CompanyService {
     } else {
       const createdOwnerAccount = await this.usersService.createUser({
         payload: { email: companyOwnerEmail },
+        role: Roles.PRIMARY_ADMIN,
         trx
       });
       to = companyOwnerEmail;
@@ -77,9 +82,10 @@ export class CompanyService {
       ...companyCreationPayload
     });
 
-    await this.companyUsersService.createCompanyOwner({
+    await this.companyUsersService.createCompanyUser({
       userId,
-      companyId
+      companyId,
+      trx
     });
 
     for (const companyMember of companyMembers) {
@@ -100,11 +106,18 @@ export class CompanyService {
       } else {
         const { id } = await this.usersService.createUser({
           payload: { email: companyMember.email },
+          role: companyMember.role,
           trx
         });
         userInfo.email = companyMember.email;
         userId = id;
       }
+
+      await this.companyUsersService.createCompanyUser({
+        userId,
+        companyId,
+        trx
+      });
 
       const confirmationHash =
         this.cryptographicService.generateConfirmationHash();
@@ -161,6 +174,26 @@ export class CompanyService {
       where: { companyOwnerId },
       transaction
     });
+  }
+
+  async confirmCompanyAccount({
+    companyId: id,
+    trx: transaction
+  }: ConfirmCompanyAccountInterface) {
+    return await this.companyRepository.update(
+      {
+        isConfirmed: true
+      },
+      { where: { id }, transaction }
+    );
+  }
+
+  async confirmCompanyMembership({
+    userId,
+    trx
+  }: ConfirmCompanyMembershipInterface) {
+    await this.companyUsersService.confirmCompanyMembership({ userId, trx });
+    // TODO send mail to the user here
   }
 
   private async createCompanyAccount({

@@ -8,6 +8,8 @@ import { AuthModule } from '@modules/auth.module';
 import { UserSettings } from '@models/user-settings.model';
 import { ConfirmationHashModule } from '@modules/confirmation-hash.module';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
+import { CompanyService } from '@modules/company.service';
+import { CompanyModule } from '@modules/company.module';
 
 @Module({
   controllers: [UsersController],
@@ -16,6 +18,7 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
     SequelizeModule.forFeature([User, UserSettings, ConfirmationHash]),
     forwardRef(() => ConfirmationHashModule),
     forwardRef(() => AuthModule),
+    forwardRef(() => CompanyModule),
     RolesModule
   ],
   exports: [UsersService]

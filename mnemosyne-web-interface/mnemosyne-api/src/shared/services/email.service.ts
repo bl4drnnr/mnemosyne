@@ -24,7 +24,7 @@ export class EmailService {
     payload,
     companyInfo,
     language,
-    trx: transaction
+    trx
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
@@ -34,7 +34,7 @@ export class EmailService {
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx: transaction });
+    await this.createConfirmationHash({ emailSettings, trx });
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
@@ -56,7 +56,7 @@ export class EmailService {
     payload,
     userInfo,
     language,
-    trx: transaction
+    trx
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
@@ -66,7 +66,7 @@ export class EmailService {
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx: transaction });
+    await this.createConfirmationHash({ emailSettings, trx });
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
@@ -88,7 +88,7 @@ export class EmailService {
     payload,
     userInfo,
     language,
-    trx: transaction
+    trx
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
@@ -98,7 +98,7 @@ export class EmailService {
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx: transaction });
+    await this.createConfirmationHash({ emailSettings, trx });
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
@@ -152,7 +152,7 @@ export class EmailService {
     payload,
     userInfo,
     language,
-    trx: transaction
+    trx
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
@@ -162,7 +162,7 @@ export class EmailService {
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx: transaction });
+    await this.createConfirmationHash({ emailSettings, trx });
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
@@ -199,7 +199,7 @@ export class EmailService {
     payload,
     userInfo,
     language,
-    trx: transaction
+    trx
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to, changingEmail } =
       payload;
@@ -211,7 +211,7 @@ export class EmailService {
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx: transaction });
+    await this.createConfirmationHash({ emailSettings, trx });
 
     const link = this.getConfirmationLink({
       hash: payload.confirmationHash,

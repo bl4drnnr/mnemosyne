@@ -35,8 +35,22 @@ export class ConfirmationHashController {
     @Query('confirmationHash') confirmationHash: string
   ) {
     return this.confirmationHashService.confirmCompanyAccount({
-      payload,
       confirmationHash,
+      payload,
+      trx
+    });
+  }
+
+  @UsePipes(ValidationPipe)
+  @Post('company-member-account-confirmation')
+  companyMemberAccountConfirmation(
+    @TransactionParam() trx: Transaction,
+    @Body() payload: ConfirmCompanyAccDto,
+    @Query('confirmationHash') confirmationHash: string
+  ) {
+    return this.confirmationHashService.companyMemberAccountConfirmation({
+      confirmationHash,
+      payload,
       trx
     });
   }

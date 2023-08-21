@@ -307,7 +307,7 @@ export class AuthService {
   private async generateTokens({
     roles,
     userId,
-    trx: transaction
+    trx
   }: GenerateTokensInterface) {
     const _at = this.generateAccessToken({
       roles: roles.map((role) => role.value),
@@ -318,7 +318,7 @@ export class AuthService {
     await this.updateRefreshToken({
       userId,
       tokenId,
-      trx: transaction
+      trx
     });
 
     return { _at, _rt };

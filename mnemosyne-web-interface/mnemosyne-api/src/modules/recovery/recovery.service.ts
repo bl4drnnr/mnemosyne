@@ -10,6 +10,7 @@ import { GenerateKeysInterface } from '@interfaces/generate-keys.interface';
 import { RecoverAccountInterface } from '@interfaces/recover-account.interface';
 import { GenerateAndSaveKeysInterface } from '@interfaces/generate-and-save-keys.interface';
 import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
 
 @Injectable()
 export class RecoveryService {
@@ -29,6 +30,7 @@ export class RecoveryService {
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
+        confirmationType: Confirmation.REGISTRATION,
         trx
       });
 

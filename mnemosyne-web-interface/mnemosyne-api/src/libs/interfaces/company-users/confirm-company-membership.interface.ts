@@ -1,7 +1,6 @@
 import { Transaction } from 'sequelize';
 
-export interface CreateCompanyUserInterface {
+export interface ConfirmCompanyMembershipInterface {
   userId: string;
-  companyId: string;
   trx?: Transaction;
 }

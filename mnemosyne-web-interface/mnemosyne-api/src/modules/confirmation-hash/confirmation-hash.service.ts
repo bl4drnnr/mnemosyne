@@ -21,13 +21,11 @@ import { LastPassResetHashInterface } from '@interfaces/last-pass-reset-hash.int
 import { ConfirmAccountInterface } from '@interfaces/confirm-account.interface';
 import { ConfirmEmailInterface } from '@interfaces/confirm-email.interface';
 import { ConfirmPasswordResetInterface } from '@interfaces/confirm-password-reset.interface';
-import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
-import { PasswordNotSetDto } from '@dto/password-not-set.dto';
-import { UserDataNotSetDto } from '@dto/user-data-not-set.dto';
 import { ConfirmCompanyAccInterface } from '@interfaces/confirm-company-acc.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CompanyService } from '@modules/company.service';
-import { CompanyInfoInterface } from '@interfaces/company-info.interface';
+import { ConfirmHashInterface } from '@interfaces/confirm-hash.interface';
+import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
 
 @Injectable()
 export class ConfirmationHashService {
@@ -80,18 +78,25 @@ export class ConfirmationHashService {
 
   async getUserByConfirmationHash({
     confirmationHash,
+    confirmationType,
     trx: transaction
   }: GetByHashInterface) {
+    const where: Partial<ConfirmationHash> = { confirmationHash };
+
+    if (confirmationType) where.confirmationHash = confirmationHash;
+
     const foundHash = await this.confirmationHashRepository.findOne({
-      where: { confirmationHash },
+      where,
       transaction
     });
 
     if (!foundHash) throw new HashNotFoundException();
 
-    return await this.usersService.getUserById({
+    const user = await this.usersService.getUserById({
       id: foundHash.userId
     });
+
+    return { foundHash, user };
   }
 
   async getUserLastPasswordResetHash({
@@ -108,23 +113,27 @@ export class ConfirmationHashService {
     });
   }
 
+  async confirmHash({ hashId: id, trx: transaction }: ConfirmHashInterface) {
+    await this.confirmationHashRepository.update(
+      {
+        confirmed: true
+      },
+      { where: { id }, transaction }
+    );
+  }
+
   async confirmAccount({
     confirmationHash,
     language,
-    trx: transaction
+    trx
   }: ConfirmAccountInterface) {
-    const foundHash = await this.confirmationHashRepository.findOne({
-      where: { confirmationHash, confirmationType: Confirmation.REGISTRATION },
-      transaction
+    const { user, foundHash } = await this.getUserByConfirmationHash({
+      confirmationHash,
+      confirmationType: Confirmation.REGISTRATION,
+      trx
     });
 
-    if (!foundHash) throw new HashNotFoundException();
-
-    const { isMfaSet, userSettings, firstName, lastName, email } =
-      await this.usersService.getUserById({
-        id: foundHash.userId,
-        trx: transaction
-      });
+    const { isMfaSet, userSettings, firstName, lastName, email } = user;
 
     const isAccConfirmed = foundHash.confirmed;
     const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
@@ -136,12 +145,10 @@ export class ConfirmationHashService {
 
     if (isAccConfirmed && !isRecoverySetUp) return new RecoveryKeysNotSetDto();
 
-    await this.confirmationHashRepository.update(
-      {
-        confirmed: true
-      },
-      { where: { id: foundHash.id }, transaction }
-    );
+    await this.confirmHash({
+      hashId: foundHash.id,
+      trx
+    });
 
     await this.emailService.sendRegistrationCompleteEmail({
       userInfo: { firstName, lastName },
@@ -155,100 +162,47 @@ export class ConfirmationHashService {
   async confirmCompanyAccount({
     payload,
     confirmationHash,
-    trx: transaction
+    trx
   }: ConfirmCompanyAccInterface) {
-    const { language } = payload;
-
-    const foundHash = await this.confirmationHashRepository.findOne({
-      where: {
-        confirmationHash,
-        confirmationType: Confirmation.COMPANY_REGISTRATION
-      },
-      transaction
+    const { foundHash: hash, user } = await this.getUserByConfirmationHash({
+      confirmationHash,
+      confirmationType: Confirmation.COMPANY_REGISTRATION,
+      trx
     });
 
-    if (!foundHash) throw new HashNotFoundException();
+    return await this.usersService.createAccountFrontScratch({
+      user,
+      hash,
+      payload,
+      trx
+    });
+  }
 
-    const {
-      id: userId,
-      password,
-      isMfaSet,
-      userSettings,
-      firstName,
-      lastName,
-      email
-    } = await this.usersService.getUserById({
-      id: foundHash.userId,
-      trx: transaction
+  async companyMemberAccountConfirmation({
+    payload,
+    confirmationHash,
+    trx
+  }: ConfirmCompanyAccInterface) {
+    const { foundHash: hash, user } = await this.getUserByConfirmationHash({
+      confirmationHash,
+      confirmationType: Confirmation.COMPANY_INVITATION,
+      trx
     });
 
-    const isCompanyAccConfirmed = foundHash.confirmed;
-    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
-    const userDataSet = !!firstName && !!lastName;
-    const userProvidedData = !!payload.firstName && !!payload.lastName;
-    const passwordSet = !!password;
-    const userProvidedPassword = !!payload.password;
-
-    if (isCompanyAccConfirmed && !userDataSet && !userProvidedData)
-      return new UserDataNotSetDto();
-
-    if (!userDataSet && userProvidedData) {
-      await this.usersService.updateUserInfo({
-        payload: { firstName: payload.firstName, lastName: payload.lastName },
-        userId,
-        trx: transaction
+    if (!user.isMfaSet) {
+      return await this.usersService.createAccountFrontScratch({
+        user,
+        hash,
+        payload,
+        trx
       });
+    } else {
+      await this.companyService.confirmCompanyMembership({
+        userId: user.id,
+        trx
+      });
+      return new CompanyMemberAccConfirmedDto();
     }
-
-    if (isCompanyAccConfirmed && !passwordSet && !userProvidedPassword)
-      return new PasswordNotSetDto();
-
-    if (!passwordSet && userProvidedPassword) {
-      const hashedPassword = await this.cryptographicService.hashPassword({
-        password: payload.password
-      });
-
-      await this.usersService.updateUser({
-        payload: { password: hashedPassword },
-        userId
-      });
-    }
-
-    if (isCompanyAccConfirmed && isMfaSet && isRecoverySetUp)
-      throw new AccountAlreadyConfirmedException();
-
-    if (isCompanyAccConfirmed && !isMfaSet) return new MfaNotSetDto();
-
-    if (isCompanyAccConfirmed && !isRecoverySetUp)
-      return new RecoveryKeysNotSetDto();
-
-    await this.confirmationHashRepository.update(
-      {
-        confirmed: true
-      },
-      { where: { id: foundHash.id }, transaction }
-    );
-
-    const { companyName, companyLocation, companyWebsite } =
-      await this.companyService.getCompanyByOwnerId({
-        companyOwnerId: foundHash.userId,
-        trx: transaction
-      });
-
-    const companyInfo: CompanyInfoInterface = {
-      companyOwnerEmail: email,
-      companyLocation,
-      companyWebsite,
-      companyName
-    };
-
-    await this.emailService.sendCompanyRegistrationCompleteEmail({
-      to: email,
-      companyInfo,
-      language
-    });
-
-    return new CompanyAccountConfirmedDto();
   }
 
   async confirmEmailChange({
@@ -256,12 +210,13 @@ export class ConfirmationHashService {
     payload,
     trx
   }: ConfirmEmailInterface) {
-    const foundHash = await this.confirmationHashRepository.findOne({
-      where: { confirmationHash, confirmationType: Confirmation.EMAIL_CHANGE },
-      transaction: trx
+    const { foundHash, user } = await this.getUserByConfirmationHash({
+      confirmationHash,
+      confirmationType: Confirmation.EMAIL_CHANGE,
+      trx
     });
 
-    if (!foundHash) throw new HashNotFoundException();
+    const { id: userId, userSettings, email, firstName, lastName } = user;
 
     const isWithinDay = this.timeService.isWithinTimeframe({
       time: foundHash.createdAt,
@@ -269,17 +224,6 @@ export class ConfirmationHashService {
     });
 
     if (!isWithinDay) throw new LinkExpiredException();
-
-    const {
-      id: userId,
-      userSettings,
-      email,
-      firstName,
-      lastName
-    } = await this.usersService.getUserById({
-      id: foundHash.userId,
-      trx
-    });
 
     const { mfaCode, phoneCode, password, language } = payload;
 
@@ -322,15 +266,10 @@ export class ConfirmationHashService {
       language
     });
 
-    await this.confirmationHashRepository.update(
-      {
-        confirmed: true
-      },
-      {
-        where: { id: foundHash.id },
-        transaction: trx
-      }
-    );
+    await this.confirmHash({
+      hashId: foundHash.id,
+      trx
+    });
 
     return new EmailChangedDto();
   }
@@ -341,23 +280,14 @@ export class ConfirmationHashService {
   }: ConfirmPasswordResetInterface) {
     const { password, hash, phoneCode, mfaCode, language } = payload;
 
-    const forgotPasswordHash = await this.confirmationHashRepository.findOne({
-      where: {
+    const { foundHash: forgotPasswordHash, user } =
+      await this.getUserByConfirmationHash({
         confirmationHash: hash,
-        confirmationType: Confirmation.FORGOT_PASSWORD
-      },
-      transaction: trx
-    });
+        confirmationType: Confirmation.FORGOT_PASSWORD,
+        trx
+      });
 
-    if (forgotPasswordHash && !password) return;
     if (!forgotPasswordHash) throw new HashNotFoundException();
-
-    const isWithinDay = this.timeService.isWithinTimeframe({
-      time: forgotPasswordHash.createdAt,
-      seconds: 86400
-    });
-
-    if (!isWithinDay) throw new LinkExpiredException();
 
     const {
       id: userId,
@@ -366,10 +296,14 @@ export class ConfirmationHashService {
       email,
       firstName,
       lastName
-    } = await this.usersService.getUserById({
-      id: forgotPasswordHash.userId,
-      trx
+    } = user;
+
+    const isWithinDay = this.timeService.isWithinTimeframe({
+      time: forgotPasswordHash.createdAt,
+      seconds: 86400
     });
+
+    if (!isWithinDay) throw new LinkExpiredException();
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
@@ -417,12 +351,10 @@ export class ConfirmationHashService {
       language
     });
 
-    await this.confirmationHashRepository.update(
-      {
-        confirmed: true
-      },
-      { where: { id: forgotPasswordHash.id }, transaction: trx }
-    );
+    await this.confirmHash({
+      hashId: forgotPasswordHash.id,
+      trx
+    });
 
     return new PasswordResetDto();
   }

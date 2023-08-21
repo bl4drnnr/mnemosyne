@@ -12,7 +12,7 @@ import { CompanyUsersModule } from '@modules/company-users.module';
   imports: [
     SequelizeModule.forFeature([Company]),
     forwardRef(() => UsersModule),
-    CompanyUsersModule
+    forwardRef(() => CompanyUsersModule)
   ],
   exports: [CompanyService]
 })
