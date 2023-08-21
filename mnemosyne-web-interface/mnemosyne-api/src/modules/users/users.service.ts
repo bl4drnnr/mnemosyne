@@ -426,6 +426,7 @@ export class UsersService {
       });
     } else if (isMfaSet && hashType === Confirmation.COMPANY_INVITATION) {
       await this.companyService.confirmCompanyMembership({
+        language,
         userId,
         trx
       });

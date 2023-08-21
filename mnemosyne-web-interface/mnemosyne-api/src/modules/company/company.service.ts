@@ -190,10 +190,20 @@ export class CompanyService {
 
   async confirmCompanyMembership({
     userId,
+    language,
     trx
   }: ConfirmCompanyMembershipInterface) {
+    const { email } = await this.usersService.getUserById({
+      id: userId,
+      trx
+    });
+
     await this.companyUsersService.confirmCompanyMembership({ userId, trx });
-    // TODO send mail to the user here
+
+    await this.emailService.sendCompanyMemberConfirmCompleteEmail({
+      to: email,
+      language
+    });
   }
 
   private async createCompanyAccount({

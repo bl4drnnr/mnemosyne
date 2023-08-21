@@ -198,6 +198,7 @@ export class ConfirmationHashService {
       });
     } else {
       await this.companyService.confirmCompanyMembership({
+        language: payload.language,
         userId: user.id,
         trx
       });
