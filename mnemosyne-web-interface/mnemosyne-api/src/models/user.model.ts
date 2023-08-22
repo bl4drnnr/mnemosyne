@@ -17,6 +17,7 @@ import { Session } from '@models/session.model';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { UserSettings } from '@models/user-settings.model';
 import { Company } from '@models/company.model';
+import { CompanyUser } from '@models/company-users.model';
 
 interface UserCreationAttributes {
   email: string;
@@ -57,6 +58,9 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @HasOne(() => Company)
   company: Company;
+
+  @HasOne(() => CompanyUser)
+  companyUser: CompanyUser;
 
   @HasOne(() => UserSettings)
   userSettings: UserSettings;

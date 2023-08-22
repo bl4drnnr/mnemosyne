@@ -11,6 +11,7 @@ import { EmailTemplateInterface } from '@interfaces/email-template.interface';
 import { companyRegistrationTemplate } from '@email-templates/company-registration.template';
 import { companyMemberInviteTemplate } from '@email-templates/company-member-invite.template';
 import { companyRegCompleteTemplate } from '@email-templates/company-reg-complete.template';
+import { companyMemberConfInviteTemplate } from '@email-templates/company-member-conf-invite.template';
 
 @Injectable()
 export class EmailTemplatesService {
@@ -166,6 +167,35 @@ export class EmailTemplatesService {
 
     const html = companyRegCompleteTemplate({
       companyInfo,
+      link,
+      language
+    });
+
+    return { html, subject };
+  }
+
+  companyMemberConfirmCompleteEmail({
+    link,
+    language
+  }: SecurityPayloadInterface): EmailTemplateInterface {
+    let subject: string;
+
+    switch (language) {
+      case Language.EN:
+        subject = 'Mnemosyne - Company invitation confirmed';
+        break;
+      case Language.RU:
+        subject = 'Mnemosyne - Приглашение компании подтверждено';
+        break;
+      case Language.PL:
+        subject = 'Mnemosyne - Zaproszenie firmy potwierdzone';
+        break;
+      default:
+        subject = 'Mnemosyne - Company invitation confirmed';
+        break;
+    }
+
+    const html = companyMemberConfInviteTemplate({
       link,
       language
     });

@@ -70,6 +70,7 @@ export class SecurityService {
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
+        confirmationType: Confirmation.REGISTRATION,
         trx
       });
 
@@ -106,6 +107,7 @@ export class SecurityService {
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
+        confirmationType: Confirmation.REGISTRATION,
         trx
       });
 
@@ -199,6 +201,7 @@ export class SecurityService {
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
+        confirmationType: Confirmation.REGISTRATION,
         trx
       });
 
@@ -251,8 +254,10 @@ export class SecurityService {
     trx
   }: HashSendSmsInterface) {
     const {
-      id: userId,
-      userSettings: { phone }
+      user: {
+        id: userId,
+        userSettings: { phone }
+      }
     } = await this.confirmationHashService.getUserByConfirmationHash({
       confirmationHash,
       trx
@@ -320,6 +325,7 @@ export class SecurityService {
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
+        confirmationType: Confirmation.REGISTRATION,
         trx
       });
 

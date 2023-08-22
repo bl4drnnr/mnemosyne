@@ -13,11 +13,21 @@ import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { GetCompanyByOwnerIdInterface } from '@interfaces/get-company-by-owner-id.interface';
+import { CompanyUsersService } from '@modules/company-users.service';
+import { Roles } from '@interfaces/roles.enum';
+import { ConfirmCompanyAccountInterface } from '@interfaces/confirm-company-account.interface';
+import { ConfirmCompanyMembershipInterface } from '@interfaces/confirm-company-membership.interface';
+import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
+import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-creation.interface';
+import { GetCompanyByIdInterface } from '@interfaces/get-company-by-id.interface';
+import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
 
 @Injectable()
 export class CompanyService {
   constructor(
     private readonly cryptographicService: CryptographicService,
+    @Inject(forwardRef(() => CompanyUsersService))
+    private readonly companyUsersService: CompanyUsersService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
     @Inject(forwardRef(() => UsersService))
@@ -57,6 +67,7 @@ export class CompanyService {
     } else {
       const createdOwnerAccount = await this.usersService.createUser({
         payload: { email: companyOwnerEmail },
+        role: Roles.PRIMARY_ADMIN,
         trx
       });
       to = companyOwnerEmail;
@@ -75,11 +86,11 @@ export class CompanyService {
       ...companyCreationPayload
     });
 
-    // await this.companyUserRepository.create({
-    //   userId,
-    //   companyId,
-    //   invitationSentAt: new Date()
-    // });
+    await this.companyUsersService.createCompanyUser({
+      userId,
+      companyId,
+      trx
+    });
 
     for (const companyMember of companyMembers) {
       let userId: string;
@@ -99,11 +110,18 @@ export class CompanyService {
       } else {
         const { id } = await this.usersService.createUser({
           payload: { email: companyMember.email },
+          role: companyMember.role,
           trx
         });
         userInfo.email = companyMember.email;
         userId = id;
       }
+
+      await this.companyUsersService.createCompanyUser({
+        userId,
+        companyId,
+        trx
+      });
 
       const confirmationHash =
         this.cryptographicService.generateConfirmationHash();
@@ -160,6 +178,97 @@ export class CompanyService {
       where: { companyOwnerId },
       transaction
     });
+  }
+
+  async getCompanyByUserId({ userId, trx }: GetCompanyByUserIdInterface) {
+    const { companyId } = await this.companyUsersService.getCompanyUserByUserId(
+      {
+        userId,
+        trx
+      }
+    );
+    return await this.companyRepository.findOne({
+      where: { id: companyId },
+      transaction: trx
+    });
+  }
+
+  async getCompanyById({ id, trx: transaction }: GetCompanyByIdInterface) {
+    return await this.companyRepository.findByPk(id, {
+      transaction
+    });
+  }
+
+  async confirmCompanyAccount({
+    companyId: id,
+    trx: transaction
+  }: ConfirmCompanyAccountInterface) {
+    return await this.companyRepository.update(
+      {
+        isConfirmed: true
+      },
+      { where: { id }, transaction }
+    );
+  }
+
+  async confirmCompanyCreation({
+    companyId,
+    language,
+    trx
+  }: ConfirmCompanyCreationInterface) {
+    const {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      user: { id: userId, email: companyOwnerEmail }
+    } = await this.getCompanyById({
+      id: companyId,
+      trx
+    });
+
+    const companyInfo = {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerEmail
+    };
+
+    await this.confirmCompanyAccount({
+      companyId,
+      trx
+    });
+
+    await this.confirmCompanyMembership({
+      userId,
+      language,
+      trx
+    });
+
+    await this.emailService.sendCompanyRegistrationCompleteEmail({
+      to: companyOwnerEmail,
+      companyInfo,
+      language
+    });
+  }
+
+  async confirmCompanyMembership({
+    userId,
+    language,
+    trx
+  }: ConfirmCompanyMembershipInterface) {
+    const { email } = await this.usersService.getUserById({
+      id: userId,
+      trx
+    });
+
+    await this.companyUsersService.confirmCompanyMembership({ userId, trx });
+
+    await this.emailService.sendCompanyMemberConfirmCompleteEmail({
+      to: email,
+      language
+    });
+
+    return new CompanyMemberAccConfirmedDto();
   }
 
   private async createCompanyAccount({

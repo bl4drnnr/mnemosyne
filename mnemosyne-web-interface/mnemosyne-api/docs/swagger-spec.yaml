@@ -87,6 +87,24 @@ paths:
       responses:
         "201":
           description: ""
+  /api/confirmation-hash/company-member-account-confirmation:
+    post:
+      operationId: ConfirmationHashController_companyMemberAccountConfirmation
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConfirmCompanyAccDto"
+      responses:
+        "201":
+          description: ""
   /api/confirmation-hash/email-change-confirmation:
     post:
       operationId: ConfirmationHashController_confirmEmailChange
@@ -158,6 +176,19 @@ paths:
       responses:
         "200":
           description: ""
+  /api/company/create-company:
+    post:
+      operationId: CompanyController_createCompany
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCompanyDto"
+      responses:
+        "201":
+          description: ""
   /api/roles:
     post:
       operationId: RolesController_createRole
@@ -209,16 +240,10 @@ paths:
       responses:
         "201":
           description: ""
-  /api/company/create-company:
+  /api/company-users/invite-user:
     post:
-      operationId: CompanyController_createCompany
+      operationId: CompanyUsersController_inviteUser
       parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateCompanyDto"
       responses:
         "201":
           description: ""
@@ -577,6 +602,9 @@ components:
     CreateUserDto:
       type: object
       properties: {}
+    CreateCompanyDto:
+      type: object
+      properties: {}
     CreateRoleDto:
       type: object
       properties: {}
@@ -584,9 +612,6 @@ components:
       type: object
       properties: {}
     RevokeRoleDto:
-      type: object
-      properties: {}
-    CreateCompanyDto:
       type: object
       properties: {}
     LoginGenerate2faQrDto:

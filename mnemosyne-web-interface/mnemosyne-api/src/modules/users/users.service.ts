@@ -34,6 +34,17 @@ import { GetUserByRecoveryKeysInterface } from '@interfaces/get-user-by-recovery
 import { DeleteUserAccountInterface } from '@interfaces/delete-user-account.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
+import { Roles } from '@interfaces/roles.enum';
+import { UserDataNotSetDto } from '@dto/user-data-not-set.dto';
+import { PasswordNotSetDto } from '@dto/password-not-set.dto';
+import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
+import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
+import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
+import { CompanyInfoInterface } from '@interfaces/company-info.interface';
+import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
+import { CreateAccFromScratchInterface } from '@interfaces/create-acc-from-scratch.interface';
+import { CompanyService } from '@modules/company.service';
+import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
 
 @Injectable()
 export class UsersService {
@@ -43,6 +54,8 @@ export class UsersService {
     private readonly emailService: EmailService,
     private readonly configService: ApiConfigService,
     private readonly timeService: TimeService,
+    @Inject(forwardRef(() => CompanyService))
+    private readonly companyService: CompanyService,
     @Inject(forwardRef(() => ConfirmationHashService))
     private readonly confirmationHashService: ConfirmationHashService,
     @InjectModel(User) private readonly userRepository: typeof User,
@@ -58,8 +71,12 @@ export class UsersService {
     });
   }
 
-  async createUser({ payload, trx: transaction }: CreateUserInterface) {
-    const defaultRole = await this.roleService.getRoleByValue('DEFAULT');
+  async createUser({
+    payload,
+    role = Roles.DEFAULT,
+    trx: transaction
+  }: CreateUserInterface) {
+    const defaultRole = await this.roleService.getRoleByValue(role);
     const user = await this.userRepository.create(payload, { transaction });
     await user.$set('roles', [defaultRole.id], { transaction });
     await this.createUserSettings({ userId: user.id, trx: transaction });
@@ -108,9 +125,9 @@ export class UsersService {
   async verifyUserCredentials({
     email,
     password,
-    trx: transaction
+    trx
   }: VerifyUserCredentialsInterface) {
-    const user = await this.getUserByEmail({ email, trx: transaction });
+    const user = await this.getUserByEmail({ email, trx });
 
     if (!user || !user.password) throw new WrongCredentialsException();
 
@@ -302,8 +319,108 @@ export class UsersService {
     return this.getUserById({ id: userSettings.userId, trx: transaction });
   }
 
-  async deleteUserAccount({ userId, trx }: DeleteUserAccountInterface) {
-    // @TODO Think about either make it soft or hard delete
+  async deleteUserAccount({
+    userId: id,
+    trx: transaction
+  }: DeleteUserAccountInterface) {
+    // TODO hard delete user acconut
+    // return await this.userRepository.destroy({
+    //   where: { id },
+    //   transaction
+    // });
+  }
+
+  async createAccountFromScratch({
+    user,
+    hash,
+    payload,
+    trx
+  }: CreateAccFromScratchInterface) {
+    const { language } = payload;
+    const hashType = hash.confirmationType;
+
+    const {
+      id: userId,
+      password,
+      isMfaSet,
+      userSettings,
+      firstName,
+      lastName,
+      email
+    } = user;
+
+    const isAccConfirmed = hash.confirmed;
+
+    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
+
+    const userDataSet = !!firstName && !!lastName;
+    const userProvidedData = !!payload.firstName && !!payload.lastName;
+
+    const passwordSet = !!password;
+    const userProvidedPassword = !!payload.password;
+
+    if (isAccConfirmed && !userDataSet && !userProvidedData)
+      return new UserDataNotSetDto();
+
+    if (!userDataSet && userProvidedData) {
+      await this.updateUserInfo({
+        payload: { firstName: payload.firstName, lastName: payload.lastName },
+        userId,
+        trx
+      });
+    }
+
+    if (isAccConfirmed && !passwordSet && !userProvidedPassword)
+      return new PasswordNotSetDto();
+
+    if (!passwordSet && userProvidedPassword) {
+      const hashedPassword = await this.cryptographicService.hashPassword({
+        password: payload.password
+      });
+
+      await this.updateUser({
+        payload: { password: hashedPassword },
+        userId
+      });
+    }
+
+    if (isAccConfirmed && isMfaSet && isRecoverySetUp)
+      throw new AccountAlreadyConfirmedException();
+
+    if (isAccConfirmed && !isMfaSet) return new MfaNotSetDto();
+
+    if (isAccConfirmed && !isRecoverySetUp) return new RecoveryKeysNotSetDto();
+
+    await this.confirmationHashService.confirmHash({
+      hashId: hash.id,
+      trx
+    });
+
+    const { id: companyId } = await this.companyService.getCompanyByOwnerId({
+      companyOwnerId: hash.userId,
+      trx
+    });
+
+    if (isMfaSet && hashType === Confirmation.COMPANY_REGISTRATION) {
+      await this.companyService.confirmCompanyCreation({
+        companyId,
+        language,
+        trx
+      });
+    } else if (isMfaSet && hashType === Confirmation.COMPANY_INVITATION) {
+      await this.companyService.confirmCompanyMembership({
+        language,
+        userId,
+        trx
+      });
+    }
+
+    switch (hashType) {
+      case Confirmation.COMPANY_REGISTRATION:
+        return new CompanyAccountConfirmedDto();
+      case Confirmation.COMPANY_INVITATION:
+        return new CompanyMemberAccConfirmedDto();
+    }
   }
 
   private async createUserSettings({
