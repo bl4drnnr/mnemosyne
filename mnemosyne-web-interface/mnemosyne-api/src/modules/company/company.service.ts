@@ -17,6 +17,10 @@ import { CompanyUsersService } from '@modules/company-users.service';
 import { Roles } from '@interfaces/roles.enum';
 import { ConfirmCompanyAccountInterface } from '@interfaces/confirm-company-account.interface';
 import { ConfirmCompanyMembershipInterface } from '@interfaces/confirm-company-membership.interface';
+import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
+import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-creation.interface';
+import { GetCompanyByIdInterface } from '@interfaces/get-company-by-id.interface';
+import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
 
 @Injectable()
 export class CompanyService {
@@ -176,6 +180,25 @@ export class CompanyService {
     });
   }
 
+  async getCompanyByUserId({ userId, trx }: GetCompanyByUserIdInterface) {
+    const { companyId } = await this.companyUsersService.getCompanyUserByUserId(
+      {
+        userId,
+        trx
+      }
+    );
+    return await this.companyRepository.findOne({
+      where: { id: companyId },
+      transaction: trx
+    });
+  }
+
+  async getCompanyById({ id, trx: transaction }: GetCompanyByIdInterface) {
+    return await this.companyRepository.findByPk(id, {
+      transaction
+    });
+  }
+
   async confirmCompanyAccount({
     companyId: id,
     trx: transaction
@@ -186,6 +209,46 @@ export class CompanyService {
       },
       { where: { id }, transaction }
     );
+  }
+
+  async confirmCompanyCreation({
+    companyId,
+    language,
+    trx
+  }: ConfirmCompanyCreationInterface) {
+    const {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      user: { id: userId, email: companyOwnerEmail }
+    } = await this.getCompanyById({
+      id: companyId,
+      trx
+    });
+
+    const companyInfo = {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerEmail
+    };
+
+    await this.confirmCompanyAccount({
+      companyId,
+      trx
+    });
+
+    await this.confirmCompanyMembership({
+      userId,
+      language,
+      trx
+    });
+
+    await this.emailService.sendCompanyRegistrationCompleteEmail({
+      to: companyOwnerEmail,
+      companyInfo,
+      language
+    });
   }
 
   async confirmCompanyMembership({
@@ -204,6 +267,8 @@ export class CompanyService {
       to: email,
       language
     });
+
+    return new CompanyMemberAccConfirmedDto();
   }
 
   private async createCompanyAccount({

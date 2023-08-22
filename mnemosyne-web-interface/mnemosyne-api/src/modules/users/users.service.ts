@@ -44,7 +44,6 @@ import { CompanyInfoInterface } from '@interfaces/company-info.interface';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { CreateAccFromScratchInterface } from '@interfaces/create-acc-from-scratch.interface';
 import { CompanyService } from '@modules/company.service';
-import { AccountConfirmedDto } from '@dto/account-confirmed.dto';
 import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
 
 @Injectable()
@@ -331,7 +330,7 @@ export class UsersService {
     // });
   }
 
-  async createAccountFrontScratch({
+  async createAccountFromScratch({
     user,
     hash,
     payload,
@@ -397,32 +396,16 @@ export class UsersService {
       trx
     });
 
-    const {
-      id: companyId,
-      companyName,
-      companyLocation,
-      companyWebsite
-    } = await this.companyService.getCompanyByOwnerId({
+    const { id: companyId } = await this.companyService.getCompanyByOwnerId({
       companyOwnerId: hash.userId,
       trx
     });
 
-    const companyInfo: CompanyInfoInterface = {
-      companyOwnerEmail: email,
-      companyLocation,
-      companyWebsite,
-      companyName
-    };
-
     if (isMfaSet && hashType === Confirmation.COMPANY_REGISTRATION) {
-      await this.companyService.confirmCompanyAccount({
+      await this.companyService.confirmCompanyCreation({
         companyId,
+        language,
         trx
-      });
-      await this.emailService.sendCompanyRegistrationCompleteEmail({
-        to: email,
-        companyInfo,
-        language
       });
     } else if (isMfaSet && hashType === Confirmation.COMPANY_INVITATION) {
       await this.companyService.confirmCompanyMembership({

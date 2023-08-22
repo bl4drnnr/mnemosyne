@@ -25,7 +25,6 @@ import { ConfirmCompanyAccInterface } from '@interfaces/confirm-company-acc.inte
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CompanyService } from '@modules/company.service';
 import { ConfirmHashInterface } from '@interfaces/confirm-hash.interface';
-import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
 
 @Injectable()
 export class ConfirmationHashService {
@@ -170,12 +169,24 @@ export class ConfirmationHashService {
       trx
     });
 
-    return await this.usersService.createAccountFrontScratch({
-      user,
-      hash,
-      payload,
-      trx
-    });
+    if (!user.isMfaSet) {
+      return await this.usersService.createAccountFromScratch({
+        user,
+        hash,
+        payload,
+        trx
+      });
+    } else {
+      const { id: companyId } = await this.companyService.getCompanyByUserId({
+        userId: user.id,
+        trx
+      });
+      return await this.companyService.confirmCompanyCreation({
+        companyId,
+        language: payload.language,
+        trx
+      });
+    }
   }
 
   async companyMemberAccountConfirmation({
@@ -190,19 +201,18 @@ export class ConfirmationHashService {
     });
 
     if (!user.isMfaSet) {
-      return await this.usersService.createAccountFrontScratch({
+      return await this.usersService.createAccountFromScratch({
         user,
         hash,
         payload,
         trx
       });
     } else {
-      await this.companyService.confirmCompanyMembership({
+      return await this.companyService.confirmCompanyMembership({
         language: payload.language,
         userId: user.id,
         trx
       });
-      return new CompanyMemberAccConfirmedDto();
     }
   }
 

@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { CompanyUser } from '@models/company-users.model';
 import { CreateCompanyUserInterface } from '@interfaces/create-company-user.interface';
 import { ConfirmCompanyMembershipInterface } from '@interfaces/confirm-company-membership.interface';
+import { GetCompanyUserByUserIdInterface } from '@interfaces/get-company-user-by-user-id.interface';
 
 @Injectable()
 export class CompanyUsersService {
@@ -28,6 +29,16 @@ export class CompanyUsersService {
       },
       { transaction }
     );
+  }
+
+  async getCompanyUserByUserId({
+    userId,
+    trx: transaction
+  }: GetCompanyUserByUserIdInterface) {
+    return await this.companyUserRepository.findOne({
+      where: { userId },
+      transaction
+    });
   }
 
   async confirmCompanyMembership({
