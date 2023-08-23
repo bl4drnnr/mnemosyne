@@ -21,6 +21,7 @@ import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.
 import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-creation.interface';
 import { GetCompanyByIdInterface } from '@interfaces/get-company-by-id.interface';
 import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
+import {CompanyAccountConfirmedDto} from "@dto/company-account-confirmed.dto";
 
 @Injectable()
 export class CompanyService {
@@ -249,6 +250,8 @@ export class CompanyService {
       companyInfo,
       language
     });
+
+    return new CompanyAccountConfirmedDto();
   }
 
   async confirmCompanyMembership({
