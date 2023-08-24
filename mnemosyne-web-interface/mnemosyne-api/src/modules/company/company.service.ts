@@ -12,16 +12,14 @@ import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
-import { GetCompanyByOwnerIdInterface } from '@interfaces/get-company-by-owner-id.interface';
 import { CompanyUsersService } from '@modules/company-users.service';
 import { Roles } from '@interfaces/roles.enum';
 import { ConfirmCompanyAccountInterface } from '@interfaces/confirm-company-account.interface';
 import { ConfirmCompanyMembershipInterface } from '@interfaces/confirm-company-membership.interface';
 import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
 import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-creation.interface';
-import { GetCompanyByIdInterface } from '@interfaces/get-company-by-id.interface';
 import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
-import {CompanyAccountConfirmedDto} from "@dto/company-account-confirmed.dto";
+import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 
 @Injectable()
 export class CompanyService {
@@ -171,16 +169,6 @@ export class CompanyService {
     });
   }
 
-  async getCompanyByOwnerId({
-    companyOwnerId,
-    trx: transaction
-  }: GetCompanyByOwnerIdInterface) {
-    return await this.companyRepository.findOne({
-      where: { companyOwnerId },
-      transaction
-    });
-  }
-
   async getCompanyByUserId({ userId, trx }: GetCompanyByUserIdInterface) {
     const { companyId } = await this.companyUsersService.getCompanyUserByUserId(
       {
@@ -190,13 +178,8 @@ export class CompanyService {
     );
     return await this.companyRepository.findOne({
       where: { id: companyId },
+      include: [{ all: true }],
       transaction: trx
-    });
-  }
-
-  async getCompanyById({ id, trx: transaction }: GetCompanyByIdInterface) {
-    return await this.companyRepository.findByPk(id, {
-      transaction
     });
   }
 
@@ -213,17 +196,19 @@ export class CompanyService {
   }
 
   async confirmCompanyCreation({
-    companyId,
+    userId,
     language,
     trx
   }: ConfirmCompanyCreationInterface) {
     const {
+      id: companyId,
       companyName,
       companyLocation,
       companyWebsite,
-      user: { id: userId, email: companyOwnerEmail }
-    } = await this.getCompanyById({
-      id: companyId,
+      isConfirmed,
+      user: { email: companyOwnerEmail }
+    } = await this.getCompanyByUserId({
+      userId,
       trx
     });
 
@@ -234,22 +219,24 @@ export class CompanyService {
       companyOwnerEmail
     };
 
-    await this.confirmCompanyAccount({
-      companyId,
-      trx
-    });
+    if (!isConfirmed) {
+      await this.confirmCompanyAccount({
+        companyId,
+        trx
+      });
 
-    await this.confirmCompanyMembership({
-      userId,
-      language,
-      trx
-    });
+      await this.confirmCompanyMembership({
+        userId,
+        language,
+        trx
+      });
 
-    await this.emailService.sendCompanyRegistrationCompleteEmail({
-      to: companyOwnerEmail,
-      companyInfo,
-      language
-    });
+      await this.emailService.sendCompanyRegistrationCompleteEmail({
+        to: companyOwnerEmail,
+        companyInfo,
+        language
+      });
+    }
 
     return new CompanyAccountConfirmedDto();
   }

@@ -1,24 +1,25 @@
-import {Injectable} from '@angular/core';
-import {ApiService} from '@shared/api.service';
-import {Observable} from 'rxjs';
-import {Method} from '@interfaces/methods.enum';
-import {Controller} from '@interfaces/controller.enum';
-import {AuthEndpoint} from '@interfaces/auth.enum';
-import {LoginPayload} from '@payloads/login.interface';
-import {RegistrationPayload} from '@payloads/registration.interface';
-import {ForgotPasswordPayload} from '@payloads/forgot-password.interface';
-import {ResetUserPasswordPayload} from '@payloads/reset-user-password.interface';
-import {LoginResponse} from '@responses/login.enum';
-import {RegistrationResponse} from '@responses/registration.enum';
-import {ConfirmAccountResponse} from '@responses/confirm-account.enum';
-import {ForgotPasswordResponse} from '@responses/forgot-password.enum';
-import {ResetUserPasswordResponse} from '@responses/reset-user-password.enum';
-import {LogoutResponse} from '@responses/logout.enum';
-import {ConfirmationHashEndpoint} from '@interfaces/confirmation-hash.enum';
-import {ConfirmAccountInterface} from '@payloads/confirm-account.interface';
-import {ConfirmCompanyAccountInterface} from '@payloads/confirm-company-account.interface';
-import {RefreshTokensInterface} from '@payloads/refresh-tokens.interface';
-import {ConfirmCompanyAccountEnum} from '@responses/confirm-company-account.enum';
+import { Injectable } from '@angular/core';
+import { ApiService } from '@shared/api.service';
+import { Observable } from 'rxjs';
+import { Method } from '@interfaces/methods.enum';
+import { Controller } from '@interfaces/controller.enum';
+import { AuthEndpoint } from '@interfaces/auth.enum';
+import { LoginPayload } from '@payloads/login.interface';
+import { RegistrationPayload } from '@payloads/registration.interface';
+import { ForgotPasswordPayload } from '@payloads/forgot-password.interface';
+import { ResetUserPasswordPayload } from '@payloads/reset-user-password.interface';
+import { LoginResponse } from '@responses/login.enum';
+import { RegistrationResponse } from '@responses/registration.enum';
+import { ConfirmAccountResponse } from '@responses/confirm-account.enum';
+import { ForgotPasswordResponse } from '@responses/forgot-password.enum';
+import { ResetUserPasswordResponse } from '@responses/reset-user-password.enum';
+import { LogoutResponse } from '@responses/logout.enum';
+import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
+import { ConfirmAccountInterface } from '@payloads/confirm-account.interface';
+import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
+import { RefreshTokensInterface } from '@payloads/refresh-tokens.interface';
+import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.enum';
+import { ConfirmCompanyMemberAccEnum } from '@responses/confirm-company-member-acc.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -85,12 +86,21 @@ export class AuthenticationService {
     });
   }
 
-  confirmCompanyMembership() {
+  confirmCompanyMembership(
+    payload: ConfirmCompanyAccountInterface
+  ): Observable<{ message: ConfirmCompanyMemberAccEnum }> {
+    const params = { confirmationHash: payload.confirmationHash };
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.CONFIRMATION_HASH,
-      action: ConfirmationHashEndpoint.COMPANY_MEMBER_ACCOUNT_CONFIRM
-    })
+      action: ConfirmationHashEndpoint.COMPANY_MEMBER_ACCOUNT_CONFIRM,
+      params,
+      payload
+    });
   }
 
   forgotPassword(

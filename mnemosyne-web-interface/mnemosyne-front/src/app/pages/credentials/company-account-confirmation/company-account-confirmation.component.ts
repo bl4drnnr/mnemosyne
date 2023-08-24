@@ -31,15 +31,13 @@ export class CompanyAccountConfirmationComponent implements OnInit {
   incorrectPassword: boolean;
 
   isCompanyAccConfirmed = false;
-  isUserDataNotSet = true;
+  isOwnerDataNotSet = true;
   isPasswordNotSet = true;
   isMfaNotSet = true;
   isRecoveryKeysNotSet = true;
   accountConfirmationError: boolean;
 
   hash: string;
-  phone: string;
-  code: string;
 
   googleAuthenticatorAppLink =
     'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pli=1';
@@ -65,16 +63,16 @@ export class CompanyAccountConfirmationComponent implements OnInit {
         next: ({ message }) => {
           switch (message) {
             case ConfirmCompanyAccountEnum.USER_DATA_NOT_SET:
-              this.userDataNotSet();
+              this.ownerDataNotSet();
               break;
             case ConfirmCompanyAccountEnum.PASSWORD_NOT_SET:
-              this.userPasswordNotSet();
+              this.ownerPasswordNotSet();
               break;
             case ConfirmCompanyAccountEnum.MFA_NOT_SET:
-              this.userMfaNotSet();
+              this.ownerMfaNotSet();
               break;
             case ConfirmCompanyAccountEnum.RECOVERY_KEYS_NOT_SET:
-              this.userRecoveryNotSet();
+              this.ownerRecoveryNotSet();
               break;
             case ConfirmCompanyAccountEnum.COMPANY_ACCOUNT_CONFIRMED:
               this.companyAccountConfirmed();
@@ -88,15 +86,43 @@ export class CompanyAccountConfirmationComponent implements OnInit {
       });
   }
 
-  userDataNotSet() {
-    this.isUserDataNotSet = true;
+  ownerDataNotSet() {
+    this.isOwnerDataNotSet = true;
     this.isPasswordNotSet = false;
     this.isMfaNotSet = false;
     this.isRecoveryKeysNotSet = false;
     this.isCompanyAccConfirmed = true;
   }
 
-  userDataButtonDisabled() {
+  ownerPasswordNotSet() {
+    this.isOwnerDataNotSet = false;
+    this.isPasswordNotSet = true;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = false;
+    this.isCompanyAccConfirmed = true;
+  }
+
+  ownerMfaNotSet() {
+    this.isOwnerDataNotSet = false;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = true;
+    this.isRecoveryKeysNotSet = false;
+    this.isCompanyAccConfirmed = true;
+  }
+
+  ownerRecoveryNotSet() {
+    this.isOwnerDataNotSet = false;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = true;
+    this.isCompanyAccConfirmed = true;
+  }
+
+  companyAccountConfirmed() {
+    this.step = 3;
+  }
+
+  ownerDataButtonDisabled() {
     return (
       !this.firstName ||
       !this.lastName ||
@@ -105,40 +131,8 @@ export class CompanyAccountConfirmationComponent implements OnInit {
     );
   }
 
-  userPasswordNotSet() {
-    this.isUserDataNotSet = false;
-    this.isPasswordNotSet = true;
-    this.isMfaNotSet = false;
-    this.isRecoveryKeysNotSet = false;
-    this.isCompanyAccConfirmed = true;
-  }
-
   passwordButtonDisabled() {
     return this.incorrectPassword;
-  }
-
-  userMfaNotSet() {
-    this.isUserDataNotSet = false;
-    this.isPasswordNotSet = false;
-    this.isMfaNotSet = true;
-    this.isRecoveryKeysNotSet = false;
-    this.isCompanyAccConfirmed = true;
-  }
-
-  userRecoveryNotSet() {
-    this.isUserDataNotSet = false;
-    this.isPasswordNotSet = false;
-    this.isMfaNotSet = false;
-    this.isRecoveryKeysNotSet = true;
-    this.isCompanyAccConfirmed = true;
-  }
-
-  companyAccountConfirmed() {
-    this.isUserDataNotSet = true;
-    this.isPasswordNotSet = false;
-    this.isMfaNotSet = false;
-    this.isRecoveryKeysNotSet = false;
-    this.isCompanyAccConfirmed = true;
   }
 
   async handleRedirect(path: string) {
