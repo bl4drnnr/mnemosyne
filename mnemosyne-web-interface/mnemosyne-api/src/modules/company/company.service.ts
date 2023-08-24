@@ -246,6 +246,11 @@ export class CompanyService {
     language,
     trx
   }: ConfirmCompanyMembershipInterface) {
+    const { companyName } = await this.getCompanyByUserId({
+      userId,
+      trx
+    });
+
     const { email } = await this.usersService.getUserById({
       id: userId,
       trx
@@ -255,6 +260,7 @@ export class CompanyService {
 
     await this.emailService.sendCompanyMemberConfirmCompleteEmail({
       to: email,
+      companyName,
       language
     });
 

@@ -150,6 +150,7 @@ export class EmailService {
 
   async sendCompanyMemberConfirmCompleteEmail({
     to,
+    companyName,
     language
   }: CompletedSecurityEmailInterface) {
     const link = this.getConfirmationLink({ route: 'login' });
@@ -157,6 +158,7 @@ export class EmailService {
     const { html, subject } =
       this.emailTemplatesService.companyMemberConfirmCompleteEmail({
         link,
+        companyName,
         language
       });
 
