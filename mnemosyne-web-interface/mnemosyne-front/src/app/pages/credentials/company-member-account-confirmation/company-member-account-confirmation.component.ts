@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Titles } from '@interfaces/titles.enum';
 import { ConfirmCompanyMemberAccEnum } from '@responses/confirm-company-member-acc.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
+import { StaticService } from '@services/static.service';
 
 @Component({
   selector: 'app-company-member-account-confirmation',
@@ -31,21 +32,24 @@ export class CompanyMemberAccountConfirmationComponent implements OnInit {
   incorrectPassword: boolean;
 
   isMemberAccConfirmed = false;
+  isMemberDataNotSet = true;
+  isPasswordNotSet = true;
+  isMfaNotSet = true;
+  isRecoveryKeysNotSet = true;
   accountConfirmationError: boolean;
 
   hash: string;
 
-  googleAuthenticatorAppLink =
-    'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pli=1';
-  microsoftAuthenticatorAppLink =
-    'https://support.microsoft.com/en-us/account-billing/download-and-install-the-microsoft-authenticator-app-351498fc-850a-45da-b7b6-27e523b8702a';
-
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,
+    private readonly staticService: StaticService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {}
+
+  googleAuthAppLink = this.staticService.getMfaAuthApps().google;
+  microsoftAuthAppLink = this.staticService.getMfaAuthApps().microsoft;
 
   confirmCompanyMemberAccount(hash: string) {
     this.authenticationService
@@ -82,13 +86,37 @@ export class CompanyMemberAccountConfirmationComponent implements OnInit {
       });
   }
 
-  memberDataNotSet() {}
+  memberDataNotSet() {
+    this.isMemberDataNotSet = true;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = false;
+    this.isMemberAccConfirmed = true;
+  }
 
-  memberPasswordNotSet() {}
+  memberPasswordNotSet() {
+    this.isMemberDataNotSet = false;
+    this.isPasswordNotSet = true;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = false;
+    this.isMemberAccConfirmed = true;
+  }
 
-  memberMfaNotSet() {}
+  memberMfaNotSet() {
+    this.isMemberDataNotSet = false;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = true;
+    this.isRecoveryKeysNotSet = false;
+    this.isMemberAccConfirmed = true;
+  }
 
-  memberRecoveryNotSet() {}
+  memberRecoveryNotSet() {
+    this.isMemberDataNotSet = false;
+    this.isPasswordNotSet = false;
+    this.isMfaNotSet = false;
+    this.isRecoveryKeysNotSet = true;
+    this.isMemberAccConfirmed = true;
+  }
 
   memberAccountConfirmed() {
     this.step = 3;

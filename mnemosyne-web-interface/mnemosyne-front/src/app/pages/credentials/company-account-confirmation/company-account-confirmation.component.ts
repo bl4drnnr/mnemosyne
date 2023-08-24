@@ -5,6 +5,7 @@ import { TranslationService } from '@services/translation.service';
 import { Titles } from '@interfaces/titles.enum';
 import { AuthenticationService } from '@services/authentication.service';
 import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.enum';
+import { StaticService } from '@services/static.service';
 
 @Component({
   selector: 'page-company-account-confirmation',
@@ -39,17 +40,16 @@ export class CompanyAccountConfirmationComponent implements OnInit {
 
   hash: string;
 
-  googleAuthenticatorAppLink =
-    'https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pli=1';
-  microsoftAuthenticatorAppLink =
-    'https://support.microsoft.com/en-us/account-billing/download-and-install-the-microsoft-authenticator-app-351498fc-850a-45da-b7b6-27e523b8702a';
-
   constructor(
     private readonly authenticationService: AuthenticationService,
     private readonly translationService: TranslationService,
+    private readonly staticService: StaticService,
     private readonly route: ActivatedRoute,
     private readonly router: Router
   ) {}
+
+  googleAuthAppLink = this.staticService.getMfaAuthApps().google;
+  microsoftAuthAppLink = this.staticService.getMfaAuthApps().microsoft;
 
   confirmCompanyAccount(hash: string) {
     this.authenticationService

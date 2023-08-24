@@ -183,16 +183,16 @@ export class EmailTemplatesService {
 
     switch (language) {
       case Language.EN:
-        subject = `Mnemosyne - ${companyName} - Company invitation confirmed`;
+        subject = `Mnemosyne - Company invitation confirmed - ${companyName}`;
         break;
       case Language.RU:
-        subject = `Mnemosyne - ${companyName} - Приглашение компании подтверждено`;
+        subject = `Mnemosyne - Приглашение компании подтверждено - ${companyName}`;
         break;
       case Language.PL:
-        subject = `Mnemosyne - ${companyName} - Zaproszenie firmy potwierdzone`;
+        subject = `Mnemosyne - Zaproszenie firmy potwierdzone - ${companyName}`;
         break;
       default:
-        subject = `Mnemosyne - ${companyName} - Company invitation confirmed`;
+        subject = `Mnemosyne - Company invitation confirmed - ${companyName}`;
         break;
     }
 
