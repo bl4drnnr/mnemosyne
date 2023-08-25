@@ -169,7 +169,9 @@ export class ConfirmationHashService {
       trx
     });
 
-    if (!user.isMfaSet) {
+    const isRecoverySet = user.userSettings.recoveryKeysFingerprint;
+
+    if (!isRecoverySet) {
       return await this.usersService.createAccountFromScratch({
         user,
         hash,
@@ -177,12 +179,8 @@ export class ConfirmationHashService {
         trx
       });
     } else {
-      const { id: companyId } = await this.companyService.getCompanyByUserId({
-        userId: user.id,
-        trx
-      });
       return await this.companyService.confirmCompanyCreation({
-        companyId,
+        userId: user.id,
         language: payload.language,
         trx
       });
@@ -200,7 +198,9 @@ export class ConfirmationHashService {
       trx
     });
 
-    if (!user.isMfaSet) {
+    const isRecoverySet = user.userSettings.recoveryKeysFingerprint;
+
+    if (!isRecoverySet) {
       return await this.usersService.createAccountFromScratch({
         user,
         hash,

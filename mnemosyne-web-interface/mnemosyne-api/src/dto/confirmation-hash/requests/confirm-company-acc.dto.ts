@@ -1,6 +1,5 @@
 import { IsEnum, IsOptional, IsString, Length, Matches } from 'class-validator';
 import { PasswordRegex } from '@regex/password.regex';
-import { MfaCodeRegex } from '@regex/mfa-code.regex';
 import { Language } from '@interfaces/language.enum';
 
 export class ConfirmCompanyAccDto {

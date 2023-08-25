@@ -4,7 +4,8 @@ import { CompanyInfoInterface } from '@interfaces/company-info.interface';
 
 export interface CompletedSecurityEmailInterface {
   to: string;
-  userInfo?: UserInfoInterface;
+  companyName?: string;
   companyInfo?: CompanyInfoInterface;
+  userInfo?: UserInfoInterface;
   language?: Language;
 }

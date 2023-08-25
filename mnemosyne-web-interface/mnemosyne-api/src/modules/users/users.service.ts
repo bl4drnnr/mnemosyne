@@ -40,7 +40,6 @@ import { PasswordNotSetDto } from '@dto/password-not-set.dto';
 import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
-import { CompanyInfoInterface } from '@interfaces/company-info.interface';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { CreateAccFromScratchInterface } from '@interfaces/create-acc-from-scratch.interface';
 import { CompanyService } from '@modules/company.service';
@@ -345,13 +344,10 @@ export class UsersService {
       isMfaSet,
       userSettings,
       firstName,
-      lastName,
-      email
+      lastName
     } = user;
 
-    const isAccConfirmed = hash.confirmed;
-
-    const isRecoverySetUp = userSettings.recoveryKeysFingerprint;
+    const isRecoverySet = userSettings.recoveryKeysFingerprint;
 
     const userDataSet = !!firstName && !!lastName;
     const userProvidedData = !!payload.firstName && !!payload.lastName;
@@ -359,8 +355,7 @@ export class UsersService {
     const passwordSet = !!password;
     const userProvidedPassword = !!payload.password;
 
-    if (isAccConfirmed && !userDataSet && !userProvidedData)
-      return new UserDataNotSetDto();
+    if (!userDataSet && !userProvidedData) return new UserDataNotSetDto();
 
     if (!userDataSet && userProvidedData) {
       await this.updateUserInfo({
@@ -370,8 +365,7 @@ export class UsersService {
       });
     }
 
-    if (isAccConfirmed && !passwordSet && !userProvidedPassword)
-      return new PasswordNotSetDto();
+    if (!passwordSet && !userProvidedPassword) return new PasswordNotSetDto();
 
     if (!passwordSet && userProvidedPassword) {
       const hashedPassword = await this.cryptographicService.hashPassword({
@@ -384,30 +378,24 @@ export class UsersService {
       });
     }
 
-    if (isAccConfirmed && isMfaSet && isRecoverySetUp)
-      throw new AccountAlreadyConfirmedException();
+    if (isMfaSet && isRecoverySet) throw new AccountAlreadyConfirmedException();
 
-    if (isAccConfirmed && !isMfaSet) return new MfaNotSetDto();
+    if (!isMfaSet) return new MfaNotSetDto();
 
-    if (isAccConfirmed && !isRecoverySetUp) return new RecoveryKeysNotSetDto();
+    if (!isRecoverySet) return new RecoveryKeysNotSetDto();
 
     await this.confirmationHashService.confirmHash({
       hashId: hash.id,
       trx
     });
 
-    const { id: companyId } = await this.companyService.getCompanyByOwnerId({
-      companyOwnerId: hash.userId,
-      trx
-    });
-
-    if (isMfaSet && hashType === Confirmation.COMPANY_REGISTRATION) {
+    if (isRecoverySet && hashType === Confirmation.COMPANY_REGISTRATION) {
       await this.companyService.confirmCompanyCreation({
-        companyId,
+        userId,
         language,
         trx
       });
-    } else if (isMfaSet && hashType === Confirmation.COMPANY_INVITATION) {
+    } else if (isRecoverySet && hashType === Confirmation.COMPANY_INVITATION) {
       await this.companyService.confirmCompanyMembership({
         language,
         userId,

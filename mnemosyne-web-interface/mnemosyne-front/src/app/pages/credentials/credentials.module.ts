@@ -48,6 +48,10 @@ const routes: Routes = [
     component: CompanyAccountConfirmationComponent
   },
   {
+    path: 'company-member-account-confirmation/:hash',
+    component: CompanyMemberAccountConfirmationComponent
+  },
+  {
     path: 'reset-password/:hash',
     component: ResetPasswordComponent
   },

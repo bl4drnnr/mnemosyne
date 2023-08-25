@@ -6,6 +6,7 @@ export enum Titles {
   FORGOT_PASSWORD = 'forgotPassword',
   ACCOUNT_CONFIRMATION = 'accConfirm',
   COMPANY_ACC_CONFIRMATION = 'companyAccConfirm',
+  COMPANY_MEMBER_ACC_CONFIRM = 'companyMemberAccConfirm',
   DASHBOARD = 'dashboard',
   SETTINGS = 'settings',
   RECOVER_ACCOUNT = 'recoverAccount',

@@ -55,6 +55,10 @@ export const CredentialsTranslationProvider = {
       alias: CredentialsTranslation.COMPANY_CONFIRM_ACC_ALIAS
     },
     {
+      scope: CredentialsTranslation.COMPANY_MEMBER_ACC_CONFIRM,
+      alias: CredentialsTranslation.COMPANY_MEMBER_ACC_CONFIRM_ALIAS
+    },
+    {
       scope: CredentialsTranslation.FORGOT_PASSWORD,
       alias: CredentialsTranslation.FORGOT_PASSWORD_ALIAS
     },
