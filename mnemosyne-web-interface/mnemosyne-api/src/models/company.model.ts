@@ -19,6 +19,7 @@ interface CompanyCreationAttributes {
   companyLocation: string;
   companyWebsite: string;
   companyOwnerId: string;
+  tac: boolean;
 }
 
 @Table({ tableName: 'companies' })
@@ -61,6 +62,13 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
     field: 'is_confirmed'
   })
   isConfirmed: boolean;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    field: 'tac'
+  })
+  tac: boolean;
 
   @BelongsTo(() => User)
   user: User;

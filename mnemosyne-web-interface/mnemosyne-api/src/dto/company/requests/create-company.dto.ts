@@ -1,6 +1,7 @@
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsEnum,
   IsFQDN,
   IsOptional,
@@ -36,6 +37,9 @@ export class CreateCompanyDto {
   @ArrayMaxSize(5)
   @Type(() => MemberRoleDto)
   readonly companyMembers: CompanyMembersType;
+
+  @IsBoolean()
+  readonly tac: boolean;
 
   @IsOptional()
   @IsEnum(Language)

@@ -20,6 +20,7 @@ import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.
 import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-creation.interface';
 import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
+import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
 
 @Injectable()
 export class CompanyService {
@@ -42,8 +43,11 @@ export class CompanyService {
       companyWebsite,
       companyLocation,
       companyMembers,
+      tac,
       language
     } = payload;
+
+    if (!tac) throw new TacNotAcceptedException();
 
     const existingCompany = await this.getCompanyByName({
       companyName,
@@ -73,11 +77,12 @@ export class CompanyService {
       userId = createdOwnerAccount.id;
     }
 
-    const companyCreationPayload = {
+    const companyCreationPayload: CreateCompanyInterface = {
       companyName,
       companyLocation,
       companyWebsite,
       companyOwnerId: userId,
+      tac,
       trx
     };
 
@@ -124,15 +129,17 @@ export class CompanyService {
 
       const confirmationHash =
         this.cryptographicService.generateConfirmationHash();
+
       const companyMemberRegEmailPayload: VerificationEmailInterface = {
+        to: userInfo.email,
         confirmationType: Confirmation.COMPANY_INVITATION,
         confirmationHash,
         userId
       };
 
       await this.emailService.sendCompanyMemberEmail({
-        companyInfo: payload,
-        payload: companyMemberRegEmailPayload,
+        payload: { ...companyMemberRegEmailPayload },
+        companyInfo: { ...payload },
         userInfo,
         language,
         trx
@@ -272,6 +279,7 @@ export class CompanyService {
     companyLocation,
     companyWebsite,
     companyOwnerId,
+    tac,
     trx: transaction
   }: CreateCompanyInterface) {
     return await this.companyRepository.create(
@@ -279,7 +287,8 @@ export class CompanyService {
         companyName,
         companyLocation,
         companyWebsite,
-        companyOwnerId
+        companyOwnerId,
+        tac
       },
       { transaction }
     );

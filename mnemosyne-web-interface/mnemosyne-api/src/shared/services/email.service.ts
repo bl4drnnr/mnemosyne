@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { ApiConfigService } from '@shared/config.service';
 import * as SendGrid from '@sendgrid/mail';
 import { ConfirmationHashService } from '@modules/confirmation-hash/confirmation-hash.service';
-import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { EmailTemplatesService } from '@shared/email-templates.service';
 import { SecurityInitEmailInterface } from '@interfaces/security-init-email.interface';
 import { CompletedSecurityEmailInterface } from '@interfaces/completed-security-email.interface';
 import { SendEmailInterface } from '@interfaces/send-email.interface';
 import { EmailConfirmHashInterface } from '@interfaces/email-confirm-hash.interface';
 import { GetConfirmLinkInterface } from '@interfaces/get-confirm-link.interface';
+import { EmailSettingsInterface } from '@interfaces/email-settings.interface';
 
 @Injectable()
 export class EmailService {
@@ -28,7 +28,7 @@ export class EmailService {
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
-    const emailSettings: VerificationEmailInterface = {
+    const emailSettings: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
@@ -60,7 +60,7 @@ export class EmailService {
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
-    const emailSettings: VerificationEmailInterface = {
+    const emailSettings: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
@@ -92,7 +92,7 @@ export class EmailService {
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
-    const emailSettings: VerificationEmailInterface = {
+    const emailSettings: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
@@ -173,7 +173,7 @@ export class EmailService {
   }: SecurityInitEmailInterface) {
     const { confirmationHash, confirmationType, userId, to } = payload;
 
-    const emailSettings: VerificationEmailInterface = {
+    const emailSettings: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
@@ -221,7 +221,7 @@ export class EmailService {
     const { confirmationHash, confirmationType, userId, to, changingEmail } =
       payload;
 
-    const emailSettings: VerificationEmailInterface = {
+    const emailSettings: EmailSettingsInterface = {
       changingEmail,
       confirmationHash,
       confirmationType,

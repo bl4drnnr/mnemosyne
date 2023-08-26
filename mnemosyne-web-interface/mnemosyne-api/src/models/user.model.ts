@@ -50,6 +50,14 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   isMfaSet: boolean;
 
+  @Default(false)
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    field: 'tac'
+  })
+  tac: boolean;
+
   @HasMany(() => ConfirmationHash)
   confirmationHashes: Array<ConfirmationHash>;
 

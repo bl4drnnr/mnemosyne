@@ -6,5 +6,6 @@ export interface CreateCompanyPayload {
   companyWebsite: string;
   companyOwnerEmail: string;
   companyMembers: Array<{ email: string; role: Role }>;
+  tac: boolean;
   language?: string;
 }
