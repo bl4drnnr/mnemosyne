@@ -8,15 +8,6 @@ import {
   UseGuards,
   UsePipes
 } from '@nestjs/common';
-import { AuthService } from '@modules/auth/auth.service';
-import { CreateUserDto } from '@dto/create-user.dto';
-import { AuthGuard } from '@guards/auth.guard';
-import { UserId } from '@decorators/user-id.decorator';
-import { ValidationPipe } from '@pipes/validation.pipe';
-import { LogInUserDto } from '@dto/log-in-user.dto';
-import { TransactionParam } from '@decorators/transaction.decorator';
-import { Transaction } from 'sequelize';
-import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -28,9 +19,16 @@ import {
   getSchemaPath,
   refs
 } from '@nestjs/swagger';
+import { AuthService } from '@modules/auth/auth.service';
+import { CreateUserDto } from '@dto/create-user.dto';
+import { AuthGuard } from '@guards/auth.guard';
+import { UserId } from '@decorators/user-id.decorator';
+import { ValidationPipe } from '@pipes/validation.pipe';
+import { LogInUserDto } from '@dto/log-in-user.dto';
+import { TransactionParam } from '@decorators/transaction.decorator';
+import { Transaction } from 'sequelize';
+import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import { AuthDocs } from '@docs/auth.docs';
-import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
-import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -45,10 +43,12 @@ export class AuthController {
     schema: { oneOf: refs(...AuthDocs.LoginDocs.Responses) }
   })
   @ApiBadRequestResponse({
-    schema: { $ref: getSchemaPath(WrongCredentialsException) }
+    description: AuthDocs.LoginDocs.BadRequestDesc,
+    schema: { oneOf: refs(...AuthDocs.LoginDocs.BadRequests) }
   })
   @ApiForbiddenResponse({
-    schema: { $ref: getSchemaPath(AccountNotConfirmedException) }
+    description: AuthDocs.LoginDocs.ForbiddenDesc,
+    schema: { oneOf: refs(...AuthDocs.LoginDocs.Forbidden) }
   })
   @ApiBody({
     type: AuthDocs.LoginDocs.BodyType,

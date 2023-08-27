@@ -166,7 +166,10 @@ paths:
               $ref: "#/components/schemas/LogInUserDto"
       responses:
         "201":
-          description: As a response function gets 2 tokens - refresh and access
+          description: As a response function gets 2 tokens - refresh and access. Also, as
+            a response user may get a message that either token or phone MFA is
+            required or both of them. It is sent as a message (status 201), not
+            an error.
           content:
             application/json:
               schema:
@@ -179,18 +182,27 @@ paths:
                   - $ref: "#/components/schemas/PhoneMfaRequiredDto"
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/AccountNotConfirmedException"
+                  - $ref: "#/components/schemas/SmsExpiredException"
+                  - $ref: "#/components/schemas/WrongCodeException"
         "400":
-          description: ""
+          description: Bad request responses include wrong provided MFA code, or expired
+            MFA code, or wrong provided credentials.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WrongCredentialsException"
+                oneOf:
+                  - $ref: "#/components/schemas/SmsExpiredException"
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongCodeException"
         "403":
-          description: ""
+          description: Forbidden response for login includes only response saying that
+            user account has not been confirmed. It means, that it exists, but
+            user have not clicked the link in the message.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/AccountNotConfirmedException"
+                oneOf:
+                  - $ref: "#/components/schemas/AccountNotConfirmedException"
       tags:
         &a3
         - Authentication
@@ -688,11 +700,11 @@ components:
         _at:
           type: string
           description: Authentication token
-          example: oJooaisjdoaijsd
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6WyJERUZBVUxUIl0sInVzZXJJZCI6IjU4NGE3MzYzLWYxMmYtNGYxMy04NmQ1LTgxZWEwNzI5Y2I1MSIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2OTMxMzc2MDYsImV4cCI6MTY5MzE0NDgwNn0.c29vRfkNAbYi1stsn5EsN0N7ruUKrzkZe7RZpUDwu0U
         _rt:
           type: string
           description: Refresh token
-          example: oJooaisjdoaijsd
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwNjY5MzYxLTc3ODgtNGJlNC05ZWNkLTAxNjcyM2FjMWU2MyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNjkzMTM3NjA2LCJleHAiOjE2OTM3NDI0MDZ9.eLt3U9RFbh_iRy1MpH30VIyCSMp6mxEw1Yw9MLEsvGU
       required:
         - _at
         - _rt
@@ -757,6 +769,24 @@ components:
           type: string
           description: Account not confirmed error message
           example: account-not-confirmed
+      required:
+        - message
+    SmsExpiredException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: SMS expired error message
+          example: sms-expired
+      required:
+        - message
+    WrongCodeException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong code error message
+          example: wrong-code
       required:
         - message
     LogInUserDto:

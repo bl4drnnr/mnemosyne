@@ -50,14 +50,16 @@ export class LogInUserResponseDto {
   @ApiProperty({
     type: String,
     description: 'Authentication token',
-    example: 'oJooaisjdoaijsd'
+    example:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6WyJERUZBVUxUIl0sInVzZXJJZCI6IjU4NGE3MzYzLWYxMmYtNGYxMy04NmQ1LTgxZWEwNzI5Y2I1MSIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2OTMxMzc2MDYsImV4cCI6MTY5MzE0NDgwNn0.c29vRfkNAbYi1stsn5EsN0N7ruUKrzkZe7RZpUDwu0U'
   })
   readonly _at: string;
 
   @ApiProperty({
     type: String,
     description: 'Refresh token',
-    example: 'oJooaisjdoaijsd'
+    example:
+      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwNjY5MzYxLTc3ODgtNGJlNC05ZWNkLTAxNjcyM2FjMWU2MyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNjkzMTM3NjA2LCJleHAiOjE2OTM3NDI0MDZ9.eLt3U9RFbh_iRy1MpH30VIyCSMp6mxEw1Yw9MLEsvGU'
   })
   readonly _rt: string;
 }
