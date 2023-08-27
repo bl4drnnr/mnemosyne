@@ -752,22 +752,112 @@ components:
   schemas:
     ForgotPasswordDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - email
     UploadPhotoDto:
       type: object
-      properties: {}
+      properties:
+        userPhoto:
+          type: string
+          description: User base64-encoded images
+          example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4...
+      required:
+        - userPhoto
     UpdateUserInfoDto:
       type: object
-      properties: {}
+      properties:
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
     ConfirmCompanyAccDto:
       type: object
-      properties: {}
+      properties:
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
     ConfirmEmailChangeDto:
       type: object
-      properties: {}
+      properties:
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User phone code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
     ResetUserPasswordDto:
       type: object
-      properties: {}
+      properties:
+        password:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        hash:
+          type: string
+          description: Hash
+          example: 77d72295446715926352fe5a60c344516571835d
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - hash
     LogInUserResponseDto:
       type: object
       properties:
@@ -1004,7 +1094,7 @@ components:
           description: Email address
           example: joe@doe.com
         companyMembers:
-          description: Array of company members
+          description: List of company members
           example:
             - email: tim.cook@icloud.com
               role: ADMIN
@@ -1027,9 +1117,7 @@ components:
         - companyName
         - companyWebsite
         - companyOwnerEmail
-        - companyMembers
         - tac
-        - language
     CompanyCreatedDto:
       type: object
       properties:
@@ -1059,37 +1147,210 @@ components:
       properties: {}
     LoginGenerate2faQrDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - email
+        - password
     VerifyTwoFaDto:
       type: object
-      properties: {}
+      properties:
+        code:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        twoFaToken:
+          type: string
+          description: 2FA token
+          example: EQKWPCTZD6GDO4TAWFPPLYPE4QDW7SXB
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - code
+        - twoFaToken
     DisableTwoFaDto:
       type: object
-      properties: {}
+      properties:
+        code:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+      required:
+        - code
     RegistrationSendSmsCodeDto:
       type: object
-      properties: {}
+      properties:
+        phone:
+          type: string
+          description: Phone
+          example: "+48123123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - phone
     LoginSendSmsDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - email
+        - password
     VerifyMobilePhoneDto:
       type: object
-      properties: {}
+      properties:
+        phone:
+          type: string
+          description: Phone
+          example: "+48123123123"
+        code:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - phone
+        - code
     DeleteAccountDto:
       type: object
-      properties: {}
+      properties:
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        fullName:
+          type: string
+          description: Full name
+          example: Joe Doe
+      required:
+        - password
     ChangePasswordDto:
       type: object
-      properties: {}
+      properties:
+        currentPassword:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        newPassword:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+      required:
+        - currentPassword
+        - newPassword
     ChangeEmailDto:
       type: object
-      properties: {}
+      properties:
+        newEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - newEmail
     GenerateRecoveryKeysDto:
       type: object
-      properties: {}
+      properties:
+        passphrase:
+          type: string
+          description: Passphrase
+          example: "123123123"
+      required:
+        - passphrase
     LoginGenerateRecoveryKeysDto:
       type: object
-      properties: {}
+      properties:
+        passphrase:
+          type: string
+          description: Passphrase
+          example: "123123123"
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - passphrase
+        - email
+        - password
     RecoverAccountDto:
       type: object
-      properties: {}
+      properties:
+        passphrase:
+          type: string
+          description: Passphrase
+          example: "123123123"
+        recoveryKeys:
+          description: List of recovery keys
+          example: e54ee7e285fbb....
+          type: array
+          items:
+            type: array
+            maxLength: 5
+            minLength: 5
+      required:
+        - passphrase
+        - recoveryKeys
