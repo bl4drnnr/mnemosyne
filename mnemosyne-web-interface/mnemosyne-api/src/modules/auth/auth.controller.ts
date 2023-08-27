@@ -35,24 +35,24 @@ import { AuthDocs } from '@docs/auth.docs';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: AuthDocs.LoginDocs.OperationDesc })
-  @ApiExtraModels(...AuthDocs.LoginDocs.Responses)
+  @ApiOperation({ summary: AuthDocs.Login.OperationDesc })
+  @ApiExtraModels(...AuthDocs.Login.Responses)
   @ApiResponse({
     status: 201,
-    description: AuthDocs.LoginDocs.ResponseDesc,
-    schema: { oneOf: refs(...AuthDocs.LoginDocs.Responses) }
+    description: AuthDocs.Login.ResponseDesc,
+    schema: { oneOf: refs(...AuthDocs.Login.Responses) }
   })
   @ApiBadRequestResponse({
-    description: AuthDocs.LoginDocs.BadRequestDesc,
-    schema: { oneOf: refs(...AuthDocs.LoginDocs.BadRequests) }
+    description: AuthDocs.Login.BadRequestDesc,
+    schema: { oneOf: refs(...AuthDocs.Login.BadRequests) }
   })
   @ApiForbiddenResponse({
-    description: AuthDocs.LoginDocs.ForbiddenDesc,
-    schema: { oneOf: refs(...AuthDocs.LoginDocs.Forbidden) }
+    description: AuthDocs.Login.ForbiddenDesc,
+    schema: { oneOf: refs(...AuthDocs.Login.Forbidden) }
   })
   @ApiBody({
-    type: AuthDocs.LoginDocs.BodyType,
-    description: AuthDocs.LoginDocs.BodyTypeDesc,
+    type: AuthDocs.Login.BodyType,
+    description: AuthDocs.Login.BodyTypeDesc,
     schema: { $ref: getSchemaPath(LogInUserDto) }
   })
   @UsePipes(ValidationPipe)

@@ -1,11 +1,12 @@
 import { BadRequestException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
+import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class SmsExpiredException extends BadRequestException {
   @ApiProperty({
     type: String,
-    description: 'SMS expired error message',
-    example: 'sms-expired'
+    description: DocsProperty.SMS_EXPIRED_DESC,
+    example: DocsProperty.SMS_EXPIRED_EXAMPLE
   })
   readonly message: string;
 

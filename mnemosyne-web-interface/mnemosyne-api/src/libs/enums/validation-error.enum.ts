@@ -1,4 +1,4 @@
-export enum ValidationErrorEnum {
+export enum ValidationError {
   WRONG_EMAIL_FORMAT = 'wrong-email-format',
   WRONG_IMAGE_FORMAT = 'user-photo-must-be-base64',
   WRONG_MFA_CODE_FORMAT = 'mfa-code-should-be-6-digit-code',

@@ -10,7 +10,7 @@ import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
 
 export abstract class AuthDocs {
-  static get LoginDocs() {
+  static get Login() {
     return {
       OperationDesc: 'Endpoint is responsible for user login',
       BodyType: LogInUserDto,

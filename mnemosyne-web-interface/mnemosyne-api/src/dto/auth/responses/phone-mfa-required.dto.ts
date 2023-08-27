@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class PhoneMfaRequiredDto {
   @ApiProperty({
     type: String,
-    description: 'Phone MFA required response message',
-    example: 'phone-required'
+    description: DocsProperty.PHONE_REQUIRED_DESC,
+    example: DocsProperty.PHONE_REQUIRED_EXAMPLE
   })
   readonly message: string;
 

@@ -2,64 +2,63 @@ import { IsOptional, IsString, Length, Matches } from 'class-validator';
 import { EmailRegex } from '@regex/email.regex';
 import { PasswordRegex } from '@regex/password.regex';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { ValidationErrorEnum } from '@interfaces/validation-error.enum';
+import { ValidationError } from '@interfaces/validation-error.enum';
+import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class LogInUserDto {
   @ApiProperty({
     type: String,
-    description: 'Email address',
-    example: 'joe@doe.com'
+    description: DocsProperty.EMAIL_DESC,
+    example: DocsProperty.EMAIL_EXAMPLE
   })
-  @Matches(EmailRegex, { message: ValidationErrorEnum.WRONG_EMAIL_FORMAT })
+  @Matches(EmailRegex, { message: ValidationError.WRONG_EMAIL_FORMAT })
   readonly email: string;
 
   @ApiProperty({
     type: String,
-    description: 'User password',
-    example: '78ui&*UI'
+    description: DocsProperty.PASSWORD_DESC,
+    example: DocsProperty.PASSWORD_EXAMPLE
   })
   @Matches(PasswordRegex, {
-    message: ValidationErrorEnum.WRONG_PASSWORD_FORMAT
+    message: ValidationError.WRONG_PASSWORD_FORMAT
   })
   readonly password: string;
 
   @ApiProperty({
     type: String,
-    description: 'User phone code - MFA',
-    example: '123123'
+    description: DocsProperty.PHONE_MFA_CODE_DESC,
+    example: DocsProperty.MFA_CODE_EXAMPLE
   })
   @ApiPropertyOptional()
   @IsOptional()
-  @IsString({ message: ValidationErrorEnum.WRONG_PHONE_CODE_FORMAT })
-  @Length(6, 6, { message: ValidationErrorEnum.WRONG_PHONE_CODE_FORMAT })
+  @IsString({ message: ValidationError.WRONG_PHONE_CODE_FORMAT })
+  @Length(6, 6, { message: ValidationError.WRONG_PHONE_CODE_FORMAT })
   readonly phoneCode?: string;
 
   @ApiProperty({
     type: String,
-    description: 'User authentication application code - MFA',
-    example: '123123'
+    description: DocsProperty.AUTH_MFA_CODE_DESC,
+    example: DocsProperty.MFA_CODE_EXAMPLE
   })
   @ApiPropertyOptional()
   @IsOptional()
-  @IsString({ message: ValidationErrorEnum.WRONG_MFA_CODE_FORMAT })
-  @Length(6, 6, { message: ValidationErrorEnum.WRONG_MFA_CODE_FORMAT })
+  @IsString({ message: ValidationError.WRONG_MFA_CODE_FORMAT })
+  @Length(6, 6, { message: ValidationError.WRONG_MFA_CODE_FORMAT })
   readonly mfaCode?: string;
 }
 
 export class LogInUserResponseDto {
   @ApiProperty({
     type: String,
-    description: 'Authentication token',
-    example:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6WyJERUZBVUxUIl0sInVzZXJJZCI6IjU4NGE3MzYzLWYxMmYtNGYxMy04NmQ1LTgxZWEwNzI5Y2I1MSIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2OTMxMzc2MDYsImV4cCI6MTY5MzE0NDgwNn0.c29vRfkNAbYi1stsn5EsN0N7ruUKrzkZe7RZpUDwu0U'
+    description: DocsProperty.ACCESS_TOKEN_DESC,
+    example: DocsProperty.ACCESS_TOKEN_EXAMPLE
   })
   readonly _at: string;
 
   @ApiProperty({
     type: String,
-    description: 'Refresh token',
-    example:
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwNjY5MzYxLTc3ODgtNGJlNC05ZWNkLTAxNjcyM2FjMWU2MyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNjkzMTM3NjA2LCJleHAiOjE2OTM3NDI0MDZ9.eLt3U9RFbh_iRy1MpH30VIyCSMp6mxEw1Yw9MLEsvGU'
+    description: DocsProperty.REFRESH_TOKEN_DESC,
+    example: DocsProperty.REFRESH_TOKEN_EXAMPLE
   })
   readonly _rt: string;
 }
