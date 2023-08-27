@@ -153,23 +153,23 @@ paths:
   /api/auth/login:
     post:
       operationId: AuthController_login
-      summary: Endpoint is responsible for user login
+      summary: Endpoint is responsible for user login.
       parameters: []
       requestBody:
         required: true
         description: According to the requirements, all users will have to configure MFA
           for their accounts. Therefore, even tho both MFA codes are optional,
-          at least one of them will be provided
+          at least one of them will be provided.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/LogInUserDto"
       responses:
         "201":
-          description: As a response function gets 2 tokens - refresh and access. Also, as
-            a response user may get a message that either token or phone MFA is
-            required or both of them. It is sent as a message (status 201), not
-            an error.
+          description: As a response function returns 2 tokens - refresh and access. Also,
+            as a response user may get a message that either token or phone MFA
+            is required or both of them. It is sent as a message (status 201),
+            not an error.
           content:
             application/json:
               schema:
@@ -201,54 +201,128 @@ paths:
           content:
             application/json:
               schema:
-                oneOf:
-                  - $ref: "#/components/schemas/AccountNotConfirmedException"
+                $ref: "#/components/schemas/AccountNotConfirmedException"
       tags:
         &a3
         - Authentication
   /api/auth/registration:
     post:
       operationId: AuthController_registration
+      summary: Endpoint is responsible for user registration.
       parameters: []
       requestBody:
         required: true
+        description: In order to create an account user has to provide email, password,
+          first name and last name, and accept T&C.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateUserDto"
       responses:
         "201":
-          description: ""
+          description: As a response function returns message about created user.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserCreatedDto"
+        "400":
+          description: User gets bad request response in case if user already exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAlreadyExistsException"
+        "403":
+          description: Forbidden response for registration includes only response saying
+            that user has not accepted Terms & Conditions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TacNotAcceptedException"
       tags: *a3
   /api/auth/logout:
     get:
       operationId: AuthController_logout
+      summary: ""
+      status: 201
+      description: As a response function returns message about that user was logged
+        out and refresh token cleaned from token.
+      schema:
+        $ref: "#/components/schemas/LoggedOutDto"
       parameters: []
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response function returns message about that user was logged
+            out and refresh token cleaned from token.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LoggedOutDto"
       tags: *a3
   /api/auth/refresh:
     get:
       operationId: AuthController_refreshTokens
+      summary: Endpoint is responsible for refresh tokens.
       parameters: []
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response function returns 2 tokens - refresh and access. But
+            in compare with login function, this function always returns 2
+            tokens, without asking for MFA etc.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LogInUserResponseDto"
+        "400":
+          description: Bad requests can return in case of invalid tokens or corrupted
+            tokens.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/InvalidTokenException"
+                  - $ref: "#/components/schemas/CorruptedTokenException"
+        "401":
+          description: Unauthorized error can be returned in case of if token is expired.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ExpiredTokenException"
       tags: *a3
   /api/company/create-company:
     post:
       operationId: CompanyController_createCompany
+      summary: Endpoint is responsible for company creation.
       parameters: []
       requestBody:
         required: true
+        description: In order to create a company account user has to provide company
+          name, location, website, owner email, list of company members
+          (optional) and accept T&C.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateCompanyDto"
       responses:
         "201":
-          description: ""
+          description: As a response function returns message about created company.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyCreatedDto"
+        "400":
+          description: Forbidden response for company creation includes only response
+            saying that company has not accepted Terms & Conditions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TacNotAcceptedException"
+        "403":
+          description: Forbidden response for company creation includes only response
+            saying that company has not accepted Terms & Conditions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TacNotAcceptedException"
       tags:
         - Company
   /api/roles:
@@ -678,22 +752,112 @@ components:
   schemas:
     ForgotPasswordDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - email
     UploadPhotoDto:
       type: object
-      properties: {}
+      properties:
+        userPhoto:
+          type: string
+          description: User base64-encoded images
+          example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4...
+      required:
+        - userPhoto
     UpdateUserInfoDto:
       type: object
-      properties: {}
+      properties:
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
     ConfirmCompanyAccDto:
       type: object
-      properties: {}
+      properties:
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
     ConfirmEmailChangeDto:
       type: object
-      properties: {}
+      properties:
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User phone code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
     ResetUserPasswordDto:
       type: object
-      properties: {}
+      properties:
+        password:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        hash:
+          type: string
+          description: Hash
+          example: 77d72295446715926352fe5a60c344516571835d
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - hash
     LogInUserResponseDto:
       type: object
       properties:
@@ -811,12 +975,167 @@ components:
       required:
         - email
         - password
+    UserCreatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User created response message
+          example: user-created
+      required:
+        - message
+    UserAlreadyExistsException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User already exists error message
+          example: user-already-exists
+      required:
+        - message
+    TacNotAcceptedException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: T&C not accepted error message
+          example: tac-not-accepted
+      required:
+        - message
     CreateUserDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
+        tac:
+          type: boolean
+          description: Terms & Conditions
+          example: "true"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - tac
+    LoggedOutDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User logged out response message
+          example: user-logged-out
+      required:
+        - message
+    CorruptedTokenException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Corrupted token error message
+          example: corrupted-token
+      required:
+        - message
+    InvalidTokenException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Invalid token error message
+          example: invalid-token
+      required:
+        - message
+    ExpiredTokenException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Token expired error message
+          example: token-expired
+      required:
+        - message
     CreateCompanyDto:
       type: object
-      properties: {}
+      properties:
+        companyLocation:
+          type: string
+          description: Company location
+          example: Cupertino, CA 95014
+        companyName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        companyWebsite:
+          type: string
+          description: Company website
+          example: apple.com
+        companyOwnerEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        companyMembers:
+          description: List of company members
+          example:
+            - email: tim.cook@icloud.com
+              role: ADMIN
+          type: array
+          items:
+            type: array
+        tac:
+          type: boolean
+          description: Terms & Conditions
+          example: "true"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - companyLocation
+        - companyName
+        - companyWebsite
+        - companyOwnerEmail
+        - tac
+    CompanyCreatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: "Company created response message "
+          example: company-created
+      required:
+        - message
+    CompanyExistsException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company already exists error message
+          example: company-already-exists
+      required:
+        - message
     CreateRoleDto:
       type: object
       properties: {}
@@ -828,37 +1147,210 @@ components:
       properties: {}
     LoginGenerate2faQrDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - email
+        - password
     VerifyTwoFaDto:
       type: object
-      properties: {}
+      properties:
+        code:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        twoFaToken:
+          type: string
+          description: 2FA token
+          example: EQKWPCTZD6GDO4TAWFPPLYPE4QDW7SXB
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - code
+        - twoFaToken
     DisableTwoFaDto:
       type: object
-      properties: {}
+      properties:
+        code:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+      required:
+        - code
     RegistrationSendSmsCodeDto:
       type: object
-      properties: {}
+      properties:
+        phone:
+          type: string
+          description: Phone
+          example: "+48123123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - phone
     LoginSendSmsDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - email
+        - password
     VerifyMobilePhoneDto:
       type: object
-      properties: {}
+      properties:
+        phone:
+          type: string
+          description: Phone
+          example: "+48123123123"
+        code:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - phone
+        - code
     DeleteAccountDto:
       type: object
-      properties: {}
+      properties:
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        fullName:
+          type: string
+          description: Full name
+          example: Joe Doe
+      required:
+        - password
     ChangePasswordDto:
       type: object
-      properties: {}
+      properties:
+        currentPassword:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        newPassword:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+      required:
+        - currentPassword
+        - newPassword
     ChangeEmailDto:
       type: object
-      properties: {}
+      properties:
+        newEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - newEmail
     GenerateRecoveryKeysDto:
       type: object
-      properties: {}
+      properties:
+        passphrase:
+          type: string
+          description: Passphrase
+          example: "123123123"
+      required:
+        - passphrase
     LoginGenerateRecoveryKeysDto:
       type: object
-      properties: {}
+      properties:
+        passphrase:
+          type: string
+          description: Passphrase
+          example: "123123123"
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+      required:
+        - passphrase
+        - email
+        - password
     RecoverAccountDto:
       type: object
-      properties: {}
+      properties:
+        passphrase:
+          type: string
+          description: Passphrase
+          example: "123123123"
+        recoveryKeys:
+          description: List of recovery keys
+          example: e54ee7e285fbb....
+          type: array
+          items:
+            type: array
+            maxLength: 5
+            minLength: 5
+      required:
+        - passphrase
+        - recoveryKeys

@@ -16,8 +16,7 @@ import {
   ApiOperation,
   ApiResponse,
   ApiTags,
-  getSchemaPath,
-  refs
+  ApiUnauthorizedResponse
 } from '@nestjs/swagger';
 import { AuthService } from '@modules/auth/auth.service';
 import { CreateUserDto } from '@dto/create-user.dto';
@@ -35,26 +34,12 @@ import { AuthDocs } from '@docs/auth.docs';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @ApiOperation({ summary: AuthDocs.Login.OperationDesc })
-  @ApiExtraModels(...AuthDocs.Login.Responses)
-  @ApiResponse({
-    status: 201,
-    description: AuthDocs.Login.ResponseDesc,
-    schema: { oneOf: refs(...AuthDocs.Login.Responses) }
-  })
-  @ApiBadRequestResponse({
-    description: AuthDocs.Login.BadRequestDesc,
-    schema: { oneOf: refs(...AuthDocs.Login.BadRequests) }
-  })
-  @ApiForbiddenResponse({
-    description: AuthDocs.Login.ForbiddenDesc,
-    schema: { oneOf: refs(...AuthDocs.Login.Forbidden) }
-  })
-  @ApiBody({
-    type: AuthDocs.Login.BodyType,
-    description: AuthDocs.Login.BodyTypeDesc,
-    schema: { $ref: getSchemaPath(LogInUserDto) }
-  })
+  @ApiOperation(AuthDocs.Login.ApiOperation)
+  @ApiExtraModels(...AuthDocs.Login.ApiExtraModels)
+  @ApiResponse(AuthDocs.Login.ApiResponse)
+  @ApiBadRequestResponse(AuthDocs.Login.ApiBadRequestResponse)
+  @ApiForbiddenResponse(AuthDocs.Login.ApiForbiddenResponse)
+  @ApiBody(AuthDocs.Login.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('login')
   async login(
@@ -64,6 +49,12 @@ export class AuthController {
     return this.authService.login({ payload, trx });
   }
 
+  @ApiOperation(AuthDocs.Registration.ApiOperation)
+  @ApiExtraModels(...AuthDocs.Registration.ApiExtraModels)
+  @ApiResponse(AuthDocs.Registration.ApiResponse)
+  @ApiBadRequestResponse(AuthDocs.Registration.ApiBadRequestResponse)
+  @ApiForbiddenResponse(AuthDocs.Registration.ApiForbiddenResponse)
+  @ApiBody(AuthDocs.Registration.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('registration')
   registration(
@@ -73,6 +64,9 @@ export class AuthController {
     return this.authService.registration({ payload, trx });
   }
 
+  @ApiOperation(AuthDocs.Logout.ApiResponse)
+  @ApiExtraModels(...AuthDocs.Logout.ApiExtraModels)
+  @ApiResponse(AuthDocs.Logout.ApiResponse)
   @UseGuards(AuthGuard)
   @Get('logout')
   async logout(
@@ -87,6 +81,11 @@ export class AuthController {
     return res.status(HttpStatus.OK).json(response);
   }
 
+  @ApiOperation(AuthDocs.RefreshTokens.ApiOperation)
+  @ApiExtraModels(...AuthDocs.RefreshTokens.ApiExtraModels)
+  @ApiResponse(AuthDocs.RefreshTokens.ApiResponse)
+  @ApiBadRequestResponse(AuthDocs.RefreshTokens.ApiBadRequestResponse)
+  @ApiUnauthorizedResponse(AuthDocs.RefreshTokens.ApiUnauthorizedResponse)
   @Get('refresh')
   async refreshTokens(
     @CookieRefreshToken() refreshToken: string,

@@ -1,9 +1,10 @@
-import { IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsOptional, Matches } from 'class-validator';
 import { EmailRegex } from '@regex/email.regex';
 import { PasswordRegex } from '@regex/password.regex';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ValidationError } from '@interfaces/validation-error.enum';
 import { DocsProperty } from '@interfaces/docs-property.enum';
+import { MfaCodeRegex } from '@regex/mfa-code.regex';
 
 export class LogInUserDto {
   @ApiProperty({
@@ -31,8 +32,9 @@ export class LogInUserDto {
   })
   @ApiPropertyOptional()
   @IsOptional()
-  @IsString({ message: ValidationError.WRONG_PHONE_CODE_FORMAT })
-  @Length(6, 6, { message: ValidationError.WRONG_PHONE_CODE_FORMAT })
+  @Matches(MfaCodeRegex, {
+    message: ValidationError.WRONG_PHONE_CODE_FORMAT
+  })
   readonly phoneCode?: string;
 
   @ApiProperty({
@@ -42,8 +44,9 @@ export class LogInUserDto {
   })
   @ApiPropertyOptional()
   @IsOptional()
-  @IsString({ message: ValidationError.WRONG_MFA_CODE_FORMAT })
-  @Length(6, 6, { message: ValidationError.WRONG_MFA_CODE_FORMAT })
+  @Matches(MfaCodeRegex, {
+    message: ValidationError.WRONG_PHONE_CODE_FORMAT
+  })
   readonly mfaCode?: string;
 }
 
