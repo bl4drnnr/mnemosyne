@@ -8,6 +8,17 @@ import {
   UseGuards,
   UsePipes
 } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiExtraModels,
+  ApiForbiddenResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  getSchemaPath,
+  refs
+} from '@nestjs/swagger';
 import { AuthService } from '@modules/auth/auth.service';
 import { CreateUserDto } from '@dto/create-user.dto';
 import { AuthGuard } from '@guards/auth.guard';
@@ -17,11 +28,33 @@ import { LogInUserDto } from '@dto/log-in-user.dto';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
+import { AuthDocs } from '@docs/auth.docs';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ summary: AuthDocs.Login.OperationDesc })
+  @ApiExtraModels(...AuthDocs.Login.Responses)
+  @ApiResponse({
+    status: 201,
+    description: AuthDocs.Login.ResponseDesc,
+    schema: { oneOf: refs(...AuthDocs.Login.Responses) }
+  })
+  @ApiBadRequestResponse({
+    description: AuthDocs.Login.BadRequestDesc,
+    schema: { oneOf: refs(...AuthDocs.Login.BadRequests) }
+  })
+  @ApiForbiddenResponse({
+    description: AuthDocs.Login.ForbiddenDesc,
+    schema: { oneOf: refs(...AuthDocs.Login.Forbidden) }
+  })
+  @ApiBody({
+    type: AuthDocs.Login.BodyType,
+    description: AuthDocs.Login.BodyTypeDesc,
+    schema: { $ref: getSchemaPath(LogInUserDto) }
+  })
   @UsePipes(ValidationPipe)
   @Post('login')
   async login(

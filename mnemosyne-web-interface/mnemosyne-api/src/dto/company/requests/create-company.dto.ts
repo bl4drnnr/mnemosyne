@@ -1,6 +1,7 @@
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsEnum,
   IsFQDN,
   IsOptional,
@@ -14,21 +15,22 @@ import { Type } from 'class-transformer';
 import { Language } from '@interfaces/language.enum';
 import { CompanyMembersType } from '@custom-types/company-members.type';
 import { MemberRoleDto } from '@dto/member-role.dto';
+import { ValidationError } from '@interfaces/validation-error.enum';
 
 export class CreateCompanyDto {
-  @IsString({ message: 'wrong-location-format' })
-  @Length(8, 128, { message: 'wrong-location-length' })
+  @IsString({ message: ValidationError.WRONG_LOCATION_FORMAT })
+  @Length(8, 128, { message: ValidationError.WRONG_LOCATION_LENGTH })
   readonly companyLocation: string;
 
-  @IsString({ message: 'wrong-company-format' })
-  @Length(2, 64, { message: 'wrong-company-length' })
+  @IsString({ message: ValidationError.WRONG_COMPANY_FORMAT })
+  @Length(2, 64, { message: ValidationError.WRONG_COMPANY_LENGTH })
   readonly companyName: string;
 
-  @IsString({ message: 'wrong-fqdn' })
+  @IsString({ message: ValidationError.WRONG_FQDN })
   @IsFQDN()
   readonly companyWebsite: string;
 
-  @Matches(EmailRegex, { message: 'wrong-email-format' })
+  @Matches(EmailRegex, { message: ValidationError.WRONG_EMAIL_FORMAT })
   readonly companyOwnerEmail: string;
 
   @IsArray()
@@ -36,6 +38,9 @@ export class CreateCompanyDto {
   @ArrayMaxSize(5)
   @Type(() => MemberRoleDto)
   readonly companyMembers: CompanyMembersType;
+
+  @IsBoolean()
+  readonly tac: boolean;
 
   @IsOptional()
   @IsEnum(Language)

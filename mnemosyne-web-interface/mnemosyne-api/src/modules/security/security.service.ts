@@ -539,6 +539,7 @@ export class SecurityService {
 
     await this.emailService.sendEmailChangeEmail({
       payload: {
+        to: newEmail,
         changingEmail: newEmail,
         confirmationType: Confirmation.EMAIL_CHANGE,
         confirmationHash,

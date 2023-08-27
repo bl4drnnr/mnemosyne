@@ -86,6 +86,9 @@
         "src/libs/interfaces/company/*",
         "src/libs/interfaces/company-users/*"
       ],
+      "@docs/*": [
+        "src/libs/docs/*"
+      ],
       "@email-templates/*": [
         "src/libs/email-templates/*",
         "src/libs/email-templates/security/*"

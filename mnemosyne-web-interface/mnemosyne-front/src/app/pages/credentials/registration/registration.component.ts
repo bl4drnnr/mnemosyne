@@ -56,6 +56,7 @@ export class RegistrationComponent implements OnInit {
   incorrectCompanyName = true;
   incorrectLocationName = true;
   incorrectCompanyOwnerEmail = true;
+  registrationTac = false;
 
   incorrectEmail = true;
   incorrectPassword = true;
@@ -84,6 +85,7 @@ export class RegistrationComponent implements OnInit {
         companyLocation: this.companyLocation,
         companyWebsite: this.companyWebsite,
         companyOwnerEmail: this.companyOwnerEmail,
+        tac: this.registrationTac,
         companyMembers
       })
       .subscribe({
@@ -198,7 +200,9 @@ export class RegistrationComponent implements OnInit {
       !this.companyWebsite;
 
     const incorrectOwnerData =
-      !this.companyOwnerEmail || this.incorrectCompanyOwnerEmail;
+      !this.registrationTac ||
+      !this.companyOwnerEmail ||
+      this.incorrectCompanyOwnerEmail;
 
     const incorrectAllCompanyData = incorrectCompanyData || incorrectOwnerData;
 
@@ -207,6 +211,7 @@ export class RegistrationComponent implements OnInit {
 
   wrongCredentials({ includeAll }: WrongCredentialsInterface) {
     const incorrectCredentials = this.incorrectPassword || this.incorrectEmail;
+
     const incorrectAllCredentials =
       incorrectCredentials ||
       !this.tac ||

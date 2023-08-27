@@ -1,7 +1,7 @@
-import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { Transaction } from 'sequelize';
+import { EmailSettingsInterface } from '@interfaces/email-settings.interface';
 
 export interface EmailConfirmHashInterface {
-  emailSettings: VerificationEmailInterface;
+  emailSettings: EmailSettingsInterface;
   trx?: Transaction;
 }
