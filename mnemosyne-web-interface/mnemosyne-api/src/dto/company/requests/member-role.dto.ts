@@ -3,11 +3,23 @@ import { EmailRegex } from '@regex/email.regex';
 import { Roles } from '@interfaces/roles.enum';
 import { Role } from '@custom-types/role.type';
 import { ValidationError } from '@interfaces/validation-error.enum';
+import { ApiProperty } from '@nestjs/swagger';
+import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class MemberRoleDto {
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.EMAIL_DESC,
+    example: DocsProperty.EMAIL_EXAMPLE
+  })
   @Matches(EmailRegex, { message: ValidationError.WRONG_EMAIL_FORMAT })
   readonly email: string;
 
+  @ApiProperty({
+    type: Roles,
+    enum: Roles,
+    description: DocsProperty.ROLES_DESC
+  })
   @IsEnum(Roles, { message: ValidationError.WRONG_ROLE_VALUE })
   readonly role: Role;
 }

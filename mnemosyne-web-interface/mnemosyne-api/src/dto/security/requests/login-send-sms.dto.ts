@@ -3,6 +3,8 @@ import { EmailRegex } from '@regex/email.regex';
 import { PasswordRegex } from '@regex/password.regex';
 import { Language } from '@interfaces/language.enum';
 import { ValidationError } from '@interfaces/validation-error.enum';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class LoginSendSmsDto {
   @Matches(EmailRegex, { message: ValidationError.WRONG_EMAIL_FORMAT })
@@ -13,7 +15,13 @@ export class LoginSendSmsDto {
   })
   readonly password: string;
 
+  @ApiProperty({
+    type: Language,
+    enum: Language,
+    description: DocsProperty.LANGUAGE_DESC
+  })
+  @ApiPropertyOptional()
   @IsOptional()
   @IsEnum(Language)
-  readonly language: Language;
+  readonly language?: Language;
 }

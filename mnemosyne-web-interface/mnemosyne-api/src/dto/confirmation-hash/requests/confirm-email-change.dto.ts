@@ -3,6 +3,8 @@ import { PasswordRegex } from '@regex/password.regex';
 import { MfaCodeRegex } from '@regex/mfa-code.regex';
 import { Language } from '@interfaces/language.enum';
 import { ValidationError } from '@interfaces/validation-error.enum';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class ConfirmEmailChangeDto {
   @IsOptional()
@@ -21,7 +23,13 @@ export class ConfirmEmailChangeDto {
   })
   readonly phoneCode: string;
 
+  @ApiProperty({
+    type: Language,
+    enum: Language,
+    description: DocsProperty.LANGUAGE_DESC
+  })
+  @ApiPropertyOptional()
   @IsOptional()
   @IsEnum(Language)
-  readonly language: Language;
+  readonly language?: Language;
 }

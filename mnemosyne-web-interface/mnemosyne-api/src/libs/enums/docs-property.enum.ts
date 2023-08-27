@@ -48,5 +48,17 @@ export enum DocsProperty {
   EXPIRED_TOKEN_DESC = 'Token expired error message',
   EXPIRED_TOKEN_EXAMPLE = 'token-expired',
   INVALID_TOKEN_DESC = 'Invalid token error message',
-  INVALID_TOKEN_EXAMPLE = 'invalid-token'
+  INVALID_TOKEN_EXAMPLE = 'invalid-token',
+  COMPANY_LOCATION_DESC = 'Company location',
+  COMPANY_LOCATION_EXAMPLE = 'Cupertino, CA 95014',
+  COMPANY_NAME_DESC = 'Company name',
+  COMPANY_NAME_EXAMPLE = 'Apple Inc.',
+  COMPANY_WEBSITE_DESC = 'Company website',
+  COMPANY_WEBSITE_EXAMPLE = 'apple.com',
+  COMPANY_MEMBERS_DESC = 'Array of company members',
+  ROLES_DESC = 'Available user members',
+  COMPANY_CREATED_DESC = 'Company created response message ',
+  COMPANY_CREATED_EXAMPLE = 'company-created',
+  COMPANY_EXISTS_DESC = 'Company already exists error message',
+  COMPANY_EXISTS_EXAMPLE = 'company-already-exists'
 }
