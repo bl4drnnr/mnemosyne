@@ -7,7 +7,9 @@ import { ValidationPipe } from '@pipes/validation.pipe';
 import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { Language } from '@interfaces/language.enum';
 import { ConfirmCompanyAccDto } from '@dto/confirm-company-acc.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Confirmation Hashes')
 @Controller('confirmation-hash')
 export class ConfirmationHashController {
   constructor(

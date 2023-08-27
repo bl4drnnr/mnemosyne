@@ -5,17 +5,18 @@ import {
   Length,
   MaxLength
 } from 'class-validator';
+import { ValidationErrorEnum } from '@interfaces/validation-error.enum';
 
 export class RecoverAccountDto {
-  @IsString({ message: 'wrong-passphrase-format' })
-  @Length(8, 128, { message: 'wrong-passphrase-length' })
+  @IsString({ message: ValidationErrorEnum.WRONG_PASSPHRASE_FORMAT })
+  @Length(8, 128, { message: ValidationErrorEnum.WRONG_PASSPHRASE_LENGTH })
   readonly passphrase: string;
 
-  @ArrayMinSize(5, { message: 'corrupted-recovery-keys' })
-  @ArrayMaxSize(5, { message: 'corrupted-recovery-keys' })
+  @ArrayMinSize(5, { message: ValidationErrorEnum.WRONG_REC_KEYS })
+  @ArrayMaxSize(5, { message: ValidationErrorEnum.WRONG_REC_KEYS })
   @MaxLength(1024, {
     each: true,
-    message: 'corrupted-recovery-keys'
+    message: ValidationErrorEnum.WRONG_REC_KEYS
   })
   readonly recoveryKeys: Array<string>;
 }

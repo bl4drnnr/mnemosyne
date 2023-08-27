@@ -25,7 +25,9 @@ import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { ChangePasswordDto } from '@dto/change-password.dto';
 import { ChangeEmailDto } from '@dto/change-email.dto';
 import { Language } from '@interfaces/language.enum';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Security')
 @Controller('security')
 export class SecurityController {
   constructor(private readonly securityService: SecurityService) {}

@@ -1,11 +1,14 @@
-import { IsString, Length } from 'class-validator';
+import { IsOptional, IsString, Length } from 'class-validator';
+import { ValidationErrorEnum } from '@interfaces/validation-error.enum';
 
 export class UpdateUserInfoDto {
-  @IsString({ message: 'wrong-first-name-format' })
-  @Length(1, 64, { message: 'wrong-first-name-length' })
+  @IsOptional()
+  @IsString({ message: ValidationErrorEnum.WRONG_FIRST_NAME_FORMAT })
+  @Length(1, 64, { message: ValidationErrorEnum.WRONG_FIRST_NAME_LENGTH })
   readonly firstName: string;
 
-  @IsString({ message: 'wrong-last-name-format' })
-  @Length(1, 64, { message: 'wrong-last-name-length' })
+  @IsOptional()
+  @IsString({ message: ValidationErrorEnum.WRONG_LAST_NAME_FORMAT })
+  @Length(1, 64, { message: ValidationErrorEnum.WRONG_LAST_NAME_LENGTH })
   readonly lastName: string;
 }

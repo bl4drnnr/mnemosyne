@@ -2,21 +2,25 @@ import { IsOptional, IsString, Matches } from 'class-validator';
 import { PhoneRegex } from '@regex/phone.regex';
 import { PasswordRegex } from '@regex/password.regex';
 import { EmailRegex } from '@regex/email.regex';
+import { MfaCodeRegex } from '@regex/mfa-code.regex';
+import { ValidationErrorEnum } from '@interfaces/validation-error.enum';
 
 export class VerifyMobilePhoneDto {
-  @IsString({ message: 'wrong-phone-format' })
-  @Matches(PhoneRegex, { message: 'wrong-phone-format' })
+  @IsString({ message: ValidationErrorEnum.WRONG_PHONE_FORMAT })
+  @Matches(PhoneRegex, { message: ValidationErrorEnum.WRONG_PHONE_FORMAT })
   readonly phone: string;
 
-  @IsString({ message: 'mfa-code-should-be-6-digit-code' })
-  @Matches(PhoneRegex, { message: 'mfa-code-should-be-6-digit-code' })
+  @IsString({ message: ValidationErrorEnum.WRONG_MFA_CODE_FORMAT })
+  @Matches(MfaCodeRegex, { message: ValidationErrorEnum.WRONG_MFA_CODE_FORMAT })
   readonly code: string;
 
   @IsOptional()
-  @Matches(EmailRegex, { message: 'wrong-email-format' })
+  @Matches(EmailRegex, { message: ValidationErrorEnum.WRONG_EMAIL_FORMAT })
   readonly email: string;
 
   @IsOptional()
-  @Matches(PasswordRegex, { message: 'wrong-password-format' })
+  @Matches(PasswordRegex, {
+    message: ValidationErrorEnum.WRONG_PASSWORD_FORMAT
+  })
   readonly password: string;
 }

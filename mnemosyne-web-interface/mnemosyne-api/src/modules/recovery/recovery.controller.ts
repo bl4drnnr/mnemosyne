@@ -15,7 +15,9 @@ import { UserId } from '@decorators/user-id.decorator';
 import { RecoverAccountDto } from '@dto/recover-account.dto';
 import { RecoveryService } from '@modules/recovery.service';
 import { LoginGenerateRecoveryKeysDto } from '@dto/login-generate-recovery-keys.dto';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Recovery')
 @Controller('recovery')
 export class RecoveryController {
   constructor(private readonly recoveryService: RecoveryService) {}

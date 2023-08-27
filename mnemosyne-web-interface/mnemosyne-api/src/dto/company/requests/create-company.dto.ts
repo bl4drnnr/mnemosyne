@@ -15,21 +15,22 @@ import { Type } from 'class-transformer';
 import { Language } from '@interfaces/language.enum';
 import { CompanyMembersType } from '@custom-types/company-members.type';
 import { MemberRoleDto } from '@dto/member-role.dto';
+import { ValidationErrorEnum } from '@interfaces/validation-error.enum';
 
 export class CreateCompanyDto {
-  @IsString({ message: 'wrong-location-format' })
-  @Length(8, 128, { message: 'wrong-location-length' })
+  @IsString({ message: ValidationErrorEnum.WRONG_LOCATION_FORMAT })
+  @Length(8, 128, { message: ValidationErrorEnum.WRONG_LOCATION_LENGTH })
   readonly companyLocation: string;
 
-  @IsString({ message: 'wrong-company-format' })
-  @Length(2, 64, { message: 'wrong-company-length' })
+  @IsString({ message: ValidationErrorEnum.WRONG_COMPANY_FORMAT })
+  @Length(2, 64, { message: ValidationErrorEnum.WRONG_COMPANY_LENGTH })
   readonly companyName: string;
 
-  @IsString({ message: 'wrong-fqdn' })
+  @IsString({ message: ValidationErrorEnum.WRONG_FQDN })
   @IsFQDN()
   readonly companyWebsite: string;
 
-  @Matches(EmailRegex, { message: 'wrong-email-format' })
+  @Matches(EmailRegex, { message: ValidationErrorEnum.WRONG_EMAIL_FORMAT })
   readonly companyOwnerEmail: string;
 
   @IsArray()

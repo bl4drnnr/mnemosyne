@@ -4,7 +4,9 @@ import { ValidationPipe } from '@pipes/validation.pipe';
 import { CreateCompanyDto } from '@dto/create-company.dto';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
+import { ApiTags } from '@nestjs/swagger';
 
+@ApiTags('Company')
 @Controller('company')
 export class CompanyController {
   constructor(private readonly companyService: CompanyService) {}

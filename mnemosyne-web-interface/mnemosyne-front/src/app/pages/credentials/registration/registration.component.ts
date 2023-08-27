@@ -197,11 +197,12 @@ export class RegistrationComponent implements OnInit {
       wrongWebsite ||
       this.incorrectCompanyName ||
       this.incorrectLocationName ||
-      !this.registrationTac ||
       !this.companyWebsite;
 
     const incorrectOwnerData =
-      !this.companyOwnerEmail || this.incorrectCompanyOwnerEmail;
+      !this.registrationTac ||
+      !this.companyOwnerEmail ||
+      this.incorrectCompanyOwnerEmail;
 
     const incorrectAllCompanyData = incorrectCompanyData || incorrectOwnerData;
 

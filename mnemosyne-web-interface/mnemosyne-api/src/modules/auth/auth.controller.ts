@@ -17,11 +17,44 @@ import { LogInUserDto } from '@dto/log-in-user.dto';
 import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiExtraModels,
+  ApiForbiddenResponse,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  getSchemaPath,
+  refs
+} from '@nestjs/swagger';
+import { AuthDocs } from '@docs/auth.docs';
+import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
+import { AccountNotConfirmedException } from '@exceptions/account-not-confirmed.exception';
 
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
+  @ApiOperation({ summary: AuthDocs.LoginDocs.OperationDesc })
+  @ApiExtraModels(...AuthDocs.LoginDocs.Responses)
+  @ApiResponse({
+    status: 201,
+    description: AuthDocs.LoginDocs.ResponseDesc,
+    schema: { oneOf: refs(...AuthDocs.LoginDocs.Responses) }
+  })
+  @ApiBadRequestResponse({
+    schema: { $ref: getSchemaPath(WrongCredentialsException) }
+  })
+  @ApiForbiddenResponse({
+    schema: { $ref: getSchemaPath(AccountNotConfirmedException) }
+  })
+  @ApiBody({
+    type: AuthDocs.LoginDocs.BodyType,
+    description: AuthDocs.LoginDocs.BodyTypeDesc,
+    schema: { $ref: getSchemaPath(LogInUserDto) }
+  })
   @UsePipes(ValidationPipe)
   @Post('login')
   async login(
