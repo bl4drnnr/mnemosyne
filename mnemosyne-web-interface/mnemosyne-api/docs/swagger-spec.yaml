@@ -813,7 +813,40 @@ components:
         - password
     CreateUserDto:
       type: object
-      properties: {}
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
+        tac:
+          type: boolean
+          description: Terms & Conditions
+          example: "true"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - email
+        - password
+        - firstName
+        - lastName
+        - tac
     CreateCompanyDto:
       type: object
       properties: {}
