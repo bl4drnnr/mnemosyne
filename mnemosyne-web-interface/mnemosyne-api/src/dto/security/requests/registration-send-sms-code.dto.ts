@@ -6,6 +6,11 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class RegistrationSendSmsCodeDto {
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.PHONE_DESC,
+    example: DocsProperty.PHONE_EXAMPLE
+  })
   @IsString({ message: ValidationError.WRONG_PHONE_FORMAT })
   @Matches(PhoneRegex, { message: ValidationError.WRONG_PHONE_FORMAT })
   readonly phone: string;

@@ -59,14 +59,17 @@ export class CreateCompanyDto {
   @ApiProperty({
     type: Array<MemberRoleDto>,
     description: DocsProperty.COMPANY_MEMBERS_DESC,
-    example: [{ email: 'tim.cook@icloud.com', role: Roles.ADMIN }],
+    example: [
+      { email: DocsProperty.COMPANY_MEMBER_EMAIL_EXAMPLE, role: Roles.ADMIN }
+    ],
     isArray: true
   })
+  @ApiPropertyOptional()
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMaxSize(5)
   @Type(() => MemberRoleDto)
-  readonly companyMembers: CompanyMembersType;
+  readonly companyMembers?: CompanyMembersType;
 
   @ApiProperty({
     type: Boolean,
