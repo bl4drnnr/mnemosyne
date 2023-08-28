@@ -23,7 +23,7 @@ export class CompanyController {
   @ApiOperation(CompanyDocs.CreateCompany.ApiOperation)
   @ApiExtraModels(...CompanyDocs.CreateCompany.ApiExtraModels)
   @ApiResponse(CompanyDocs.CreateCompany.ApiResponse)
-  @ApiBadRequestResponse(CompanyDocs.CreateCompany.ApiForbiddenResponse)
+  @ApiBadRequestResponse(CompanyDocs.CreateCompany.ApiBadRequestResponse)
   @ApiForbiddenResponse(CompanyDocs.CreateCompany.ApiForbiddenResponse)
   @ApiBody(CompanyDocs.CreateCompany.ApiBody)
   @UsePipes(ValidationPipe)

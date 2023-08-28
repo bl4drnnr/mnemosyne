@@ -169,6 +169,7 @@ export class ConfirmationHashService {
       trx
     });
 
+    // @TODO change here to more reliable check
     const isRecoverySet = user.userSettings.recoveryKeysFingerprint;
 
     if (!isRecoverySet) {
@@ -198,6 +199,7 @@ export class ConfirmationHashService {
       trx
     });
 
+    // @TODO change here to more reliable check
     const isRecoverySet = user.userSettings.recoveryKeysFingerprint;
 
     if (!isRecoverySet) {
@@ -286,10 +288,11 @@ export class ConfirmationHashService {
   }
 
   async confirmResetUserPassword({
+    hash,
     payload,
     trx
   }: ConfirmPasswordResetInterface) {
-    const { password, hash, phoneCode, mfaCode, language } = payload;
+    const { password, phoneCode, mfaCode, language } = payload;
 
     const { foundHash: forgotPasswordHash, user } =
       await this.getUserByConfirmationHash({

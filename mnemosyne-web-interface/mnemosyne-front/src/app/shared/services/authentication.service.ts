@@ -121,6 +121,7 @@ export class AuthenticationService {
   resetUserPassword(payload: ResetUserPasswordPayload): Observable<{
     message: ResetUserPasswordResponse;
   }> {
+    const params = { confirmationHash: payload.hash };
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -129,6 +130,7 @@ export class AuthenticationService {
       method: Method.POST,
       controller: Controller.CONFIRMATION_HASH,
       action: ConfirmationHashEndpoint.RESET_USER_PASSWORD_CONFIRMATION,
+      params,
       payload
     });
   }

@@ -64,7 +64,7 @@ export class AuthController {
     return this.authService.registration({ payload, trx });
   }
 
-  @ApiOperation(AuthDocs.Logout.ApiResponse)
+  @ApiOperation(AuthDocs.Logout.ApiOperation)
   @ApiExtraModels(...AuthDocs.Logout.ApiExtraModels)
   @ApiResponse(AuthDocs.Logout.ApiResponse)
   @UseGuards(AuthGuard)

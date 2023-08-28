@@ -62,6 +62,7 @@ paths:
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
+      summary: Endpoint is responsible for account confirmation.
       parameters:
         - name: confirmationHash
           required: true
@@ -72,16 +73,36 @@ paths:
           required: true
           in: query
           schema:
+            enum:
+              - ru
+              - pl
+              - en
             type: string
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response function returns either message that MFA has not been
+            set or recovery keys have not been set or, after they both set,
+            message that account is confirmed
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/MfaNotSetDto"
+                  - $ref: "#/components/schemas/RecoveryKeysNotSetDto"
+                  - $ref: "#/components/schemas/AccountConfirmedDto"
+        "403":
+          description: In case if account has already been confirmed, user gets the message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountAlreadyConfirmedException"
       tags:
         &a2
         - Confirmation Hashes
   /api/confirmation-hash/company-account-confirmation:
     post:
       operationId: ConfirmationHashController_confirmCompanyAccount
+      summary: Endpoint is responsible for company account confirmation
       parameters:
         - name: confirmationHash
           required: true
@@ -90,17 +111,46 @@ paths:
             type: string
       requestBody:
         required: true
+        description: This endpoint is also responsible for account confirmation and
+          setup of the person, who was assigned as primary admin during company
+          account creation process.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ConfirmCompanyAccDto"
       responses:
         "201":
-          description: ""
+          description: Response is similar to the response of normal account confirmation,
+            but in this case, except MFA and recovery keys, user (company admin)
+            will have to set up also personal data (first name and last name)
+            and password.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CompanyAccountConfirmedDto"
+                  - $ref: "#/components/schemas/MfaNotSetDto"
+                  - $ref: "#/components/schemas/RecoveryKeysNotSetDto"
+                  - $ref: "#/components/schemas/UserDataNotSetDto"
+                  - $ref: "#/components/schemas/PasswordNotSetDto"
+        "403":
+          description: Forbidden error is thrown in case if account already confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountAlreadyConfirmedException"
+        "404":
+          description: Not found exception is thrown in case if confirmation hash is not
+            found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HashNotFoundException"
       tags: *a2
   /api/confirmation-hash/company-member-account-confirmation:
     post:
       operationId: ConfirmationHashController_companyMemberAccountConfirmation
+      summary: Endpoint is responsible for company member account confirmation.
       parameters:
         - name: confirmationHash
           required: true
@@ -109,17 +159,46 @@ paths:
             type: string
       requestBody:
         required: true
+        description: This endpoint is also responsible for account confirmation and
+          setup of the invited person, if the invited person did not have an
+          account. Otherwise, the membership will be just confirmed.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ConfirmCompanyAccDto"
       responses:
         "201":
-          description: ""
+          description: Response is similar to the response of normal account confirmation,
+            but in this case, except MFA and recovery keys, user (company admin)
+            will have to set up also personal data (first name and last name)
+            and password.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CompanyMemberAccConfirmedDto"
+                  - $ref: "#/components/schemas/MfaNotSetDto"
+                  - $ref: "#/components/schemas/RecoveryKeysNotSetDto"
+                  - $ref: "#/components/schemas/UserDataNotSetDto"
+                  - $ref: "#/components/schemas/PasswordNotSetDto"
+        "403":
+          description: Forbidden error is thrown in case if account already confirmed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountAlreadyConfirmedException"
+        "404":
+          description: Not found exception is thrown in case if confirmation hash is not
+            found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HashNotFoundException"
       tags: *a2
   /api/confirmation-hash/email-change-confirmation:
     post:
       operationId: ConfirmationHashController_confirmEmailChange
+      summary: Endpoint is responsible for email change confirmation
       parameters:
         - name: confirmationHash
           required: true
@@ -128,27 +207,99 @@ paths:
             type: string
       requestBody:
         required: true
+        description: "While email change confirmation user has to provide confirmation
+          data about their account. It includes: password, MFA code and/or
+          mobile phone code."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ConfirmEmailChangeDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets information that email change has been
+            confirmed, but before that they need to verify their identity with
+            password and MFA.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/EmailChangedDto"
+                  - $ref: "#/components/schemas/FullMfaRequiredDto"
+                  - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
+                  - $ref: "#/components/schemas/PhoneMfaRequiredDto"
+        "400":
+          description: Bad request responses include wrong provided MFA code, or expired
+            MFA code, or wrong provided credentials.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/SmsExpiredException"
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+        "404":
+          description: Not found error is thrown in case if link (confirmation hash) has
+            expired.
+          content:
+            application/json:
+              schema:
+                $ref:
+                  - $ref: "#/components/schemas/HashNotFoundException"
+                  - $ref: "#/components/schemas/LinkExpiredException"
       tags: *a2
   /api/confirmation-hash/reset-user-password-confirmation:
     post:
       operationId: ConfirmationHashController_resetUserPassword
-      parameters: []
+      summary: Endpoint is responsible for user reset password confirmation.
+      parameters:
+        - name: confirmationHash
+          required: true
+          in: query
+          schema:
+            type: string
       requestBody:
         required: true
+        description: "While reset password confirmation user has to provide confirmation
+          data about their account. It includes: password, MFA code and/or
+          mobile phone code."
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ResetUserPasswordDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets information that new password is set, but
+            before that they need to verify their identity with password and
+            MFA.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/PasswordResetDto"
+                  - $ref: "#/components/schemas/FullMfaRequiredDto"
+                  - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
+                  - $ref: "#/components/schemas/PhoneMfaRequiredDto"
+        "400":
+          description: Bad request responses include wrong provided MFA code, or expired
+            MFA code, or wrong provided credentials or that the previous
+            password is used.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/SmsExpiredException"
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+                  - $ref: "#/components/schemas/PreviousPasswordException"
+        "404":
+          description: Not found exceptions are thrown in case if either hash not found or
+            link expired.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/HashNotFoundException"
+                  - $ref: "#/components/schemas/LinkExpiredException"
       tags: *a2
   /api/auth/login:
     post:
@@ -174,16 +325,11 @@ paths:
             application/json:
               schema:
                 oneOf:
-                  - $ref: "#/components/schemas/LogInUserResponseDto"
                   - $ref: "#/components/schemas/MfaNotSetDto"
                   - $ref: "#/components/schemas/RecoveryKeysNotSetDto"
                   - $ref: "#/components/schemas/FullMfaRequiredDto"
                   - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
                   - $ref: "#/components/schemas/PhoneMfaRequiredDto"
-                  - $ref: "#/components/schemas/WrongCredentialsException"
-                  - $ref: "#/components/schemas/AccountNotConfirmedException"
-                  - $ref: "#/components/schemas/SmsExpiredException"
-                  - $ref: "#/components/schemas/WrongCodeException"
         "400":
           description: Bad request responses include wrong provided MFA code, or expired
             MFA code, or wrong provided credentials.
@@ -242,12 +388,7 @@ paths:
   /api/auth/logout:
     get:
       operationId: AuthController_logout
-      summary: ""
-      status: 201
-      description: As a response function returns message about that user was logged
-        out and refresh token cleaned from token.
-      schema:
-        $ref: "#/components/schemas/LoggedOutDto"
+      summary: Endpoint is responsible for user log out.
       parameters: []
       responses:
         "201":
@@ -310,12 +451,11 @@ paths:
               schema:
                 $ref: "#/components/schemas/CompanyCreatedDto"
         "400":
-          description: Forbidden response for company creation includes only response
-            saying that company has not accepted Terms & Conditions.
+          description: Bad request is returned in case if company is already exists.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/TacNotAcceptedException"
+                $ref: "#/components/schemas/CompanyExistsException"
         "403":
           description: Forbidden response for company creation includes only response
             saying that company has not accepted Terms & Conditions.
@@ -786,6 +926,78 @@ components:
           type: string
           description: Last name
           example: Doe
+    AccountConfirmedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Account confirmed response message
+          example: account-confirmed
+      required:
+        - message
+    MfaNotSetDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: MFA not set response message
+          example: mfa-not-set
+      required:
+        - message
+    RecoveryKeysNotSetDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Recovery keys not set response message
+          example: recovery-keys-not-set
+      required:
+        - message
+    AccountAlreadyConfirmedException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Account already confirmed error message
+          example: account-already-confirmed
+      required:
+        - message
+    UserDataNotSetDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User data not set response message
+          example: user-data-not-set
+      required:
+        - message
+    PasswordNotSetDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Password not set response message
+          example: password-not-set
+      required:
+        - message
+    CompanyAccountConfirmedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company account confirmed response message
+          example: company-account-confirmed
+      required:
+        - message
+    HashNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Hash not found error message
+          example: hash-not-found
+      required:
+        - message
     ConfirmCompanyAccDto:
       type: object
       properties:
@@ -808,86 +1020,22 @@ components:
             - pl
             - en
           description: One of 3 available languages
-    ConfirmEmailChangeDto:
-      type: object
-      properties:
-        password:
-          type: string
-          description: User password
-          example: 78ui&*UI
-        mfaCode:
-          type: string
-          description: User authentication application code - MFA
-          example: "123123"
-        phoneCode:
-          type: string
-          description: User phone code - MFA
-          example: "123123"
-        language:
-          type: string
-          enum:
-            - ru
-            - pl
-            - en
-          description: One of 3 available languages
-    ResetUserPasswordDto:
-      type: object
-      properties:
-        password:
-          type: string
-          description: Email address
-          example: joe@doe.com
-        hash:
-          type: string
-          description: Hash
-          example: 77d72295446715926352fe5a60c344516571835d
-        mfaCode:
-          type: string
-          description: User authentication application code - MFA
-          example: "123123"
-        phoneCode:
-          type: string
-          description: User authentication application code - MFA
-          example: "123123"
-        language:
-          type: string
-          enum:
-            - ru
-            - pl
-            - en
-          description: One of 3 available languages
-      required:
-        - hash
-    LogInUserResponseDto:
-      type: object
-      properties:
-        _at:
-          type: string
-          description: Access JWT token
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6WyJERUZBVUxUIl0sInVzZXJJZCI6IjU4NGE3MzYzLWYxMmYtNGYxMy04NmQ1LTgxZWEwNzI5Y2I1MSIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2OTMxMzc2MDYsImV4cCI6MTY5MzE0NDgwNn0.c29vRfkNAbYi1stsn5EsN0N7ruUKrzkZe7RZpUDwu0U
-        _rt:
-          type: string
-          description: Refresh JWT token
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwNjY5MzYxLTc3ODgtNGJlNC05ZWNkLTAxNjcyM2FjMWU2MyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNjkzMTM3NjA2LCJleHAiOjE2OTM3NDI0MDZ9.eLt3U9RFbh_iRy1MpH30VIyCSMp6mxEw1Yw9MLEsvGU
-      required:
-        - _at
-        - _rt
-    MfaNotSetDto:
+    CompanyMemberAccConfirmedDto:
       type: object
       properties:
         message:
           type: string
-          description: MFA not set response message
-          example: mfa-not-set
+          description: Company member account confirmed response message
+          example: company-member-acc-confirmed
       required:
         - message
-    RecoveryKeysNotSetDto:
+    EmailChangedDto:
       type: object
       properties:
         message:
           type: string
-          description: Recovery keys not set response message
-          example: recovery-keys-not-set
+          description: Email changed response message
+          example: email-changed
       required:
         - message
     FullMfaRequiredDto:
@@ -917,22 +1065,13 @@ components:
           example: phone-required
       required:
         - message
-    WrongCredentialsException:
+    LinkExpiredException:
       type: object
       properties:
         message:
           type: string
-          description: Wrong credentials error message
-          example: wrong-credentials
-      required:
-        - message
-    AccountNotConfirmedException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Account not confirmed error message
-          example: account-not-confirmed
+          description: Link expired error message
+          example: link-expired
       required:
         - message
     SmsExpiredException:
@@ -944,6 +1083,15 @@ components:
           example: sms-expired
       required:
         - message
+    WrongCredentialsException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong credentials error message
+          example: wrong-credentials
+      required:
+        - message
     WrongCodeException:
       type: object
       properties:
@@ -951,6 +1099,91 @@ components:
           type: string
           description: Wrong code error message
           example: wrong-code
+      required:
+        - message
+    ConfirmEmailChangeDto:
+      type: object
+      properties:
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User phone code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+    PasswordResetDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Password reset response message
+          example: password-reset
+      required:
+        - message
+    PreviousPasswordException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Previous password error message
+          example: previous-password
+      required:
+        - message
+    ResetUserPasswordDto:
+      type: object
+      properties:
+        password:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+    LogInUserResponseDto:
+      type: object
+      properties:
+        _at:
+          type: string
+          description: Access JWT token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6WyJERUZBVUxUIl0sInVzZXJJZCI6IjU4NGE3MzYzLWYxMmYtNGYxMy04NmQ1LTgxZWEwNzI5Y2I1MSIsInR5cGUiOiJhY2Nlc3MiLCJpYXQiOjE2OTMxMzc2MDYsImV4cCI6MTY5MzE0NDgwNn0.c29vRfkNAbYi1stsn5EsN0N7ruUKrzkZe7RZpUDwu0U
+        _rt:
+          type: string
+          description: Refresh JWT token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ImQwNjY5MzYxLTc3ODgtNGJlNC05ZWNkLTAxNjcyM2FjMWU2MyIsInR5cGUiOiJyZWZyZXNoIiwiaWF0IjoxNjkzMTM3NjA2LCJleHAiOjE2OTM3NDI0MDZ9.eLt3U9RFbh_iRy1MpH30VIyCSMp6mxEw1Yw9MLEsvGU
+      required:
+        - _at
+        - _rt
+    AccountNotConfirmedException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Account not confirmed error message
+          example: account-not-confirmed
       required:
         - message
     LogInUserDto:

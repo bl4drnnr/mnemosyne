@@ -32,6 +32,13 @@ export abstract class AuthDocs {
       SmsExpiredException,
       WrongCodeException
     ];
+    const ApiResponses = [
+      MfaNotSetDto,
+      RecoveryKeysNotSetDto,
+      FullMfaRequiredDto,
+      TokenTwoFaRequiredDto,
+      PhoneMfaRequiredDto
+    ];
     const BadRequests = [
       SmsExpiredException,
       WrongCredentialsException,
@@ -54,7 +61,7 @@ export abstract class AuthDocs {
       ApiResponse: {
         status: 201,
         description: apiResponseDesc,
-        schema: { oneOf: refs(...ApiModels) }
+        schema: { oneOf: refs(...ApiResponses) }
       },
       ApiBadRequestResponse: {
         description: apiBadRequestRespDesc,
