@@ -821,6 +821,8 @@ paths:
   /api/recovery/registration-generate-recovery-keys:
     post:
       operationId: RecoveryController_registrationGenerateRecoveryKeys
+      summary: Endpoint is responsible for generating of recovery keys while
+        registration.
       parameters:
         - name: confirmationHash
           required: true
@@ -829,13 +831,27 @@ paths:
             type: string
       requestBody:
         required: true
+        description: In order to generate the set of recovery keys user has to send
+          passphrase that is going to be used in order to encrypt the set.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/GenerateRecoveryKeysDto"
       responses:
         "201":
-          description: ""
+          description: As a response function returns list of recovery keys.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+        "404":
+          description: Not found exceptions are thrown in case if either hash not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HashNotFoundException"
       tags:
         &a6
         - Recovery

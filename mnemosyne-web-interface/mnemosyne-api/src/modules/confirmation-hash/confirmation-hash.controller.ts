@@ -18,7 +18,7 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
-import { ConfirmationHashDocs } from '@docs/confirmation-hash.docs';
+import { ConfirmHashDocs } from '@docs/confirmation-hash.docs';
 
 @ApiTags('Confirmation Hashes')
 @Controller('confirmation-hash')
@@ -27,14 +27,12 @@ export class ConfirmationHashController {
     private readonly confirmationHashService: ConfirmationHashService
   ) {}
 
-  @ApiOperation(ConfirmationHashDocs.AccountConfirmation.ApiOperation)
-  @ApiExtraModels(...ConfirmationHashDocs.AccountConfirmation.ApiExtraModels)
-  @ApiResponse(ConfirmationHashDocs.AccountConfirmation.ApiResponse)
-  @ApiForbiddenResponse(
-    ConfirmationHashDocs.AccountConfirmation.ApiForbiddenResponse
-  )
-  @ApiQuery(ConfirmationHashDocs.AccountConfirmation.ApiConfirmHashQuery)
-  @ApiQuery(ConfirmationHashDocs.AccountConfirmation.ApiLangQuery)
+  @ApiOperation(ConfirmHashDocs.AccConfirm.ApiOperation)
+  @ApiExtraModels(...ConfirmHashDocs.AccConfirm.ApiExtraModels)
+  @ApiResponse(ConfirmHashDocs.AccConfirm.ApiResponse)
+  @ApiForbiddenResponse(ConfirmHashDocs.AccConfirm.ApiForbiddenResponse)
+  @ApiQuery(ConfirmHashDocs.AccConfirm.ApiConfirmHashQuery)
+  @ApiQuery(ConfirmHashDocs.AccConfirm.ApiLangQuery)
   @Get('account-confirmation')
   confirmAccount(
     @TransactionParam() trx: Transaction,
@@ -48,19 +46,13 @@ export class ConfirmationHashController {
     });
   }
 
-  @ApiOperation(ConfirmationHashDocs.CompanyAccountConfirmation.ApiOperation)
-  @ApiExtraModels(
-    ...ConfirmationHashDocs.CompanyAccountConfirmation.ApiExtraModels
-  )
-  @ApiResponse(ConfirmationHashDocs.CompanyAccountConfirmation.ApiResponse)
-  @ApiForbiddenResponse(
-    ConfirmationHashDocs.CompanyAccountConfirmation.ApiForbiddenResponse
-  )
-  @ApiNotFoundResponse(
-    ConfirmationHashDocs.CompanyAccountConfirmation.ApiNotFoundResponse
-  )
-  @ApiBody(ConfirmationHashDocs.CompanyAccountConfirmation.ApiBody)
-  @ApiQuery(ConfirmationHashDocs.CompanyAccountConfirmation.ApiConfirmHashQuery)
+  @ApiOperation(ConfirmHashDocs.CompanyAccConfirm.ApiOperation)
+  @ApiExtraModels(...ConfirmHashDocs.CompanyAccConfirm.ApiExtraModels)
+  @ApiResponse(ConfirmHashDocs.CompanyAccConfirm.ApiResponse)
+  @ApiForbiddenResponse(ConfirmHashDocs.CompanyAccConfirm.ApiForbiddenResponse)
+  @ApiNotFoundResponse(ConfirmHashDocs.CompanyAccConfirm.ApiNotFoundResponse)
+  @ApiBody(ConfirmHashDocs.CompanyAccConfirm.ApiBody)
+  @ApiQuery(ConfirmHashDocs.CompanyAccConfirm.ApiConfirmHashQuery)
   @UsePipes(ValidationPipe)
   @Post('company-account-confirmation')
   confirmCompanyAccount(
@@ -75,21 +67,17 @@ export class ConfirmationHashController {
     });
   }
 
-  @ApiOperation(ConfirmationHashDocs.CompanyMemberAccConfirmation.ApiOperation)
-  @ApiExtraModels(
-    ...ConfirmationHashDocs.CompanyMemberAccConfirmation.ApiExtraModels
-  )
-  @ApiResponse(ConfirmationHashDocs.CompanyMemberAccConfirmation.ApiResponse)
+  @ApiOperation(ConfirmHashDocs.CompanyMemberAccConfirm.ApiOperation)
+  @ApiExtraModels(...ConfirmHashDocs.CompanyMemberAccConfirm.ApiExtraModels)
+  @ApiResponse(ConfirmHashDocs.CompanyMemberAccConfirm.ApiResponse)
   @ApiForbiddenResponse(
-    ConfirmationHashDocs.CompanyMemberAccConfirmation.ApiForbiddenResponse
+    ConfirmHashDocs.CompanyMemberAccConfirm.ApiForbiddenResponse
   )
   @ApiNotFoundResponse(
-    ConfirmationHashDocs.CompanyMemberAccConfirmation.ApiNotFoundResponse
+    ConfirmHashDocs.CompanyMemberAccConfirm.ApiNotFoundResponse
   )
-  @ApiBody(ConfirmationHashDocs.CompanyMemberAccConfirmation.ApiBody)
-  @ApiQuery(
-    ConfirmationHashDocs.CompanyMemberAccConfirmation.ApiConfirmHashQuery
-  )
+  @ApiBody(ConfirmHashDocs.CompanyMemberAccConfirm.ApiBody)
+  @ApiQuery(ConfirmHashDocs.CompanyMemberAccConfirm.ApiConfirmHashQuery)
   @UsePipes(ValidationPipe)
   @Post('company-member-account-confirmation')
   companyMemberAccountConfirmation(
@@ -104,19 +92,15 @@ export class ConfirmationHashController {
     });
   }
 
-  @ApiOperation(ConfirmationHashDocs.EmailChangeConfirmation.ApiOperation)
-  @ApiExtraModels(
-    ...ConfirmationHashDocs.EmailChangeConfirmation.ApiExtraModels
-  )
-  @ApiResponse(ConfirmationHashDocs.EmailChangeConfirmation.ApiResponse)
+  @ApiOperation(ConfirmHashDocs.EmailChangeConfirm.ApiOperation)
+  @ApiExtraModels(...ConfirmHashDocs.EmailChangeConfirm.ApiExtraModels)
+  @ApiResponse(ConfirmHashDocs.EmailChangeConfirm.ApiResponse)
   @ApiBadRequestResponse(
-    ConfirmationHashDocs.EmailChangeConfirmation.ApiBadRequestResponse
+    ConfirmHashDocs.EmailChangeConfirm.ApiBadRequestResponse
   )
-  @ApiNotFoundResponse(
-    ConfirmationHashDocs.EmailChangeConfirmation.ApiNotFoundResponse
-  )
-  @ApiBody(ConfirmationHashDocs.EmailChangeConfirmation.ApiBody)
-  @ApiQuery(ConfirmationHashDocs.EmailChangeConfirmation.ApiConfirmHashQuery)
+  @ApiNotFoundResponse(ConfirmHashDocs.EmailChangeConfirm.ApiNotFoundResponse)
+  @ApiBody(ConfirmHashDocs.EmailChangeConfirm.ApiBody)
+  @ApiQuery(ConfirmHashDocs.EmailChangeConfirm.ApiConfirmHashQuery)
   @UsePipes(ValidationPipe)
   @Post('email-change-confirmation')
   confirmEmailChange(
@@ -131,21 +115,19 @@ export class ConfirmationHashController {
     });
   }
 
-  @ApiOperation(ConfirmationHashDocs.ResetUserPasswordConfirmation.ApiOperation)
+  @ApiOperation(ConfirmHashDocs.ResetUserPasswordConfirmation.ApiOperation)
   @ApiExtraModels(
-    ...ConfirmationHashDocs.ResetUserPasswordConfirmation.ApiExtraModels
+    ...ConfirmHashDocs.ResetUserPasswordConfirmation.ApiExtraModels
   )
-  @ApiResponse(ConfirmationHashDocs.ResetUserPasswordConfirmation.ApiResponse)
+  @ApiResponse(ConfirmHashDocs.ResetUserPasswordConfirmation.ApiResponse)
   @ApiBadRequestResponse(
-    ConfirmationHashDocs.ResetUserPasswordConfirmation.ApiBadRequestResponse
+    ConfirmHashDocs.ResetUserPasswordConfirmation.ApiBadRequestResponse
   )
   @ApiNotFoundResponse(
-    ConfirmationHashDocs.ResetUserPasswordConfirmation.ApiNotFoundResponse
+    ConfirmHashDocs.ResetUserPasswordConfirmation.ApiNotFoundResponse
   )
-  @ApiBody(ConfirmationHashDocs.ResetUserPasswordConfirmation.ApiBody)
-  @ApiQuery(
-    ConfirmationHashDocs.ResetUserPasswordConfirmation.ApiConfirmHashQuery
-  )
+  @ApiBody(ConfirmHashDocs.ResetUserPasswordConfirmation.ApiBody)
+  @ApiQuery(ConfirmHashDocs.ResetUserPasswordConfirmation.ApiConfirmHashQuery)
   @UsePipes(ValidationPipe)
   @Post('reset-user-password-confirmation')
   async resetUserPassword(

@@ -15,13 +15,29 @@ import { UserId } from '@decorators/user-id.decorator';
 import { RecoverAccountDto } from '@dto/recover-account.dto';
 import { RecoveryService } from '@modules/recovery.service';
 import { LoginGenerateRecoveryKeysDto } from '@dto/login-generate-recovery-keys.dto';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiExtraModels,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
+import { RecoveryDocs } from '@docs/recovery.docs';
 
 @ApiTags('Recovery')
 @Controller('recovery')
 export class RecoveryController {
   constructor(private readonly recoveryService: RecoveryService) {}
 
+  @ApiOperation(RecoveryDocs.RegGenRecoveryKeys.ApiOperation)
+  @ApiExtraModels(...RecoveryDocs.RegGenRecoveryKeys.ApiExtraModels)
+  @ApiResponse(RecoveryDocs.RegGenRecoveryKeys.ApiResponse)
+  @ApiNotFoundResponse(RecoveryDocs.RegGenRecoveryKeys.ApiNotFoundResponse)
+  @ApiBody(RecoveryDocs.RegGenRecoveryKeys.ApiBody)
+  @ApiQuery(RecoveryDocs.RegGenRecoveryKeys.ApiConfirmHashQuery)
   @UsePipes(ValidationPipe)
   @Post('registration-generate-recovery-keys')
   registrationGenerateRecoveryKeys(
@@ -36,6 +52,11 @@ export class RecoveryController {
     });
   }
 
+  @ApiOperation(RecoveryDocs.LoginGenRecKeys.ApiOperation)
+  @ApiExtraModels(...RecoveryDocs.LoginGenRecKeys.ApiExtraModels)
+  @ApiResponse(RecoveryDocs.LoginGenRecKeys.ApiResponse)
+  @ApiBadRequestResponse(RecoveryDocs.LoginGenRecKeys.ApiBadRequestResponse)
+  @ApiBody(RecoveryDocs.LoginGenRecKeys.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('login-generate-recovery-keys')
   loginGenerateRecoveryKeys(
@@ -48,6 +69,10 @@ export class RecoveryController {
     });
   }
 
+  @ApiOperation(RecoveryDocs.GenerateRecoveryKeys.ApiOperation)
+  @ApiExtraModels(...RecoveryDocs.GenerateRecoveryKeys.ApiExtraModels)
+  @ApiResponse(RecoveryDocs.GenerateRecoveryKeys.ApiResponse)
+  @ApiBody(RecoveryDocs.GenerateRecoveryKeys.ApiBody)
   @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe)
   @Post('generate-recovery-keys')
@@ -63,6 +88,11 @@ export class RecoveryController {
     });
   }
 
+  @ApiOperation(RecoveryDocs.RecoveryAccount.ApiOperation)
+  @ApiExtraModels(...RecoveryDocs.RecoveryAccount.ApiExtraModels)
+  @ApiResponse(RecoveryDocs.RecoveryAccount.ApiResponse)
+  @ApiBadRequestResponse(RecoveryDocs.RecoveryAccount.ApiBadRequestResponse)
+  @ApiBody(RecoveryDocs.RecoveryAccount.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('recover-account')
   recoverUserAccount(

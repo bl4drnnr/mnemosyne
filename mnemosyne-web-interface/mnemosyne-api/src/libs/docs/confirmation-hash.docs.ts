@@ -23,8 +23,8 @@ import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
 
-export abstract class ConfirmationHashDocs {
-  static get AccountConfirmation() {
+export abstract class ConfirmHashDocs {
+  static get AccConfirm() {
     const ApiModels = [
       AccountConfirmedDto,
       MfaNotSetDto,
@@ -72,7 +72,7 @@ export abstract class ConfirmationHashDocs {
     };
   }
 
-  static get CompanyAccountConfirmation() {
+  static get CompanyAccConfirm() {
     const ApiModels = [
       MfaNotSetDto,
       RecoveryKeysNotSetDto,
@@ -132,7 +132,7 @@ export abstract class ConfirmationHashDocs {
     };
   }
 
-  static get CompanyMemberAccConfirmation() {
+  static get CompanyMemberAccConfirm() {
     const ApiModels = [
       CompanyMemberAccConfirmedDto,
       MfaNotSetDto,
@@ -192,7 +192,7 @@ export abstract class ConfirmationHashDocs {
     };
   }
 
-  static get EmailChangeConfirmation() {
+  static get EmailChangeConfirm() {
     const ApiModels = [
       EmailChangedDto,
       FullMfaRequiredDto,
