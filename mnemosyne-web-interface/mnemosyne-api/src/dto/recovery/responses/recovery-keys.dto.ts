@@ -10,5 +10,5 @@ export class RecoveryKeysResponseDto {
     minLength: 5,
     maxLength: 5
   })
-  recoveryKeys: Array<string>;
+  readonly recoveryKeys: Array<string>;
 }

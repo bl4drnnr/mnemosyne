@@ -3,61 +3,111 @@ paths:
   /api/users/forgot-password:
     post:
       operationId: UsersController_forgotPassword
+      summary: Endpoint is responsible for initiation of password reset.
       parameters: []
       requestBody:
         required: true
+        description: In order to reset password user has to provide only email.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ForgotPasswordDto"
       responses:
         "201":
-          description: ""
+          description: In both cases - if user exists or not, user will get the same
+            response saying that email with password reset link has been sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResetPasswordEmailDto"
+        "400":
+          description: Bad request error is sent to user if user will try to send more
+            than 1 reset request within 180 seconds.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongTimeframeException"
+        "403":
+          description: In case if password has been changed within 24h, user will not be
+            able to continue.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PasswordChangedException"
       tags:
         &a1
         - Users
   /api/users/upload-user-photo:
     post:
       operationId: UsersController_uploadUserPhoto
+      summary: Endpoint is responsible for upload of the user photo.
       parameters: []
       requestBody:
         required: true
+        description: Body contains base64-encoded PNG picture.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UploadPhotoDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that photo is uploaded.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PhotoUploadedDto"
+        "400":
+          description: If user tries to upload something else except of base64-encoded PNG
+            picture.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongPictureException"
       tags: *a1
   /api/users/user-info:
     get:
       operationId: UsersController_getUserInfo
+      summary: Endpoint is responsible for getting user personal information.
       parameters: []
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets personal information.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetUserInfoResponseDto"
       tags: *a1
     patch:
       operationId: UsersController_updateUserInfo
+      summary: Endpoint is responsible for updating user information.
       parameters: []
       requestBody:
         required: true
+        description: Body contains user personal information.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UpdateUserInfoDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets message that information has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserUpdatedDto"
       tags: *a1
   /api/users/user-security:
     get:
       operationId: UsersController_getUserSecuritySettings
+      summary: Endpoint is responsible for getting user security settings.
       parameters: []
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets security settings.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetUserSecResponseDto"
       tags: *a1
   /api/confirmation-hash/account-confirmation:
     get:
@@ -843,9 +893,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                $ref: "#/components/schemas/RecoveryKeysResponseDto"
         "404":
           description: Not found exceptions are thrown in case if either hash not found.
           content:
@@ -858,44 +906,84 @@ paths:
   /api/recovery/login-generate-recovery-keys:
     post:
       operationId: RecoveryController_loginGenerateRecoveryKeys
+      summary: Endpoint is responsible for generating of recovery keys while login, if
+        keys were not generated while confirmation.
       parameters: []
       requestBody:
         required: true
+        description: In order to generate the set of recovery keys user has to send
+          passphrase that is going to be used in order to encrypt the set. Since
+          it is a login, user also has to provide email and password.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/LoginGenerateRecoveryKeysDto"
       responses:
         "201":
-          description: ""
+          description: As a response function returns list of recovery keys.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecoveryKeysResponseDto"
+        "400":
+          description: Bad request error is thrown in case if user has provided wrong
+            credentials.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongCredentialsException"
       tags: *a6
   /api/recovery/generate-recovery-keys:
     post:
       operationId: RecoveryController_generateRecoveryKeys
+      summary: Endpoint is responsible for generating recovery keys.
       parameters: []
       requestBody:
         required: true
+        description: In the request body user has to provide only passphrase in order to
+          encrypt and get fingerprint of set of recovery keys.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/GenerateRecoveryKeysDto"
       responses:
         "201":
-          description: ""
+          description: As a response function returns list of recovery keys.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecoveryKeysResponseDto"
       tags: *a6
   /api/recovery/recover-account:
     post:
       operationId: RecoveryController_recoverUserAccount
+      summary: Endpoint is responsible for account recovery.
       parameters: []
       requestBody:
         required: true
+        description: In the body user provides recovery keys and passphrase for recovery
+          keys.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/RecoverAccountDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets the response that account has been
+            successfully recovered. Meanwhile function resets MFA (both token
+            and phone). While first login after reset user will have to set up
+            new MFA and set of recovery keys.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AccountRecoveredDto"
+        "400":
+          description: If there is recovery keys fingerprint mismatch, bad request will be
+            thrown.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongRecoveryKeysException"
       tags: *a6
 info:
   title: Mnemosyne
@@ -906,6 +994,15 @@ tags: []
 servers: []
 components:
   schemas:
+    ResetPasswordEmailDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Reset password email sent response message
+          example: reset-password-email-sent
+      required:
+        - message
     ForgotPasswordDto:
       type: object
       properties:
@@ -922,6 +1019,33 @@ components:
           description: One of 3 available languages
       required:
         - email
+    PasswordChangedException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Password already changed error message
+          example: password-already-changed
+      required:
+        - message
+    WrongTimeframeException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong timeframe error message
+          example: wrong-timeframe
+      required:
+        - message
+    PhotoUploadedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Photo uploaded response message
+          example: photo-uploaded
+      required:
+        - message
     UploadPhotoDto:
       type: object
       properties:
@@ -931,6 +1055,94 @@ components:
           example: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4...
       required:
         - userPhoto
+    WrongPictureException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong picture format error message
+          example: wrong-picture-format
+      required:
+        - message
+    GetUserInfoResponseDto:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Hashed (MD5) user ID
+          example: 7630e8093291151b656de0dd48a60017
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        isProfilePicPresent:
+          type: boolean
+          description: Is user profile picture present
+          example: "true"
+      required:
+        - userId
+        - firstName
+        - lastName
+        - email
+        - isProfilePicPresent
+    PhoneStatus:
+      type: object
+      properties:
+        isSetUp:
+          type: boolean
+          description: Phone setup - is phone set up
+          example: "true"
+        twoLastDigit:
+          type: string
+          description: Phone setup - 2 last digits
+          example: "12"
+      required:
+        - isSetUp
+        - twoLastDigit
+    GetUserSecResponseDto:
+      type: object
+      properties:
+        phoneStatus:
+          $ref: "#/components/schemas/PhoneStatus"
+        passwordCanBeChanged:
+          type: boolean
+          description: Password can be changed
+          example: "true"
+        emailChanged:
+          type: boolean
+          description: Is email changed
+          example: "true"
+        isTwoFaSetUp:
+          type: boolean
+          description: Is 2FA set up
+          example: "true"
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+      required:
+        - phoneStatus
+        - passwordCanBeChanged
+        - emailChanged
+        - isTwoFaSetUp
+        - email
+    UserUpdatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User updated response message
+          example: user-updated
+      required:
+        - message
     UpdateUserInfoDto:
       type: object
       properties:
@@ -1557,6 +1769,19 @@ components:
           description: One of 3 available languages
       required:
         - newEmail
+    RecoveryKeysResponseDto:
+      type: object
+      properties:
+        recoveryKeys:
+          description: List of recovery keys
+          example: e54ee7e285fbb....
+          type: array
+          items:
+            type: array
+            maxLength: 5
+            minLength: 5
+      required:
+        - recoveryKeys
     GenerateRecoveryKeysDto:
       type: object
       properties:
@@ -1603,3 +1828,21 @@ components:
       required:
         - passphrase
         - recoveryKeys
+    AccountRecoveredDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Account recovered response message
+          example: account-recovered
+      required:
+        - message
+    WrongRecoveryKeysException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong recovery keys error message
+          example: wrong-recovery-keys
+      required:
+        - message

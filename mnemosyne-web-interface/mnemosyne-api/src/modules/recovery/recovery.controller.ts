@@ -6,15 +6,6 @@ import {
   UseGuards,
   UsePipes
 } from '@nestjs/common';
-import { ValidationPipe } from '@pipes/validation.pipe';
-import { GenerateRecoveryKeysDto } from '@dto/generate-recovery-keys.dto';
-import { TransactionParam } from '@decorators/transaction.decorator';
-import { Transaction } from 'sequelize';
-import { AuthGuard } from '@guards/auth.guard';
-import { UserId } from '@decorators/user-id.decorator';
-import { RecoverAccountDto } from '@dto/recover-account.dto';
-import { RecoveryService } from '@modules/recovery.service';
-import { LoginGenerateRecoveryKeysDto } from '@dto/login-generate-recovery-keys.dto';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -25,6 +16,15 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
+import { ValidationPipe } from '@pipes/validation.pipe';
+import { GenerateRecoveryKeysDto } from '@dto/generate-recovery-keys.dto';
+import { TransactionParam } from '@decorators/transaction.decorator';
+import { Transaction } from 'sequelize';
+import { AuthGuard } from '@guards/auth.guard';
+import { UserId } from '@decorators/user-id.decorator';
+import { RecoverAccountDto } from '@dto/recover-account.dto';
+import { RecoveryService } from '@modules/recovery.service';
+import { LoginGenerateRecoveryKeysDto } from '@dto/login-generate-recovery-keys.dto';
 import { RecoveryDocs } from '@docs/recovery.docs';
 
 @ApiTags('Recovery')

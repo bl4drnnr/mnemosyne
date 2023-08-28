@@ -1,12 +1,3 @@
-import { Body, Controller, Get, Post, Query, UsePipes } from '@nestjs/common';
-import { ConfirmationHashService } from '@modules/confirmation-hash.service';
-import { TransactionParam } from '@decorators/transaction.decorator';
-import { Transaction } from 'sequelize';
-import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
-import { ValidationPipe } from '@pipes/validation.pipe';
-import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
-import { Language } from '@interfaces/language.enum';
-import { ConfirmCompanyAccDto } from '@dto/confirm-company-acc.dto';
 import {
   ApiBadRequestResponse,
   ApiBody,
@@ -18,6 +9,15 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query, UsePipes } from '@nestjs/common';
+import { ConfirmationHashService } from '@modules/confirmation-hash.service';
+import { TransactionParam } from '@decorators/transaction.decorator';
+import { Transaction } from 'sequelize';
+import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
+import { ValidationPipe } from '@pipes/validation.pipe';
+import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
+import { Language } from '@interfaces/language.enum';
+import { ConfirmCompanyAccDto } from '@dto/confirm-company-acc.dto';
 import { ConfirmHashDocs } from '@docs/confirmation-hash.docs';
 
 @ApiTags('Confirmation Hashes')
