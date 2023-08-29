@@ -3,6 +3,7 @@ import { CompanyCreatedDto } from '@dto/company-created.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
 import { CompanyExistsException } from '@exceptions/company-exists.exception';
 import { CreateCompanyDto } from '@dto/create-company.dto';
+import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
 
 export abstract class CompanyDocs {
   static get CreateCompany() {
@@ -43,7 +44,7 @@ export abstract class CompanyDocs {
         type: CreateCompanyDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(CreateCompanyDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 }

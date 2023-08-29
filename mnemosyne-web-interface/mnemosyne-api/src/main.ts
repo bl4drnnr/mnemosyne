@@ -15,6 +15,16 @@ import * as yaml from 'yaml';
     .setTitle('Mnemosyne')
     .setDescription('Documentation of Mnemosyne API.')
     .setVersion('0.0.1')
+    .addBearerAuth(
+      {
+        description:
+          'Please enter the JWT token in the following format: Bearer <JWT>',
+        name: 'x-access-token',
+        type: 'apiKey',
+        in: 'header'
+      },
+      'x-access-token'
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
@@ -26,7 +36,9 @@ import * as yaml from 'yaml';
   fs.writeFileSync('./docs/swagger-spec.json', JSON.stringify(document));
   fs.writeFileSync('./docs/swagger-spec.yaml', yamlString);
 
-  SwaggerModule.setup('docs', app, document);
+  SwaggerModule.setup('docs', app, document, {
+    customSiteTitle: 'Mnemosyne | API Documentation'
+  });
 
   await app.listen(port, () => {
     console.log(

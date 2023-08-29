@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
   ApiNotFoundResponse,
@@ -73,8 +74,9 @@ export class RecoveryController {
   @ApiExtraModels(...RecoveryDocs.GenerateRecoveryKeys.ApiExtraModels)
   @ApiResponse(RecoveryDocs.GenerateRecoveryKeys.ApiResponse)
   @ApiBody(RecoveryDocs.GenerateRecoveryKeys.ApiBody)
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Post('generate-recovery-keys')
   generateRecoveryKeys(
     @Body() payload: GenerateRecoveryKeysDto,

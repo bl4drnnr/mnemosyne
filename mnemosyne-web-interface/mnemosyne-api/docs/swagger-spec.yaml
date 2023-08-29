@@ -64,6 +64,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/WrongPictureException"
       tags: *a1
+      security:
+        - x-access-token: []
   /api/users/user-info:
     get:
       operationId: UsersController_getUserInfo
@@ -77,6 +79,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetUserInfoResponseDto"
       tags: *a1
+      security:
+        - x-access-token: []
     patch:
       operationId: UsersController_updateUserInfo
       summary: Endpoint is responsible for updating user information.
@@ -96,6 +100,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserUpdatedDto"
       tags: *a1
+      security:
+        - x-access-token: []
   /api/users/user-security:
     get:
       operationId: UsersController_getUserSecuritySettings
@@ -109,6 +115,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/GetUserSecResponseDto"
       tags: *a1
+      security:
+        - x-access-token: []
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
@@ -449,6 +457,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/LoggedOutDto"
       tags: *a3
+      security:
+        - x-access-token: []
   /api/auth/refresh:
     get:
       operationId: AuthController_refreshTokens
@@ -584,6 +594,8 @@ paths:
   /api/security/registration-generate-2fa-qr:
     get:
       operationId: SecurityController_registrationGenerateTwoFaQrCode
+      summary: Endpoint is responsible for generating of QR code and secret after
+        registration from confirmation hash.
       parameters:
         - name: confirmationHash
           required: true
@@ -591,36 +603,76 @@ paths:
           schema:
             type: string
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets link to the QR code to scan along with its
+            secret that (only after successful confirmation) will be added to
+            the database.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QrCodeDto"
+        "404":
+          description: Not found error is thrown in case if confirmation hash has not been
+            found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HashNotFoundException"
       tags:
         &a5
         - Security
   /api/security/login-generate-2fa-qr:
     post:
       operationId: SecurityController_loginGenerateTwoFaQrCode
+      summary: Endpoint is responsible for generating of QR code and secret while
+        login if it was not setup during account confirmation.
       parameters: []
       requestBody:
         required: true
+        description: In the body user has to provide credentials - email and password.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/LoginGenerate2faQrDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets link to the QR code to scan along with its
+            secret that (only after successful confirmation) will be added to
+            the database.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QrCodeDto"
+        "400":
+          description: Bad request is thrown in case if user provided wrong credentials.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongCredentialsException"
       tags: *a5
   /api/security/generate-2fa-qr:
     get:
       operationId: SecurityController_generateTwoFaQrCode
+      summary: Endpoint is responsible for generating QR code and its secret only for
+        authenticated users.
       parameters: []
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets link to the QR code to scan along with its
+            secret that (only after successful confirmation) will be added to
+            the database.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QrCodeDto"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/registration-verify-2fa:
     post:
       operationId: SecurityController_registrationVerifyTwoFaQrCode
+      summary: Endpoint is responsible 2FA verification while confirmation process
+        after registration.
       parameters:
         - name: confirmationHash
           required: true
@@ -629,59 +681,135 @@ paths:
             type: string
       requestBody:
         required: true
+        description: In this case body contains 2FA token that was generated on the BE
+          and sent to user, and 6-digit code that verifies this token.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyTwoFaDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that 2FA is set and it is added to
+            the database.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaSetDto"
+        "400":
+          description: Bad request is thrown in case if wrong code was provided.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongCodeException"
+        "404":
+          description: Not found error is thrown in case if confirmation hash has not been
+            found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HashNotFoundException"
       tags: *a5
   /api/security/login-verify-2fa:
     post:
       operationId: SecurityController_loginVerifyTwoFaQrCode
+      summary: Endpoint is responsible for 2FA verification while login process.
       parameters: []
       requestBody:
         required: true
+        description: In this case body contains 2FA token that was generated on the BE
+          and sent to user, and 6-digit code that verifies this token along with
+          email and password.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyTwoFaDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that 2FA is set and it is added to
+            the database.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaSetDto"
+        "400":
+          description: Bad request error is throws in case if user provided either wrong
+            credentials or, if credentials are correct, wrong code.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongCodeException"
       tags: *a5
   /api/security/verify-2fa:
     post:
       operationId: SecurityController_verifyTwoFaQrCode
+      summary: Endpoint is responsible for 2FA verification and available only for
+        authenticated users.
       parameters: []
       requestBody:
         required: true
+        description: In this case body contains 2FA token that was generated on the BE
+          and sent to user, and 6-digit code that verifies this token.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyTwoFaDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that 2FA is set and it is added to
+            the database.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaSetDto"
+        "400":
+          description: Bad request error is throws in case if user provided wrong code.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongCodeException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/disable-2fa:
     post:
       operationId: SecurityController_disableTwoFa
+      summary: Endpoint is responsible for 2FA disable. Available only for
+        authenticated users.
       parameters: []
       requestBody:
         required: true
+        description: In the body user has to provide 6-digit code.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/DisableTwoFaDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that 2FA is disabled.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaDisabledDto"
+        "400":
+          description: Bad requests are thrown in case if either 2FA or phone is not set
+            or wrong code provided.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/TwoFaNotSetException"
+                  - $ref: "#/components/schemas/PhoneNotSetException"
+                  - $ref: "#/components/schemas/WrongCodeException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/registration-send-sms-code:
     post:
       operationId: SecurityController_registrationSendSmsCode
+      summary: Endpoint is responsible for setting MFA (mobile phone) while
+        confirmation after registration process.
       parameters:
         - name: confirmationHash
           required: true
@@ -690,45 +818,94 @@ paths:
             type: string
       requestBody:
         required: true
+        description: In the body user has to provide mobile phone.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/RegistrationSendSmsCodeDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that code is sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsCodeSentDto"
+        "400":
+          description: Bad request error is thrown in case if mobile phone is already
+            taken or user is trying to resent SMS message within wrong
+            timeframe.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/PhoneAlreadyTakenException"
+                  - $ref: "#/components/schemas/WrongTimeframeException"
       tags: *a5
   /api/security/login-send-sms-code:
     post:
       operationId: SecurityController_loginSendSmsCode
+      summary: Endpoint is responsible for sending SMS code as MFA method while
+        logging in.
       parameters: []
       requestBody:
         required: true
+        description: In the body user has to provide email and password.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/LoginSendSmsDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that SMS has been sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsCodeSentDto"
+        "400":
+          description: Bad requests error os thrown in case if user provided wrong
+            credentials or tried to resent SMS message in wrong timeframe.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongTimeframeException"
       tags: *a5
   /api/security/send-sms-code:
     post:
       operationId: SecurityController_sendSmsCode
+      summary: Endpoint is responsible for sending SMS code. Available only for
+        authenticated users.
       parameters: []
       requestBody:
         required: true
+        description: In the body user has to provide mobile phone.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/RegistrationSendSmsCodeDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that SMS has been sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsCodeSentDto"
+        "400":
+          description: Bad requests error os thrown in case if user tried to resent SMS
+            message in wrong timeframe.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongTimeframeException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/hash-send-sms-code:
     get:
       operationId: SecurityController_hashSendSmsCode
+      summary: Endpoint is responsible for sending SMS code based on confirmation hash
+        while email change confirmation or password reset.
       parameters:
         - name: confirmationHash
           required: true
@@ -739,35 +916,90 @@ paths:
           required: true
           in: query
           schema:
+            enum:
+              - ru
+              - pl
+              - en
             type: string
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets message that SMS has been sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsCodeSentDto"
+        "400":
+          description: Bad request is thrown in case if code was sent in wrong timeframe.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongTimeframeException"
+        "404":
+          description: Not found error is thrown in case if confirmation hash has not been
+            found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HashNotFoundException"
       tags: *a5
   /api/security/get-sms-code:
     get:
       operationId: SecurityController_getSmsCode
+      summary: Endpoint is responsible for setting up phone for authenticated users.
       parameters:
         - name: language
           required: true
           in: query
           schema:
+            enum:
+              - ru
+              - pl
+              - en
             type: string
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets message that SMS has been sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsCodeSentDto"
+        "400":
+          description: Bad request error is thrown in case if phone has not set up.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/PhoneNotSetException"
+                  - $ref: "#/components/schemas/WrongTimeframeException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/clear-sms-code:
     post:
       operationId: SecurityController_clearSmsCode
+      summary: Endpoint is responsible for clearing SMS code.
       parameters: []
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that SMS is cleared.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SmsClearedDto"
+        "400":
+          description: Bad request error is thrown in case if phone has not set up.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PhoneNotSetException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/registration-verify-mobile-phone:
     post:
       operationId: SecurityController_registrationVerifyMobilePhone
+      summary: Endpoint is responsible for verification of mobile phone number while
+        confirmation process after registration.
       parameters:
         - name: confirmationHash
           required: true
@@ -776,98 +1008,251 @@ paths:
             type: string
       requestBody:
         required: true
+        description: Body contains mobile phone number along with associated with it code.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyMobilePhoneDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that MFA is set.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaSetDto"
+        "400":
+          description: Bad request error is thrown in case if user provided wrong phone
+            (was modified artificially), or wrong code, or SMS code expired.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongProvidedPhoneException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+                  - $ref: "#/components/schemas/SmsExpiredException"
+        "404":
+          description: Not found error is thrown in case if confirmation hash not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HashNotFoundException"
       tags: *a5
   /api/security/login-verify-mobile-phone:
     post:
       operationId: SecurityController_loginVerifyMobilePhone
+      summary: Endpoint is responsible for verification of mobile phone number during
+        login.
       parameters: []
       requestBody:
         required: true
+        description: Body contains mobile phone number along with associated with it
+          code. Because of the fact that this is login, user also has to provide
+          email and password.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyMobilePhoneDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that MFA is set.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaSetDto"
+        "400":
+          description: "Bad request is thrown in following cases: wrong credentials, wrong
+            (modified artificially) provided phone number, wrong code, SMS
+            expired."
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongProvidedPhoneException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+                  - $ref: "#/components/schemas/SmsExpiredException"
       tags: *a5
   /api/security/verify-mobile-phone:
     post:
       operationId: SecurityController_verifyMobilePhone
+      summary: Endpoint is responsible for mobile phone verification. Available only
+        for authenticated users.
       parameters: []
       requestBody:
         required: true
+        description: Body contains mobile phone number along with associated with it code.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/VerifyMobilePhoneDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that MFA is set.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaSetDto"
+        "400":
+          description: "Bad request is thrown in following cases: wrong (modified
+            artificially) provided phone number, wrong code, SMS expired."
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongProvidedPhoneException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+                  - $ref: "#/components/schemas/SmsExpiredException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/disable-phone:
     post:
       operationId: SecurityController_disablePhone
+      summary: Endpoint is responsible for token MFA disable.
       parameters: []
       requestBody:
         required: true
+        description: Body contains 6-digit code to verify token.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/DisableTwoFaDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that token MFA is disabled.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MfaDisabledDto"
+        "400":
+          description: "Bad request error is thrown in following cases: phone not set,
+            token 2FA not set (either one of them), wrong phone, wrong code or
+            SMS expired."
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/PhoneNotSetException"
+                  - $ref: "#/components/schemas/TwoFaNotSetException"
+                  - $ref: "#/components/schemas/WrongProvidedPhoneException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+                  - $ref: "#/components/schemas/SmsExpiredException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/delete-account:
     delete:
       operationId: SecurityController_deleteUserAccount
+      summary: Endpoint is responsible for account deletion.
       parameters: []
       requestBody:
         required: true
+        description: Body includes credentials, MFA code(s), and full name as deletion
+          confirmation.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/DeleteAccountDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: "Responses include following: MFA required, deletion confirmation
+            required, or account deleted."
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/AccountDeletedDto"
+                  - $ref: "#/components/schemas/FullMfaRequiredDto"
+                  - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
+                  - $ref: "#/components/schemas/PhoneMfaRequiredDto"
+                  - $ref: "#/components/schemas/DeleteConfirmationRequiredDto"
+        "400":
+          description: "Bad request is thrown in following cases: wrong credentials, wrong
+            deletion confirmation, or wrong MFA code"
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongDeletionConfirmationException"
+                  - $ref: "#/components/schemas/WrongCodeException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/change-password:
     patch:
       operationId: SecurityController_changePassword
+      summary: Endpoint is responsible for password change.
       parameters: []
       requestBody:
         required: true
+        description: Body contains current password, new password, MFA code(s).
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ChangePasswordDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: "Responses include following: MFA required or password changed."
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/FullMfaRequiredDto"
+                  - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
+                  - $ref: "#/components/schemas/PhoneMfaRequiredDto"
+                  - $ref: "#/components/schemas/PasswordChangedDto"
+        "400":
+          description: "Bad request is thrown in following cases: wrong credentials, wrong
+            MFA code, SMS expired, or password was change (wrong timeframe) or
+            previous password is used."
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/PasswordChangedException"
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/PreviousPasswordException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+                  - $ref: "#/components/schemas/SmsExpiredException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/security/change-email:
     post:
       operationId: SecurityController_changeEmail
+      summary: Endpoint is responsible for email change.
       parameters: []
       requestBody:
         required: true
+        description: User has to provide new email.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ChangeEmailDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets the message that confirmation email for
+            email change has been sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailChangeEmailSentDto"
+        "400":
+          description: Bad request error is thrown in case if email is already taken.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailAlreadyTakenException"
+        "403":
+          description: Forbidden error is thrown in case if email is already changed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailAlreadyChangedException"
       tags: *a5
+      security:
+        - x-access-token: []
   /api/recovery/registration-generate-recovery-keys:
     post:
       operationId: RecoveryController_registrationGenerateRecoveryKeys
@@ -954,6 +1339,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/RecoveryKeysResponseDto"
       tags: *a6
+      security:
+        - x-access-token: []
   /api/recovery/recover-account:
     post:
       operationId: RecoveryController_recoverUserAccount
@@ -993,6 +1380,14 @@ info:
 tags: []
 servers: []
 components:
+  securitySchemes:
+    x-access-token:
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Please enter the JWT token in the following format: Bearer <JWT>"
+      name: x-access-token
+      type: apiKey
+      in: header
   schemas:
     ResetPasswordEmailDto:
       type: object
@@ -1606,6 +2001,20 @@ components:
     RevokeRoleDto:
       type: object
       properties: {}
+    QrCodeDto:
+      type: object
+      properties:
+        qr:
+          type: string
+          description: Link that leads to QR code to scan (via Google API)
+          example: https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=otpauth://totp/Mnemosyne%3Amikhail.bahdashych%40gmail.com%3Fsecret=7BEEKMUDHULQVZYE7LQYR2R4BDP5NJJA%26issuer=Mnemosyne
+        secret:
+          type: string
+          description: 2FA token
+          example: 7BEEKMUDHULQVZYE7LQYR2R4BDP5NJJA
+      required:
+        - qr
+        - secret
     LoginGenerate2faQrDto:
       type: object
       properties:
@@ -1630,7 +2039,7 @@ components:
         twoFaToken:
           type: string
           description: 2FA token
-          example: EQKWPCTZD6GDO4TAWFPPLYPE4QDW7SXB
+          example: 7BEEKMUDHULQVZYE7LQYR2R4BDP5NJJA
         email:
           type: string
           description: Email address
@@ -1642,6 +2051,15 @@ components:
       required:
         - code
         - twoFaToken
+    MfaSetDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: MFA set response message
+          example: mfa-set
+      required:
+        - message
     DisableTwoFaDto:
       type: object
       properties:
@@ -1651,6 +2069,33 @@ components:
           example: "123123"
       required:
         - code
+    MfaDisabledDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: MFA disabled response message
+          example: mfa-disabled
+      required:
+        - message
+    TwoFaNotSetException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 2FA not set up error message
+          example: two-fa-not-set-up
+      required:
+        - message
+    PhoneNotSetException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Phone not set up error message
+          example: phone-not-set-up
+      required:
+        - message
     RegistrationSendSmsCodeDto:
       type: object
       properties:
@@ -1667,6 +2112,24 @@ components:
           description: One of 3 available languages
       required:
         - phone
+    SmsCodeSentDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: SMS code sent response message
+          example: sms-code-sent
+      required:
+        - message
+    PhoneAlreadyTakenException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Phone already taken error message
+          example: phone-already-taken
+      required:
+        - message
     LoginSendSmsDto:
       type: object
       properties:
@@ -1688,6 +2151,15 @@ components:
       required:
         - email
         - password
+    SmsClearedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: SMS cleared response message
+          example: sms-cleared
+      required:
+        - message
     VerifyMobilePhoneDto:
       type: object
       properties:
@@ -1710,6 +2182,15 @@ components:
       required:
         - phone
         - code
+    WrongProvidedPhoneException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong provided phone error message
+          example: wrong-provided-phone
+      required:
+        - message
     DeleteAccountDto:
       type: object
       properties:
@@ -1731,6 +2212,33 @@ components:
           example: Joe Doe
       required:
         - password
+    AccountDeletedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Account deleted response message
+          example: account-deleted
+      required:
+        - message
+    DeleteConfirmationRequiredDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Delete confirmation required response message
+          example: delete-confirmation-required
+      required:
+        - message
+    WrongDeletionConfirmationException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong deletion confirmation error message
+          example: wrong-deletion-confirmation
+      required:
+        - message
     ChangePasswordDto:
       type: object
       properties:
@@ -1753,6 +2261,15 @@ components:
       required:
         - currentPassword
         - newPassword
+    PasswordChangedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Password changed response message
+          example: password-changed
+      required:
+        - message
     ChangeEmailDto:
       type: object
       properties:
@@ -1769,6 +2286,33 @@ components:
           description: One of 3 available languages
       required:
         - newEmail
+    EmailChangeEmailSentDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Email change email set response message
+          example: email-change-email-sent
+      required:
+        - message
+    EmailAlreadyChangedException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Email already changed error message
+          example: email-already-changed
+      required:
+        - message
+    EmailAlreadyTakenException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Email already taken error message
+          example: email-already-taken
+      required:
+        - message
     RecoveryKeysResponseDto:
       type: object
       properties:

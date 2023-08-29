@@ -74,7 +74,9 @@ import { CompanyUsersModule } from '@modules/company-users.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(BasicAuthMiddleware).forRoutes({
+    consumer
+      .apply(BasicAuthMiddleware)
+      .forRoutes({
       path: '/api/*',
       method: RequestMethod.ALL
     });

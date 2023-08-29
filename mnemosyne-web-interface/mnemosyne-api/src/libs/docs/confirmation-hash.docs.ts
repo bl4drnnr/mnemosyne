@@ -22,6 +22,7 @@ import { WrongCodeException } from '@exceptions/wrong-code.exception';
 import { ResetUserPasswordDto } from '@dto/reset-user-password.dto';
 import { PasswordResetDto } from '@dto/password-reset.dto';
 import { PreviousPasswordException } from '@exceptions/previous-password.exception';
+import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
 
 export abstract class ConfirmHashDocs {
   static get AccConfirm() {
@@ -127,7 +128,7 @@ export abstract class ConfirmHashDocs {
         type: ConfirmCompanyAccDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(ConfirmCompanyAccDto) }
-      },
+      } as ApiBodyOptions,
       ApiConfirmHashQuery: confirmHashQuery
     };
   }
@@ -187,7 +188,7 @@ export abstract class ConfirmHashDocs {
         type: ConfirmCompanyAccDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(ConfirmCompanyAccDto) }
-      },
+      } as ApiBodyOptions,
       ApiConfirmHashQuery: confirmHashQuery
     };
   }
@@ -254,7 +255,7 @@ export abstract class ConfirmHashDocs {
         type: ConfirmEmailChangeDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(ConfirmEmailChangeDto) }
-      },
+      } as ApiBodyOptions,
       ApiConfirmHashQuery: confirmHashQuery
     };
   }
@@ -323,7 +324,7 @@ export abstract class ConfirmHashDocs {
         type: ResetUserPasswordDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(ResetUserPasswordDto) }
-      },
+      } as ApiBodyOptions,
       ApiConfirmHashQuery: confirmHashQuery
     };
   }

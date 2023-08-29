@@ -9,6 +9,18 @@ import {
   UseGuards,
   UsePipes
 } from '@nestjs/common';
+import {
+  ApiBadRequestResponse,
+  ApiBearerAuth,
+  ApiBody,
+  ApiExtraModels,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { SecurityService } from '@modules/security/security.service';
 import { VerifyTwoFaDto } from '@dto/verify-two-fa.dto';
 import { RegistrationSendSmsCodeDto } from '@dto/registration-send-sms-code.dto';
@@ -25,13 +37,18 @@ import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { ChangePasswordDto } from '@dto/change-password.dto';
 import { ChangeEmailDto } from '@dto/change-email.dto';
 import { Language } from '@interfaces/language.enum';
-import { ApiTags } from '@nestjs/swagger';
+import { SecurityDocs } from '@docs/security.docs';
 
 @ApiTags('Security')
 @Controller('security')
 export class SecurityController {
   constructor(private readonly securityService: SecurityService) {}
 
+  @ApiOperation(SecurityDocs.RegGenTwoFaQrCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.RegGenTwoFaQrCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.RegGenTwoFaQrCode.ApiResponse)
+  @ApiNotFoundResponse(SecurityDocs.RegGenTwoFaQrCode.ApiNotFoundResponse)
+  @ApiQuery(SecurityDocs.RegGenTwoFaQrCode.ApiConfirmHashQuery)
   @Get('registration-generate-2fa-qr')
   registrationGenerateTwoFaQrCode(
     @Query('confirmationHash') confirmationHash: string,
@@ -43,6 +60,11 @@ export class SecurityController {
     });
   }
 
+  @ApiOperation(SecurityDocs.LoginGenTwoFaQrCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.LoginGenTwoFaQrCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.LoginGenTwoFaQrCode.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.LoginGenTwoFaQrCode.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.LoginGenTwoFaQrCode.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('login-generate-2fa-qr')
   loginGenerateTwoFaQrCode(
@@ -52,6 +74,10 @@ export class SecurityController {
     return this.securityService.loginGenerateTwoFaQrCode({ payload, trx });
   }
 
+  @ApiOperation(SecurityDocs.GenerateTwoFaQrCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.GenerateTwoFaQrCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.GenerateTwoFaQrCode.ApiResponse)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('generate-2fa-qr')
   generateTwoFaQrCode(
@@ -61,6 +87,13 @@ export class SecurityController {
     return this.securityService.generateTwoFaQrCode({ userId, trx });
   }
 
+  @ApiOperation(SecurityDocs.RegVerifyTwoFa.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.RegVerifyTwoFa.ApiExtraModels)
+  @ApiResponse(SecurityDocs.RegVerifyTwoFa.ApiResponse)
+  @ApiNotFoundResponse(SecurityDocs.RegVerifyTwoFa.ApiNotFoundResponse)
+  @ApiBadRequestResponse(SecurityDocs.RegVerifyTwoFa.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.RegVerifyTwoFa.ApiBody)
+  @ApiQuery(SecurityDocs.RegVerifyTwoFa.ApiConfirmHashQuery)
   @UsePipes(ValidationPipe)
   @Post('registration-verify-2fa')
   registrationVerifyTwoFaQrCode(
@@ -75,6 +108,11 @@ export class SecurityController {
     });
   }
 
+  @ApiOperation(SecurityDocs.LoginVerifyTwoFa.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.LoginVerifyTwoFa.ApiExtraModels)
+  @ApiResponse(SecurityDocs.LoginVerifyTwoFa.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.LoginVerifyTwoFa.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.LoginVerifyTwoFa.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('login-verify-2fa')
   loginVerifyTwoFaQrCode(
@@ -84,6 +122,12 @@ export class SecurityController {
     return this.securityService.loginVerifyTwoFaQrCode({ payload, trx });
   }
 
+  @ApiOperation(SecurityDocs.VerifyTwoFa.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.VerifyTwoFa.ApiExtraModels)
+  @ApiResponse(SecurityDocs.VerifyTwoFa.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.VerifyTwoFa.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.VerifyTwoFa.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe)
   @Post('verify-2fa')
@@ -95,8 +139,14 @@ export class SecurityController {
     return this.securityService.verifyTwoFaQrCode({ payload, userId, trx });
   }
 
-  @UseGuards(AuthGuard)
+  @ApiOperation(SecurityDocs.DisableTwoFa.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.DisableTwoFa.ApiExtraModels)
+  @ApiResponse(SecurityDocs.DisableTwoFa.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.DisableTwoFa.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.DisableTwoFa.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Post('disable-2fa')
   disableTwoFa(
     @Body() payload: DisableTwoFaDto,
@@ -106,6 +156,11 @@ export class SecurityController {
     return this.securityService.disableTwoFa({ payload, userId, trx });
   }
 
+  @ApiOperation(SecurityDocs.RegSendSmsCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.RegSendSmsCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.RegSendSmsCode.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.RegSendSmsCode.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.RegSendSmsCode.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('registration-send-sms-code')
   registrationSendSmsCode(
@@ -120,6 +175,11 @@ export class SecurityController {
     });
   }
 
+  @ApiOperation(SecurityDocs.LoginSendSmsCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.LoginSendSmsCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.LoginSendSmsCode.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.LoginSendSmsCode.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.LoginSendSmsCode.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('login-send-sms-code')
   loginSendSmsCode(
@@ -129,8 +189,14 @@ export class SecurityController {
     return this.securityService.loginSendSmsCode({ payload, trx });
   }
 
-  @UseGuards(AuthGuard)
+  @ApiOperation(SecurityDocs.SendSmsCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.SendSmsCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.SendSmsCode.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.SendSmsCode.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.SendSmsCode.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Post('send-sms-code')
   sendSmsCode(
     @Body() payload: RegistrationSendSmsCodeDto,
@@ -140,6 +206,13 @@ export class SecurityController {
     return this.securityService.sendSmsCode({ payload, userId, trx });
   }
 
+  @ApiOperation(SecurityDocs.HashSendSmsCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.HashSendSmsCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.HashSendSmsCode.ApiResponse)
+  @ApiNotFoundResponse(SecurityDocs.HashSendSmsCode.ApiNotFoundResponse)
+  @ApiBadRequestResponse(SecurityDocs.HashSendSmsCode.ApiBadRequestResponse)
+  @ApiQuery(SecurityDocs.HashSendSmsCode.ApiConfirmHashQuery)
+  @ApiQuery(SecurityDocs.HashSendSmsCode.ApiLangQuery)
   @Get('hash-send-sms-code')
   hashSendSmsCode(
     @TransactionParam() trx: Transaction,
@@ -153,6 +226,12 @@ export class SecurityController {
     });
   }
 
+  @ApiOperation(SecurityDocs.GetSmsCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.GetSmsCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.GetSmsCode.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.GetSmsCode.ApiBadRequestResponse)
+  @ApiQuery(SecurityDocs.GetSmsCode.ApiLangQuery)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('get-sms-code')
   getSmsCode(
@@ -163,12 +242,26 @@ export class SecurityController {
     return this.securityService.getSmsCode({ userId, language, trx });
   }
 
+  @ApiOperation(SecurityDocs.ClearSmsCode.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.ClearSmsCode.ApiExtraModels)
+  @ApiResponse(SecurityDocs.ClearSmsCode.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.ClearSmsCode.ApiBadRequestResponse)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Post('clear-sms-code')
   clearSmsCode(@UserId() userId: string, @TransactionParam() trx: Transaction) {
     return this.securityService.clearSmsCode({ userId, trx });
   }
 
+  @ApiOperation(SecurityDocs.RegVerifyMobilePhone.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.RegVerifyMobilePhone.ApiExtraModels)
+  @ApiResponse(SecurityDocs.RegVerifyMobilePhone.ApiResponse)
+  @ApiBadRequestResponse(
+    SecurityDocs.RegVerifyMobilePhone.ApiBadRequestResponse
+  )
+  @ApiNotFoundResponse(SecurityDocs.RegVerifyMobilePhone.ApiNotFoundResponse)
+  @ApiBody(SecurityDocs.RegVerifyMobilePhone.ApiBody)
+  @ApiQuery(SecurityDocs.RegVerifyMobilePhone.ApiConfirmHashQuery)
   @UsePipes(ValidationPipe)
   @Post('registration-verify-mobile-phone')
   registrationVerifyMobilePhone(
@@ -183,6 +276,13 @@ export class SecurityController {
     });
   }
 
+  @ApiOperation(SecurityDocs.LoginVerifyMobilePhone.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.LoginVerifyMobilePhone.ApiExtraModels)
+  @ApiResponse(SecurityDocs.LoginVerifyMobilePhone.ApiResponse)
+  @ApiBadRequestResponse(
+    SecurityDocs.LoginVerifyMobilePhone.ApiBadRequestResponse
+  )
+  @ApiBody(SecurityDocs.LoginVerifyMobilePhone.ApiBody)
   @UsePipes(ValidationPipe)
   @Post('login-verify-mobile-phone')
   loginVerifyMobilePhone(
@@ -195,8 +295,14 @@ export class SecurityController {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @ApiOperation(SecurityDocs.VerifyMobilePhone.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.VerifyMobilePhone.ApiExtraModels)
+  @ApiResponse(SecurityDocs.VerifyMobilePhone.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.VerifyMobilePhone.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.VerifyMobilePhone.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Post('verify-mobile-phone')
   verifyMobilePhone(
     @Body() payload: VerifyMobilePhoneDto,
@@ -206,8 +312,14 @@ export class SecurityController {
     return this.securityService.verifyMobilePhone({ payload, userId, trx });
   }
 
-  @UseGuards(AuthGuard)
+  @ApiOperation(SecurityDocs.DisablePhone.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.DisablePhone.ApiExtraModels)
+  @ApiResponse(SecurityDocs.DisablePhone.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.DisablePhone.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.DisablePhone.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Post('disable-phone')
   disablePhone(
     @Body() payload: DisableTwoFaDto,
@@ -217,6 +329,12 @@ export class SecurityController {
     return this.securityService.disablePhone({ payload, userId, trx });
   }
 
+  @ApiOperation(SecurityDocs.DeleteAccount.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.DeleteAccount.ApiExtraModels)
+  @ApiResponse(SecurityDocs.DeleteAccount.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.DeleteAccount.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.DeleteAccount.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Delete('delete-account')
   deleteUserAccount(
@@ -231,8 +349,14 @@ export class SecurityController {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @ApiOperation(SecurityDocs.ChangePassword.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.ChangePassword.ApiExtraModels)
+  @ApiResponse(SecurityDocs.ChangePassword.ApiResponse)
+  @ApiBadRequestResponse(SecurityDocs.ChangePassword.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.ChangePassword.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Patch('change-password')
   changePassword(
     @UserId() userId: string,
@@ -246,8 +370,15 @@ export class SecurityController {
     });
   }
 
-  @UseGuards(AuthGuard)
+  @ApiOperation(SecurityDocs.ChangeEmail.ApiOperation)
+  @ApiExtraModels(...SecurityDocs.ChangeEmail.ApiExtraModels)
+  @ApiResponse(SecurityDocs.ChangeEmail.ApiResponse)
+  @ApiForbiddenResponse(SecurityDocs.ChangeEmail.ApiForbiddenResponse)
+  @ApiBadRequestResponse(SecurityDocs.ChangeEmail.ApiBadRequestResponse)
+  @ApiBody(SecurityDocs.ChangeEmail.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Post('change-email')
   changeEmail(
     @UserId() userId: string,

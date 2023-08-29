@@ -17,6 +17,7 @@ import { LoggedOutDto } from '@dto/logged-out.dto';
 import { CorruptedTokenException } from '@exceptions/corrupted-token.exception';
 import { InvalidTokenException } from '@exceptions/invalid-token.exception';
 import { ExpiredTokenException } from '@exceptions/expired-token.exception';
+import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
 
 export abstract class AuthDocs {
   static get Login() {
@@ -75,7 +76,7 @@ export abstract class AuthDocs {
         type: LogInUserDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(LogInUserDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 
@@ -116,7 +117,7 @@ export abstract class AuthDocs {
         type: CreateUserDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(CreateUserDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 

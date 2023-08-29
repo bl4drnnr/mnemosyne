@@ -7,6 +7,7 @@ import { LoginGenerateRecoveryKeysDto } from '@dto/login-generate-recovery-keys.
 import { RecoverAccountDto } from '@dto/recover-account.dto';
 import { AccountRecoveredDto } from '@dto/account-recovered.dto';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
+import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
 
 export abstract class RecoveryDocs {
   static get RegGenRecoveryKeys() {
@@ -47,7 +48,7 @@ export abstract class RecoveryDocs {
         type: GenerateRecoveryKeysDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(GenerateRecoveryKeysDto) }
-      },
+      } as ApiBodyOptions,
       ApiConfirmHashQuery: confirmHashQuery
     };
   }
@@ -84,7 +85,7 @@ export abstract class RecoveryDocs {
         type: LoginGenerateRecoveryKeysDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(LoginGenerateRecoveryKeysDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 
@@ -110,7 +111,7 @@ export abstract class RecoveryDocs {
         type: GenerateRecoveryKeysDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(GenerateRecoveryKeysDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 
@@ -145,7 +146,7 @@ export abstract class RecoveryDocs {
         type: RecoverAccountDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(RecoverAccountDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 }

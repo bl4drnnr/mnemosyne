@@ -83,7 +83,7 @@ export enum DocsProperty {
   PHONE_DESC = 'Phone',
   PHONE_EXAMPLE = '+48123123123',
   TWO_FA_TOKEN_DESC = '2FA token',
-  TWO_FA_TOKEN_EXAMPLE = 'EQKWPCTZD6GDO4TAWFPPLYPE4QDW7SXB',
+  TWO_FA_TOKEN_EXAMPLE = '7BEEKMUDHULQVZYE7LQYR2R4BDP5NJJA',
   ACCOUNT_DELETED_DESC = 'Account deleted response message',
   ACCOUNT_DELETED_EXAMPLE = 'account-deleted',
   DELETE_CONFIRMATION_REQUIRED_DESC = 'Delete confirmation required response message',
@@ -159,5 +159,9 @@ export enum DocsProperty {
   PHONE_STATUS_IS_SET_UP_DESC = 'Phone setup - is phone set up',
   PHONE_STATUS_IS_SET_UP_EXAMPLE = 'true',
   PHONE_STATUS_2_LAST_DIGITS_DESC = 'Phone setup - 2 last digits',
-  PHONE_STATUS_2_LAST_DIGITS_EXAMPLE = '12'
+  PHONE_STATUS_2_LAST_DIGITS_EXAMPLE = '12',
+  QR_CODE_LINK_DESC = 'Link that leads to QR code to scan (via Google API)',
+  QR_CODE_LINK_EXAMPLE = 'https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=otpauth://totp/Mnemosyne%3Amikhail.bahdashych%40gmail.com%3Fsecret=7BEEKMUDHULQVZYE7LQYR2R4BDP5NJJA%26issuer=Mnemosyne',
+  PHONE_ALREADY_TAKEN_DESC = 'Phone already taken error message',
+  PHONE_ALREADY_TAKEN_EXAMPLE = 'phone-already-taken'
 }

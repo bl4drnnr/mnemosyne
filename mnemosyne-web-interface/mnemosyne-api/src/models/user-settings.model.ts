@@ -28,7 +28,7 @@ export class UserSettings extends Model<
   @Column(DataType.UUID)
   id: string;
 
-  @Column({ type: DataType.STRING, allowNull: true })
+  @Column({ type: DataType.STRING, allowNull: true, unique: true })
   phone: string;
 
   @Column({ type: DataType.STRING, allowNull: true, field: 'phone_code' })

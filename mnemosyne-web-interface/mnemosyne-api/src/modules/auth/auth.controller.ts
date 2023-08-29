@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
@@ -67,6 +68,7 @@ export class AuthController {
   @ApiOperation(AuthDocs.Logout.ApiOperation)
   @ApiExtraModels(...AuthDocs.Logout.ApiExtraModels)
   @ApiResponse(AuthDocs.Logout.ApiResponse)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('logout')
   async logout(

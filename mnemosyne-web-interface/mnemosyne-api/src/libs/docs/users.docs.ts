@@ -10,6 +10,7 @@ import { GetUserInfoResponseDto } from '@dto/get-user-info-response.dto';
 import { GetUserSecResponseDto } from '@dto/get-user-sec-response.dto';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
+import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
 
 export abstract class UsersDocs {
   static get ForgotPassword() {
@@ -51,7 +52,7 @@ export abstract class UsersDocs {
         type: ForgotPasswordDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(ForgotPasswordDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 
@@ -82,7 +83,7 @@ export abstract class UsersDocs {
         type: UploadPhotoDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(UploadPhotoDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 
@@ -143,7 +144,7 @@ export abstract class UsersDocs {
         type: UpdateUserInfoDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(UpdateUserInfoDto) }
-      }
+      } as ApiBodyOptions
     };
   }
 }

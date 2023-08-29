@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
@@ -53,6 +54,7 @@ export class UsersController {
   @ApiBadRequestResponse(UsersDocs.UploadUserPhoto.ApiBadRequestResponse)
   @ApiBody(UsersDocs.UploadUserPhoto.ApiBody)
   @UsePipes(ValidationPipe)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Post('upload-user-photo')
   async uploadUserPhoto(
@@ -68,6 +70,7 @@ export class UsersController {
   @ApiOperation(UsersDocs.GetUserInfo.ApiOperation)
   @ApiExtraModels(...UsersDocs.GetUserInfo.ApiExtraModels)
   @ApiResponse(UsersDocs.GetUserInfo.ApiResponse)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('user-info')
   async getUserInfo(
@@ -80,6 +83,7 @@ export class UsersController {
   @ApiOperation(UsersDocs.GetUserSecurity.ApiOperation)
   @ApiExtraModels(...UsersDocs.GetUserSecurity.ApiExtraModels)
   @ApiResponse(UsersDocs.GetUserSecurity.ApiResponse)
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('user-security')
   async getUserSecuritySettings(
@@ -93,6 +97,7 @@ export class UsersController {
   @ApiExtraModels(...UsersDocs.PatchUserInfo.ApiExtraModels)
   @ApiResponse(UsersDocs.PatchUserInfo.ApiResponse)
   @ApiBody(UsersDocs.PatchUserInfo.ApiBody)
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   @Patch('user-info')
