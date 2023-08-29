@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBasicAuth,
   ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
@@ -49,6 +50,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.RegGenTwoFaQrCode.ApiResponse)
   @ApiNotFoundResponse(SecurityDocs.RegGenTwoFaQrCode.ApiNotFoundResponse)
   @ApiQuery(SecurityDocs.RegGenTwoFaQrCode.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @Get('registration-generate-2fa-qr')
   registrationGenerateTwoFaQrCode(
     @Query('confirmationHash') confirmationHash: string,
@@ -65,6 +67,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.LoginGenTwoFaQrCode.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.LoginGenTwoFaQrCode.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.LoginGenTwoFaQrCode.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login-generate-2fa-qr')
   loginGenerateTwoFaQrCode(
@@ -77,6 +80,7 @@ export class SecurityController {
   @ApiOperation(SecurityDocs.GenerateTwoFaQrCode.ApiOperation)
   @ApiExtraModels(...SecurityDocs.GenerateTwoFaQrCode.ApiExtraModels)
   @ApiResponse(SecurityDocs.GenerateTwoFaQrCode.ApiResponse)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('generate-2fa-qr')
@@ -94,6 +98,7 @@ export class SecurityController {
   @ApiBadRequestResponse(SecurityDocs.RegVerifyTwoFa.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.RegVerifyTwoFa.ApiBody)
   @ApiQuery(SecurityDocs.RegVerifyTwoFa.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('registration-verify-2fa')
   registrationVerifyTwoFaQrCode(
@@ -113,6 +118,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.LoginVerifyTwoFa.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.LoginVerifyTwoFa.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.LoginVerifyTwoFa.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login-verify-2fa')
   loginVerifyTwoFaQrCode(
@@ -127,9 +133,10 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.VerifyTwoFa.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.VerifyTwoFa.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.VerifyTwoFa.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
-  @UseGuards(AuthGuard)
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Post('verify-2fa')
   verifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
@@ -144,6 +151,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.DisableTwoFa.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.DisableTwoFa.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.DisableTwoFa.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
@@ -161,6 +169,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.RegSendSmsCode.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.RegSendSmsCode.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.RegSendSmsCode.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('registration-send-sms-code')
   registrationSendSmsCode(
@@ -180,6 +189,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.LoginSendSmsCode.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.LoginSendSmsCode.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.LoginSendSmsCode.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login-send-sms-code')
   loginSendSmsCode(
@@ -194,6 +204,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.SendSmsCode.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.SendSmsCode.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.SendSmsCode.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
@@ -213,6 +224,7 @@ export class SecurityController {
   @ApiBadRequestResponse(SecurityDocs.HashSendSmsCode.ApiBadRequestResponse)
   @ApiQuery(SecurityDocs.HashSendSmsCode.ApiConfirmHashQuery)
   @ApiQuery(SecurityDocs.HashSendSmsCode.ApiLangQuery)
+  @ApiBasicAuth('basicAuth')
   @Get('hash-send-sms-code')
   hashSendSmsCode(
     @TransactionParam() trx: Transaction,
@@ -231,6 +243,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.GetSmsCode.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.GetSmsCode.ApiBadRequestResponse)
   @ApiQuery(SecurityDocs.GetSmsCode.ApiLangQuery)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('get-sms-code')
@@ -246,6 +259,7 @@ export class SecurityController {
   @ApiExtraModels(...SecurityDocs.ClearSmsCode.ApiExtraModels)
   @ApiResponse(SecurityDocs.ClearSmsCode.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.ClearSmsCode.ApiBadRequestResponse)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Post('clear-sms-code')
@@ -262,6 +276,7 @@ export class SecurityController {
   @ApiNotFoundResponse(SecurityDocs.RegVerifyMobilePhone.ApiNotFoundResponse)
   @ApiBody(SecurityDocs.RegVerifyMobilePhone.ApiBody)
   @ApiQuery(SecurityDocs.RegVerifyMobilePhone.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('registration-verify-mobile-phone')
   registrationVerifyMobilePhone(
@@ -283,6 +298,7 @@ export class SecurityController {
     SecurityDocs.LoginVerifyMobilePhone.ApiBadRequestResponse
   )
   @ApiBody(SecurityDocs.LoginVerifyMobilePhone.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login-verify-mobile-phone')
   loginVerifyMobilePhone(
@@ -300,6 +316,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.VerifyMobilePhone.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.VerifyMobilePhone.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.VerifyMobilePhone.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
@@ -317,6 +334,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.DisablePhone.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.DisablePhone.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.DisablePhone.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
@@ -334,6 +352,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.DeleteAccount.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.DeleteAccount.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.DeleteAccount.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Delete('delete-account')
@@ -354,6 +373,7 @@ export class SecurityController {
   @ApiResponse(SecurityDocs.ChangePassword.ApiResponse)
   @ApiBadRequestResponse(SecurityDocs.ChangePassword.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.ChangePassword.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
@@ -376,6 +396,7 @@ export class SecurityController {
   @ApiForbiddenResponse(SecurityDocs.ChangeEmail.ApiForbiddenResponse)
   @ApiBadRequestResponse(SecurityDocs.ChangeEmail.ApiBadRequestResponse)
   @ApiBody(SecurityDocs.ChangeEmail.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)

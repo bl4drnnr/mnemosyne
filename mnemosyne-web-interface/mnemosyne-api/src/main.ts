@@ -25,6 +25,14 @@ import * as yaml from 'yaml';
       },
       'x-access-token'
     )
+    .addBasicAuth(
+      {
+        description: 'Basic API authentication username and password',
+        type: 'http',
+        in: 'header'
+      },
+      'basicAuth'
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

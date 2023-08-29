@@ -37,6 +37,8 @@ paths:
       tags:
         &a1
         - Users
+      security:
+        - basicAuth: []
   /api/users/upload-user-photo:
     post:
       operationId: UsersController_uploadUserPhoto
@@ -66,6 +68,7 @@ paths:
       tags: *a1
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/users/user-info:
     get:
       operationId: UsersController_getUserInfo
@@ -81,6 +84,7 @@ paths:
       tags: *a1
       security:
         - x-access-token: []
+        - basicAuth: []
     patch:
       operationId: UsersController_updateUserInfo
       summary: Endpoint is responsible for updating user information.
@@ -102,6 +106,7 @@ paths:
       tags: *a1
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/users/user-security:
     get:
       operationId: UsersController_getUserSecuritySettings
@@ -117,6 +122,7 @@ paths:
       tags: *a1
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
@@ -157,6 +163,8 @@ paths:
       tags:
         &a2
         - Confirmation Hashes
+      security:
+        - basicAuth: []
   /api/confirmation-hash/company-account-confirmation:
     post:
       operationId: ConfirmationHashController_confirmCompanyAccount
@@ -205,6 +213,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags: *a2
+      security:
+        - basicAuth: []
   /api/confirmation-hash/company-member-account-confirmation:
     post:
       operationId: ConfirmationHashController_companyMemberAccountConfirmation
@@ -253,6 +263,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags: *a2
+      security:
+        - basicAuth: []
   /api/confirmation-hash/email-change-confirmation:
     post:
       operationId: ConfirmationHashController_confirmEmailChange
@@ -305,6 +317,8 @@ paths:
                   - $ref: "#/components/schemas/HashNotFoundException"
                   - $ref: "#/components/schemas/LinkExpiredException"
       tags: *a2
+      security:
+        - basicAuth: []
   /api/confirmation-hash/reset-user-password-confirmation:
     post:
       operationId: ConfirmationHashController_resetUserPassword
@@ -359,6 +373,8 @@ paths:
                   - $ref: "#/components/schemas/HashNotFoundException"
                   - $ref: "#/components/schemas/LinkExpiredException"
       tags: *a2
+      security:
+        - basicAuth: []
   /api/auth/login:
     post:
       operationId: AuthController_login
@@ -409,6 +425,8 @@ paths:
       tags:
         &a3
         - Authentication
+      security:
+        - basicAuth: []
   /api/auth/registration:
     post:
       operationId: AuthController_registration
@@ -443,6 +461,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/TacNotAcceptedException"
       tags: *a3
+      security:
+        - basicAuth: []
   /api/auth/logout:
     get:
       operationId: AuthController_logout
@@ -459,6 +479,7 @@ paths:
       tags: *a3
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/auth/refresh:
     get:
       operationId: AuthController_refreshTokens
@@ -489,6 +510,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/ExpiredTokenException"
       tags: *a3
+      security:
+        - basicAuth: []
   /api/company/create-company:
     post:
       operationId: CompanyController_createCompany
@@ -525,6 +548,8 @@ paths:
                 $ref: "#/components/schemas/TacNotAcceptedException"
       tags:
         - Company
+      security:
+        - basicAuth: []
   /api/roles:
     post:
       operationId: RolesController_createRole
@@ -621,6 +646,8 @@ paths:
       tags:
         &a5
         - Security
+      security:
+        - basicAuth: []
   /api/security/login-generate-2fa-qr:
     post:
       operationId: SecurityController_loginGenerateTwoFaQrCode
@@ -650,6 +677,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/generate-2fa-qr:
     get:
       operationId: SecurityController_generateTwoFaQrCode
@@ -668,6 +697,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/registration-verify-2fa:
     post:
       operationId: SecurityController_registrationVerifyTwoFaQrCode
@@ -709,6 +739,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/login-verify-2fa:
     post:
       operationId: SecurityController_loginVerifyTwoFaQrCode
@@ -741,6 +773,8 @@ paths:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongCodeException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/verify-2fa:
     post:
       operationId: SecurityController_verifyTwoFaQrCode
@@ -772,6 +806,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/disable-2fa:
     post:
       operationId: SecurityController_disableTwoFa
@@ -805,6 +840,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/registration-send-sms-code:
     post:
       operationId: SecurityController_registrationSendSmsCode
@@ -841,6 +877,8 @@ paths:
                   - $ref: "#/components/schemas/PhoneAlreadyTakenException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/login-send-sms-code:
     post:
       operationId: SecurityController_loginSendSmsCode
@@ -871,6 +909,8 @@ paths:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/send-sms-code:
     post:
       operationId: SecurityController_sendSmsCode
@@ -901,6 +941,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/hash-send-sms-code:
     get:
       operationId: SecurityController_hashSendSmsCode
@@ -942,6 +983,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/get-sms-code:
     get:
       operationId: SecurityController_getSmsCode
@@ -974,6 +1017,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/clear-sms-code:
     post:
       operationId: SecurityController_clearSmsCode
@@ -995,6 +1039,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/registration-verify-mobile-phone:
     post:
       operationId: SecurityController_registrationVerifyMobilePhone
@@ -1037,6 +1082,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/login-verify-mobile-phone:
     post:
       operationId: SecurityController_loginVerifyMobilePhone
@@ -1072,6 +1119,8 @@ paths:
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
       tags: *a5
+      security:
+        - basicAuth: []
   /api/security/verify-mobile-phone:
     post:
       operationId: SecurityController_verifyMobilePhone
@@ -1105,6 +1154,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/disable-phone:
     post:
       operationId: SecurityController_disablePhone
@@ -1140,6 +1190,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/delete-account:
     delete:
       operationId: SecurityController_deleteUserAccount
@@ -1179,6 +1230,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/change-password:
     patch:
       operationId: SecurityController_changePassword
@@ -1218,6 +1270,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/security/change-email:
     post:
       operationId: SecurityController_changeEmail
@@ -1253,6 +1306,7 @@ paths:
       tags: *a5
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/recovery/registration-generate-recovery-keys:
     post:
       operationId: RecoveryController_registrationGenerateRecoveryKeys
@@ -1288,6 +1342,8 @@ paths:
       tags:
         &a6
         - Recovery
+      security:
+        - basicAuth: []
   /api/recovery/login-generate-recovery-keys:
     post:
       operationId: RecoveryController_loginGenerateRecoveryKeys
@@ -1318,6 +1374,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
       tags: *a6
+      security:
+        - basicAuth: []
   /api/recovery/generate-recovery-keys:
     post:
       operationId: RecoveryController_generateRecoveryKeys
@@ -1341,6 +1399,7 @@ paths:
       tags: *a6
       security:
         - x-access-token: []
+        - basicAuth: []
   /api/recovery/recover-account:
     post:
       operationId: RecoveryController_recoverUserAccount
@@ -1372,6 +1431,8 @@ paths:
               schema:
                 $ref: "#/components/schemas/WrongRecoveryKeysException"
       tags: *a6
+      security:
+        - basicAuth: []
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.
@@ -1387,6 +1448,11 @@ components:
       description: "Please enter the JWT token in the following format: Bearer <JWT>"
       name: x-access-token
       type: apiKey
+      in: header
+    basicAuth:
+      type: http
+      scheme: basic
+      description: Basic API authentication username and password
       in: header
   schemas:
     ResetPasswordEmailDto:

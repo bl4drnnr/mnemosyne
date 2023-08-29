@@ -1,5 +1,6 @@
 import {
   ApiBadRequestResponse,
+  ApiBasicAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
@@ -33,6 +34,7 @@ export class ConfirmationHashController {
   @ApiForbiddenResponse(ConfirmHashDocs.AccConfirm.ApiForbiddenResponse)
   @ApiQuery(ConfirmHashDocs.AccConfirm.ApiConfirmHashQuery)
   @ApiQuery(ConfirmHashDocs.AccConfirm.ApiLangQuery)
+  @ApiBasicAuth('basicAuth')
   @Get('account-confirmation')
   confirmAccount(
     @TransactionParam() trx: Transaction,
@@ -53,6 +55,7 @@ export class ConfirmationHashController {
   @ApiNotFoundResponse(ConfirmHashDocs.CompanyAccConfirm.ApiNotFoundResponse)
   @ApiBody(ConfirmHashDocs.CompanyAccConfirm.ApiBody)
   @ApiQuery(ConfirmHashDocs.CompanyAccConfirm.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('company-account-confirmation')
   confirmCompanyAccount(
@@ -78,6 +81,7 @@ export class ConfirmationHashController {
   )
   @ApiBody(ConfirmHashDocs.CompanyMemberAccConfirm.ApiBody)
   @ApiQuery(ConfirmHashDocs.CompanyMemberAccConfirm.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('company-member-account-confirmation')
   companyMemberAccountConfirmation(
@@ -101,6 +105,7 @@ export class ConfirmationHashController {
   @ApiNotFoundResponse(ConfirmHashDocs.EmailChangeConfirm.ApiNotFoundResponse)
   @ApiBody(ConfirmHashDocs.EmailChangeConfirm.ApiBody)
   @ApiQuery(ConfirmHashDocs.EmailChangeConfirm.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('email-change-confirmation')
   confirmEmailChange(
@@ -128,6 +133,7 @@ export class ConfirmationHashController {
   )
   @ApiBody(ConfirmHashDocs.ResetUserPasswordConfirmation.ApiBody)
   @ApiQuery(ConfirmHashDocs.ResetUserPasswordConfirmation.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('reset-user-password-confirmation')
   async resetUserPassword(

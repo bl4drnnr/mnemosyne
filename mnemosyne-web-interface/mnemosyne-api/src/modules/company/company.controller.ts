@@ -1,5 +1,6 @@
 import {
   ApiBadRequestResponse,
+  ApiBasicAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
@@ -26,6 +27,7 @@ export class CompanyController {
   @ApiBadRequestResponse(CompanyDocs.CreateCompany.ApiBadRequestResponse)
   @ApiForbiddenResponse(CompanyDocs.CreateCompany.ApiForbiddenResponse)
   @ApiBody(CompanyDocs.CreateCompany.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('create-company')
   createCompany(

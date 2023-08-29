@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBasicAuth,
   ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
@@ -39,6 +40,7 @@ export class RecoveryController {
   @ApiNotFoundResponse(RecoveryDocs.RegGenRecoveryKeys.ApiNotFoundResponse)
   @ApiBody(RecoveryDocs.RegGenRecoveryKeys.ApiBody)
   @ApiQuery(RecoveryDocs.RegGenRecoveryKeys.ApiConfirmHashQuery)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('registration-generate-recovery-keys')
   registrationGenerateRecoveryKeys(
@@ -58,6 +60,7 @@ export class RecoveryController {
   @ApiResponse(RecoveryDocs.LoginGenRecKeys.ApiResponse)
   @ApiBadRequestResponse(RecoveryDocs.LoginGenRecKeys.ApiBadRequestResponse)
   @ApiBody(RecoveryDocs.LoginGenRecKeys.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login-generate-recovery-keys')
   loginGenerateRecoveryKeys(
@@ -74,6 +77,7 @@ export class RecoveryController {
   @ApiExtraModels(...RecoveryDocs.GenerateRecoveryKeys.ApiExtraModels)
   @ApiResponse(RecoveryDocs.GenerateRecoveryKeys.ApiResponse)
   @ApiBody(RecoveryDocs.GenerateRecoveryKeys.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
@@ -95,6 +99,7 @@ export class RecoveryController {
   @ApiResponse(RecoveryDocs.RecoveryAccount.ApiResponse)
   @ApiBadRequestResponse(RecoveryDocs.RecoveryAccount.ApiBadRequestResponse)
   @ApiBody(RecoveryDocs.RecoveryAccount.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('recover-account')
   recoverUserAccount(
