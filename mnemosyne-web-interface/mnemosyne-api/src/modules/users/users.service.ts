@@ -44,6 +44,9 @@ import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { CreateAccFromScratchInterface } from '@interfaces/create-acc-from-scratch.interface';
 import { CompanyService } from '@modules/company.service';
 import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.dto';
+import { GetUserInfoResponseDto } from '@dto/get-user-info-response.dto';
+import { GetUserSecResponseDto } from '@dto/get-user-sec-response.dto';
+import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface';
 
 @Injectable()
 export class UsersService {
@@ -117,6 +120,13 @@ export class UsersService {
   async getUserById({ id, trx: transaction }: GetUserByIdInterface) {
     return await this.userRepository.findByPk(id, {
       include: { all: true },
+      transaction
+    });
+  }
+
+  async getUserByPhone({ phone, trx: transaction }: GetUserByPhoneInterface) {
+    return await this.userSettingsRepository.findOne({
+      where: { phone },
       transaction
     });
   }
@@ -258,13 +268,13 @@ export class UsersService {
       trx
     });
 
-    return {
+    return new GetUserInfoResponseDto({
       userId: userIdHash,
       firstName,
       lastName,
       email,
       isProfilePicPresent
-    };
+    });
   }
 
   async getUserSecuritySettings({
@@ -289,13 +299,13 @@ export class UsersService {
     const passwordCanBeChanged = passwordChanged ? !isWithinDay : true;
     const twoLastDigit = !!phone ? phone.slice(-2) : null;
 
-    return {
+    return new GetUserSecResponseDto({
       phoneStatus: { isSetUp, twoLastDigit },
       passwordCanBeChanged,
       emailChanged,
       isTwoFaSetUp,
       email
-    };
+    });
   }
 
   async updateUserInfo({ userId, payload, trx }: UpdateUserInfoInterface) {

@@ -50,6 +50,8 @@ import { VerifySmsCodeInterface } from '@interfaces/verify-sms-code.interface';
 import { VerifyQrCodeInterface } from '@interfaces/verify-qr-code.interface';
 import { GenerateQrCodeInterface } from '@interfaces/generate-qr-code.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
+import { QrCodeDto } from '@dto/qr-code.dto';
+import { PhoneAlreadyTakenException } from '@exceptions/phone-already-taken.exception';
 
 @Injectable()
 export class SecurityService {
@@ -198,6 +200,13 @@ export class SecurityService {
   }: RegistrationSendSmsInterface) {
     const { language, phone } = payload;
 
+    const usedPhone = await this.usersService.getUserByPhone({
+      phone,
+      trx
+    });
+
+    if (usedPhone) throw new PhoneAlreadyTakenException();
+
     const { userId } =
       await this.confirmationHashService.getUserIdByConfirmationHash({
         confirmationHash,
@@ -205,7 +214,7 @@ export class SecurityService {
         trx
       });
 
-    await this.phoneService.verifyAndResendSmsCode({
+    await this.phoneService.verifyTimeframeAndResendSmsCode({
       language,
       phone,
       userId,
@@ -225,7 +234,7 @@ export class SecurityService {
         trx
       });
 
-    await this.phoneService.verifyAndResendSmsCode({
+    await this.phoneService.verifyTimeframeAndResendSmsCode({
       phone: userSettings.phone,
       language,
       userId,
@@ -238,7 +247,7 @@ export class SecurityService {
   async sendSmsCode({ payload, userId, trx }: SendSmsInterface) {
     const { language, phone } = payload;
 
-    await this.phoneService.verifyAndResendSmsCode({
+    await this.phoneService.verifyTimeframeAndResendSmsCode({
       language,
       phone,
       userId,
@@ -263,7 +272,7 @@ export class SecurityService {
       trx
     });
 
-    await this.phoneService.verifyAndResendSmsCode({
+    await this.phoneService.verifyTimeframeAndResendSmsCode({
       phone,
       userId,
       language,
@@ -283,7 +292,7 @@ export class SecurityService {
 
     if (!phone) throw new PhoneNotSetException();
 
-    await this.phoneService.verifyAndResendSmsCode({
+    await this.phoneService.verifyTimeframeAndResendSmsCode({
       phone,
       language,
       userId,
@@ -591,7 +600,10 @@ export class SecurityService {
       account: email
     });
 
-    return { qr, secret };
+    return new QrCodeDto({
+      qr,
+      secret
+    });
   }
 
   private async verifyQrCode({

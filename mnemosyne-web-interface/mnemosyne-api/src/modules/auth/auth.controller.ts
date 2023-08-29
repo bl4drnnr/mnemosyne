@@ -10,6 +10,8 @@ import {
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
+  ApiBasicAuth,
+  ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
@@ -40,6 +42,7 @@ export class AuthController {
   @ApiBadRequestResponse(AuthDocs.Login.ApiBadRequestResponse)
   @ApiForbiddenResponse(AuthDocs.Login.ApiForbiddenResponse)
   @ApiBody(AuthDocs.Login.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login')
   async login(
@@ -55,6 +58,7 @@ export class AuthController {
   @ApiBadRequestResponse(AuthDocs.Registration.ApiBadRequestResponse)
   @ApiForbiddenResponse(AuthDocs.Registration.ApiForbiddenResponse)
   @ApiBody(AuthDocs.Registration.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('registration')
   registration(
@@ -64,9 +68,11 @@ export class AuthController {
     return this.authService.registration({ payload, trx });
   }
 
-  @ApiOperation(AuthDocs.Logout.ApiResponse)
+  @ApiOperation(AuthDocs.Logout.ApiOperation)
   @ApiExtraModels(...AuthDocs.Logout.ApiExtraModels)
   @ApiResponse(AuthDocs.Logout.ApiResponse)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('logout')
   async logout(
@@ -86,6 +92,7 @@ export class AuthController {
   @ApiResponse(AuthDocs.RefreshTokens.ApiResponse)
   @ApiBadRequestResponse(AuthDocs.RefreshTokens.ApiBadRequestResponse)
   @ApiUnauthorizedResponse(AuthDocs.RefreshTokens.ApiUnauthorizedResponse)
+  @ApiBasicAuth('basicAuth')
   @Get('refresh')
   async refreshTokens(
     @CookieRefreshToken() refreshToken: string,

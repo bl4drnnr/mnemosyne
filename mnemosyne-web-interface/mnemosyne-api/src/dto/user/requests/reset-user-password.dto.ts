@@ -1,4 +1,4 @@
-import { IsEnum, IsOptional, IsString, Length, Matches } from 'class-validator';
+import { IsEnum, IsOptional, Matches } from 'class-validator';
 import { PasswordRegex } from '@regex/password.regex';
 import { MfaCodeRegex } from '@regex/mfa-code.regex';
 import { Language } from '@interfaces/language.enum';
@@ -18,15 +18,6 @@ export class ResetUserPasswordDto {
     message: ValidationError.WRONG_PASSWORD_FORMAT
   })
   readonly password?: string;
-
-  @ApiProperty({
-    type: String,
-    description: DocsProperty.HASH_DESC,
-    example: DocsProperty.HASH_EXAMPLE
-  })
-  @IsString({ message: ValidationError.WRONG_HASH_FORMAT })
-  @Length(40, 40, { message: ValidationError.WRONG_HASH_LENGTH })
-  readonly hash: string;
 
   @ApiProperty({
     type: String,

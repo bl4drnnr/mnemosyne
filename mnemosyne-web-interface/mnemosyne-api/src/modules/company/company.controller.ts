@@ -1,11 +1,6 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
-import { CompanyService } from '@modules/company.service';
-import { ValidationPipe } from '@pipes/validation.pipe';
-import { CreateCompanyDto } from '@dto/create-company.dto';
-import { TransactionParam } from '@decorators/transaction.decorator';
-import { Transaction } from 'sequelize';
 import {
   ApiBadRequestResponse,
+  ApiBasicAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
@@ -13,6 +8,12 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
+import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { CompanyService } from '@modules/company.service';
+import { ValidationPipe } from '@pipes/validation.pipe';
+import { CreateCompanyDto } from '@dto/create-company.dto';
+import { TransactionParam } from '@decorators/transaction.decorator';
+import { Transaction } from 'sequelize';
 import { CompanyDocs } from '@docs/company.docs';
 
 @ApiTags('Company')
@@ -23,9 +24,10 @@ export class CompanyController {
   @ApiOperation(CompanyDocs.CreateCompany.ApiOperation)
   @ApiExtraModels(...CompanyDocs.CreateCompany.ApiExtraModels)
   @ApiResponse(CompanyDocs.CreateCompany.ApiResponse)
-  @ApiBadRequestResponse(CompanyDocs.CreateCompany.ApiForbiddenResponse)
+  @ApiBadRequestResponse(CompanyDocs.CreateCompany.ApiBadRequestResponse)
   @ApiForbiddenResponse(CompanyDocs.CreateCompany.ApiForbiddenResponse)
   @ApiBody(CompanyDocs.CreateCompany.ApiBody)
+  @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('create-company')
   createCompany(

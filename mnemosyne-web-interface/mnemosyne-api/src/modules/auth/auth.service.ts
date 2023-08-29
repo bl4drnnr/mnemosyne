@@ -195,7 +195,7 @@ export class AuthService {
     } = userSettings;
 
     if (!mfaCode && userTwoFaToken && !phoneCode && phone) {
-      await this.phoneService.verifyAndResendSmsCode({
+      await this.phoneService.verifyTimeframeAndResendSmsCode({
         language,
         userId,
         phone
@@ -206,7 +206,7 @@ export class AuthService {
     if (!mfaCode && userTwoFaToken) return new TokenTwoFaRequiredDto();
 
     if (!phoneCode && phone) {
-      await this.phoneService.verifyAndResendSmsCode({
+      await this.phoneService.verifyTimeframeAndResendSmsCode({
         language,
         userId,
         phone

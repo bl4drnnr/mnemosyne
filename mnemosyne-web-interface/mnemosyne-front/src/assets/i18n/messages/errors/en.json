@@ -56,5 +56,6 @@
   "password-already-changed": "Password was changed less than 24h ago",
   "company-members-limit-reached": "You've reached the limit of users you can invite while registration",
   "member-already-on-list": "Company member is already on the list",
-  "company-already-exists": "Company with this name already exists"
+  "company-already-exists": "Company with this name already exists",
+  "phone-already-taken": "Mobile phone has already been taken"
 }

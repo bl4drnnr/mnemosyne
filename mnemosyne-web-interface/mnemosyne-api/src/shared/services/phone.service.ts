@@ -40,7 +40,7 @@ export class PhoneService {
     return verificationCode.toString();
   }
 
-  async verifyAndResendSmsCode({
+  async verifyTimeframeAndResendSmsCode({
     language,
     userId,
     phone,
