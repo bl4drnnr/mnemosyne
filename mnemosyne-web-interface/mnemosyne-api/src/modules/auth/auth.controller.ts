@@ -45,10 +45,7 @@ export class AuthController {
   @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login')
-  async login(
-    @Body() payload: LogInUserDto,
-    @TransactionParam() trx: Transaction
-  ) {
+  login(@Body() payload: LogInUserDto, @TransactionParam() trx: Transaction) {
     return this.authService.login({ payload, trx });
   }
 
@@ -94,7 +91,7 @@ export class AuthController {
   @ApiUnauthorizedResponse(AuthDocs.RefreshTokens.ApiUnauthorizedResponse)
   @ApiBasicAuth('basicAuth')
   @Get('refresh')
-  async refreshTokens(
+  refreshTokens(
     @CookieRefreshToken() refreshToken: string,
     @TransactionParam() trx: Transaction
   ) {

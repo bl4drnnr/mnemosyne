@@ -1,8 +1,7 @@
 import {
   MiddlewareConsumer,
   Module,
-  NestModule,
-  RequestMethod
+  NestModule
 } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
@@ -74,9 +73,6 @@ import { CompanyUsersModule } from '@modules/company-users.module';
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(BasicAuthMiddleware).forRoutes({
-      path: '/api/*',
-      method: RequestMethod.ALL
-    });
+    consumer.apply(BasicAuthMiddleware).exclude('/docs').forRoutes('*');
   }
 }

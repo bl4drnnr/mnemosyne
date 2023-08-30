@@ -1,9 +1,9 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import * as jwt from 'jsonwebtoken';
 import { InvalidTokenException } from '@exceptions/invalid-token.exception';
 import { CorruptedTokenException } from '@exceptions/corrupted-token.exception';
 import { ExpiredTokenException } from '@exceptions/expired-token.exception';
+import { AuthError } from '@interfaces/auth-error.enum';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -25,10 +25,15 @@ export class AuthGuard implements CanActivate {
       req.user = tokenData.userId;
       return true;
     } catch (error: any) {
-      if (error instanceof jwt.TokenExpiredError)
-        throw new ExpiredTokenException();
-      else if (error instanceof jwt.JsonWebTokenError)
-        throw new InvalidTokenException();
+      const errorName = error.name as AuthError;
+      switch (errorName) {
+        case AuthError.TOKEN_EXPIRED_ERROR:
+          throw new ExpiredTokenException();
+        case AuthError.JSON_WEB_TOKEN_ERROR:
+          throw new InvalidTokenException();
+        default:
+          throw new InvalidTokenException();
+      }
     }
   }
 }
