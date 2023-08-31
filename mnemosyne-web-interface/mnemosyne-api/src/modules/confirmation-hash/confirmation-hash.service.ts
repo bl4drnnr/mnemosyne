@@ -188,9 +188,9 @@ export class ConfirmationHashService {
 
     const isRecoverySet = userSettings.recoveryKeysFingerprint;
 
-    const isAccAlreadyConfirmed = hash.confirmed && isMfaSet && isRecoverySet;
+    const isCompanyAccConfirmed = hash.confirmed && isMfaSet && isRecoverySet;
 
-    if (!isAccAlreadyConfirmed) {
+    if (!isCompanyAccConfirmed) {
       return await this.usersService.createAccountFromScratch({
         user,
         hash,

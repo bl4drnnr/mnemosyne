@@ -37,7 +37,6 @@ import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { Roles } from '@interfaces/roles.enum';
 import { UserDataNotSetDto } from '@dto/user-data-not-set.dto';
 import { PasswordNotSetDto } from '@dto/password-not-set.dto';
-import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
@@ -392,23 +391,40 @@ export class UsersService {
       });
     }
 
-    const isHashConfirmed = hash.confirmed;
+    const isCompanyHashConfirmed = hash.confirmed;
 
-    if (!isHashConfirmed) {
+    if (!isCompanyHashConfirmed) {
+      const ownerRegistrationHash =
+        await this.confirmationHashService.getConfirmationHashByUserId({
+          userId,
+          confirmationType: Confirmation.REGISTRATION,
+          trx
+        });
+
+      if (!ownerRegistrationHash.confirmed) {
+        await this.confirmationHashService.confirmHash({
+          hashId: ownerRegistrationHash.id,
+          trx
+        });
+      }
+
       await this.confirmationHashService.confirmHash({
         hashId: hash.id,
         trx
       });
     }
 
-    if (!isHashConfirmed && hashType === Confirmation.COMPANY_REGISTRATION) {
+    if (
+      !isCompanyHashConfirmed &&
+      hashType === Confirmation.COMPANY_REGISTRATION
+    ) {
       await this.companyService.confirmCompanyCreation({
         userId,
         language,
         trx
       });
     } else if (
-      !isHashConfirmed &&
+      !isCompanyHashConfirmed &&
       hashType === Confirmation.COMPANY_INVITATION
     ) {
       await this.companyService.confirmCompanyMembership({
