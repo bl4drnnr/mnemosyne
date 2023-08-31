@@ -9,11 +9,13 @@ export class BasicAuthMiddleware implements NestMiddleware {
   constructor(private configService: ApiConfigService) {}
 
   use(req: Request, res: Response, next: NextFunction) {
+    const unAuthMessage = 'unauthorized';
+
     if (req.headers['authorization']) {
       const authorization = req.headers['authorization'];
       const basic = authorization.match(/^Basic (.+)$/);
 
-      if (!basic) return new UnauthorizedException();
+      if (!basic) throw new UnauthorizedException(unAuthMessage);
 
       const credentials = Buffer.from(basic[1], 'base64').toString('utf-8');
 
@@ -21,11 +23,12 @@ export class BasicAuthMiddleware implements NestMiddleware {
       const apiPassword = this.configService.basicAuthConfig.password;
 
       if (credentials != `${apiUsername}:${apiPassword}`) {
-        return new UnauthorizedException();
+        throw new UnauthorizedException(unAuthMessage);
       }
 
       return next();
+    } else {
+      throw new UnauthorizedException(unAuthMessage);
     }
-    return new UnauthorizedException();
   }
 }

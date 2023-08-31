@@ -23,6 +23,7 @@ export class RecoveryKeysComponent {
   passphrase: string;
   recoveryKeysGenerated: boolean;
   recoveryKeys: Array<string>;
+  keysCopiedEmitDisable: boolean;
 
   constructor(
     private readonly validationService: ValidationService,
@@ -39,9 +40,7 @@ export class RecoveryKeysComponent {
 
   keysCopied() {
     this.confirmRecoveryKeysSetup.emit();
-    this.passphrase = '';
-    this.recoveryKeysGenerated = false;
-    this.recoveryKeys = [];
+    this.keysCopiedEmitDisable = true;
   }
 
   downloadRecoveryKeys() {

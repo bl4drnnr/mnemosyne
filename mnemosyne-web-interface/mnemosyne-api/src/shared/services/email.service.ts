@@ -9,11 +9,15 @@ import { SendEmailInterface } from '@interfaces/send-email.interface';
 import { EmailConfirmHashInterface } from '@interfaces/email-confirm-hash.interface';
 import { GetConfirmLinkInterface } from '@interfaces/get-confirm-link.interface';
 import { EmailSettingsInterface } from '@interfaces/email-settings.interface';
+import { CryptographicService } from '@shared/cryptographic.service';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
+import { Routes } from '@interfaces/routes.enum';
 
 @Injectable()
 export class EmailService {
   constructor(
     private readonly configService: ApiConfigService,
+    private readonly cryptographicService: CryptographicService,
     private readonly emailTemplatesService: EmailTemplatesService,
     private readonly confirmationHashService: ConfirmationHashService
   ) {
@@ -26,19 +30,36 @@ export class EmailService {
     language,
     trx
   }: SecurityInitEmailInterface) {
-    const { confirmationHash, confirmationType, userId, to } = payload;
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
 
-    const emailSettings: EmailSettingsInterface = {
+    const { confirmationType, userId, to } = payload;
+
+    const companyRegistration: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx });
+    await this.createConfirmationHash({
+      emailSettings: companyRegistration,
+      trx
+    });
+
+    const userRegistration: EmailSettingsInterface = {
+      confirmationType: Confirmation.REGISTRATION,
+      confirmationHash,
+      userId
+    };
+
+    await this.createConfirmationHash({
+      emailSettings: userRegistration,
+      trx
+    });
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
-      route: 'company-account-confirmation'
+      route: Routes.COMPANY_ACCOUNT_CONFIRMATION
     });
 
     const { html, subject } =
@@ -58,19 +79,36 @@ export class EmailService {
     language,
     trx
   }: SecurityInitEmailInterface) {
-    const { confirmationHash, confirmationType, userId, to } = payload;
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
 
-    const emailSettings: EmailSettingsInterface = {
+    const { confirmationType, userId, to } = payload;
+
+    const memberInvitation: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx });
+    await this.createConfirmationHash({
+      emailSettings: memberInvitation,
+      trx
+    });
+
+    const memberRegistration: EmailSettingsInterface = {
+      confirmationHash,
+      confirmationType: Confirmation.REGISTRATION,
+      userId
+    };
+
+    await this.createConfirmationHash({
+      emailSettings: memberRegistration,
+      trx
+    });
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
-      route: 'company-member-account-confirmation'
+      route: Routes.COMPANY_MEMBER_ACCOUNT_CONFIRMATION
     });
 
     const { html, subject } =
@@ -90,7 +128,10 @@ export class EmailService {
     language,
     trx
   }: SecurityInitEmailInterface) {
-    const { confirmationHash, confirmationType, userId, to } = payload;
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
+
+    const { confirmationType, userId, to } = payload;
 
     const emailSettings: EmailSettingsInterface = {
       confirmationHash,
@@ -102,7 +143,7 @@ export class EmailService {
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
-      route: 'account-confirmation'
+      route: Routes.ACCOUNT_CONFIRMATION
     });
 
     const { html, subject } =
@@ -120,7 +161,9 @@ export class EmailService {
     userInfo,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = this.getConfirmationLink({ route: 'login' });
+    const link = this.getConfirmationLink({
+      route: Routes.LOGIN
+    });
 
     const { html, subject } = this.emailTemplatesService.registrationComplete({
       userInfo,
@@ -136,7 +179,9 @@ export class EmailService {
     companyInfo,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = this.getConfirmationLink({ route: 'login' });
+    const link = this.getConfirmationLink({
+      route: Routes.LOGIN
+    });
 
     const { html, subject } =
       this.emailTemplatesService.companyRegistrationComplete({
@@ -153,7 +198,9 @@ export class EmailService {
     companyName,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = this.getConfirmationLink({ route: 'login' });
+    const link = this.getConfirmationLink({
+      route: Routes.LOGIN
+    });
 
     const { html, subject } =
       this.emailTemplatesService.companyMemberConfirmCompleteEmail({
@@ -171,7 +218,10 @@ export class EmailService {
     language,
     trx
   }: SecurityInitEmailInterface) {
-    const { confirmationHash, confirmationType, userId, to } = payload;
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
+
+    const { confirmationType, userId, to } = payload;
 
     const emailSettings: EmailSettingsInterface = {
       confirmationHash,
@@ -183,7 +233,7 @@ export class EmailService {
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,
-      route: 'reset-password'
+      route: Routes.RESET_PASSWORD
     });
 
     const { html, subject } =
@@ -201,7 +251,9 @@ export class EmailService {
     userInfo,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = this.getConfirmationLink({ route: 'login' });
+    const link = this.getConfirmationLink({
+      route: Routes.LOGIN
+    });
 
     const { html, subject } = this.emailTemplatesService.resetPasswordComplete({
       userInfo,
@@ -218,8 +270,10 @@ export class EmailService {
     language,
     trx
   }: SecurityInitEmailInterface) {
-    const { confirmationHash, confirmationType, userId, to, changingEmail } =
-      payload;
+    const confirmationHash =
+      this.cryptographicService.generateConfirmationHash();
+
+    const { confirmationType, userId, to, changingEmail } = payload;
 
     const emailSettings: EmailSettingsInterface = {
       changingEmail,
@@ -231,8 +285,8 @@ export class EmailService {
     await this.createConfirmationHash({ emailSettings, trx });
 
     const link = this.getConfirmationLink({
-      hash: payload.confirmationHash,
-      route: 'email-change-confirmation'
+      hash: confirmationHash,
+      route: Routes.EMAIL_CHANGE_CONFIRMATION
     });
 
     const { html, subject } =
@@ -250,7 +304,9 @@ export class EmailService {
     userInfo,
     language
   }: CompletedSecurityEmailInterface) {
-    const link = this.getConfirmationLink({ route: 'login' });
+    const link = this.getConfirmationLink({
+      route: Routes.LOGIN
+    });
 
     const { html, subject } = this.emailTemplatesService.emailChangeComplete({
       userInfo,

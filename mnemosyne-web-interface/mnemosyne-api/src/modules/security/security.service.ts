@@ -543,15 +543,11 @@ export class SecurityService {
 
     if (existingUser) throw new EmailAlreadyTakenException();
 
-    const confirmationHash =
-      this.cryptographicService.generateConfirmationHash();
-
     await this.emailService.sendEmailChangeEmail({
       payload: {
         to: newEmail,
         changingEmail: newEmail,
         confirmationType: Confirmation.EMAIL_CHANGE,
-        confirmationHash,
         userId
       },
       userInfo: { firstName, lastName },

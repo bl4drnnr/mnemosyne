@@ -10,7 +10,6 @@ import { UsersService } from '@modules/users.service';
 import { EmailService } from '@shared/email.service';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
-import { CryptographicService } from '@shared/cryptographic.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { CompanyUsersService } from '@modules/company-users.service';
 import { Roles } from '@interfaces/roles.enum';
@@ -25,7 +24,6 @@ import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception'
 @Injectable()
 export class CompanyService {
   constructor(
-    private readonly cryptographicService: CryptographicService,
     @Inject(forwardRef(() => CompanyUsersService))
     private readonly companyUsersService: CompanyUsersService,
     @Inject(forwardRef(() => EmailService))
@@ -69,7 +67,7 @@ export class CompanyService {
       userId = ownerExistingAccount.id;
     } else {
       const createdOwnerAccount = await this.usersService.createUser({
-        payload: { email: companyOwnerEmail },
+        payload: { email: companyOwnerEmail, tac: true },
         role: Roles.PRIMARY_ADMIN,
         trx
       });
@@ -127,13 +125,9 @@ export class CompanyService {
         trx
       });
 
-      const confirmationHash =
-        this.cryptographicService.generateConfirmationHash();
-
       const companyMemberRegEmailPayload: VerificationEmailInterface = {
         to: userInfo.email,
         confirmationType: Confirmation.COMPANY_INVITATION,
-        confirmationHash,
         userId
       };
 
@@ -146,12 +140,8 @@ export class CompanyService {
       });
     }
 
-    const confirmationHash =
-      this.cryptographicService.generateConfirmationHash();
-
     const companyRegistrationEmailPayload: VerificationEmailInterface = {
       confirmationType: Confirmation.COMPANY_REGISTRATION,
-      confirmationHash,
       userId,
       to
     };
@@ -171,6 +161,7 @@ export class CompanyService {
     trx: transaction
   }: GetCompanyByNameInterface) {
     return await this.companyRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { companyName },
       transaction
     });
@@ -184,6 +175,7 @@ export class CompanyService {
       }
     );
     return await this.companyRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { id: companyId },
       include: [{ all: true }],
       transaction: trx
@@ -194,11 +186,11 @@ export class CompanyService {
     companyId: id,
     trx: transaction
   }: ConfirmCompanyAccountInterface) {
-    return await this.companyRepository.update(
+    await this.companyRepository.update(
       {
         isConfirmed: true
       },
-      { where: { id }, transaction }
+      { returning: undefined, where: { id }, transaction }
     );
   }
 

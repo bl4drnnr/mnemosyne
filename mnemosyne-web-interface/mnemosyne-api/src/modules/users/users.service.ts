@@ -37,7 +37,6 @@ import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { Roles } from '@interfaces/roles.enum';
 import { UserDataNotSetDto } from '@dto/user-data-not-set.dto';
 import { PasswordNotSetDto } from '@dto/password-not-set.dto';
-import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
@@ -67,6 +66,7 @@ export class UsersService {
 
   async getUserByEmail({ email, trx: transaction }: GetUserByEmailInterface) {
     return await this.userRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { email },
       include: [{ all: true }],
       transaction
@@ -90,20 +90,20 @@ export class UsersService {
     userId,
     trx: transaction
   }: UpdateUserSettingsInterface) {
-    return await this.userSettingsRepository.update(
+    await this.userSettingsRepository.update(
       {
         ...payload
       },
-      { where: { userId }, transaction }
+      { returning: undefined, where: { userId }, transaction }
     );
   }
 
   async updateUser({ payload, userId, trx: transaction }: UpdateUserInterface) {
-    return await this.userRepository.update(
+    await this.userRepository.update(
       {
         ...payload
       },
-      { where: { id: userId }, transaction }
+      { returning: undefined, where: { id: userId }, transaction }
     );
   }
 
@@ -112,6 +112,7 @@ export class UsersService {
     trx: transaction
   }: GetUserSettingsInterface) {
     return await this.userSettingsRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { userId },
       transaction
     });
@@ -126,6 +127,7 @@ export class UsersService {
 
   async getUserByPhone({ phone, trx: transaction }: GetUserByPhoneInterface) {
     return await this.userSettingsRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { phone },
       transaction
     });
@@ -183,14 +185,10 @@ export class UsersService {
       if (isWithinThreeMinutes) throw new WrongTimeframeException();
     }
 
-    const confirmationHash =
-      this.cryptographicService.generateConfirmationHash();
-
     await this.emailService.sendForgotPasswordEmail({
       payload: {
         to: email,
         confirmationType: Confirmation.FORGOT_PASSWORD,
-        confirmationHash,
         userId
       },
       userInfo: {
@@ -319,6 +317,7 @@ export class UsersService {
     trx: transaction
   }: GetUserByRecoveryKeysInterface) {
     const userSettings = await this.userSettingsRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { recoveryKeysFingerprint },
       transaction
     });
@@ -332,7 +331,7 @@ export class UsersService {
     userId: id,
     trx: transaction
   }: DeleteUserAccountInterface) {
-    // TODO hard delete user acconut
+    // TODO hard delete user account
     // return await this.userRepository.destroy({
     //   where: { id },
     //   transaction
@@ -388,30 +387,49 @@ export class UsersService {
       });
     }
 
-    if (isMfaSet && isRecoverySet) throw new AccountAlreadyConfirmedException();
+    const isHashConfirmed = hash.confirmed;
 
-    if (!isMfaSet) return new MfaNotSetDto();
+    if (!isHashConfirmed) {
+      const ownerRegistrationHash =
+        await this.confirmationHashService.getConfirmationHashByUserId({
+          userId,
+          confirmationType: Confirmation.REGISTRATION,
+          trx
+        });
 
-    if (!isRecoverySet) return new RecoveryKeysNotSetDto();
+      if (!ownerRegistrationHash.confirmed) {
+        await this.confirmationHashService.confirmHash({
+          hashId: ownerRegistrationHash.id,
+          trx
+        });
+      }
 
-    await this.confirmationHashService.confirmHash({
-      hashId: hash.id,
-      trx
-    });
+      await this.confirmationHashService.confirmHash({
+        hashId: hash.id,
+        trx
+      });
+    }
 
-    if (isRecoverySet && hashType === Confirmation.COMPANY_REGISTRATION) {
+    if (!isHashConfirmed && hashType === Confirmation.COMPANY_REGISTRATION) {
       await this.companyService.confirmCompanyCreation({
         userId,
         language,
         trx
       });
-    } else if (isRecoverySet && hashType === Confirmation.COMPANY_INVITATION) {
+    } else if (
+      !isHashConfirmed &&
+      hashType === Confirmation.COMPANY_INVITATION
+    ) {
       await this.companyService.confirmCompanyMembership({
         language,
         userId,
         trx
       });
     }
+
+    if (!isMfaSet) return new MfaNotSetDto();
+
+    if (!isRecoverySet) return new RecoveryKeysNotSetDto();
 
     switch (hashType) {
       case Confirmation.COMPANY_REGISTRATION:

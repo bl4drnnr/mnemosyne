@@ -128,14 +128,10 @@ export class AuthService {
       trx
     });
 
-    const confirmationHash =
-      this.cryptographicService.generateConfirmationHash();
-
     await this.emailService.sendRegistrationConfirmationEmail({
       payload: {
         to: email,
         confirmationType: Confirmation.REGISTRATION,
-        confirmationHash,
         userId
       },
       userInfo: {
@@ -284,6 +280,7 @@ export class AuthService {
     trx: transaction
   }: UpdateRefreshTokenInterface) {
     const currentSession = await this.sessionRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { userId },
       transaction
     });
@@ -326,6 +323,7 @@ export class AuthService {
 
   private async getTokenById({ tokenId, trx: transaction }: GetTokenInterface) {
     return this.sessionRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { tokenId },
       transaction
     });

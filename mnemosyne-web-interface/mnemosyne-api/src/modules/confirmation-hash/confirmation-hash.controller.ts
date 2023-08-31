@@ -136,7 +136,7 @@ export class ConfirmationHashController {
   @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('reset-user-password-confirmation')
-  async resetUserPassword(
+  resetUserPassword(
     @Query('confirmationHash') confirmationHash: string,
     @Body() payload: ResetUserPasswordDto,
     @TransactionParam() trx: Transaction

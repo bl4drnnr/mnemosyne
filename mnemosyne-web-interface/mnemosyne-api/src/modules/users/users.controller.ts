@@ -43,7 +43,7 @@ export class UsersController {
   @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('forgot-password')
-  async forgotPassword(
+  forgotPassword(
     @Body() payload: ForgotPasswordDto,
     @TransactionParam() trx: Transaction
   ) {
@@ -60,10 +60,7 @@ export class UsersController {
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   @Post('upload-user-photo')
-  async uploadUserPhoto(
-    @Body() payload: UploadPhotoDto,
-    @UserId() userId: string
-  ) {
+  uploadUserPhoto(@Body() payload: UploadPhotoDto, @UserId() userId: string) {
     return this.usersService.uploadUserPhoto({
       payload,
       userId
@@ -77,10 +74,7 @@ export class UsersController {
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('user-info')
-  async getUserInfo(
-    @UserId() userId: string,
-    @TransactionParam() trx: Transaction
-  ) {
+  getUserInfo(@UserId() userId: string, @TransactionParam() trx: Transaction) {
     return this.usersService.getUserInfo({ userId, trx });
   }
 
@@ -91,7 +85,7 @@ export class UsersController {
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('user-security')
-  async getUserSecuritySettings(
+  getUserSecuritySettings(
     @UserId() userId: string,
     @TransactionParam() trx: Transaction
   ) {
@@ -107,7 +101,7 @@ export class UsersController {
   @UsePipes(ValidationPipe)
   @UseGuards(AuthGuard)
   @Patch('user-info')
-  async updateUserInfo(
+  updateUserInfo(
     @UserId() userId: string,
     @TransactionParam() trx: Transaction,
     @Body() payload: UpdateUserInfoDto

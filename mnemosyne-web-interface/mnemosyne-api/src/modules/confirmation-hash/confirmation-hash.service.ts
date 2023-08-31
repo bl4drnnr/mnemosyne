@@ -25,6 +25,7 @@ import { ConfirmCompanyAccInterface } from '@interfaces/confirm-company-acc.inte
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CompanyService } from '@modules/company.service';
 import { ConfirmHashInterface } from '@interfaces/confirm-hash.interface';
+import { GetHashByUserIdInterface } from '@interfaces/get-hash-by-user-id.interface';
 
 @Injectable()
 export class ConfirmationHashService {
@@ -66,6 +67,7 @@ export class ConfirmationHashService {
     trx: transaction
   }: GetByHashInterface) {
     const foundHash = await this.confirmationHashRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { confirmationHash },
       transaction
     });
@@ -98,11 +100,24 @@ export class ConfirmationHashService {
     return { foundHash, user };
   }
 
+  async getConfirmationHashByUserId({
+    userId,
+    confirmationType,
+    trx: transaction
+  }: GetHashByUserIdInterface) {
+    return await this.confirmationHashRepository.findOne({
+      rejectOnEmpty: undefined,
+      where: { userId, confirmationType },
+      transaction
+    });
+  }
+
   async getUserLastPasswordResetHash({
     userId,
     trx: transaction
   }: LastPassResetHashInterface) {
     return this.confirmationHashRepository.findOne({
+      rejectOnEmpty: undefined,
       where: {
         userId,
         confirmationType: Confirmation.FORGOT_PASSWORD
@@ -117,7 +132,7 @@ export class ConfirmationHashService {
       {
         confirmed: true
       },
-      { where: { id }, transaction }
+      { returning: false, where: { id }, transaction }
     );
   }
 
@@ -169,10 +184,13 @@ export class ConfirmationHashService {
       trx
     });
 
-    // @TODO change here to more reliable check
-    const isRecoverySet = user.userSettings.recoveryKeysFingerprint;
+    const { userSettings, isMfaSet } = user;
 
-    if (!isRecoverySet) {
+    const isRecoverySet = userSettings.recoveryKeysFingerprint;
+
+    const isCompanyAccConfirmed = hash.confirmed && isMfaSet && isRecoverySet;
+
+    if (!isCompanyAccConfirmed) {
       return await this.usersService.createAccountFromScratch({
         user,
         hash,
@@ -199,10 +217,13 @@ export class ConfirmationHashService {
       trx
     });
 
-    // @TODO change here to more reliable check
-    const isRecoverySet = user.userSettings.recoveryKeysFingerprint;
+    const { userSettings, isMfaSet } = user;
 
-    if (!isRecoverySet) {
+    const isRecoverySet = userSettings.recoveryKeysFingerprint;
+
+    const isCompanyAccConfirmed = hash.confirmed && isMfaSet && isRecoverySet;
+
+    if (!isCompanyAccConfirmed) {
       return await this.usersService.createAccountFromScratch({
         user,
         hash,
