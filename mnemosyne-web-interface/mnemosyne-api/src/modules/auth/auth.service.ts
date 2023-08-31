@@ -284,6 +284,7 @@ export class AuthService {
     trx: transaction
   }: UpdateRefreshTokenInterface) {
     const currentSession = await this.sessionRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { userId },
       transaction
     });
@@ -326,6 +327,7 @@ export class AuthService {
 
   private async getTokenById({ tokenId, trx: transaction }: GetTokenInterface) {
     return this.sessionRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { tokenId },
       transaction
     });

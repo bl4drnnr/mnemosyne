@@ -36,6 +36,7 @@ export class CompanyUsersService {
     trx: transaction
   }: GetCompanyUserByUserIdInterface) {
     return await this.companyUserRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { userId },
       transaction
     });
@@ -45,11 +46,11 @@ export class CompanyUsersService {
     userId,
     trx: transaction
   }: ConfirmCompanyMemberInterface) {
-    return await this.companyUserRepository.update(
+    await this.companyUserRepository.update(
       {
         invitationConfirmed: true
       },
-      { where: { userId }, transaction }
+      { returning: undefined, where: { userId }, transaction }
     );
   }
 }

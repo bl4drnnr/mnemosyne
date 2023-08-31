@@ -21,6 +21,8 @@ import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-cre
 import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
+import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
+import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 
 @Injectable()
 export class CompanyService {
@@ -69,7 +71,7 @@ export class CompanyService {
       userId = ownerExistingAccount.id;
     } else {
       const createdOwnerAccount = await this.usersService.createUser({
-        payload: { email: companyOwnerEmail },
+        payload: { email: companyOwnerEmail, tac: true },
         role: Roles.PRIMARY_ADMIN,
         trx
       });
@@ -171,6 +173,7 @@ export class CompanyService {
     trx: transaction
   }: GetCompanyByNameInterface) {
     return await this.companyRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { companyName },
       transaction
     });
@@ -184,6 +187,7 @@ export class CompanyService {
       }
     );
     return await this.companyRepository.findOne({
+      rejectOnEmpty: undefined,
       where: { id: companyId },
       include: [{ all: true }],
       transaction: trx
@@ -194,11 +198,11 @@ export class CompanyService {
     companyId: id,
     trx: transaction
   }: ConfirmCompanyAccountInterface) {
-    return await this.companyRepository.update(
+    await this.companyRepository.update(
       {
         isConfirmed: true
       },
-      { where: { id }, transaction }
+      { returning: undefined, where: { id }, transaction }
     );
   }
 

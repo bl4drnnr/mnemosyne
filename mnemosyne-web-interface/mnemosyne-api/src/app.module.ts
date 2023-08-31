@@ -1,8 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@modules/users.module';
