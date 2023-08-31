@@ -10,7 +10,6 @@ import { UsersService } from '@modules/users.service';
 import { EmailService } from '@shared/email.service';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
-import { CryptographicService } from '@shared/cryptographic.service';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { CompanyUsersService } from '@modules/company-users.service';
 import { Roles } from '@interfaces/roles.enum';
@@ -21,13 +20,10 @@ import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-cre
 import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
-import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
-import { RecoveryKeysNotSetDto } from '@dto/recovery-keys-not-set.dto';
 
 @Injectable()
 export class CompanyService {
   constructor(
-    private readonly cryptographicService: CryptographicService,
     @Inject(forwardRef(() => CompanyUsersService))
     private readonly companyUsersService: CompanyUsersService,
     @Inject(forwardRef(() => EmailService))
@@ -129,13 +125,9 @@ export class CompanyService {
         trx
       });
 
-      const confirmationHash =
-        this.cryptographicService.generateConfirmationHash();
-
       const companyMemberRegEmailPayload: VerificationEmailInterface = {
         to: userInfo.email,
         confirmationType: Confirmation.COMPANY_INVITATION,
-        confirmationHash,
         userId
       };
 
@@ -148,12 +140,8 @@ export class CompanyService {
       });
     }
 
-    const confirmationHash =
-      this.cryptographicService.generateConfirmationHash();
-
     const companyRegistrationEmailPayload: VerificationEmailInterface = {
       confirmationType: Confirmation.COMPANY_REGISTRATION,
-      confirmationHash,
       userId,
       to
     };

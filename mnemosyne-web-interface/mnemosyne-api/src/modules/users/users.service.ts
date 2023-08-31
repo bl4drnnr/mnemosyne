@@ -185,14 +185,10 @@ export class UsersService {
       if (isWithinThreeMinutes) throw new WrongTimeframeException();
     }
 
-    const confirmationHash =
-      this.cryptographicService.generateConfirmationHash();
-
     await this.emailService.sendForgotPasswordEmail({
       payload: {
         to: email,
         confirmationType: Confirmation.FORGOT_PASSWORD,
-        confirmationHash,
         userId
       },
       userInfo: {

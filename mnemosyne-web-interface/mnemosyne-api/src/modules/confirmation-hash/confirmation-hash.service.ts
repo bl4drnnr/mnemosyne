@@ -217,12 +217,13 @@ export class ConfirmationHashService {
       trx
     });
 
-    const regConfirmHash = await this.getConfirmationHashByUserId({
-      userId: user.id,
-      confirmationType: Confirmation.REGISTRATION
-    });
+    const { userSettings, isMfaSet } = user;
 
-    if (!regConfirmHash || !regConfirmHash.confirmed) {
+    const isRecoverySet = userSettings.recoveryKeysFingerprint;
+
+    const isCompanyAccConfirmed = hash.confirmed && isMfaSet && isRecoverySet;
+
+    if (!isCompanyAccConfirmed) {
       return await this.usersService.createAccountFromScratch({
         user,
         hash,

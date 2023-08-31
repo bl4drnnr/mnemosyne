@@ -128,14 +128,10 @@ export class AuthService {
       trx
     });
 
-    const confirmationHash =
-      this.cryptographicService.generateConfirmationHash();
-
     await this.emailService.sendRegistrationConfirmationEmail({
       payload: {
         to: email,
         confirmationType: Confirmation.REGISTRATION,
-        confirmationHash,
         userId
       },
       userInfo: {
