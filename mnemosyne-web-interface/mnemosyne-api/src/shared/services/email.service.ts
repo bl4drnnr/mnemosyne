@@ -35,25 +35,25 @@ export class EmailService {
 
     const { confirmationType, userId, to } = payload;
 
-    const companyRegistrationEmailSettings: EmailSettingsInterface = {
+    const companyRegistration: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
     };
 
     await this.createConfirmationHash({
-      emailSettings: companyRegistrationEmailSettings,
+      emailSettings: companyRegistration,
       trx
     });
 
-    const userRegistrationEmailSettings: EmailSettingsInterface = {
+    const userRegistration: EmailSettingsInterface = {
       confirmationType: Confirmation.REGISTRATION,
       confirmationHash,
       userId
     };
 
     await this.createConfirmationHash({
-      emailSettings: userRegistrationEmailSettings,
+      emailSettings: userRegistration,
       trx
     });
 
@@ -84,13 +84,27 @@ export class EmailService {
 
     const { confirmationType, userId, to } = payload;
 
-    const emailSettings: EmailSettingsInterface = {
+    const memberInvitation: EmailSettingsInterface = {
       confirmationHash,
       confirmationType,
       userId
     };
 
-    await this.createConfirmationHash({ emailSettings, trx });
+    await this.createConfirmationHash({
+      emailSettings: memberInvitation,
+      trx
+    });
+
+    const memberRegistration: EmailSettingsInterface = {
+      confirmationHash,
+      confirmationType: Confirmation.REGISTRATION,
+      userId
+    };
+
+    await this.createConfirmationHash({
+      emailSettings: memberRegistration,
+      trx
+    });
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,

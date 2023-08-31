@@ -58,17 +58,20 @@
       [label]="t('input.recoveryKey', { i: i + 1 })"
       [value]="key"
       [readOnly]="true"
+      [disabled]="keysCopiedEmitDisable"
     />
 
     <basic-button
       [onWhite]="onWhite"
       [label]="t('button.downloadRecoveryKeys')"
+      [disabled]="keysCopiedEmitDisable"
       (buttonClick)="downloadRecoveryKeys()"
     />
 
     <div class="last-button">
       <basic-button
         [onWhite]="onWhite"
+        [disabled]="keysCopiedEmitDisable"
         [label]="t('button.keysSaved')"
         [fillButton]="true"
         (buttonClick)="keysCopied()"

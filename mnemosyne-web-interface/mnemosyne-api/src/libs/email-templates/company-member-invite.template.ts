@@ -15,6 +15,7 @@ export const companyMemberInviteTemplate = ({
   let companyNameTitle: string;
   let companyLocationTitle: string;
   let companyWebsiteTitle: string;
+  let companyOwnerTitle: string;
 
   switch (language) {
     case Language.EN:
@@ -24,6 +25,7 @@ export const companyMemberInviteTemplate = ({
       companyNameTitle = 'Company name';
       companyLocationTitle = 'Company location';
       companyWebsiteTitle = 'Company website';
+      companyOwnerTitle = 'Company account owner email address';
       break;
     case Language.RU:
       title = `Добро пожаловать, ${username}`;
@@ -32,6 +34,8 @@ export const companyMemberInviteTemplate = ({
       companyNameTitle = 'Название компании';
       companyLocationTitle = 'Местонахождение компании';
       companyWebsiteTitle = 'Веб-сайт компании';
+      companyOwnerTitle =
+        'Адрес электронной почты владельца учетной записи компании';
       break;
     case Language.PL:
       title = `Witaj, ${username}`;
@@ -40,6 +44,7 @@ export const companyMemberInviteTemplate = ({
       companyNameTitle = 'Nazwa firmy';
       companyLocationTitle = 'Lokalizacja firmy';
       companyWebsiteTitle = 'Strona internetowa firmy';
+      companyOwnerTitle = 'Adres e-mail właściciela konta firmowego';
       break;
     default:
       title = `Welcome, ${username}`;
@@ -48,6 +53,7 @@ export const companyMemberInviteTemplate = ({
       companyNameTitle = 'Company name';
       companyLocationTitle = 'Company location';
       companyWebsiteTitle = 'Company website';
+      companyOwnerTitle = 'Company account owner email address';
       break;
   }
 
@@ -56,6 +62,7 @@ export const companyMemberInviteTemplate = ({
     content,
     button,
     link,
+    companyOwnerTitle,
     companyNameTitle,
     companyLocationTitle,
     companyWebsiteTitle,

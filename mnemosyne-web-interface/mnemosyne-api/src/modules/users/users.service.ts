@@ -387,9 +387,9 @@ export class UsersService {
       });
     }
 
-    const isCompanyHashConfirmed = hash.confirmed;
+    const isHashConfirmed = hash.confirmed;
 
-    if (!isCompanyHashConfirmed) {
+    if (!isHashConfirmed) {
       const ownerRegistrationHash =
         await this.confirmationHashService.getConfirmationHashByUserId({
           userId,
@@ -410,17 +410,14 @@ export class UsersService {
       });
     }
 
-    if (
-      !isCompanyHashConfirmed &&
-      hashType === Confirmation.COMPANY_REGISTRATION
-    ) {
+    if (!isHashConfirmed && hashType === Confirmation.COMPANY_REGISTRATION) {
       await this.companyService.confirmCompanyCreation({
         userId,
         language,
         trx
       });
     } else if (
-      !isCompanyHashConfirmed &&
+      !isHashConfirmed &&
       hashType === Confirmation.COMPANY_INVITATION
     ) {
       await this.companyService.confirmCompanyMembership({

@@ -152,16 +152,16 @@ export class EmailTemplatesService {
 
     switch (language) {
       case Language.EN:
-        subject = `Mnemosyne - Welcome - ${companyName}`;
+        subject = `Mnemosyne - Company created - ${companyName}`;
         break;
       case Language.RU:
-        subject = `Mnemosyne - Доборо пожаловать - ${companyName}`;
+        subject = `Mnemosyne - Компания создана - ${companyName}`;
         break;
       case Language.PL:
-        subject = `Mnemosyne - Witamy - ${companyName}`;
+        subject = `Mnemosyne - Firma utworzona - ${companyName}`;
         break;
       default:
-        subject = `Mnemosyne - Welcome - ${companyName}`;
+        subject = `Mnemosyne - Company created - ${companyName}`;
         break;
     }
 
