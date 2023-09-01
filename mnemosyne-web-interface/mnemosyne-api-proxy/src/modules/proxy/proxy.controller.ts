@@ -1,11 +1,16 @@
 import { Controller, Param, Post, Body, Res, Headers } from '@nestjs/common';
 import { ProxyService } from '@proxy/proxy.service';
 import { ProxyActionInterface } from '@interfaces/proxy-action.interface';
+import {ApiExtraModels, ApiOperation, ApiResponse} from "@nestjs/swagger";
+import {ProxyDocs} from "@docs/proxy.docs";
 
 @Controller('proxy')
 export class ProxyController {
   constructor(private proxyService: ProxyService) {}
 
+  @ApiOperation(ProxyDocs.ProxyAction.ApiOperation)
+  @ApiExtraModels(...ProxyDocs.ProxyAction.ApiExtraModels)
+  @ApiResponse(ProxyDocs.ProxyAction.ApiResponse)
   @Post(':controller/:action')
   async proxyAction(
     @Param('controller') controller: string,
