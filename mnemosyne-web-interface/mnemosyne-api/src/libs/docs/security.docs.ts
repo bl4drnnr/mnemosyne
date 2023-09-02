@@ -48,7 +48,10 @@ export abstract class SecurityDocs {
     const apiResponseDesc =
       'As a response user gets link to the QR code to scan along with its secret that (only after successful confirmation) will be added to the database.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
@@ -144,7 +147,10 @@ export abstract class SecurityDocs {
     const apiBodyDesc =
       'In this case body contains 2FA token that was generated on the BE and sent to user, and 6-digit code that verifies this token.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
@@ -412,13 +418,18 @@ export abstract class SecurityDocs {
     const apiBadRequestRespDesc =
       'Bad request is thrown in case if code was sent in wrong timeframe.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+    const langQueryDesc = 'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
     };
 
     const languageQuery = {
+      description: langQueryDesc,
       name: 'language',
       enum: Language,
       required: true
@@ -460,7 +471,10 @@ export abstract class SecurityDocs {
     const apiBadRequestRespDesc =
       'Bad request error is thrown in case if phone has not set up.';
 
+    const langQueryDesc = 'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
+
     const languageQuery = {
+      description: langQueryDesc,
       name: 'language',
       enum: Language,
       required: true
@@ -531,7 +545,10 @@ export abstract class SecurityDocs {
     const apiBodyDesc =
       'Body contains mobile phone number along with associated with it code.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true

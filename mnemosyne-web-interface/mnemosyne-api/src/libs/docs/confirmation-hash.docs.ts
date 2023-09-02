@@ -44,13 +44,18 @@ export abstract class ConfirmHashDocs {
     const apiForbiddenRespDesc =
       'In case if account has already been confirmed, user gets the message.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+    const langQueryDesc = 'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
     };
 
     const languageQuery = {
+      description: langQueryDesc,
       name: 'language',
       enum: Language,
       required: true
@@ -91,7 +96,10 @@ export abstract class ConfirmHashDocs {
       PasswordNotSetDto
     ];
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
@@ -162,7 +170,10 @@ export abstract class ConfirmHashDocs {
     const apiBodyDesc =
       'This endpoint is also responsible for account confirmation and setup of the invited person, if the invited person did not have an account. Otherwise, the membership will be just confirmed.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
@@ -229,7 +240,10 @@ export abstract class ConfirmHashDocs {
     const apiBodyDesc =
       'While email change confirmation user has to provide confirmation data about their account. It includes: password, MFA code and/or mobile phone code.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
@@ -298,7 +312,10 @@ export abstract class ConfirmHashDocs {
     const apiBodyDesc =
       'While reset password confirmation user has to provide confirmation data about their account. It includes: password, MFA code and/or mobile phone code.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true
