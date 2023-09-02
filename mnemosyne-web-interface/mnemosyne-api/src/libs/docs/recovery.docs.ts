@@ -26,7 +26,10 @@ export abstract class RecoveryDocs {
     const apiBodyDesc =
       'In order to generate the set of recovery keys user has to send passphrase that is going to be used in order to encrypt the set.';
 
+    const confirmHashQueryDesc = 'Confirmation hash';
+
     const confirmHashQuery = {
+      description: confirmHashQueryDesc,
       name: 'confirmationHash',
       type: String,
       required: true

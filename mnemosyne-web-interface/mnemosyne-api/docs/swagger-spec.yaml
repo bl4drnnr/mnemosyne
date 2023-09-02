@@ -131,11 +131,15 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
         - name: language
           required: true
           in: query
+          description: Language that is going to be user in order to select the language
+            of the email template, SMS message etc. Comes from FE localStorage
+            from Transloco package.
           schema:
             enum:
               - ru
@@ -173,6 +177,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       requestBody:
@@ -223,6 +228,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       requestBody:
@@ -273,6 +279,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       requestBody:
@@ -327,6 +334,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       requestBody:
@@ -625,6 +633,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       responses:
@@ -707,6 +716,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       requestBody:
@@ -951,11 +961,15 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
         - name: language
           required: true
           in: query
+          description: Language that is going to be user in order to select the language
+            of the email template, SMS message etc. Comes from FE localStorage
+            from Transloco package.
           schema:
             enum:
               - ru
@@ -993,6 +1007,9 @@ paths:
         - name: language
           required: true
           in: query
+          description: Language that is going to be user in order to select the language
+            of the email template, SMS message etc. Comes from FE localStorage
+            from Transloco package.
           schema:
             enum:
               - ru
@@ -1049,6 +1066,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       requestBody:
@@ -1316,6 +1334,7 @@ paths:
         - name: confirmationHash
           required: true
           in: query
+          description: Confirmation hash
           schema:
             type: string
       requestBody:
