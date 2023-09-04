@@ -74,6 +74,7 @@ export class EmailService {
 
   async sendCompanyMemberEmail({
     companyInfo,
+    isUserExists,
     payload,
     userInfo,
     language,
@@ -95,16 +96,18 @@ export class EmailService {
       trx
     });
 
-    const memberRegistration: EmailSettingsInterface = {
-      confirmationHash,
-      confirmationType: Confirmation.REGISTRATION,
-      userId
-    };
+    if (!isUserExists) {
+      const memberRegistration: EmailSettingsInterface = {
+        confirmationHash,
+        confirmationType: Confirmation.REGISTRATION,
+        userId
+      };
 
-    await this.createConfirmationHash({
-      emailSettings: memberRegistration,
-      trx
-    });
+      await this.createConfirmationHash({
+        emailSettings: memberRegistration,
+        trx
+      });
+    }
 
     const link = this.getConfirmationLink({
       hash: confirmationHash,

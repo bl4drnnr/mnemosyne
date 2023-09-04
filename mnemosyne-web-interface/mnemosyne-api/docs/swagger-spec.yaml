@@ -574,43 +574,10 @@ paths:
       tags:
         &a4
         - Roles
-  "/api/roles/{value}":
-    get:
-      operationId: RolesController_getRoleByValue
-      parameters:
-        - name: value
-          required: true
-          in: path
-          schema:
-            type: string
-      responses:
-        "200":
-          description: ""
-      tags: *a4
   /api/roles/grant:
     post:
       operationId: RolesController_grantRole
       parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/GrantRoleDto"
-      responses:
-        "201":
-          description: ""
-      tags: *a4
-  /api/roles/revoke:
-    post:
-      operationId: RolesController_revokeRole
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RevokeRoleDto"
       responses:
         "201":
           description: ""
@@ -2078,12 +2045,6 @@ components:
       required:
         - message
     CreateRoleDto:
-      type: object
-      properties: {}
-    GrantRoleDto:
-      type: object
-      properties: {}
-    RevokeRoleDto:
       type: object
       properties: {}
     QrCodeDto:

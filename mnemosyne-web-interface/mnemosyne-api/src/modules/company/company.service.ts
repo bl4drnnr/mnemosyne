@@ -20,10 +20,13 @@ import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-cre
 import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
+import {RolesService} from "@modules/roles.service";
 
 @Injectable()
 export class CompanyService {
   constructor(
+    @Inject(forwardRef(() => RolesService))
+    private readonly rolesService: RolesService,
     @Inject(forwardRef(() => CompanyUsersService))
     private readonly companyUsersService: CompanyUsersService,
     @Inject(forwardRef(() => EmailService))
@@ -105,16 +108,24 @@ export class CompanyService {
 
       if (existingCompanyMember) {
         const { email, firstName, lastName, id } = existingCompanyMember;
+
         userInfo.email = email;
         userInfo.firstName = firstName;
         userInfo.lastName = lastName;
         userId = id;
+
+        await this.rolesService.grantRole({
+          value: companyMember.role,
+          userId,
+          trx
+        });
       } else {
         const { id } = await this.usersService.createUser({
           payload: { email: companyMember.email },
           role: companyMember.role,
           trx
         });
+
         userInfo.email = companyMember.email;
         userId = id;
       }
@@ -134,6 +145,7 @@ export class CompanyService {
       await this.emailService.sendCompanyMemberEmail({
         payload: { ...companyMemberRegEmailPayload },
         companyInfo: { ...payload },
+        isUserExists: !!existingCompanyMember,
         userInfo,
         language,
         trx

@@ -21,7 +21,7 @@ export const companyMemberInviteTemplate = ({
     case Language.EN:
       title = `Welcome, ${username}`;
       content = `Congratulations! You have been invited to join ${companyInfo.companyName} organization at Mnemosyne. If order to continue and accept invitation, please, click the button below. If you already have account, you will just join the company. Otherwise, you will have to create an account by setting up the password, personal info and recovery keys.`;
-      button = 'Complete registration';
+      button = 'Accept invitation';
       companyNameTitle = 'Company name';
       companyLocationTitle = 'Company location';
       companyWebsiteTitle = 'Company website';
@@ -30,7 +30,7 @@ export const companyMemberInviteTemplate = ({
     case Language.RU:
       title = `Добро пожаловать, ${username}`;
       content = `Поздравляем! Вас пригласили присоединиться к организации ${companyInfo.companyName} в Mnemosyne. Чтобы продолжить и принять приглашение, пожалуйста, нажмите кнопку ниже. Если у вас уже есть аккаунт, вы просто присоединитесь к компании. В противном случае вам придется создать учетную запись, установив пароль, личную информацию и ключи восстановления.`;
-      button = 'Завершить регистрацию';
+      button = 'Принять приглашение';
       companyNameTitle = 'Название компании';
       companyLocationTitle = 'Местонахождение компании';
       companyWebsiteTitle = 'Веб-сайт компании';
@@ -40,7 +40,7 @@ export const companyMemberInviteTemplate = ({
     case Language.PL:
       title = `Witaj, ${username}`;
       content = `Gratulacje! Zaproszono Cię do dołączenia do organizacji ${companyInfo.companyName} w Mnemosyne. Jeśli chcesz kontynuować i zaakceptować zaproszenie, kliknij przycisk poniżej. Jeśli masz już konto, po prostu dołączysz do firmy. W przeciwnym razie będziesz musiał utworzyć konto, ustawiając hasło, dane osobowe i klucze odzyskiwania.`;
-      button = 'Dokończ rejestrację';
+      button = 'Przyjąć zaproszenie';
       companyNameTitle = 'Nazwa firmy';
       companyLocationTitle = 'Lokalizacja firmy';
       companyWebsiteTitle = 'Strona internetowa firmy';
@@ -49,7 +49,7 @@ export const companyMemberInviteTemplate = ({
     default:
       title = `Welcome, ${username}`;
       content = `Congratulations! You have been invited to join ${companyInfo.companyName} organization at Mnemosyne. If order to continue and accept invitation, please, click the button below. If you already have account, you will just join the company. Otherwise, you will have to create an account by setting up the password, personal info and recovery keys.`;
-      button = 'Complete registration';
+      button = 'Accept invitation';
       companyNameTitle = 'Company name';
       companyLocationTitle = 'Company location';
       companyWebsiteTitle = 'Company website';
