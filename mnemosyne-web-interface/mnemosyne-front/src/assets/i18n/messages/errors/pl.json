@@ -57,5 +57,6 @@
   "company-members-limit-reached": "Osiągnąłeś limit użytkowników, których możesz zaprosić podczas rejestracji",
   "member-already-on-list": "Członek firmy jest już na liście",
   "company-already-exists": "Firma o takiej nazwie już istnieje",
-  "phone-already-taken": "Telefon komórkowy został już zajęty"
+  "phone-already-taken": "Telefon komórkowy został już zajęty",
+  "wrong-deletion-confirmation": "Błędne dane potwierdzające usunięcie"
 }

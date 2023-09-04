@@ -80,7 +80,7 @@ export class UsersService {
   }: CreateUserInterface) {
     const defaultRole = await this.roleService.getRoleByValue(role);
     const user = await this.userRepository.create(payload, { transaction });
-    await user.$set('roles', [defaultRole.id], { transaction });
+    await user.$add('roles', [defaultRole.id], { transaction });
     await this.createUserSettings({ userId: user.id, trx: transaction });
     return user;
   }
@@ -331,11 +331,10 @@ export class UsersService {
     userId: id,
     trx: transaction
   }: DeleteUserAccountInterface) {
-    // TODO hard delete user account
-    // return await this.userRepository.destroy({
-    //   where: { id },
-    //   transaction
-    // });
+    return await this.userRepository.destroy({
+      where: { id },
+      transaction
+    });
   }
 
   async createAccountFromScratch({

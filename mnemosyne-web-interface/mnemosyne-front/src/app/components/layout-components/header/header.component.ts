@@ -44,7 +44,7 @@ export class HeaderComponent implements OnInit {
 
   async logoutUser() {
     localStorage.removeItem('_at');
-    await this.handleRedirect('/');
+    await this.handleRedirect('');
   }
 
   @HostListener('window:scroll')

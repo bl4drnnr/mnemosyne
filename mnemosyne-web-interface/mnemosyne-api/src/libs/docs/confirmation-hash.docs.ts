@@ -45,7 +45,8 @@ export abstract class ConfirmHashDocs {
       'In case if account has already been confirmed, user gets the message.';
 
     const confirmHashQueryDesc = 'Confirmation hash';
-    const langQueryDesc = 'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
+    const langQueryDesc =
+      'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
 
     const confirmHashQuery = {
       description: confirmHashQueryDesc,

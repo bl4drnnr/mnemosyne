@@ -57,5 +57,6 @@
   "company-members-limit-reached": "Вы достигли лимита пользователей, которых можете пригласить при регистрации",
   "member-already-on-list": "Член компании уже есть в списке",
   "company-already-exists": "Компания с таким именем уже существует",
-  "phone-already-taken": "Мобильный телефон уже занят"
+  "phone-already-taken": "Мобильный телефон уже занят",
+  "wrong-deletion-confirmation": "Неправильные данные подтверждения удаления"
 }

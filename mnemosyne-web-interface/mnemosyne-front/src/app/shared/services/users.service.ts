@@ -74,8 +74,8 @@ export class UsersService {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.DELETE,
-      controller: Controller.USERS,
-      action: UsersEndpoint.DELETE_ACCOUNT,
+      controller: Controller.SECURITY,
+      action: SecurityEndpoint.DELETE_ACCOUNT,
       payload,
       accessToken
     });

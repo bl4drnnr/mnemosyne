@@ -10,6 +10,7 @@ import { ChangePasswordPayload } from '@payloads/change-password.interface';
 import { EmailService } from '@services/email.service';
 import { TranslationService } from '@services/translation.service';
 import { AccountTranslation } from '@translations/account.enum';
+import { AccountDeletedResponse } from '@responses/account-deleted.enum';
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -25,27 +26,46 @@ export class SecuritySettingsComponent {
   @Output() passwordChanged = new EventEmitter<void>();
   @Output() userSettingsReInit = new EventEmitter<void>();
   @Output() changeEmailSent = new EventEmitter<void>();
+  @Output() accountDeleted = new EventEmitter<void>();
 
+  /**
+   * Set token MFA
+   */
   set2faModal: boolean;
   qrCode: string;
   twoFaToken: string;
   mfaCode = '';
   showQr = true;
 
+  /**
+   * Disable token MFA
+   */
   disable2faModal: boolean;
   disableTwoFaCode = '';
 
+  /**
+   * Set mobile phone MFA
+   */
   setMobilePhoneModal: boolean;
   phone: string;
   phoneCode = '';
   phoneCodeSent = false;
 
+  /**
+   * Disable mobile phone MFA
+   */
   disableMobilePhoneModal: boolean;
 
+  /**
+   * Email change
+   */
   changeEmailModal: boolean;
   newEmail: string;
   incorrectNewEmail: boolean;
 
+  /**
+   * Password change
+   */
   changePasswordModal: boolean;
   currentPassword: string;
   incorrectPassword: boolean;
@@ -56,9 +76,23 @@ export class SecuritySettingsComponent {
   changePassPhoneRequired: boolean;
   changePassPhoneCode: string;
 
-  deleteAccountModal: boolean;
-
+  /**
+   * Recovery key re-generating
+   */
   generateRecoveryKeysModal: boolean;
+
+  /**
+   * Account deletion
+   */
+  deleteAccountModal: boolean;
+  deleteAccPassword: string;
+  deleteAccIncorrectPass: boolean;
+  deleteAccMfaCode: string;
+  deleteAccPhoneCode: string;
+  deleteAccFullName: string;
+  deleteAccMfaRequired: boolean;
+  deleteAccPhoneRequired: boolean;
+  deleteAccConfirmationRequired: boolean;
 
   constructor(
     private readonly mfaService: MfaService,
@@ -209,6 +243,39 @@ export class SecuritySettingsComponent {
       });
   }
 
+  deleteUserAccount() {
+    this.usersService
+      .deleteAccount({
+        password: this.deleteAccPassword,
+        mfaCode: this.deleteAccMfaCode,
+        phoneCode: this.deleteAccPhoneCode,
+        fullName: this.deleteAccFullName
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          switch (message) {
+            case AccountDeletedResponse.FULL_MFA_REQUIRED:
+              this.deleteAccMfaRequired = true;
+              this.deleteAccPhoneRequired = true;
+              break;
+            case AccountDeletedResponse.PHONE_REQUIRED:
+              this.deleteAccPhoneRequired = true;
+              break;
+            case AccountDeletedResponse.TOKEN_TWO_FA_REQUIRED:
+              this.deleteAccMfaRequired = true;
+              break;
+            case AccountDeletedResponse.DELETE_CONFIRMATION_REQUIRED:
+              this.deleteAccConfirmationRequired = true;
+              break;
+            case AccountDeletedResponse.ACCOUNT_DELETED:
+              this.closeDeleteAccountModal();
+              this.accountDeleted.emit();
+              break;
+          }
+        }
+      });
+  }
+
   changeEmail() {
     if (!this.newEmail || this.incorrectNewEmail) return;
 
@@ -268,6 +335,7 @@ export class SecuritySettingsComponent {
     this.changePassMfaCode = '';
     this.changePassPhoneRequired = false;
     this.changePassPhoneCode = '';
+    this.phoneCodeSent = false;
   }
 
   closeChangeEmailModal() {
@@ -277,6 +345,15 @@ export class SecuritySettingsComponent {
 
   closeDeleteAccountModal() {
     this.deleteAccountModal = false;
+    this.deleteAccPassword = '';
+    this.deleteAccIncorrectPass = false;
+    this.deleteAccMfaCode = '';
+    this.deleteAccPhoneCode = '';
+    this.deleteAccFullName = '';
+    this.deleteAccMfaRequired = false;
+    this.deleteAccPhoneRequired = false;
+    this.deleteAccConfirmationRequired = false;
+    this.phoneCodeSent = false;
   }
 
   closeGenerateRecoveryKeysModal() {

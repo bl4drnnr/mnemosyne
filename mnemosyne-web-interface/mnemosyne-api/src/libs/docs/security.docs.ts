@@ -419,7 +419,8 @@ export abstract class SecurityDocs {
       'Bad request is thrown in case if code was sent in wrong timeframe.';
 
     const confirmHashQueryDesc = 'Confirmation hash';
-    const langQueryDesc = 'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
+    const langQueryDesc =
+      'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
 
     const confirmHashQuery = {
       description: confirmHashQueryDesc,
@@ -471,7 +472,8 @@ export abstract class SecurityDocs {
     const apiBadRequestRespDesc =
       'Bad request error is thrown in case if phone has not set up.';
 
-    const langQueryDesc = 'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
+    const langQueryDesc =
+      'Language that is going to be user in order to select the language of the email template, SMS message etc. Comes from FE localStorage from Transloco package.';
 
     const languageQuery = {
       description: langQueryDesc,

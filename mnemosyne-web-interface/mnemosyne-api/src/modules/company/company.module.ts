@@ -5,7 +5,7 @@ import { Company } from '@models/company.model';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from '@modules/users.module';
 import { CompanyUsersModule } from '@modules/company-users.module';
-import {RolesModule} from "@modules/roles.module";
+import { RolesModule } from '@modules/roles.module';
 
 @Module({
   controllers: [CompanyController],

@@ -1,4 +1,4 @@
-import {ApiProperty, ApiPropertyOptional} from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
 
 export class ProxyActionInterface {

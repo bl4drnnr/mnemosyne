@@ -4,7 +4,7 @@ import { Role } from '@models/role.model';
 import { CreateRoleDto } from '@dto/create-role.dto';
 import { GrantRoleDto } from '@dto/grant-role.dto';
 import { User } from '@models/user.model';
-import {Role as RoleType } from "@custom-types/role.type";
+import { Role as RoleType } from '@custom-types/role.type';
 
 @Injectable()
 export class RolesService {
@@ -23,11 +23,9 @@ export class RolesService {
     });
   }
 
-  async grantRole({
-    userId, value, trx: transaction
-                  }: GrantRoleDto) {
+  async grantRole({ userId, value, trx: transaction }: GrantRoleDto) {
     const user = await this.userRepository.findByPk(userId);
     const assignedRoles = await this.getRoleByValue(value);
-    await user.$set('roles', [assignedRoles.id], { transaction });
+    await user.$add('roles', [assignedRoles.id], { transaction });
   }
 }

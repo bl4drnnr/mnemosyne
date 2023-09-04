@@ -56,5 +56,8 @@
   "passphraseDesc": "Passphrase can be anything, it will be used to encrypt recovery keys.",
   "passphraseError": "Min length of passphrase is 8 symbols, max is 128",
   "providePassphraseDesc": "Provide the passphrase that was used while generating recovery keys (not the account password)",
-  "recoveryKey": "Recovery key {{ i }}"
+  "recoveryKey": "Recovery key {{ i }}",
+  "fullName": "Full name",
+  "provideFullName": "Provide your full name",
+  "accDeletionFullName": "In order to delete an account provide your full name (first name and last name)."
 }
