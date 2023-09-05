@@ -6,6 +6,7 @@ import { CompanyInfoInterface } from '@interfaces/company-info.interface';
 
 export interface SecurityInitEmailInterface {
   payload: VerificationEmailInterface;
+  isUserExists?: boolean;
   userInfo?: UserInfoInterface;
   companyInfo?: CompanyInfoInterface;
   language?: Language;

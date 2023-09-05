@@ -5,7 +5,6 @@ import {
   finalize,
   mergeMap,
   Observable,
-  throwError,
   timer
 } from 'rxjs';
 import { EnvService } from '@shared/env.service';

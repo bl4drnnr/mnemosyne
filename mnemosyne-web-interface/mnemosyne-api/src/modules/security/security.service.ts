@@ -440,7 +440,13 @@ export class SecurityService {
       dataToCompare: password,
       hash: currentUserPassword
     });
+
     if (!passwordEquals) throw new WrongCredentialsException();
+
+    if (!fullName) return new DeleteConfirmationRequiredDto();
+
+    if (fullName !== `${firstName} ${lastName}`)
+      throw new WrongDeletionConfirmationException();
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
@@ -455,11 +461,6 @@ export class SecurityService {
     } catch (e: any) {
       throw new HttpException(e.response.message, e.status);
     }
-
-    if (!fullName) return new DeleteConfirmationRequiredDto();
-
-    if (fullName !== `${firstName} ${lastName}`)
-      throw new WrongDeletionConfirmationException();
 
     await this.usersService.deleteUserAccount({ userId, trx });
 

@@ -56,5 +56,8 @@
   "passphraseDesc": "Hasło może być dowolne, zostanie użyte do zaszyfrowania kluczy odzyskiwania.",
   "passphraseError": "Minimalna długość hasła to 8 znaków, maksymalna to 128",
   "providePassphraseDesc": "Podaj hasło użyte podczas generowania kluczy odzyskiwania (nie hasło do konta)",
-  "recoveryKey": "Klucz odzyskiwania {{ i }}"
+  "recoveryKey": "Klucz odzyskiwania {{ i }}",
+  "fullName": "Imię i nazwisko",
+  "provideFullName": "Podaj swoje pełne imię i nazwisko",
+  "accDeletionFullName": "Aby usunąć konto, podaj swoje pełne imię i nazwisko (imię i nazwisko)."
 }

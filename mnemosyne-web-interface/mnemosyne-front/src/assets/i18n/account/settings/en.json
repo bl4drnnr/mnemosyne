@@ -54,5 +54,7 @@
     "sectionDesc": "Generated keys are used when you don't have access to MFA/mobile phone, and want to restore the access to the account.",
     "successSetup": "Recovery keys have been successfully set up"
   },
-  "infoNotSaved": "User information has been changed but not saved."
+  "infoNotSaved": "User information has been changed but not saved.",
+  "tokenMfaRequired": "Provide the code from the authenticator application.",
+  "phoneMfaRequired": "Send the SMS message with the code to your mobile phone number and confirm it by providing in the field below."
 }

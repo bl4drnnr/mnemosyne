@@ -20,10 +20,14 @@ import { ConfirmCompanyCreationInterface } from '@interfaces/confirm-company-cre
 import { GetCompanyByUserIdInterface } from '@interfaces/get-company-by-user-id.interface';
 import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
+import { RolesService } from '@modules/roles.service';
+import { User } from '@models/user.model';
 
 @Injectable()
 export class CompanyService {
   constructor(
+    @Inject(forwardRef(() => RolesService))
+    private readonly rolesService: RolesService,
     @Inject(forwardRef(() => CompanyUsersService))
     private readonly companyUsersService: CompanyUsersService,
     @Inject(forwardRef(() => EmailService))
@@ -54,8 +58,7 @@ export class CompanyService {
 
     if (existingCompany) throw new CompanyExistsException();
 
-    let to: string;
-    let userId: string;
+    let createdOwnerAccount: User;
 
     const ownerExistingAccount = await this.usersService.getUserByEmail({
       email: companyOwnerEmail,
@@ -63,17 +66,24 @@ export class CompanyService {
     });
 
     if (ownerExistingAccount) {
-      to = ownerExistingAccount.email;
-      userId = ownerExistingAccount.id;
+      await this.rolesService.grantRole({
+        value: Roles.PRIMARY_ADMIN,
+        userId: ownerExistingAccount.id,
+        trx
+      });
     } else {
-      const createdOwnerAccount = await this.usersService.createUser({
+      createdOwnerAccount = await this.usersService.createUser({
         payload: { email: companyOwnerEmail, tac: true },
         role: Roles.PRIMARY_ADMIN,
         trx
       });
-      to = companyOwnerEmail;
-      userId = createdOwnerAccount.id;
     }
+
+    const to = ownerExistingAccount ? ownerExistingAccount.email : companyOwnerEmail;
+
+    const userId = ownerExistingAccount
+      ? ownerExistingAccount.id
+      : createdOwnerAccount.id;
 
     const companyCreationPayload: CreateCompanyInterface = {
       companyName,
@@ -95,7 +105,8 @@ export class CompanyService {
     });
 
     for (const companyMember of companyMembers) {
-      let userId: string;
+      let createdUser: User;
+
       const userInfo: UserInfoInterface = {};
 
       const existingCompanyMember = await this.usersService.getUserByEmail({
@@ -104,20 +115,30 @@ export class CompanyService {
       });
 
       if (existingCompanyMember) {
-        const { email, firstName, lastName, id } = existingCompanyMember;
-        userInfo.email = email;
-        userInfo.firstName = firstName;
-        userInfo.lastName = lastName;
-        userId = id;
+        await this.rolesService.grantRole({
+          value: companyMember.role,
+          userId: existingCompanyMember.id,
+          trx
+        });
       } else {
-        const { id } = await this.usersService.createUser({
+        createdUser = await this.usersService.createUser({
           payload: { email: companyMember.email },
           role: companyMember.role,
           trx
         });
-        userInfo.email = companyMember.email;
-        userId = id;
       }
+
+      userInfo.email = existingCompanyMember
+        ? existingCompanyMember.email
+        : companyMember.email;
+      userInfo.firstName = existingCompanyMember
+        ? existingCompanyMember.firstName
+        : null;
+      userInfo.lastName = existingCompanyMember
+        ? existingCompanyMember.lastName
+        : null;
+
+      const userId = existingCompany ? existingCompany.id : createdUser.id;
 
       await this.companyUsersService.createCompanyUser({
         userId,
@@ -134,6 +155,7 @@ export class CompanyService {
       await this.emailService.sendCompanyMemberEmail({
         payload: { ...companyMemberRegEmailPayload },
         companyInfo: { ...payload },
+        isUserExists: !!existingCompanyMember,
         userInfo,
         language,
         trx
@@ -149,6 +171,7 @@ export class CompanyService {
     await this.emailService.sendCompanyRegistrationEmail({
       payload: { ...companyRegistrationEmailPayload },
       companyInfo: { ...payload },
+      isUserExists: !!ownerExistingAccount,
       language,
       trx
     });

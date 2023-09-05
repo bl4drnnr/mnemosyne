@@ -9,6 +9,7 @@ import { Titles } from '@interfaces/titles.enum';
 import { SettingSectionType } from '@interfaces/setting-section.type';
 import { AccountTranslation } from '@translations/account.enum';
 import { MessagesTranslation } from '@translations/messages.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'component-settings',
@@ -30,7 +31,8 @@ export class SettingsComponent implements OnInit {
     private readonly globalMessageService: GlobalMessageService,
     private readonly refreshTokensService: RefreshTokensService,
     private readonly translationService: TranslationService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly router: Router
   ) {}
 
   saveUserInfo(userInfo: UserInfoResponse) {
@@ -100,6 +102,15 @@ export class SettingsComponent implements OnInit {
     this.usersService.getUserSecuritySettings().subscribe({
       next: (userSecurity) => (this.userSecurity = userSecurity)
     });
+  }
+
+  async accountDeleted() {
+    localStorage.removeItem('_at');
+    await this.handleRedirect('');
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
   }
 
   async ngOnInit() {

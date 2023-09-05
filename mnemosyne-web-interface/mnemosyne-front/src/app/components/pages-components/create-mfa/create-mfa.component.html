@@ -45,9 +45,17 @@
   <div *ngIf="selectedMfaOption?.key === 'mfa'">
     <p class="paragraph">
       <span>{{ t('mfa.scanQr1') }}</span>
-      <basic-link label="Google Authenticator" [bold]="true" href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2&pli=1"/>
+      <basic-link
+        label="Google Authenticator"
+        [bold]="true"
+        [href]="googleAuthAppLink"
+      />
       <span>{{ t('mfa.scanQr2') }}</span>
-      <basic-link label="Microsoft Authenticator" [bold]="true" href="https://support.microsoft.com/en-us/account-billing/download-and-install-the-microsoft-authenticator-app-351498fc-850a-45da-b7b6-27e523b8702a"/>
+      <basic-link
+        label="Microsoft Authenticator"
+        [bold]="true"
+        [href]="microsoftAuthAppLink"
+      />
       <span>{{ t('mfa.scanQr3') }}</span>
     </p>
 

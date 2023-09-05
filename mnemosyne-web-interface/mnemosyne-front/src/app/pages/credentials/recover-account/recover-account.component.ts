@@ -6,7 +6,6 @@ import { ValidationService } from '@services/validation.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslationService } from '@services/translation.service';
 import { Titles } from '@interfaces/titles.enum';
-import { MessagesTranslation } from '@translations/messages.enum';
 
 @Component({
   selector: 'page-recover-account',

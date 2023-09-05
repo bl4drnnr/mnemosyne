@@ -22,5 +22,6 @@
   "uploadRecoveryKeys": "Upload recovery keys",
   "recoverAcc": "Recover account",
   "changePassword": "Change password",
-  "changeEmail": "Change email"
+  "changeEmail": "Change email",
+  "deleteAccount": "Permanently delete account"
 }

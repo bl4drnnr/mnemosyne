@@ -63,12 +63,12 @@
   }
 
   &.fill-danger {
-    border: 1px solid var(--warn-color);
+    border: 1px solid var(--error-color);
     background-color: var(--warn-color);
 
     &:hover {
-      background-color: var(--warn-color);
-      border: 1px solid var(--warn-color);
+      border: 1px solid var(--error-color);
+      background-color: var(--error-color);
     }
   }
 

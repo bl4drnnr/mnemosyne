@@ -3,8 +3,8 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Role } from '@models/role.model';
 import { CreateRoleDto } from '@dto/create-role.dto';
 import { GrantRoleDto } from '@dto/grant-role.dto';
-import { RevokeRoleDto } from '@dto/revoke-role.dto';
 import { User } from '@models/user.model';
+import { Role as RoleType } from '@custom-types/role.type';
 
 @Injectable()
 export class RolesService {
@@ -17,17 +17,15 @@ export class RolesService {
     return await this.roleRepository.create(payload);
   }
 
-  async getRoleByValue(value: string) {
+  async getRoleByValue(value: RoleType) {
     return await this.roleRepository.findOne({
       where: { value }
     });
   }
 
-  async grantRole(payload: GrantRoleDto) {
-    const user = await this.userRepository.findByPk(payload.userId);
-  }
-
-  async revokeRole(payload: RevokeRoleDto) {
-    //
+  async grantRole({ userId, value, trx: transaction }: GrantRoleDto) {
+    const user = await this.userRepository.findByPk(userId);
+    const assignedRoles = await this.getRoleByValue(value);
+    await user.$add('roles', [assignedRoles.id], { transaction });
   }
 }

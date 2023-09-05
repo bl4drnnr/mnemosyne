@@ -177,7 +177,7 @@
       </div>
 
       <div *ngIf="changePassMfaRequired">
-        <p class="paragraph on-white">Provide the code from the authenticator application</p>
+        <p class="paragraph on-white">{{ t('settings.tokenMfaRequired') }}</p>
         <div class="input-mfa-wrapper">
           <basic-input-mfa
             [onWhite]="true"
@@ -187,7 +187,7 @@
       </div>
 
       <div *ngIf="changePassPhoneRequired">
-        <p class="paragraph on-white">Send the SMS message with the code your mobile phone number and confirm it by providing in the field below</p>
+        <p class="paragraph on-white">{{ t('settings.phoneMfaRequired') }}</p>
         <basic-phone
           [readOnly]="true"
           [onWhite]="true"
@@ -270,7 +270,66 @@
       [description]="t('settings.deleteAcc.deleteAccDesc')"
       [showModal]="deleteAccountModal"
       (closeModal)="closeDeleteAccountModal()"
-    ></basic-modal>
+    >
+      <basic-input
+        type="password"
+        [onWhite]="true"
+        [label]="t('input.currentPass')"
+        [placeholder]="t('input.provideCurrentPass')"
+        [errorMessage]="t('input.passRulesNotFollowed')"
+        [value]="deleteAccPassword"
+        (valueChange)="deleteAccPassword = $event"
+        (incorrectInput)="deleteAccIncorrectPass = $event"
+      />
+
+      <div *ngIf="deleteAccConfirmationRequired">
+        <basic-input
+          [onWhite]="true"
+          [label]="t('input.provideFullName')"
+          [placeholder]="t('input.fullName')"
+          [inputDescription]="t('input.accDeletionFullName')"
+          [value]="deleteAccFullName"
+          (valueChange)="deleteAccFullName = $event"
+        />
+      </div>
+
+      <div *ngIf="deleteAccMfaRequired">
+        <p class="paragraph on-white">{{ t('settings.tokenMfaRequired') }}</p>
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="deleteAccMfaCode = $event"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="deleteAccPhoneRequired">
+        <p class="paragraph on-white">{{ t('settings.phoneMfaRequired') }}</p>
+        <basic-phone
+          [readOnly]="true"
+          [onWhite]="true"
+          [startCountdownManually]="true"
+          [phoneInput]="userSecurity.phoneStatus.twoLastDigit"
+          [phoneCodeSent]="phoneCodeSent"
+          (sendSmsCode)="sendSmsCode($event)"
+        />
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="deleteAccPhoneCode = $event"
+          />
+        </div>
+      </div>
+
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [fillDanger]="true"
+          [label]="t('button.deleteAccount')"
+          (buttonClick)="deleteUserAccount()"
+        />
+      </div>
+    </basic-modal>
 
     <h3>{{ t('settings.recoveryKeys.title') }}</h3>
     <ul class="rules-list">

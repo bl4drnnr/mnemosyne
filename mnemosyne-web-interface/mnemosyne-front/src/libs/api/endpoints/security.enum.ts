@@ -17,5 +17,6 @@ export enum SecurityEndpoint {
   GET_SMS_CODE = 'get-sms-code',
   CLEAR_SMS_CODE = 'clear-sms-code',
   CHANGE_EMAIL = 'change-email',
-  HASH_SEND_SMS_CODE = 'hash-send-sms-code'
+  HASH_SEND_SMS_CODE = 'hash-send-sms-code',
+  DELETE_ACCOUNT = 'delete-account'
 }
