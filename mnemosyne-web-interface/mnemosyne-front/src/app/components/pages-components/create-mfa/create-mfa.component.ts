@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { PhoneService } from '@services/phone.service';
 import { MfaService } from '@services/mfa.service';
+import {StaticService} from "@services/static.service";
 
 @Component({
   selector: 'page-component-mfa',
@@ -33,9 +34,13 @@ export class CreateMfaComponent {
   ];
 
   constructor(
+    private readonly staticService: StaticService,
     private readonly smsService: PhoneService,
     private readonly mfaService: MfaService
   ) {}
+
+  googleAuthAppLink = this.staticService.getMfaAuthApps().google;
+  microsoftAuthAppLink = this.staticService.getMfaAuthApps().microsoft;
 
   async changeMfaOption({ key }: DropdownInterface) {
     if (this.isCountdownRunning) return;
