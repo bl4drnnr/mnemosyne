@@ -1,6 +1,6 @@
 <ng-container *transloco="let t">
   <div class="security-settings-container">
-    <h3>{{ t('settings.securitySettingsRules.title') }}</h3>
+    <h1>{{ t('settings.securitySettingsRules.title') }}</h1>
     <ul class="rules-list">
       <li class="rule">{{ t('settings.securitySettingsRules.rule1') }}</li>
       <li class="rule">{{ t('settings.securitySettingsRules.rule2') }}</li>
@@ -231,6 +231,7 @@
     >
       <basic-input
         type="email"
+        [onWhite]="true"
         [label]="t('input.provideEmail')"
         [placeholder]="t('input.email')"
         [errorMessage]="t('input.wrongEmailFormat')"
@@ -331,7 +332,9 @@
       </div>
     </basic-modal>
 
-    <h3>{{ t('settings.recoveryKeys.title') }}</h3>
+    <div class="empty-space"></div>
+
+    <h1>{{ t('settings.recoveryKeys.title') }}</h1>
     <ul class="rules-list">
       <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys1') }}</li>
       <li class="rule">{{ t('settings.recoveryKeys.recoveryKeys2') }}</li>

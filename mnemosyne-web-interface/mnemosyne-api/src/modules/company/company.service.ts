@@ -79,7 +79,9 @@ export class CompanyService {
       });
     }
 
-    const to = ownerExistingAccount ? ownerExistingAccount.email : companyOwnerEmail;
+    const to = ownerExistingAccount
+      ? ownerExistingAccount.email
+      : companyOwnerEmail;
 
     const userId = ownerExistingAccount
       ? ownerExistingAccount.id

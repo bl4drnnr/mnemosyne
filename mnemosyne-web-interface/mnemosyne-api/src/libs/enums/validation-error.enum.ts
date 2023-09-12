@@ -19,7 +19,5 @@ export enum ValidationError {
   WRONG_LAST_NAME_LENGTH = 'wrong-last-name-length',
   WRONG_PASSPHRASE_FORMAT = 'wrong-passphrase-format',
   WRONG_PASSPHRASE_LENGTH = 'wrong-passphrase-length',
-  WRONG_REC_KEYS = 'corrupted-recovery-keys',
-  WRONG_HASH_FORMAT = 'wrong-hash-format',
-  WRONG_HASH_LENGTH = 'wrong-hash-length'
+  WRONG_REC_KEYS = 'corrupted-recovery-keys'
 }
