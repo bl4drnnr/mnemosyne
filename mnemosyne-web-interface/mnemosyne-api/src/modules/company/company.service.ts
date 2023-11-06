@@ -140,7 +140,7 @@ export class CompanyService {
         ? existingCompanyMember.lastName
         : null;
 
-      const userId = existingCompany ? existingCompany.id : createdUser.id;
+      const userId = existingCompanyMember ? existingCompanyMember.id : createdUser.id;
 
       await this.companyUsersService.createCompanyUser({
         userId,

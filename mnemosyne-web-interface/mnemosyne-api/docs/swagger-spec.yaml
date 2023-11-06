@@ -586,6 +586,12 @@ paths:
     post:
       operationId: CompanyUsersController_inviteUser
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/InviteUserToCompanyDto"
       responses:
         "201":
           description: ""
@@ -2047,6 +2053,15 @@ components:
     CreateRoleDto:
       type: object
       properties: {}
+    InviteUserToCompanyDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+      required:
+        - email
     QrCodeDto:
       type: object
       properties:

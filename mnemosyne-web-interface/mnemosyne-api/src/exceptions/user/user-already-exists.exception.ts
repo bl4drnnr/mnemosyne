@@ -1,8 +1,8 @@
-import { BadRequestException } from '@nestjs/common';
+import { ConflictException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
 
-export class UserAlreadyExistsException extends BadRequestException {
+export class UserAlreadyExistsException extends ConflictException {
   @ApiProperty({
     type: String,
     description: DocsProperty.USER_ALREADY_EXISTS_DESC,
