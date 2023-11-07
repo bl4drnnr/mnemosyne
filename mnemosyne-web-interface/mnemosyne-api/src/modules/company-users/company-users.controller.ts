@@ -1,6 +1,11 @@
 import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
 import { CompanyUsersService } from '@modules/company-users.service';
-import {ApiExtraModels, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {
+  ApiExtraModels,
+  ApiOperation,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { AuthGuard } from '@guards/auth.guard';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { RoleGuard } from '@guards/role.guard';
@@ -9,7 +14,7 @@ import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { Roles } from '@decorators/roles.decorator';
 import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
-import {CompanyUsersDocs} from "@docs/company-users.docs";
+import { CompanyUsersDocs } from '@docs/company-users.docs';
 
 @ApiTags('Company Users')
 @Controller('company-users')

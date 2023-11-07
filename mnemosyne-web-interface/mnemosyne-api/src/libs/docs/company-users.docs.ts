@@ -1,6 +1,6 @@
-import {getSchemaPath} from "@nestjs/swagger";
-import {InviteUserToCompanyDto} from "@dto/invite-user-to-company.dto";
-import {UserInvitedDto} from "@dto/user-invited.dto";
+import { getSchemaPath } from '@nestjs/swagger';
+import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
+import { UserInvitedDto } from '@dto/user-invited.dto';
 
 export abstract class CompanyUsersDocs {
   static get InviteUser() {

@@ -1,17 +1,17 @@
-import {forwardRef, Inject, Injectable} from '@nestjs/common';
-import {InjectModel} from '@nestjs/sequelize';
-import {CompanyUser} from '@models/company-users.model';
-import {CreateCompanyUserInterface} from '@interfaces/create-company-user.interface';
-import {GetCompanyUserByUserIdInterface} from '@interfaces/get-company-user-by-user-id.interface';
-import {ConfirmCompanyMemberInterface} from '@interfaces/confirm-company-member.interface';
-import {InviteUserToCompanyInterface} from '@interfaces/invite-user-to-company.interface';
-import {UsersService} from "@modules/users.service";
-import {UserInvitedDto} from "@dto/user-invited.dto";
-import {VerificationEmailInterface} from "@interfaces/verification-email.interface";
-import {Confirmation} from "@interfaces/confirmation-type.enum";
-import {RolesService} from "@modules/roles.service";
-import {User} from "@models/user.model";
-import {UserInfoInterface} from "@interfaces/user-info.interface";
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { CompanyUser } from '@models/company-users.model';
+import { CreateCompanyUserInterface } from '@interfaces/create-company-user.interface';
+import { GetCompanyUserByUserIdInterface } from '@interfaces/get-company-user-by-user-id.interface';
+import { ConfirmCompanyMemberInterface } from '@interfaces/confirm-company-member.interface';
+import { InviteUserToCompanyInterface } from '@interfaces/invite-user-to-company.interface';
+import { UsersService } from '@modules/users.service';
+import { UserInvitedDto } from '@dto/user-invited.dto';
+import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
+import { Confirmation } from '@interfaces/confirmation-type.enum';
+import { RolesService } from '@modules/roles.service';
+import { User } from '@models/user.model';
+import { UserInfoInterface } from '@interfaces/user-info.interface';
 
 @Injectable()
 export class CompanyUsersService {
@@ -31,7 +31,9 @@ export class CompanyUsersService {
   }: InviteUserToCompanyInterface) {
     const { email, role } = payload;
 
-    const { company: { id: companyId } } = await this.usersService.getUserById({
+    const {
+      company: { id: companyId }
+    } = await this.usersService.getUserById({
       id: userId,
       trx
     });
@@ -59,15 +61,9 @@ export class CompanyUsersService {
       });
     }
 
-    userInfo.email = existingUser
-      ? existingUser.email
-      : email;
-    userInfo.firstName = existingUser
-      ? existingUser.firstName
-      : null;
-    userInfo.lastName = existingUser
-      ? existingUser.lastName
-      : null;
+    userInfo.email = existingUser ? existingUser.email : email;
+    userInfo.firstName = existingUser ? existingUser.firstName : null;
+    userInfo.lastName = existingUser ? existingUser.lastName : null;
 
     const companyUserId = existingUser ? existingUser.id : createdUser.id;
 
