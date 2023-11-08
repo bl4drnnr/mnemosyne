@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import {
-  catchError,
-  finalize,
-  mergeMap,
-  Observable,
-  timer
-} from 'rxjs';
+import { catchError, finalize, mergeMap, Observable, timer } from 'rxjs';
 import { EnvService } from '@shared/env.service';
 import { ErrorHandlerService } from '@shared/api/error-handler.service';
 import { LoaderService } from '@shared/loader.service';

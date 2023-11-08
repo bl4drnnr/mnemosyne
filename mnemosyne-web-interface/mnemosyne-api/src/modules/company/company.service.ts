@@ -79,7 +79,9 @@ export class CompanyService {
       });
     }
 
-    const to = ownerExistingAccount ? ownerExistingAccount.email : companyOwnerEmail;
+    const to = ownerExistingAccount
+      ? ownerExistingAccount.email
+      : companyOwnerEmail;
 
     const userId = ownerExistingAccount
       ? ownerExistingAccount.id
@@ -138,7 +140,9 @@ export class CompanyService {
         ? existingCompanyMember.lastName
         : null;
 
-      const userId = existingCompany ? existingCompany.id : createdUser.id;
+      const userId = existingCompanyMember
+        ? existingCompanyMember.id
+        : createdUser.id;
 
       await this.companyUsersService.createCompanyUser({
         userId,

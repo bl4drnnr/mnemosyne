@@ -118,14 +118,6 @@ export class InputComponent {
     this.onSpace.emit();
   }
 
-  passwordFontSize() {
-    return (
-      this.passwordTypes.includes(this.type) &&
-      this.value &&
-      this.value.length > 0
-    );
-  }
-
   async notifyClipboardCopy() {
     const message = await this.translationService.translateText(
       'copied',

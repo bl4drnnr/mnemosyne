@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { PhoneService } from '@services/phone.service';
 import { MfaService } from '@services/mfa.service';
-import {StaticService} from "@services/static.service";
+import { StaticService } from '@services/static.service';
 
 @Component({
   selector: 'page-component-mfa',
