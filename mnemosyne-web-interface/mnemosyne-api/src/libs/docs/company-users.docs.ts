@@ -6,9 +6,9 @@ export abstract class CompanyUsersDocs {
   static get InviteUser() {
     const ApiModels = [InviteUserToCompanyDto, UserInvitedDto];
 
-    const apiOperationSum = '';
+    const apiOperationSum = 'Endpoint is responsible for user invitation to the company.';
     const apiResponseDesc = '';
-    const apiBodyDesc = '';
+    const apiBodyDesc = 'In order to invite the user to the company the member of the company with the administrator role has to provide an email of the user along with the their role.';
 
     return {
       ApiOperation: { summary: apiOperationSum },
