@@ -8,13 +8,15 @@ import { UserPhotoComponent } from '@components/user-photo/user-photo.component'
 import { TranslocoModule } from '@ngneat/transloco';
 import { BasicComponentsModule } from '@components/basic-components.module';
 import { PagesComponentsModule } from '@components/pages-components.module';
+import { CompanySettingsComponent } from '@components/dashboard-components/company-settings/company-settings.component';
 
 const components = [
   SecuritySettingsComponent,
   SecuritySettingSectionComponent,
   SidebarComponent,
   UserInfoSettingsComponent,
-  UserPhotoComponent
+  UserPhotoComponent,
+  CompanySettingsComponent
 ];
 
 @NgModule({

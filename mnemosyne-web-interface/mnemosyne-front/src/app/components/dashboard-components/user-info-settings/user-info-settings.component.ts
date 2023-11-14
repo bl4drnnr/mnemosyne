@@ -8,6 +8,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
+import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 
 @Component({
   selector: 'dashboard-user-info-settings',
@@ -29,7 +30,8 @@ export class UserInfoSettingsComponent {
   @Input() lastName: string;
   @Input() email: string;
   @Input() isProfilePicPresent: boolean;
-  @Output() saveUserInfoEvent = new EventEmitter<UserInfoResponse>();
+  @Output() saveUserInfoEvent = new EventEmitter<UpdateUserInfoPayload>();
+  @Output() getUserInfoEvent = new EventEmitter<void>();
 
   incorrectFirstName: boolean;
   incorrectLastName: boolean;
@@ -58,11 +60,9 @@ export class UserInfoSettingsComponent {
 
   saveUserInfo() {
     this.saveUserInfoEvent.emit({
-      userId: this.userId,
       firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      isProfilePicPresent: this.isProfilePicPresent
+      lastName: this.lastName
     });
+    this.getUserInfoEvent.emit();
   }
 }

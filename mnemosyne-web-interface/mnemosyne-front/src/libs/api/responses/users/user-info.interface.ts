@@ -3,5 +3,6 @@ export interface UserInfoResponse {
   firstName: string;
   lastName: string;
   email: string;
+  companyId: string;
   isProfilePicPresent: boolean;
 }

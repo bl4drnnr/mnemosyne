@@ -12,16 +12,22 @@ import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { RolesService } from '@modules/roles.service';
 import { User } from '@models/user.model';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
+import { EmailService } from '@shared/email.service';
+import { CompanyService } from '@modules/company.service';
 
 @Injectable()
 export class CompanyUsersService {
   constructor(
     @InjectModel(CompanyUser)
     private readonly companyUserRepository: typeof CompanyUser,
+    @Inject(forwardRef(() => CompanyService))
+    private readonly companyService: CompanyService,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
     @Inject(forwardRef(() => RolesService))
-    private readonly rolesService: RolesService
+    private readonly rolesService: RolesService,
+    @Inject(forwardRef(() => EmailService))
+    private readonly emailService: EmailService
   ) {}
 
   async inviteUserToCompany({
@@ -29,7 +35,7 @@ export class CompanyUsersService {
     payload,
     trx
   }: InviteUserToCompanyInterface) {
-    const { email, role } = payload;
+    const { email, role, language } = payload;
 
     const {
       company: { id: companyId }
@@ -56,7 +62,11 @@ export class CompanyUsersService {
     } else {
       createdUser = await this.usersService.createUser({
         payload: { email },
-        role,
+        trx
+      });
+      await this.rolesService.grantRole({
+        userId: createdUser.id,
+        value: role,
         trx
       });
     }
@@ -79,14 +89,33 @@ export class CompanyUsersService {
       userId: companyUserId
     };
 
-    // await this.emailService.sendCompanyMemberEmail({
-    //   payload: { ...companyMemberRegEmailPayload },
-    //   companyInfo: { ...payload },
-    //   isUserExists: !!existingCompanyMember,
-    //   userInfo,
-    //   language,
-    //   trx
-    // });
+    const { companyName, companyLocation, companyWebsite, companyOwnerId } =
+      await this.companyService.getCompanyByUserId({
+        userId,
+        trx
+      });
+
+    const { email: companyOwnerEmail } = await this.usersService.getUserById({
+      id: companyOwnerId,
+      trx
+    });
+
+    const companyInfo = {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerEmail
+    };
+    const isUserExists = !!existingUser;
+
+    await this.emailService.sendCompanyMemberEmail({
+      payload: { ...companyMemberRegEmailPayload },
+      isUserExists,
+      companyInfo,
+      userInfo,
+      language,
+      trx
+    });
 
     return new UserInvitedDto();
   }

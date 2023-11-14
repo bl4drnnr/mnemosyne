@@ -37,23 +37,33 @@ export class GetUserInfoResponseDto {
   })
   readonly isProfilePicPresent: boolean;
 
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_ID_DESC,
+    example: DocsProperty.COMPANY_ID_EXAMPLE
+  })
+  readonly companyId: string | null;
+
   constructor({
     userId,
     firstName,
     lastName,
     email,
-    isProfilePicPresent
+    isProfilePicPresent,
+    companyId
   }: {
     userId: string;
     firstName: string;
     lastName: string;
     email: string;
     isProfilePicPresent: boolean;
+    companyId: string | null;
   }) {
     this.userId = userId;
     this.firstName = firstName;
     this.lastName = lastName;
     this.email = email;
     this.isProfilePicPresent = isProfilePicPresent;
+    this.companyId = companyId;
   }
 }

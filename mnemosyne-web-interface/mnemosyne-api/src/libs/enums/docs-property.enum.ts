@@ -163,5 +163,7 @@ export enum DocsProperty {
   QR_CODE_LINK_DESC = 'Link that leads to QR code to scan (via Google API)',
   QR_CODE_LINK_EXAMPLE = 'https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=otpauth://totp/Mnemosyne%3Amikhail.bahdashych%40gmail.com%3Fsecret=7BEEKMUDHULQVZYE7LQYR2R4BDP5NJJA%26issuer=Mnemosyne',
   PHONE_ALREADY_TAKEN_DESC = 'Phone already taken error message',
-  PHONE_ALREADY_TAKEN_EXAMPLE = 'phone-already-taken'
+  PHONE_ALREADY_TAKEN_EXAMPLE = 'phone-already-taken',
+  COMPANY_ID_DESC = 'UUID (v4) of the company',
+  COMPANY_ID_EXAMPLE = '4682d1d3-c041-4399-ba98-73a5ce149d3c'
 }

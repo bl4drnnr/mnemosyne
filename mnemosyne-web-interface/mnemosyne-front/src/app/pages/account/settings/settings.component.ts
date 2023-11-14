@@ -10,6 +10,7 @@ import { SettingSectionType } from '@interfaces/setting-section.type';
 import { AccountTranslation } from '@translations/account.enum';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { Router } from '@angular/router';
+import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 
 @Component({
   selector: 'component-settings',
@@ -35,7 +36,7 @@ export class SettingsComponent implements OnInit {
     private readonly router: Router
   ) {}
 
-  saveUserInfo(userInfo: UserInfoResponse) {
+  saveUserInfo(userInfo: UpdateUserInfoPayload) {
     this.usersService.updateUserInfo(userInfo).subscribe({
       next: async ({ message }) => {
         const globalMessage = await this.translationService.translateText(
@@ -113,12 +114,10 @@ export class SettingsComponent implements OnInit {
     await this.router.navigate([path]);
   }
 
-  async ngOnInit() {
-    this.translationService.setPageTitle(Titles.SETTINGS);
-
+  async requestUserInfo() {
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
 
-    if (userInfoRequest)
+    if (userInfoRequest) {
       userInfoRequest.subscribe({
         next: (userInfo) => {
           this.userInfo = userInfo;
@@ -129,7 +128,13 @@ export class SettingsComponent implements OnInit {
           this.isProfilePicPresent = userInfo.isProfilePicPresent;
         }
       });
+    }
 
     this.getUserSecuritySettings();
+  }
+
+  async ngOnInit() {
+    this.translationService.setPageTitle(Titles.SETTINGS);
+    await this.requestUserInfo();
   }
 }

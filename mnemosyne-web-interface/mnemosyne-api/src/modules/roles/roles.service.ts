@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Role } from '@models/role.model';
-import { CreateRoleDto } from '@dto/create-role.dto';
-import { GrantRoleDto } from '@dto/grant-role.dto';
 import { User } from '@models/user.model';
-import { Role as RoleType } from '@custom-types/role.type';
+import { GrantRoleInterface } from '@interfaces/grant-role.interface';
 
 @Injectable()
 export class RolesService {
@@ -13,19 +11,11 @@ export class RolesService {
     @InjectModel(User) private readonly userRepository: typeof User
   ) {}
 
-  async createRole(payload: CreateRoleDto) {
-    return await this.roleRepository.create(payload);
-  }
-
-  async getRoleByValue(value: RoleType) {
-    return await this.roleRepository.findOne({
+  async grantRole({ userId, value, trx: transaction }: GrantRoleInterface) {
+    const user = await this.userRepository.findByPk(userId, { transaction });
+    const assignedRoles = await this.roleRepository.findOne({
       where: { value }
     });
-  }
-
-  async grantRole({ userId, value, trx: transaction }: GrantRoleDto) {
-    const user = await this.userRepository.findByPk(userId);
-    const assignedRoles = await this.getRoleByValue(value);
     await user.$add('roles', [assignedRoles.id], { transaction });
   }
 }

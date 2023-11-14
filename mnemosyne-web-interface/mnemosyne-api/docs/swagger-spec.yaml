@@ -558,33 +558,10 @@ paths:
         - Company
       security:
         - basicAuth: []
-  /api/roles:
-    post:
-      operationId: RolesController_createRole
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateRoleDto"
-      responses:
-        "201":
-          description: ""
-      tags:
-        &a4
-        - Roles
-  /api/roles/grant:
-    post:
-      operationId: RolesController_grantRole
-      parameters: []
-      responses:
-        "201":
-          description: ""
-      tags: *a4
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
+      summary: Endpoint is responsible for user invitation to the company.
       parameters: []
       requestBody:
         required: true
@@ -595,6 +572,10 @@ paths:
       responses:
         "201":
           description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserInvitedDto"
       tags:
         - Company Users
   /api/security/registration-generate-2fa-qr:
@@ -626,7 +607,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags:
-        &a5
+        &a4
         - Security
       security:
         - basicAuth: []
@@ -658,7 +639,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/generate-2fa-qr:
@@ -676,7 +657,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/QrCodeDto"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -721,7 +702,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/login-verify-2fa:
@@ -755,7 +736,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/verify-2fa:
@@ -786,7 +767,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -820,7 +801,7 @@ paths:
                   - $ref: "#/components/schemas/TwoFaNotSetException"
                   - $ref: "#/components/schemas/PhoneNotSetException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -859,7 +840,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/PhoneAlreadyTakenException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/login-send-sms-code:
@@ -891,7 +872,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/send-sms-code:
@@ -921,7 +902,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -969,7 +950,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/get-sms-code:
@@ -1004,7 +985,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/PhoneNotSetException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1026,7 +1007,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PhoneNotSetException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1072,7 +1053,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/login-verify-mobile-phone:
@@ -1109,7 +1090,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a4
       security:
         - basicAuth: []
   /api/security/verify-mobile-phone:
@@ -1142,7 +1123,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1178,7 +1159,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1218,7 +1199,7 @@ paths:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongDeletionConfirmationException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1258,7 +1239,7 @@ paths:
                   - $ref: "#/components/schemas/PreviousPasswordException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1294,7 +1275,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmailAlreadyChangedException"
-      tags: *a5
+      tags: *a4
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1332,7 +1313,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags:
-        &a6
+        &a5
         - Recovery
       security:
         - basicAuth: []
@@ -1365,7 +1346,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
-      tags: *a6
+      tags: *a5
       security:
         - basicAuth: []
   /api/recovery/generate-recovery-keys:
@@ -1388,7 +1369,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RecoveryKeysResponseDto"
-      tags: *a6
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1422,7 +1403,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongRecoveryKeysException"
-      tags: *a6
+      tags: *a5
       security:
         - basicAuth: []
 info:
@@ -1540,12 +1521,17 @@ components:
           type: boolean
           description: Is user profile picture present
           example: "true"
+        companyId:
+          type: string
+          description: UUID (v4) of the company
+          example: 4682d1d3-c041-4399-ba98-73a5ce149d3c
       required:
         - userId
         - firstName
         - lastName
         - email
         - isProfilePicPresent
+        - companyId
     PhoneStatus:
       type: object
       properties:
@@ -2050,9 +2036,6 @@ components:
           example: company-already-exists
       required:
         - message
-    CreateRoleDto:
-      type: object
-      properties: {}
     InviteUserToCompanyDto:
       type: object
       properties:
@@ -2060,8 +2043,33 @@ components:
           type: string
           description: Email address
           example: joe@doe.com
+        role:
+          type: string
+          enum:
+            - PRIMARY_ADMIN
+            - ADMIN
+            - DEFAULT
+            - READ_ONLY
+          description: Available user members
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
       required:
         - email
+        - role
+    UserInvitedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User invited response message
+          example: user-invited
+      required:
+        - message
     QrCodeDto:
       type: object
       properties:

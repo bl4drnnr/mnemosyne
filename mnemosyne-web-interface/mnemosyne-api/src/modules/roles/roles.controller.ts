@@ -1,24 +1,9 @@
-import { Body, Controller, Post, UsePipes } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { RolesService } from '@modules/roles.service';
-import { CreateRoleDto } from '@dto/create-role.dto';
-import { GrantRoleDto } from '@dto/grant-role.dto';
-import { ValidationPipe } from '@pipes/validation.pipe';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Roles')
 @Controller('roles')
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
-
-  @UsePipes(ValidationPipe)
-  @Post()
-  createRole(@Body() payload: CreateRoleDto) {
-    return this.rolesService.createRole(payload);
-  }
-
-  @UsePipes(ValidationPipe)
-  @Post('grant')
-  grantRole(@Body() payload: GrantRoleDto) {
-    return this.rolesService.grantRole(payload);
-  }
 }
