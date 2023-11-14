@@ -1,5 +1,17 @@
-<div class="loader-overlay" *ngIf="loaderService.isLoading$ | async">
+<div
+  class="loader-overlay"
+  [@fade]="(loaderService.isLoading$ | async) ? 'visible' : 'hidden'"
+>
   <div class="loader-container">
-    <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <div class="lds-roller">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   </div>
 </div>
