@@ -165,5 +165,11 @@ export enum DocsProperty {
   PHONE_ALREADY_TAKEN_DESC = 'Phone already taken error message',
   PHONE_ALREADY_TAKEN_EXAMPLE = 'phone-already-taken',
   COMPANY_ID_DESC = 'UUID (v4) of the company',
-  COMPANY_ID_EXAMPLE = '4682d1d3-c041-4399-ba98-73a5ce149d3c'
+  COMPANY_ID_EXAMPLE = '4682d1d3-c041-4399-ba98-73a5ce149d3c',
+  NAME_PRONUNS_DESC = 'This could be a phonetic pronunciation, or an example of something your name sounds like',
+  NAME_PRONUNS_EXAMPLE = 'Zoe ("zo-ee")',
+  HOME_ADDRESS_DESC = 'User home address',
+  HOME_ADDRESS_EXAMPLE = 'One Apple Park Way, United States',
+  HOME_PHONE_DESC = 'User home phone',
+  HOME_PHONE_EXAMPLE = '(800) 1231-1234'
 }

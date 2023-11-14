@@ -15,6 +15,7 @@ import { CompanyMembersType } from '@interfaces/company-members.type';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
 import { GlobalMessageService } from '@shared/global-message.service';
+import { RegistrationPayload } from '@payloads/registration.interface';
 
 @Component({
   selector: 'page-registration',
@@ -41,6 +42,9 @@ export class RegistrationComponent implements OnInit {
 
   firstName: string;
   lastName: string;
+  namePronunciation: string;
+  homeAddress: string;
+  homePhone: string;
 
   companyLocation: string;
   companyName: string;
@@ -96,13 +100,24 @@ export class RegistrationComponent implements OnInit {
   handleRegistration() {
     if (this.wrongCredentials({ includeAll: true })) return;
 
+    const registrationPayload: RegistrationPayload = {
+      email: this.email,
+      password: this.password,
+      tac: this.tac,
+      firstName: this.firstName,
+      lastName: this.lastName
+    };
+
+    if (this.namePronunciation)
+      registrationPayload.namePronunciation = this.namePronunciation;
+
+    if (this.homeAddress) registrationPayload.homeAddress = this.homeAddress;
+
+    if (this.homePhone) registrationPayload.homePhone = this.homePhone;
+
     this.authenticationService
       .registration({
-        email: this.email,
-        password: this.password,
-        tac: this.tac,
-        firstName: this.firstName,
-        lastName: this.lastName
+        ...registrationPayload
       })
       .subscribe({
         next: () => (this.step = 3)

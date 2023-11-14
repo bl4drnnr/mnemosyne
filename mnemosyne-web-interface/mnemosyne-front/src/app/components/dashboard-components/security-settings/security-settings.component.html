@@ -16,6 +16,7 @@
       [title]="t('settings.mfa.setup2fa')"
       [description]="t('settings.mfa.setup2faDesc')"
       [buttonLabel]="t('settings.mfa.setup2fa')"
+      [emojiName]="'locked-with-key.png'"
       (onButtonClick)="generateTwoFaQrCode()"
     />
 
@@ -47,6 +48,7 @@
       [title]="t('settings.mfa.disable2fa')"
       [description]="t('settings.mfa.disable2faDesc')"
       [buttonLabel]="t('settings.mfa.disable2fa')"
+      [emojiName]="'locked-with-key.png'"
       [dangerButton]="true"
       [disabledButton]="userSecurity.isTwoFaSetUp && !userSecurity.phoneStatus.isSetUp"
       (onButtonClick)="disable2faModal = true"
@@ -80,6 +82,7 @@
       [title]="t('settings.phone.setupPhone')"
       [description]="t('settings.phone.setupPhoneDesc')"
       [buttonLabel]="t('settings.phone.setupPhone')"
+      [emojiName]="'mobile-phone.png'"
       (onButtonClick)="setMobilePhoneModal = true"
     />
 
@@ -115,6 +118,7 @@
       [title]="t('settings.phone.disablePhone')"
       [description]="t('settings.phone.disablePhoneDesc')"
       [buttonLabel]="t('settings.phone.disablePhone')"
+      [emojiName]="'mobile-phone.png'"
       [dangerButton]="true"
       [disabledButton]="userSecurity.phoneStatus.isSetUp && !userSecurity.isTwoFaSetUp"
       (onButtonClick)="disableMobilePhoneModal = true"
@@ -141,6 +145,7 @@
       [title]="t('settings.password.changePassword')"
       [description]="t('settings.password.changePasswordDesc')"
       [buttonLabel]="t('settings.password.changePassword')"
+      [emojiName]="'old-key.png'"
       [disabledButton]="!userSecurity.passwordCanBeChanged"
       (onButtonClick)="changePasswordModal = true"
     />
@@ -220,6 +225,7 @@
       [title]="t('settings.email.changeEmail')"
       [description]="t('settings.email.changeEmailDesc')"
       [buttonLabel]="t('settings.email.changeEmail')"
+      [emojiName]="'envelope.png'"
       (onButtonClick)="changeEmailModal = true"
     />
 
@@ -232,8 +238,8 @@
       <basic-input
         type="email"
         [onWhite]="true"
-        [label]="t('input.provideEmail')"
-        [placeholder]="t('input.email')"
+        [label]="t('input.email')"
+        [placeholder]="t('input.provideEmail')"
         [errorMessage]="t('input.wrongEmailFormat')"
         [value]="newEmail"
         (valueChange)="newEmail = $event"
@@ -254,6 +260,7 @@
       [title]="t('settings.email.changeEmail')"
       [description]="t('settings.email.emailAlreadyChanged')"
       [buttonLabel]="t('settings.email.changeEmail')"
+      [emojiName]="'envelope.png'"
       [disabledButton]="true"
     />
 
@@ -262,6 +269,7 @@
       [title]="t('settings.deleteAcc.deleteAcc')"
       [description]="t('settings.deleteAcc.deleteAccDesc')"
       [buttonLabel]="t('settings.deleteAcc.deleteAcc')"
+      [emojiName]="'cross-mark.png'"
       [dangerButton]="true"
       (onButtonClick)="deleteAccountModal = true"
     />
@@ -348,6 +356,7 @@
       [title]="t('settings.recoveryKeys.sectionTitle')"
       [description]="t('settings.recoveryKeys.sectionDesc')"
       [buttonLabel]="t('settings.recoveryKeys.sectionTitle')"
+      [emojiName]="'key.png'"
       (onButtonClick)="generateRecoveryKeysModal = true"
     />
 

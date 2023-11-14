@@ -12,5 +12,6 @@ export class SecuritySettingSectionComponent {
   @Input() buttonLabel: string;
   @Input() dangerButton = false;
   @Input() disabledButton = false;
+  @Input() emojiName: string;
   @Output() onButtonClick = new EventEmitter<void>();
 }

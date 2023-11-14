@@ -17,7 +17,7 @@
       </div>
       <div
         class="settings-header-box"
-        *ngIf="userInfo.companyId"
+        *ngIf="userInfo && userInfo.companyId"
         [ngClass]="{ active: currentSection === 'company' }"
         (click)="currentSection = 'company'"
       >
