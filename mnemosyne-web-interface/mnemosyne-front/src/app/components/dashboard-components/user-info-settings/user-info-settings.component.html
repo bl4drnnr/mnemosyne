@@ -30,6 +30,17 @@
         (incorrectInput)="incorrectLastName = $event"
       />
 
+      <div class="dived-line"></div>
+
+      <basic-input
+        [label]="t('input.email')"
+        [value]="email"
+        [disabled]="true"
+        [inputDescription]="t('input.emailChangeInfo')"
+      />
+
+      <div class="dived-line"></div>
+
       <basic-input
         [label]="t('input.namePronunciation')"
         [placeholder]="t('input.namePronunciationPlaceholder')"
@@ -51,15 +62,6 @@
         [value]="homePhone"
         (valueChange)="homePhone = $event"
       />
-
-      <basic-input
-        [label]="t('input.email')"
-        [value]="email"
-        [disabled]="true"
-        [inputDescription]="t('input.emailChangeInfo')"
-      />
-
-      <div class="dived-line"></div>
 
       <div
         class="info-changed"

@@ -21,9 +21,9 @@ export class SettingsComponent implements OnInit {
   userId: string;
   firstName: string;
   lastName: string;
-  namePronunciation: string | null;
-  homeAddress: string | null;
-  homePhone: string | null;
+  namePronunciation: string;
+  homeAddress: string;
+  homePhone: string;
   email: string;
   isProfilePicPresent: boolean;
 

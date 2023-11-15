@@ -29,9 +29,9 @@ export class UserInfoSettingsComponent {
 
   @Input() firstName: string;
   @Input() lastName: string;
-  @Input() namePronunciation: string | null;
-  @Input() homeAddress: string | null;
-  @Input() homePhone: string | null;
+  @Input() namePronunciation: string;
+  @Input() homeAddress: string;
+  @Input() homePhone: string;
 
   @Input() email: string;
   @Input() isProfilePicPresent: boolean;
@@ -40,36 +40,46 @@ export class UserInfoSettingsComponent {
 
   incorrectFirstName: boolean;
   incorrectLastName: boolean;
-  incorrectCompanyName: boolean;
-  incorrectLocationName: boolean;
-  incorrectWebsite: boolean;
 
   constructor(public validationService: ValidationService) {}
 
   wasInfoChanged() {
+    const wasFirstNameChanged =
+      this.firstName && this.firstName !== this.userInfo.firstName;
+    const wasLastNameChanged =
+      this.lastName && this.lastName !== this.userInfo.lastName;
+    const wasNamePronChanged =
+      this.namePronunciation !== this.userInfo.namePronunciation;
+    const wasHomeAddressChanged =
+      this.homeAddress !== this.userInfo.homeAddress;
+    const wasHomePhoneChanged = this.homePhone !== this.userInfo.homePhone;
+
     return (
-      (this.firstName && this.firstName !== this.userInfo.firstName) ||
-      (this.lastName && this.lastName !== this.userInfo.lastName)
+      wasFirstNameChanged ||
+      wasLastNameChanged ||
+      wasNamePronChanged ||
+      wasHomeAddressChanged ||
+      wasHomePhoneChanged
     );
   }
 
   incorrectData() {
-    return (
-      this.incorrectFirstName ||
-      this.incorrectLastName ||
-      this.incorrectLocationName ||
-      this.incorrectCompanyName ||
-      this.incorrectWebsite
-    );
+    return this.incorrectFirstName || this.incorrectLastName;
   }
 
   saveUserInfo() {
+    const namePronunciation = this.namePronunciation
+      ? this.namePronunciation
+      : null;
+    const homeAddress = this.homeAddress ? this.homeAddress : null;
+    const homePhone = this.homePhone ? this.homePhone : null;
+
     this.saveUserInfoEvent.emit({
       firstName: this.firstName,
       lastName: this.lastName,
-      namePronunciation: this.namePronunciation,
-      homeAddress: this.homeAddress,
-      homePhone: this.homePhone
+      namePronunciation,
+      homeAddress,
+      homePhone
     });
     this.getUserInfoEvent.emit();
   }
