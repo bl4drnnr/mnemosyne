@@ -26,8 +26,13 @@ import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 export class UserInfoSettingsComponent {
   @Input() userInfo: UserInfoResponse;
   @Input() userId: string;
+
   @Input() firstName: string;
   @Input() lastName: string;
+  @Input() namePronunciation: string | null;
+  @Input() homeAddress: string | null;
+  @Input() homePhone: string | null;
+
   @Input() email: string;
   @Input() isProfilePicPresent: boolean;
   @Output() saveUserInfoEvent = new EventEmitter<UpdateUserInfoPayload>();
@@ -61,7 +66,10 @@ export class UserInfoSettingsComponent {
   saveUserInfo() {
     this.saveUserInfoEvent.emit({
       firstName: this.firstName,
-      lastName: this.lastName
+      lastName: this.lastName,
+      namePronunciation: this.namePronunciation,
+      homeAddress: this.homeAddress,
+      homePhone: this.homePhone
     });
     this.getUserInfoEvent.emit();
   }

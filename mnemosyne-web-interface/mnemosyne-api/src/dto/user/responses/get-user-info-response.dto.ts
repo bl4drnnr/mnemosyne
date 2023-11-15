@@ -44,10 +44,34 @@ export class GetUserInfoResponseDto {
   })
   readonly companyId: string | null;
 
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.NAME_PRONUNS_DESC,
+    example: DocsProperty.NAME_PRONUNS_EXAMPLE
+  })
+  readonly namePronunciation: string | null;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.HOME_ADDRESS_DESC,
+    example: DocsProperty.HOME_ADDRESS_EXAMPLE
+  })
+  readonly homeAddress: string | null;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.HOME_PHONE_DESC,
+    example: DocsProperty.HOME_PHONE_EXAMPLE
+  })
+  readonly homePhone: string | null;
+
   constructor({
     userId,
     firstName,
     lastName,
+    namePronunciation,
+    homeAddress,
+    homePhone,
     email,
     isProfilePicPresent,
     companyId
@@ -55,6 +79,9 @@ export class GetUserInfoResponseDto {
     userId: string;
     firstName: string;
     lastName: string;
+    namePronunciation: string | null;
+    homeAddress: string | null;
+    homePhone: string | null;
     email: string;
     isProfilePicPresent: boolean;
     companyId: string | null;
@@ -62,6 +89,9 @@ export class GetUserInfoResponseDto {
     this.userId = userId;
     this.firstName = firstName;
     this.lastName = lastName;
+    this.namePronunciation = namePronunciation;
+    this.homeAddress = homeAddress;
+    this.homePhone = homePhone;
     this.email = email;
     this.isProfilePicPresent = isProfilePicPresent;
     this.companyId = companyId;

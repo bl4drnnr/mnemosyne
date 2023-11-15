@@ -252,7 +252,14 @@ export class UsersService {
       isProfilePicPresent = false;
     }
 
-    const { firstName, lastName, email } = await this.getUserById({
+    const {
+      firstName,
+      lastName,
+      namePronunciation,
+      homeAddress,
+      homePhone,
+      email
+    } = await this.getUserById({
       id: userId,
       trx
     });
@@ -268,6 +275,9 @@ export class UsersService {
       userId: userIdHash,
       firstName,
       lastName,
+      namePronunciation,
+      homeAddress,
+      homePhone,
       email,
       companyId,
       isProfilePicPresent
