@@ -15,6 +15,14 @@
       >
         <h3 class="settings-header-title">{{ t('settings.securitySettings') }}</h3>
       </div>
+      <div
+        class="settings-header-box"
+        *ngIf="userInfo && userInfo.companyId"
+        [ngClass]="{ active: currentSection === 'company' }"
+        (click)="currentSection = 'company'"
+      >
+        <h3 class="settings-header-title">{{ t('settings.companySettings') }}</h3>
+      </div>
     </div>
 
     <div *ngIf="currentSection === 'personal'">
@@ -23,9 +31,13 @@
         [userId]="userId"
         [firstName]="firstName"
         [lastName]="lastName"
+        [namePronunciation]="namePronunciation"
+        [homeAddress]="homeAddress"
+        [homePhone]="homePhone"
         [email]="email"
         [isProfilePicPresent]="isProfilePicPresent"
         (saveUserInfoEvent)="saveUserInfo($event)"
+        (getUserInfoEvent)="requestUserInfo()"
       />
     </div>
 
@@ -41,6 +53,10 @@
         (userSettingsReInit)="getUserSecuritySettings()"
         (accountDeleted)="accountDeleted()"
       />
+    </div>
+
+    <div *ngIf="currentSection === 'company'">
+      <dashboard-company-settings />
     </div>
   </ng-container>
 </layout-default>

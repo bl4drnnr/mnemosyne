@@ -5,6 +5,8 @@
   "managePersonalSettings": "Zarządzaj swoimi danymi osobowymi",
   "securitySettings": "Ustawienia bezpieczeństwa",
   "manageSecuritySettings": "Zarządzaj ustawieniami bezpieczeństwa swojego konta",
+  "companySettings": "Ustawienia firmy",
+  "manageCompanySettings": "Zarządzaj i przeglądaj członków swojej firmy oraz ustawienia",
   "securitySettingsRules": {
     "title": "Zarządzaj ustawieniami bezpieczeństwa swojego konta i upewnij się, że jest ono zabezpieczone",
     "rule1": "Upewnij się, że przeczytałeś Zasady bezpieczeństwa i prywatności Mnemosyne, ponieważ niektóre ustawienia są obowiązkowe dla wszystkich użytkowników.",

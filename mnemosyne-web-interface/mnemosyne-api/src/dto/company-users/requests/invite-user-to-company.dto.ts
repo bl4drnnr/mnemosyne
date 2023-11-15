@@ -1,10 +1,11 @@
-import { IsEnum, Matches } from 'class-validator';
+import { IsEnum, IsOptional, Matches } from 'class-validator';
 import { EmailRegex } from '@regex/email.regex';
 import { ValidationError } from '@interfaces/validation-error.enum';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
 import { Roles } from '@interfaces/roles.enum';
 import { Role } from '@custom-types/role.type';
+import { Language } from '@interfaces/language.enum';
 
 export class InviteUserToCompanyDto {
   @ApiProperty({
@@ -22,4 +23,14 @@ export class InviteUserToCompanyDto {
   })
   @IsEnum(Roles, { message: ValidationError.WRONG_ROLE_VALUE })
   readonly role: Role;
+
+  @ApiProperty({
+    type: Language,
+    enum: Language,
+    description: DocsProperty.LANGUAGE_DESC
+  })
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsEnum(Language)
+  readonly language?: Language;
 }

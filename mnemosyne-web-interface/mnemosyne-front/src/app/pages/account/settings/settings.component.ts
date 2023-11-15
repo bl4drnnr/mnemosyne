@@ -10,6 +10,7 @@ import { SettingSectionType } from '@interfaces/setting-section.type';
 import { AccountTranslation } from '@translations/account.enum';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { Router } from '@angular/router';
+import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 
 @Component({
   selector: 'component-settings',
@@ -20,6 +21,9 @@ export class SettingsComponent implements OnInit {
   userId: string;
   firstName: string;
   lastName: string;
+  namePronunciation: string;
+  homeAddress: string;
+  homePhone: string;
   email: string;
   isProfilePicPresent: boolean;
 
@@ -35,7 +39,7 @@ export class SettingsComponent implements OnInit {
     private readonly router: Router
   ) {}
 
-  saveUserInfo(userInfo: UserInfoResponse) {
+  saveUserInfo(userInfo: UpdateUserInfoPayload) {
     this.usersService.updateUserInfo(userInfo).subscribe({
       next: async ({ message }) => {
         const globalMessage = await this.translationService.translateText(
@@ -113,23 +117,30 @@ export class SettingsComponent implements OnInit {
     await this.router.navigate([path]);
   }
 
-  async ngOnInit() {
-    this.translationService.setPageTitle(Titles.SETTINGS);
-
+  async requestUserInfo() {
     const userInfoRequest = await this.refreshTokensService.refreshTokens();
 
-    if (userInfoRequest)
+    if (userInfoRequest) {
       userInfoRequest.subscribe({
         next: (userInfo) => {
           this.userInfo = userInfo;
           this.userId = userInfo.userId;
           this.firstName = userInfo.firstName;
           this.lastName = userInfo.lastName;
+          this.namePronunciation = userInfo.namePronunciation;
+          this.homeAddress = userInfo.homeAddress;
+          this.homePhone = userInfo.homePhone;
           this.email = userInfo.email;
           this.isProfilePicPresent = userInfo.isProfilePicPresent;
         }
       });
+    }
 
     this.getUserSecuritySettings();
+  }
+
+  async ngOnInit() {
+    this.translationService.setPageTitle(Titles.SETTINGS);
+    await this.requestUserInfo();
   }
 }

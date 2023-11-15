@@ -67,4 +67,31 @@ export class CreateUserDto {
   @IsOptional()
   @IsEnum(Language)
   readonly language?: Language;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.NAME_PRONUNS_DESC,
+    example: DocsProperty.NAME_PRONUNS_EXAMPLE
+  })
+  @ApiPropertyOptional()
+  @IsOptional()
+  readonly namePronunciation?: string;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.HOME_ADDRESS_DESC,
+    example: DocsProperty.HOME_ADDRESS_EXAMPLE
+  })
+  @ApiPropertyOptional()
+  @IsOptional()
+  readonly homeAddress?: string;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.HOME_PHONE_DESC,
+    example: DocsProperty.HOME_PHONE_EXAMPLE
+  })
+  @ApiPropertyOptional()
+  @IsOptional()
+  readonly homePhone?: string;
 }

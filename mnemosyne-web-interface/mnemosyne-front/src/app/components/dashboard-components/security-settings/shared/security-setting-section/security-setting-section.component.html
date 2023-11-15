@@ -1,7 +1,16 @@
 <div class="security-setting-section" *ngIf="showSection">
   <div class="security-setting-section-content">
     <div class="text-section">
-      <p class="security-setting-section-title">{{ title }}</p>
+      <div class="flex">
+        <basic-emoji
+          class="security-setting-section-icon"
+          *ngIf="emojiName"
+          [emoji]="emojiName"
+          [width]="24"
+          [height]="24"
+        />
+        <p class="security-setting-section-title">{{ title }}</p>
+      </div>
       <p class="security-setting-section-p">{{ description }}</p>
     </div>
     <div class="button-section">

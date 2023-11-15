@@ -5,6 +5,8 @@
   "managePersonalSettings": "Manage your personal information",
   "securitySettings": "Security settings",
   "manageSecuritySettings": "Manage the security settings of your account",
+  "companySettings": "Company settings",
+  "manageCompanySettings": "Manage and review your company members and settings",
   "securitySettingsRules": {
     "title": "Manage security settings of your account and make sure it is secured",
     "rule1": "Please, make sure you have read Mnemosyne's Security & Privacy policies since some settings are obliged for all users.",

@@ -45,7 +45,7 @@ export class ApiService {
       headers
     });
 
-    const loaderTimeout$ = timer(1000).pipe(
+    const loaderTimeout$ = timer(0).pipe(
       mergeMap(() => {
         this.loaderService.start();
         return request$;

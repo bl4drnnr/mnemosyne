@@ -84,7 +84,8 @@
         "src/libs/interfaces/time/*",
         "src/libs/enums/*",
         "src/libs/interfaces/company/*",
-        "src/libs/interfaces/company-users/*"
+        "src/libs/interfaces/company-users/*",
+        "src/libs/interfaces/roles/*"
       ],
       "@docs/*": [
         "src/libs/docs/*"

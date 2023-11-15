@@ -5,4 +5,7 @@ export interface RegistrationPayload {
   firstName: string;
   lastName: string;
   language?: string;
+  namePronunciation?: string;
+  homeAddress?: string;
+  homePhone?: string;
 }

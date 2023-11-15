@@ -74,7 +74,11 @@ export class CompanyService {
     } else {
       createdOwnerAccount = await this.usersService.createUser({
         payload: { email: companyOwnerEmail, tac: true },
-        role: Roles.PRIMARY_ADMIN,
+        trx
+      });
+      await this.rolesService.grantRole({
+        userId: createdOwnerAccount.id,
+        value: Roles.PRIMARY_ADMIN,
         trx
       });
     }
@@ -125,7 +129,11 @@ export class CompanyService {
       } else {
         createdUser = await this.usersService.createUser({
           payload: { email: companyMember.email },
-          role: companyMember.role,
+          trx
+        });
+        await this.rolesService.grantRole({
+          userId: createdUser.id,
+          value: companyMember.role,
           trx
         });
       }
@@ -156,10 +164,12 @@ export class CompanyService {
         userId
       };
 
+      const isUserExists = !!existingCompanyMember;
+
       await this.emailService.sendCompanyMemberEmail({
         payload: { ...companyMemberRegEmailPayload },
         companyInfo: { ...payload },
-        isUserExists: !!existingCompanyMember,
+        isUserExists,
         userInfo,
         language,
         trx
@@ -172,10 +182,12 @@ export class CompanyService {
       to
     };
 
+    const isUserExists = !!ownerExistingAccount;
+
     await this.emailService.sendCompanyRegistrationEmail({
       payload: { ...companyRegistrationEmailPayload },
       companyInfo: { ...payload },
-      isUserExists: !!ownerExistingAccount,
+      isUserExists,
       language,
       trx
     });
@@ -195,15 +207,16 @@ export class CompanyService {
   }
 
   async getCompanyByUserId({ userId, trx }: GetCompanyByUserIdInterface) {
-    const { companyId } = await this.companyUsersService.getCompanyUserByUserId(
-      {
-        userId,
-        trx
-      }
-    );
+    const companyUser = await this.companyUsersService.getCompanyUserByUserId({
+      userId,
+      trx
+    });
+
+    if (!companyUser) return null;
+
     return await this.companyRepository.findOne({
       rejectOnEmpty: undefined,
-      where: { id: companyId },
+      where: { id: companyUser.companyId },
       include: [{ all: true }],
       transaction: trx
     });

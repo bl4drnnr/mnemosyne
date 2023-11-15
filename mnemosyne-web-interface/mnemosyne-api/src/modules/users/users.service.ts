@@ -2,7 +2,6 @@ import { S3 } from 'aws-sdk';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { User } from '@models/user.model';
-import { RolesService } from '@modules/roles.service';
 import { UserSettings } from '@models/user-settings.model';
 import { EmailService } from '@shared/email.service';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
@@ -34,7 +33,6 @@ import { GetUserByRecoveryKeysInterface } from '@interfaces/get-user-by-recovery
 import { DeleteUserAccountInterface } from '@interfaces/delete-user-account.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
-import { Roles } from '@interfaces/roles.enum';
 import { UserDataNotSetDto } from '@dto/user-data-not-set.dto';
 import { PasswordNotSetDto } from '@dto/password-not-set.dto';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
@@ -51,7 +49,6 @@ import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface
 export class UsersService {
   constructor(
     private readonly cryptographicService: CryptographicService,
-    private readonly roleService: RolesService,
     private readonly emailService: EmailService,
     private readonly configService: ApiConfigService,
     private readonly timeService: TimeService,
@@ -73,14 +70,8 @@ export class UsersService {
     });
   }
 
-  async createUser({
-    payload,
-    role = Roles.DEFAULT,
-    trx: transaction
-  }: CreateUserInterface) {
-    const defaultRole = await this.roleService.getRoleByValue(role);
+  async createUser({ payload, trx: transaction }: CreateUserInterface) {
     const user = await this.userRepository.create(payload, { transaction });
-    await user.$add('roles', [defaultRole.id], { transaction });
     await this.createUserSettings({ userId: user.id, trx: transaction });
     return user;
   }
@@ -261,16 +252,34 @@ export class UsersService {
       isProfilePicPresent = false;
     }
 
-    const { firstName, lastName, email } = await this.getUserById({
+    const {
+      firstName,
+      lastName,
+      namePronunciation,
+      homeAddress,
+      homePhone,
+      email
+    } = await this.getUserById({
       id: userId,
       trx
     });
+
+    const company = await this.companyService.getCompanyByUserId({
+      userId,
+      trx
+    });
+
+    const companyId = company ? company.id : null;
 
     return new GetUserInfoResponseDto({
       userId: userIdHash,
       firstName,
       lastName,
+      namePronunciation,
+      homeAddress,
+      homePhone,
       email,
+      companyId,
       isProfilePicPresent
     });
   }
