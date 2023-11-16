@@ -81,6 +81,7 @@ export class UserInfoSettingsComponent {
       homeAddress,
       homePhone
     });
+
     this.getUserInfoEvent.emit();
   }
 }
