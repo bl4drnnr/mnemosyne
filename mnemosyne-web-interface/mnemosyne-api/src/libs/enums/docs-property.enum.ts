@@ -171,5 +171,6 @@ export enum DocsProperty {
   HOME_ADDRESS_DESC = 'User home address',
   HOME_ADDRESS_EXAMPLE = 'One Apple Park Way, United States',
   HOME_PHONE_DESC = 'User home phone',
-  HOME_PHONE_EXAMPLE = '(800) 1231-1234'
+  HOME_PHONE_EXAMPLE = '(800) 1231-1234',
+  COMPANY_USERS_DESC = 'List of company users (id and email)'
 }

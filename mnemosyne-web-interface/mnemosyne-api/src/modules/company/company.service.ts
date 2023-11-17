@@ -22,6 +22,8 @@ import { CompanyAccountConfirmedDto } from '@dto/company-account-confirmed.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
 import { RolesService } from '@modules/roles.service';
 import { User } from '@models/user.model';
+import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.interface';
+import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 
 @Injectable()
 export class CompanyService {
@@ -193,6 +195,45 @@ export class CompanyService {
     });
 
     return new CompanyCreatedDto();
+  }
+
+  async getCompanyInformationById({
+    companyId,
+    trx: transaction
+  }: GetCompanyInfoByIdInterface) {
+    const {
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerId,
+      companyUsers
+    } = await this.companyRepository.findByPk(companyId, {
+      transaction,
+      include: [{ all: true }]
+    });
+
+    const { email: companyOwnerEmail } = await this.usersService.getUserById({
+      id: companyOwnerId,
+      trx: transaction
+    });
+
+    const companyUsersIds = companyUsers.map(
+      (companyUser) => companyUser.userId
+    );
+
+    const users = await this.usersService.getUsersByIds({
+      ids: companyUsersIds,
+      attributes: ['id', 'email'],
+      trx: transaction
+    });
+
+    return new GetCompanyByIdDto({
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerEmail,
+      companyUsers: users
+    });
   }
 
   async getCompanyByName({

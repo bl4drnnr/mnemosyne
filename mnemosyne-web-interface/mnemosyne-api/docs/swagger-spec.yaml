@@ -555,9 +555,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/TacNotAcceptedException"
       tags:
+        &a4
         - Company
       security:
         - basicAuth: []
+  /api/company/company-information:
+    get:
+      operationId: CompanyController_getCompanyInformationById
+      summary: Endpoint is responsible for getting information about the company by ID.
+      parameters:
+        - name: companyId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: As a response endpoint returns information about the company by ID.
+      tags: *a4
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
@@ -607,7 +622,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags:
-        &a4
+        &a5
         - Security
       security:
         - basicAuth: []
@@ -639,7 +654,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/generate-2fa-qr:
@@ -657,7 +672,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/QrCodeDto"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -702,7 +717,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/login-verify-2fa:
@@ -736,7 +751,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/verify-2fa:
@@ -767,7 +782,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCodeException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -801,7 +816,7 @@ paths:
                   - $ref: "#/components/schemas/TwoFaNotSetException"
                   - $ref: "#/components/schemas/PhoneNotSetException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -840,7 +855,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/PhoneAlreadyTakenException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/login-send-sms-code:
@@ -872,7 +887,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/send-sms-code:
@@ -902,7 +917,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -950,7 +965,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/get-sms-code:
@@ -985,7 +1000,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/PhoneNotSetException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1007,7 +1022,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PhoneNotSetException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1053,7 +1068,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/login-verify-mobile-phone:
@@ -1090,7 +1105,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a4
+      tags: *a5
       security:
         - basicAuth: []
   /api/security/verify-mobile-phone:
@@ -1123,7 +1138,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1159,7 +1174,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1199,7 +1214,7 @@ paths:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongDeletionConfirmationException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1239,7 +1254,7 @@ paths:
                   - $ref: "#/components/schemas/PreviousPasswordException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1275,7 +1290,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmailAlreadyChangedException"
-      tags: *a4
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1313,7 +1328,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags:
-        &a5
+        &a6
         - Recovery
       security:
         - basicAuth: []
@@ -1346,7 +1361,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/recovery/generate-recovery-keys:
@@ -1369,7 +1384,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RecoveryKeysResponseDto"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1403,7 +1418,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongRecoveryKeysException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
 info:

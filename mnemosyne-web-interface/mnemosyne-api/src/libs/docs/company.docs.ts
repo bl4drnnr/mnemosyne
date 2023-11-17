@@ -47,4 +47,22 @@ export abstract class CompanyDocs {
       } as ApiBodyOptions
     };
   }
+
+  static get GetCompanyInfo() {
+    const ApiModels = [];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting information about the company by ID.';
+    const apiResponseDesc =
+      'As a response endpoint returns information about the company by ID.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc
+      }
+    };
+  }
 }

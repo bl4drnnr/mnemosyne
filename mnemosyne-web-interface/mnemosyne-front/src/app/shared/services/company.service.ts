@@ -6,6 +6,8 @@ import { Controller } from '@interfaces/controller.enum';
 import { CompanyEndpoint } from '@interfaces/company.enum';
 import { CreateCompanyPayload } from '@payloads/create-company.interface';
 import { CompanyCreatedResponse } from '@responses/company-created.enum';
+import { GetCompanyByIdInterface } from '@payloads/get-company-by-id.interface';
+import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +27,17 @@ export class CompanyService {
       controller: Controller.COMPANY,
       action: CompanyEndpoint.CREATE_COMPANY_ACCOUNT,
       payload
+    });
+  }
+
+  getCompanyInformationById({
+    companyId
+  }: GetCompanyByIdInterface): Observable<GetCompanyInfoByIdInterface> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.COMPANY,
+      action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID,
+      params: { companyId }
     });
   }
 }

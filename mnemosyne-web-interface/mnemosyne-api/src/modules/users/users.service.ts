@@ -44,6 +44,7 @@ import { CompanyMemberAccConfirmedDto } from '@dto/company-member-acc-confirmed.
 import { GetUserInfoResponseDto } from '@dto/get-user-info-response.dto';
 import { GetUserSecResponseDto } from '@dto/get-user-sec-response.dto';
 import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface';
+import { GetUsersByIdsInterface } from '@interfaces/get-users-by-ids.interface';
 
 @Injectable()
 export class UsersService {
@@ -112,6 +113,18 @@ export class UsersService {
   async getUserById({ id, trx: transaction }: GetUserByIdInterface) {
     return await this.userRepository.findByPk(id, {
       include: { all: true },
+      transaction
+    });
+  }
+
+  async getUsersByIds({
+    ids,
+    attributes,
+    trx: transaction
+  }: GetUsersByIdsInterface) {
+    return await this.userRepository.findAll({
+      where: { id: ids },
+      attributes,
       transaction
     });
   }
