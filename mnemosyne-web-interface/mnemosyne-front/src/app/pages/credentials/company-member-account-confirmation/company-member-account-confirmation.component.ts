@@ -6,6 +6,7 @@ import { Titles } from '@interfaces/titles.enum';
 import { ConfirmCompanyMemberAccEnum } from '@responses/confirm-company-member-acc.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { StaticService } from '@services/static.service';
+import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
 
 @Component({
   selector: 'app-company-member-account-confirmation',
@@ -26,6 +27,10 @@ export class CompanyMemberAccountConfirmationComponent implements OnInit {
 
   firstName: string;
   lastName: string;
+  namePronunciation: string;
+  homeAddress: string;
+  homePhone: string;
+
   incorrectFirstName: boolean;
   incorrectLastName: boolean;
   password: string;
@@ -52,12 +57,23 @@ export class CompanyMemberAccountConfirmationComponent implements OnInit {
   microsoftAuthAppLink = this.staticService.getMfaAuthApps().microsoft;
 
   confirmCompanyMemberAccount(hash: string) {
+    const confirmationPayload: ConfirmCompanyAccountInterface = {
+      confirmationHash: hash,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      password: this.password
+    };
+
+    if (this.namePronunciation)
+      confirmationPayload.namePronunciation = this.namePronunciation;
+
+    if (this.homeAddress) confirmationPayload.homeAddress = this.homeAddress;
+
+    if (this.homePhone) confirmationPayload.homePhone = this.homePhone;
+
     this.authenticationService
       .confirmCompanyMembership({
-        confirmationHash: hash,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        password: this.password
+        ...confirmationPayload
       })
       .subscribe({
         next: ({ message }) => {

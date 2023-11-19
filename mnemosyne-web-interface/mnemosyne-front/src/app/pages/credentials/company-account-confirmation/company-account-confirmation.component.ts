@@ -6,6 +6,7 @@ import { Titles } from '@interfaces/titles.enum';
 import { AuthenticationService } from '@services/authentication.service';
 import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.enum';
 import { StaticService } from '@services/static.service';
+import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
 
 @Component({
   selector: 'page-company-account-confirmation',
@@ -26,6 +27,10 @@ export class CompanyAccountConfirmationComponent implements OnInit {
 
   firstName: string;
   lastName: string;
+  namePronunciation: string;
+  homeAddress: string;
+  homePhone: string;
+
   incorrectFirstName: boolean;
   incorrectLastName: boolean;
   password: string;
@@ -52,12 +57,23 @@ export class CompanyAccountConfirmationComponent implements OnInit {
   microsoftAuthAppLink = this.staticService.getMfaAuthApps().microsoft;
 
   confirmCompanyAccount(hash: string) {
+    const confirmationPayload: ConfirmCompanyAccountInterface = {
+      confirmationHash: hash,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      password: this.password
+    };
+
+    if (this.namePronunciation)
+      confirmationPayload.namePronunciation = this.namePronunciation;
+
+    if (this.homeAddress) confirmationPayload.homeAddress = this.homeAddress;
+
+    if (this.homePhone) confirmationPayload.homePhone = this.homePhone;
+
     this.authenticationService
       .confirmCompanyAccount({
-        confirmationHash: hash,
-        firstName: this.firstName,
-        lastName: this.lastName,
-        password: this.password
+        ...confirmationPayload
       })
       .subscribe({
         next: ({ message }) => {
