@@ -217,6 +217,8 @@ export class CompanyService {
       trx: transaction
     });
 
+    // TODO Add pagination
+
     const companyUsersIds = companyUsers.map(
       (companyUser) => companyUser.userId
     );
