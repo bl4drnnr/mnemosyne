@@ -58,5 +58,7 @@
   "member-already-on-list": "Członek firmy jest już na liście",
   "company-already-exists": "Firma o takiej nazwie już istnieje",
   "phone-already-taken": "Telefon komórkowy został już zajęty",
-  "wrong-deletion-confirmation": "Błędne dane potwierdzające usunięcie"
+  "wrong-deletion-confirmation": "Błędne dane potwierdzające usunięcie",
+  "parse-error": "Błąd analizy",
+  "company-not-found": "Firma nie została znaleziona"
 }

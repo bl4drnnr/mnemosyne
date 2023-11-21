@@ -15,9 +15,10 @@ import { FormsModule } from '@angular/forms';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
 import { CopyClipboardDirective } from '@directives/clipboard.directive';
-import { QrMfaComponent } from './qr-mfa/qr-mfa.component';
-import { PhoneComponent } from './phone/phone.component';
-import { ArrowComponent } from './arrow/arrow.component';
+import { QrMfaComponent } from '@components/qr-mfa/qr-mfa.component';
+import { PhoneComponent } from '@components/phone/phone.component';
+import { ArrowComponent } from '@components/arrow/arrow.component';
+import { PaginationComponent } from '@components/pagination/pagination.component';
 
 const components = [
   ButtonComponent,
@@ -30,17 +31,15 @@ const components = [
   InputMfaComponent,
   LinkComponent,
   ModalComponent,
-  SpinnerComponent
+  SpinnerComponent,
+  QrMfaComponent,
+  PhoneComponent,
+  ArrowComponent,
+  PaginationComponent
 ];
 
 @NgModule({
-  declarations: [
-    ...components,
-    CopyClipboardDirective,
-    QrMfaComponent,
-    PhoneComponent,
-    ArrowComponent
-  ],
+  declarations: [...components, CopyClipboardDirective],
   imports: [
     CommonModule,
     NgOptimizedImage,
@@ -48,6 +47,6 @@ const components = [
     TranslocoModule,
     ModeToggleModule
   ],
-  exports: [...components, QrMfaComponent, PhoneComponent, ArrowComponent]
+  exports: [...components]
 })
 export class BasicComponentsModule {}

@@ -58,5 +58,7 @@
   "member-already-on-list": "Company member is already on the list",
   "company-already-exists": "Company with this name already exists",
   "phone-already-taken": "Mobile phone has already been taken",
-  "wrong-deletion-confirmation": "Wrong deletion confirmation data"
+  "wrong-deletion-confirmation": "Wrong deletion confirmation data",
+  "parse-error": "Parse error",
+  "company-not-found": "Company has not been found"
 }

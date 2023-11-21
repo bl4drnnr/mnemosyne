@@ -25,6 +25,7 @@ import { User } from '@models/user.model';
 import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.interface';
 import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 import { ParseException } from '@exceptions/parse.exception';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
 
 @Injectable()
 export class CompanyService {
@@ -209,16 +210,20 @@ export class CompanyService {
 
     if (isNaN(page) || isNaN(limit)) throw new ParseException();
 
+    const company = await this.companyRepository.findByPk(companyId, {
+      transaction,
+      include: [{ all: true }]
+    });
+
+    if (!company) throw new CompanyNotFoundException();
+
     const {
       companyName,
       companyLocation,
       companyWebsite,
       companyOwnerId,
       companyUsers
-    } = await this.companyRepository.findByPk(companyId, {
-      transaction,
-      include: [{ all: true }]
-    });
+    } = company;
 
     const { email: companyOwnerEmail } = await this.usersService.getUserById({
       id: companyOwnerId,

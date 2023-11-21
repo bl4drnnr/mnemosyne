@@ -1,10 +1,12 @@
 import {
   ApiBadRequestResponse,
   ApiBasicAuth,
+  ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
@@ -49,6 +51,12 @@ export class CompanyController {
   @ApiOperation(CompanyDocs.GetCompanyInfo.ApiOperation)
   @ApiExtraModels(...CompanyDocs.GetCompanyInfo.ApiExtraModels)
   @ApiResponse(CompanyDocs.GetCompanyInfo.ApiResponse)
+  @ApiBadRequestResponse(CompanyDocs.GetCompanyInfo.ApiBadRequestResponse)
+  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiCompanyIdQuery)
+  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiLimitQuery)
+  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiPageQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('company-information')
   getCompanyInformationById(

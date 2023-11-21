@@ -14,4 +14,5 @@ export interface GetCompanyInfoByIdInterface {
   companyOwnerId: string;
   companyOwnerEmail: string;
   companyUsers: UsersList;
+  count: number;
 }

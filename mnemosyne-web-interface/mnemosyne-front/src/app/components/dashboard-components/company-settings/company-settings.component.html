@@ -1,0 +1,11 @@
+<div *ngIf="companyInformation">
+  <div *ngFor="let user of companyInformation.companyUsers">
+    Email: {{ user.email }}
+  </div>
+
+  <basic-pagination
+    [itemsPerPage]="limit"
+    [totalItems]="totalItems"
+    (setItemsPerPage)="limit = $event"
+  />
+</div>

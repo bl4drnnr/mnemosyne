@@ -1,0 +1,34 @@
+<div class="pagination-container">
+  <basic-button
+    [label]="'<<'"
+    (buttonClick)="setNewItemsPerPage('1')"
+  />
+  <basic-button
+    [label]="'<'"
+  />
+
+  <basic-button
+    [label]="'1'"
+  />
+  ...
+  <basic-button
+    [label]="totalPages.toString()"
+  />
+
+  <basic-button
+    [label]="'>'"
+  />
+  <basic-button
+    [label]="'>>'"
+  />
+
+  <basic-input
+    class="items-per-page-input"
+    type="number"
+    [value]="itemsPerPage"
+    (valueChange)="setNewItemsPerPage($event)"
+  />
+
+  Total pages: {{ totalPages }}
+  Total items: {{ totalItems }}
+</div>

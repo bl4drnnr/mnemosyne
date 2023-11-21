@@ -62,6 +62,8 @@ export enum DocsProperty {
   COMPANY_CREATED_EXAMPLE = 'company-created',
   COMPANY_EXISTS_DESC = 'Company already exists error message',
   COMPANY_EXISTS_EXAMPLE = 'company-already-exists',
+  COMPANY_NOT_FOUND_DESC = 'Company not found error message',
+  COMPANY_NOT_FOUND_EXAMPLE = 'company-not-found',
   PARSE_EXCEPTION_DESC = 'Parse exception',
   PARSE_EXCEPTION_EXAMPLE = 'parse-error',
   USER_INVITED_DESC = 'User invited response message',

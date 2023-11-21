@@ -14,6 +14,7 @@ export class CompanySettingsComponent implements OnInit {
 
   page: string = '0';
   limit: string = '5';
+  totalItems: number;
 
   constructor(private readonly companyService: CompanyService) {}
 
@@ -26,6 +27,7 @@ export class CompanySettingsComponent implements OnInit {
       })
       .subscribe({
         next: (companyInformation) => {
+          this.totalItems = companyInformation.count;
           this.companyInformation = companyInformation;
         }
       });
