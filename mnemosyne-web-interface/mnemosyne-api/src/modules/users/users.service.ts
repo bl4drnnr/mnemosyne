@@ -45,6 +45,7 @@ import { GetUserInfoResponseDto } from '@dto/get-user-info-response.dto';
 import { GetUserSecResponseDto } from '@dto/get-user-sec-response.dto';
 import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface';
 import { GetUsersByIdsInterface } from '@interfaces/get-users-by-ids.interface';
+import { ConfirmationHash } from '@models/confirmation-hash.model';
 
 @Injectable()
 export class UsersService {
@@ -118,12 +119,23 @@ export class UsersService {
   }
 
   async getUsersByIds({
+    page,
+    limit,
     ids,
     attributes,
     trx: transaction
   }: GetUsersByIdsInterface) {
-    return await this.userRepository.findAll({
+    const offset = page * limit;
+
+    return await this.userRepository.findAndCountAll({
+      include: {
+        model: ConfirmationHash,
+        attributes: ['confirmed', 'createdAt'],
+        where: { confirmationType: Confirmation.REGISTRATION }
+      },
       where: { id: ids },
+      limit,
+      offset,
       attributes,
       transaction
     });

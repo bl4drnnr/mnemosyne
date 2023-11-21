@@ -24,6 +24,7 @@ import { RolesService } from '@modules/roles.service';
 import { User } from '@models/user.model';
 import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.interface';
 import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
+import { ParseException } from '@exceptions/parse.exception';
 
 @Injectable()
 export class CompanyService {
@@ -199,8 +200,15 @@ export class CompanyService {
 
   async getCompanyInformationById({
     companyId,
+    limit: stringLimit,
+    page: stringPage,
     trx: transaction
   }: GetCompanyInfoByIdInterface) {
+    const page = parseInt(stringPage);
+    const limit = parseInt(stringLimit);
+
+    if (isNaN(page) || isNaN(limit)) throw new ParseException();
+
     const {
       companyName,
       companyLocation,
@@ -217,24 +225,38 @@ export class CompanyService {
       trx: transaction
     });
 
-    // TODO Add pagination
-
     const companyUsersIds = companyUsers.map(
       (companyUser) => companyUser.userId
     );
 
-    const users = await this.usersService.getUsersByIds({
+    const { rows, count } = await this.usersService.getUsersByIds({
+      page,
+      limit,
       ids: companyUsersIds,
       attributes: ['id', 'email'],
       trx: transaction
+    });
+
+    const users = rows.map(({ id, email, confirmationHashes }) => {
+      const registrationHash = confirmationHashes[0];
+      return {
+        id,
+        email,
+        registrationHash: {
+          confirmed: registrationHash.confirmed,
+          createdAt: registrationHash.createdAt
+        }
+      };
     });
 
     return new GetCompanyByIdDto({
       companyName,
       companyLocation,
       companyWebsite,
+      companyOwnerId,
       companyOwnerEmail,
-      companyUsers: users
+      companyUsers: users,
+      count
     });
   }
 

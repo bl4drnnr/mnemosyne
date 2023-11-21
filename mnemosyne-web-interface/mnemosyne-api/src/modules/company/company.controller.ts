@@ -53,8 +53,15 @@ export class CompanyController {
   @Get('company-information')
   getCompanyInformationById(
     @Query('companyId') companyId: string,
+    @Query('limit') limit: string,
+    @Query('page') page: string,
     @TransactionParam() trx: Transaction
   ) {
-    return this.companyService.getCompanyInformationById({ companyId, trx });
+    return this.companyService.getCompanyInformationById({
+      companyId,
+      limit,
+      page,
+      trx
+    });
   }
 }
