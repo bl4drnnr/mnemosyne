@@ -27,6 +27,7 @@ export class CreateMfaComponent {
   phoneCodeSent = false;
   isCountdownRunning = false;
 
+  // TODO Check if it is possible to do translation here
   selectedMfaOption: DropdownInterface;
   mfaOptions: Array<DropdownInterface> = [
     { key: 'phone', value: 'Phone' },

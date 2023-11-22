@@ -17,6 +17,10 @@ export class DropdownComponent {
   @Input() options: Array<DropdownInterface>;
   @Input() defaultLabel: string;
   @Input() disabled: boolean;
+  @Input() defaultValue: DropdownInterface = {
+    key: '',
+    value: ''
+  };
 
   @Output() selectedOption = new EventEmitter<DropdownInterface>();
 

@@ -1,7 +1,6 @@
 <div class="pagination-container">
   <basic-button
     [label]="'<<'"
-    (buttonClick)="setNewItemsPerPage('1')"
   />
   <basic-button
     [label]="'<'"
@@ -22,11 +21,11 @@
     [label]="'>>'"
   />
 
-  <basic-input
+  <basic-dropdown
     class="items-per-page-input"
-    type="number"
-    [value]="itemsPerPage"
-    (valueChange)="setNewItemsPerPage($event)"
+    [options]="itemsPerPageOptions"
+    [defaultValue]="selectedPaginationOption"
+    (selectedOption)="setNewItemsPerPage($event)"
   />
 
   Total pages: {{ totalPages }}

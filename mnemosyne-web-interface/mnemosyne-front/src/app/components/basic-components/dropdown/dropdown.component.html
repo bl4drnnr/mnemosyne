@@ -5,7 +5,7 @@
     [disabled]="disabled"
   >
     <basic-arrow [isArrowOpen]="isDropdownOpen" />
-    {{ currentOption || defaultLabel }}
+    {{ defaultValue.value || currentOption || defaultLabel }}
   </button>
   <div class="dropdown-menu" [ngClass]="{ 'show': isDropdownOpen }">
     <button

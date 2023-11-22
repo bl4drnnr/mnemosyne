@@ -1,5 +1,5 @@
 export interface GetCompanyByIdInterface {
   companyId: string;
-  limit: string;
+  pageSize: string;
   page: string;
 }

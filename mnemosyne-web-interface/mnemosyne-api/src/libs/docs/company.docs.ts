@@ -61,7 +61,7 @@ export abstract class CompanyDocs {
       'Parse exception is thrown in case if page or limit params cannot be parsed as number.';
 
     const companyIdQueryDesc = 'Query for the company id.';
-    const limitQueryDesc =
+    const pageSizeQueryDesc =
       'Query for limit in order to get list of company users.';
     const pageQueryDesc =
       'Query for page in order to get list of comapny users.';
@@ -73,9 +73,9 @@ export abstract class CompanyDocs {
       required: true
     };
 
-    const limitQuery = {
-      description: limitQueryDesc,
-      name: 'limit',
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
       type: String,
       required: true
     };
@@ -100,7 +100,7 @@ export abstract class CompanyDocs {
         schema: { $ref: getSchemaPath(ParseException) }
       },
       ApiCompanyIdQuery: companyIdQuery,
-      ApiLimitQuery: limitQuery,
+      ApiPageSizeQuery: pageSizeQuery,
       ApiPageQuery: pageQuery
     };
   }

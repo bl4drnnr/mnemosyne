@@ -13,17 +13,17 @@ export class CompanySettingsComponent implements OnInit {
   companyInformation: GetCompanyInfoByIdInterface;
 
   page: string = '0';
-  limit: string = '5';
+  pageSize: string = '10';
   totalItems: number;
 
   constructor(private readonly companyService: CompanyService) {}
 
-  ngOnInit() {
+  fetchUsers() {
     this.companyService
       .getCompanyInformationById({
         companyId: this.companyId,
         page: this.page,
-        limit: this.limit
+        pageSize: this.pageSize
       })
       .subscribe({
         next: (companyInformation) => {
@@ -31,5 +31,9 @@ export class CompanySettingsComponent implements OnInit {
           this.companyInformation = companyInformation;
         }
       });
+  }
+
+  ngOnInit() {
+    this.fetchUsers();
   }
 }

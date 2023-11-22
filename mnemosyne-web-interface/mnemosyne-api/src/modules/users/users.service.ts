@@ -67,7 +67,7 @@ export class UsersService {
     return await this.userRepository.findOne({
       rejectOnEmpty: undefined,
       where: { email },
-      include: [{ all: true }],
+      include: { all: true },
       transaction
     });
   }
@@ -119,14 +119,12 @@ export class UsersService {
   }
 
   async getUsersByIds({
-    page,
+    offset,
     limit,
     ids,
     attributes,
     trx: transaction
   }: GetUsersByIdsInterface) {
-    const offset = page * limit;
-
     return await this.userRepository.findAndCountAll({
       include: {
         model: ConfirmationHash,

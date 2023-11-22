@@ -33,13 +33,13 @@ export class CompanyService {
   getCompanyInformationById({
     companyId,
     page,
-    limit
+    pageSize
   }: GetCompanyByIdInterface): Observable<GetCompanyInfoByIdInterface> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID,
-      params: { companyId, page, limit }
+      params: { companyId, page, pageSize }
     });
   }
 }

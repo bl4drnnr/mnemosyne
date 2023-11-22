@@ -25,6 +25,8 @@
         'error': showError,
         'on-white': onWhite
       }"
+      [min]="min"
+      [max]="max"
       [disabled]="disabled"
       [(ngModel)]="value"
       [type]="passwordTypes.includes(type) ? 'password' : type"

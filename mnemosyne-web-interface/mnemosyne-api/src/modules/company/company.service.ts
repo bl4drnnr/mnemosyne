@@ -26,6 +26,7 @@ import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.
 import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 import { ParseException } from '@exceptions/parse.exception';
 import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { DeleteCompanyAccountInterface } from '@interfaces/delete-company-account.interface';
 
 @Injectable()
 export class CompanyService {
@@ -201,18 +202,18 @@ export class CompanyService {
 
   async getCompanyInformationById({
     companyId,
-    limit: stringLimit,
-    page: stringPage,
+    page,
+    pageSize,
     trx: transaction
   }: GetCompanyInfoByIdInterface) {
-    const page = parseInt(stringPage);
-    const limit = parseInt(stringLimit);
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
 
-    if (isNaN(page) || isNaN(limit)) throw new ParseException();
+    if (isNaN(offset) || isNaN(limit)) throw new ParseException();
 
     const company = await this.companyRepository.findByPk(companyId, {
       transaction,
-      include: [{ all: true }]
+      include: { all: true }
     });
 
     if (!company) throw new CompanyNotFoundException();
@@ -235,7 +236,7 @@ export class CompanyService {
     );
 
     const { rows, count } = await this.usersService.getUsersByIds({
-      page,
+      offset,
       limit,
       ids: companyUsersIds,
       attributes: ['id', 'email'],
@@ -287,7 +288,7 @@ export class CompanyService {
     return await this.companyRepository.findOne({
       rejectOnEmpty: undefined,
       where: { id: companyUser.companyId },
-      include: [{ all: true }],
+      include: { all: true },
       transaction: trx
     });
   }
@@ -374,6 +375,14 @@ export class CompanyService {
     });
 
     return new CompanyMemberAccConfirmedDto();
+  }
+
+  deleteCompanyAccount({
+    userId,
+    payload,
+    trx
+  }: DeleteCompanyAccountInterface) {
+    const { language } = payload;
   }
 
   private async createCompanyAccount({
