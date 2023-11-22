@@ -12,19 +12,28 @@ export class CompanySettingsComponent implements OnInit {
 
   companyInformation: GetCompanyInfoByIdInterface;
 
+  page: string = '0';
+  pageSize: string = '10';
+  totalItems: number;
+
   constructor(private readonly companyService: CompanyService) {}
 
-  ngOnInit() {
+  fetchUsers() {
     this.companyService
       .getCompanyInformationById({
-        companyId: this.companyId
+        companyId: this.companyId,
+        page: this.page,
+        pageSize: this.pageSize
       })
       .subscribe({
         next: (companyInformation) => {
+          this.totalItems = companyInformation.count;
           this.companyInformation = companyInformation;
         }
       });
   }
 
-  protected readonly JSON = JSON;
+  ngOnInit() {
+    this.fetchUsers();
+  }
 }

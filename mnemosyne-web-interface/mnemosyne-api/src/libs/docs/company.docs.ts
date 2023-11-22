@@ -4,6 +4,8 @@ import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception'
 import { CompanyExistsException } from '@exceptions/company-exists.exception';
 import { CreateCompanyDto } from '@dto/create-company.dto';
 import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
+import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
+import { ParseException } from '@exceptions/parse.exception';
 
 export abstract class CompanyDocs {
   static get CreateCompany() {
@@ -49,20 +51,57 @@ export abstract class CompanyDocs {
   }
 
   static get GetCompanyInfo() {
-    const ApiModels = [];
+    const ApiModels = [GetCompanyByIdDto, ParseException];
 
     const apiOperationSum =
       'Endpoint is responsible for getting information about the company by ID.';
     const apiResponseDesc =
       'As a response endpoint returns information about the company by ID.';
+    const apiBadRequestRespDesc =
+      'Parse exception is thrown in case if page or limit params cannot be parsed as number.';
+
+    const companyIdQueryDesc = 'Query for the company id.';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of company users.';
+    const pageQueryDesc =
+      'Query for page in order to get list of comapny users.';
+
+    const companyIdQuery = {
+      description: companyIdQueryDesc,
+      name: 'companyId',
+      type: String,
+      required: true
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: true
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: true
+    };
 
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
       ApiResponse: {
         status: 200,
-        description: apiResponseDesc
-      }
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetCompanyByIdDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(ParseException) }
+      },
+      ApiCompanyIdQuery: companyIdQuery,
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery
     };
   }
 }

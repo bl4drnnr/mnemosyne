@@ -24,6 +24,9 @@ import { RolesService } from '@modules/roles.service';
 import { User } from '@models/user.model';
 import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.interface';
 import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
+import { ParseException } from '@exceptions/parse.exception';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { DeleteCompanyAccountInterface } from '@interfaces/delete-company-account.interface';
 
 @Injectable()
 export class CompanyService {
@@ -199,18 +202,32 @@ export class CompanyService {
 
   async getCompanyInformationById({
     companyId,
+    page,
+    pageSize,
     trx: transaction
   }: GetCompanyInfoByIdInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
+    const company = await this.companyRepository.findByPk(companyId, {
+      transaction,
+      include: { all: true }
+    });
+
+    if (!company) throw new CompanyNotFoundException();
+
     const {
       companyName,
       companyLocation,
       companyWebsite,
       companyOwnerId,
       companyUsers
-    } = await this.companyRepository.findByPk(companyId, {
-      transaction,
-      include: [{ all: true }]
-    });
+    } = company;
 
     const { email: companyOwnerEmail } = await this.usersService.getUserById({
       id: companyOwnerId,
@@ -221,18 +238,34 @@ export class CompanyService {
       (companyUser) => companyUser.userId
     );
 
-    const users = await this.usersService.getUsersByIds({
+    const { rows, count } = await this.usersService.getUsersByIds({
+      offset,
+      limit,
       ids: companyUsersIds,
       attributes: ['id', 'email'],
       trx: transaction
+    });
+
+    const users = rows.map(({ id, email, confirmationHashes }) => {
+      const registrationHash = confirmationHashes[0];
+      return {
+        id,
+        email,
+        registrationHash: {
+          confirmed: registrationHash.confirmed,
+          createdAt: registrationHash.createdAt
+        }
+      };
     });
 
     return new GetCompanyByIdDto({
       companyName,
       companyLocation,
       companyWebsite,
+      companyOwnerId,
       companyOwnerEmail,
-      companyUsers: users
+      companyUsers: users,
+      count
     });
   }
 
@@ -258,7 +291,7 @@ export class CompanyService {
     return await this.companyRepository.findOne({
       rejectOnEmpty: undefined,
       where: { id: companyUser.companyId },
-      include: [{ all: true }],
+      include: { all: true },
       transaction: trx
     });
   }
@@ -345,6 +378,14 @@ export class CompanyService {
     });
 
     return new CompanyMemberAccConfirmedDto();
+  }
+
+  deleteCompanyAccount({
+    userId,
+    payload,
+    trx
+  }: DeleteCompanyAccountInterface) {
+    const { language } = payload;
   }
 
   private async createCompanyAccount({

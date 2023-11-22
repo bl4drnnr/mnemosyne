@@ -1,0 +1,39 @@
+<div class="pagination-container">
+  <basic-button
+    [label]="'<<'"
+    (buttonClick)="goToStartPage()"
+  />
+  <basic-button
+    [label]="'<'"
+    (buttonClick)="setNewCurrentPage(-1)"
+  />
+
+  <basic-button
+    [label]="'1'"
+    (buttonClick)="goToStartPage()"
+  />
+  ...
+  <basic-button
+    [label]="totalPages.toString()"
+    (buttonClick)="goToEndPage()"
+  />
+
+  <basic-button
+    [label]="'>'"
+    (buttonClick)="setNewCurrentPage(1)"
+  />
+  <basic-button
+    [label]="'>>'"
+    (buttonClick)="goToEndPage()"
+  />
+</div>
+
+<div class="pagination-button">
+  <basic-dropdown
+    class="items-per-page-input"
+    [options]="itemsPerPageOptions"
+    [defaultValue]="selectedPaginationOption"
+    (selectedOption)="setNewItemsPerPage($event)"
+  />
+  <basic-input/>
+</div>

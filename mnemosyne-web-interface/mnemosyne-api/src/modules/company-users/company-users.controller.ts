@@ -1,6 +1,8 @@
 import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
 import { CompanyUsersService } from '@modules/company-users.service';
 import {
+  ApiBasicAuth,
+  ApiBearerAuth,
   ApiExtraModels,
   ApiOperation,
   ApiResponse,
@@ -24,6 +26,8 @@ export class CompanyUsersController {
   @ApiOperation(CompanyUsersDocs.InviteUser.ApiOperation)
   @ApiExtraModels(...CompanyUsersDocs.InviteUser.ApiExtraModels)
   @ApiResponse(CompanyUsersDocs.InviteUser.ApiResponse)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
   @Roles('ADMIN')
   @UseGuards(RoleGuard)

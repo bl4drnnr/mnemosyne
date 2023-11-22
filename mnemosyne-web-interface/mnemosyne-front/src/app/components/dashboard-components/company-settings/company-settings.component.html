@@ -1,3 +1,14 @@
-<div>
-  {{ JSON.stringify(companyInformation) }}
+<div *ngIf="companyInformation">
+  <div *ngFor="let user of companyInformation.companyUsers">
+    Email: {{ user.email }}
+  </div>
+
+  <basic-pagination
+    [currentPage]="page"
+    [itemsPerPage]="pageSize"
+    [totalItems]="totalItems"
+    (setCurrentPage)="page = $event"
+    (setItemsPerPage)="pageSize = $event"
+    (fetchItems)="fetchUsers()"
+  />
 </div>

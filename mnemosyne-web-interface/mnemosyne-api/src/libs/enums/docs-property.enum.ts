@@ -62,6 +62,10 @@ export enum DocsProperty {
   COMPANY_CREATED_EXAMPLE = 'company-created',
   COMPANY_EXISTS_DESC = 'Company already exists error message',
   COMPANY_EXISTS_EXAMPLE = 'company-already-exists',
+  COMPANY_NOT_FOUND_DESC = 'Company not found error message',
+  COMPANY_NOT_FOUND_EXAMPLE = 'company-not-found',
+  PARSE_EXCEPTION_DESC = 'Parse exception',
+  PARSE_EXCEPTION_EXAMPLE = 'parse-error',
   USER_INVITED_DESC = 'User invited response message',
   USER_INVITED_EXAMPLE = 'user-invited',
   ACC_CONFIRMED_DESC = 'Account confirmed response message',
@@ -172,5 +176,9 @@ export enum DocsProperty {
   HOME_ADDRESS_EXAMPLE = 'One Apple Park Way, United States',
   HOME_PHONE_DESC = 'User home phone',
   HOME_PHONE_EXAMPLE = '(800) 1231-1234',
-  COMPANY_USERS_DESC = 'List of company users (id and email)'
+  COMPANY_USERS_DESC = 'List of company users (id and email)',
+  COUNT_DESC = 'Count for the pagination',
+  COUNT_EXAMPLE = '5',
+  CONFIRMED_HASH_EXAMPLE = 'false',
+  CONFIRMATION_HASH_CREATED_AT_EXAMPLE = '2023-11-17T11:42:26.534Z'
 }

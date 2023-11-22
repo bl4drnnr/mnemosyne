@@ -567,12 +567,56 @@ paths:
         - name: companyId
           required: true
           in: query
+          description: Query for the company id.
+          schema:
+            type: string
+        - name: page
+          required: true
+          in: query
+          description: Query for page in order to get list of comapny users.
+          schema:
+            type: string
+        - name: pageSize
+          required: true
+          in: query
+          description: Query for limit in order to get list of company users.
           schema:
             type: string
       responses:
         "200":
           description: As a response endpoint returns information about the company by ID.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCompanyByIdDto"
+        "400":
+          description: Parse exception is thrown in case if page or limit params cannot be
+            parsed as number.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParseException"
       tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company/delete-company:
+    delete:
+      operationId: CompanyController_deleteCompanyAccount
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteCompanyDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
@@ -593,6 +637,9 @@ paths:
                 $ref: "#/components/schemas/UserInvitedDto"
       tags:
         - Company Users
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/security/registration-generate-2fa-qr:
     get:
       operationId: SecurityController_registrationGenerateTwoFaQrCode
@@ -2093,6 +2140,71 @@ components:
           example: company-already-exists
       required:
         - message
+    GetCompanyByIdDto:
+      type: object
+      properties:
+        companyName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        companyLocation:
+          type: string
+          description: Company location
+          example: Cupertino, CA 95014
+        companyWebsite:
+          type: string
+          description: Company website
+          example: apple.com
+        companyOwnerId:
+          type: string
+          description: Hashed (MD5) user ID
+          example: 7630e8093291151b656de0dd48a60017
+        companyOwnerEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        companyUsers:
+          description: List of company users (id and email)
+          example:
+            - id: 7630e8093291151b656de0dd48a60017
+              email: joe@doe.com
+              registrationHash:
+                confirmed: "false"
+                createdAt: 2023-11-17T11:42:26.534Z
+          type: array
+          items:
+            type: array
+        count:
+          type: number
+          description: Count for the pagination
+          example: "5"
+      required:
+        - companyName
+        - companyLocation
+        - companyWebsite
+        - companyOwnerId
+        - companyOwnerEmail
+        - companyUsers
+        - count
+    ParseException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Parse exception
+          example: parse-error
+      required:
+        - message
+    DeleteCompanyDto:
+      type: object
+      properties:
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
     InviteUserToCompanyDto:
       type: object
       properties:

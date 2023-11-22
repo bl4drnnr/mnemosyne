@@ -58,5 +58,7 @@
   "member-already-on-list": "Член компании уже есть в списке",
   "company-already-exists": "Компания с таким именем уже существует",
   "phone-already-taken": "Мобильный телефон уже занят",
-  "wrong-deletion-confirmation": "Неправильные данные подтверждения удаления"
+  "wrong-deletion-confirmation": "Неправильные данные подтверждения удаления",
+  "parse-error": "Ошибка синтаксического анализа",
+  "company-not-found": "Компания не найдена"
 }

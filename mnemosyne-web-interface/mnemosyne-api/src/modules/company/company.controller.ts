@@ -1,16 +1,19 @@
 import {
   ApiBadRequestResponse,
   ApiBasicAuth,
+  ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Query,
@@ -24,6 +27,10 @@ import { TransactionParam } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { CompanyDocs } from '@docs/company.docs';
 import { AuthGuard } from '@guards/auth.guard';
+import { Roles } from '@decorators/roles.decorator';
+import { RoleGuard } from '@guards/role.guard';
+import { UserId } from '@decorators/user-id.decorator';
+import { DeleteCompanyDto } from '@dto/delete-company.dto';
 
 @ApiTags('Company')
 @Controller('company')
@@ -49,12 +56,44 @@ export class CompanyController {
   @ApiOperation(CompanyDocs.GetCompanyInfo.ApiOperation)
   @ApiExtraModels(...CompanyDocs.GetCompanyInfo.ApiExtraModels)
   @ApiResponse(CompanyDocs.GetCompanyInfo.ApiResponse)
+  @ApiBadRequestResponse(CompanyDocs.GetCompanyInfo.ApiBadRequestResponse)
+  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiCompanyIdQuery)
+  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiPageSizeQuery)
+  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiPageQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('company-information')
   getCompanyInformationById(
     @Query('companyId') companyId: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
     @TransactionParam() trx: Transaction
   ) {
-    return this.companyService.getCompanyInformationById({ companyId, trx });
+    return this.companyService.getCompanyInformationById({
+      companyId,
+      page,
+      pageSize,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Delete('delete-company')
+  deleteCompanyAccount(
+    @UserId() userId: string,
+    @Body() payload: DeleteCompanyDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyService.deleteCompanyAccount({
+      userId,
+      payload,
+      trx
+    });
   }
 }

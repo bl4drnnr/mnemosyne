@@ -56,6 +56,8 @@ export class InputComponent {
   @Input() maxLength: number;
   @Input() readOnly = false;
   @Input() onWhite = false;
+  @Input() min: string;
+  @Input() max: string;
 
   @Output() valueChange = new EventEmitter<string>();
   @Output() incorrectInput = new EventEmitter<boolean>();

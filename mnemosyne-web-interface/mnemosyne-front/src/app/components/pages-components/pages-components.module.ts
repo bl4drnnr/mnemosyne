@@ -12,17 +12,18 @@ const components = [
   AltRegistrationComponent,
   CreatePasswordComponent,
   CreateMfaComponent,
-  RecoveryKeysComponent
+  RecoveryKeysComponent,
+  InviteCompanyUsersComponent
 ];
 
 @NgModule({
-  declarations: [...components, InviteCompanyUsersComponent],
+  declarations: [...components],
   imports: [
     CommonModule,
     NgOptimizedImage,
     BasicComponentsModule,
     TranslocoModule
   ],
-  exports: [...components, InviteCompanyUsersComponent]
+  exports: [...components]
 })
 export class PagesComponentsModule {}
