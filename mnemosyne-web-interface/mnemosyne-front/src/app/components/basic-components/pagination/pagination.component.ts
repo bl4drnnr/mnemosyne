@@ -7,9 +7,11 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
   styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent {
+  @Input() currentPage: string;
   @Input() itemsPerPage: string;
   @Input() totalItems: number;
   @Output() setItemsPerPage = new EventEmitter<string>();
+  @Output() setCurrentPage = new EventEmitter<string>();
   @Output() fetchItems = new EventEmitter<void>();
 
   selectedPaginationOption: DropdownInterface = {
@@ -41,6 +43,29 @@ export class PaginationComponent {
 
   get totalPages() {
     return Math.ceil(this.totalItems / Number(this.itemsPerPage));
+  }
+
+  get currentPageInt() {
+    return Number(this.currentPage) + 1;
+  }
+
+  setNewCurrentPage(newPage: number) {
+    const actualPage = this.currentPageInt - 1 + newPage;
+
+    if (actualPage >= 0 && actualPage <= this.totalPages) {
+      this.setCurrentPage.emit(String(actualPage));
+      this.fetchItemsList();
+    }
+  }
+
+  goToStartPage() {
+    this.setCurrentPage.emit('0');
+    this.fetchItemsList();
+  }
+
+  goToEndPage() {
+    this.setCurrentPage.emit(String(this.totalPages - 1));
+    this.fetchItemsList();
   }
 
   setNewItemsPerPage({ key, value }: DropdownInterface) {

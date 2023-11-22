@@ -4,8 +4,10 @@
   </div>
 
   <basic-pagination
+    [currentPage]="page"
     [itemsPerPage]="pageSize"
     [totalItems]="totalItems"
+    (setCurrentPage)="page = $event"
     (setItemsPerPage)="pageSize = $event"
     (fetchItems)="fetchUsers()"
   />

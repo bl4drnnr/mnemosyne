@@ -209,7 +209,10 @@ export class CompanyService {
     const offset = Number(page) * Number(pageSize);
     const limit = Number(pageSize);
 
-    if (isNaN(offset) || isNaN(limit)) throw new ParseException();
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
 
     const company = await this.companyRepository.findByPk(companyId, {
       transaction,

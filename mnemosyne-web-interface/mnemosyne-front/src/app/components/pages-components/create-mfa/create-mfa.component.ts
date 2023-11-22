@@ -3,6 +3,7 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { PhoneService } from '@services/phone.service';
 import { MfaService } from '@services/mfa.service';
 import { StaticService } from '@services/static.service';
+import { TranslationService } from '@services/translation.service';
 
 @Component({
   selector: 'page-component-mfa',
@@ -27,7 +28,6 @@ export class CreateMfaComponent {
   phoneCodeSent = false;
   isCountdownRunning = false;
 
-  // TODO Check if it is possible to do translation here
   selectedMfaOption: DropdownInterface;
   mfaOptions: Array<DropdownInterface> = [
     { key: 'phone', value: 'Phone' },
@@ -35,6 +35,7 @@ export class CreateMfaComponent {
   ];
 
   constructor(
+    private readonly translationService: TranslationService,
     private readonly staticService: StaticService,
     private readonly smsService: PhoneService,
     private readonly mfaService: MfaService
