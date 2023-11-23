@@ -28,12 +28,20 @@
   />
 </div>
 
-<div class="pagination-button">
-  <basic-dropdown
-    class="items-per-page-input"
-    [options]="itemsPerPageOptions"
-    [defaultValue]="selectedPaginationOption"
-    (selectedOption)="setNewItemsPerPage($event)"
-  />
-  <basic-input/>
+<div class="pagination-button-container">
+  <div class="pagination-button">
+    <basic-dropdown
+      class="items-per-page-input"
+      [label]="'Items per page'"
+      [options]="itemsPerPageOptions"
+      [defaultValue]="selectedPaginationOption"
+      (selectedOption)="setNewItemsPerPage($event)"
+    />
+  </div>
+  <div class="pagination-button">
+    <basic-input
+      [label]="'Go to page'"
+      [placeholder]="'Page'"
+    />
+  </div>
 </div>

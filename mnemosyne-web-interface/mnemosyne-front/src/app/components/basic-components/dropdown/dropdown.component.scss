@@ -85,3 +85,13 @@
     background-color: var(--color-hover);
   }
 }
+
+.dropdown-label {
+  opacity: .9;
+  font-size: 14px;
+  margin: 14px 0;
+
+  &.on-white {
+    color: $color-black;
+  }
+}

@@ -1,4 +1,8 @@
 <div class="dropdown">
+  <p
+    class="dropdown-label"
+    *ngIf="label"
+  >{{ label }}</p>
   <button
     class="dropdown-toggle"
     (click)="toggleDropdown()"

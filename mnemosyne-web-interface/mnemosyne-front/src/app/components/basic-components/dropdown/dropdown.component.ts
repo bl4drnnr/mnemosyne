@@ -14,6 +14,7 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
   styleUrls: ['./dropdown.component.scss']
 })
 export class DropdownComponent {
+  @Input() label: string;
   @Input() options: Array<DropdownInterface>;
   @Input() defaultLabel: string;
   @Input() disabled: boolean;

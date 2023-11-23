@@ -8,6 +8,11 @@
   width: 70px;
 }
 
-.pagination-button {
+.pagination-button-container {
   display: flex;
+  max-width: 300px;
+}
+
+.pagination-button {
+  width: 50%;
 }
