@@ -58,5 +58,10 @@
   },
   "infoNotSaved": "Informacje o użytkowniku zostały zmienione, ale nie zostały zapisane.",
   "tokenMfaRequired": "Podaj kod z aplikacji uwierzytelniającej.",
-  "phoneMfaRequired": "Wyślij wiadomość SMS z kodem na swój numer telefonu komórkowego i potwierdź go wpisując w poniższe pole."
+  "phoneMfaRequired": "Wyślij wiadomość SMS z kodem na swój numer telefonu komórkowego i potwierdź go wpisując w poniższe pole.",
+  "companySettingsSection": {
+    "generalInfo": "Informacje ogólne",
+    "usersManagement": "Zarządzanie użytkownikami",
+    "securitySettings": "Ustawienia zabezpieczeń"
+  }
 }

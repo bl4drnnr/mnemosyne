@@ -1,11 +1,4 @@
-type UsersList = Array<{
-  id: string;
-  email: string;
-  registrationHash: {
-    confirmed: boolean;
-    createdAt: Date;
-  };
-}>;
+import { UsersList } from '@interfaces/users-list.type';
 
 export interface GetCompanyInfoByIdInterface {
   companyName: string;

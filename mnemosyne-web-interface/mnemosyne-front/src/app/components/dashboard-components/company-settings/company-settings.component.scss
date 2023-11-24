@@ -1,1 +1,41 @@
 @import 'variables';
+
+.company-settings-container {
+  width: 80%;
+  display: flex;
+  margin: 30px auto;
+}
+
+.menu-bar {
+  width: 300px;
+  height: 100%;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+}
+
+.menu-option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 15px 0;
+}
+
+.menu-option-wrapper {
+  width: 90%;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .2s;
+
+  &.active {
+    border: 1px solid var(--main-color);
+  }
+
+  &:hover {
+    background-color: var(--color-hover);
+  }
+}
+
+.content-block {}
