@@ -7,6 +7,7 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
   styleUrls: ['./pagination.component.scss']
 })
 export class PaginationComponent {
+  @Input() itemsPerPageLabel: string;
   @Input() currentPage: string;
   @Input() itemsPerPage: string;
   @Input() totalItems: number;
@@ -72,6 +73,23 @@ export class PaginationComponent {
     this.selectedPaginationOption = { key, value };
     this.setItemsPerPage.emit(key);
     this.fetchItemsList();
+  }
+
+  showPageIndicator() {
+    return (
+      this.totalPages > 2 &&
+      this.currentPageInt !== 1 &&
+      this.currentPageInt !== this.totalPages
+    );
+  }
+
+  manuallySetThePage(newPage: string) {
+    const newPageInt = parseInt(newPage);
+
+    if (newPageInt >= 1 && newPageInt <= this.totalPages) {
+      this.setCurrentPage.emit(String(newPageInt - 1));
+      this.fetchItemsList();
+    }
   }
 
   fetchItemsList() {

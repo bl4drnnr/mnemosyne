@@ -2,6 +2,33 @@
 
 .pagination-container {
   display: flex;
+  width: 300px;
+}
+
+.pagination-box {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  &.right {
+    justify-content: right;
+  }
+
+  &.left {
+    justify-content: left;
+  }
+}
+
+.pagination-page-button {
+  width: 36px;
+
+  &.margin-left {
+    margin-left: 6px;
+  }
+
+  &.margin-right {
+    margin-right: 6px;
+  }
 }
 
 .items-per-page-input {

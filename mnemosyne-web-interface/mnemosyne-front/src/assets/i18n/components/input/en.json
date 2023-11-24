@@ -68,5 +68,7 @@
   "recoveryKey": "Recovery key {{ i }}",
   "fullName": "Full name",
   "provideFullName": "Provide your full name",
-  "accDeletionFullName": "In order to delete an account provide your full name (first name and last name)."
+  "accDeletionFullName": "In order to delete an account provide your full name (first name and last name).",
+  "goToPageLabel": "Go to page",
+  "pagePlaceholder": "Page"
 }
