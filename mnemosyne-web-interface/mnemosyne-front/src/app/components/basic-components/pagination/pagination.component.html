@@ -1,39 +1,72 @@
-<div class="pagination-container">
-  <basic-button
-    [label]="'<<'"
-    (buttonClick)="goToStartPage()"
-  />
-  <basic-button
-    [label]="'<'"
-    (buttonClick)="setNewCurrentPage(-1)"
-  />
+<ng-container *transloco="let t">
+  <div class="pagination-container" *ngIf="totalPages > 1">
+    <div class="pagination-box left">
+      <basic-button
+        class="pagination-page-button"
+        [label]="'<<'"
+        (buttonClick)="goToStartPage()"
+      />
+      <basic-button
+        class="pagination-page-button margin-left"
+        [label]="'<'"
+        (buttonClick)="setNewCurrentPage(-1)"
+      />
+    </div>
 
-  <basic-button
-    [label]="'1'"
-    (buttonClick)="goToStartPage()"
-  />
-  ...
-  <basic-button
-    [label]="totalPages.toString()"
-    (buttonClick)="goToEndPage()"
-  />
+    <div class="pagination-box">
+      <basic-button
+        class="pagination-page-button margin-right"
+        [label]="'1'"
+        [fillButton]="currentPageInt === 1"
+        (buttonClick)="goToStartPage()"
+      />
+      <basic-button
+        class="pagination-page-button"
+        *ngIf="showPageIndicator()"
+        [label]="currentPageInt.toString()"
+        [disabled]="true"
+      />
+      <basic-button
+        class="pagination-page-button margin-left"
+        [label]="totalPages.toString()"
+        [fillButton]="currentPageInt === totalPages"
+        (buttonClick)="goToEndPage()"
+      />
+    </div>
 
-  <basic-button
-    [label]="'>'"
-    (buttonClick)="setNewCurrentPage(1)"
-  />
-  <basic-button
-    [label]="'>>'"
-    (buttonClick)="goToEndPage()"
-  />
-</div>
+    <div class="pagination-box right">
+      <basic-button
+        class="pagination-page-button margin-right"
+        [label]="'>'"
+        (buttonClick)="setNewCurrentPage(1)"
+      />
+      <basic-button
+        class="pagination-page-button"
+        [label]="'>>'"
+        (buttonClick)="goToEndPage()"
+      />
+    </div>
+  </div>
 
-<div class="pagination-button">
-  <basic-dropdown
-    class="items-per-page-input"
-    [options]="itemsPerPageOptions"
-    [defaultValue]="selectedPaginationOption"
-    (selectedOption)="setNewItemsPerPage($event)"
-  />
-  <basic-input/>
-</div>
+  <div class="pagination-button-container">
+    <div class="pagination-button">
+      <basic-dropdown
+        class="items-per-page-input"
+        [label]="itemsPerPageLabel"
+        [options]="itemsPerPageOptions"
+        [defaultValue]="selectedPaginationOption"
+        (selectedOption)="setNewItemsPerPage($event)"
+      />
+    </div>
+    <div class="pagination-button">
+      <basic-input
+        type="number"
+        [min]="'1'"
+        [label]="t('input.goToPageLabel')"
+        [placeholder]="t('input.pagePlaceholder')"
+        [value]="currentPageInt.toString()"
+        (valueChange)="manuallySetThePage($event)"
+      />
+    </div>
+  </div>
+</ng-container>

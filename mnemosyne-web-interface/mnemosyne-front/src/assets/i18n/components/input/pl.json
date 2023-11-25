@@ -68,5 +68,7 @@
   "recoveryKey": "Klucz odzyskiwania {{ i }}",
   "fullName": "Imię i nazwisko",
   "provideFullName": "Podaj swoje pełne imię i nazwisko",
-  "accDeletionFullName": "Aby usunąć konto, podaj swoje pełne imię i nazwisko (imię i nazwisko)."
+  "accDeletionFullName": "Aby usunąć konto, podaj swoje pełne imię i nazwisko (imię i nazwisko).",
+  "goToPageLabel": "Przejdź do strony",
+  "pagePlaceholder": "Strona"
 }

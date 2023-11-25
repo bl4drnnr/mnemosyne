@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CompanyService } from '@services/company.service';
 import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
+import { CompanySettingsSectionType } from '@interfaces/company-settings-section.type';
 
 @Component({
   selector: 'dashboard-company-settings',
@@ -10,6 +11,7 @@ import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interf
 export class CompanySettingsComponent implements OnInit {
   @Input() companyId: string;
 
+  companySettingsSection: CompanySettingsSectionType = 'info';
   companyInformation: GetCompanyInfoByIdInterface;
 
   page: string = '0';
