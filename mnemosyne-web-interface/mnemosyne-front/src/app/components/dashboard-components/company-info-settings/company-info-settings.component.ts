@@ -29,10 +29,11 @@ export class CompanyInfoSettingsComponent {
   @Input() companyWebsite: string;
   @Input() companyOwnerEmail: string;
   @Output() saveCompanyInformationEvent = new EventEmitter<any>();
+  @Output() getCompanyInformationEvent = new EventEmitter<any>();
 
-  incorrectCompanyName = true;
-  incorrectLocationName = true;
-  incorrectFQDN = true;
+  incorrectCompanyName: boolean = false;
+  incorrectLocationName: boolean = false;
+  incorrectFQDN: boolean = false;
 
   constructor(public validationService: ValidationService) {}
 
@@ -54,15 +55,27 @@ export class CompanyInfoSettingsComponent {
     );
   }
 
-  incorrectData() {
+  incorrectCompanyData() {
     return (
+      !this.companyName ||
+      !this.companyLocation ||
       this.incorrectCompanyName ||
       this.incorrectLocationName ||
       this.incorrectFQDN
     );
   }
 
+  checkAndWriteCompanyWebsite(companyWebsite: string) {
+    this.companyWebsite = companyWebsite;
+    this.incorrectFQDN = !this.validationService.isFQDN(companyWebsite);
+  }
+
+  saveButtonDisabled() {
+    return !this.wasInfoChanged() || this.incorrectCompanyData();
+  }
+
   saveCompanyInformation() {
     this.saveCompanyInformationEvent.emit();
+    this.getCompanyInformationEvent.emit();
   }
 }

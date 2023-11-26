@@ -56,8 +56,10 @@
     "sectionDesc": "Wygenerowane klucze są używane, gdy nie masz dostępu do MFA/telefonu komórkowego i chcesz przywrócić dostęp do konta.",
     "successSetup": "Klucze odzyskiwania zostały pomyślnie skonfigurowane"
   },
-  "infoNotSaved": "Informacje o użytkowniku zostały zmienione, ale nie zostały zapisane.",
+  "userInfoNotSaved": "Informacje o użytkowniku zostały zmienione, ale nie zostały zapisane.",
+  "userInfoProvidedWrong": "Jedno z pól informacji o użytkowniku zostało podane błędnie!",
   "companyInfoNotSaved": "Informacje o firmie zostały zmienione, ale nie zostały zapisane.",
+  "companyInfoProvidedWrong": "Jedno z pól z informacjami o firmie zostało wprowadzone błędnie!",
   "tokenMfaRequired": "Podaj kod z aplikacji uwierzytelniającej.",
   "phoneMfaRequired": "Wyślij wiadomość SMS z kodem na swój numer telefonu komórkowego i potwierdź go wpisując w poniższe pole.",
   "companySettingsSection": {

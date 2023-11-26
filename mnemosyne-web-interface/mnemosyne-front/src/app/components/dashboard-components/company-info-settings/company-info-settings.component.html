@@ -36,8 +36,7 @@
       [showError]="!validationService.isFQDN(companyWebsite)"
       [errorMessage]="t('input.wrongFQDN')"
       [value]="companyWebsite"
-      (valueChange)="companyWebsite = $event"
-      (incorrectInput)="incorrectFQDN = $event"
+      (valueChange)="checkAndWriteCompanyWebsite($event)"
     />
     <basic-input
       type="email"
@@ -56,8 +55,16 @@
       <p class="info-changed-text">{{ t('settings.companyInfoNotSaved') }}</p>
     </div>
 
+    <div
+      class="info-changed"
+      *ngIf="incorrectCompanyData()"
+      [@infoChangedAnimation]="true"
+    >
+      <p class="info-changed-text">{{ t('settings.companyInfoProvidedWrong') }}</p>
+    </div>
+
     <basic-button
-      [disabled]="!wasInfoChanged() || incorrectData()"
+      [disabled]="saveButtonDisabled()"
       [label]="t('button.saveSettings')"
       (buttonClick)="saveCompanyInformation()"
     />
