@@ -65,7 +65,9 @@
   "companySettingsSection": {
     "generalInfo": "General information",
     "usersManagement": "Users management",
+    "rolesManagement": "Roles management",
     "securitySettings": "Security settings",
-    "companyInfoDesc": "Below you will be able to find different company information settings that can be modified. In order to change some settings, you need to go to different settings."
+    "companyInfoDesc": "Below you will be able to find different company information settings that can be modified. In order to change some settings, you need to go to different settings.",
+    "usersManagementDesc": "Here is the list of all company members, their roles and account confirmation status. From this page you will be able to add users, delete users from the company and modify their level of access."
   }
 }

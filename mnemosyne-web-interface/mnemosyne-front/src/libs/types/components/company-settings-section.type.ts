@@ -1,1 +1,5 @@
-export type CompanySettingsSectionType = 'info' | 'users' | 'security';
+export type CompanySettingsSectionType =
+  | 'info'
+  | 'users'
+  | 'roles'
+  | 'security';

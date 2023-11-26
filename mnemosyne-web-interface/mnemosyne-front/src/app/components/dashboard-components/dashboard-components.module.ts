@@ -12,6 +12,7 @@ import { CompanySettingsComponent } from '@components/dashboard-components/compa
 import { CompanyInfoSettingsComponent } from '@components/company-info-settings/company-info-settings.component';
 import { CompanyUsersSettingsComponent } from '@components/company-users-settings/company-users-settings.component';
 import { CompanySecuritySettingsComponent } from '@components/company-security-settings/company-security-settings.component';
+import { CompanyRolesManagementComponent } from '@components/company-roles-management/company-roles-management.component';
 
 const components = [
   SecuritySettingsComponent,
@@ -22,7 +23,8 @@ const components = [
   CompanySettingsComponent,
   CompanyInfoSettingsComponent,
   CompanyUsersSettingsComponent,
-  CompanySecuritySettingsComponent
+  CompanySecuritySettingsComponent,
+  CompanyRolesManagementComponent
 ];
 
 @NgModule({

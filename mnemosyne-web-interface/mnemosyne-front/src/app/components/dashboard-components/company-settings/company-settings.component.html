@@ -28,6 +28,18 @@
       <div class="menu-option">
         <div
           class="menu-option-wrapper"
+          [ngClass]="{ 'active': companySettingsSection === 'roles' }"
+          (click)="companySettingsSection = 'roles'"
+        >
+          <div class="emoji-wrapper">
+            <basic-emoji emoji="warning.png" [width]="24" [height]="24"/>
+          </div>
+          <p>{{ t('settings.companySettingsSection.rolesManagement') }}</p>
+        </div>
+      </div>
+      <div class="menu-option">
+        <div
+          class="menu-option-wrapper"
           [ngClass]="{ 'active': companySettingsSection === 'security' }"
           (click)="companySettingsSection = 'security'"
         >
@@ -56,6 +68,10 @@
         <dashboard-company-users-settings
           [companyUsers]="companyInformation.companyUsers"
         />
+      </div>
+
+      <div *ngIf="companySettingsSection === 'roles'">
+        <dashboard-company-roles-management/>
       </div>
 
       <div *ngIf="companySettingsSection === 'security'">

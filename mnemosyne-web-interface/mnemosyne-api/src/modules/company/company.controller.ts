@@ -56,6 +56,7 @@ export class CompanyController {
     return this.companyService.createCompany({ payload, trx });
   }
 
+  // TODO Change the endpoint so it uses @CompanyId() decorator instead of query and remove this query from user information
   @ApiOperation(CompanyDocs.GetCompanyInfo.ApiOperation)
   @ApiExtraModels(...CompanyDocs.GetCompanyInfo.ApiExtraModels)
   @ApiResponse(CompanyDocs.GetCompanyInfo.ApiResponse)
