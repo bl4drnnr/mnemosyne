@@ -48,6 +48,7 @@
           [companyWebsite]="companyInformation.companyWebsite"
           [companyOwnerEmail]="companyInformation.companyOwnerEmail"
           (getCompanyInformationEvent)="fetchCompanyInformation()"
+          (saveCompanyInformationEvent)="saveCompanyInformation($event)"
         />
       </div>
 

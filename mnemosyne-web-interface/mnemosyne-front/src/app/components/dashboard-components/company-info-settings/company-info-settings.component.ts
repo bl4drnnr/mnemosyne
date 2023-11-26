@@ -8,6 +8,7 @@ import {
 } from '@angular/animations';
 import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
 import { ValidationService } from '@services/validation.service';
+import { UpdateCompanyInfoInterface } from '@payloads/update-company-info.interface';
 
 @Component({
   selector: 'dashboard-company-info-settings',
@@ -28,7 +29,8 @@ export class CompanyInfoSettingsComponent {
   @Input() companyLocation: string;
   @Input() companyWebsite: string;
   @Input() companyOwnerEmail: string;
-  @Output() saveCompanyInformationEvent = new EventEmitter<any>();
+  @Output() saveCompanyInformationEvent =
+    new EventEmitter<UpdateCompanyInfoInterface>();
   @Output() getCompanyInformationEvent = new EventEmitter<any>();
 
   incorrectCompanyName: boolean = false;
@@ -75,7 +77,12 @@ export class CompanyInfoSettingsComponent {
   }
 
   saveCompanyInformation() {
-    this.saveCompanyInformationEvent.emit();
+    this.saveCompanyInformationEvent.emit({
+      companyLocation: this.companyLocation,
+      companyName: this.companyName,
+      companyWebsite: this.companyWebsite
+    });
+
     this.getCompanyInformationEvent.emit();
   }
 }

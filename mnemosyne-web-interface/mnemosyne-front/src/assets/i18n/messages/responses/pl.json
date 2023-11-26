@@ -1,5 +1,6 @@
 {
   "success": "Sukces",
   "photo-uploaded": "Zdjęcie przesłane",
-  "user-updated": "Użytkownik został pomyślnie zaktualizowany"
+  "user-updated": "Użytkownik został pomyślnie zaktualizowany",
+  "company-updated": "Informacje o firmie zostały pomyślnie zaktualizowane"
 }
