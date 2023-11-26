@@ -68,11 +68,19 @@
         *ngIf="wasInfoChanged()"
         [@infoChangedAnimation]="true"
       >
-        <p class="info-changed-text">{{ t('settings.infoNotSaved') }}</p>
+        <p class="info-changed-text">{{ t('settings.userInfoNotSaved') }}</p>
+      </div>
+
+      <div
+        class="info-changed"
+        *ngIf="incorrectUserData()"
+        [@infoChangedAnimation]="true"
+      >
+        <p class="info-changed-text">{{ t('settings.userInfoProvidedWrong') }}</p>
       </div>
 
       <basic-button
-        [disabled]="!wasInfoChanged() || incorrectData()"
+        [disabled]="saveButtonDisabled()"
         [label]="t('button.saveSettings')"
         (buttonClick)="saveUserInfo()"
       />

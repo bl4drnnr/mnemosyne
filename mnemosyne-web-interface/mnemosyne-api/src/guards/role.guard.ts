@@ -25,7 +25,7 @@ export class RoleGuard implements CanActivate {
     if (!requiredRoles) return true;
 
     const req = context.switchToHttp().getRequest();
-    const authHeader = req.headers['X-Access-Token'];
+    const authHeader = req.headers['x-access-token'];
 
     if (!authHeader) throw new InvalidTokenException();
 
@@ -34,11 +34,12 @@ export class RoleGuard implements CanActivate {
 
     if (bearer !== 'Bearer' || !token) throw new CorruptedTokenException();
 
-    try {
-      const user = this.jwtService.verify(token);
-      return user.roles.some((role) => requiredRoles.includes(role));
-    } catch (e) {
-      throw new ForbiddenResourceException();
-    }
+    const user = this.jwtService.verify(token);
+    const ifUserHasRole = user.roles.some((role) =>
+      requiredRoles.includes(role)
+    );
+
+    if (!ifUserHasRole) throw new ForbiddenResourceException();
+    else return true;
   }
 }

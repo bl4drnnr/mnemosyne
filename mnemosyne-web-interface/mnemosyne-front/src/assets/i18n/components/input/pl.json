@@ -9,6 +9,7 @@
   "provideCompanyMemberEmail": "Podaj adres e-mail członka firmy",
   "companyMemberEmailDesc": "Podaj adres e-mail członka firmy, którego chcesz zaprosić, i naciśnij spację, aby dodać.",
   "companyOwnerEmailDesc": "Podaj adres e-mail konta, które będzie głównym administratorem konta firmowego.",
+  "changeCompanyOwnerEmailDesc": "Aby zmienić adres e-mail właściciela firmy musisz przenieść własność konta na inne konto. W tym celu sprawdź sekcję Ustawienia zabezpieczeń.",
   "providePass": "Podaj swoje hasło",
   "providePhone": "Podaj swój numer telefonu",
   "wrongPassFormat": "Nieprawidłowy format hasła",

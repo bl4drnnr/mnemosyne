@@ -63,8 +63,17 @@ export class UserInfoSettingsComponent {
     );
   }
 
-  incorrectData() {
-    return this.incorrectFirstName || this.incorrectLastName;
+  incorrectUserData() {
+    return (
+      !this.firstName ||
+      !this.lastName ||
+      this.incorrectFirstName ||
+      this.incorrectLastName
+    );
+  }
+
+  saveButtonDisabled() {
+    return !this.wasInfoChanged() || this.incorrectUserData();
   }
 
   saveUserInfo() {

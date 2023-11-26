@@ -27,6 +27,8 @@ import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 import { ParseException } from '@exceptions/parse.exception';
 import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
 import { DeleteCompanyAccountInterface } from '@interfaces/delete-company-account.interface';
+import { UpdateCompanyInfoInterface } from '@interfaces/update-company-info.interface';
+import { CompanyUpdatedDto } from '@dto/company-updated.dto';
 
 @Injectable()
 export class CompanyService {
@@ -386,6 +388,21 @@ export class CompanyService {
     trx
   }: DeleteCompanyAccountInterface) {
     const { language } = payload;
+  }
+
+  async updateCompanyInformation({
+    companyId,
+    payload,
+    trx
+  }: UpdateCompanyInfoInterface) {
+    await this.companyRepository.update(
+      {
+        ...payload
+      },
+      { returning: undefined, where: { id: companyId }, transaction: trx }
+    );
+
+    return new CompanyUpdatedDto();
   }
 
   private async createCompanyAccount({

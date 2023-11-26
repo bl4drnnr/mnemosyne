@@ -118,6 +118,8 @@ export enum DocsProperty {
   RESET_PASSWORD_EMAIL_SENT_EXAMPLE = 'reset-password-email-sent',
   USER_UPDATED_DESC = 'User updated response message',
   USER_UPDATE_EXAMPLE = 'user-updated',
+  COMPANY_UPDATED_DESC = 'Company update response message',
+  COMPANY_UPDATED_EXAMPLE = 'company-updated',
   FORBIDDEN_RESOURCE_DESC = 'Forbidden resource error message',
   FORBIDDEN_RESOURCE_EXAMPLE = 'forbidden',
   ACC_ALREADY_CONFIRMED_DESC = 'Account already confirmed error message',

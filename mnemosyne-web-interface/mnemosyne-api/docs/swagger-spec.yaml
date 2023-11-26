@@ -617,6 +617,30 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/company/update-company:
+    patch:
+      operationId: CompanyController_updateCompanyInformation
+      summary: Endpoint is responsible for updating company information.
+      parameters: []
+      requestBody:
+        required: true
+        description: Body contains company information.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCompanyDto"
+      responses:
+        "201":
+          description: As a response user (with administrator permissions) gets message
+            that information has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyUpdatedDto"
+      tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
@@ -2205,6 +2229,34 @@ components:
             - pl
             - en
           description: One of 3 available languages
+    CompanyUpdatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company update response message
+          example: company-updated
+      required:
+        - message
+    UpdateCompanyDto:
+      type: object
+      properties:
+        companyLocation:
+          type: string
+          description: Company location
+          example: Cupertino, CA 95014
+        companyName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        companyWebsite:
+          type: string
+          description: Company website
+          example: apple.com
+      required:
+        - companyLocation
+        - companyName
+        - companyWebsite
     InviteUserToCompanyDto:
       type: object
       properties:

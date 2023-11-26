@@ -1,0 +1,72 @@
+<ng-container *transloco="let t">
+  <div class="title-container">
+    <basic-emoji emoji="books.png" [width]="48" [height]="48"/>
+    <h1 class="section-title">{{ t('settings.companySettingsSection.generalInfo') }}</h1>
+  </div>
+
+  <p>{{ t('settings.companySettingsSection.companyInfoDesc') }}</p>
+
+  <div>
+    <basic-input
+      [label]="t('input.companyName')"
+      [placeholder]="t('input.provideCompanyName')"
+      [inputDescription]="t('input.companyDesc')"
+      [errorMessage]="t('input.companyError')"
+      [value]="companyName"
+      [minLength]="2"
+      [maxLength]="64"
+      (valueChange)="companyName = $event"
+      (incorrectInput)="incorrectCompanyName = $event"
+    />
+    <basic-input
+      [label]="t('input.companyLocation')"
+      [placeholder]="t('input.provideCompanyLocation')"
+      [inputDescription]="t('input.companyLocationDesc')"
+      [errorMessage]="t('input.locationError')"
+      [value]="companyLocation"
+      [minLength]="8"
+      [maxLength]="128"
+      (valueChange)="companyLocation = $event"
+      (incorrectInput)="incorrectLocationName = $event"
+    />
+    <basic-input
+      [label]="t('input.companyWebsite')"
+      [placeholder]="t('input.provideCompanyWebsite')"
+      [inputDescription]="t('input.websiteDesc')"
+      [showError]="!validationService.isFQDN(companyWebsite)"
+      [errorMessage]="t('input.wrongFQDN')"
+      [value]="companyWebsite"
+      (valueChange)="checkAndWriteCompanyWebsite($event)"
+    />
+    <basic-input
+      type="email"
+      [label]="t('input.companyOwnerEmail')"
+      [placeholder]="t('input.provideCompanyOwnerEmail')"
+      [inputDescription]="t('input.changeCompanyOwnerEmailDesc')"
+      [value]="companyOwnerEmail"
+      [disabled]="true"
+    />
+
+    <div
+      class="info-changed"
+      *ngIf="wasInfoChanged()"
+      [@infoChangedAnimation]="true"
+    >
+      <p class="info-changed-text">{{ t('settings.companyInfoNotSaved') }}</p>
+    </div>
+
+    <div
+      class="info-changed"
+      *ngIf="incorrectCompanyData()"
+      [@infoChangedAnimation]="true"
+    >
+      <p class="info-changed-text">{{ t('settings.companyInfoProvidedWrong') }}</p>
+    </div>
+
+    <basic-button
+      [disabled]="saveButtonDisabled()"
+      [label]="t('button.saveSettings')"
+      (buttonClick)="saveCompanyInformation()"
+    />
+  </div>
+</ng-container>

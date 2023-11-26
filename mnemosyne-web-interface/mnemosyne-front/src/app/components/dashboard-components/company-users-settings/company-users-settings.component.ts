@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UsersList } from '@interfaces/users-list.type';
 
 @Component({
@@ -8,4 +8,6 @@ import { UsersList } from '@interfaces/users-list.type';
 })
 export class CompanyUsersSettingsComponent {
   @Input() companyUsers: UsersList;
+  // TODO Break fetching of company information and company users into 2 endpoints
+  @Output() fetchCompanyUsers = new EventEmitter<void>();
 }

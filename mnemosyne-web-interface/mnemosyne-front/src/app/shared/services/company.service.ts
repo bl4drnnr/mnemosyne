@@ -8,6 +8,8 @@ import { CreateCompanyPayload } from '@payloads/create-company.interface';
 import { CompanyCreatedResponse } from '@responses/company-created.enum';
 import { GetCompanyByIdInterface } from '@payloads/get-company-by-id.interface';
 import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
+import { UpdateCompanyInfoInterface } from '@payloads/update-company-info.interface';
+import { CompanyInfoUpdatedEnum } from '@responses/company-info-updated.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +42,19 @@ export class CompanyService {
       controller: Controller.COMPANY,
       action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID,
       params: { companyId, page, pageSize }
+    });
+  }
+
+  saveCompanyInformation(
+    payload: UpdateCompanyInfoInterface
+  ): Observable<{ message: CompanyInfoUpdatedEnum }> {
+    const accessToken = localStorage.getItem('_at')!;
+    return this.apiService.apiProxyRequest({
+      method: Method.PATCH,
+      controller: Controller.COMPANY,
+      action: CompanyEndpoint.UPDATE_COMPANY_INFORMATION,
+      payload,
+      accessToken
     });
   }
 }
