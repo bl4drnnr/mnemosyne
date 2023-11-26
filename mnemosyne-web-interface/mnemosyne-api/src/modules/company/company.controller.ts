@@ -100,6 +100,10 @@ export class CompanyController {
     });
   }
 
+  @ApiOperation(CompanyDocs.UpdateCompanyInformation.ApiOperation)
+  @ApiExtraModels(...CompanyDocs.UpdateCompanyInformation.ApiExtraModels)
+  @ApiResponse(CompanyDocs.UpdateCompanyInformation.ApiResponse)
+  @ApiBody(CompanyDocs.UpdateCompanyInformation.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)

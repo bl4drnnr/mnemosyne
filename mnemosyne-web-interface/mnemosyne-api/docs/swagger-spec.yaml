@@ -620,16 +620,23 @@ paths:
   /api/company/update-company:
     patch:
       operationId: CompanyController_updateCompanyInformation
+      summary: Endpoint is responsible for updating company information.
       parameters: []
       requestBody:
         required: true
+        description: Body contains company information.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UpdateCompanyDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user (with administrator permissions) gets message
+            that information has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyUpdatedDto"
       tags: *a4
       security:
         - x-access-token: []
@@ -2222,6 +2229,15 @@ components:
             - pl
             - en
           description: One of 3 available languages
+    CompanyUpdatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company update response message
+          example: company-updated
+      required:
+        - message
     UpdateCompanyDto:
       type: object
       properties:

@@ -6,6 +6,8 @@ import { CreateCompanyDto } from '@dto/create-company.dto';
 import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
 import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 import { ParseException } from '@exceptions/parse.exception';
+import { UpdateCompanyDto } from '@dto/update-company.dto';
+import { CompanyUpdatedDto } from '@dto/company-updated.dto';
 
 export abstract class CompanyDocs {
   static get CreateCompany() {
@@ -102,6 +104,31 @@ export abstract class CompanyDocs {
       ApiCompanyIdQuery: companyIdQuery,
       ApiPageSizeQuery: pageSizeQuery,
       ApiPageQuery: pageQuery
+    };
+  }
+
+  static get UpdateCompanyInformation() {
+    const ApiModels = [CompanyUpdatedDto, UpdateCompanyDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for updating company information.';
+    const apiResponseDesc =
+      'As a response user (with administrator permissions) gets message that information has been updated';
+    const apiBodyDesc = 'Body contains company information.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(CompanyUpdatedDto) }
+      },
+      ApiBody: {
+        type: UpdateCompanyDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(UpdateCompanyDto) }
+      } as ApiBodyOptions
     };
   }
 }
