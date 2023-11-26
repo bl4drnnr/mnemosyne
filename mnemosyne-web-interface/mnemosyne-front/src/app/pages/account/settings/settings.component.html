@@ -55,9 +55,9 @@
       />
     </div>
 
-    <div *ngIf="currentSection === 'company'">
+    <div *ngIf="currentSection === 'company' && userInfo && userInfo.companyId">
       <dashboard-company-settings
-        [companyId]="userInfo.companyId!"
+        [companyId]="userInfo.companyId"
       />
     </div>
   </ng-container>

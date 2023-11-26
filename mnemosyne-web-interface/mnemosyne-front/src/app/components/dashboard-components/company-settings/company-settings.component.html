@@ -7,6 +7,9 @@
           [ngClass]="{ 'active': companySettingsSection === 'info' }"
           (click)="companySettingsSection = 'info'"
         >
+          <div class="emoji-wrapper">
+            <basic-emoji emoji="books.png" [width]="24" [height]="24"/>
+          </div>
           <p>{{ t('settings.companySettingsSection.generalInfo') }}</p>
         </div>
       </div>
@@ -16,6 +19,9 @@
           [ngClass]="{ 'active': companySettingsSection === 'users' }"
           (click)="companySettingsSection = 'users'"
         >
+          <div class="emoji-wrapper">
+            <basic-emoji emoji="technologist.png" [width]="24" [height]="24"/>
+          </div>
           <p>{{ t('settings.companySettingsSection.usersManagement') }}</p>
         </div>
       </div>
@@ -25,14 +31,18 @@
           [ngClass]="{ 'active': companySettingsSection === 'security' }"
           (click)="companySettingsSection = 'security'"
         >
+          <div class="emoji-wrapper">
+            <basic-emoji emoji="shield.png" [width]="24" [height]="24"/>
+          </div>
           <p>{{ t('settings.companySettingsSection.securitySettings') }}</p>
         </div>
       </div>
     </div>
 
-    <div class="content-block">
+    <div class="content-block" *ngIf="companyInformation">
       <div *ngIf="companySettingsSection === 'info'">
         <dashboard-company-info-settings
+          [companyInformation]="companyInformation"
           [companyName]="companyInformation.companyName"
           [companyLocation]="companyInformation.companyLocation"
           [companyWebsite]="companyInformation.companyWebsite"

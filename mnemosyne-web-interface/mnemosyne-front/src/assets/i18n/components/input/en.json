@@ -9,6 +9,7 @@
   "provideCompanyMemberEmail": "Provide email of the company member",
   "companyMemberEmailDesc": "Provide the email address of the company member you would like to invite and press Space bar to add.",
   "companyOwnerEmailDesc": "Provide the email address of the account which will be the primary administrator of the company account.",
+  "changeCompanyOwnerEmailDesc": "In order to change the email of the company owner you have to transfer the account ownership to a different account. To do that, please, check the Security Settings section.",
   "providePass": "Provide your password",
   "providePhone": "Provide your phone number",
   "wrongPassFormat": "Wrong password format",

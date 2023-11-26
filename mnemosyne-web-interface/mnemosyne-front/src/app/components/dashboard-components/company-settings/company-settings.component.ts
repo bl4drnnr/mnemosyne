@@ -20,7 +20,7 @@ export class CompanySettingsComponent implements OnInit {
 
   constructor(private readonly companyService: CompanyService) {}
 
-  fetchUsers() {
+  fetchCompanyInformation() {
     this.companyService
       .getCompanyInformationById({
         companyId: this.companyId,
@@ -35,7 +35,9 @@ export class CompanySettingsComponent implements OnInit {
       });
   }
 
+  saveCompanyInformation() {}
+
   ngOnInit() {
-    this.fetchUsers();
+    this.fetchCompanyInformation();
   }
 }

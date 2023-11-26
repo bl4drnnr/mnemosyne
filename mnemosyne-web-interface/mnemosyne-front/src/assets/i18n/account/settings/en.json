@@ -57,11 +57,13 @@
     "successSetup": "Recovery keys have been successfully set up"
   },
   "infoNotSaved": "User information has been changed but not saved.",
+  "companyInfoNotSaved": "Company information has been changed but not saved.",
   "tokenMfaRequired": "Provide the code from the authenticator application.",
   "phoneMfaRequired": "Send the SMS message with the code to your mobile phone number and confirm it by providing in the field below.",
   "companySettingsSection": {
     "generalInfo": "General information",
     "usersManagement": "Users management",
-    "securitySettings": "Security settings"
+    "securitySettings": "Security settings",
+    "companyInfoDesc": "Below you will be able to find different company information settings that can be modified. In order to change some settings, you need to go to different settings."
   }
 }

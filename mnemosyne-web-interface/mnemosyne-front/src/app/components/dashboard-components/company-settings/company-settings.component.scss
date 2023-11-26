@@ -1,13 +1,13 @@
 @import 'variables';
 
 .company-settings-container {
-  width: 80%;
+  width: 60%;
   display: flex;
   margin: 30px auto;
 }
 
 .menu-bar {
-  width: 300px;
+  min-width: 300px;
   height: 100%;
   border: 1px solid var(--border-color);
   border-radius: 8px;
@@ -21,13 +21,16 @@
 }
 
 .menu-option-wrapper {
+  position: relative;
+  display: flex;
   width: 90%;
   padding: 10px;
-  text-align: center;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   transition: .2s;
+  justify-content: center;
+  align-items: center;
 
   &.active {
     border: 1px solid var(--main-color);
@@ -38,4 +41,14 @@
   }
 }
 
-.content-block {}
+.emoji-wrapper {
+  position: absolute;
+  left: 15px;
+}
+
+.content-block {
+  border-left: 1px solid var(--border-color);
+  min-height: 600px;
+  margin-left: 30px;
+  padding-left: 30px;
+}

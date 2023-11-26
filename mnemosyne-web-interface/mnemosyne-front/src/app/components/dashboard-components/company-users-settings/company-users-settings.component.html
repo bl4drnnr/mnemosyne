@@ -1,13 +1,20 @@
-<!--  <div *ngFor="let user of companyInformation.companyUsers">-->
-<!--    Email: {{ user.email }}-->
-<!--  </div>-->
+<ng-container *transloco="let t">
+  <div class="title-container">
+    <basic-emoji emoji="technologist.png" [width]="48" [height]="48"/>
+    <h1 class="section-title">{{ t('settings.companySettingsSection.usersManagement') }}</h1>
+  </div>
 
-<!--  <basic-pagination-->
-<!--    [itemsPerPageLabel]="'Users per page'"-->
-<!--    [currentPage]="page"-->
-<!--    [itemsPerPage]="pageSize"-->
-<!--    [totalItems]="totalItems"-->
-<!--    (setCurrentPage)="page = $event"-->
-<!--    (setItemsPerPage)="pageSize = $event"-->
-<!--    (fetchItems)="fetchUsers()"-->
-<!--  />-->
+  <!--  <div *ngFor="let user of companyInformation.companyUsers">-->
+  <!--    Email: {{ user.email }}-->
+  <!--  </div>-->
+
+  <!--  <basic-pagination-->
+  <!--    [itemsPerPageLabel]="'Users per page'"-->
+  <!--    [currentPage]="page"-->
+  <!--    [itemsPerPage]="pageSize"-->
+  <!--    [totalItems]="totalItems"-->
+  <!--    (setCurrentPage)="page = $event"-->
+  <!--    (setItemsPerPage)="pageSize = $event"-->
+  <!--    (fetchItems)="fetchUsers()"-->
+  <!--  />-->
+</ng-container>

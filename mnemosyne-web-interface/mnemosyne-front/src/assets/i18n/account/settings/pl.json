@@ -57,11 +57,13 @@
     "successSetup": "Klucze odzyskiwania zostały pomyślnie skonfigurowane"
   },
   "infoNotSaved": "Informacje o użytkowniku zostały zmienione, ale nie zostały zapisane.",
+  "companyInfoNotSaved": "Informacje o firmie zostały zmienione, ale nie zostały zapisane.",
   "tokenMfaRequired": "Podaj kod z aplikacji uwierzytelniającej.",
   "phoneMfaRequired": "Wyślij wiadomość SMS z kodem na swój numer telefonu komórkowego i potwierdź go wpisując w poniższe pole.",
   "companySettingsSection": {
     "generalInfo": "Informacje ogólne",
     "usersManagement": "Zarządzanie użytkownikami",
-    "securitySettings": "Ustawienia zabezpieczeń"
+    "securitySettings": "Ustawienia zabezpieczeń",
+    "companyInfoDesc": "Poniżej znajdziesz różne ustawienia informacji o firmie, które można modyfikować. Aby zmienić niektóre ustawienia, musisz przejść do innych ustawień."
   }
 }
