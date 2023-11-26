@@ -35,6 +35,7 @@ export class CompanySettingsComponent implements OnInit {
       });
   }
 
+  // TODO Implement function for saving company information
   saveCompanyInformation() {}
 
   ngOnInit() {

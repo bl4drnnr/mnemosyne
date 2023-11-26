@@ -42,4 +42,6 @@ export class CompanyService {
       params: { companyId, page, pageSize }
     });
   }
+
+  saveCompanyInformation() {}
 }

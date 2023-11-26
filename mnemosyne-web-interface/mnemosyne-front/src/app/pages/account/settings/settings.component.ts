@@ -29,7 +29,7 @@ export class SettingsComponent implements OnInit {
 
   userInfo: UserInfoResponse;
   userSecurity: UserSecurityResponse;
-  currentSection: SettingSectionType = 'company';
+  currentSection: SettingSectionType = 'personal';
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,

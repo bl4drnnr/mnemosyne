@@ -160,6 +160,7 @@ export class UsersService {
       dataToCompare: password,
       hash: user.password
     });
+
     if (!passwordEquals) throw new WrongCredentialsException();
 
     return user;

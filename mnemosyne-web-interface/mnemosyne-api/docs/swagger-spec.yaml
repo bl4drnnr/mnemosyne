@@ -617,6 +617,23 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/company/update-company:
+    patch:
+      operationId: CompanyController_updateCompanyInformation
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCompanyDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
@@ -2205,6 +2222,25 @@ components:
             - pl
             - en
           description: One of 3 available languages
+    UpdateCompanyDto:
+      type: object
+      properties:
+        companyLocation:
+          type: string
+          description: Company location
+          example: Cupertino, CA 95014
+        companyName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        companyWebsite:
+          type: string
+          description: Company website
+          example: apple.com
+      required:
+        - companyLocation
+        - companyName
+        - companyWebsite
     InviteUserToCompanyDto:
       type: object
       properties:

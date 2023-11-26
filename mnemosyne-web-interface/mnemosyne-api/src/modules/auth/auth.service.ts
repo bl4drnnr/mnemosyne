@@ -58,6 +58,7 @@ export class AuthService {
 
     const {
       id: userId,
+      companyUser,
       confirmationHashes,
       isMfaSet,
       userSettings,
@@ -67,6 +68,8 @@ export class AuthService {
       password,
       trx
     });
+
+    const userCompanyId = companyUser ? companyUser.companyId : null;
 
     const registrationHashes = [
       Confirmation.REGISTRATION,
@@ -100,7 +103,12 @@ export class AuthService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    const { _rt, _at } = await this.generateTokens({ userId, roles, trx });
+    const { _rt, _at } = await this.generateTokens({
+      companyId: userCompanyId,
+      userId,
+      roles,
+      trx
+    });
 
     return { _rt, _at };
   }
@@ -165,12 +173,23 @@ export class AuthService {
 
     if (!token) throw new InvalidTokenException();
 
-    const { id: userId, roles } = await this.usersService.getUserById({
+    const {
+      id: userId,
+      companyUser,
+      roles
+    } = await this.usersService.getUserById({
       id: token.userId,
       trx
     });
 
-    const { _at, _rt } = await this.generateTokens({ userId, roles, trx });
+    const userCompanyId = companyUser ? companyUser.companyId : null;
+
+    const { _at, _rt } = await this.generateTokens({
+      companyId: userCompanyId,
+      userId,
+      roles,
+      trx
+    });
 
     return { _at, _rt };
   }
@@ -252,8 +271,12 @@ export class AuthService {
     }
   }
 
-  private generateAccessToken({ userId, roles }: GenerateAccessTokenInterface) {
-    const payload = { roles, userId, type: 'access' };
+  private generateAccessToken({
+    userId,
+    companyId,
+    roles
+  }: GenerateAccessTokenInterface) {
+    const payload = { roles, userId, companyId, type: 'access' };
 
     const options = {
       expiresIn: this.configService.jwtAuthConfig.accessExpiresIn,
@@ -304,12 +327,15 @@ export class AuthService {
   private async generateTokens({
     roles,
     userId,
+    companyId,
     trx
   }: GenerateTokensInterface) {
     const _at = this.generateAccessToken({
       roles: roles.map((role) => role.value),
+      companyId,
       userId
     });
+
     const { id: tokenId, token: _rt } = this.generateRefreshToken();
 
     await this.updateRefreshToken({
