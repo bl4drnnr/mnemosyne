@@ -4,6 +4,10 @@ import { ApiProperty } from '@nestjs/swagger';
 type UsersList = Array<{
   id: string;
   email: string;
+  roles: Array<{
+    id: string;
+    value: string;
+  }>;
   registrationHash: {
     confirmed: boolean;
     createdAt: Date;
@@ -25,6 +29,10 @@ export class GetCompanyUsersDto {
       {
         id: DocsProperty.USER_ID_EXAMPLE,
         email: DocsProperty.EMAIL_EXAMPLE,
+        roles: {
+          id: DocsProperty.ROLE_ID_EXAMPLE,
+          value: DocsProperty.ROLE_ID_VALUE
+        },
         registrationHash: {
           confirmed: DocsProperty.CONFIRMED_HASH_EXAMPLE,
           createdAt: DocsProperty.CONFIRMATION_HASH_CREATED_AT_EXAMPLE

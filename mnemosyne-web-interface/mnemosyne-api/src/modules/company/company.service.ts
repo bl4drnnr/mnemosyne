@@ -260,11 +260,16 @@ export class CompanyService {
       trx: transaction
     });
 
-    const users = rows.map(({ id, email, confirmationHashes }) => {
+    const users = rows.map(({ id, email, roles, confirmationHashes }) => {
       const registrationHash = confirmationHashes[0];
+      const userRoles = roles.map(({ id, value }) => {
+        return { id, value };
+      });
+
       return {
         id,
         email,
+        roles: userRoles,
         registrationHash: {
           confirmed: registrationHash.confirmed,
           createdAt: registrationHash.createdAt

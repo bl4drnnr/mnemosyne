@@ -6,19 +6,41 @@
 
   <p>{{ t('settings.companySettingsSection.usersManagementDesc') }}</p>
 
-  <!--  <div *ngFor="let user of companyInformation.companyUsers">-->
-  <!--    Email: {{ user.email }}-->
-  <!--  </div>-->
+  <div class="company-users-container">
+    <div class="company-users-header">
+      <p class="company-users-header-id">ID</p>
+      <p class="company-users-header-email">
+        {{ t('settings.companySettingsSection.emailHeader') }}
+      </p>
+      <p class="company-users-header-role">
+        {{ t('settings.companySettingsSection.roleHeader') }}
+      </p>
+      <p class="company-users-header-delete">
+        {{ t('settings.companySettingsSection.deleteUserButtonHeader') }}
+      </p>
+    </div>
 
-  <div>
-<!--    <basic-pagination-->
-<!--      [itemsPerPageLabel]="'Users per page'"-->
-<!--      [currentPage]="page"-->
-<!--      [itemsPerPage]="pageSize"-->
-<!--      [totalItems]="totalItems"-->
-<!--      (setCurrentPage)="page = $event"-->
-<!--      (setItemsPerPage)="pageSize = $event"-->
-<!--      (fetchItems)="fetchUsers()"-->
-<!--    />-->
+    <div class="company-user" *ngFor="let user of companyUsers; let idx = index">
+      <p class="company-users-header-id">{{ idx + 1 }}</p>
+      <p class="company-users-header-email">{{ user.email }}</p>
+      <p class="company-users-header-role" *ngFor="let role of user.roles">
+        <span>{{ role.value }}</span>
+      </p>
+      <p class="company-users-header-delete">
+        <basic-emoji emoji="cross-mark.png" [width]="16" [height]="16"/>
+      </p>
+    </div>
+  </div>
+
+  <div class="pagination-container">
+    <basic-pagination
+      [itemsPerPageLabel]="'Users per page'"
+      [currentPage]="page"
+      [itemsPerPage]="pageSize"
+      [totalItems]="totalItems"
+      (setCurrentPage)="setCurrentPage($event)"
+      (setItemsPerPage)="setUsersPerPage($event)"
+      (fetchItems)="fetchUsers()"
+    />
   </div>
 </ng-container>

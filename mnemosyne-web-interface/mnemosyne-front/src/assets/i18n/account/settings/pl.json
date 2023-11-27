@@ -68,6 +68,9 @@
     "rolesManagement": "Zarządzanie rolami",
     "securitySettings": "Ustawienia zabezpieczeń",
     "companyInfoDesc": "Poniżej znajdziesz różne ustawienia informacji o firmie, które można modyfikować. Aby zmienić niektóre ustawienia, musisz przejść do innych ustawień.",
-    "usersManagementDesc": "Oto lista wszystkich członków firmy, ich role i status potwierdzenia konta. Na tej stronie będziesz mógł dodawać użytkowników, usuwać użytkowników z firmy i modyfikować ich poziom dostępu."
+    "usersManagementDesc": "Oto lista wszystkich członków firmy, ich role i status potwierdzenia konta. Na tej stronie będziesz mógł dodawać użytkowników, usuwać użytkowników z firmy i modyfikować ich poziom dostępu.",
+    "emailHeader": "E-mail",
+    "roleHeader": "Rola",
+    "deleteUserButtonHeader": "Usuń"
   }
 }

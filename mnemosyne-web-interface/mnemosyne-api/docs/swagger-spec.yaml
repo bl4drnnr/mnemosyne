@@ -2213,6 +2213,9 @@ components:
           example:
             - id: 7630e8093291151b656de0dd48a60017
               email: joe@doe.com
+              roles:
+                id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
+                value: PRIMARY_ADMIN
               registrationHash:
                 confirmed: "false"
                 createdAt: 2023-11-17T11:42:26.534Z

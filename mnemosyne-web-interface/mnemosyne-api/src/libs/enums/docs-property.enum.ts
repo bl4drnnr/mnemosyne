@@ -62,8 +62,6 @@ export enum DocsProperty {
   COMPANY_CREATED_EXAMPLE = 'company-created',
   COMPANY_EXISTS_DESC = 'Company already exists error message',
   COMPANY_EXISTS_EXAMPLE = 'company-already-exists',
-  COMPANY_NOT_FOUND_DESC = 'Company not found error message',
-  COMPANY_NOT_FOUND_EXAMPLE = 'company-not-found',
   PARSE_EXCEPTION_DESC = 'Parse exception',
   PARSE_EXCEPTION_EXAMPLE = 'parse-error',
   USER_INVITED_DESC = 'User invited response message',
@@ -182,5 +180,7 @@ export enum DocsProperty {
   CONFIRMED_HASH_EXAMPLE = 'false',
   CONFIRMATION_HASH_CREATED_AT_EXAMPLE = '2023-11-17T11:42:26.534Z',
   IS_COMPANY_MEMBER_DESC = 'Flag if the user is company member',
-  IS_COMPANY_MEMBER_EXAMPLE = 'false'
+  IS_COMPANY_MEMBER_EXAMPLE = 'false',
+  ROLE_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c',
+  ROLE_ID_VALUE = 'PRIMARY_ADMIN'
 }

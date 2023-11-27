@@ -66,8 +66,13 @@
 
       <div *ngIf="companySettingsSection === 'users'">
         <dashboard-company-users-settings
+          [page]="page"
+          [pageSize]="pageSize"
+          [totalItems]="totalItems"
           [companyUsers]="companyUsers"
           (fetchCompanyUsers)="fetchCompanyUsers()"
+          (setNewCurrentPage)="page = $event"
+          (setNewUsersPerPage)="pageSize = $event"
         />
       </div>
 
