@@ -9,7 +9,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
+   position: absolute;
   width: 100%;
   @include z-index(header);
 }

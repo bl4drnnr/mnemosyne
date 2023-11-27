@@ -42,6 +42,14 @@
   padding: 15px 0 15px 15px;
 }
 
+.company-users-header-delete-icon {
+  display: flex;
+  width: 10%;
+  border-left: 1px solid var(--border-color);
+  justify-content: center;
+  align-items: center;
+}
+
 .company-user {
   display: flex;
   border-bottom: 1px solid var(--border-color);
@@ -56,4 +64,10 @@
 .pagination-container {
   display: flex;
   justify-content: center;
+}
+
+.invite-user-button-box {
+  display: flex;
+  margin-top: 25px;
+  justify-content: flex-end;
 }

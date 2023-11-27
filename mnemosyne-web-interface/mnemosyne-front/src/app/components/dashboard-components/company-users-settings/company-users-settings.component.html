@@ -6,6 +6,46 @@
 
   <p>{{ t('settings.companySettingsSection.usersManagementDesc') }}</p>
 
+  <div class="invite-user-button-box">
+    <basic-button
+      [label]="t('settings.companySettingsSection.inviteUser')"
+      (buttonClick)="openInviteUserModal()"
+    />
+  </div>
+
+  <basic-modal
+    [header]="'Invite user(-s) to the company'"
+    [description]="'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque dignissimos eos incidunt minima nihil numquam provident quas quod sit, sunt.'"
+    [showModal]="showInviteUserModal"
+    (closeModal)="closeInviteUserModal()"
+  >
+    <basic-input
+      type="email"
+      [onWhite]="true"
+      [label]="t('input.companyMemberEmail')"
+      [placeholder]="t('input.provideCompanyMemberEmail')"
+      [inputDescription]="t('input.companyMemberEmailDesc')"
+      [errorMessage]="t('input.wrongEmailFormat')"
+      [value]="companyMember"
+      (valueChange)="companyMember = $event"
+      (incorrectInput)="incorrectMemberEmail = $event"
+      (onSpace)="addCompanyMember()"
+    />
+
+    <page-component-invite-company-users
+      [onWhite]="true"
+      [companyRoles]="companyRoles"
+      [companyMembers]="companyMembers"
+      (removeCompanyMember)="removeMember($event)"
+      (changeCompanyMemberRole)="changeUserRole($event)"
+    />
+
+    <basic-button
+      [label]="'Invite users'"
+      [onWhite]="true"
+    />
+  </basic-modal>
+
   <div class="company-users-container">
     <div class="company-users-header">
       <p class="company-users-header-id">ID</p>
@@ -23,10 +63,8 @@
     <div class="company-user" *ngFor="let user of companyUsers; let idx = index">
       <p class="company-users-header-id">{{ idx + 1 }}</p>
       <p class="company-users-header-email">{{ user.email }}</p>
-      <p class="company-users-header-role" *ngFor="let role of user.roles">
-        <span>{{ role.value }}</span>
-      </p>
-      <p class="company-users-header-delete">
+      <p class="company-users-header-role">{{ printUsersRoles(user.roles) }}</p>
+      <p class="company-users-header-delete-icon">
         <basic-emoji emoji="cross-mark.png" [width]="16" [height]="16"/>
       </p>
     </div>
@@ -34,7 +72,7 @@
 
   <div class="pagination-container">
     <basic-pagination
-      [itemsPerPageLabel]="'Users per page'"
+      [itemsPerPageLabel]="t('settings.companySettingsSection.usersPerPage')"
       [currentPage]="page"
       [itemsPerPage]="pageSize"
       [totalItems]="totalItems"

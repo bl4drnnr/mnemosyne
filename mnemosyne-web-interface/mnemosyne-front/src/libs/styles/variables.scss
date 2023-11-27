@@ -347,6 +347,7 @@ p, spam, ul, li, ol {
   --alert-shadow: #{rgba($black, 0.1) 0 10px 50px};
   --color-hover: #{$color-shadow-hover-light};
   --loader-background: #{rgba($color-white, 1) 0 0 no-repeat padding-box};
+  --transparent-background: #{rgba($color-black, .5) 0 0 no-repeat padding-box};
 }
 
 @mixin dark() {
@@ -369,4 +370,5 @@ p, spam, ul, li, ol {
   --alert-shadow: #{rgba($color-white, 0.1) 0 10px 50px};
   --color-hover: #{$color-shadow-hover-dark};
   --loader-background: #{rgba($color-black-background, 1) 0 0 no-repeat padding-box};
+  --transparent-background: #{rgba($color-black, .5) 0 0 no-repeat padding-box};
 }
