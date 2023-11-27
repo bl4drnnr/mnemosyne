@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UsersList } from '@interfaces/users-list.type';
 
 @Component({
@@ -6,8 +6,11 @@ import { UsersList } from '@interfaces/users-list.type';
   templateUrl: './company-users-settings.component.html',
   styleUrls: ['./company-users-settings.component.scss']
 })
-export class CompanyUsersSettingsComponent {
+export class CompanyUsersSettingsComponent implements OnInit {
   @Input() companyUsers: UsersList;
-  // TODO Break fetching of company information and company users into 2 endpoints
   @Output() fetchCompanyUsers = new EventEmitter<void>();
+
+  ngOnInit() {
+    this.fetchCompanyUsers.emit();
+  }
 }

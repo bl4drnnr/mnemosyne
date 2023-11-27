@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CompanyService } from '@services/company.service';
 import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
 import { CompanySettingsSectionType } from '@interfaces/company-settings-section.type';
@@ -7,6 +7,7 @@ import { TranslationService } from '@services/translation.service';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
+import { UsersList } from '@interfaces/users-list.type';
 
 @Component({
   selector: 'dashboard-company-settings',
@@ -14,14 +15,13 @@ import { RefreshTokensService } from '@services/refresh-tokens.service';
   styleUrls: ['./company-settings.component.scss']
 })
 export class CompanySettingsComponent implements OnInit {
-  @Input() companyId: string;
-
   companySettingsSection: CompanySettingsSectionType = 'info';
   companyInformation: GetCompanyInfoByIdInterface;
 
   page: string = '0';
   pageSize: string = '10';
   totalItems: number;
+  companyUsers: UsersList;
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
@@ -31,16 +31,23 @@ export class CompanySettingsComponent implements OnInit {
   ) {}
 
   fetchCompanyInformation() {
+    this.companyService.getCompanyInformationById().subscribe({
+      next: (companyInformation) => {
+        this.companyInformation = companyInformation;
+      }
+    });
+  }
+
+  fetchCompanyUsers() {
     this.companyService
-      .getCompanyInformationById({
-        companyId: this.companyId,
+      .getCompanyUsers({
         page: this.page,
         pageSize: this.pageSize
       })
       .subscribe({
-        next: (companyInformation) => {
-          this.totalItems = companyInformation.count;
-          this.companyInformation = companyInformation;
+        next: ({ companyUsers, count }) => {
+          this.totalItems = count;
+          this.companyUsers = companyUsers;
         }
       });
   }

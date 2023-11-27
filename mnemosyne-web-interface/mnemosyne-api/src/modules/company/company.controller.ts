@@ -56,25 +56,40 @@ export class CompanyController {
     return this.companyService.createCompany({ payload, trx });
   }
 
-  // TODO Change the endpoint so it uses @CompanyId() decorator instead of query and remove this query from user information
   @ApiOperation(CompanyDocs.GetCompanyInfo.ApiOperation)
   @ApiExtraModels(...CompanyDocs.GetCompanyInfo.ApiExtraModels)
   @ApiResponse(CompanyDocs.GetCompanyInfo.ApiResponse)
-  @ApiBadRequestResponse(CompanyDocs.GetCompanyInfo.ApiBadRequestResponse)
-  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiCompanyIdQuery)
-  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiPageSizeQuery)
-  @ApiQuery(CompanyDocs.GetCompanyInfo.ApiPageQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('company-information')
   getCompanyInformationById(
-    @Query('companyId') companyId: string,
+    @CompanyId() companyId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyService.getCompanyInformationById({
+      companyId,
+      trx
+    });
+  }
+
+  @ApiOperation(CompanyDocs.GetCompanyUsers.ApiOperation)
+  @ApiExtraModels(...CompanyDocs.GetCompanyUsers.ApiExtraModels)
+  @ApiResponse(CompanyDocs.GetCompanyUsers.ApiResponse)
+  @ApiBadRequestResponse(CompanyDocs.GetCompanyUsers.ApiBadRequestResponse)
+  @ApiQuery(CompanyDocs.GetCompanyUsers.ApiPageSizeQuery)
+  @ApiQuery(CompanyDocs.GetCompanyUsers.ApiPageQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('company-users')
+  getCompanyUsers(
+    @CompanyId() companyId: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
     @TransactionParam() trx: Transaction
   ) {
-    return this.companyService.getCompanyInformationById({
+    return this.companyService.getCompanyUsers({
       companyId,
       page,
       pageSize,

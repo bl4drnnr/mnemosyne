@@ -6,6 +6,6 @@ export interface UserInfoResponse {
   homeAddress: string;
   homePhone: string;
   email: string;
-  companyId: string | null;
   isProfilePicPresent: boolean;
+  isCompanyMember: boolean;
 }

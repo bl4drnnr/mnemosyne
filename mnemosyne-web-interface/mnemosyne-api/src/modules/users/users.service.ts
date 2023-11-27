@@ -293,7 +293,7 @@ export class UsersService {
       trx
     });
 
-    const companyId = company ? company.id : null;
+    const isCompanyMember = !!company;
 
     return new GetUserInfoResponseDto({
       userId: userIdHash,
@@ -303,8 +303,8 @@ export class UsersService {
       homeAddress,
       homePhone,
       email,
-      companyId,
-      isProfilePicPresent
+      isProfilePicPresent,
+      isCompanyMember
     });
   }
 

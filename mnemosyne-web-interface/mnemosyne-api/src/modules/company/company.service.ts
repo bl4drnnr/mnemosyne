@@ -25,10 +25,11 @@ import { User } from '@models/user.model';
 import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.interface';
 import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 import { ParseException } from '@exceptions/parse.exception';
-import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
 import { DeleteCompanyAccountInterface } from '@interfaces/delete-company-account.interface';
 import { UpdateCompanyInfoInterface } from '@interfaces/update-company-info.interface';
 import { CompanyUpdatedDto } from '@dto/company-updated.dto';
+import { GetCompanyUsersInterface } from '@interfaces/get-company-users.interface';
+import { GetCompanyUsersDto } from '@dto/get-company-users.dto';
 
 @Injectable()
 export class CompanyService {
@@ -204,10 +205,36 @@ export class CompanyService {
 
   async getCompanyInformationById({
     companyId,
+    trx: transaction
+  }: GetCompanyInfoByIdInterface) {
+    const company = await this.companyRepository.findByPk(companyId, {
+      transaction,
+      include: { all: true }
+    });
+
+    const { companyName, companyLocation, companyWebsite, companyOwnerId } =
+      company;
+
+    const { email: companyOwnerEmail } = await this.usersService.getUserById({
+      id: companyOwnerId,
+      trx: transaction
+    });
+
+    return new GetCompanyByIdDto({
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerId,
+      companyOwnerEmail
+    });
+  }
+
+  async getCompanyUsers({
+    companyId,
     page,
     pageSize,
     trx: transaction
-  }: GetCompanyInfoByIdInterface) {
+  }: GetCompanyUsersInterface) {
     const offset = Number(page) * Number(pageSize);
     const limit = Number(pageSize);
 
@@ -216,24 +243,9 @@ export class CompanyService {
 
     if (paginationParseError) throw new ParseException();
 
-    const company = await this.companyRepository.findByPk(companyId, {
+    const { companyUsers } = await this.companyRepository.findByPk(companyId, {
       transaction,
       include: { all: true }
-    });
-
-    if (!company) throw new CompanyNotFoundException();
-
-    const {
-      companyName,
-      companyLocation,
-      companyWebsite,
-      companyOwnerId,
-      companyUsers
-    } = company;
-
-    const { email: companyOwnerEmail } = await this.usersService.getUserById({
-      id: companyOwnerId,
-      trx: transaction
     });
 
     const companyUsersIds = companyUsers.map(
@@ -260,12 +272,7 @@ export class CompanyService {
       };
     });
 
-    return new GetCompanyByIdDto({
-      companyName,
-      companyLocation,
-      companyWebsite,
-      companyOwnerId,
-      companyOwnerEmail,
+    return new GetCompanyUsersDto({
       companyUsers: users,
       count
     });

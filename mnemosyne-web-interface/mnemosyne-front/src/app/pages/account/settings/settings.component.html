@@ -17,7 +17,7 @@
       </div>
       <div
         class="settings-header-box"
-        *ngIf="userInfo && userInfo.companyId"
+        *ngIf="isCompanyMember"
         [ngClass]="{ active: currentSection === 'company' }"
         (click)="currentSection = 'company'"
       >
@@ -55,10 +55,8 @@
       />
     </div>
 
-    <div *ngIf="currentSection === 'company' && userInfo && userInfo.companyId">
-      <dashboard-company-settings
-        [companyId]="userInfo.companyId"
-      />
+    <div *ngIf="currentSection === 'company'">
+      <dashboard-company-settings/>
     </div>
   </ng-container>
 </layout-default>

@@ -8,6 +8,7 @@ import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 import { ParseException } from '@exceptions/parse.exception';
 import { UpdateCompanyDto } from '@dto/update-company.dto';
 import { CompanyUpdatedDto } from '@dto/company-updated.dto';
+import { GetCompanyUsersDto } from '@dto/get-company-users.dto';
 
 export abstract class CompanyDocs {
   static get CreateCompany() {
@@ -53,27 +54,38 @@ export abstract class CompanyDocs {
   }
 
   static get GetCompanyInfo() {
-    const ApiModels = [GetCompanyByIdDto, ParseException];
+    const ApiModels = [GetCompanyByIdDto];
 
     const apiOperationSum =
       'Endpoint is responsible for getting information about the company by ID.';
     const apiResponseDesc =
       'As a response endpoint returns information about the company by ID.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetCompanyByIdDto) }
+      }
+    };
+  }
+
+  static get GetCompanyUsers() {
+    const ApiModels = [GetCompanyUsersDto, ParseException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting the list of all users in company with pagination.';
+    const apiResponseDesc =
+      'As the response user gets the list of all users along with count for pagination.';
     const apiBadRequestRespDesc =
       'Parse exception is thrown in case if page or limit params cannot be parsed as number.';
 
-    const companyIdQueryDesc = 'Query for the company id.';
     const pageSizeQueryDesc =
       'Query for limit in order to get list of company users.';
     const pageQueryDesc =
       'Query for page in order to get list of comapny users.';
-
-    const companyIdQuery = {
-      description: companyIdQueryDesc,
-      name: 'companyId',
-      type: String,
-      required: true
-    };
 
     const pageSizeQuery = {
       description: pageSizeQueryDesc,
@@ -95,13 +107,12 @@ export abstract class CompanyDocs {
       ApiResponse: {
         status: 200,
         description: apiResponseDesc,
-        schema: { $ref: getSchemaPath(GetCompanyByIdDto) }
+        schema: { $ref: getSchemaPath(GetCompanyUsersDto) }
       },
       ApiBadRequestResponse: {
         description: apiBadRequestRespDesc,
         schema: { $ref: getSchemaPath(ParseException) }
       },
-      ApiCompanyIdQuery: companyIdQuery,
       ApiPageSizeQuery: pageSizeQuery,
       ApiPageQuery: pageQuery
     };

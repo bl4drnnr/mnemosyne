@@ -39,13 +39,6 @@ export class GetUserInfoResponseDto {
 
   @ApiProperty({
     type: String,
-    description: DocsProperty.COMPANY_ID_DESC,
-    example: DocsProperty.COMPANY_ID_EXAMPLE
-  })
-  readonly companyId: string | null;
-
-  @ApiProperty({
-    type: String,
     description: DocsProperty.NAME_PRONUNS_DESC,
     example: DocsProperty.NAME_PRONUNS_EXAMPLE
   })
@@ -65,6 +58,13 @@ export class GetUserInfoResponseDto {
   })
   readonly homePhone: string | null;
 
+  @ApiProperty({
+    type: Boolean,
+    description: DocsProperty.IS_COMPANY_MEMBER_DESC,
+    example: DocsProperty.IS_COMPANY_MEMBER_EXAMPLE
+  })
+  readonly isCompanyMember: boolean;
+
   constructor({
     userId,
     firstName,
@@ -74,7 +74,7 @@ export class GetUserInfoResponseDto {
     homePhone,
     email,
     isProfilePicPresent,
-    companyId
+    isCompanyMember
   }: {
     userId: string;
     firstName: string;
@@ -84,7 +84,7 @@ export class GetUserInfoResponseDto {
     homePhone: string | null;
     email: string;
     isProfilePicPresent: boolean;
-    companyId: string | null;
+    isCompanyMember: boolean;
   }) {
     this.userId = userId;
     this.firstName = firstName;
@@ -94,6 +94,6 @@ export class GetUserInfoResponseDto {
     this.homePhone = homePhone;
     this.email = email;
     this.isProfilePicPresent = isProfilePicPresent;
-    this.companyId = companyId;
+    this.isCompanyMember = isCompanyMember;
   }
 }

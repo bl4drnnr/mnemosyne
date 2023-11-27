@@ -170,8 +170,6 @@ export enum DocsProperty {
   QR_CODE_LINK_EXAMPLE = 'https://chart.googleapis.com/chart?chs=166x166&chld=L|0&cht=qr&chl=otpauth://totp/Mnemosyne%3Amikhail.bahdashych%40gmail.com%3Fsecret=7BEEKMUDHULQVZYE7LQYR2R4BDP5NJJA%26issuer=Mnemosyne',
   PHONE_ALREADY_TAKEN_DESC = 'Phone already taken error message',
   PHONE_ALREADY_TAKEN_EXAMPLE = 'phone-already-taken',
-  COMPANY_ID_DESC = 'UUID (v4) of the company',
-  COMPANY_ID_EXAMPLE = '4682d1d3-c041-4399-ba98-73a5ce149d3c',
   NAME_PRONUNS_DESC = 'This could be a phonetic pronunciation, or an example of something your name sounds like',
   NAME_PRONUNS_EXAMPLE = 'Zoe ("zo-ee")',
   HOME_ADDRESS_DESC = 'User home address',
@@ -182,5 +180,7 @@ export enum DocsProperty {
   COUNT_DESC = 'Count for the pagination',
   COUNT_EXAMPLE = '5',
   CONFIRMED_HASH_EXAMPLE = 'false',
-  CONFIRMATION_HASH_CREATED_AT_EXAMPLE = '2023-11-17T11:42:26.534Z'
+  CONFIRMATION_HASH_CREATED_AT_EXAMPLE = '2023-11-17T11:42:26.534Z',
+  IS_COMPANY_MEMBER_DESC = 'Flag if the user is company member',
+  IS_COMPANY_MEMBER_EXAMPLE = 'false'
 }
