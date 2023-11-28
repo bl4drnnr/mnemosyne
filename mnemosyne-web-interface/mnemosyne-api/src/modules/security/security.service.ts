@@ -520,6 +520,12 @@ export class SecurityService {
       trx
     });
 
+    await this.usersService.updateUserSettings({
+      payload: { passwordChanged: new Date() },
+      userId,
+      trx
+    });
+
     return new PasswordChangedDto();
   }
 

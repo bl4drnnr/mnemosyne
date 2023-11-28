@@ -68,6 +68,20 @@
     "rolesManagement": "Roles management",
     "securitySettings": "Security settings",
     "companyInfoDesc": "Below you will be able to find different company information settings that can be modified. In order to change some settings, you need to go to different settings.",
-    "usersManagementDesc": "Here is the list of all company members, their roles and account confirmation status. From this page you will be able to add users, delete users from the company and modify their level of access."
+    "usersManagementDesc": "Here is the list of all company members, their roles and account confirmation status. From this page you will be able to add users, delete users from the company and modify their level of access.",
+    "emailHeader": "Email",
+    "roleHeader": "Role",
+    "deleteUserButtonHeader": "Delete",
+    "usersPerPage": "Users per page",
+    "inviteUser": "Invite user(-s)",
+    "inviteUserModalHeader": "Invite user(-s) to the company",
+    "inviteUserModalDesc": "Below you will find the input field in order to invite the user in your company. To do that, provide the email and press Space bar to add user to the list. You can either remove user from the list of change their role. Once everything is provided, press the Invitation button.",
+    "companySecurityDesc": "In this section you can manage the security settings of your company, such as transferring ownership to the different account, changing different policies and deleting the company and all its data.",
+    "transferOwnershipHeader": "Transfer ownership of the company",
+    "transferOwnershipDesc": "You can transfer the ownership of the Primary Admin role from the one account to the different one. The only thing you need to be concerned about is that this account should already be the member of the company.",
+    "transferOwnershipPhone": "In order to transfer the ownership of the company account, please, make sure you have provide the code sent to your mobile phone.",
+    "transferOwnershipMfa": "In order to transfer the ownership of the company account, please, make sure you have provide the code from the authenticator application.",
+    "deleteCompanyHeader": "Delete company account",
+    "deleteCompanyDesc": "Be careful! You are about to delete the company account along with all its data. Users will be removed from the company, but their accounts themselves will not be delete from the system."
   }
 }

@@ -6,17 +6,81 @@
 
   <p>{{ t('settings.companySettingsSection.usersManagementDesc') }}</p>
 
-  <!--  <div *ngFor="let user of companyInformation.companyUsers">-->
-  <!--    Email: {{ user.email }}-->
-  <!--  </div>-->
+  <div class="invite-user-button-box">
+    <basic-button
+      [label]="t('settings.companySettingsSection.inviteUser')"
+      (buttonClick)="openInviteUserModal()"
+    />
+  </div>
 
-  <!--  <basic-pagination-->
-  <!--    [itemsPerPageLabel]="'Users per page'"-->
-  <!--    [currentPage]="page"-->
-  <!--    [itemsPerPage]="pageSize"-->
-  <!--    [totalItems]="totalItems"-->
-  <!--    (setCurrentPage)="page = $event"-->
-  <!--    (setItemsPerPage)="pageSize = $event"-->
-  <!--    (fetchItems)="fetchUsers()"-->
-  <!--  />-->
+  <basic-modal
+    [header]="t('settings.companySettingsSection.inviteUserModalHeader')"
+    [description]="t('settings.companySettingsSection.inviteUserModalDesc')"
+    [showModal]="showInviteUserModal"
+    (closeModal)="closeInviteUserModal()"
+  >
+    <basic-input
+      type="email"
+      [onWhite]="true"
+      [label]="t('input.companyMemberEmail')"
+      [placeholder]="t('input.provideCompanyMemberEmail')"
+      [inputDescription]="t('input.companyMemberEmailDesc')"
+      [errorMessage]="t('input.wrongEmailFormat')"
+      [value]="companyMember"
+      (valueChange)="companyMember = $event"
+      (incorrectInput)="incorrectMemberEmail = $event"
+      (onSpace)="addCompanyMember()"
+    />
+
+    <page-component-invite-company-users
+      [onWhite]="true"
+      [companyRoles]="companyRoles"
+      [companyMembers]="companyMembers"
+      (removeCompanyMember)="removeMember($event)"
+      (changeCompanyMemberRole)="changeUserRole($event)"
+    />
+
+    <basic-button
+      [onWhite]="true"
+      [label]="t('settings.companySettingsSection.inviteUser')"
+      [disabled]="companyMembers.length === 0"
+      (buttonClick)="inviteUsers()"
+    />
+  </basic-modal>
+
+  <div class="company-users-container">
+    <div class="company-users-header">
+      <p class="company-users-header-id">ID</p>
+      <p class="company-users-header-email">
+        {{ t('settings.companySettingsSection.emailHeader') }}
+      </p>
+      <p class="company-users-header-role">
+        {{ t('settings.companySettingsSection.roleHeader') }}
+      </p>
+      <p class="company-users-header-delete">
+        {{ t('settings.companySettingsSection.deleteUserButtonHeader') }}
+      </p>
+    </div>
+
+    <div class="company-user" *ngFor="let user of companyUsers; let idx = index">
+      <p class="company-users-header-id">{{ idx + 1 }}</p>
+      <p class="company-users-header-email">{{ user.email }}</p>
+      <p class="company-users-header-role">{{ printUsersRoles(user.roles) }}</p>
+      <p class="company-users-header-delete-icon">
+        <basic-emoji emoji="cross-mark.png" [width]="16" [height]="16"/>
+      </p>
+    </div>
+  </div>
+
+  <div class="pagination-container">
+    <basic-pagination
+      [itemsPerPageLabel]="t('settings.companySettingsSection.usersPerPage')"
+      [currentPage]="page"
+      [itemsPerPage]="pageSize"
+      [totalItems]="totalItems"
+      (setCurrentPage)="setCurrentPage($event)"
+      (setItemsPerPage)="setUsersPerPage($event)"
+      (fetchItems)="fetchUsers()"
+    />
+  </div>
 </ng-container>

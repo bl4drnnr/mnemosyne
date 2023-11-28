@@ -68,6 +68,20 @@
     "rolesManagement": "Zarządzanie rolami",
     "securitySettings": "Ustawienia zabezpieczeń",
     "companyInfoDesc": "Poniżej znajdziesz różne ustawienia informacji o firmie, które można modyfikować. Aby zmienić niektóre ustawienia, musisz przejść do innych ustawień.",
-    "usersManagementDesc": "Oto lista wszystkich członków firmy, ich role i status potwierdzenia konta. Na tej stronie będziesz mógł dodawać użytkowników, usuwać użytkowników z firmy i modyfikować ich poziom dostępu."
+    "usersManagementDesc": "Oto lista wszystkich członków firmy, ich role i status potwierdzenia konta. Na tej stronie będziesz mógł dodawać użytkowników, usuwać użytkowników z firmy i modyfikować ich poziom dostępu.",
+    "emailHeader": "E-mail",
+    "roleHeader": "Rola",
+    "deleteUserButtonHeader": "Usuń",
+    "usersPerPage": "Użytkownicy na stronę",
+    "inviteUser": "Zaproś użytkownika(-ów)",
+    "inviteUserModalHeader": "Zaproś użytkownika(-ów) do firmy",
+    "inviteUserModalDesc": "Poniżej znajdziesz pole wejściowe, w którym możesz zaprosić użytkownika w swojej firmie. Aby to zrobić, podaj adres e-mail i naciśnij spację, aby dodać użytkownika do listy. Możesz albo usunąć użytkownika z listy zmian ich rolę. Gdy już wszystko zostanie podane, naciśnij przycisk Zaproszenie.",
+    "companySecurityDesc": "W tej sekcji możesz zarządzać ustawieniami bezpieczeństwa swojej firmy, takimi jak przeniesienie własności na inne konto, zmiana różnych polityk oraz usunięcie firmy i wszystkich jej danych.",
+    "transferOwnershipHeader": "Przeniesienie własności firmy",
+    "transferOwnershipDesc": "Możesz przenieść własność roli Administratora głównego z jednego konta na inne. Jedyne, o co musisz się martwić, to to, że to konto powinno już należeć do firmy.",
+    "transferOwnershipPhone": "Aby przenieść własność konta firmowego, upewnij się, że podałeś kod wysłany na Twój telefon komórkowy.",
+    "transferOwnershipMfa": "Aby przenieść własność konta firmowego, upewnij się, że podałeś kod z aplikacji uwierzytelniającej.",
+    "deleteCompanyHeader": "Usuń konto firmowe",
+    "deleteCompanyDesc": "Uważaj! Za chwilę usuniesz konto firmowe wraz ze wszystkimi jego danymi. Użytkownicy zostaną usunięci z firmy, ale ich konta nie zostaną usunięte z systemu."
   }
 }

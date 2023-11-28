@@ -1,6 +1,5 @@
 export enum Roles {
   PRIMARY_ADMIN = 'PRIMARY_ADMIN',
   ADMIN = 'ADMIN',
-  DEFAULT = 'DEFAULT',
-  READ_ONLY = 'READ_ONLY'
+  DEFAULT = 'DEFAULT'
 }

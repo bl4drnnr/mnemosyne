@@ -1,14 +1,28 @@
 <div class="member-container" *ngIf="companyMembers.length > 0">
-  <div class="member-box" *ngFor="let member of companyMembers">
+  <div
+    class="member-box"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngFor="let member of companyMembers"
+  >
     <div class="member-email">
-      <p class="paragraph">{{ member.email }}</p>
+      <p
+        class="paragraph"
+        [ngClass]="{ 'on-white': onWhite }"
+      >{{ member.email }}</p>
     </div>
 
     <div class="member-right-side">
 
-      <div class="role-box" (click)="toggleDropdown(member.email)">
+      <div
+        class="role-box"
+        [ngClass]="{ 'on-white': onWhite }"
+        (click)="toggleDropdown(member.email)"
+      >
         <basic-arrow [isArrowOpen]="member.isRoleDropDownOpen" />
-        <p class="paragraph role-value">{{ member.roleValue }}</p>
+        <p
+          class="paragraph role-value"
+          [ngClass]="{ 'on-white': onWhite }"
+        >{{ member.roleValue }}</p>
       </div>
 
       <div class="dropdown-menu" [ngClass]="{ 'show': member.isRoleDropDownOpen }">
@@ -21,7 +35,11 @@
         </button>
       </div>
 
-      <div class="member-remove" (click)="removeMember(member.email)">
+      <div
+        class="member-remove"
+        [ngClass]="{ 'on-white': onWhite }"
+        (click)="removeMember(member.email)"
+      >
         <img
           [ngSrc]="closeButtonUrl"
           [width]="15"

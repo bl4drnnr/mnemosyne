@@ -15,6 +15,7 @@ import { RegistrationCompanyMemberInterface } from '@interfaces/registration-com
   ]
 })
 export class InviteCompanyUsersComponent {
+  @Input() onWhite: boolean;
   @Input() companyRoles: CompanyRolesType;
   @Input() companyMembers: CompanyMembersType;
   @Output() removeCompanyMember = new EventEmitter<string>();

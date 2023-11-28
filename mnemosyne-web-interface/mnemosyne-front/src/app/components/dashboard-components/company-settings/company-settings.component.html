@@ -66,7 +66,13 @@
 
       <div *ngIf="companySettingsSection === 'users'">
         <dashboard-company-users-settings
-          [companyUsers]="companyInformation.companyUsers"
+          [page]="page"
+          [pageSize]="pageSize"
+          [totalItems]="totalItems"
+          [companyUsers]="companyUsers"
+          (fetchCompanyUsers)="fetchCompanyUsers()"
+          (setNewCurrentPage)="page = $event"
+          (setNewUsersPerPage)="pageSize = $event"
         />
       </div>
 
@@ -77,6 +83,7 @@
       <div *ngIf="companySettingsSection === 'security'">
         <dashboard-company-security-settings
           [companyOwnerEmail]="companyInformation.companyOwnerEmail"
+          (transferCompanyOwnership)="transferCompanyOwnership($event)"
         />
       </div>
     </div>

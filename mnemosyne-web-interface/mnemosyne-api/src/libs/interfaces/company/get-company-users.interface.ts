@@ -1,6 +1,8 @@
 import { Transaction } from 'sequelize';
 
-export interface GetCompanyInfoByIdInterface {
+export interface GetCompanyUsersInterface {
   companyId: string;
+  page: string;
+  pageSize: string;
   trx?: Transaction;
 }

@@ -3,4 +3,133 @@
     <basic-emoji emoji="shield.png" [width]="48" [height]="48"/>
     <h1 class="section-title">{{ t('settings.companySettingsSection.securitySettings') }}</h1>
   </div>
+
+  <p>{{ t('settings.companySettingsSection.companySecurityDesc') }}</p>
+
+  <security-setting-section
+    [showSection]="true"
+    [title]="t('settings.companySettingsSection.transferOwnershipHeader')"
+    [description]="t('settings.companySettingsSection.transferOwnershipDesc')"
+    [buttonLabel]="t('button.transferOwnershipButton')"
+    [emojiName]="'envelope.png'"
+    (onButtonClick)="showOwnershipTransferModal = true"
+  />
+
+  <basic-modal
+    [header]="t('settings.companySettingsSection.transferOwnershipHeader')"
+    [description]="t('settings.companySettingsSection.transferOwnershipDesc')"
+    [showModal]="showOwnershipTransferModal"
+    (closeModal)="closeOwnershipTransferModal()"
+  >
+    <div *ngIf="transferOwnershipStep === 1" [@fadeInOut]="true">
+      <basic-input
+        type="email"
+        [onWhite]="true"
+        [label]="t('input.companyOwnerEmail')"
+        [placeholder]="t('input.provideCompanyOwnerEmail')"
+        [value]="companyOwnerEmail"
+        [disabled]="true"
+      />
+      <basic-input
+        type="email"
+        [onWhite]="true"
+        [label]="t('input.newCompanyOwnerEmailLabel')"
+        [placeholder]="t('input.newCompanyOwnerEmailPlaceholder')"
+        [inputDescription]="t('input.newCompanyOwnerEmailDesc')"
+        [errorMessage]="t('input.wrongEmailFormat')"
+        [value]="newCompanyOwnerEmail"
+        (valueChange)="newCompanyOwnerEmail = $event"
+        (incorrectInput)="incorrectNewCompanyOwnerEmail = $event"
+      />
+      <basic-button
+        [label]="t('button.transferOwnershipButton')"
+        [onWhite]="true"
+        (buttonClick)="transferOwnership()"
+        [disabled]="disabledTransferOwnershipButton()"
+      />
+    </div>
+
+    <div *ngIf="transferOwnershipStep === 2" [@fadeInOut]="true">
+      <basic-input
+        type="email"
+        [onWhite]="true"
+        [label]="t('input.companyOwnerEmail')"
+        [placeholder]="t('input.provideCompanyOwnerEmail')"
+        [value]="companyOwnerEmail"
+        [disabled]="true"
+      />
+      <basic-input
+        type="email"
+        [onWhite]="true"
+        [label]="t('input.newCompanyOwnerEmailLabel')"
+        [placeholder]="t('input.newCompanyOwnerEmailPlaceholder')"
+        [inputDescription]="t('input.newCompanyOwnerEmailDesc')"
+        [errorMessage]="t('input.wrongEmailFormat')"
+        [value]="newCompanyOwnerEmail"
+        (valueChange)="newCompanyOwnerEmail = $event"
+        (incorrectInput)="incorrectNewCompanyOwnerEmail = $event"
+        [disabled]="true"
+      />
+
+      <div *ngIf="transferOwnershipIsPhoneRequired">
+        <p class="paragraph on-white">
+          {{ t('settings.companySettingsSection.transferOwnershipPhone') }}
+        </p>
+        <basic-input-mfa
+          [onWhite]="true"
+          [isPhone]="true"
+          (mfaCode)="transferOwnershipPhoneCode = $event"
+          (resendSms)="transferOwnershipResendSmsCode()"
+        />
+      </div>
+
+      <div *ngIf="transferOwnershipIsMfaRequired">
+        <p class="paragraph on-white">
+          {{ t('settings.companySettingsSection.transferOwnershipMfa') }}
+        </p>
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="transferOwnershipMfaCode = $event"
+          />
+        </div>
+      </div>
+
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [label]="t('button.goBack')"
+          (buttonClick)="transferOwnershipStep = 1"
+        />
+      </div>
+
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [label]="t('button.transferOwnershipButton')"
+          (buttonClick)="transferOwnership()"
+          [disabled]="disabledTransferOwnershipButton()"
+        />
+      </div>
+    </div>
+
+    <div *ngIf="transferOwnershipStep === 3" [@fadeInOut]="true"></div>
+  </basic-modal>
+
+  <security-setting-section
+    [showSection]="true"
+    [title]="t('settings.companySettingsSection.deleteCompanyHeader')"
+    [description]="t('settings.companySettingsSection.deleteCompanyDesc')"
+    [buttonLabel]="t('button.deleteCompany')"
+    [emojiName]="'cross-mark.png'"
+    [dangerButton]="true"
+    (onButtonClick)="deleteCompanyModal = true"
+  />
+
+  <basic-modal
+    [header]="t('settings.companySettingsSection.deleteCompanyHeader')"
+    [description]="t('settings.companySettingsSection.deleteCompanyDesc')"
+    [showModal]="deleteCompanyModal"
+    (closeModal)="closeDeleteCompanyModal()"
+  ></basic-modal>
 </ng-container>

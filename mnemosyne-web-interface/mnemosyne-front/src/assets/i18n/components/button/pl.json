@@ -23,5 +23,7 @@
   "recoverAcc": "Odzyskaj konto",
   "changePassword": "Zmień hasło",
   "changeEmail": "Zmień e-mail",
-  "deleteAccount": "Trwale usuń konto"
+  "deleteAccount": "Trwale usuń konto",
+  "transferOwnershipButton": "Przenieś własność",
+  "deleteCompany": "Usuń firmę"
 }

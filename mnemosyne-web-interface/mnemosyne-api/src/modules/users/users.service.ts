@@ -46,6 +46,7 @@ import { GetUserSecResponseDto } from '@dto/get-user-sec-response.dto';
 import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface';
 import { GetUsersByIdsInterface } from '@interfaces/get-users-by-ids.interface';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
+import { Role } from '@models/role.model';
 
 @Injectable()
 export class UsersService {
@@ -126,11 +127,17 @@ export class UsersService {
     trx: transaction
   }: GetUsersByIdsInterface) {
     return await this.userRepository.findAndCountAll({
-      include: {
-        model: ConfirmationHash,
-        attributes: ['confirmed', 'createdAt'],
-        where: { confirmationType: Confirmation.REGISTRATION }
-      },
+      include: [
+        {
+          model: ConfirmationHash,
+          attributes: ['confirmed', 'createdAt'],
+          where: { confirmationType: Confirmation.REGISTRATION }
+        },
+        {
+          model: Role,
+          attributes: ['id', 'value']
+        }
+      ],
       where: { id: ids },
       limit,
       offset,
@@ -293,7 +300,7 @@ export class UsersService {
       trx
     });
 
-    const companyId = company ? company.id : null;
+    const isCompanyMember = !!company;
 
     return new GetUserInfoResponseDto({
       userId: userIdHash,
@@ -303,8 +310,8 @@ export class UsersService {
       homeAddress,
       homePhone,
       email,
-      companyId,
-      isProfilePicPresent
+      isProfilePicPresent,
+      isCompanyMember
     });
   }
 

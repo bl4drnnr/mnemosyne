@@ -10,7 +10,7 @@
   overflow: hidden;
   position: fixed;
   display: flex;
-  background: var(--loader-background);
+  background: var(--transparent-background);
   @include z-index(modal);
 }
 

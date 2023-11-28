@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { Company } from '@models/company.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { RegistrationCompanyInterface } from '@interfaces/registration-company.interface';
@@ -25,14 +25,20 @@ import { User } from '@models/user.model';
 import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.interface';
 import { GetCompanyByIdDto } from '@dto/get-company-by-id.dto';
 import { ParseException } from '@exceptions/parse.exception';
-import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
 import { DeleteCompanyAccountInterface } from '@interfaces/delete-company-account.interface';
 import { UpdateCompanyInfoInterface } from '@interfaces/update-company-info.interface';
 import { CompanyUpdatedDto } from '@dto/company-updated.dto';
+import { GetCompanyUsersInterface } from '@interfaces/get-company-users.interface';
+import { GetCompanyUsersDto } from '@dto/get-company-users.dto';
+import { TransferOwnershipInterface } from '@interfaces/transfer-ownership.interface';
+import { CompanyOwnershipTransferredDto } from '@dto/company-ownership-transferred.dto';
+import { AuthService } from '@modules/auth.service';
 
 @Injectable()
 export class CompanyService {
   constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
     @Inject(forwardRef(() => RolesService))
     private readonly rolesService: RolesService,
     @Inject(forwardRef(() => CompanyUsersService))
@@ -204,10 +210,36 @@ export class CompanyService {
 
   async getCompanyInformationById({
     companyId,
+    trx: transaction
+  }: GetCompanyInfoByIdInterface) {
+    const company = await this.companyRepository.findByPk(companyId, {
+      transaction,
+      include: { all: true }
+    });
+
+    const { companyName, companyLocation, companyWebsite, companyOwnerId } =
+      company;
+
+    const { email: companyOwnerEmail } = await this.usersService.getUserById({
+      id: companyOwnerId,
+      trx: transaction
+    });
+
+    return new GetCompanyByIdDto({
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyOwnerId,
+      companyOwnerEmail
+    });
+  }
+
+  async getCompanyUsers({
+    companyId,
     page,
     pageSize,
     trx: transaction
-  }: GetCompanyInfoByIdInterface) {
+  }: GetCompanyUsersInterface) {
     const offset = Number(page) * Number(pageSize);
     const limit = Number(pageSize);
 
@@ -216,24 +248,9 @@ export class CompanyService {
 
     if (paginationParseError) throw new ParseException();
 
-    const company = await this.companyRepository.findByPk(companyId, {
+    const { companyUsers } = await this.companyRepository.findByPk(companyId, {
       transaction,
       include: { all: true }
-    });
-
-    if (!company) throw new CompanyNotFoundException();
-
-    const {
-      companyName,
-      companyLocation,
-      companyWebsite,
-      companyOwnerId,
-      companyUsers
-    } = company;
-
-    const { email: companyOwnerEmail } = await this.usersService.getUserById({
-      id: companyOwnerId,
-      trx: transaction
     });
 
     const companyUsersIds = companyUsers.map(
@@ -248,11 +265,16 @@ export class CompanyService {
       trx: transaction
     });
 
-    const users = rows.map(({ id, email, confirmationHashes }) => {
+    const users = rows.map(({ id, email, roles, confirmationHashes }) => {
       const registrationHash = confirmationHashes[0];
+      const userRoles = roles.map(({ id, value }) => {
+        return { id, value };
+      });
+
       return {
         id,
         email,
+        roles: userRoles,
         registrationHash: {
           confirmed: registrationHash.confirmed,
           createdAt: registrationHash.createdAt
@@ -260,12 +282,7 @@ export class CompanyService {
       };
     });
 
-    return new GetCompanyByIdDto({
-      companyName,
-      companyLocation,
-      companyWebsite,
-      companyOwnerId,
-      companyOwnerEmail,
+    return new GetCompanyUsersDto({
       companyUsers: users,
       count
     });
@@ -403,6 +420,37 @@ export class CompanyService {
     );
 
     return new CompanyUpdatedDto();
+  }
+
+  async transferCompanyOwnership({
+    companyId,
+    userId,
+    payload,
+    trx
+  }: TransferOwnershipInterface) {
+    const { mfaCode, phoneCode, language, newCompanyOwnerEmail } = payload;
+
+    const { userSettings } = await this.usersService.getUserById({
+      id: userId,
+      trx
+    });
+
+    try {
+      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
+        userSettings,
+        userId,
+        mfaCode,
+        phoneCode,
+        language,
+        trx
+      });
+
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.message, e.status);
+    }
+
+    return new CompanyOwnershipTransferredDto();
   }
 
   private async createCompanyAccount({

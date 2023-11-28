@@ -71,5 +71,8 @@
   "provideFullName": "Provide your full name",
   "accDeletionFullName": "In order to delete an account provide your full name (first name and last name).",
   "goToPageLabel": "Go to page",
-  "pagePlaceholder": "Page"
+  "pagePlaceholder": "Page",
+  "newCompanyOwnerEmailLabel": "Company new owner email",
+  "newCompanyOwnerEmailPlaceholder": "Provide the company new owner email address",
+  "newCompanyOwnerEmailDesc": "In order to continue, please, make sure that the provided email is the company member with confirmed account"
 }

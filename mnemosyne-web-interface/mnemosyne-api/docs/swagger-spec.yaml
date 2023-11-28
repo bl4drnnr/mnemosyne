@@ -563,13 +563,24 @@ paths:
     get:
       operationId: CompanyController_getCompanyInformationById
       summary: Endpoint is responsible for getting information about the company by ID.
+      parameters: []
+      responses:
+        "200":
+          description: As a response endpoint returns information about the company by ID.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCompanyByIdDto"
+      tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company/company-users:
+    get:
+      operationId: CompanyController_getCompanyUsers
+      summary: Endpoint is responsible for getting the list of all users in company
+        with pagination.
       parameters:
-        - name: companyId
-          required: true
-          in: query
-          description: Query for the company id.
-          schema:
-            type: string
         - name: page
           required: true
           in: query
@@ -584,11 +595,12 @@ paths:
             type: string
       responses:
         "200":
-          description: As a response endpoint returns information about the company by ID.
+          description: As the response user gets the list of all users along with count
+            for pagination.
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetCompanyByIdDto"
+                $ref: "#/components/schemas/GetCompanyUsersDto"
         "400":
           description: Parse exception is thrown in case if page or limit params cannot be
             parsed as number.
@@ -637,6 +649,23 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CompanyUpdatedDto"
+      tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company/transfer-ownership:
+    post:
+      operationId: CompanyController_transferCompanyOwnership
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransferOwnershipDto"
+      responses:
+        "201":
+          description: ""
       tags: *a4
       security:
         - x-access-token: []
@@ -1607,10 +1636,6 @@ components:
           type: boolean
           description: Is user profile picture present
           example: "true"
-        companyId:
-          type: string
-          description: UUID (v4) of the company
-          example: 4682d1d3-c041-4399-ba98-73a5ce149d3c
         namePronunciation:
           type: string
           description: This could be a phonetic pronunciation, or an example of something
@@ -1624,16 +1649,20 @@ components:
           type: string
           description: User home phone
           example: (800) 1231-1234
+        isCompanyMember:
+          type: boolean
+          description: Flag if the user is company member
+          example: "false"
       required:
         - userId
         - firstName
         - lastName
         - email
         - isProfilePicPresent
-        - companyId
         - namePronunciation
         - homeAddress
         - homePhone
+        - isCompanyMember
     PhoneStatus:
       type: object
       properties:
@@ -2187,11 +2216,23 @@ components:
           type: string
           description: Email address
           example: joe@doe.com
+      required:
+        - companyName
+        - companyLocation
+        - companyWebsite
+        - companyOwnerId
+        - companyOwnerEmail
+    GetCompanyUsersDto:
+      type: object
+      properties:
         companyUsers:
           description: List of company users (id and email)
           example:
             - id: 7630e8093291151b656de0dd48a60017
               email: joe@doe.com
+              roles:
+                id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
+                value: PRIMARY_ADMIN
               registrationHash:
                 confirmed: "false"
                 createdAt: 2023-11-17T11:42:26.534Z
@@ -2203,11 +2244,6 @@ components:
           description: Count for the pagination
           example: "5"
       required:
-        - companyName
-        - companyLocation
-        - companyWebsite
-        - companyOwnerId
-        - companyOwnerEmail
         - companyUsers
         - count
     ParseException:
@@ -2257,6 +2293,30 @@ components:
         - companyLocation
         - companyName
         - companyWebsite
+    TransferOwnershipDto:
+      type: object
+      properties:
+        newCompanyOwnerEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User phone code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - newCompanyOwnerEmail
     InviteUserToCompanyDto:
       type: object
       properties:
