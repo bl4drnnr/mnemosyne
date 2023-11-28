@@ -78,6 +78,10 @@
     "inviteUserModalDesc": "Below you will find the input field in order to invite the user in your company. To do that, provide the email and press Space bar to add user to the list. You can either remove user from the list of change their role. Once everything is provided, press the Invitation button.",
     "companySecurityDesc": "In this section you can manage the security settings of your company, such as transferring ownership to the different account, changing different policies and deleting the company and all its data.",
     "transferOwnershipHeader": "Transfer ownership of the company",
-    "transferOwnershipDesc": "You can transfer the ownership of the Primary Admin role from the one account to the different one. The only thing you need to be concerned about is that this account should already be the member of the company."
+    "transferOwnershipDesc": "You can transfer the ownership of the Primary Admin role from the one account to the different one. The only thing you need to be concerned about is that this account should already be the member of the company.",
+    "transferOwnershipPhone": "In order to transfer the ownership of the company account, please, make sure you have provide the code sent to your mobile phone.",
+    "transferOwnershipMfa": "In order to transfer the ownership of the company account, please, make sure you have provide the code from the authenticator application.",
+    "deleteCompanyHeader": "Delete company account",
+    "deleteCompanyDesc": "Be careful! You are about to delete the company account along with all its data. Users will be removed from the company, but their accounts themselves will not be delete from the system."
   }
 }

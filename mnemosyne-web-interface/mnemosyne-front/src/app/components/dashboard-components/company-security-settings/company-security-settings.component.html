@@ -72,28 +72,45 @@
       />
 
       <div *ngIf="transferOwnershipIsPhoneRequired">
+        <p class="paragraph on-white">
+          {{ t('settings.companySettingsSection.transferOwnershipPhone') }}
+        </p>
         <basic-input-mfa
+          [onWhite]="true"
           [isPhone]="true"
           (mfaCode)="transferOwnershipPhoneCode = $event"
           (resendSms)="transferOwnershipResendSmsCode()"
         />
       </div>
+
       <div *ngIf="transferOwnershipIsMfaRequired">
-        <basic-input-mfa (mfaCode)="transferOwnershipMfaCode = $event" />
+        <p class="paragraph on-white">
+          {{ t('settings.companySettingsSection.transferOwnershipMfa') }}
+        </p>
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="transferOwnershipMfaCode = $event"
+          />
+        </div>
       </div>
 
-      <basic-button
-        class="last-button"
-        [label]="t('button.goBack')"
-        (buttonClick)="transferOwnershipStep = 1"
-      />
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [label]="t('button.goBack')"
+          (buttonClick)="transferOwnershipStep = 1"
+        />
+      </div>
 
-      <basic-button
-        [label]="t('button.transferOwnershipButton')"
-        [onWhite]="true"
-        (buttonClick)="transferOwnership()"
-        [disabled]="disabledTransferOwnershipButton()"
-      />
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [label]="t('button.transferOwnershipButton')"
+          (buttonClick)="transferOwnership()"
+          [disabled]="disabledTransferOwnershipButton()"
+        />
+      </div>
     </div>
 
     <div *ngIf="transferOwnershipStep === 3" [@fadeInOut]="true"></div>
@@ -101,17 +118,17 @@
 
   <security-setting-section
     [showSection]="true"
-    [title]="''"
-    [description]="''"
-    [buttonLabel]="''"
+    [title]="t('settings.companySettingsSection.deleteCompanyHeader')"
+    [description]="t('settings.companySettingsSection.deleteCompanyDesc')"
+    [buttonLabel]="t('button.deleteCompany')"
     [emojiName]="'cross-mark.png'"
     [dangerButton]="true"
     (onButtonClick)="deleteCompanyModal = true"
   />
 
   <basic-modal
-    [header]="''"
-    [description]="''"
+    [header]="t('settings.companySettingsSection.deleteCompanyHeader')"
+    [description]="t('settings.companySettingsSection.deleteCompanyDesc')"
     [showModal]="deleteCompanyModal"
     (closeModal)="closeDeleteCompanyModal()"
   ></basic-modal>

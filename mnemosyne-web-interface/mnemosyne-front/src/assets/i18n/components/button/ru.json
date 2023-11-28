@@ -24,5 +24,6 @@
   "changePassword": "Изменить пароль",
   "changeEmail": "Изменить адрес электронной почты",
   "deleteAccount": "Удалить аккаунт навсегда",
-  "transferOwnershipButton": "Передать право собственности"
+  "transferOwnershipButton": "Передать право собственности",
+  "deleteCompany": "Удалить компанию"
 }

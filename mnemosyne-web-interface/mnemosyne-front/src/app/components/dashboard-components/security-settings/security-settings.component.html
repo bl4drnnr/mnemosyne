@@ -156,7 +156,7 @@
       [showModal]="changePasswordModal"
       (closeModal)="closeChangePasswordModal()"
     >
-      <div *ngIf="!changePassMfaRequired || !changePassPhoneRequired">
+      <div *ngIf="hidePasswordCreateFields()">
         <basic-input
           type="password"
           [onWhite]="true"
@@ -177,6 +177,7 @@
             [onWhite]="true"
             [label]="t('button.changePassword')"
             (buttonClick)="changePassword()"
+            [disabled]="disableChangePasswordButton()"
           />
         </div>
       </div>
@@ -214,6 +215,7 @@
           <basic-button
             [onWhite]="true"
             [label]="t('button.continue')"
+            [disabled]="disableChangePasswordMfaButton()"
             (buttonClick)="changePassword()"
           />
         </div>

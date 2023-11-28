@@ -207,17 +207,14 @@ export class SecuritySettingsComponent {
       newPassword: this.newPassword
     };
 
-    if (this.changePassMfaCode)
+    if (this.changePassMfaCode?.length === 6)
       changePasswordPayload.mfaCode = this.changePassMfaCode;
-    if (this.changePassPhoneCode)
+    if (this.changePassPhoneCode?.length === 6)
       changePasswordPayload.phoneCode = this.changePassPhoneCode;
 
     this.usersService
       .changePassword({
-        currentPassword: this.currentPassword,
-        newPassword: this.newPassword,
-        mfaCode: this.changePassMfaCode,
-        phoneCode: this.changePassPhoneCode
+        ...changePasswordPayload
       })
       .subscribe({
         next: async ({ message }) => {
@@ -225,6 +222,7 @@ export class SecuritySettingsComponent {
             case PasswordChangedResponse.FULL_MFA_REQUIRED:
               this.changePassMfaRequired = true;
               this.changePassPhoneRequired = true;
+              this.phoneCodeSent = true;
               break;
             case PasswordChangedResponse.PHONE_REQUIRED:
               this.changePassPhoneRequired = true;
@@ -241,6 +239,32 @@ export class SecuritySettingsComponent {
           }
         }
       });
+  }
+
+  hidePasswordCreateFields() {
+    return !this.changePassMfaRequired && !this.changePassPhoneRequired;
+  }
+
+  disableChangePasswordButton() {
+    return (
+      !this.currentPassword ||
+      !this.newPassword ||
+      this.incorrectPassword ||
+      this.incorrectNewPassword
+    );
+  }
+
+  disableChangePasswordMfaButton() {
+    if (this.changePassMfaRequired && !this.changePassPhoneRequired) {
+      return this.changePassMfaCode?.length !== 6;
+    } else if (this.changePassPhoneRequired && !this.changePassMfaRequired) {
+      return this.changePassPhoneCode?.length !== 6;
+    } else {
+      return (
+        this.changePassMfaCode?.length !== 6 &&
+        this.changePassPhoneCode?.length !== 6
+      );
+    }
   }
 
   deleteUserAccount() {

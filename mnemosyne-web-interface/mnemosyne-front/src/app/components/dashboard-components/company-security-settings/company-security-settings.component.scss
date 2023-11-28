@@ -12,5 +12,19 @@
 .last-button {
   margin-top: 20px;
   padding-top: 20px;
-  border-top: 1px solid var(--border-color);
+  border-top: 1px solid var(--border-color-dark);
+}
+
+.input-mfa-wrapper {
+  margin: 10px 0;
+}
+
+.paragraph {
+  font-size: 14px;
+  margin-top: 20px;
+  opacity: .75;
+
+  &.on-white {
+    color: $color-black;
+  }
 }

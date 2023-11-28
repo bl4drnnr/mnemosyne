@@ -24,5 +24,6 @@
   "changePassword": "Zmień hasło",
   "changeEmail": "Zmień e-mail",
   "deleteAccount": "Trwale usuń konto",
-  "transferOwnershipButton": "Przenieś własność"
+  "transferOwnershipButton": "Przenieś własność",
+  "deleteCompany": "Usuń firmę"
 }

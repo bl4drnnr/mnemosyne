@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CompanyService } from '@services/company.service';
 import { CompanyOwnershipTransferredEnum } from '@responses/company-ownership-transferred.enum';
-import { HttpErrorResponse } from '@angular/common/http';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PhoneService } from '@services/phone.service';
+import { TransferCompanyOwnershipInterface } from '@payloads/transfer-company-ownership.interface';
 
 @Component({
   selector: 'dashboard-company-security-settings',
@@ -41,7 +41,13 @@ export class CompanySecuritySettingsComponent {
   ) {}
 
   closeOwnershipTransferModal() {
+    this.transferOwnershipStep = 1;
     this.newCompanyOwnerEmail = '';
+    this.transferOwnershipPhoneCode = '';
+    this.transferOwnershipMfaCode = '';
+    this.transferOwnershipIsPhoneRequired = false;
+    this.transferOwnershipIsMfaRequired = false;
+    this.transferOwnershipPhoneCodeSent = false;
     this.showOwnershipTransferModal = false;
   }
 
@@ -50,11 +56,19 @@ export class CompanySecuritySettingsComponent {
   }
 
   transferOwnership() {
+    const payload: TransferCompanyOwnershipInterface = {
+      newCompanyOwnerEmail: this.newCompanyOwnerEmail
+    };
+
+    if (this.transferOwnershipPhoneCode?.length === 6)
+      payload.phoneCode = this.transferOwnershipPhoneCode;
+
+    if (this.transferOwnershipMfaCode?.length === 6)
+      payload.mfaCode = this.transferOwnershipMfaCode;
+
     this.companyService
       .transferCompanyOwnership({
-        newCompanyOwnerEmail: this.newCompanyOwnerEmail,
-        phoneCode: this.transferOwnershipPhoneCode,
-        mfaCode: this.transferOwnershipMfaCode
+        ...payload
       })
       .subscribe({
         next: async ({ message }) => {
@@ -63,6 +77,7 @@ export class CompanySecuritySettingsComponent {
               this.transferOwnershipStep = 2;
               this.transferOwnershipIsPhoneRequired = true;
               this.transferOwnershipIsMfaRequired = true;
+              this.transferOwnershipPhoneCodeSent = true;
               break;
             case CompanyOwnershipTransferredEnum.TOKEN_TWO_FA_REQUIRED:
               this.transferOwnershipStep = 2;
@@ -71,17 +86,23 @@ export class CompanySecuritySettingsComponent {
             case CompanyOwnershipTransferredEnum.PHONE_REQUIRED:
               this.transferOwnershipStep = 2;
               this.transferOwnershipIsPhoneRequired = true;
+              this.transferOwnershipPhoneCodeSent = true;
               break;
             case CompanyOwnershipTransferredEnum.COMPANY_OWNERSHIP_TRANSFERRED:
               this.transferOwnershipStep = 3;
               this.transferCompanyOwnership.emit(message);
               break;
           }
-        },
-        error: (err: HttpErrorResponse) => {
-          //
         }
       });
+  }
+
+  transferOwnershipVerifyPhoneDisable() {
+    return this.transferOwnershipPhoneCode?.length !== 6;
+  }
+
+  transferOwnershipTwoFaButtonDisable() {
+    return this.transferOwnershipMfaCode?.length !== 6;
   }
 
   transferOwnershipResendSmsCode() {
@@ -91,6 +112,22 @@ export class CompanySecuritySettingsComponent {
   }
 
   disabledTransferOwnershipButton() {
-    return this.incorrectNewCompanyOwnerEmail || !this.newCompanyOwnerEmail;
+    switch (this.transferOwnershipStep) {
+      case 1:
+        return this.incorrectNewCompanyOwnerEmail || !this.newCompanyOwnerEmail;
+      case 2:
+        if (this.transferOwnershipIsPhoneRequired) {
+          return this.transferOwnershipVerifyPhoneDisable();
+        } else if (this.transferOwnershipIsMfaRequired) {
+          return this.transferOwnershipTwoFaButtonDisable();
+        } else {
+          return (
+            this.transferOwnershipVerifyPhoneDisable() &&
+            this.transferOwnershipTwoFaButtonDisable()
+          );
+        }
+      default:
+        return false;
+    }
   }
 }
