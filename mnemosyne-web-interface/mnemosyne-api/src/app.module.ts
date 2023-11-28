@@ -23,6 +23,7 @@ import { Company } from '@models/company.model';
 import { UserRole } from '@models/user-role.model';
 import { CompanyUser } from '@models/company-users.model';
 import { CompanyUsersModule } from '@modules/company-users.module';
+import { CompanyRolesModule } from '@modules/company-roles.module';
 
 @Module({
   imports: [
@@ -58,7 +59,8 @@ import { CompanyUsersModule } from '@modules/company-users.module';
     SecurityModule,
     RecoveryModule,
     CompanyModule,
-    CompanyUsersModule
+    CompanyUsersModule,
+    CompanyRolesModule
   ],
   providers: [
     {
