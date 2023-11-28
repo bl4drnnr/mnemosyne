@@ -23,5 +23,6 @@
   "recoverAcc": "Recover account",
   "changePassword": "Change password",
   "changeEmail": "Change email",
-  "deleteAccount": "Permanently delete account"
+  "deleteAccount": "Permanently delete account",
+  "transferOwnershipButton": "Transfer ownership"
 }

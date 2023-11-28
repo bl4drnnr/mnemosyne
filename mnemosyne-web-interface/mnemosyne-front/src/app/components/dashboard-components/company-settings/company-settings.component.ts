@@ -67,6 +67,16 @@ export class CompanySettingsComponent implements OnInit {
     });
   }
 
+  async transferCompanyOwnership(message: string) {
+    const globalMessage = await this.translationService.translateText(
+      message,
+      MessagesTranslation.RESPONSES
+    );
+    this.globalMessageService.handle({
+      message: globalMessage
+    });
+  }
+
   ngOnInit() {
     this.fetchCompanyInformation();
   }

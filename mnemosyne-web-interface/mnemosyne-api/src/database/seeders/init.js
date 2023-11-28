@@ -26,13 +26,6 @@ module.exports = {
           description: 'Default role of user. Read and write.',
           created_at: new Date(),
           updated_at: new Date()
-        },
-        {
-          id: uuid.v4(),
-          value: 'READ_ONLY',
-          description: 'Read only access.',
-          created_at: new Date(),
-          updated_at: new Date()
         }
       ]);
     } catch (e) {

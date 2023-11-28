@@ -73,6 +73,11 @@
     "roleHeader": "Role",
     "deleteUserButtonHeader": "Delete",
     "usersPerPage": "Users per page",
-    "inviteUser": "Invite user(-s)"
+    "inviteUser": "Invite user(-s)",
+    "inviteUserModalHeader": "Invite user(-s) to the company",
+    "inviteUserModalDesc": "Below you will find the input field in order to invite the user in your company. To do that, provide the email and press Space bar to add user to the list. You can either remove user from the list of change their role. Once everything is provided, press the Invitation button.",
+    "companySecurityDesc": "In this section you can manage the security settings of your company, such as transferring ownership to the different account, changing different policies and deleting the company and all its data.",
+    "transferOwnershipHeader": "Transfer ownership of the company",
+    "transferOwnershipDesc": "You can transfer the ownership of the Primary Admin role from the one account to the different one. The only thing you need to be concerned about is that this account should already be the member of the company."
   }
 }

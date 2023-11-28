@@ -19,9 +19,11 @@ export class CompanyUsersSettingsComponent implements OnInit {
   @Input() pageSize: string;
   @Input() totalItems: number;
   @Input() companyUsers: UsersList;
+
   @Output() fetchCompanyUsers = new EventEmitter<void>();
   @Output() setNewCurrentPage = new EventEmitter<string>();
   @Output() setNewUsersPerPage = new EventEmitter<string>();
+  @Output() inviteUsersToCompany = new EventEmitter<void>();
 
   showInviteUserModal: boolean;
 
@@ -74,7 +76,6 @@ export class CompanyUsersSettingsComponent implements OnInit {
       primaryAdmin: string;
       admin: string;
       default: string;
-      readOnly: string;
     } = await this.translationService.translateObject(
       'roles',
       CredentialsTranslation.REGISTRATION
@@ -88,10 +89,6 @@ export class CompanyUsersSettingsComponent implements OnInit {
       {
         key: Roles.DEFAULT,
         value: roles.default
-      },
-      {
-        key: Roles.READ_ONLY,
-        value: roles.readOnly
       }
     ];
 
@@ -115,6 +112,10 @@ export class CompanyUsersSettingsComponent implements OnInit {
     );
     this.companyMembers[companyMemberIdx] = { email, roleKey, roleValue };
     await this.initDefaultRoles();
+  }
+
+  inviteUsers() {
+    //
   }
 
   setCurrentPage(currentPage: string) {

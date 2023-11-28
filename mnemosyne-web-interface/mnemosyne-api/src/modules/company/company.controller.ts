@@ -34,6 +34,7 @@ import { UserId } from '@decorators/user-id.decorator';
 import { DeleteCompanyDto } from '@dto/delete-company.dto';
 import { CompanyId } from '@decorators/company-id.decorator';
 import { UpdateCompanyDto } from '@dto/update-company.dto';
+import { TransferOwnershipDto } from '@dto/transfer-ownership.dto';
 
 @ApiTags('Company')
 @Controller('company')
@@ -134,6 +135,27 @@ export class CompanyController {
   ) {
     return this.companyService.updateCompanyInformation({
       companyId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Post('transfer-ownership')
+  transferCompanyOwnership(
+    @CompanyId() companyId: string,
+    @UserId() userId: string,
+    @Body() payload: TransferOwnershipDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyService.transferCompanyOwnership({
+      companyId,
+      userId,
       payload,
       trx
     });

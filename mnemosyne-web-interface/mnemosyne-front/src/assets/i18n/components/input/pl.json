@@ -71,5 +71,8 @@
   "provideFullName": "Podaj swoje pełne imię i nazwisko",
   "accDeletionFullName": "Aby usunąć konto, podaj swoje pełne imię i nazwisko (imię i nazwisko).",
   "goToPageLabel": "Przejdź do strony",
-  "pagePlaceholder": "Strona"
+  "pagePlaceholder": "Strona",
+  "newCompanyOwnerEmailLabel": "E-mail nowego właściciela firmy",
+  "newCompanyOwnerEmailPlaceholder": "Podaj adres e-mail nowego właściciela firmy",
+  "newCompanyOwnerEmailDesc": "Aby kontynuować, upewnij się, że podany adres e-mail należy do członka firmy z potwierdzonym kontem"
 }

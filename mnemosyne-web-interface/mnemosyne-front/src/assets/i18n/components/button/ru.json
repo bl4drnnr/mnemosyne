@@ -23,5 +23,6 @@
   "recoverAcc": "Восстановить аккаунт",
   "changePassword": "Изменить пароль",
   "changeEmail": "Изменить адрес электронной почты",
-  "deleteAccount": "Удалить аккаунт навсегда"
+  "deleteAccount": "Удалить аккаунт навсегда",
+  "transferOwnershipButton": "Передать право собственности"
 }

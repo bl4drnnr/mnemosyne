@@ -257,10 +257,6 @@ export class RegistrationComponent implements OnInit {
       {
         key: Roles.DEFAULT,
         value: roles.default
-      },
-      {
-        key: Roles.READ_ONLY,
-        value: roles.readOnly
       }
     ];
 

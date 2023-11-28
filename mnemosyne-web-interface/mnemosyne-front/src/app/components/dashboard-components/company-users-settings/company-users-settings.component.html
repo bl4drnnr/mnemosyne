@@ -14,8 +14,8 @@
   </div>
 
   <basic-modal
-    [header]="'Invite user(-s) to the company'"
-    [description]="'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque dignissimos eos incidunt minima nihil numquam provident quas quod sit, sunt.'"
+    [header]="t('settings.companySettingsSection.inviteUserModalHeader')"
+    [description]="t('settings.companySettingsSection.inviteUserModalDesc')"
     [showModal]="showInviteUserModal"
     (closeModal)="closeInviteUserModal()"
   >
@@ -41,8 +41,10 @@
     />
 
     <basic-button
-      [label]="'Invite users'"
       [onWhite]="true"
+      [label]="t('settings.companySettingsSection.inviteUser')"
+      [disabled]="companyMembers.length === 0"
+      (buttonClick)="inviteUsers()"
     />
   </basic-modal>
 

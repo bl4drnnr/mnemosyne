@@ -335,6 +335,7 @@ p, spam, ul, li, ol {
   --text-color: #{$text-color};
   --paragraph-color: #{$black};
   --border-color: #{rgba($color-black, .1)};
+  --border-color-dark: #{rgba($color-black, .1)};
   --disabled-color: #{rgba($block-color, .2)};
   --success-color: #{$success-color};
   --success-color-svg: #{$success-color-svg};
@@ -358,6 +359,7 @@ p, spam, ul, li, ol {
   --text-color: #{$color-white};
   --paragraph-color: #{rgba($color-white, .85)};
   --border-color: #{rgba($color-white, .3)};
+  --border-color-dark: #{rgba($color-black, .1)};
   --disabled-color: #{rgba($color-white, .1)};
   --success-color: #{$success-color};
   --success-color-svg: #{$success-color-svg};

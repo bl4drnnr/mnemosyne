@@ -1,4 +1,4 @@
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { Company } from '@models/company.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { RegistrationCompanyInterface } from '@interfaces/registration-company.interface';
@@ -30,10 +30,15 @@ import { UpdateCompanyInfoInterface } from '@interfaces/update-company-info.inte
 import { CompanyUpdatedDto } from '@dto/company-updated.dto';
 import { GetCompanyUsersInterface } from '@interfaces/get-company-users.interface';
 import { GetCompanyUsersDto } from '@dto/get-company-users.dto';
+import { TransferOwnershipInterface } from '@interfaces/transfer-ownership.interface';
+import { CompanyOwnershipTransferredDto } from '@dto/company-ownership-transferred.dto';
+import { AuthService } from '@modules/auth.service';
 
 @Injectable()
 export class CompanyService {
   constructor(
+    @Inject(forwardRef(() => AuthService))
+    private readonly authService: AuthService,
     @Inject(forwardRef(() => RolesService))
     private readonly rolesService: RolesService,
     @Inject(forwardRef(() => CompanyUsersService))
@@ -415,6 +420,37 @@ export class CompanyService {
     );
 
     return new CompanyUpdatedDto();
+  }
+
+  async transferCompanyOwnership({
+    companyId,
+    userId,
+    payload,
+    trx
+  }: TransferOwnershipInterface) {
+    const { mfaCode, phoneCode, language, newCompanyOwnerEmail } = payload;
+
+    const { userSettings } = await this.usersService.getUserById({
+      id: userId,
+      trx
+    });
+
+    try {
+      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
+        userSettings,
+        userId,
+        mfaCode,
+        phoneCode,
+        language,
+        trx
+      });
+
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.message, e.status);
+    }
+
+    return new CompanyOwnershipTransferredDto();
   }
 
   private async createCompanyAccount({

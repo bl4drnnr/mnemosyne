@@ -653,6 +653,23 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/company/transfer-ownership:
+    post:
+      operationId: CompanyController_transferCompanyOwnership
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransferOwnershipDto"
+      responses:
+        "201":
+          description: ""
+      tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
@@ -2276,6 +2293,30 @@ components:
         - companyLocation
         - companyName
         - companyWebsite
+    TransferOwnershipDto:
+      type: object
+      properties:
+        newCompanyOwnerEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User phone code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - newCompanyOwnerEmail
     InviteUserToCompanyDto:
       type: object
       properties:
