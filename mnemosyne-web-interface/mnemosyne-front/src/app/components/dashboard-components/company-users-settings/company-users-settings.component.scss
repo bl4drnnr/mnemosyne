@@ -25,12 +25,20 @@
 }
 
 .company-users-header-email {
-  width: 60%;
+  width: 40%;
   border-left: 1px solid var(--border-color);
   padding: 15px;
 }
 
 .company-users-header-role {
+  width: 20%;
+  border-left: 1px solid var(--border-color);
+  padding: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.company-users-header-confirmation {
   width: 20%;
   border-left: 1px solid var(--border-color);
   padding: 15px;

@@ -71,6 +71,7 @@
     "usersManagementDesc": "Oto lista wszystkich członków firmy, ich role i status potwierdzenia konta. Na tej stronie będziesz mógł dodawać użytkowników, usuwać użytkowników z firmy i modyfikować ich poziom dostępu.",
     "emailHeader": "E-mail",
     "roleHeader": "Rola",
+    "confirmedHeader": "Potwierdzenie",
     "deleteUserButtonHeader": "Usuń",
     "usersPerPage": "Użytkownicy na stronę",
     "inviteUser": "Zaproś użytkownika(-ów)",

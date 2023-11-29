@@ -71,6 +71,7 @@
     "usersManagementDesc": "Here is the list of all company members, their roles and account confirmation status. From this page you will be able to add users, delete users from the company and modify their level of access.",
     "emailHeader": "Email",
     "roleHeader": "Role",
+    "confirmedHeader": "Confirmed",
     "deleteUserButtonHeader": "Delete",
     "usersPerPage": "Users per page",
     "inviteUser": "Invite user(-s)",
