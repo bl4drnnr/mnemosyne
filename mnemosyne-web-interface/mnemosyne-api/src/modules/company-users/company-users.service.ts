@@ -14,6 +14,7 @@ import { User } from '@models/user.model';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { EmailService } from '@shared/email.service';
 import { CompanyService } from '@modules/company.service';
+import { GetCompanyMemberInfoInterface } from '@interfaces/get-company-member-info.interface';
 
 @Injectable()
 export class CompanyUsersService {
@@ -118,6 +119,14 @@ export class CompanyUsersService {
     });
 
     return new UserInvitedDto();
+  }
+
+  async getCompanyMemberInfo({
+    companyId,
+    memberId,
+    trx
+  }: GetCompanyMemberInfoInterface) {
+    //
   }
 
   async createCompanyUser({

@@ -13,7 +13,6 @@ import {
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Patch,
   Post,
@@ -31,7 +30,6 @@ import { AuthGuard } from '@guards/auth.guard';
 import { Roles } from '@decorators/roles.decorator';
 import { RoleGuard } from '@guards/role.guard';
 import { UserId } from '@decorators/user-id.decorator';
-import { DeleteCompanyDto } from '@dto/delete-company.dto';
 import { CompanyId } from '@decorators/company-id.decorator';
 import { UpdateCompanyDto } from '@dto/update-company.dto';
 import { TransferOwnershipDto } from '@dto/transfer-ownership.dto';
@@ -94,25 +92,6 @@ export class CompanyController {
       companyId,
       page,
       pageSize,
-      trx
-    });
-  }
-
-  @ApiBasicAuth('basicAuth')
-  @ApiBearerAuth('x-access-token')
-  @UsePipes(ValidationPipe)
-  @Roles('ADMIN')
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
-  @Delete('delete-company')
-  deleteCompanyAccount(
-    @UserId() userId: string,
-    @Body() payload: DeleteCompanyDto,
-    @TransactionParam() trx: Transaction
-  ) {
-    return this.companyService.deleteCompanyAccount({
-      userId,
-      payload,
       trx
     });
   }

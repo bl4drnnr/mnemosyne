@@ -399,14 +399,6 @@ export class CompanyService {
     return new CompanyMemberAccConfirmedDto();
   }
 
-  deleteCompanyAccount({
-    userId,
-    payload,
-    trx
-  }: DeleteCompanyAccountInterface) {
-    const { language } = payload;
-  }
-
   async updateCompanyInformation({
     companyId,
     payload,

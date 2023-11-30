@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { UsersService } from '@services/users.service';
 import { AuthenticationService } from '@services/authentication.service';
+import { switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,15 +28,11 @@ export class RefreshTokensService {
 
     if (!accessToken) return this.handleLogout();
 
-    this.authenticationService
-      .refreshTokens({
-        accessToken
+    return this.authenticationService.refreshTokens({ accessToken }).pipe(
+      switchMap(({ _at }) => {
+        localStorage.setItem('_at', _at);
+        return this.usersService.getUserInfo();
       })
-      .subscribe({
-        next: ({ _at }) => localStorage.setItem('_at', _at),
-        error: async () => await this.handleLogout()
-      });
-
-    return this.usersService.getUserInfo();
+    );
   }
 }

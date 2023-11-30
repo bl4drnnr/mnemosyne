@@ -1,4 +1,12 @@
-import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+  UsePipes
+} from '@nestjs/common';
 import { CompanyUsersService } from '@modules/company-users.service';
 import {
   ApiBasicAuth,
@@ -17,6 +25,7 @@ import { Transaction } from 'sequelize';
 import { Roles } from '@decorators/roles.decorator';
 import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
 import { CompanyUsersDocs } from '@docs/company-users.docs';
+import { CompanyId } from '@decorators/company-id.decorator';
 
 @ApiTags('Company Users')
 @Controller('company-users')
@@ -41,6 +50,26 @@ export class CompanyUsersController {
     return this.companyUsersService.inviteUserToCompany({
       userId,
       payload,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Post('invite-user')
+  @Get('company-member-info')
+  getCompanyMemberInfo(
+    @CompanyId() companyId: string,
+    @Query() memberId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyUsersService.getCompanyMemberInfo({
+      companyId,
+      memberId,
       trx
     });
   }

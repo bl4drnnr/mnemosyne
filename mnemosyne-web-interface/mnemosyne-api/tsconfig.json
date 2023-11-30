@@ -88,6 +88,7 @@
         "src/libs/interfaces/time/*",
         "src/libs/interfaces/company/*",
         "src/libs/interfaces/company-users/*",
+        "src/libs/interfaces/company-roles/*",
         "src/libs/interfaces/roles/*"
       ],
       "@docs/*": [

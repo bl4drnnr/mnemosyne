@@ -50,7 +50,9 @@ export class ApiConfigService {
       recoveryEndpoints: this.getArray('ALLOWED_ENDPOINTS_RECOVERY'),
       securityEndpoints: this.getArray('ALLOWED_ENDPOINTS_SECURITY'),
       usersEndpoints: this.getArray('ALLOWED_ENDPOINTS_USERS'),
-      companyEndpoints: this.getArray('ALLOWED_ENDPOINTS_COMPANY')
+      companyEndpoints: this.getArray('ALLOWED_ENDPOINTS_COMPANY'),
+      companyUsersEndpoints: this.getArray('ALLOWED_ENDPOINTS_COMPANY_USERS'),
+      companyRolesEndpoints: this.getArray('ALLOWED_ENDPOINTS_COMPANY_ROLES')
     };
   }
 

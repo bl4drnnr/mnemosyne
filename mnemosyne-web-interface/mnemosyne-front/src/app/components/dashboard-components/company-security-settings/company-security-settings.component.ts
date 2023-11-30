@@ -23,6 +23,8 @@ export class CompanySecuritySettingsComponent {
   @Input() companyOwnerEmail: string;
   @Output() transferCompanyOwnership = new EventEmitter<string>();
 
+  // @TODO Modal window for user information, modification, delete and role change.
+  // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service)
   showOwnershipTransferModal = false;
   deleteCompanyModal = false;
 
