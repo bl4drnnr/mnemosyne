@@ -1,4 +1,4 @@
-export interface ConfirmCompanyAccountInterface {
+export interface ConfirmCompanyAccountPayload {
   firstName: string;
   lastName: string;
   password: string;

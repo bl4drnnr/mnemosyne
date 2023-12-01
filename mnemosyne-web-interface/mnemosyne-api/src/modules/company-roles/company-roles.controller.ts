@@ -15,12 +15,13 @@ import { CreateCompanyRoleDto } from '@dto/create-company-role.dto';
 import { UpdateCompanyRoleDto } from '@dto/update-company-role.dto';
 import { AssignRoleDto } from '@dto/assign-role.dto';
 import { RevokeRoleDto } from '@dto/revoke-role.dto';
-import { ApiBasicAuth, ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBasicAuth, ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { Roles } from '@decorators/roles.decorator';
 import { RoleGuard } from '@guards/role.guard';
 import { AuthGuard } from '@guards/auth.guard';
 
+@ApiTags('Company Roles')
 @Controller('company-roles')
 export class CompanyRolesController {
   constructor(private readonly companyRolesService: CompanyRolesService) {}

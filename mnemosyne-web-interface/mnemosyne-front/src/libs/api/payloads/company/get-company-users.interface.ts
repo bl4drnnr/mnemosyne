@@ -1,4 +1,4 @@
-export interface GetCompanyUsersInterface {
+export interface GetCompanyUsersPayload {
   page: string;
   pageSize: string;
 }

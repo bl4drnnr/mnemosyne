@@ -1,6 +1,6 @@
 import { ConfirmEmailChangePayload } from '@payloads/confirm-email-change-payload.interface';
 
-export interface ConfirmEmailChangeInterface {
+export interface ConfirmEmailChangeInterfacePayload {
   hash: string;
   payload: ConfirmEmailChangePayload;
 }

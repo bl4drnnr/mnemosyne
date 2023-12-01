@@ -3,7 +3,7 @@ import { CompanyService } from '@services/company.service';
 import { CompanyOwnershipTransferredEnum } from '@responses/company-ownership-transferred.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PhoneService } from '@services/phone.service';
-import { TransferCompanyOwnershipInterface } from '@payloads/transfer-company-ownership.interface';
+import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
 
 @Component({
   selector: 'dashboard-company-security-settings',
@@ -25,6 +25,7 @@ export class CompanySecuritySettingsComponent {
 
   // @TODO Modal window for user information, modification, delete and role change.
   // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service)
+  // @TODO Rename interfaces and payloads in front-end services
   showOwnershipTransferModal = false;
   deleteCompanyModal = false;
 
@@ -58,7 +59,7 @@ export class CompanySecuritySettingsComponent {
   }
 
   transferOwnership() {
-    const payload: TransferCompanyOwnershipInterface = {
+    const payload: TransferCompanyOwnershipPayload = {
       newCompanyOwnerEmail: this.newCompanyOwnerEmail
     };
 

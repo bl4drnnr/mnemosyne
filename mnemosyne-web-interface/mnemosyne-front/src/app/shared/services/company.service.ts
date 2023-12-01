@@ -6,13 +6,13 @@ import { Controller } from '@interfaces/controller.enum';
 import { CompanyEndpoint } from '@interfaces/company.enum';
 import { CreateCompanyPayload } from '@payloads/create-company.interface';
 import { CompanyCreatedResponse } from '@responses/company-created.enum';
-import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
-import { UpdateCompanyInfoInterface } from '@payloads/update-company-info.interface';
+import { GetCompanyInfoByIdResponse } from '@responses/get-company-by-id.interface';
+import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interface';
 import { CompanyInfoUpdatedEnum } from '@responses/company-info-updated.enum';
-import { GetCompanyUsersInterface } from '@payloads/get-company-users.interface';
-import { GetCompanyUsersResInterface } from '@responses/get-company-users-res.interface';
+import { GetCompanyUsersPayload } from '@payloads/get-company-users.interface';
+import { GetCompanyUsersResponse } from '@responses/get-company-users-res.interface';
 import { CompanyOwnershipTransferredEnum } from '@responses/company-ownership-transferred.enum';
-import { TransferCompanyOwnershipInterface } from '@payloads/transfer-company-ownership.interface';
+import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +35,7 @@ export class CompanyService {
     });
   }
 
-  getCompanyInformationById(): Observable<GetCompanyInfoByIdInterface> {
+  getCompanyInformationById(): Observable<GetCompanyInfoByIdResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
@@ -48,7 +48,7 @@ export class CompanyService {
   getCompanyUsers({
     page,
     pageSize
-  }: GetCompanyUsersInterface): Observable<GetCompanyUsersResInterface> {
+  }: GetCompanyUsersPayload): Observable<GetCompanyUsersResponse> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
@@ -60,7 +60,7 @@ export class CompanyService {
   }
 
   saveCompanyInformation(
-    payload: UpdateCompanyInfoInterface
+    payload: UpdateCompanyInfoPayload
   ): Observable<{ message: CompanyInfoUpdatedEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
@@ -73,7 +73,7 @@ export class CompanyService {
   }
 
   transferCompanyOwnership(
-    payload: TransferCompanyOwnershipInterface
+    payload: TransferCompanyOwnershipPayload
   ): Observable<{ message: CompanyOwnershipTransferredEnum }> {
     const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');

@@ -1,4 +1,4 @@
-export interface ConfirmAccountInterface {
+export interface ConfirmAccountPayload {
   confirmationHash: string;
   language?: string;
 }

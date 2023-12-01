@@ -52,7 +52,9 @@
         "src/libs/api/responses/recovery/*",
         "src/libs/api/responses/users/*",
         "src/libs/api/responses/email/*",
-        "src/libs/api/responses/company/*"
+        "src/libs/api/responses/company/*",
+        "src/libs/api/responses/company-roles/*",
+        "src/libs/api/responses/company-users/*"
       ],
       "@payloads/*": [
         "src/libs/api/payloads/auth/*",
@@ -61,7 +63,9 @@
         "src/libs/api/payloads/recovery/*",
         "src/libs/api/payloads/users/*",
         "src/libs/api/payloads/email/*",
-        "src/libs/api/payloads/company/*"
+        "src/libs/api/payloads/company/*",
+        "src/libs/api/payloads/company-roles/*",
+        "src/libs/api/payloads/company-users/*"
       ],
       "@env/*": ["src/app/environments/*"],
       "@layouts/*": ["src/app/layouts/*"],
