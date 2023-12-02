@@ -92,10 +92,10 @@ export class UsersController {
     return this.usersService.getUserSecuritySettings({ userId, trx });
   }
 
-  @ApiOperation(UsersDocs.PatchUserInfo.ApiOperation)
-  @ApiExtraModels(...UsersDocs.PatchUserInfo.ApiExtraModels)
-  @ApiResponse(UsersDocs.PatchUserInfo.ApiResponse)
-  @ApiBody(UsersDocs.PatchUserInfo.ApiBody)
+  @ApiOperation(UsersDocs.UpdateUserInfo.ApiOperation)
+  @ApiExtraModels(...UsersDocs.UpdateUserInfo.ApiExtraModels)
+  @ApiResponse(UsersDocs.UpdateUserInfo.ApiResponse)
+  @ApiBody(UsersDocs.UpdateUserInfo.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
@@ -103,8 +103,8 @@ export class UsersController {
   @Patch('user-info')
   updateUserInfo(
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction,
-    @Body() payload: UpdateUserInfoDto
+    @Body() payload: UpdateUserInfoDto,
+    @TransactionParam() trx: Transaction
   ) {
     return this.usersService.updateUserInfo({
       userId,

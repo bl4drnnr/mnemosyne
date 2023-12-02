@@ -168,7 +168,7 @@
       <basic-button
         [disabled]="saveButtonDisabled()"
         [label]="t('button.saveSettings')"
-        (buttonClick)="saveCompanyMemberInfo()"
+        (buttonClick)="saveCompanyMemberInfo(currentCompanyMember.memberId)"
       />
     </basic-modal>
   </div>

@@ -707,6 +707,27 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+    patch:
+      operationId: CompanyUsersController_updateCompanyMemberInfo
+      parameters:
+        - name: memberId
+          required: true
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserInfoDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a5
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/security/registration-generate-2fa-qr:
     get:
       operationId: SecurityController_registrationGenerateTwoFaQrCode
@@ -2445,6 +2466,10 @@ components:
     CompanyMemberInfoDto:
       type: object
       properties:
+        memberId:
+          type: string
+          description: Hashed (MD5) user ID
+          example: 7630e8093291151b656de0dd48a60017
         email:
           type: string
           description: Email address
@@ -2471,6 +2496,7 @@ components:
           description: User home phone
           example: (800) 1231-1234
       required:
+        - memberId
         - email
         - firstName
         - lastName

@@ -55,7 +55,6 @@ export class PhoneService {
   sendSmsCode(
     payload: SendSmsPayload
   ): Observable<{ message: SendSmsCodeResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
     if (language) payload.language = language;
 
@@ -63,8 +62,7 @@ export class PhoneService {
       method: Method.POST,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.SEND_SMS_CODE,
-      payload,
-      accessToken
+      payload
     });
   }
 
@@ -86,25 +84,21 @@ export class PhoneService {
   }
 
   getSmsCode(): Observable<{ message: SendSmsCodeResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
 
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.GET_SMS_CODE,
-      params: { language },
-      accessToken
+      params: { language }
     });
   }
 
   clearSmsCode(): Observable<{ message: SmsClearedResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.SECURITY,
-      action: SecurityEndpoint.CLEAR_SMS_CODE,
-      accessToken
+      action: SecurityEndpoint.CLEAR_SMS_CODE
     });
   }
 
@@ -136,26 +130,22 @@ export class PhoneService {
   verifyMobilePhone(
     payload: VerifyMobilePhonePayload
   ): Observable<{ message: VerifyTwoFaResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.VERIFY_MOBILE_PHONE,
-      payload,
-      accessToken
+      payload
     });
   }
 
   disablePhone(
     payload: DisableTwoFaPayload
   ): Observable<{ message: MfaDisabledResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.DISABLE_PHONE,
-      payload,
-      accessToken
+      payload
     });
   }
 }

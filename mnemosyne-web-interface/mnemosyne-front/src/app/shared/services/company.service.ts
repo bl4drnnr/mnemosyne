@@ -36,12 +36,10 @@ export class CompanyService {
   }
 
   getCompanyInformationById(): Observable<GetCompanyInfoByIdResponse> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.COMPANY,
-      action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID,
-      accessToken
+      action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID
     });
   }
 
@@ -49,33 +47,28 @@ export class CompanyService {
     page,
     pageSize
   }: GetCompanyUsersPayload): Observable<GetCompanyUsersResponse> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.GET_COMPANY_USERS,
-      params: { page, pageSize },
-      accessToken
+      params: { page, pageSize }
     });
   }
 
   saveCompanyInformation(
     payload: UpdateCompanyInfoPayload
   ): Observable<{ message: CompanyInfoUpdatedResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.PATCH,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.UPDATE_COMPANY_INFORMATION,
-      payload,
-      accessToken
+      payload
     });
   }
 
   transferCompanyOwnership(
     payload: TransferCompanyOwnershipPayload
   ): Observable<{ message: CompanyOwnershipTransferredResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -84,8 +77,7 @@ export class CompanyService {
       method: Method.POST,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.TRANSFER_OWNERSHIP,
-      payload,
-      accessToken
+      payload
     });
   }
 }

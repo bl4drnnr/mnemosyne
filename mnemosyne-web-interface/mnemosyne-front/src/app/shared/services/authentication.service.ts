@@ -17,7 +17,6 @@ import { LogoutResponse } from '@responses/logout.enum';
 import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
 import { ConfirmAccountPayload } from '@payloads/confirm-account.interface';
 import { ConfirmCompanyAccountPayload } from '@payloads/confirm-company-account.interface';
-import { RefreshTokensPayload } from '@payloads/refresh-tokens.interface';
 import { ConfirmCompanyAccountResponse } from '@responses/confirm-company-account.enum';
 import { ConfirmCompanyMemberAccResponse } from '@responses/confirm-company-member-acc.enum';
 
@@ -135,24 +134,19 @@ export class AuthenticationService {
     });
   }
 
-  refreshTokens({
-    accessToken
-  }: RefreshTokensPayload): Observable<{ _at: string }> {
+  refreshTokens(): Observable<{ _at: string }> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.AUTH,
-      action: AuthEndpoint.REFRESH,
-      accessToken
+      action: AuthEndpoint.REFRESH
     });
   }
 
   logout(): Observable<{ message: LogoutResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.AUTH,
-      action: AuthEndpoint.LOGOUT,
-      accessToken
+      action: AuthEndpoint.LOGOUT
     });
   }
 }

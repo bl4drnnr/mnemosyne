@@ -1,4 +1,5 @@
 export interface CompanyMemberInfoResponse {
+  memberId: string;
   email: string;
   firstName: string;
   lastName: string;

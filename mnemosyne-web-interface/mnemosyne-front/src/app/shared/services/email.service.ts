@@ -19,7 +19,6 @@ export class EmailService {
   changeEmail(
     payload: ChangeEmailPayload
   ): Observable<{ message: ChangeEmailResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -28,8 +27,7 @@ export class EmailService {
       method: Method.POST,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.CHANGE_EMAIL,
-      payload,
-      accessToken
+      payload
     });
   }
 

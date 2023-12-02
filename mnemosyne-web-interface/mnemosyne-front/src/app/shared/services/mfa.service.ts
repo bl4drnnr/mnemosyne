@@ -41,12 +41,10 @@ export class MfaService {
   }
 
   generateTwoFaQrCode(): Observable<GenerateTwoFaResponse> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.SECURITY,
-      action: SecurityEndpoint.GENERATE_2FA_QR,
-      accessToken
+      action: SecurityEndpoint.GENERATE_2FA_QR
     });
   }
 
@@ -78,26 +76,22 @@ export class MfaService {
   verifyTwoFaQrCode(
     payload: VerifyTwoFaPayload
   ): Observable<{ message: VerifyTwoFaResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.VERIFY_2FA,
-      payload,
-      accessToken
+      payload
     });
   }
 
   disableTwoFa(
     payload: DisableTwoFaPayload
   ): Observable<{ message: MfaDisabledResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.DISABLE_2FA,
-      payload,
-      accessToken
+      payload
     });
   }
 }

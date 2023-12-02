@@ -17,6 +17,8 @@ import {
   transition,
   trigger
 } from '@angular/animations';
+import { RefreshTokensService } from '@services/refresh-tokens.service';
+import { MessagesTranslation } from '@translations/messages.enum';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -66,6 +68,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   incorrectCompanyMemberLastName: boolean;
 
   constructor(
+    private readonly refreshTokensService: RefreshTokensService,
     private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly translationService: TranslationService
@@ -171,8 +174,39 @@ export class CompanyUsersSettingsComponent implements OnInit {
       });
   }
 
-  saveCompanyMemberInfo() {
-    //
+  saveCompanyMemberInfo(memberId: string) {
+    const namePronunciation = this.currentCompanyMemberNamePronunciation
+      ? this.currentCompanyMemberNamePronunciation
+      : null;
+    const homeAddress = this.currentCompanyMemberHomeAddress
+      ? this.currentCompanyMemberHomeAddress
+      : null;
+    const homePhone = this.currentCompanyMemberHomePhone
+      ? this.currentCompanyMemberHomePhone
+      : null;
+
+    this.companyUsersService
+      .updateCompanyMemberInformation({
+        firstName: this.currentCompanyMemberFirstName,
+        lastName: this.currentCompanyMemberLastName,
+        namePronunciation,
+        homeAddress,
+        homePhone,
+        memberId
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          const globalMessage = await this.translationService.translateText(
+            message,
+            MessagesTranslation.RESPONSES
+          );
+          this.globalMessageService.handle({
+            message: globalMessage
+          });
+          this.fetchCompanyMemberInformation(memberId);
+        },
+        error: () => this.refreshTokensService.handleLogout()
+      });
   }
 
   wasInfoChanged() {

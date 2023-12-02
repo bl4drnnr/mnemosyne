@@ -28,7 +28,7 @@ export class RefreshTokensService {
 
     if (!accessToken) return this.handleLogout();
 
-    return this.authenticationService.refreshTokens({ accessToken }).pipe(
+    return this.authenticationService.refreshTokens().pipe(
       switchMap(({ _at }) => {
         localStorage.setItem('_at', _at);
         return this.usersService.getUserInfo();

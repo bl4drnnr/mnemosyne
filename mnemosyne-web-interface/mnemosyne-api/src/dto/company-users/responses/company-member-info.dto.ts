@@ -4,6 +4,13 @@ import { DocsProperty } from '@interfaces/docs-property.enum';
 export class CompanyMemberInfoDto {
   @ApiProperty({
     type: String,
+    description: DocsProperty.USER_ID_DESC,
+    example: DocsProperty.USER_ID_EXAMPLE
+  })
+  readonly memberId: string;
+
+  @ApiProperty({
+    type: String,
     description: DocsProperty.EMAIL_DESC,
     example: DocsProperty.EMAIL_EXAMPLE
   })
@@ -45,6 +52,7 @@ export class CompanyMemberInfoDto {
   readonly homePhone: string | null;
 
   constructor({
+    memberId,
     email,
     firstName,
     lastName,
@@ -52,6 +60,7 @@ export class CompanyMemberInfoDto {
     homeAddress,
     homePhone
   }: {
+    memberId: string;
     email: string;
     firstName: string;
     lastName: string;
@@ -59,6 +68,7 @@ export class CompanyMemberInfoDto {
     homeAddress: string | null;
     homePhone: string | null;
   }) {
+    this.memberId = memberId;
     this.email = email;
     this.firstName = firstName;
     this.lastName = lastName;

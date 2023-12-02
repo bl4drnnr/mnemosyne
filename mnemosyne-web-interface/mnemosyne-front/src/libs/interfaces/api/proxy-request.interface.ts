@@ -25,5 +25,4 @@ export interface ProxyRequestInterface {
   method: Method;
   payload?: object;
   params?: object;
-  accessToken?: string;
 }

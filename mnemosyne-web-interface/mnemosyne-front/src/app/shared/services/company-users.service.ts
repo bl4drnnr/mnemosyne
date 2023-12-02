@@ -8,6 +8,8 @@ import { Controller } from '@interfaces/controller.enum';
 import { CompanyUsersEndpoint } from '@interfaces/company-users.enum';
 import { CompanyMemberInfoInterface } from '@payloads/company-member-info.interface';
 import { CompanyMemberInfoResponse } from '@responses/company-member-info.interface';
+import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
+import { UserUpdatedResponse } from '@responses/user-updated.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -38,6 +40,18 @@ export class CompanyUsersService {
       controller: Controller.COMPANY_USERS,
       action: CompanyUsersEndpoint.COMPANY_MEMBER_INFO,
       params: { memberId }
+    });
+  }
+
+  updateCompanyMemberInformation(
+    payload: UpdateUserInfoPayload
+  ): Observable<{ message: UserUpdatedResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.PATCH,
+      controller: Controller.COMPANY_USERS,
+      action: CompanyUsersEndpoint.COMPANY_MEMBER_INFO,
+      params: { memberId: payload.memberId },
+      payload
     });
   }
 }
