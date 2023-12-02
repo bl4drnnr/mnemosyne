@@ -4,5 +4,7 @@ export enum Controller {
   CONFIRMATION_HASH = 'confirmation-hash',
   USERS = 'users',
   RECOVERY = 'recovery',
-  COMPANY = 'company'
+  COMPANY = 'company',
+  COMPANY_USERS = 'company-users',
+  COMPANY_ROLES = 'company-roles'
 }

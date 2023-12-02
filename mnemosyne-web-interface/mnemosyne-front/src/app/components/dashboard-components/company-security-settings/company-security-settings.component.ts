@@ -1,9 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CompanyService } from '@services/company.service';
-import { CompanyOwnershipTransferredEnum } from '@responses/company-ownership-transferred.enum';
+import { CompanyOwnershipTransferredResponse } from '@responses/company-ownership-transferred.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PhoneService } from '@services/phone.service';
 import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
+import { CompanyUsersService } from '@services/company-users.service';
 
 @Component({
   selector: 'dashboard-company-security-settings',
@@ -25,7 +26,6 @@ export class CompanySecuritySettingsComponent {
 
   // @TODO Modal window for user information, modification, delete and role change.
   // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service)
-  // @TODO Rename interfaces and payloads in front-end services
   showOwnershipTransferModal = false;
   deleteCompanyModal = false;
 
@@ -76,22 +76,22 @@ export class CompanySecuritySettingsComponent {
       .subscribe({
         next: async ({ message }) => {
           switch (message) {
-            case CompanyOwnershipTransferredEnum.FULL_MFA_REQUIRED:
+            case CompanyOwnershipTransferredResponse.FULL_MFA_REQUIRED:
               this.transferOwnershipStep = 2;
               this.transferOwnershipIsPhoneRequired = true;
               this.transferOwnershipIsMfaRequired = true;
               this.transferOwnershipPhoneCodeSent = true;
               break;
-            case CompanyOwnershipTransferredEnum.TOKEN_TWO_FA_REQUIRED:
+            case CompanyOwnershipTransferredResponse.TOKEN_TWO_FA_REQUIRED:
               this.transferOwnershipStep = 2;
               this.transferOwnershipIsMfaRequired = true;
               break;
-            case CompanyOwnershipTransferredEnum.PHONE_REQUIRED:
+            case CompanyOwnershipTransferredResponse.PHONE_REQUIRED:
               this.transferOwnershipStep = 2;
               this.transferOwnershipIsPhoneRequired = true;
               this.transferOwnershipPhoneCodeSent = true;
               break;
-            case CompanyOwnershipTransferredEnum.COMPANY_OWNERSHIP_TRANSFERRED:
+            case CompanyOwnershipTransferredResponse.COMPANY_OWNERSHIP_TRANSFERRED:
               this.transferOwnershipStep = 3;
               this.transferCompanyOwnership.emit(message);
               break;

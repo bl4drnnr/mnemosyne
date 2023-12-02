@@ -6,9 +6,9 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
+import { GetCompanyInfoByIdResponse } from '@responses/get-company-by-id.interface';
 import { ValidationService } from '@services/validation.service';
-import { UpdateCompanyInfoInterface } from '@payloads/update-company-info.interface';
+import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interface';
 
 @Component({
   selector: 'dashboard-company-info-settings',
@@ -24,13 +24,13 @@ import { UpdateCompanyInfoInterface } from '@payloads/update-company-info.interf
   ]
 })
 export class CompanyInfoSettingsComponent {
-  @Input() companyInformation: GetCompanyInfoByIdInterface;
+  @Input() companyInformation: GetCompanyInfoByIdResponse;
   @Input() companyName: string;
   @Input() companyLocation: string;
   @Input() companyWebsite: string;
   @Input() companyOwnerEmail: string;
   @Output() saveCompanyInformationEvent =
-    new EventEmitter<UpdateCompanyInfoInterface>();
+    new EventEmitter<UpdateCompanyInfoPayload>();
   @Output() getCompanyInformationEvent = new EventEmitter<any>();
 
   incorrectCompanyName: boolean = false;

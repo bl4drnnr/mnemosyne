@@ -8,10 +8,10 @@ import { CreateCompanyPayload } from '@payloads/create-company.interface';
 import { CompanyCreatedResponse } from '@responses/company-created.enum';
 import { GetCompanyInfoByIdResponse } from '@responses/get-company-by-id.interface';
 import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interface';
-import { CompanyInfoUpdatedEnum } from '@responses/company-info-updated.enum';
+import { CompanyInfoUpdatedResponse } from '@responses/company-info-updated.enum';
 import { GetCompanyUsersPayload } from '@payloads/get-company-users.interface';
 import { GetCompanyUsersResponse } from '@responses/get-company-users-res.interface';
-import { CompanyOwnershipTransferredEnum } from '@responses/company-ownership-transferred.enum';
+import { CompanyOwnershipTransferredResponse } from '@responses/company-ownership-transferred.enum';
 import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
 
 @Injectable({
@@ -61,7 +61,7 @@ export class CompanyService {
 
   saveCompanyInformation(
     payload: UpdateCompanyInfoPayload
-  ): Observable<{ message: CompanyInfoUpdatedEnum }> {
+  ): Observable<{ message: CompanyInfoUpdatedResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.PATCH,
@@ -74,7 +74,7 @@ export class CompanyService {
 
   transferCompanyOwnership(
     payload: TransferCompanyOwnershipPayload
-  ): Observable<{ message: CompanyOwnershipTransferredEnum }> {
+  ): Observable<{ message: CompanyOwnershipTransferredResponse }> {
     const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
 

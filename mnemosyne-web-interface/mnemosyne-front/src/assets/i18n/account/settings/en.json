@@ -72,7 +72,7 @@
     "emailHeader": "Email",
     "roleHeader": "Role",
     "confirmedHeader": "Confirmed",
-    "deleteUserButtonHeader": "Delete",
+    "moreInfoUserButtonHeader": "More",
     "usersPerPage": "Users per page",
     "inviteUser": "Invite user(-s)",
     "inviteUserModalHeader": "Invite user(-s) to the company",

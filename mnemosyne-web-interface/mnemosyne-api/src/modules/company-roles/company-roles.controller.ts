@@ -20,6 +20,7 @@ import { ValidationPipe } from '@pipes/validation.pipe';
 import { Roles } from '@decorators/roles.decorator';
 import { RoleGuard } from '@guards/role.guard';
 import { AuthGuard } from '@guards/auth.guard';
+import { DeleteCompanyRoleDto } from '@dto/delete-company-role.dto';
 
 @ApiTags('Company Roles')
 @Controller('company-roles')
@@ -73,7 +74,7 @@ export class CompanyRolesController {
   @Delete('delete-role')
   deleteCompanyRole(
     @CompanyId() companyId: string,
-    @Body() payload: any,
+    @Body() payload: DeleteCompanyRoleDto,
     @TransactionParam() trx: Transaction
   ) {
     return this.companyRolesService.deleteCompanyRole({

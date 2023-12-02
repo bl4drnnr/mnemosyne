@@ -57,14 +57,13 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
   @Roles('ADMIN')
   @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
-  @Post('invite-user')
   @Get('company-member-info')
   getCompanyMemberInfo(
     @CompanyId() companyId: string,
-    @Query() memberId: string,
+    @Query('memberId') memberId: string,
     @TransactionParam() trx: Transaction
   ) {
     return this.companyUsersService.getCompanyMemberInfo({

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CompanyService } from '@services/company.service';
-import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
+import { GetCompanyInfoByIdResponse } from '@responses/get-company-by-id.interface';
 import { CompanySettingsSectionType } from '@interfaces/company-settings-section.type';
-import { UpdateCompanyInfoInterface } from '@payloads/update-company-info.interface';
+import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interface';
 import { TranslationService } from '@services/translation.service';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { GlobalMessageService } from '@shared/global-message.service';
@@ -16,7 +16,7 @@ import { UsersList } from '@interfaces/users-list.type';
 })
 export class CompanySettingsComponent implements OnInit {
   companySettingsSection: CompanySettingsSectionType = 'info';
-  companyInformation: GetCompanyInfoByIdInterface;
+  companyInformation: GetCompanyInfoByIdResponse;
 
   page: string = '0';
   pageSize: string = '10';
@@ -52,7 +52,7 @@ export class CompanySettingsComponent implements OnInit {
       });
   }
 
-  saveCompanyInformation(payload: UpdateCompanyInfoInterface) {
+  saveCompanyInformation(payload: UpdateCompanyInfoPayload) {
     this.companyService.saveCompanyInformation(payload).subscribe({
       next: async ({ message }) => {
         const globalMessage = await this.translationService.translateText(

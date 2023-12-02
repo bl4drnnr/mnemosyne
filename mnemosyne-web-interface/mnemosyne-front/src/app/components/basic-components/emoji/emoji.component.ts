@@ -7,6 +7,7 @@ import { EnvService } from '@shared/env.service';
   styleUrls: ['./emoji.component.scss']
 })
 export class EmojiComponent implements OnInit {
+  @Input() isSvg: boolean;
   @Input() width: number;
   @Input() height: number;
   @Input() emoji: string;

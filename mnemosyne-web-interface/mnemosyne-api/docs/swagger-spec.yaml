@@ -612,23 +612,6 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
-  /api/company/delete-company:
-    delete:
-      operationId: CompanyController_deleteCompanyAccount
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeleteCompanyDto"
-      responses:
-        "200":
-          description: ""
-      tags: *a4
-      security:
-        - x-access-token: []
-        - basicAuth: []
   /api/company/update-company:
     patch:
       operationId: CompanyController_updateCompanyInformation
@@ -689,7 +672,24 @@ paths:
               schema:
                 $ref: "#/components/schemas/UserInvitedDto"
       tags:
+        &a5
         - Company Users
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-users/company-member-info:
+    get:
+      operationId: CompanyUsersController_getCompanyMemberInfo
+      parameters:
+        - name: memberId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -722,7 +722,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags:
-        &a5
+        &a6
         - Security
       security:
         - basicAuth: []
@@ -754,7 +754,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/generate-2fa-qr:
@@ -772,7 +772,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/QrCodeDto"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -817,7 +817,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/login-verify-2fa:
@@ -851,7 +851,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/verify-2fa:
@@ -882,7 +882,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -916,7 +916,7 @@ paths:
                   - $ref: "#/components/schemas/TwoFaNotSetException"
                   - $ref: "#/components/schemas/PhoneNotSetException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -955,7 +955,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/PhoneAlreadyTakenException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/login-send-sms-code:
@@ -987,7 +987,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/send-sms-code:
@@ -1017,7 +1017,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1065,7 +1065,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/get-sms-code:
@@ -1100,7 +1100,7 @@ paths:
                 oneOf:
                   - $ref: "#/components/schemas/PhoneNotSetException"
                   - $ref: "#/components/schemas/WrongTimeframeException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1122,7 +1122,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PhoneNotSetException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1168,7 +1168,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/login-verify-mobile-phone:
@@ -1205,7 +1205,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a6
       security:
         - basicAuth: []
   /api/security/verify-mobile-phone:
@@ -1238,7 +1238,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1274,7 +1274,7 @@ paths:
                   - $ref: "#/components/schemas/WrongProvidedPhoneException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1314,7 +1314,7 @@ paths:
                   - $ref: "#/components/schemas/WrongCredentialsException"
                   - $ref: "#/components/schemas/WrongDeletionConfirmationException"
                   - $ref: "#/components/schemas/WrongCodeException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1354,7 +1354,7 @@ paths:
                   - $ref: "#/components/schemas/PreviousPasswordException"
                   - $ref: "#/components/schemas/WrongCodeException"
                   - $ref: "#/components/schemas/SmsExpiredException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1390,7 +1390,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/EmailAlreadyChangedException"
-      tags: *a5
+      tags: *a6
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1428,7 +1428,7 @@ paths:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
       tags:
-        &a6
+        &a7
         - Recovery
       security:
         - basicAuth: []
@@ -1461,7 +1461,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongCredentialsException"
-      tags: *a6
+      tags: *a7
       security:
         - basicAuth: []
   /api/recovery/generate-recovery-keys:
@@ -1484,7 +1484,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/RecoveryKeysResponseDto"
-      tags: *a6
+      tags: *a7
       security:
         - x-access-token: []
         - basicAuth: []
@@ -1518,8 +1518,95 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WrongRecoveryKeysException"
-      tags: *a6
+      tags: *a7
       security:
+        - basicAuth: []
+  /api/company-roles/create-role:
+    post:
+      operationId: CompanyRolesController_createCompanyRole
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateCompanyRoleDto"
+      responses:
+        "201":
+          description: ""
+      tags:
+        &a8
+        - Company Roles
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-roles/update-role:
+    patch:
+      operationId: CompanyRolesController_updateCompanyRole
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateCompanyRoleDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a8
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-roles/delete-role:
+    delete:
+      operationId: CompanyRolesController_deleteCompanyRole
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteCompanyRoleDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a8
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-roles/assign-role:
+    patch:
+      operationId: CompanyRolesController_assignRoleToUser
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AssignRoleDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a8
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-roles/revoke-role:
+    patch:
+      operationId: CompanyRolesController_revokeUserRole
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RevokeRoleDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a8
+      security:
+        - x-access-token: []
         - basicAuth: []
 info:
   title: Mnemosyne
@@ -2255,16 +2342,6 @@ components:
           example: parse-error
       required:
         - message
-    DeleteCompanyDto:
-      type: object
-      properties:
-        language:
-          type: string
-          enum:
-            - ru
-            - pl
-            - en
-          description: One of 3 available languages
     CompanyUpdatedDto:
       type: object
       properties:
@@ -2740,3 +2817,18 @@ components:
           example: wrong-recovery-keys
       required:
         - message
+    CreateCompanyRoleDto:
+      type: object
+      properties: {}
+    UpdateCompanyRoleDto:
+      type: object
+      properties: {}
+    DeleteCompanyRoleDto:
+      type: object
+      properties: {}
+    AssignRoleDto:
+      type: object
+      properties: {}
+    RevokeRoleDto:
+      type: object
+      properties: {}

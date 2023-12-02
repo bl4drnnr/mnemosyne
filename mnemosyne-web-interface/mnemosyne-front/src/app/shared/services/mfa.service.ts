@@ -10,7 +10,7 @@ import { LoginPhonePayload } from '@payloads/login-phone.interface';
 import { GenerateTwoFaResponse } from '@responses/generate-two-fa.interface';
 import { DisableTwoFaPayload } from '@payloads/disable-two-fa.interface';
 import { MfaDisabledResponse } from '@responses/mfa-disabled.enum';
-import { RegistrationGenerate2faInterface } from '@payloads/registration-generate-2fa.interface';
+import { RegistrationGenerate2faPayload } from '@payloads/registration-generate-2fa.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class MfaService {
 
   registrationGenerateTwoFaQrCode({
     hash
-  }: RegistrationGenerate2faInterface): Observable<GenerateTwoFaResponse> {
+  }: RegistrationGenerate2faPayload): Observable<GenerateTwoFaResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.SECURITY,

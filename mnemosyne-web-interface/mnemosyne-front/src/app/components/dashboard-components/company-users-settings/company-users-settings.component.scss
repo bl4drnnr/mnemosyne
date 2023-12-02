@@ -25,13 +25,13 @@
 }
 
 .company-users-header-email {
-  width: 40%;
+  width: 50%;
   border-left: 1px solid var(--border-color);
   padding: 15px;
 }
 
 .company-users-header-role {
-  width: 20%;
+  width: 15%;
   border-left: 1px solid var(--border-color);
   padding: 15px;
   display: flex;
@@ -39,30 +39,32 @@
 }
 
 .company-users-header-confirmation {
-  width: 20%;
+  width: 15%;
   border-left: 1px solid var(--border-color);
   padding: 15px;
+  display: flex;
+  justify-content: center;
 }
 
-.company-users-header-delete {
+.company-users-header-more {
   width: 10%;
   border-left: 1px solid var(--border-color);
   padding: 15px 0 15px 15px;
 }
 
-.company-users-header-delete-icon {
+.company-users-header-more-icon {
   display: flex;
   width: 10%;
   border-left: 1px solid var(--border-color);
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .company-user {
   display: flex;
   border-bottom: 1px solid var(--border-color);
   transition: .2s;
-  cursor: pointer;
 
   &:hover {
     background-color: var(--disabled-color);

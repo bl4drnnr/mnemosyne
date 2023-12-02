@@ -30,7 +30,9 @@
         "src/exceptions/security/*",
         "src/exceptions/validation/*",
         "src/exceptions/recovery/*",
-        "src/exceptions/company/*"
+        "src/exceptions/company/*",
+        "src/exceptions/company-users/*",
+        "src/exceptions/company-roles/*"
       ],
       "@dto/*": [
         "src/dto/*",

@@ -1,4 +1,4 @@
-export enum ConfirmCompanyMemberAccEnum {
+export enum ConfirmCompanyMemberAccResponse {
   COMPANY_MEMBER_ACC_CONFIRMED = 'company-member-acc-confirmed',
   MFA_NOT_SET = 'mfa-not-set',
   RECOVERY_KEYS_NOT_SET = 'recovery-keys-not-set',

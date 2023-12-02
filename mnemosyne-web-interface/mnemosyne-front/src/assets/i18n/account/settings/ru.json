@@ -72,7 +72,7 @@
     "emailHeader": "Электронная почта",
     "roleHeader": "Роль",
     "confirmedHeader": "Подтверждение",
-    "deleteUserButtonHeader": "Удалить",
+    "moreInfoUserButtonHeader": "Больше",
     "usersPerPage": "Пользователей на страницу",
     "inviteUser": "Пригласить пользователя(-ей)",
     "inviteUserModalHeader": "Пригласить пользователя(-ей) в компанию",

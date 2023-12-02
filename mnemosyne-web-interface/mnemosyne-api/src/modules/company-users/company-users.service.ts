@@ -15,6 +15,8 @@ import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { EmailService } from '@shared/email.service';
 import { CompanyService } from '@modules/company.service';
 import { GetCompanyMemberInfoInterface } from '@interfaces/get-company-member-info.interface';
+import { CompanyMemberNotFoundException } from '@exceptions/company-member-not-found.exception';
+import { CompanyMemberInfoDto } from '@dto/company-member-info.dto';
 
 @Injectable()
 export class CompanyUsersService {
@@ -123,10 +125,34 @@ export class CompanyUsersService {
 
   async getCompanyMemberInfo({
     companyId,
-    memberId,
+    memberId: userId,
     trx
   }: GetCompanyMemberInfoInterface) {
-    //
+    const companyMember = await this.companyUserRepository.findOne({
+      where: { companyId, userId },
+      include: { model: User },
+      transaction: trx
+    });
+
+    if (!companyMember) throw new CompanyMemberNotFoundException();
+
+    const {
+      email,
+      firstName,
+      lastName,
+      namePronunciation,
+      homeAddress,
+      homePhone
+    } = companyMember.user;
+
+    return new CompanyMemberInfoDto({
+      email,
+      firstName,
+      lastName,
+      namePronunciation,
+      homeAddress,
+      homePhone
+    });
   }
 
   async createCompanyUser({

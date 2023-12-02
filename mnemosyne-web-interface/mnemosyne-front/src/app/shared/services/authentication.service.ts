@@ -18,8 +18,8 @@ import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
 import { ConfirmAccountPayload } from '@payloads/confirm-account.interface';
 import { ConfirmCompanyAccountPayload } from '@payloads/confirm-company-account.interface';
 import { RefreshTokensPayload } from '@payloads/refresh-tokens.interface';
-import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.enum';
-import { ConfirmCompanyMemberAccEnum } from '@responses/confirm-company-member-acc.enum';
+import { ConfirmCompanyAccountResponse } from '@responses/confirm-company-account.enum';
+import { ConfirmCompanyMemberAccResponse } from '@responses/confirm-company-member-acc.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -71,7 +71,7 @@ export class AuthenticationService {
 
   confirmCompanyAccount(
     payload: ConfirmCompanyAccountPayload
-  ): Observable<{ message: ConfirmCompanyAccountEnum }> {
+  ): Observable<{ message: ConfirmCompanyAccountResponse }> {
     const params = { confirmationHash: payload.confirmationHash };
     const language = localStorage.getItem('translocoLang');
 
@@ -88,7 +88,7 @@ export class AuthenticationService {
 
   confirmCompanyMembership(
     payload: ConfirmCompanyAccountPayload
-  ): Observable<{ message: ConfirmCompanyMemberAccEnum }> {
+  ): Observable<{ message: ConfirmCompanyMemberAccResponse }> {
     const params = { confirmationHash: payload.confirmationHash };
     const language = localStorage.getItem('translocoLang');
 

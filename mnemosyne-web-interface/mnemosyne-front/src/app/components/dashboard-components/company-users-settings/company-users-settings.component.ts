@@ -8,6 +8,8 @@ import { Roles } from '@interfaces/roles.enum';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { TranslationService } from '@services/translation.service';
 import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
+import { CompanyUsersService } from '@services/company-users.service';
+import { CompanyMemberInfoResponse } from '@responses/company-member-info.interface';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -34,7 +36,11 @@ export class CompanyUsersSettingsComponent implements OnInit {
   companyMemberDefaultRoleValue: string;
   companyMemberDefaultRoleKey: Role;
 
+  currentCompanyMember: CompanyMemberInfoResponse;
+  currentCompanyMemberModal: boolean;
+
   constructor(
+    private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly translationService: TranslationService
   ) {}
@@ -116,6 +122,19 @@ export class CompanyUsersSettingsComponent implements OnInit {
 
   inviteUsers() {
     //
+  }
+
+  fetchCompanyMemberInformation(memberId: string) {
+    this.companyUsersService
+      .getCompanyMemberInformation({
+        memberId
+      })
+      .subscribe({
+        next: (currentCompanyMember) => {
+          this.currentCompanyMember = currentCompanyMember;
+          this.currentCompanyMemberModal = true;
+        }
+      });
   }
 
   setCurrentPage(currentPage: string) {
