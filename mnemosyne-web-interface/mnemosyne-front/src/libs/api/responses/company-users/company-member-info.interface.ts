@@ -2,7 +2,7 @@ export interface CompanyMemberInfoResponse {
   email: string;
   firstName: string;
   lastName: string;
-  namePronunciation: string | null;
-  homeAddress: string | null;
-  homePhone: string | null;
+  namePronunciation: string;
+  homeAddress: string;
+  homePhone: string;
 }

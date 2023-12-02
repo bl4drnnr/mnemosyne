@@ -83,6 +83,8 @@
     "transferOwnershipPhone": "In order to transfer the ownership of the company account, please, make sure you have provide the code sent to your mobile phone.",
     "transferOwnershipMfa": "In order to transfer the ownership of the company account, please, make sure you have provide the code from the authenticator application.",
     "deleteCompanyHeader": "Delete company account",
-    "deleteCompanyDesc": "Be careful! You are about to delete the company account along with all its data. Users will be removed from the company, but their accounts themselves will not be delete from the system."
+    "deleteCompanyDesc": "Be careful! You are about to delete the company account along with all its data. Users will be removed from the company, but their accounts themselves will not be delete from the system.",
+    "modifyCompanyMemberHeader": "Modify the information of company member",
+    "modifyCompanyMemberDesc": "You are allowed to modify only certain fields, like company member first name, last name and other data. Some data, like email address, can be modified only by the user themself."
   }
 }

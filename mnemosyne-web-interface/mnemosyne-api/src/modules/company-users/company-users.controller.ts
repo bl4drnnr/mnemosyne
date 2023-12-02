@@ -11,8 +11,8 @@ import { CompanyUsersService } from '@modules/company-users.service';
 import {
   ApiBasicAuth,
   ApiBearerAuth,
-  ApiExtraModels,
-  ApiOperation,
+  ApiExtraModels, ApiNotFoundResponse,
+  ApiOperation, ApiQuery,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
@@ -54,6 +54,11 @@ export class CompanyUsersController {
     });
   }
 
+  @ApiOperation(CompanyUsersDocs.GetCompanyMemberInfo.ApiOperation)
+  @ApiExtraModels(...CompanyUsersDocs.GetCompanyMemberInfo.ApiExtraModels)
+  @ApiResponse(CompanyUsersDocs.GetCompanyMemberInfo.ApiResponse)
+  @ApiNotFoundResponse(CompanyUsersDocs.GetCompanyMemberInfo.ApiNotFoundResponse)
+  @ApiQuery(CompanyUsersDocs.GetCompanyMemberInfo.ApiMemberIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)

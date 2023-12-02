@@ -81,3 +81,13 @@
   margin-top: 25px;
   justify-content: flex-end;
 }
+
+.info-changed {
+  margin-bottom: 20px;
+}
+
+.info-changed-text {
+  color: var(--error-color);
+  font-size: 12px;
+  font-weight: 400;
+}

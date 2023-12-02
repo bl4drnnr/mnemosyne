@@ -666,7 +666,7 @@ paths:
               $ref: "#/components/schemas/InviteUserToCompanyDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets message that user has been invited.
           content:
             application/json:
               schema:
@@ -680,15 +680,29 @@ paths:
   /api/company-users/company-member-info:
     get:
       operationId: CompanyUsersController_getCompanyMemberInfo
+      summary: Endpoint is responsible for obtaining the information about company
+        member by ID.
       parameters:
         - name: memberId
           required: true
           in: query
+          description: User (company member) ID.
           schema:
             type: string
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets information about company user.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyMemberInfoDto"
+        "404":
+          description: In case if user ID has been modified and user not found, endpoint
+            returns the error of user not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyMemberNotFoundException"
       tags: *a5
       security:
         - x-access-token: []
@@ -2426,6 +2440,50 @@ components:
           type: string
           description: User invited response message
           example: user-invited
+      required:
+        - message
+    CompanyMemberInfoDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
+        namePronunciation:
+          type: string
+          description: This could be a phonetic pronunciation, or an example of something
+            your name sounds like
+          example: Zoe ("zo-ee")
+        homeAddress:
+          type: string
+          description: User home address
+          example: One Apple Park Way, United States
+        homePhone:
+          type: string
+          description: User home phone
+          example: (800) 1231-1234
+      required:
+        - email
+        - firstName
+        - lastName
+        - namePronunciation
+        - homeAddress
+        - homePhone
+    CompanyMemberNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company member not found error message
+          example: company-member-not-found
       required:
         - message
     QrCodeDto:
