@@ -21,7 +21,10 @@ import {
 @Component({
   selector: 'dashboard-company-users-settings',
   templateUrl: './company-users-settings.component.html',
-  styleUrls: ['./company-users-settings.component.scss'],
+  styleUrls: [
+    './company-users-settings.component.scss',
+    '../shared/security-setting-section/security-setting-section.component.scss'
+  ],
   animations: [
     trigger('infoChangedAnimation', [
       state('void', style({ transform: 'translateY(-5px)', opacity: 0 })),

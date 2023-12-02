@@ -8,7 +8,10 @@ import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-owne
 @Component({
   selector: 'dashboard-company-security-settings',
   templateUrl: './company-security-settings.component.html',
-  styleUrls: ['./company-security-settings.component.scss'],
+  styleUrls: [
+    './company-security-settings.component.scss',
+    '../shared/security-setting-section/security-setting-section.component.scss'
+  ],
   animations: [
     trigger('fadeInOut', [
       transition(':enter', [
@@ -26,7 +29,6 @@ export class CompanySecuritySettingsComponent {
   // @TODO Modal window for user information, modification, delete and role change.
   // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service)
   // @TODO Check front-end issues (footer and modal window scroll)
-  // @TODO Reimport styles (check for duplicates and use layouts to store)
   showOwnershipTransferModal = false;
   deleteCompanyModal = false;
 

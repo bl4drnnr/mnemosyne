@@ -54,3 +54,33 @@
   font-size: 14px;
   margin-top: 10px;
 }
+
+.info-changed {
+  margin-bottom: 20px;
+}
+
+.info-changed-text {
+  color: var(--error-color);
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.dived-line {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 20px 0;
+
+  &.no-bottom {
+    margin-bottom: 0;
+  }
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+}
+
+.section-title {
+  margin-left: 15px;
+}

@@ -11,8 +11,10 @@ import { CompanyUsersService } from '@modules/company-users.service';
 import {
   ApiBasicAuth,
   ApiBearerAuth,
-  ApiExtraModels, ApiNotFoundResponse,
-  ApiOperation, ApiQuery,
+  ApiExtraModels,
+  ApiNotFoundResponse,
+  ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
@@ -57,14 +59,16 @@ export class CompanyUsersController {
   @ApiOperation(CompanyUsersDocs.GetCompanyMemberInfo.ApiOperation)
   @ApiExtraModels(...CompanyUsersDocs.GetCompanyMemberInfo.ApiExtraModels)
   @ApiResponse(CompanyUsersDocs.GetCompanyMemberInfo.ApiResponse)
-  @ApiNotFoundResponse(CompanyUsersDocs.GetCompanyMemberInfo.ApiNotFoundResponse)
+  @ApiNotFoundResponse(
+    CompanyUsersDocs.GetCompanyMemberInfo.ApiNotFoundResponse
+  )
   @ApiQuery(CompanyUsersDocs.GetCompanyMemberInfo.ApiMemberIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @UseGuards(AuthGuard)
   @Roles('ADMIN')
   @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
   @Get('company-member-info')
   getCompanyMemberInfo(
     @CompanyId() companyId: string,

@@ -60,5 +60,6 @@
   "phone-already-taken": "Mobile phone has already been taken",
   "wrong-deletion-confirmation": "Wrong deletion confirmation data",
   "parse-error": "Parse error",
-  "company-not-found": "Company has not been found"
+  "company-not-found": "Company has not been found",
+  "company-member-not-found": "Company member has not been found"
 }

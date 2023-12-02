@@ -1,14 +1,5 @@
 @import 'variables';
 
-.title-container {
-  display: flex;
-  align-items: center;
-}
-
-.section-title {
-  margin-left: 15px;
-}
-
 .company-users-container {
   margin: 25px 0;
 }
@@ -82,12 +73,3 @@
   justify-content: flex-end;
 }
 
-.info-changed {
-  margin-bottom: 20px;
-}
-
-.info-changed-text {
-  color: var(--error-color);
-  font-size: 12px;
-  font-weight: 400;
-}

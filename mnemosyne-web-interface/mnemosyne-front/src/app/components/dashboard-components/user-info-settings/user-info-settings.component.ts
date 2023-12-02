@@ -13,7 +13,10 @@ import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 @Component({
   selector: 'dashboard-user-info-settings',
   templateUrl: './user-info-settings.component.html',
-  styleUrls: ['./user-info-settings.component.scss'],
+  styleUrls: [
+    './user-info-settings.component.scss',
+    '../shared/security-setting-section/security-setting-section.component.scss'
+  ],
   animations: [
     trigger('infoChangedAnimation', [
       state('void', style({ transform: 'translateY(-5px)', opacity: 0 })),

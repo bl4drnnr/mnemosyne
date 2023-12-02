@@ -60,5 +60,6 @@
   "phone-already-taken": "Telefon komórkowy został już zajęty",
   "wrong-deletion-confirmation": "Błędne dane potwierdzające usunięcie",
   "parse-error": "Błąd analizy",
-  "company-not-found": "Firma nie została znaleziona"
+  "company-not-found": "Firma nie została znaleziona",
+  "company-member-not-found": "Nie znaleziono członka firmy"
 }

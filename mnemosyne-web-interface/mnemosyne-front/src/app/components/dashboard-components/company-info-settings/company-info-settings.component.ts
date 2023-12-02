@@ -13,7 +13,10 @@ import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interfac
 @Component({
   selector: 'dashboard-company-info-settings',
   templateUrl: './company-info-settings.component.html',
-  styleUrls: ['./company-info-settings.component.scss'],
+  styleUrls: [
+    './company-info-settings.component.scss',
+    '../shared/security-setting-section/security-setting-section.component.scss'
+  ],
   animations: [
     trigger('infoChangedAnimation', [
       state('void', style({ transform: 'translateY(-5px)', opacity: 0 })),
