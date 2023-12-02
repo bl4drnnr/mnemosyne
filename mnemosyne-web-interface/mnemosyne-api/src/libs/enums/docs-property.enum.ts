@@ -184,5 +184,17 @@ export enum DocsProperty {
   ROLE_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c',
   ROLE_ID_VALUE = 'PRIMARY_ADMIN',
   COMPANY_OWNERSHIP_TRANSFERRED_DESC = 'Company ownership transferred response message',
-  COMPANY_OWNERSHIP_TRANSFERRED_EXAMPLE = 'company-ownership-transferred'
+  COMPANY_OWNERSHIP_TRANSFERRED_EXAMPLE = 'company-ownership-transferred',
+  COMPANY_ROLE_DELETED_DESC = 'Company role deleted response message',
+  COMPANY_ROLE_DELETED_EXAMPLE = 'company-role-deleted',
+  COMPANY_ROLE_CREATED_DESC = 'Company role created response message',
+  COMPANY_ROLE_CREATED_EXAMPLE = 'company-role-created',
+  COMPANY_ROLE_ASSIGNED_DESC = 'Company role assigned response message',
+  COMPANY_ROLE_ASSIGNED_EXAMPLE = 'company-role-assigned',
+  COMPANY_ROLE_REVOKED_DESC = 'Company role revoked response message',
+  COMPANY_ROLE_REVOKED_EXAMPLE = 'company-role-revoked',
+  COMPANY_ROLE_UPDATED_DESC = 'Company role updated response message',
+  COMPANY_ROLE_UPDATED_EXAMPLE = 'company-role-updated',
+  COMPANY_MEMBER_NOT_FOUND_DESC = 'Company member not found error message',
+  COMPANY_MEMBER_NOT_FOUND_EXAMPLE = 'company-member-not-found'
 }

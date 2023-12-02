@@ -25,72 +25,60 @@ export class UsersService {
   uploadUserPhoto(
     payload: UploadUserPhotoPayload
   ): Observable<{ message: PhotoUploadedResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.USERS,
       action: UsersEndpoint.UPLOAD_USER_PHOTO,
-      payload,
-      accessToken
+      payload
     });
   }
 
   getUserInfo(): Observable<UserInfoResponse> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.USERS,
-      action: UsersEndpoint.USER_INFO,
-      accessToken
+      action: UsersEndpoint.USER_INFO
     });
   }
 
   getUserSecuritySettings(): Observable<UserSecurityResponse> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.USERS,
-      action: UsersEndpoint.USER_SECURITY,
-      accessToken
+      action: UsersEndpoint.USER_SECURITY
     });
   }
 
   updateUserInfo(
     payload: UpdateUserInfoPayload
   ): Observable<{ message: UserUpdatedResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.PATCH,
       controller: Controller.USERS,
       action: UsersEndpoint.USER_INFO,
-      payload,
-      accessToken
+      payload
     });
   }
 
   deleteAccount(
     payload: DeleteAccountPayload
   ): Observable<{ message: AccountDeletedResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.DELETE,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.DELETE_ACCOUNT,
-      payload,
-      accessToken
+      payload
     });
   }
 
   changePassword(
     payload: ChangePasswordPayload
   ): Observable<{ message: PasswordChangedResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.PATCH,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.CHANGE_PASSWORD,
-      payload,
-      accessToken
+      payload
     });
   }
 }

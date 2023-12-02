@@ -6,6 +6,8 @@ import { UsersEndpoint } from '@interfaces/users.enum';
 import { RecoveryEndpoint } from '@interfaces/recovery.enum';
 import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
 import { CompanyEndpoint } from '@interfaces/company.enum';
+import { CompanyUsersEndpoint } from '@interfaces/company-users.enum';
+import { CompanyRolesEndpoint } from '@interfaces/company-roles.enum';
 
 type EndpointsType =
   | AuthEndpoint
@@ -13,7 +15,9 @@ type EndpointsType =
   | UsersEndpoint
   | RecoveryEndpoint
   | ConfirmationHashEndpoint
-  | CompanyEndpoint;
+  | CompanyEndpoint
+  | CompanyUsersEndpoint
+  | CompanyRolesEndpoint;
 
 export interface ProxyRequestInterface {
   controller: Controller;
@@ -21,5 +25,4 @@ export interface ProxyRequestInterface {
   method: Method;
   payload?: object;
   params?: object;
-  accessToken?: string;
 }

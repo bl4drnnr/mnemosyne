@@ -57,8 +57,11 @@
       <p class="company-users-header-role">
         {{ t('settings.companySettingsSection.roleHeader') }}
       </p>
-      <p class="company-users-header-delete">
-        {{ t('settings.companySettingsSection.deleteUserButtonHeader') }}
+      <p class="company-users-header-confirmation">
+        {{ t('settings.companySettingsSection.confirmedHeader') }}
+      </p>
+      <p class="company-users-header-more">
+        {{ t('settings.companySettingsSection.moreInfoUserButtonHeader') }}
       </p>
     </div>
 
@@ -66,10 +69,108 @@
       <p class="company-users-header-id">{{ idx + 1 }}</p>
       <p class="company-users-header-email">{{ user.email }}</p>
       <p class="company-users-header-role">{{ printUsersRoles(user.roles) }}</p>
-      <p class="company-users-header-delete-icon">
-        <basic-emoji emoji="cross-mark.png" [width]="16" [height]="16"/>
+      <p class="company-users-header-confirmation">
+        <span *ngIf="user.registrationHash.confirmed">
+          <basic-emoji emoji="large-green-circle.png" [width]="24" [height]="24" />
+        </span>
+        <span *ngIf="!user.registrationHash.confirmed">
+          <basic-emoji emoji="large-red-circle.png" [width]="24" [height]="24" />
+        </span>
+      </p>
+      <p
+        (click)="fetchCompanyMemberInformation(user.id)"
+        class="company-users-header-more-icon"
+      >
+        <basic-emoji emoji="three-dots.svg" [isSvg]="true" [width]="16" [height]="16"/>
       </p>
     </div>
+  </div>
+
+  <div *ngIf="currentCompanyMember">
+    <basic-modal
+      [header]="t('settings.companySettingsSection.modifyCompanyMemberHeader')"
+      [description]="t('settings.companySettingsSection.modifyCompanyMemberDesc')"
+      [showModal]="currentCompanyMemberModal"
+      (closeModal)="closeCompanyMemberInformationModal()"
+    >
+      <basic-input
+        type="email"
+        [onWhite]="true"
+        [disabled]="true"
+        [label]="t('input.companyMemberEmail')"
+        [inputDescription]="t('input.companyMemberEmailModifyDesc')"
+        [value]="currentCompanyMemberEmail"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.companyMemberFirstName')"
+        [placeholder]="t('input.provideCompanyMemberFirstName')"
+        [inputDescription]="t('input.fieldRequired')"
+        [value]="currentCompanyMemberFirstName"
+        [minLength]="1"
+        [maxLength]="64"
+        (valueChange)="currentCompanyMemberFirstName = $event"
+        (incorrectInput)="incorrectCompanyMemberFirstName = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.companyMemberLastName')"
+        [placeholder]="t('input.provideCompanyMemberLastName')"
+        [inputDescription]="t('input.fieldRequired')"
+        [value]="currentCompanyMemberLastName"
+        [minLength]="1"
+        [maxLength]="64"
+        (valueChange)="currentCompanyMemberLastName = $event"
+        (incorrectInput)="incorrectCompanyMemberLastName = $event"
+      />
+
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.companyMemberNamePronunciation')"
+        [placeholder]="t('input.provideCompanyMemberNamePronunciation')"
+        [inputDescription]="t('input.companyMemberNamePronunciationDesc')"
+        [value]="currentCompanyMemberNamePronunciation"
+        (valueChange)="currentCompanyMemberNamePronunciation = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.companyMemberHomeAddress')"
+        [placeholder]="t('input.provideCompanyMemberHomeAddress')"
+        [inputDescription]="t('input.companyMemberHomeAddressDesc')"
+        [value]="currentCompanyMemberHomeAddress"
+        (valueChange)="currentCompanyMemberHomeAddress = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.companyMemberHomePhone')"
+        [placeholder]="t('input.provideCompanyMemberHomePhone')"
+        [inputDescription]="t('input.companyMemberHomePhoneDesc')"
+        [value]="currentCompanyMemberHomePhone"
+        (valueChange)="currentCompanyMemberHomePhone = $event"
+      />
+
+      <div
+        class="info-changed"
+        *ngIf="wasInfoChanged()"
+        [@infoChangedAnimation]="true"
+      >
+        <p class="info-changed-text">{{ t('settings.userInfoNotSaved') }}</p>
+      </div>
+
+      <div
+        class="info-changed"
+        *ngIf="incorrectUserData()"
+        [@infoChangedAnimation]="true"
+      >
+        <p class="info-changed-text">{{ t('settings.userInfoProvidedWrong') }}</p>
+      </div>
+
+      <basic-button
+        [disabled]="saveButtonDisabled()"
+        [label]="t('button.saveSettings')"
+        (buttonClick)="saveCompanyMemberInfo(currentCompanyMember.memberId)"
+      />
+    </basic-modal>
   </div>
 
   <div class="pagination-container">

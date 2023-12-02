@@ -1,3 +1,3 @@
-export interface RegistrationGenerate2faInterface {
+export interface RegistrationGenerate2faPayload {
   hash: string;
 }

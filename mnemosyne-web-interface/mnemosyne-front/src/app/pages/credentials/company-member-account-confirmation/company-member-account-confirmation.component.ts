@@ -3,10 +3,10 @@ import { AuthenticationService } from '@services/authentication.service';
 import { TranslationService } from '@services/translation.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Titles } from '@interfaces/titles.enum';
-import { ConfirmCompanyMemberAccEnum } from '@responses/confirm-company-member-acc.enum';
+import { ConfirmCompanyMemberAccResponse } from '@responses/confirm-company-member-acc.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
 import { StaticService } from '@services/static.service';
-import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
+import { ConfirmCompanyAccountPayload } from '@payloads/confirm-company-account.interface';
 
 @Component({
   selector: 'app-company-member-account-confirmation',
@@ -57,7 +57,7 @@ export class CompanyMemberAccountConfirmationComponent implements OnInit {
   microsoftAuthAppLink = this.staticService.getMfaAuthApps().microsoft;
 
   confirmCompanyMemberAccount(hash: string) {
-    const confirmationPayload: ConfirmCompanyAccountInterface = {
+    const confirmationPayload: ConfirmCompanyAccountPayload = {
       confirmationHash: hash,
       firstName: this.firstName,
       lastName: this.lastName,
@@ -78,19 +78,19 @@ export class CompanyMemberAccountConfirmationComponent implements OnInit {
       .subscribe({
         next: ({ message }) => {
           switch (message) {
-            case ConfirmCompanyMemberAccEnum.USER_DATA_NOT_SET:
+            case ConfirmCompanyMemberAccResponse.USER_DATA_NOT_SET:
               this.memberDataNotSet();
               break;
-            case ConfirmCompanyMemberAccEnum.PASSWORD_NOT_SET:
+            case ConfirmCompanyMemberAccResponse.PASSWORD_NOT_SET:
               this.memberPasswordNotSet();
               break;
-            case ConfirmCompanyMemberAccEnum.MFA_NOT_SET:
+            case ConfirmCompanyMemberAccResponse.MFA_NOT_SET:
               this.memberMfaNotSet();
               break;
-            case ConfirmCompanyMemberAccEnum.RECOVERY_KEYS_NOT_SET:
+            case ConfirmCompanyMemberAccResponse.RECOVERY_KEYS_NOT_SET:
               this.memberRecoveryNotSet();
               break;
-            case ConfirmCompanyMemberAccEnum.COMPANY_MEMBER_ACC_CONFIRMED:
+            case ConfirmCompanyMemberAccResponse.COMPANY_MEMBER_ACC_CONFIRMED:
               this.memberAccountConfirmed();
               break;
             default:

@@ -71,7 +71,8 @@
     "usersManagementDesc": "Oto lista wszystkich członków firmy, ich role i status potwierdzenia konta. Na tej stronie będziesz mógł dodawać użytkowników, usuwać użytkowników z firmy i modyfikować ich poziom dostępu.",
     "emailHeader": "E-mail",
     "roleHeader": "Rola",
-    "deleteUserButtonHeader": "Usuń",
+    "confirmedHeader": "Potwierdzenie",
+    "moreInfoUserButtonHeader": "Więcej",
     "usersPerPage": "Użytkownicy na stronę",
     "inviteUser": "Zaproś użytkownika(-ów)",
     "inviteUserModalHeader": "Zaproś użytkownika(-ów) do firmy",
@@ -82,6 +83,8 @@
     "transferOwnershipPhone": "Aby przenieść własność konta firmowego, upewnij się, że podałeś kod wysłany na Twój telefon komórkowy.",
     "transferOwnershipMfa": "Aby przenieść własność konta firmowego, upewnij się, że podałeś kod z aplikacji uwierzytelniającej.",
     "deleteCompanyHeader": "Usuń konto firmowe",
-    "deleteCompanyDesc": "Uważaj! Za chwilę usuniesz konto firmowe wraz ze wszystkimi jego danymi. Użytkownicy zostaną usunięci z firmy, ale ich konta nie zostaną usunięte z systemu."
+    "deleteCompanyDesc": "Uważaj! Za chwilę usuniesz konto firmowe wraz ze wszystkimi jego danymi. Użytkownicy zostaną usunięci z firmy, ale ich konta nie zostaną usunięte z systemu.",
+    "modifyCompanyMemberHeader": "Zmodyfikuj dane członka firmy",
+    "modifyCompanyMemberDesc": "Możesz modyfikować tylko niektóre pola, takie jak imię, nazwisko i inne dane członka firmy. Niektóre dane, takie jak adres e-mail, mogą być modyfikowane tylko przez samego użytkownika."
   }
 }

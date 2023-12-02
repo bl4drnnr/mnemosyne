@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 import { ChangeEmailResponse } from '@responses/change-email.enum';
 import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
 import { ConfirmEmailChangeResponse } from '@responses/confirm-email-change.enum';
-import { ConfirmEmailChangeInterface } from '@payloads/confirm-email-change.interface';
+import { ConfirmEmailChangeInterfacePayload } from '@payloads/confirm-email-change.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,6 @@ export class EmailService {
   changeEmail(
     payload: ChangeEmailPayload
   ): Observable<{ message: ChangeEmailResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -28,15 +27,14 @@ export class EmailService {
       method: Method.POST,
       controller: Controller.SECURITY,
       action: SecurityEndpoint.CHANGE_EMAIL,
-      payload,
-      accessToken
+      payload
     });
   }
 
   confirmEmailChange({
     hash,
     payload
-  }: ConfirmEmailChangeInterface): Observable<{
+  }: ConfirmEmailChangeInterfacePayload): Observable<{
     message: ConfirmEmailChangeResponse;
   }> {
     const language = localStorage.getItem('translocoLang');

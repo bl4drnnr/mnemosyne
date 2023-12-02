@@ -1,4 +1,4 @@
-export interface GetCompanyInfoByIdInterface {
+export interface GetCompanyInfoByIdResponse {
   companyName: string;
   companyLocation: string;
   companyWebsite: string;

@@ -4,9 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TranslationService } from '@services/translation.service';
 import { Titles } from '@interfaces/titles.enum';
 import { AuthenticationService } from '@services/authentication.service';
-import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.enum';
+import { ConfirmCompanyAccountResponse } from '@responses/confirm-company-account.enum';
 import { StaticService } from '@services/static.service';
-import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
+import { ConfirmCompanyAccountPayload } from '@payloads/confirm-company-account.interface';
 
 @Component({
   selector: 'page-company-account-confirmation',
@@ -57,7 +57,7 @@ export class CompanyAccountConfirmationComponent implements OnInit {
   microsoftAuthAppLink = this.staticService.getMfaAuthApps().microsoft;
 
   confirmCompanyAccount(hash: string) {
-    const confirmationPayload: ConfirmCompanyAccountInterface = {
+    const confirmationPayload: ConfirmCompanyAccountPayload = {
       confirmationHash: hash,
       firstName: this.firstName,
       lastName: this.lastName,
@@ -78,19 +78,19 @@ export class CompanyAccountConfirmationComponent implements OnInit {
       .subscribe({
         next: ({ message }) => {
           switch (message) {
-            case ConfirmCompanyAccountEnum.USER_DATA_NOT_SET:
+            case ConfirmCompanyAccountResponse.USER_DATA_NOT_SET:
               this.ownerDataNotSet();
               break;
-            case ConfirmCompanyAccountEnum.PASSWORD_NOT_SET:
+            case ConfirmCompanyAccountResponse.PASSWORD_NOT_SET:
               this.ownerPasswordNotSet();
               break;
-            case ConfirmCompanyAccountEnum.MFA_NOT_SET:
+            case ConfirmCompanyAccountResponse.MFA_NOT_SET:
               this.ownerMfaNotSet();
               break;
-            case ConfirmCompanyAccountEnum.RECOVERY_KEYS_NOT_SET:
+            case ConfirmCompanyAccountResponse.RECOVERY_KEYS_NOT_SET:
               this.ownerRecoveryNotSet();
               break;
-            case ConfirmCompanyAccountEnum.COMPANY_ACCOUNT_CONFIRMED:
+            case ConfirmCompanyAccountResponse.COMPANY_ACCOUNT_CONFIRMED:
               this.companyAccountConfirmed();
               break;
             default:

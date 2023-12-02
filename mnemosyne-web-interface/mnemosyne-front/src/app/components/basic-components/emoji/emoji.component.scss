@@ -1,3 +1,14 @@
+@import 'variables';
+
 .emoji-span {
   display: flex;
+}
+
+.svg-filter {
+  filter: var(--svg-color);
+  transition: .2s;
+
+  &:hover {
+    filter: var(--svg-color-main);
+  }
 }

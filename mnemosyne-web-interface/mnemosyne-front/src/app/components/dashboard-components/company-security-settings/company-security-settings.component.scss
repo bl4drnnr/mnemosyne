@@ -1,14 +1,5 @@
 @import 'variables';
 
-.title-container {
-  display: flex;
-  align-items: center;
-}
-
-.section-title {
-  margin-left: 15px;
-}
-
 .last-button {
   margin-top: 20px;
   padding-top: 20px;
@@ -27,4 +18,8 @@
   &.on-white {
     color: $color-black;
   }
+}
+
+.company-security-desc {
+  margin-bottom: 50px;
 }

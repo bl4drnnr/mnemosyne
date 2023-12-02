@@ -1,10 +1,22 @@
-import { Body, Controller, Post, UseGuards, UsePipes } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+  UsePipes
+} from '@nestjs/common';
 import { CompanyUsersService } from '@modules/company-users.service';
 import {
   ApiBasicAuth,
   ApiBearerAuth,
+  ApiBody,
   ApiExtraModels,
+  ApiNotFoundResponse,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
@@ -17,6 +29,8 @@ import { Transaction } from 'sequelize';
 import { Roles } from '@decorators/roles.decorator';
 import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
 import { CompanyUsersDocs } from '@docs/company-users.docs';
+import { CompanyId } from '@decorators/company-id.decorator';
+import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 
 @ApiTags('Company Users')
 @Controller('company-users')
@@ -41,6 +55,61 @@ export class CompanyUsersController {
     return this.companyUsersService.inviteUserToCompany({
       userId,
       payload,
+      trx
+    });
+  }
+
+  @ApiOperation(CompanyUsersDocs.GetCompanyMemberInfo.ApiOperation)
+  @ApiExtraModels(...CompanyUsersDocs.GetCompanyMemberInfo.ApiExtraModels)
+  @ApiResponse(CompanyUsersDocs.GetCompanyMemberInfo.ApiResponse)
+  @ApiNotFoundResponse(
+    CompanyUsersDocs.GetCompanyMemberInfo.ApiNotFoundResponse
+  )
+  @ApiQuery(CompanyUsersDocs.GetCompanyMemberInfo.ApiMemberIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Get('company-member-info')
+  getCompanyMemberInfo(
+    @CompanyId() companyId: string,
+    @Query('memberId') memberId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyUsersService.getCompanyMemberInfo({
+      companyId,
+      memberId,
+      trx
+    });
+  }
+
+  @ApiOperation(CompanyUsersDocs.UpdateCompanyMemberInfo.ApiOperation)
+  @ApiExtraModels(...CompanyUsersDocs.UpdateCompanyMemberInfo.ApiExtraModels)
+  @ApiResponse(CompanyUsersDocs.UpdateCompanyMemberInfo.ApiResponse)
+  @ApiNotFoundResponse(
+    CompanyUsersDocs.UpdateCompanyMemberInfo.ApiNotFoundResponse
+  )
+  @ApiBody(CompanyUsersDocs.UpdateCompanyMemberInfo.ApiBody)
+  @ApiQuery(CompanyUsersDocs.UpdateCompanyMemberInfo.ApiMemberIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Patch('company-member-info')
+  updateCompanyMemberInfo(
+    @CompanyId() companyId: string,
+    @Body() payload: UpdateUserInfoDto,
+    @Query('memberId') memberId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyUsersService.updateCompanyMemberInfo({
+      companyId,
+      payload,
+      memberId,
       trx
     });
   }

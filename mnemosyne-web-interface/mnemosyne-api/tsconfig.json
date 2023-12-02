@@ -30,7 +30,9 @@
         "src/exceptions/security/*",
         "src/exceptions/validation/*",
         "src/exceptions/recovery/*",
-        "src/exceptions/company/*"
+        "src/exceptions/company/*",
+        "src/exceptions/company-users/*",
+        "src/exceptions/company-roles/*"
       ],
       "@dto/*": [
         "src/dto/*",
@@ -88,6 +90,7 @@
         "src/libs/interfaces/time/*",
         "src/libs/interfaces/company/*",
         "src/libs/interfaces/company-users/*",
+        "src/libs/interfaces/company-roles/*",
         "src/libs/interfaces/roles/*"
       ],
       "@docs/*": [

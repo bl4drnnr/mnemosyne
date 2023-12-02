@@ -15,7 +15,10 @@ import { AccountDeletedResponse } from '@responses/account-deleted.enum';
 @Component({
   selector: 'dashboard-security-settings',
   templateUrl: './security-settings.component.html',
-  styleUrls: ['./security-settings.component.scss']
+  styleUrls: [
+    './security-settings.component.scss',
+    '../shared/security-setting-section/security-setting-section.component.scss'
+  ]
 })
 export class SecuritySettingsComponent {
   @Input() userSecurity: UserSecurityResponse;

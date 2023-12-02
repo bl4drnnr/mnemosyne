@@ -8,11 +8,33 @@ import { Roles } from '@interfaces/roles.enum';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { TranslationService } from '@services/translation.service';
 import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
+import { CompanyUsersService } from '@services/company-users.service';
+import { CompanyMemberInfoResponse } from '@responses/company-member-info.interface';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
+import { RefreshTokensService } from '@services/refresh-tokens.service';
+import { MessagesTranslation } from '@translations/messages.enum';
 
 @Component({
   selector: 'dashboard-company-users-settings',
   templateUrl: './company-users-settings.component.html',
-  styleUrls: ['./company-users-settings.component.scss']
+  styleUrls: [
+    './company-users-settings.component.scss',
+    '../shared/security-setting-section/security-setting-section.component.scss'
+  ],
+  animations: [
+    trigger('infoChangedAnimation', [
+      state('void', style({ transform: 'translateY(-5px)', opacity: 0 })),
+      state('*', style({ transform: 'translateY(0)', opacity: 1 })),
+      transition('void => *', animate('0.5s')),
+      transition('* => void', animate('0.5s'))
+    ])
+  ]
 })
 export class CompanyUsersSettingsComponent implements OnInit {
   @Input() page: string;
@@ -34,7 +56,20 @@ export class CompanyUsersSettingsComponent implements OnInit {
   companyMemberDefaultRoleValue: string;
   companyMemberDefaultRoleKey: Role;
 
+  currentCompanyMember: CompanyMemberInfoResponse;
+  currentCompanyMemberEmail: string;
+  currentCompanyMemberFirstName: string;
+  currentCompanyMemberLastName: string;
+  currentCompanyMemberNamePronunciation: string;
+  currentCompanyMemberHomeAddress: string;
+  currentCompanyMemberHomePhone: string;
+  currentCompanyMemberModal: boolean;
+  incorrectCompanyMemberFirstName: boolean;
+  incorrectCompanyMemberLastName: boolean;
+
   constructor(
+    private readonly refreshTokensService: RefreshTokensService,
+    private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly translationService: TranslationService
   ) {}
@@ -116,6 +151,112 @@ export class CompanyUsersSettingsComponent implements OnInit {
 
   inviteUsers() {
     //
+  }
+
+  fetchCompanyMemberInformation(memberId: string) {
+    this.companyUsersService
+      .getCompanyMemberInformation({
+        memberId
+      })
+      .subscribe({
+        next: (currentCompanyMember) => {
+          this.currentCompanyMember = currentCompanyMember;
+          this.currentCompanyMemberEmail = currentCompanyMember.email;
+          this.currentCompanyMemberFirstName = currentCompanyMember.firstName;
+          this.currentCompanyMemberLastName = currentCompanyMember.lastName;
+          this.currentCompanyMemberNamePronunciation =
+            currentCompanyMember.namePronunciation;
+          this.currentCompanyMemberHomeAddress =
+            currentCompanyMember.homeAddress;
+          this.currentCompanyMemberHomePhone = currentCompanyMember.homePhone;
+          this.currentCompanyMemberModal = true;
+        }
+      });
+  }
+
+  saveCompanyMemberInfo(memberId: string) {
+    const namePronunciation = this.currentCompanyMemberNamePronunciation
+      ? this.currentCompanyMemberNamePronunciation
+      : null;
+    const homeAddress = this.currentCompanyMemberHomeAddress
+      ? this.currentCompanyMemberHomeAddress
+      : null;
+    const homePhone = this.currentCompanyMemberHomePhone
+      ? this.currentCompanyMemberHomePhone
+      : null;
+
+    this.companyUsersService
+      .updateCompanyMemberInformation({
+        firstName: this.currentCompanyMemberFirstName,
+        lastName: this.currentCompanyMemberLastName,
+        namePronunciation,
+        homeAddress,
+        homePhone,
+        memberId
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          const globalMessage = await this.translationService.translateText(
+            message,
+            MessagesTranslation.RESPONSES
+          );
+          this.globalMessageService.handle({
+            message: globalMessage
+          });
+          this.fetchCompanyMemberInformation(memberId);
+        },
+        error: () => this.refreshTokensService.handleLogout()
+      });
+  }
+
+  wasInfoChanged() {
+    const wasFirstNameChanged =
+      this.currentCompanyMemberFirstName &&
+      this.currentCompanyMemberFirstName !==
+        this.currentCompanyMember.firstName;
+    const wasLastNameChanged =
+      this.currentCompanyMemberLastName &&
+      this.currentCompanyMemberLastName !== this.currentCompanyMember.lastName;
+    const wasNamePronChanged =
+      this.currentCompanyMemberNamePronunciation !==
+      this.currentCompanyMember.namePronunciation;
+    const wasHomeAddressChanged =
+      this.currentCompanyMemberHomeAddress !==
+      this.currentCompanyMember.homeAddress;
+    const wasHomePhoneChanged =
+      this.currentCompanyMemberHomePhone !==
+      this.currentCompanyMember.homePhone;
+
+    return (
+      wasFirstNameChanged ||
+      wasLastNameChanged ||
+      wasNamePronChanged ||
+      wasHomeAddressChanged ||
+      wasHomePhoneChanged
+    );
+  }
+
+  incorrectUserData() {
+    return (
+      !this.currentCompanyMemberFirstName ||
+      !this.currentCompanyMemberLastName ||
+      this.incorrectCompanyMemberFirstName ||
+      this.incorrectCompanyMemberLastName
+    );
+  }
+
+  saveButtonDisabled() {
+    return !this.wasInfoChanged() || this.incorrectUserData();
+  }
+
+  closeCompanyMemberInformationModal() {
+    this.currentCompanyMemberEmail = '';
+    this.currentCompanyMemberFirstName = '';
+    this.currentCompanyMemberLastName = '';
+    this.currentCompanyMemberNamePronunciation = '';
+    this.currentCompanyMemberHomeAddress = '';
+    this.currentCompanyMemberHomePhone = '';
+    this.currentCompanyMemberModal = false;
   }
 
   setCurrentPage(currentPage: string) {

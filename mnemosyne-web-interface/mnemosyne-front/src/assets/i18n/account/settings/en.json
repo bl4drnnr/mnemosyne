@@ -71,7 +71,8 @@
     "usersManagementDesc": "Here is the list of all company members, their roles and account confirmation status. From this page you will be able to add users, delete users from the company and modify their level of access.",
     "emailHeader": "Email",
     "roleHeader": "Role",
-    "deleteUserButtonHeader": "Delete",
+    "confirmedHeader": "Confirmed",
+    "moreInfoUserButtonHeader": "More",
     "usersPerPage": "Users per page",
     "inviteUser": "Invite user(-s)",
     "inviteUserModalHeader": "Invite user(-s) to the company",
@@ -82,6 +83,8 @@
     "transferOwnershipPhone": "In order to transfer the ownership of the company account, please, make sure you have provide the code sent to your mobile phone.",
     "transferOwnershipMfa": "In order to transfer the ownership of the company account, please, make sure you have provide the code from the authenticator application.",
     "deleteCompanyHeader": "Delete company account",
-    "deleteCompanyDesc": "Be careful! You are about to delete the company account along with all its data. Users will be removed from the company, but their accounts themselves will not be delete from the system."
+    "deleteCompanyDesc": "Be careful! You are about to delete the company account along with all its data. Users will be removed from the company, but their accounts themselves will not be delete from the system.",
+    "modifyCompanyMemberHeader": "Modify the information of company member",
+    "modifyCompanyMemberDesc": "You are allowed to modify only certain fields, like company member first name, last name and other data. Some data, like email address, can be modified only by the user themself."
   }
 }

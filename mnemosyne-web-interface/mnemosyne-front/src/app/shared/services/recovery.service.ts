@@ -44,13 +44,11 @@ export class RecoveryService {
   generateRecoveryKeys(
     payload: GenerateRecoveryKeysPayload
   ): Observable<RecoveryKeysResponse> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.RECOVERY,
       action: RecoveryEndpoint.GENERATE_RECOVERY_KEYS,
-      payload,
-      accessToken
+      payload
     });
   }
 

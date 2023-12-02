@@ -74,5 +74,19 @@
   "pagePlaceholder": "Page",
   "newCompanyOwnerEmailLabel": "Company new owner email",
   "newCompanyOwnerEmailPlaceholder": "Provide the company new owner email address",
-  "newCompanyOwnerEmailDesc": "In order to continue, please, make sure that the provided email is the company member with confirmed account"
+  "newCompanyOwnerEmailDesc": "In order to continue, please, make sure that the provided email is the company member with confirmed account",
+  "companyMemberFirstName": "Company member first name",
+  "companyMemberLastName": "Company member last name",
+  "companyMemberNamePronunciation": "Company member name pronunciation",
+  "companyMemberHomeAddress": "Company member home address",
+  "companyMemberHomePhone": "Company member home phone",
+  "companyMemberEmailModifyDesc": "You cannot modify the email address of the user. This action must be performed by the user themself.",
+  "provideCompanyMemberFirstName": "Provide company member first name",
+  "provideCompanyMemberLastName": "Provide company member last name",
+  "provideCompanyMemberNamePronunciation": "Provide company member name pronunciation (for instance, Zoe ('zo-ee'))",
+  "provideCompanyMemberHomeAddress": "Provide company member home address",
+  "provideCompanyMemberHomePhone": "Provide company member home phone",
+  "companyMemberNamePronunciationDesc": "Field is optional. This could be a phonetic pronunciation, or an example of something the name sounds like.",
+  "companyMemberHomeAddressDesc": "Field is optional. You may provide here your home address where the company member is currently located.",
+  "companyMemberHomePhoneDesc": "Field is optional. You may provide company member home phone number."
 }

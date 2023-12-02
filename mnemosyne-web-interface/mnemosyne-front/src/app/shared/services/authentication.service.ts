@@ -15,11 +15,10 @@ import { ForgotPasswordResponse } from '@responses/forgot-password.enum';
 import { ResetUserPasswordResponse } from '@responses/reset-user-password.enum';
 import { LogoutResponse } from '@responses/logout.enum';
 import { ConfirmationHashEndpoint } from '@interfaces/confirmation-hash.enum';
-import { ConfirmAccountInterface } from '@payloads/confirm-account.interface';
-import { ConfirmCompanyAccountInterface } from '@payloads/confirm-company-account.interface';
-import { RefreshTokensInterface } from '@payloads/refresh-tokens.interface';
-import { ConfirmCompanyAccountEnum } from '@responses/confirm-company-account.enum';
-import { ConfirmCompanyMemberAccEnum } from '@responses/confirm-company-member-acc.enum';
+import { ConfirmAccountPayload } from '@payloads/confirm-account.interface';
+import { ConfirmCompanyAccountPayload } from '@payloads/confirm-company-account.interface';
+import { ConfirmCompanyAccountResponse } from '@responses/confirm-company-account.enum';
+import { ConfirmCompanyMemberAccResponse } from '@responses/confirm-company-member-acc.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -55,8 +54,8 @@ export class AuthenticationService {
 
   confirmAccount({
     confirmationHash
-  }: ConfirmAccountInterface): Observable<{ message: ConfirmAccountResponse }> {
-    const params: ConfirmAccountInterface = { confirmationHash };
+  }: ConfirmAccountPayload): Observable<{ message: ConfirmAccountResponse }> {
+    const params: ConfirmAccountPayload = { confirmationHash };
     const language = localStorage.getItem('translocoLang');
 
     if (language) params.language = language;
@@ -70,8 +69,8 @@ export class AuthenticationService {
   }
 
   confirmCompanyAccount(
-    payload: ConfirmCompanyAccountInterface
-  ): Observable<{ message: ConfirmCompanyAccountEnum }> {
+    payload: ConfirmCompanyAccountPayload
+  ): Observable<{ message: ConfirmCompanyAccountResponse }> {
     const params = { confirmationHash: payload.confirmationHash };
     const language = localStorage.getItem('translocoLang');
 
@@ -87,8 +86,8 @@ export class AuthenticationService {
   }
 
   confirmCompanyMembership(
-    payload: ConfirmCompanyAccountInterface
-  ): Observable<{ message: ConfirmCompanyMemberAccEnum }> {
+    payload: ConfirmCompanyAccountPayload
+  ): Observable<{ message: ConfirmCompanyMemberAccResponse }> {
     const params = { confirmationHash: payload.confirmationHash };
     const language = localStorage.getItem('translocoLang');
 
@@ -135,24 +134,19 @@ export class AuthenticationService {
     });
   }
 
-  refreshTokens({
-    accessToken
-  }: RefreshTokensInterface): Observable<{ _at: string }> {
+  refreshTokens(): Observable<{ _at: string }> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.AUTH,
-      action: AuthEndpoint.REFRESH,
-      accessToken
+      action: AuthEndpoint.REFRESH
     });
   }
 
   logout(): Observable<{ message: LogoutResponse }> {
-    const accessToken = localStorage.getItem('_at')!;
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.AUTH,
-      action: AuthEndpoint.LOGOUT,
-      accessToken
+      action: AuthEndpoint.LOGOUT
     });
   }
 }

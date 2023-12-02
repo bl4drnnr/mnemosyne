@@ -6,13 +6,13 @@ import { Controller } from '@interfaces/controller.enum';
 import { CompanyEndpoint } from '@interfaces/company.enum';
 import { CreateCompanyPayload } from '@payloads/create-company.interface';
 import { CompanyCreatedResponse } from '@responses/company-created.enum';
-import { GetCompanyInfoByIdInterface } from '@responses/get-company-by-id.interface';
-import { UpdateCompanyInfoInterface } from '@payloads/update-company-info.interface';
-import { CompanyInfoUpdatedEnum } from '@responses/company-info-updated.enum';
-import { GetCompanyUsersInterface } from '@payloads/get-company-users.interface';
-import { GetCompanyUsersResInterface } from '@responses/get-company-users-res.interface';
-import { CompanyOwnershipTransferredEnum } from '@responses/company-ownership-transferred.enum';
-import { TransferCompanyOwnershipInterface } from '@payloads/transfer-company-ownership.interface';
+import { GetCompanyInfoByIdResponse } from '@responses/get-company-by-id.interface';
+import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interface';
+import { CompanyInfoUpdatedResponse } from '@responses/company-info-updated.enum';
+import { GetCompanyUsersPayload } from '@payloads/get-company-users.interface';
+import { GetCompanyUsersResponse } from '@responses/get-company-users-res.interface';
+import { CompanyOwnershipTransferredResponse } from '@responses/company-ownership-transferred.enum';
+import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -35,47 +35,40 @@ export class CompanyService {
     });
   }
 
-  getCompanyInformationById(): Observable<GetCompanyInfoByIdInterface> {
-    const accessToken = localStorage.getItem('_at')!;
+  getCompanyInformationById(): Observable<GetCompanyInfoByIdResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.COMPANY,
-      action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID,
-      accessToken
+      action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID
     });
   }
 
   getCompanyUsers({
     page,
     pageSize
-  }: GetCompanyUsersInterface): Observable<GetCompanyUsersResInterface> {
-    const accessToken = localStorage.getItem('_at')!;
+  }: GetCompanyUsersPayload): Observable<GetCompanyUsersResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.GET_COMPANY_USERS,
-      params: { page, pageSize },
-      accessToken
+      params: { page, pageSize }
     });
   }
 
   saveCompanyInformation(
-    payload: UpdateCompanyInfoInterface
-  ): Observable<{ message: CompanyInfoUpdatedEnum }> {
-    const accessToken = localStorage.getItem('_at')!;
+    payload: UpdateCompanyInfoPayload
+  ): Observable<{ message: CompanyInfoUpdatedResponse }> {
     return this.apiService.apiProxyRequest({
       method: Method.PATCH,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.UPDATE_COMPANY_INFORMATION,
-      payload,
-      accessToken
+      payload
     });
   }
 
   transferCompanyOwnership(
-    payload: TransferCompanyOwnershipInterface
-  ): Observable<{ message: CompanyOwnershipTransferredEnum }> {
-    const accessToken = localStorage.getItem('_at')!;
+    payload: TransferCompanyOwnershipPayload
+  ): Observable<{ message: CompanyOwnershipTransferredResponse }> {
     const language = localStorage.getItem('translocoLang');
 
     if (language) payload.language = language;
@@ -84,8 +77,7 @@ export class CompanyService {
       method: Method.POST,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.TRANSFER_OWNERSHIP,
-      payload,
-      accessToken
+      payload
     });
   }
 }

@@ -25,8 +25,7 @@ export class ApiService {
     action,
     method,
     payload,
-    params,
-    accessToken
+    params
   }: ProxyRequestInterface): Observable<any> {
     const requestUrl = `${this.frontProxyUrl}/${controller}/${action}`;
     const requestBody: {
@@ -38,7 +37,6 @@ export class ApiService {
 
     if (params) requestBody.params = params;
     if (payload) requestBody.payload = payload;
-    if (accessToken) headers['X-Access-Token'] = accessToken;
 
     const request$ = this.http.post<any>(requestUrl, requestBody, {
       withCredentials: true,

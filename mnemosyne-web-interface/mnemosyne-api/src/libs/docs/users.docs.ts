@@ -123,7 +123,7 @@ export abstract class UsersDocs {
     };
   }
 
-  static get PatchUserInfo() {
+  static get UpdateUserInfo() {
     const ApiModels = [UserUpdatedDto, UpdateUserInfoDto];
 
     const apiOperationSum =
