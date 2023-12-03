@@ -12,6 +12,8 @@ import { companyRegistrationTemplate } from '@email-templates/company-registrati
 import { companyMemberInviteTemplate } from '@email-templates/company-member-invite.template';
 import { companyRegCompleteTemplate } from '@email-templates/company-reg-complete.template';
 import { companyMemberConfirmInviteTemplate } from '@email-templates/company-member-confirm-invite.template';
+import { CompanyPayloadInterface } from '@interfaces/company-payload.interface';
+import { companyMemberDeletedTemplate } from '@email-templates/company-member-deleted.template';
 
 @Injectable()
 export class EmailTemplatesService {
@@ -313,7 +315,7 @@ export class EmailTemplatesService {
         subject = 'Mnemosyne - Адреса электронной почты изменен';
         break;
       case Language.PL:
-        subject = 'Mnemosyne -  Adres e-mail został zmieniony';
+        subject = 'Mnemosyne - Adres e-mail został zmieniony';
         break;
       default:
         subject = 'Mnemosyne - Email changed';
@@ -324,6 +326,37 @@ export class EmailTemplatesService {
       userInfo,
       link,
       language
+    });
+
+    return { html, subject };
+  }
+
+  userDeletedFromCompany({
+    language,
+    performedBy,
+    companyName
+  }: CompanyPayloadInterface): EmailTemplateInterface {
+    let subject: string;
+
+    switch (language) {
+      case Language.EN:
+        subject = 'Mnemosyne - You have been deleted from the company';
+        break;
+      case Language.RU:
+        subject = 'Mnemosyne - Вас удалили из компании';
+        break;
+      case Language.PL:
+        subject = 'Mnemosyne - Zostałeś usunięty z firmy';
+        break;
+      default:
+        subject = 'Mnemosyne - You have been deleted from the company';
+        break;
+    }
+
+    const html = companyMemberDeletedTemplate({
+      language,
+      performedBy,
+      companyName
     });
 
     return { html, subject };

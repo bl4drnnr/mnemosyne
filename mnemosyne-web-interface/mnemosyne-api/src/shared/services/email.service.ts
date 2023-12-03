@@ -12,6 +12,7 @@ import { EmailSettingsInterface } from '@interfaces/email-settings.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { Routes } from '@interfaces/routes.enum';
+import { CompanyMemberDeletionInterface } from '@interfaces/company-member-deletion.interface';
 
 @Injectable()
 export class EmailService {
@@ -319,6 +320,23 @@ export class EmailService {
       link,
       language
     });
+
+    await this.sendEmail({ to, html, subject });
+  }
+
+  async sendDeletionCompanyMemberEmail({
+    to,
+    performedBy,
+    companyName,
+    language
+  }: CompanyMemberDeletionInterface) {
+    const { html, subject } = this.emailTemplatesService.userDeletedFromCompany(
+      {
+        language,
+        companyName,
+        performedBy
+      }
+    );
 
     await this.sendEmail({ to, html, subject });
   }

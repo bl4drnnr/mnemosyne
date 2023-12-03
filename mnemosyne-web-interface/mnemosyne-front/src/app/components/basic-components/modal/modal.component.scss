@@ -22,6 +22,8 @@
   border-radius: 6px;
   display: flex;
   padding-bottom: 15px;
+  max-height: 80vh;
+  overflow-y: auto;
 
   @media screen and (max-width: 520px) {
     width: 90%;
@@ -29,14 +31,19 @@
   }
 }
 
+.modal-title {
+  margin: 0;
+}
+
 .window-header {
-  height: 80px;
+  height: 72px;
   width: 100%;
   align-items: center;
   justify-content: center;
   position: relative;
   display: flex;
   color: $black;
+  overflow: hidden;
 
   img {
     position: absolute;
@@ -52,11 +59,14 @@
 
 .modal-p {
   margin: 0 25px;
+  padding: 15px;
   font-size: 14px;
   opacity: .75;
   color: $color-black;
+  border-bottom: 1px solid rgba($color-black, .1);
 }
 
 .child-wrapper {
   width: 90%;
+  overflow-y: auto;
 }

@@ -85,6 +85,8 @@
     "deleteCompanyHeader": "Delete company account",
     "deleteCompanyDesc": "Be careful! You are about to delete the company account along with all its data. Users will be removed from the company, but their accounts themselves will not be delete from the system.",
     "modifyCompanyMemberHeader": "Modify the information of company member",
-    "modifyCompanyMemberDesc": "You are allowed to modify only certain fields, like company member first name, last name and other data. Some data, like email address, can be modified only by the user themself."
+    "modifyCompanyMemberDesc": "You are allowed to modify only certain fields, like company member first name, last name and other data. Some data, like email address, can be modified only by the user themself.",
+    "userDeletionHeader": "User deletion",
+    "userDeletionDesc": "Be careful! You are about to delete the member from the company. The account itself won't be deleted, but the membership will be suspended and the user won't have access to the company until they are invited back."
   }
 }

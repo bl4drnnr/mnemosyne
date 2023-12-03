@@ -32,6 +32,7 @@ import { GetCompanyUsersDto } from '@dto/get-company-users.dto';
 import { TransferOwnershipInterface } from '@interfaces/transfer-ownership.interface';
 import { CompanyOwnershipTransferredDto } from '@dto/company-ownership-transferred.dto';
 import { AuthService } from '@modules/auth.service';
+import { GetCompanyByIdInterface } from '@interfaces/get-company-by-id.interface';
 
 @Injectable()
 export class CompanyService {
@@ -294,6 +295,12 @@ export class CompanyService {
     return await this.companyRepository.findOne({
       rejectOnEmpty: undefined,
       where: { companyName },
+      transaction
+    });
+  }
+
+  async getCompanyById({ id, trx: transaction }: GetCompanyByIdInterface) {
+    return await this.companyRepository.findByPk(id, {
       transaction
     });
   }

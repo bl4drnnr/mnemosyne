@@ -709,6 +709,43 @@ paths:
         - basicAuth: []
     patch:
       operationId: CompanyUsersController_updateCompanyMemberInfo
+      summary: Endpoint is responsible for updating the information of the company
+        member.
+      parameters:
+        - name: memberId
+          required: true
+          in: query
+          description: User (company member) ID.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        description: Body contains user personal information.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserInfoDto"
+      responses:
+        "201":
+          description: As a response user gets message that information has been updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyMemberInfoDto"
+        "404":
+          description: In case if user ID has been modified and user not found, endpoint
+            returns the error of user not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyMemberNotFoundException"
+      tags: *a5
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-users/delete-company-member:
+    delete:
+      operationId: CompanyUsersController_deleteCompanyMember
       parameters:
         - name: memberId
           required: true
@@ -720,7 +757,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UpdateUserInfoDto"
+              $ref: "#/components/schemas/DeleteCompanyMemberDto"
       responses:
         "200":
           description: ""
@@ -2512,6 +2549,24 @@ components:
           example: company-member-not-found
       required:
         - message
+    DeleteCompanyMemberDto:
+      type: object
+      properties:
+        phoneCode:
+          type: string
+          description: User phone code - MFA
+          example: "123123"
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
     QrCodeDto:
       type: object
       properties:

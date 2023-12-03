@@ -25,5 +25,6 @@
   "changeEmail": "Zmień e-mail",
   "deleteAccount": "Trwale usuń konto",
   "transferOwnershipButton": "Przenieś własność",
-  "deleteCompany": "Usuń firmę"
+  "deleteCompany": "Usuń firmę",
+  "deleteCompanyMember": "Usuń członka firmy"
 }
