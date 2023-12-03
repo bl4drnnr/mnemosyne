@@ -166,6 +166,7 @@
       </div>
 
       <basic-button
+        [onWhite]="true"
         [disabled]="saveButtonDisabled()"
         [label]="t('button.saveSettings')"
         (buttonClick)="saveCompanyMemberInfo(currentCompanyMember.memberId)"
