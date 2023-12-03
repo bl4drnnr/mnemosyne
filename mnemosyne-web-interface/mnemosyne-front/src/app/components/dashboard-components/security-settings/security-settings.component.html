@@ -182,16 +182,6 @@
         </div>
       </div>
 
-      <div *ngIf="changePassMfaRequired">
-        <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
-        <div class="input-mfa-wrapper">
-          <basic-input-mfa
-            [onWhite]="true"
-            (mfaCode)="changePassMfaCode = $event"
-          />
-        </div>
-      </div>
-
       <div *ngIf="changePassPhoneRequired">
         <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
         <basic-phone
@@ -206,6 +196,16 @@
           <basic-input-mfa
             [onWhite]="true"
             (mfaCode)="changePassPhoneCode = $event"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="changePassMfaRequired">
+        <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="changePassMfaCode = $event"
           />
         </div>
       </div>
@@ -304,16 +304,6 @@
         />
       </div>
 
-      <div *ngIf="deleteAccMfaRequired">
-        <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
-        <div class="input-mfa-wrapper">
-          <basic-input-mfa
-            [onWhite]="true"
-            (mfaCode)="deleteAccMfaCode = $event"
-          />
-        </div>
-      </div>
-
       <div *ngIf="deleteAccPhoneRequired">
         <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
         <basic-phone
@@ -328,6 +318,16 @@
           <basic-input-mfa
             [onWhite]="true"
             (mfaCode)="deleteAccPhoneCode = $event"
+          />
+        </div>
+      </div>
+
+      <div *ngIf="deleteAccMfaRequired">
+        <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="deleteAccMfaCode = $event"
           />
         </div>
       </div>

@@ -21,6 +21,7 @@ import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 import { DeleteCompanyMemberPayload } from '@payloads/delete-company-member.interface';
 import { CompanyMemberDeletedResponse } from '@responses/company-member-deleted.enum';
 import { PhoneService } from '@services/phone.service';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -80,6 +81,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   deleteCompanyMemberPhoneCodeSent: boolean;
 
   constructor(
+    private readonly validationService: ValidationService,
     private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly phoneService: PhoneService,
@@ -312,22 +314,18 @@ export class CompanyUsersSettingsComponent implements OnInit {
   }
 
   disableDeleteCompanyMemberMfaButton() {
-    if (
-      this.deleteCompanyMemberMfaRequired &&
-      !this.deleteCompanyMemberPhoneRequired
-    ) {
-      return this.deleteCompanyMemberMfaCode?.length !== 6;
-    } else if (
-      this.deleteCompanyMemberPhoneRequired &&
-      !this.deleteCompanyMemberMfaRequired
-    ) {
-      return this.deleteCompanyMemberPhoneCode?.length !== 6;
-    } else {
-      return (
-        this.deleteCompanyMemberMfaCode?.length !== 6 &&
-        this.deleteCompanyMemberPhoneCode?.length !== 6
-      );
-    }
+    return this.validationService.mfaButtonDisable({
+      isPhoneRequired: this.deleteCompanyMemberPhoneRequired,
+      isMfaRequired: this.deleteCompanyMemberMfaRequired,
+      phoneCode: this.deleteCompanyMemberPhoneCode,
+      mfaCode: this.deleteCompanyMemberMfaCode
+    });
+  }
+
+  deleteCompanyMemberResendSmsCode() {
+    this.phoneService.getSmsCode().subscribe({
+      next: () => (this.deleteCompanyMemberPhoneCodeSent = true)
+    });
   }
 
   setCurrentPage(currentPage: string) {

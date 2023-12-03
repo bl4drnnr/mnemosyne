@@ -178,30 +178,22 @@
         [showModal]="deleteCompanyMemberModal"
         (closeModal)="closeCompanyMemberDeletionModal()"
       >
+        <div *ngIf="deleteCompanyMemberPhoneRequired">
+          <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
+          <basic-input-mfa
+            [onWhite]="true"
+            [isPhone]="true"
+            (mfaCode)="deleteCompanyMemberPhoneCode = $event"
+            (resendSms)="deleteCompanyMemberResendSmsCode()"
+          />
+        </div>
+
         <div *ngIf="deleteCompanyMemberMfaRequired">
           <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
           <div class="input-mfa-wrapper">
             <basic-input-mfa
               [onWhite]="true"
               (mfaCode)="deleteCompanyMemberMfaCode = $event"
-            />
-          </div>
-        </div>
-
-        <div *ngIf="deleteCompanyMemberPhoneRequired">
-          <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
-          <basic-phone
-            [readOnly]="true"
-            [onWhite]="true"
-            [startCountdownManually]="true"
-            [phoneInput]="userSecurity.phoneStatus.twoLastDigit"
-            [phoneCodeSent]="deleteCompanyMemberPhoneCodeSent"
-            (sendSmsCode)="sendSmsCode($event)"
-          />
-          <div class="input-mfa-wrapper">
-            <basic-input-mfa
-              [onWhite]="true"
-              (mfaCode)="deleteCompanyMemberPhoneCode = $event"
             />
           </div>
         </div>

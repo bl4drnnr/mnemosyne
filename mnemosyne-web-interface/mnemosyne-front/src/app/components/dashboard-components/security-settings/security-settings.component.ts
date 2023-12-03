@@ -11,6 +11,7 @@ import { EmailService } from '@services/email.service';
 import { TranslationService } from '@services/translation.service';
 import { AccountTranslation } from '@translations/account.enum';
 import { AccountDeletedResponse } from '@responses/account-deleted.enum';
+import { ValidationService } from '@services/validation.service';
 
 @Component({
   selector: 'dashboard-security-settings',
@@ -102,6 +103,7 @@ export class SecuritySettingsComponent {
     private readonly phoneService: PhoneService,
     private readonly usersService: UsersService,
     private readonly emailService: EmailService,
+    private readonly validationService: ValidationService,
     private readonly translationService: TranslationService,
     private readonly refreshTokensService: RefreshTokensService,
     private readonly globalMessageService: GlobalMessageService
@@ -258,16 +260,12 @@ export class SecuritySettingsComponent {
   }
 
   disableChangePasswordMfaButton() {
-    if (this.changePassMfaRequired && !this.changePassPhoneRequired) {
-      return this.changePassMfaCode?.length !== 6;
-    } else if (this.changePassPhoneRequired && !this.changePassMfaRequired) {
-      return this.changePassPhoneCode?.length !== 6;
-    } else {
-      return (
-        this.changePassMfaCode?.length !== 6 &&
-        this.changePassPhoneCode?.length !== 6
-      );
-    }
+    return this.validationService.mfaButtonDisable({
+      isPhoneRequired: this.changePassPhoneRequired,
+      isMfaRequired: this.changePassMfaRequired,
+      phoneCode: this.changePassPhoneCode,
+      mfaCode: this.changePassMfaCode
+    });
   }
 
   deleteUserAccount() {

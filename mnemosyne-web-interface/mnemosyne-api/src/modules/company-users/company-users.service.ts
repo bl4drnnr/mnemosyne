@@ -19,9 +19,9 @@ import { CompanyMemberNotFoundException } from '@exceptions/company-member-not-f
 import { CompanyMemberInfoDto } from '@dto/company-member-info.dto';
 import { UpdateCompanyMemberInfoInterface } from '@interfaces/update-company-member-info.interface';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
-import { DeleteCompanyMemberInterface } from '@interfaces/delete-company-member.interface';
 import { AuthService } from '@modules/auth.service';
 import { CompanyMemberDeletedDto } from '@dto/company-member-deleted.dto';
+import { DeleteCompanyMemberInterface } from '@interfaces/delete-company-member.interface';
 
 @Injectable()
 export class CompanyUsersService {
@@ -193,7 +193,7 @@ export class CompanyUsersService {
     memberId,
     trx
   }: DeleteCompanyMemberInterface) {
-    const { mfaCode, phoneCode } = payload;
+    const { mfaCode, phoneCode, language } = payload;
 
     const companyMember = await this.companyUserRepository.findOne({
       where: { companyId, userId: memberId },
@@ -203,10 +203,11 @@ export class CompanyUsersService {
 
     if (!companyMember) throw new CompanyMemberNotFoundException();
 
-    const { userSettings } = await this.usersService.getUserById({
-      id: userId,
-      trx
-    });
+    const { email: performedByEmail, userSettings } =
+      await this.usersService.getUserById({
+        id: userId,
+        trx
+      });
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
@@ -221,6 +222,23 @@ export class CompanyUsersService {
     } catch (e: any) {
       throw new HttpException(e.response.message, e.status);
     }
+
+    await this.companyUserRepository.destroy({
+      where: { companyId, userId: memberId },
+      transaction: trx
+    });
+
+    const { companyName } = await this.companyService.getCompanyById({
+      id: companyId,
+      trx
+    });
+
+    await this.emailService.sendDeletionCompanyMemberEmail({
+      to: companyMember.user.email,
+      performedBy: performedByEmail,
+      companyName,
+      language
+    });
 
     return new CompanyMemberDeletedDto();
   }

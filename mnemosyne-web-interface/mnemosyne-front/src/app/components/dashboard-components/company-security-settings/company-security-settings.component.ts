@@ -28,6 +28,7 @@ export class CompanySecuritySettingsComponent {
 
   // @TODO Modal window for user information, modification, delete and role change.
   // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service)
+  // @TODO GENERAL -- Complete all unfinished functions and perform the global test
   showOwnershipTransferModal = false;
   deleteCompanyModal = false;
 
