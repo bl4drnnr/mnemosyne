@@ -17,8 +17,10 @@ import {
   transition,
   trigger
 } from '@angular/animations';
-import { RefreshTokensService } from '@services/refresh-tokens.service';
-import { MessagesTranslation } from '@translations/messages.enum';
+import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
+import { DeleteCompanyMemberPayload } from '@payloads/delete-company-member.interface';
+import { CompanyMemberDeletedResponse } from '@responses/company-member-deleted.enum';
+import { PhoneService } from '@services/phone.service';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -46,6 +48,9 @@ export class CompanyUsersSettingsComponent implements OnInit {
   @Output() setNewCurrentPage = new EventEmitter<string>();
   @Output() setNewUsersPerPage = new EventEmitter<string>();
   @Output() inviteUsersToCompany = new EventEmitter<void>();
+  @Output() saveCompanyMemberInformation =
+    new EventEmitter<UpdateUserInfoPayload>();
+  @Output() deleteCompanyMemberEvent = new EventEmitter<string>();
 
   showInviteUserModal: boolean;
 
@@ -67,10 +72,17 @@ export class CompanyUsersSettingsComponent implements OnInit {
   incorrectCompanyMemberFirstName: boolean;
   incorrectCompanyMemberLastName: boolean;
 
+  deleteCompanyMemberModal: boolean;
+  deleteCompanyMemberMfaCode: string;
+  deleteCompanyMemberPhoneCode: string;
+  deleteCompanyMemberMfaRequired: boolean;
+  deleteCompanyMemberPhoneRequired: boolean;
+  deleteCompanyMemberPhoneCodeSent: boolean;
+
   constructor(
-    private readonly refreshTokensService: RefreshTokensService,
     private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
+    private readonly phoneService: PhoneService,
     private readonly translationService: TranslationService
   ) {}
 
@@ -185,28 +197,55 @@ export class CompanyUsersSettingsComponent implements OnInit {
       ? this.currentCompanyMemberHomePhone
       : null;
 
+    this.saveCompanyMemberInformation.emit({
+      firstName: this.currentCompanyMemberFirstName,
+      lastName: this.currentCompanyMemberLastName,
+      namePronunciation,
+      homeAddress,
+      homePhone,
+      memberId
+    });
+
+    this.fetchCompanyMemberInformation(memberId);
+  }
+
+  deleteCompanyMember(memberId: string) {
+    const deleteCompanyMemberPayload: DeleteCompanyMemberPayload = {
+      memberId
+    };
+
+    if (this.deleteCompanyMemberMfaCode?.length === 6)
+      deleteCompanyMemberPayload.mfaCode = this.deleteCompanyMemberMfaCode;
+    if (this.deleteCompanyMemberPhoneCode?.length === 6)
+      deleteCompanyMemberPayload.phoneCode = this.deleteCompanyMemberPhoneCode;
+
     this.companyUsersService
-      .updateCompanyMemberInformation({
-        firstName: this.currentCompanyMemberFirstName,
-        lastName: this.currentCompanyMemberLastName,
-        namePronunciation,
-        homeAddress,
-        homePhone,
-        memberId
-      })
+      .deleteCompanyMember({ ...deleteCompanyMemberPayload })
       .subscribe({
         next: async ({ message }) => {
-          const globalMessage = await this.translationService.translateText(
-            message,
-            MessagesTranslation.RESPONSES
-          );
-          this.globalMessageService.handle({
-            message: globalMessage
-          });
-          this.fetchCompanyMemberInformation(memberId);
-        },
-        error: () => this.refreshTokensService.handleLogout()
+          switch (message) {
+            case CompanyMemberDeletedResponse.FULL_MFA_REQUIRED:
+              this.deleteCompanyMemberMfaRequired = true;
+              this.deleteCompanyMemberPhoneRequired = true;
+              this.deleteCompanyMemberPhoneCodeSent = true;
+              break;
+            case CompanyMemberDeletedResponse.PHONE_REQUIRED:
+              this.deleteCompanyMemberPhoneRequired = true;
+              this.deleteCompanyMemberPhoneCodeSent = true;
+              break;
+            case CompanyMemberDeletedResponse.TOKEN_TWO_FA_REQUIRED:
+              this.deleteCompanyMemberMfaRequired = true;
+              break;
+            case CompanyMemberDeletedResponse.COMPANY_MEMBER_DELETED:
+              this.closeCompanyMemberDeletionModal();
+              this.deleteCompanyMemberEvent.emit(message);
+              this.fetchCompanyUsers.emit();
+              break;
+          }
+        }
       });
+
+    this.deleteCompanyMemberModal = true;
   }
 
   wasInfoChanged() {
@@ -249,6 +288,19 @@ export class CompanyUsersSettingsComponent implements OnInit {
     return !this.wasInfoChanged() || this.incorrectUserData();
   }
 
+  closeCompanyMemberDeletionModal() {
+    if (this.deleteCompanyMemberPhoneRequired) this.clearSmsCode();
+
+    this.deleteCompanyMemberModal = false;
+    this.deleteCompanyMemberMfaCode = '';
+    this.deleteCompanyMemberPhoneCode = '';
+    this.deleteCompanyMemberMfaRequired = false;
+    this.deleteCompanyMemberPhoneRequired = false;
+    this.deleteCompanyMemberPhoneCodeSent = false;
+
+    this.closeCompanyMemberInformationModal();
+  }
+
   closeCompanyMemberInformationModal() {
     this.currentCompanyMemberEmail = '';
     this.currentCompanyMemberFirstName = '';
@@ -257,6 +309,25 @@ export class CompanyUsersSettingsComponent implements OnInit {
     this.currentCompanyMemberHomeAddress = '';
     this.currentCompanyMemberHomePhone = '';
     this.currentCompanyMemberModal = false;
+  }
+
+  disableDeleteCompanyMemberMfaButton() {
+    if (
+      this.deleteCompanyMemberMfaRequired &&
+      !this.deleteCompanyMemberPhoneRequired
+    ) {
+      return this.deleteCompanyMemberMfaCode?.length !== 6;
+    } else if (
+      this.deleteCompanyMemberPhoneRequired &&
+      !this.deleteCompanyMemberMfaRequired
+    ) {
+      return this.deleteCompanyMemberPhoneCode?.length !== 6;
+    } else {
+      return (
+        this.deleteCompanyMemberMfaCode?.length !== 6 &&
+        this.deleteCompanyMemberPhoneCode?.length !== 6
+      );
+    }
   }
 
   setCurrentPage(currentPage: string) {
@@ -273,6 +344,10 @@ export class CompanyUsersSettingsComponent implements OnInit {
 
   printUsersRoles(roles: Array<{ id: string; value: string }>) {
     return roles.map(({ value }) => value).join(', ');
+  }
+
+  clearSmsCode() {
+    this.phoneService.clearSmsCode().subscribe();
   }
 
   ngOnInit() {

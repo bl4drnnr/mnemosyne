@@ -10,6 +10,8 @@ import { CompanyMemberInfoInterface } from '@payloads/company-member-info.interf
 import { CompanyMemberInfoResponse } from '@responses/company-member-info.interface';
 import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 import { UserUpdatedResponse } from '@responses/user-updated.enum';
+import { DeleteCompanyMemberPayload } from '@payloads/delete-company-member.interface';
+import { CompanyMemberDeletedResponse } from '@responses/company-member-deleted.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +53,23 @@ export class CompanyUsersService {
       controller: Controller.COMPANY_USERS,
       action: CompanyUsersEndpoint.COMPANY_MEMBER_INFO,
       params: { memberId: payload.memberId },
+      payload
+    });
+  }
+
+  deleteCompanyMember(
+    payload: DeleteCompanyMemberPayload
+  ): Observable<{ message: CompanyMemberDeletedResponse }> {
+    const { memberId } = payload;
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
+    return this.apiService.apiProxyRequest({
+      method: Method.DELETE,
+      controller: Controller.COMPANY_USERS,
+      action: CompanyUsersEndpoint.DELETE_COMPANY_MEMBER,
+      params: { memberId },
       payload
     });
   }

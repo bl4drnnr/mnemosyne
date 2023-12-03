@@ -743,6 +743,28 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/company-users/delete-company-member:
+    delete:
+      operationId: CompanyUsersController_deleteCompanyMember
+      parameters:
+        - name: memberId
+          required: true
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteCompanyMemberDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a5
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/security/registration-generate-2fa-qr:
     get:
       operationId: SecurityController_registrationGenerateTwoFaQrCode
@@ -2527,6 +2549,24 @@ components:
           example: company-member-not-found
       required:
         - message
+    DeleteCompanyMemberDto:
+      type: object
+      properties:
+        phoneCode:
+          type: string
+          description: User phone code - MFA
+          example: "123123"
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
     QrCodeDto:
       type: object
       properties:

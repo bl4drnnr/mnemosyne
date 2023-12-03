@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -31,6 +32,7 @@ import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
 import { CompanyUsersDocs } from '@docs/company-users.docs';
 import { CompanyId } from '@decorators/company-id.decorator';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
+import { DeleteCompanyMemberDto } from '@dto/delete-company-member.dto';
 
 @ApiTags('Company Users')
 @Controller('company-users')
@@ -96,8 +98,8 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  // @Roles('ADMIN')
-  // @UseGuards(RoleGuard)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Patch('company-member-info')
   updateCompanyMemberInfo(
@@ -107,6 +109,29 @@ export class CompanyUsersController {
     @TransactionParam() trx: Transaction
   ) {
     return this.companyUsersService.updateCompanyMemberInfo({
+      companyId,
+      payload,
+      memberId,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  // @Roles('ADMIN')
+  // @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Delete('delete-company-member')
+  deleteCompanyMember(
+    @UserId() userId: string,
+    @CompanyId() companyId: string,
+    @Body() payload: DeleteCompanyMemberDto,
+    @Query('memberId') memberId: string,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyUsersService.deleteCompanyMember({
+      userId,
       companyId,
       payload,
       memberId,

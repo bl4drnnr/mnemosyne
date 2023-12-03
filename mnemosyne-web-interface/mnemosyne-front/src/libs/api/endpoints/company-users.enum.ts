@@ -1,4 +1,5 @@
 export enum CompanyUsersEndpoint {
   INVITE_USER = 'invite-user',
-  COMPANY_MEMBER_INFO = 'company-member-info'
+  COMPANY_MEMBER_INFO = 'company-member-info',
+  DELETE_COMPANY_MEMBER = 'delete-company-member'
 }

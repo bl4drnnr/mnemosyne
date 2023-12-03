@@ -183,7 +183,7 @@
       </div>
 
       <div *ngIf="changePassMfaRequired">
-        <p class="paragraph on-white">{{ t('settings.tokenMfaRequired') }}</p>
+        <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
         <div class="input-mfa-wrapper">
           <basic-input-mfa
             [onWhite]="true"
@@ -193,7 +193,7 @@
       </div>
 
       <div *ngIf="changePassPhoneRequired">
-        <p class="paragraph on-white">{{ t('settings.phoneMfaRequired') }}</p>
+        <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
         <basic-phone
           [readOnly]="true"
           [onWhite]="true"
@@ -305,7 +305,7 @@
       </div>
 
       <div *ngIf="deleteAccMfaRequired">
-        <p class="paragraph on-white">{{ t('settings.tokenMfaRequired') }}</p>
+        <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
         <div class="input-mfa-wrapper">
           <basic-input-mfa
             [onWhite]="true"
@@ -315,7 +315,7 @@
       </div>
 
       <div *ngIf="deleteAccPhoneRequired">
-        <p class="paragraph on-white">{{ t('settings.phoneMfaRequired') }}</p>
+        <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
         <basic-phone
           [readOnly]="true"
           [onWhite]="true"

@@ -167,10 +167,65 @@
 
       <basic-button
         [onWhite]="true"
-        [disabled]="saveButtonDisabled()"
-        [label]="t('button.saveSettings')"
-        (buttonClick)="saveCompanyMemberInfo(currentCompanyMember.memberId)"
+        [danger]="true"
+        [label]="t('button.deleteCompanyMember')"
+        (buttonClick)="deleteCompanyMember(currentCompanyMember.memberId)"
       />
+
+      <basic-modal
+        [header]="t('settings.companySettingsSection.userDeletionHeader')"
+        [description]="t('settings.companySettingsSection.userDeletionDesc')"
+        [showModal]="deleteCompanyMemberModal"
+        (closeModal)="closeCompanyMemberDeletionModal()"
+      >
+        <div *ngIf="deleteCompanyMemberMfaRequired">
+          <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
+          <div class="input-mfa-wrapper">
+            <basic-input-mfa
+              [onWhite]="true"
+              (mfaCode)="deleteCompanyMemberMfaCode = $event"
+            />
+          </div>
+        </div>
+
+        <div *ngIf="deleteCompanyMemberPhoneRequired">
+          <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
+          <basic-phone
+            [readOnly]="true"
+            [onWhite]="true"
+            [startCountdownManually]="true"
+            [phoneInput]="userSecurity.phoneStatus.twoLastDigit"
+            [phoneCodeSent]="deleteCompanyMemberPhoneCodeSent"
+            (sendSmsCode)="sendSmsCode($event)"
+          />
+          <div class="input-mfa-wrapper">
+            <basic-input-mfa
+              [onWhite]="true"
+              (mfaCode)="deleteCompanyMemberPhoneCode = $event"
+            />
+          </div>
+        </div>
+
+        <div *ngIf="deleteCompanyMemberMfaRequired || deleteCompanyMemberPhoneRequired">
+          <div class="last-button">
+            <basic-button
+              [onWhite]="true"
+              [label]="t('button.continue')"
+              [disabled]="disableDeleteCompanyMemberMfaButton()"
+              (buttonClick)="deleteCompanyMember(currentCompanyMember.memberId)"
+            />
+          </div>
+        </div>
+      </basic-modal>
+
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [disabled]="saveButtonDisabled()"
+          [label]="t('button.saveSettings')"
+          (buttonClick)="saveCompanyMemberInfo(currentCompanyMember.memberId)"
+        />
+      </div>
     </basic-modal>
   </div>
 

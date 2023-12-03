@@ -71,6 +71,8 @@
           [totalItems]="totalItems"
           [companyUsers]="companyUsers"
           (fetchCompanyUsers)="fetchCompanyUsers()"
+          (saveCompanyMemberInformation)="saveCompanyMemberInformation($event)"
+          (deleteCompanyMemberEvent)="deleteCompanyMember($event)"
           (setNewCurrentPage)="page = $event"
           (setNewUsersPerPage)="pageSize = $event"
         />
