@@ -21,7 +21,7 @@ export class Role extends Model<Role, RoleCreationAttributes> {
   @Column(DataType.UUID)
   id: string;
 
-  @Column({ type: DataType.STRING, allowNull: false, unique: true })
+  @Column({ type: DataType.STRING, allowNull: false })
   value: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
