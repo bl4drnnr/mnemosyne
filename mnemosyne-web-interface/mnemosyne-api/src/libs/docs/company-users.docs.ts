@@ -112,4 +112,10 @@ export abstract class CompanyUsersDocs {
       ApiMemberIdQuery: memberIdQuery
     };
   }
+
+  // @TODO Write docs
+  static get DeleteCompanyMember() {
+    const apiOperationSum = '';
+    return {};
+  }
 }
