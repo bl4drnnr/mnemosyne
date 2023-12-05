@@ -1,6 +1,6 @@
 import { Language } from '@interfaces/language.enum';
 
-export interface CompanyMemberDeletionInterface {
+export interface CompanyActionInterface {
   to: string;
   performedBy: string;
   companyName: string;

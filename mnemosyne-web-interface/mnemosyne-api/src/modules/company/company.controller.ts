@@ -151,8 +151,8 @@ export class CompanyController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN')
-  @UseGuards(RoleGuard)
+  // @Roles('ADMIN')
+  // @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Delete('delete-company')
   deleteCompanyAccount(

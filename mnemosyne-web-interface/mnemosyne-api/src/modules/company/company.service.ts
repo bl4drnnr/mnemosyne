@@ -38,6 +38,7 @@ import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 import { CompanyDeletedDto } from '@dto/company-deleted.dto';
+import { CompanyUser } from '@models/company-users.model';
 
 @Injectable()
 export class CompanyService {
@@ -471,11 +472,12 @@ export class CompanyService {
       trx
     });
 
-    await this.usersService.verifyUserCredentials({
-      email,
-      password,
-      trx
-    });
+    const { email: performedByEmail } =
+      await this.usersService.verifyUserCredentials({
+        email,
+        password,
+        trx
+      });
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
@@ -511,12 +513,33 @@ export class CompanyService {
     if (userSettings.recoveryKeysFingerprint !== recoveryKeysFingerprint)
       throw new WrongRecoveryKeysException();
 
-    // await this.companyRepository.destroy({
-    //   where: { id: companyId },
-    //   transaction: trx
-    // });
+    const { companyName, companyUsers } = await this.companyRepository.findByPk(
+      companyId,
+      {
+        transaction: trx,
+        include: [
+          {
+            model: CompanyUser,
+            include: [{ model: User }]
+          }
+        ]
+      }
+    );
 
-    // @TODO Send the email that the company has been deleted
+    for (const companyUser of companyUsers) {
+      await this.emailService.sendDeletionCompanyEmail({
+        to: companyUser.user.email,
+        performedBy: performedByEmail,
+        companyName,
+        language
+      });
+    }
+
+    // @TODO Refactor this part of code once the database is rebuilt
+    await this.companyRepository.destroy({
+      where: { id: companyId },
+      transaction: trx
+    });
 
     return new CompanyDeletedDto();
   }

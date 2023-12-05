@@ -12,7 +12,7 @@ import { EmailSettingsInterface } from '@interfaces/email-settings.interface';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { Routes } from '@interfaces/routes.enum';
-import { CompanyMemberDeletionInterface } from '@interfaces/company-member-deletion.interface';
+import { CompanyActionInterface } from '@interfaces/company-action.interface';
 
 @Injectable()
 export class EmailService {
@@ -329,7 +329,7 @@ export class EmailService {
     performedBy,
     companyName,
     language
-  }: CompanyMemberDeletionInterface) {
+  }: CompanyActionInterface) {
     const { html, subject } = this.emailTemplatesService.userDeletedFromCompany(
       {
         language,
@@ -337,6 +337,21 @@ export class EmailService {
         performedBy
       }
     );
+
+    await this.sendEmail({ to, html, subject });
+  }
+
+  async sendDeletionCompanyEmail({
+    to,
+    performedBy,
+    companyName,
+    language
+  }: CompanyActionInterface) {
+    const { html, subject } = this.emailTemplatesService.companyDeletion({
+      language,
+      companyName,
+      performedBy
+    });
 
     await this.sendEmail({ to, html, subject });
   }
