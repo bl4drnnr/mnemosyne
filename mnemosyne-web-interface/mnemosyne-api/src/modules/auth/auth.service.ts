@@ -61,8 +61,7 @@ export class AuthService {
       companyUser,
       confirmationHashes,
       isMfaSet,
-      userSettings,
-      roles
+      userSettings
     } = await this.usersService.verifyUserCredentials({
       email,
       password,
@@ -106,7 +105,7 @@ export class AuthService {
     const { _rt, _at } = await this.generateTokens({
       companyId: userCompanyId,
       userId,
-      roles,
+      roles: [''],
       trx
     });
 
@@ -173,11 +172,7 @@ export class AuthService {
 
     if (!token) throw new InvalidTokenException();
 
-    const {
-      id: userId,
-      companyUser,
-      roles
-    } = await this.usersService.getUserById({
+    const { id: userId, companyUser } = await this.usersService.getUserById({
       id: token.userId,
       trx
     });
@@ -187,7 +182,7 @@ export class AuthService {
     const { _at, _rt } = await this.generateTokens({
       companyId: userCompanyId,
       userId,
-      roles,
+      roles: [''],
       trx
     });
 
@@ -331,7 +326,7 @@ export class AuthService {
     trx
   }: GenerateTokensInterface) {
     const _at = this.generateAccessToken({
-      roles: roles.map((role) => role.value),
+      roles: [''],
       companyId,
       userId
     });

@@ -1,5 +1,6 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   CreatedAt,
   DataType,
@@ -12,6 +13,8 @@ import {
 } from 'sequelize-typescript';
 import { Company } from '@models/company.model';
 import { User } from '@models/user.model';
+import { Role } from '@models/role.model';
+import { UserRole } from '@models/user-role.model';
 
 interface CompanyUserCreationAttributes {
   userId: string;
@@ -52,11 +55,14 @@ export class CompanyUser extends Model<
   })
   invitationSentAt: Date;
 
+  @BelongsTo(() => User)
+  user: User;
+
   @BelongsTo(() => Company)
   company: Company;
 
-  @BelongsTo(() => User)
-  user: User;
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Array<Role>;
 
   @CreatedAt
   @Column({ field: 'created_at' })

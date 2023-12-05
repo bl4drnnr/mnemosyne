@@ -38,7 +38,7 @@ import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 import { CompanyDeletedDto } from '@dto/company-deleted.dto';
-import { CompanyUser } from '@models/company-users.model';
+import { CompanyUser } from '@models/company-user.model';
 
 @Injectable()
 export class CompanyService {
@@ -272,16 +272,16 @@ export class CompanyService {
       trx: transaction
     });
 
-    const users = rows.map(({ id, email, roles, confirmationHashes }) => {
+    const users = rows.map(({ id, email, confirmationHashes }) => {
       const registrationHash = confirmationHashes[0];
-      const userRoles = roles.map(({ id, value }) => {
-        return { id, value };
-      });
+      // const userRoles = roles.map(({ id, value }) => {
+      //   return { id, value };
+      // });
 
       return {
         id,
         email,
-        roles: userRoles,
+        roles: [{ id: 'a', value: 'userRoles' }],
         registrationHash: {
           confirmed: registrationHash.confirmed,
           createdAt: registrationHash.createdAt

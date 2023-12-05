@@ -1,5 +1,6 @@
 import {
   BelongsTo,
+  BelongsToMany,
   Column,
   CreatedAt,
   DataType,
@@ -11,8 +12,10 @@ import {
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
-import { CompanyUser } from '@models/company-users.model';
+import { CompanyUser } from '@models/company-user.model';
 import { User } from '@models/user.model';
+import { Role } from '@models/role.model';
+import { UserRole } from '@models/user-role.model';
 
 interface CompanyCreationAttributes {
   companyName: string;
@@ -75,6 +78,9 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
 
   @HasMany(() => CompanyUser)
   companyUsers: Array<CompanyUser>;
+
+  @BelongsToMany(() => Role, () => UserRole)
+  roles: Array<Role>;
 
   @CreatedAt
   @Column({ field: 'created_at' })

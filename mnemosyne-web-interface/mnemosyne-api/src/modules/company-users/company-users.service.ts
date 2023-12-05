@@ -1,6 +1,6 @@
 import { forwardRef, HttpException, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { CompanyUser } from '@models/company-users.model';
+import { CompanyUser } from '@models/company-user.model';
 import { CreateCompanyUserInterface } from '@interfaces/create-company-user.interface';
 import { GetCompanyUserByUserIdInterface } from '@interfaces/get-company-user-by-user-id.interface';
 import { ConfirmCompanyMemberInterface } from '@interfaces/confirm-company-member.interface';
