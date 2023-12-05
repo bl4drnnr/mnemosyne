@@ -81,6 +81,10 @@ export class CompanySettingsComponent implements OnInit {
     await this.handleGlobalMessage(message);
   }
 
+  async deleteCompanyAccount(message: string) {
+    await this.handleGlobalMessage(message);
+  }
+
   async handleGlobalMessage(message: string) {
     const globalMessage = await this.translationService.translateText(
       message,

@@ -198,5 +198,7 @@ export enum DocsProperty {
   COMPANY_MEMBER_NOT_FOUND_DESC = 'Company member not found error message',
   COMPANY_MEMBER_NOT_FOUND_EXAMPLE = 'company-member-not-found',
   COMPANY_MEMBER_DELETED_DESC = 'Company member deleted from the company response message',
-  COMPANY_MEMBER_DELETED_EXAMPLE = 'company-member-deleted'
+  COMPANY_MEMBER_DELETED_EXAMPLE = 'company-member-deleted',
+  COMPANY_DELETED_DESC = 'Company deleted response message',
+  COMPANY_DELETED_EXAMPLE = 'company-deleted'
 }

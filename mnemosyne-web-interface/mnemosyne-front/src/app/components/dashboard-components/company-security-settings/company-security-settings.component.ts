@@ -4,6 +4,8 @@ import { CompanyOwnershipTransferredResponse } from '@responses/company-ownershi
 import { animate, style, transition, trigger } from '@angular/animations';
 import { PhoneService } from '@services/phone.service';
 import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
+import { ValidationService } from '@services/validation.service';
+import { GlobalMessageService } from '@shared/global-message.service';
 
 @Component({
   selector: 'dashboard-company-security-settings',
@@ -25,12 +27,24 @@ import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-owne
 export class CompanySecuritySettingsComponent {
   @Input() companyOwnerEmail: string;
   @Output() transferCompanyOwnership = new EventEmitter<string>();
+  @Output() deleteCompanyAccount = new EventEmitter<string>();
 
   // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service) -- delete seeder, add companyId to the table with roles, once the company is created, add 3 default roles to the roles table
   // @TODO GENERAL -- Complete all unfinished functions and perform the global test
   // @TODO Implement logs but for clients
+  // @TODO Refactor error codes for custom errors and check on the Internet what should be thrown
   showOwnershipTransferModal = false;
+
   deleteCompanyModal = false;
+  deleteCompanyPassword: string;
+  deleteCompanyPassphrase: string;
+  deleteCompanyIncorrectPassword: boolean;
+  deleteCompanyRecoveryKey1: string;
+  deleteCompanyRecoveryKey2: string;
+  deleteCompanyRecoveryKey3: string;
+  deleteCompanyRecoveryKey4: string;
+  deleteCompanyRecoveryKey5: string;
+  deleteCompanyStep = 1;
 
   newCompanyOwnerEmail: string;
   incorrectNewCompanyOwnerEmail: boolean;
@@ -42,6 +56,8 @@ export class CompanySecuritySettingsComponent {
   transferOwnershipPhoneCodeSent = false;
 
   constructor(
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly validationService: ValidationService,
     private readonly companyService: CompanyService,
     private readonly phoneService: PhoneService
   ) {}
@@ -59,6 +75,10 @@ export class CompanySecuritySettingsComponent {
 
   closeDeleteCompanyModal() {
     this.deleteCompanyModal = false;
+  }
+
+  deleteCompany() {
+    //
   }
 
   transferOwnership() {
@@ -135,5 +155,46 @@ export class CompanySecuritySettingsComponent {
       default:
         return false;
     }
+  }
+
+  disabledCompanyDeletionButton() {
+    return true;
+  }
+
+  isPassphraseValid() {
+    return this.validationService.checkLength({
+      str: this.deleteCompanyPassphrase,
+      min: 8,
+      max: 128
+    });
+  }
+
+  selectFile(event: any): void {
+    const file = event.target.files[0];
+
+    const fileReader = new FileReader();
+
+    fileReader.onload = async () => {
+      const recoveryKeysStr = fileReader.result;
+      if (!recoveryKeysStr) return;
+
+      const recoveryKeys = (recoveryKeysStr as string).split('\n\n');
+      const areKeyValid =
+        this.validationService.checkRecoveryKeys(recoveryKeys);
+
+      if (!areKeyValid) {
+        await this.globalMessageService.handleError({
+          message: 'invalid-recovery-keys'
+        });
+      } else {
+        this.deleteCompanyRecoveryKey1 = recoveryKeys[0];
+        this.deleteCompanyRecoveryKey2 = recoveryKeys[1];
+        this.deleteCompanyRecoveryKey3 = recoveryKeys[2];
+        this.deleteCompanyRecoveryKey4 = recoveryKeys[3];
+        this.deleteCompanyRecoveryKey5 = recoveryKeys[4];
+      }
+    };
+
+    fileReader.readAsText(file);
   }
 }

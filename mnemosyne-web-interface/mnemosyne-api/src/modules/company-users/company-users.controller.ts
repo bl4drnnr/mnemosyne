@@ -116,6 +116,12 @@ export class CompanyUsersController {
     });
   }
 
+  @ApiOperation(CompanyUsersDocs.DeleteCompanyMember.ApiOperation)
+  @ApiExtraModels(...CompanyUsersDocs.DeleteCompanyMember.ApiExtraModels)
+  @ApiResponse(CompanyUsersDocs.DeleteCompanyMember.ApiResponse)
+  @ApiNotFoundResponse(CompanyUsersDocs.DeleteCompanyMember.ApiNotFoundResponse)
+  @ApiBody(CompanyUsersDocs.DeleteCompanyMember.ApiBody)
+  @ApiQuery(CompanyUsersDocs.DeleteCompanyMember.ApiMemberIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)

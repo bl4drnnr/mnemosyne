@@ -13,6 +13,7 @@ import {
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -33,6 +34,7 @@ import { UserId } from '@decorators/user-id.decorator';
 import { CompanyId } from '@decorators/company-id.decorator';
 import { UpdateCompanyDto } from '@dto/update-company.dto';
 import { TransferOwnershipDto } from '@dto/transfer-ownership.dto';
+import { DeleteCompanyDto } from '@dto/delete-company.dto';
 
 @ApiTags('Company')
 @Controller('company')
@@ -119,6 +121,7 @@ export class CompanyController {
     });
   }
 
+  // @TODO Write docs here, but it is going to depend on the fact of what we are going to do with roles part of the whole project
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
@@ -133,6 +136,32 @@ export class CompanyController {
     @TransactionParam() trx: Transaction
   ) {
     return this.companyService.transferCompanyOwnership({
+      companyId,
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiOperation(CompanyDocs.DeleteCompanyAccount.ApiOperation)
+  @ApiExtraModels(...CompanyDocs.DeleteCompanyAccount.ApiExtraModels)
+  @ApiResponse(CompanyDocs.DeleteCompanyAccount.ApiResponse)
+  @ApiBadRequestResponse(CompanyDocs.DeleteCompanyAccount.ApiBadRequestResponse)
+  @ApiBody(CompanyDocs.DeleteCompanyAccount.ApiBody)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Delete('delete-company')
+  deleteCompanyAccount(
+    @CompanyId() companyId: string,
+    @UserId() userId: string,
+    @Body() payload: DeleteCompanyDto,
+    @TransactionParam() trx: Transaction
+  ) {
+    return this.companyService.deleteCompanyAccount({
       companyId,
       userId,
       payload,

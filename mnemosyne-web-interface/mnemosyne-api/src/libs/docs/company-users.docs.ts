@@ -1,10 +1,15 @@
-import { getSchemaPath } from '@nestjs/swagger';
+import { getSchemaPath, refs } from '@nestjs/swagger';
 import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
 import { UserInvitedDto } from '@dto/user-invited.dto';
 import { CompanyMemberInfoDto } from '@dto/company-member-info.dto';
 import { CompanyMemberNotFoundException } from '@exceptions/company-member-not-found.exception';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
+import { CompanyMemberDeletedDto } from '@dto/company-member-deleted.dto';
+import { FullMfaRequiredDto } from '@dto/full-mfa-required.dto';
+import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
+import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
+import { DeleteCompanyMemberDto } from '@dto/delete-company-member.dto';
 
 export abstract class CompanyUsersDocs {
   static get InviteUser() {
@@ -113,9 +118,57 @@ export abstract class CompanyUsersDocs {
     };
   }
 
-  // @TODO Write docs
   static get DeleteCompanyMember() {
-    const apiOperationSum = '';
-    return {};
+    const ApiModels = [
+      DeleteCompanyMemberDto,
+      CompanyMemberDeletedDto,
+      CompanyMemberNotFoundException,
+      FullMfaRequiredDto,
+      TokenTwoFaRequiredDto,
+      PhoneMfaRequiredDto
+    ];
+    const ApiResponses = [
+      CompanyMemberDeletedDto,
+      FullMfaRequiredDto,
+      TokenTwoFaRequiredDto,
+      PhoneMfaRequiredDto
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for deleting user from the company.';
+    const apiResponseDesc =
+      'In order to perform this action the MFA is required. Therefore, except the response that the user has been deleted, the user might get the response with the MFA requirement.';
+    const apiNotFoundDesc =
+      'In case if memberId was modified, or memberId of the different company was provided, endpoint returns not found error message.';
+    const apiBodyDesc = 'In the body user has to provide MFA code(s).';
+
+    const memberIdQueryDesc = 'User (company member) ID.';
+
+    const memberIdQuery = {
+      description: memberIdQueryDesc,
+      name: 'memberId',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { oneOf: refs(...ApiResponses) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(CompanyMemberNotFoundException) }
+      },
+      ApiBody: {
+        type: DeleteCompanyMemberDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(DeleteCompanyMemberDto) }
+      } as ApiBodyOptions,
+      ApiMemberIdQuery: memberIdQuery
+    };
   }
 }
