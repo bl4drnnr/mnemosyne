@@ -21,8 +21,8 @@ export class UserRole extends Model<UserRole> {
   id: string;
 
   @ForeignKey(() => CompanyUser)
-  @Column({ type: DataType.UUID, allowNull: false, field: 'user_id' })
-  userId: string;
+  @Column({ type: DataType.UUID, allowNull: false, field: 'company_user_id' })
+  companyUserId: string;
 
   @ForeignKey(() => Company)
   @Column({ type: DataType.UUID, allowNull: false, field: 'company_id' })

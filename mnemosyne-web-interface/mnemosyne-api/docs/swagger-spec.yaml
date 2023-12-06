@@ -2371,7 +2371,7 @@ components:
           description: List of company members
           example:
             - email: tim.cook@icloud.com
-              role: ADMIN
+              role: DEFAULT
           type: array
           items:
             type: array
@@ -2591,9 +2591,7 @@ components:
           type: string
           enum:
             - PRIMARY_ADMIN
-            - ADMIN
             - DEFAULT
-            - READ_ONLY
           description: Available user members
         language:
           type: string

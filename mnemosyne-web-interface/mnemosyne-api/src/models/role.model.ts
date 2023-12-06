@@ -12,6 +12,14 @@ import {
 import { CompanyUser } from '@models/company-user.model';
 import { UserRole } from '@models/user-role.model';
 import { Company } from '@models/company.model';
+import { RoleScope } from '@custom-types/role-scope.type';
+import { Scopes } from '@interfaces/role-scopes.enum';
+
+const roleScopes = [
+  Scopes.USER_MANAGEMENT,
+  Scopes.ROLES_MANAGEMENT,
+  Scopes.COMPANY_INFORMATION_MANAGEMENT
+];
 
 // @TODO Add all needed fields for roles including name, description and scopes, and refactor the code, where previous tables were deleted (for example, JWT tokens) in order to check not only roles, but also scopes
 @Table({ tableName: 'roles' })
@@ -23,6 +31,16 @@ export class Role extends Model<Role> {
 
   @Column({ type: DataType.STRING, allowNull: false })
   name: string;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  description: string;
+
+  @Column({
+    type: DataType.ARRAY(DataType.ENUM(...roleScopes)),
+    allowNull: false,
+    field: 'role_scopes'
+  })
+  roleScopes: Array<RoleScope>;
 
   @BelongsToMany(() => CompanyUser, () => UserRole)
   users: Array<CompanyUser>;
