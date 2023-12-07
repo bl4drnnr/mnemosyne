@@ -39,6 +39,7 @@ import { CryptographicService } from '@shared/cryptographic.service';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 import { CompanyDeletedDto } from '@dto/company-deleted.dto';
 import { CompanyUser } from '@models/company-user.model';
+import { CompanyUserType } from '@custom-types/company-user.type';
 
 @Injectable()
 export class CompanyService {
@@ -272,21 +273,25 @@ export class CompanyService {
       trx: transaction
     });
 
-    const users = rows.map(({ id, email, confirmationHashes }) => {
+    const users = rows.map(({ id, email, companyUser, confirmationHashes }) => {
       const registrationHash = confirmationHashes[0];
-      // const userRoles = roles.map(({ id, value }) => {
-      //   return { id, value };
-      // });
 
-      return {
+      const payload: CompanyUserType = {
         id,
         email,
-        roles: [{ id: 'a', value: 'userRoles' }],
         registrationHash: {
           confirmed: registrationHash.confirmed,
           createdAt: registrationHash.createdAt
         }
       };
+
+      if (companyUser) {
+        payload.roles = companyUser.roles.map(({ id, name }) => {
+          return { id, name };
+        });
+      }
+
+      return payload;
     });
 
     return new GetCompanyUsersDto({

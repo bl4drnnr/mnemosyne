@@ -1,38 +1,23 @@
 import { DocsProperty } from '@interfaces/docs-property.enum';
 import { ApiProperty } from '@nestjs/swagger';
+import { CompanyUserType } from '@custom-types/company-user.type';
 
-type UsersList = Array<{
-  id: string;
-  email: string;
-  roles: Array<{
-    id: string;
-    value: string;
-  }>;
-  registrationHash: {
-    confirmed: boolean;
-    createdAt: Date;
-  };
-}>;
+type UsersList = Array<CompanyUserType>;
 
 export class GetCompanyUsersDto {
   @ApiProperty({
-    type: Array<{
-      id: string;
-      email: string;
-      registrationHash: {
-        confirmed: boolean;
-        createdAt: Date;
-      };
-    }>,
+    type: Array<CompanyUserType>,
     description: DocsProperty.COMPANY_USERS_DESC,
     example: [
       {
         id: DocsProperty.USER_ID_EXAMPLE,
         email: DocsProperty.EMAIL_EXAMPLE,
-        roles: {
-          id: DocsProperty.ROLE_ID_EXAMPLE,
-          value: DocsProperty.ROLE_ID_VALUE
-        },
+        roles: [
+          {
+            id: DocsProperty.ROLE_ID_EXAMPLE,
+            name: DocsProperty.ROLE_ID_NAME
+          }
+        ],
         registrationHash: {
           confirmed: DocsProperty.CONFIRMED_HASH_EXAMPLE,
           createdAt: DocsProperty.CONFIRMATION_HASH_CREATED_AT_EXAMPLE

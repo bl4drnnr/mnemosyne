@@ -182,7 +182,7 @@ export enum DocsProperty {
   IS_COMPANY_MEMBER_DESC = 'Flag if the user is company member',
   IS_COMPANY_MEMBER_EXAMPLE = 'false',
   ROLE_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c',
-  ROLE_ID_VALUE = 'PRIMARY_ADMIN',
+  ROLE_ID_NAME = 'PRIMARY_ADMIN',
   COMPANY_OWNERSHIP_TRANSFERRED_DESC = 'Company ownership transferred response message',
   COMPANY_OWNERSHIP_TRANSFERRED_EXAMPLE = 'company-ownership-transferred',
   COMPANY_ROLE_DELETED_DESC = 'Company role deleted response message',

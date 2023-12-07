@@ -102,12 +102,21 @@ export class AuthService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    const { _rt, _at } = await this.generateTokens({
+    const generateTokensPayload: GenerateTokensInterface = {
       companyId: userCompanyId,
       userId,
-      roles: [''],
       trx
-    });
+    };
+
+    if (companyUser) {
+      generateTokensPayload.roles = companyUser.roles.map(
+        ({ id, name, description }) => {
+          return { id, name, description };
+        }
+      );
+    }
+
+    const { _rt, _at } = await this.generateTokens(generateTokensPayload);
 
     return { _rt, _at };
   }
@@ -179,12 +188,21 @@ export class AuthService {
 
     const userCompanyId = companyUser ? companyUser.companyId : null;
 
-    const { _at, _rt } = await this.generateTokens({
+    const generateTokensPayload: GenerateTokensInterface = {
       companyId: userCompanyId,
       userId,
-      roles: [''],
       trx
-    });
+    };
+
+    if (companyUser) {
+      generateTokensPayload.roles = companyUser.roles.map(
+        ({ id, name, description }) => {
+          return { id, name, description };
+        }
+      );
+    }
+
+    const { _at, _rt } = await this.generateTokens(generateTokensPayload);
 
     return { _at, _rt };
   }
@@ -326,7 +344,7 @@ export class AuthService {
     trx
   }: GenerateTokensInterface) {
     const _at = this.generateAccessToken({
-      roles: [''],
+      roles,
       companyId,
       userId
     });

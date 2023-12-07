@@ -340,8 +340,8 @@ export class CompanyUsersSettingsComponent implements OnInit {
     this.fetchCompanyUsers.emit();
   }
 
-  printUsersRoles(roles: Array<{ id: string; value: string }>) {
-    return roles.map(({ value }) => value).join(', ');
+  printUsersRoles(roles: Array<{ id: string; name: string }>) {
+    return roles.map(({ name }) => name).join(', ');
   }
 
   clearSmsCode() {
