@@ -314,7 +314,7 @@ export class SecuritySettingsComponent {
 
   async confirmRecoveryKeysSetup() {
     const message = await this.translationService.translateText(
-      'successSetup',
+      'recoveryKeys.successSetup',
       AccountTranslation.SETTINGS
     );
     this.globalMessageService.handle({ message });

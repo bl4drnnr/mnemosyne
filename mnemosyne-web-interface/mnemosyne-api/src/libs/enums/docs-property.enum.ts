@@ -182,7 +182,7 @@ export enum DocsProperty {
   IS_COMPANY_MEMBER_DESC = 'Flag if the user is company member',
   IS_COMPANY_MEMBER_EXAMPLE = 'false',
   ROLE_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c',
-  ROLE_ID_VALUE = 'PRIMARY_ADMIN',
+  ROLE_ID_NAME = 'PRIMARY_ADMIN',
   COMPANY_OWNERSHIP_TRANSFERRED_DESC = 'Company ownership transferred response message',
   COMPANY_OWNERSHIP_TRANSFERRED_EXAMPLE = 'company-ownership-transferred',
   COMPANY_ROLE_DELETED_DESC = 'Company role deleted response message',
@@ -198,5 +198,7 @@ export enum DocsProperty {
   COMPANY_MEMBER_NOT_FOUND_DESC = 'Company member not found error message',
   COMPANY_MEMBER_NOT_FOUND_EXAMPLE = 'company-member-not-found',
   COMPANY_MEMBER_DELETED_DESC = 'Company member deleted from the company response message',
-  COMPANY_MEMBER_DELETED_EXAMPLE = 'company-member-deleted'
+  COMPANY_MEMBER_DELETED_EXAMPLE = 'company-member-deleted',
+  COMPANY_DELETED_DESC = 'Company deleted response message',
+  COMPANY_DELETED_EXAMPLE = 'company-deleted'
 }

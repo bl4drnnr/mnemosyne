@@ -4,7 +4,6 @@ import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from '@modules/users.module';
 import { User } from '@models/user.model';
 import { RolesModule } from '@modules/roles.module';
-import { Role } from '@models/role.model';
 import { AuthModule } from '@modules/auth.module';
 import { SharedModule } from '@shared/shared.module';
 import { BasicAuthMiddleware } from '@middlewares/basic-auth.middleware';
@@ -20,10 +19,11 @@ import { TransactionInterceptor } from '@interceptors/transaction.interceptor';
 import { RecoveryModule } from '@modules/recovery.module';
 import { CompanyModule } from '@modules/company.module';
 import { Company } from '@models/company.model';
-import { UserRole } from '@models/user-role.model';
-import { CompanyUser } from '@models/company-users.model';
+import { CompanyUser } from '@models/company-user.model';
 import { CompanyUsersModule } from '@modules/company-users.module';
 import { CompanyRolesModule } from '@modules/company-roles.module';
+import { Role } from '@models/role.model';
+import { UserRole } from '@models/user-role.model';
 
 @Module({
   imports: [
@@ -41,13 +41,13 @@ import { CompanyRolesModule } from '@modules/company-roles.module';
       transactionType: TYPES.EXCLUSIVE,
       models: [
         User,
-        Role,
-        UserRole,
         Session,
         ConfirmationHash,
         UserSettings,
         Company,
-        CompanyUser
+        CompanyUser,
+        Role,
+        UserRole
       ],
       autoLoadModels: true
     }),

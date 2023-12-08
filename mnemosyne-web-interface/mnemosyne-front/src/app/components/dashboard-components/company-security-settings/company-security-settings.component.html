@@ -109,8 +109,8 @@
         <basic-button
           [onWhite]="true"
           [label]="t('button.transferOwnershipButton')"
-          (buttonClick)="transferOwnership()"
           [disabled]="disabledTransferOwnershipButton()"
+          (buttonClick)="transferOwnership()"
         />
       </div>
     </div>
@@ -133,5 +133,131 @@
     [description]="t('settings.companySettingsSection.deleteCompanyDesc')"
     [showModal]="deleteCompanyModal"
     (closeModal)="closeDeleteCompanyModal()"
-  ></basic-modal>
+  >
+    <div *ngIf="deleteCompanyStep === 1">
+      <basic-input
+        type="password"
+        [label]="t('input.providePass')"
+        [placeholder]="t('input.pass')"
+        [errorMessage]="t('input.passRulesNotFollowed')"
+        [value]="deleteCompanyPassword"
+        (valueChange)="deleteCompanyPassword = $event"
+        (incorrectInput)="deleteCompanyIncorrectPassword = $event"
+      />
+
+      <p class="paragraph on-white">
+        {{ t('settings.companySettingsSection.companyDeletionMessage') }}
+      </p>
+
+      <basic-input
+        type="passphrase"
+        [label]="t('input.passphrase')"
+        [placeholder]="t('input.providePassphrase')"
+        [errorMessage]="t('input.passphraseError')"
+        [inputDescription]="t('input.providePassphraseDesc')"
+        [showError]="!isPassphraseValid()"
+        [minLength]="8"
+        [maxLength]="128"
+        [value]="deleteCompanyPassphrase"
+        (valueChange)="deleteCompanyPassphrase = $event"
+        (incorrectInput)="deleteCompanyIncorrectPassphrase = $event"
+      />
+
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.recoveryKey', { i: 1 })"
+        [placeholder]="t('input.recoveryKey', { i: 1 })"
+        [minLength]="1024"
+        [maxLength]="1024"
+        [value]="deleteCompanyRecoveryKey1"
+        (valueChange)="deleteCompanyRecoveryKey1 = $event"
+        (incorrectInput)="deleteCompanyIncorrectRecoveryKey1 = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.recoveryKey', { i: 2 })"
+        [placeholder]="t('input.recoveryKey', { i: 2 })"
+        [minLength]="1024"
+        [maxLength]="1024"
+        [value]="deleteCompanyRecoveryKey2"
+        (valueChange)="deleteCompanyRecoveryKey2 = $event"
+        (incorrectInput)="deleteCompanyIncorrectRecoveryKey2 = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.recoveryKey', { i: 3 })"
+        [placeholder]="t('input.recoveryKey', { i: 3 })"
+        [minLength]="1024"
+        [maxLength]="1024"
+        [value]="deleteCompanyRecoveryKey3"
+        (valueChange)="deleteCompanyRecoveryKey3 = $event"
+        (incorrectInput)="deleteCompanyIncorrectRecoveryKey3 = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.recoveryKey', { i: 4 })"
+        [placeholder]="t('input.recoveryKey', { i: 4 })"
+        [minLength]="1024"
+        [maxLength]="1024"
+        [value]="deleteCompanyRecoveryKey4"
+        (valueChange)="deleteCompanyRecoveryKey4 = $event"
+        (incorrectInput)="deleteCompanyIncorrectRecoveryKey4 = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.recoveryKey', { i: 5 })"
+        [placeholder]="t('input.recoveryKey', { i: 5 })"
+        [minLength]="1024"
+        [maxLength]="1024"
+        [value]="deleteCompanyRecoveryKey5"
+        (valueChange)="deleteCompanyRecoveryKey5 = $event"
+        (incorrectInput)="deleteCompanyIncorrectRecoveryKey5 = $event"
+      />
+
+      <basic-button
+        [onWhite]="true"
+        [label]="t('button.uploadRecoveryKeys')"
+        (buttonClick)="uploadKeys.click()"
+      />
+
+      <input
+        type="file"
+        accept="text/*"
+        (change)="selectFile($event)"
+        #uploadKeys
+        hidden
+      />
+    </div>
+
+    <div *ngIf="deleteCompanyStep === 2">
+      <div *ngIf="deleteCompanyIsPhoneRequired">
+        <p class="modal-paragraph">{{ t('settings.phoneMfaRequired') }}</p>
+        <basic-input-mfa
+          [onWhite]="true"
+          [isPhone]="true"
+          (mfaCode)="deleteCompanyPhoneCode = $event"
+          (resendSms)="deleteCompanyResendSmsCode()"
+        />
+      </div>
+      <div *ngIf="deleteCompanyIsMfaRequired">
+        <p class="modal-paragraph">{{ t('settings.tokenMfaRequired') }}</p>
+        <div class="input-mfa-wrapper">
+          <basic-input-mfa
+            [onWhite]="true"
+            (mfaCode)="deleteCompanyMfaCode = $event"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="last-button">
+      <basic-button
+        [onWhite]="true"
+        [fillDanger]="true"
+        [label]="t('button.deleteCompany')"
+        [disabled]="disabledCompanyDeletionButton()"
+        (buttonClick)="deleteCompany()"
+      />
+    </div>
+  </basic-modal>
 </ng-container>

@@ -61,8 +61,7 @@ export class AuthService {
       companyUser,
       confirmationHashes,
       isMfaSet,
-      userSettings,
-      roles
+      userSettings
     } = await this.usersService.verifyUserCredentials({
       email,
       password,
@@ -103,12 +102,21 @@ export class AuthService {
       throw new HttpException(e.response.message, e.status);
     }
 
-    const { _rt, _at } = await this.generateTokens({
+    const generateTokensPayload: GenerateTokensInterface = {
       companyId: userCompanyId,
       userId,
-      roles,
       trx
-    });
+    };
+
+    if (companyUser) {
+      generateTokensPayload.roles = companyUser.roles.map(
+        ({ id, name, description }) => {
+          return { id, name, description };
+        }
+      );
+    }
+
+    const { _rt, _at } = await this.generateTokens(generateTokensPayload);
 
     return { _rt, _at };
   }
@@ -173,23 +181,28 @@ export class AuthService {
 
     if (!token) throw new InvalidTokenException();
 
-    const {
-      id: userId,
-      companyUser,
-      roles
-    } = await this.usersService.getUserById({
+    const { id: userId, companyUser } = await this.usersService.getUserById({
       id: token.userId,
       trx
     });
 
     const userCompanyId = companyUser ? companyUser.companyId : null;
 
-    const { _at, _rt } = await this.generateTokens({
+    const generateTokensPayload: GenerateTokensInterface = {
       companyId: userCompanyId,
       userId,
-      roles,
       trx
-    });
+    };
+
+    if (companyUser) {
+      generateTokensPayload.roles = companyUser.roles.map(
+        ({ id, name, description }) => {
+          return { id, name, description };
+        }
+      );
+    }
+
+    const { _at, _rt } = await this.generateTokens(generateTokensPayload);
 
     return { _at, _rt };
   }
@@ -331,7 +344,7 @@ export class AuthService {
     trx
   }: GenerateTokensInterface) {
     const _at = this.generateAccessToken({
-      roles: roles.map((role) => role.value),
+      roles,
       companyId,
       userId
     });

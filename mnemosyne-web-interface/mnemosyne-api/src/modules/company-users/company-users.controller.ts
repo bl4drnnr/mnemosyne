@@ -71,8 +71,8 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  // @Roles('ADMIN')
-  // @UseGuards(RoleGuard)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Get('company-member-info')
   getCompanyMemberInfo(
@@ -116,11 +116,17 @@ export class CompanyUsersController {
     });
   }
 
+  @ApiOperation(CompanyUsersDocs.DeleteCompanyMember.ApiOperation)
+  @ApiExtraModels(...CompanyUsersDocs.DeleteCompanyMember.ApiExtraModels)
+  @ApiResponse(CompanyUsersDocs.DeleteCompanyMember.ApiResponse)
+  @ApiNotFoundResponse(CompanyUsersDocs.DeleteCompanyMember.ApiNotFoundResponse)
+  @ApiBody(CompanyUsersDocs.DeleteCompanyMember.ApiBody)
+  @ApiQuery(CompanyUsersDocs.DeleteCompanyMember.ApiMemberIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  // @Roles('ADMIN')
-  // @UseGuards(RoleGuard)
+  @Roles('ADMIN')
+  @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Delete('delete-company-member')
   deleteCompanyMember(

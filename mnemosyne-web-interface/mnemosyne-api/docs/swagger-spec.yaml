@@ -653,6 +653,44 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/company/delete-company:
+    delete:
+      operationId: CompanyController_deleteCompanyAccount
+      summary: Endpoint is responsible for deletion of the company account.
+      parameters: []
+      requestBody:
+        required: true
+        description: In the body user provides MFA code(s), recovery keys with the
+          passphrase, and the password
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteCompanyDto"
+      responses:
+        "201":
+          description: As the response endpoint returns MFA requirement and after MFA is
+            provided correctly, the message that the company has been deleted.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CompanyDeletedDto"
+                  - $ref: "#/components/schemas/FullMfaRequiredDto"
+                  - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
+                  - $ref: "#/components/schemas/PhoneMfaRequiredDto"
+        "400":
+          description: In case if either user provided the wrong password or provided
+            wrong recovery keys, the bad request error will be thrown.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongRecoveryKeysException"
+      tags: *a4
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
@@ -746,21 +784,41 @@ paths:
   /api/company-users/delete-company-member:
     delete:
       operationId: CompanyUsersController_deleteCompanyMember
+      summary: Endpoint is responsible for deleting user from the company.
       parameters:
         - name: memberId
           required: true
           in: query
+          description: User (company member) ID.
           schema:
             type: string
       requestBody:
         required: true
+        description: In the body user has to provide MFA code(s).
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/DeleteCompanyMemberDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: In order to perform this action the MFA is required. Therefore,
+            except the response that the user has been deleted, the user might
+            get the response with the MFA requirement.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CompanyMemberDeletedDto"
+                  - $ref: "#/components/schemas/FullMfaRequiredDto"
+                  - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
+                  - $ref: "#/components/schemas/PhoneMfaRequiredDto"
+        "404":
+          description: In case if memberId was modified, or memberId of the different
+            company was provided, endpoint returns not found error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyMemberNotFoundException"
       tags: *a5
       security:
         - x-access-token: []
@@ -2313,7 +2371,7 @@ components:
           description: List of company members
           example:
             - email: tim.cook@icloud.com
-              role: ADMIN
+              role: DEFAULT
           type: array
           items:
             type: array
@@ -2390,8 +2448,8 @@ components:
             - id: 7630e8093291151b656de0dd48a60017
               email: joe@doe.com
               roles:
-                id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
-                value: PRIMARY_ADMIN
+                - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
+                  name: PRIMARY_ADMIN
               registrationHash:
                 confirmed: "false"
                 createdAt: 2023-11-17T11:42:26.534Z
@@ -2466,6 +2524,62 @@ components:
           description: One of 3 available languages
       required:
         - newCompanyOwnerEmail
+    DeleteCompanyDto:
+      type: object
+      properties:
+        password:
+          type: string
+          description: User password
+          example: 78ui&*UI
+        passphrase:
+          type: string
+          description: Passphrase
+          example: "123123123"
+        recoveryKeys:
+          description: List of recovery keys
+          example: e54ee7e285fbb....
+          type: array
+          items:
+            type: array
+            maxLength: 5
+            minLength: 5
+        mfaCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        phoneCode:
+          type: string
+          description: User authentication application code - MFA
+          example: "123123"
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - password
+        - passphrase
+        - recoveryKeys
+    CompanyDeletedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company deleted response message
+          example: company-deleted
+      required:
+        - message
+    WrongRecoveryKeysException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong recovery keys error message
+          example: wrong-recovery-keys
+      required:
+        - message
     InviteUserToCompanyDto:
       type: object
       properties:
@@ -2477,9 +2591,7 @@ components:
           type: string
           enum:
             - PRIMARY_ADMIN
-            - ADMIN
             - DEFAULT
-            - READ_ONLY
           description: Available user members
         language:
           type: string
@@ -2567,6 +2679,15 @@ components:
             - pl
             - en
           description: One of 3 available languages
+    CompanyMemberDeletedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company member deleted from the company response message
+          example: company-member-deleted
+      required:
+        - message
     QrCodeDto:
       type: object
       properties:
@@ -2945,15 +3066,6 @@ components:
           type: string
           description: Account recovered response message
           example: account-recovered
-      required:
-        - message
-    WrongRecoveryKeysException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Wrong recovery keys error message
-          example: wrong-recovery-keys
       required:
         - message
     CreateCompanyRoleDto:

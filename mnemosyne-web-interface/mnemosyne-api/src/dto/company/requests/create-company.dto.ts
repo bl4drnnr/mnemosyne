@@ -60,7 +60,7 @@ export class CreateCompanyDto {
     type: Array<MemberRoleDto>,
     description: DocsProperty.COMPANY_MEMBERS_DESC,
     example: [
-      { email: DocsProperty.COMPANY_MEMBER_EMAIL_EXAMPLE, role: Roles.ADMIN }
+      { email: DocsProperty.COMPANY_MEMBER_EMAIL_EXAMPLE, role: Roles.DEFAULT }
     ],
     isArray: true
   })

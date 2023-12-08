@@ -1,5 +1,5 @@
 export interface GenerateAccessTokenInterface {
   userId: string;
   companyId: string | null;
-  roles: Array<string>;
+  roles?: Array<{ id: string; name: string; description: string }>;
 }

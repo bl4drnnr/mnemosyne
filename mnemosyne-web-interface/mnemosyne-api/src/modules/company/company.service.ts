@@ -33,10 +33,18 @@ import { TransferOwnershipInterface } from '@interfaces/transfer-ownership.inter
 import { CompanyOwnershipTransferredDto } from '@dto/company-ownership-transferred.dto';
 import { AuthService } from '@modules/auth.service';
 import { GetCompanyByIdInterface } from '@interfaces/get-company-by-id.interface';
+import { DeleteCompanyInterface } from '@interfaces/delete-company.interface';
+import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
+import { CryptographicService } from '@shared/cryptographic.service';
+import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
+import { CompanyDeletedDto } from '@dto/company-deleted.dto';
+import { CompanyUser } from '@models/company-user.model';
+import { CompanyUserType } from '@custom-types/company-user.type';
 
 @Injectable()
 export class CompanyService {
   constructor(
+    private readonly cryptographicService: CryptographicService,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
     @Inject(forwardRef(() => RolesService))
@@ -265,21 +273,25 @@ export class CompanyService {
       trx: transaction
     });
 
-    const users = rows.map(({ id, email, roles, confirmationHashes }) => {
+    const users = rows.map(({ id, email, companyUser, confirmationHashes }) => {
       const registrationHash = confirmationHashes[0];
-      const userRoles = roles.map(({ id, value }) => {
-        return { id, value };
-      });
 
-      return {
+      const payload: CompanyUserType = {
         id,
         email,
-        roles: userRoles,
         registrationHash: {
           confirmed: registrationHash.confirmed,
           createdAt: registrationHash.createdAt
         }
       };
+
+      if (companyUser) {
+        payload.roles = companyUser.roles.map(({ id, name }) => {
+          return { id, name };
+        });
+      }
+
+      return payload;
     });
 
     return new GetCompanyUsersDto({
@@ -449,6 +461,92 @@ export class CompanyService {
     }
 
     return new CompanyOwnershipTransferredDto();
+  }
+
+  async deleteCompanyAccount({
+    companyId,
+    userId,
+    payload,
+    trx
+  }: DeleteCompanyInterface) {
+    const { mfaCode, phoneCode, language, recoveryKeys, passphrase, password } =
+      payload;
+
+    const { email, userSettings } = await this.usersService.getUserById({
+      id: userId,
+      trx
+    });
+
+    const { email: performedByEmail } =
+      await this.usersService.verifyUserCredentials({
+        email,
+        password,
+        trx
+      });
+
+    try {
+      const mfaStatusResponse = await this.authService.checkUserMfaStatus({
+        userSettings,
+        userId,
+        mfaCode,
+        phoneCode,
+        language,
+        trx
+      });
+
+      if (mfaStatusResponse) return mfaStatusResponse;
+    } catch (e: any) {
+      throw new HttpException(e.response.message, e.status);
+    }
+
+    const hashedPassphrase = this.cryptographicService.hashPassphrase({
+      passphrase
+    });
+
+    const encryptedRecoveryKeys = this.cryptographicService.encryptRecoveryKeys(
+      {
+        recoveryKeys,
+        hashedPassphrase
+      }
+    );
+
+    const recoveryKeysFingerprint = this.cryptographicService.hash({
+      data: encryptedRecoveryKeys,
+      algorithm: CryptoHashAlgorithm.SHA512
+    });
+
+    if (userSettings.recoveryKeysFingerprint !== recoveryKeysFingerprint)
+      throw new WrongRecoveryKeysException();
+
+    const { companyName, companyUsers } = await this.companyRepository.findByPk(
+      companyId,
+      {
+        transaction: trx,
+        include: [
+          {
+            model: CompanyUser,
+            include: [{ model: User }]
+          }
+        ]
+      }
+    );
+
+    for (const companyUser of companyUsers) {
+      await this.emailService.sendDeletionCompanyEmail({
+        to: companyUser.user.email,
+        performedBy: performedByEmail,
+        companyName,
+        language
+      });
+    }
+
+    // @TODO Refactor this part of code once the database is rebuilt
+    await this.companyRepository.destroy({
+      where: { id: companyId },
+      transaction: trx
+    });
+
+    return new CompanyDeletedDto();
   }
 
   private async createCompanyAccount({

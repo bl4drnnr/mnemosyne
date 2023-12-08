@@ -14,6 +14,7 @@ import { companyRegCompleteTemplate } from '@email-templates/company-reg-complet
 import { companyMemberConfirmInviteTemplate } from '@email-templates/company-member-confirm-invite.template';
 import { CompanyPayloadInterface } from '@interfaces/company-payload.interface';
 import { companyMemberDeletedTemplate } from '@email-templates/company-member-deleted.template';
+import { companyDeletionTemplate } from '@email-templates/company-deletion.template';
 
 @Injectable()
 export class EmailTemplatesService {
@@ -354,6 +355,37 @@ export class EmailTemplatesService {
     }
 
     const html = companyMemberDeletedTemplate({
+      language,
+      performedBy,
+      companyName
+    });
+
+    return { html, subject };
+  }
+
+  companyDeletion({
+    language,
+    performedBy,
+    companyName
+  }: CompanyPayloadInterface): EmailTemplateInterface {
+    let subject: string;
+
+    switch (language) {
+      case Language.EN:
+        subject = 'Mnemosyne - Company deletion';
+        break;
+      case Language.RU:
+        subject = 'Mnemosyne - Удаление компании';
+        break;
+      case Language.PL:
+        subject = 'Mnemosyne - Usunięcie firmy';
+        break;
+      default:
+        subject = 'Mnemosyne - Company deletion';
+        break;
+    }
+
+    const html = companyDeletionTemplate({
       language,
       performedBy,
       companyName

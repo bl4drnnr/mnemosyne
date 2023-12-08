@@ -1,4 +1,4 @@
-import { getSchemaPath } from '@nestjs/swagger';
+import { getSchemaPath, refs } from '@nestjs/swagger';
 import { CompanyCreatedDto } from '@dto/company-created.dto';
 import { TacNotAcceptedException } from '@exceptions/tac-not-accepted.exception';
 import { CompanyExistsException } from '@exceptions/company-exists.exception';
@@ -9,6 +9,13 @@ import { ParseException } from '@exceptions/parse.exception';
 import { UpdateCompanyDto } from '@dto/update-company.dto';
 import { CompanyUpdatedDto } from '@dto/company-updated.dto';
 import { GetCompanyUsersDto } from '@dto/get-company-users.dto';
+import { FullMfaRequiredDto } from '@dto/full-mfa-required.dto';
+import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
+import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
+import { CompanyDeletedDto } from '@dto/company-deleted.dto';
+import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
+import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
+import { DeleteCompanyDto } from '@dto/delete-company.dto';
 
 export abstract class CompanyDocs {
   static get CreateCompany() {
@@ -139,6 +146,57 @@ export abstract class CompanyDocs {
         type: UpdateCompanyDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(UpdateCompanyDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get TransferCompanyOwnership() {
+    return {};
+  }
+
+  static get DeleteCompanyAccount() {
+    const ApiModels = [
+      DeleteCompanyDto,
+      CompanyDeletedDto,
+      FullMfaRequiredDto,
+      TokenTwoFaRequiredDto,
+      PhoneMfaRequiredDto,
+      WrongCredentialsException,
+      WrongRecoveryKeysException
+    ];
+    const ApiResponses = [
+      CompanyDeletedDto,
+      FullMfaRequiredDto,
+      TokenTwoFaRequiredDto,
+      PhoneMfaRequiredDto
+    ];
+    const BadRequests = [WrongCredentialsException, WrongRecoveryKeysException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for deletion of the company account.';
+    const apiResponseDesc =
+      'As the response endpoint returns MFA requirement and after MFA is provided correctly, the message that the company has been deleted.';
+    const apiBadRequestRespDesc =
+      'In case if either user provided the wrong password or provided wrong recovery keys, the bad request error will be thrown.';
+    const apiBodyDesc =
+      'In the body user provides MFA code(s), recovery keys with the passphrase, and the password';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { oneOf: refs(...ApiResponses) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiBody: {
+        type: DeleteCompanyDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(DeleteCompanyDto) }
       } as ApiBodyOptions
     };
   }

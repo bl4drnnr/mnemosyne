@@ -1,8 +1,7 @@
-import { Role } from '@models/role.model';
 import { Transaction } from 'sequelize';
 
 export interface GenerateTokensInterface {
-  roles: Array<Role>;
+  roles?: Array<{ id: string; name: string; description: string }>;
   userId: string;
   companyId: string | null;
   trx?: Transaction;

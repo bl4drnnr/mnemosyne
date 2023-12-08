@@ -87,6 +87,7 @@
     "modifyCompanyMemberHeader": "Zmodyfikuj dane członka firmy",
     "modifyCompanyMemberDesc": "Możesz modyfikować tylko niektóre pola, takie jak imię, nazwisko i inne dane członka firmy. Niektóre dane, takie jak adres e-mail, mogą być modyfikowane tylko przez samego użytkownika.",
     "userDeletionHeader": "Usunięcie użytkownika",
-    "userDeletionDesc": "Uważaj! Zamierzasz usunąć członka z firmy. Samo konto nie zostanie usunięte, ale członkostwo zostanie zawieszone, a użytkownik nie będzie miał dostępu do firmy, dopóki nie zostanie zaproszony z powrotem."
+    "userDeletionDesc": "Uważaj! Zamierzasz usunąć członka z firmy. Samo konto nie zostanie usunięte, ale członkostwo zostanie zawieszone, a użytkownik nie będzie miał dostępu do firmy, dopóki nie zostanie zaproszony z powrotem.",
+    "companyDeletionMessage": "Aby kontynuować usuwanie firmy, oprócz hasła, musisz podać klucze odzyskiwania wygenerowane podczas procesu tworzenia konta wraz z późniejszym MFA."
   }
 }

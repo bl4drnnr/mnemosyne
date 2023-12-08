@@ -13,6 +13,8 @@ import { GetCompanyUsersPayload } from '@payloads/get-company-users.interface';
 import { GetCompanyUsersResponse } from '@responses/get-company-users-res.interface';
 import { CompanyOwnershipTransferredResponse } from '@responses/company-ownership-transferred.enum';
 import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
+import { DeleteCompanyPayload } from '@payloads/delete-company.interface';
+import { CompanyDeletedResponse } from '@responses/company-deleted.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -77,6 +79,21 @@ export class CompanyService {
       method: Method.POST,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.TRANSFER_OWNERSHIP,
+      payload
+    });
+  }
+
+  deleteCompany(
+    payload: DeleteCompanyPayload
+  ): Observable<{ message: CompanyDeletedResponse }> {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
+    return this.apiService.apiProxyRequest({
+      method: Method.DELETE,
+      controller: Controller.COMPANY,
+      action: CompanyEndpoint.DELETE_COMPANY,
       payload
     });
   }

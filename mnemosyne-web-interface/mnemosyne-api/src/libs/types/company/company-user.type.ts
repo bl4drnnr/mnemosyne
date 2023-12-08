@@ -1,7 +1,7 @@
-export type UsersList = Array<{
+export type CompanyUserType = {
   id: string;
   email: string;
-  roles: Array<{
+  roles?: Array<{
     id: string;
     name: string;
   }>;
@@ -9,4 +9,4 @@ export type UsersList = Array<{
     confirmed: boolean;
     createdAt: Date;
   };
-}>;
+};

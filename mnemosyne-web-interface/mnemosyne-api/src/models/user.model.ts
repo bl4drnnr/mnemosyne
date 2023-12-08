@@ -1,5 +1,4 @@
 import {
-  BelongsToMany,
   Column,
   CreatedAt,
   DataType,
@@ -11,13 +10,11 @@ import {
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
-import { Role } from '@models/role.model';
-import { UserRole } from '@models/user-role.model';
 import { Session } from '@models/session.model';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { UserSettings } from '@models/user-settings.model';
 import { Company } from '@models/company.model';
-import { CompanyUser } from '@models/company-users.model';
+import { CompanyUser } from '@models/company-user.model';
 
 interface UserCreationAttributes {
   email: string;
@@ -85,9 +82,6 @@ export class User extends Model<User, UserCreationAttributes> {
 
   @HasOne(() => UserSettings)
   userSettings: UserSettings;
-
-  @BelongsToMany(() => Role, () => UserRole)
-  roles: Array<Role>;
 
   @CreatedAt
   @Column({ field: 'created_at' })
