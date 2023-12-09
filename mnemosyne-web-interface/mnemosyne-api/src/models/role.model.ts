@@ -21,7 +21,6 @@ const roleScopes = [
   Scopes.COMPANY_INFORMATION_MANAGEMENT
 ];
 
-// @TODO Add all needed fields for roles including name, description and scopes, and refactor the code, where previous tables were deleted (for example, JWT tokens) in order to check not only roles, but also scopes
 @Table({ tableName: 'roles' })
 export class Role extends Model<Role> {
   @PrimaryKey
