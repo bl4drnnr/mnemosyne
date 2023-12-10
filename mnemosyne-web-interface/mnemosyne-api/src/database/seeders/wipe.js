@@ -16,6 +16,6 @@ module.exports = {
     await queryInterface.bulkDelete('users', null, {});
     await queryInterface.bulkDelete('users_settings', null, {});
     await queryInterface.bulkDelete('confirmation_hashes', null, {});
-    await queryInterface.bulkDelete('user_roles', null, {});
+    await queryInterface.bulkDelete('users_roles', null, {});
   }
 };

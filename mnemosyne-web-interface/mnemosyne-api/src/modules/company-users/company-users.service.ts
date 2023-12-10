@@ -63,23 +63,14 @@ export class CompanyUsersService {
       trx
     });
 
-    if (existingUser) {
-      await this.rolesService.grantRole({
-        value: role,
-        userId: existingUser.id,
-        trx
-      });
-    } else {
+    if (!existingUser) {
       createdUser = await this.usersService.createUser({
         payload: { email },
         trx
       });
-      await this.rolesService.grantRole({
-        userId: createdUser.id,
-        value: role,
-        trx
-      });
     }
+
+    // @TODO Grant custom role to the user
 
     userInfo.email = existingUser ? existingUser.email : email;
     userInfo.firstName = existingUser ? existingUser.firstName : null;

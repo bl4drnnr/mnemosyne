@@ -2591,6 +2591,7 @@ components:
           type: string
           enum:
             - PRIMARY_ADMIN
+            - ADMIN
             - DEFAULT
           description: Available user members
         language:

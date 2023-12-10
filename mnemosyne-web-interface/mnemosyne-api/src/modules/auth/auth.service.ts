@@ -109,11 +109,11 @@ export class AuthService {
     };
 
     if (companyUser) {
-      generateTokensPayload.roles = companyUser.roles.map(
-        ({ id, name, description }) => {
-          return { id, name, description };
-        }
-      );
+    //   generateTokensPayload.roles = companyUser.roles.map(
+    //     ({ id, name, description }) => {
+    //       return { id, name, description };
+    //     }
+    //   );
     }
 
     const { _rt, _at } = await this.generateTokens(generateTokensPayload);
