@@ -26,5 +26,6 @@
   "deleteAccount": "Удалить аккаунт навсегда",
   "transferOwnershipButton": "Передать право собственности",
   "deleteCompany": "Удалить компанию",
-  "deleteCompanyMember": "Удалить члена компании"
+  "deleteCompanyMember": "Удалить члена компании",
+  "createNewRole": "Создать новую роль"
 }

@@ -88,5 +88,11 @@
   "provideCompanyMemberHomePhone": "Podaj telefon domowy członkowi firmy",
   "companyMemberNamePronunciationDesc": "Pole jest opcjonalne. Może to być wymowa fonetyczna lub przykład czegoś, jak brzmi nazwa.",
   "companyMemberHomeAddressDesc": "Pole jest opcjonalne. Możesz tutaj podać swój adres domowy, pod którym aktualnie przebywa członek firmy.",
-  "companyMemberHomePhoneDesc": "Pole jest opcjonalne. Możesz podać domowy numer telefonu członka firmy."
+  "companyMemberHomePhoneDesc": "Pole jest opcjonalne. Możesz podać domowy numer telefonu członka firmy.",
+  "newRoleName": "Nowa nazwa roli",
+  "provideNewRoleName": "Podaj nazwę nowej roli",
+  "provideNewRoleNameDesc": "Podaj nazwę roli, która będzie wyświetlana na ekranie.",
+  "newRoleDescription": "Nowy opis roli",
+  "provideNewRoleDescription": "Podaj opis nowej roli",
+  "provideNewRoleDescriptionDesc": "Opis roli jest Ci potrzebny, abyś wiedział, po co ta rola jest tworzona i kto powinien być przypisany."
 }

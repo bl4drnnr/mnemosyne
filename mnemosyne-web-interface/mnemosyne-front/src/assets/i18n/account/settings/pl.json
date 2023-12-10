@@ -88,6 +88,9 @@
     "modifyCompanyMemberDesc": "Możesz modyfikować tylko niektóre pola, takie jak imię, nazwisko i inne dane członka firmy. Niektóre dane, takie jak adres e-mail, mogą być modyfikowane tylko przez samego użytkownika.",
     "userDeletionHeader": "Usunięcie użytkownika",
     "userDeletionDesc": "Uważaj! Zamierzasz usunąć członka z firmy. Samo konto nie zostanie usunięte, ale członkostwo zostanie zawieszone, a użytkownik nie będzie miał dostępu do firmy, dopóki nie zostanie zaproszony z powrotem.",
-    "companyDeletionMessage": "Aby kontynuować usuwanie firmy, oprócz hasła, musisz podać klucze odzyskiwania wygenerowane podczas procesu tworzenia konta wraz z późniejszym MFA."
+    "companyDeletionMessage": "Aby kontynuować usuwanie firmy, oprócz hasła, musisz podać klucze odzyskiwania wygenerowane podczas procesu tworzenia konta wraz z późniejszym MFA.",
+    "createNewRoleHeader": "Utwórz nową rolę",
+    "createNewRoleDesc": "Tutaj możesz utworzyć nową rolę. W tym celu podaj nazwę i opis nowej roli oraz wybierz zakresy. Następnie będziesz mógł przypisać tę nową rolę użytkownikom.",
+    "roleManagementDesc": "Celem tej sekcji jest umożliwienie administratorowi zarządzania rolami utworzonymi dla firmy i przydzielania im różnych uprawnień."
   }
 }

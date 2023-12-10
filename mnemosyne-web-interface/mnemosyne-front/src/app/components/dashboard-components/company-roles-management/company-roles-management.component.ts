@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'dashboard-company-roles-management',
@@ -8,4 +8,26 @@ import { Component } from '@angular/core';
     '../shared/security-setting-section/security-setting-section.component.scss'
   ]
 })
-export class CompanyRolesManagementComponent {}
+export class CompanyRolesManagementComponent implements OnInit {
+  newRoleName: string;
+  newRoleDescription: string;
+  showCreateNewRoleModal: boolean;
+
+  createNewRole() {
+    //
+  }
+
+  disableCreateNewRoleButton() {
+    return true;
+  }
+
+  openCreateNewRoleModal() {
+    this.showCreateNewRoleModal = true;
+  }
+
+  closeCreateNewRoleModal() {
+    this.showCreateNewRoleModal = false;
+  }
+
+  ngOnInit() {}
+}

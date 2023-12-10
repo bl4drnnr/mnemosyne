@@ -267,6 +267,7 @@ export class CompanyService {
       trx: transaction
     });
 
+    // @TODO Get company users roles in order to display them on the page section with the users
     const users = rows.map(({ id, email, companyUser, confirmationHashes }) => {
       const registrationHash = confirmationHashes[0];
 

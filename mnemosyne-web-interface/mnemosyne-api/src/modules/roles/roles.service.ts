@@ -35,6 +35,7 @@ export class RolesService {
       }
     });
 
+    // @TODO I might need to delete duplicates
     return roles.map(({ id, name, description }) => {
       return { name, description, id };
     });

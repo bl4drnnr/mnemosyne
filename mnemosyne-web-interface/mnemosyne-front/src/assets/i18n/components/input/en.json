@@ -88,5 +88,11 @@
   "provideCompanyMemberHomePhone": "Provide company member home phone",
   "companyMemberNamePronunciationDesc": "Field is optional. This could be a phonetic pronunciation, or an example of something the name sounds like.",
   "companyMemberHomeAddressDesc": "Field is optional. You may provide here your home address where the company member is currently located.",
-  "companyMemberHomePhoneDesc": "Field is optional. You may provide company member home phone number."
+  "companyMemberHomePhoneDesc": "Field is optional. You may provide company member home phone number.",
+  "newRoleName": "New role name",
+  "provideNewRoleName": "Provide the name of the new role",
+  "provideNewRoleNameDesc": "Provide the name of the role that will be displayed on the screen.",
+  "newRoleDescription": "New role description",
+  "provideNewRoleDescription": "Provide the description of the new role",
+  "provideNewRoleDescriptionDesc": "The description of the role is need for you in order to know for what this role is created and who should be assignee."
 }

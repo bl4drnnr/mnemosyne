@@ -4,6 +4,44 @@
     <h1 class="section-title">{{ t('settings.companySettingsSection.rolesManagement') }}</h1>
   </div>
 
-  <p>The purpose of this section is to allow the administrator to manage roles created for the company and assign different permissions for them.</p>
+  <p>{{ t('settings.companySettingsSection.roleManagementDesc') }}</p>
+
+  <div class="create-new-role-button-box">
+    <basic-button
+      [label]="t('button.createNewRole')"
+      (buttonClick)="openCreateNewRoleModal()"
+    />
+  </div>
+
+  <basic-modal
+    [header]="t('settings.companySettingsSection.createNewRoleHeader')"
+    [description]="t('settings.companySettingsSection.createNewRoleDesc')"
+    [showModal]="showCreateNewRoleModal"
+    (closeModal)="closeCreateNewRoleModal()"
+  >
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.newRoleName')"
+      [placeholder]="t('input.provideNewRoleName')"
+      [inputDescription]="t('input.provideNewRoleNameDesc')"
+      [value]="newRoleName"
+      (valueChange)="newRoleName = $event"
+    />
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.newRoleDescription')"
+      [placeholder]="t('input.provideNewRoleDescription')"
+      [inputDescription]="t('input.provideNewRoleDescriptionDesc')"
+      [value]="newRoleDescription"
+      (valueChange)="newRoleDescription = $event"
+    />
+
+    <basic-button
+      [onWhite]="true"
+      [label]="t('button.createNewRole')"
+      [disabled]="disableCreateNewRoleButton()"
+      (buttonClick)="createNewRole()"
+    />
+  </basic-modal>
 
 </ng-container>
