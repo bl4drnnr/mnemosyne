@@ -7,6 +7,7 @@ import { UserRole } from '@models/user-role.model';
 import { Scopes } from '@interfaces/role-scopes.enum';
 import { CreateInitRoleInterface } from '@interfaces/create-init-role.interface';
 import { Op } from 'sequelize';
+import { GetUserRolesByCompanyUserIdInterface } from '@interfaces/get-user-roles-by-company-user-id.interface';
 
 @Injectable()
 export class RolesService {
@@ -14,6 +15,30 @@ export class RolesService {
     @InjectModel(Role) private readonly roleRepository: typeof Role,
     @InjectModel(UserRole) private readonly userRoleRepository: typeof UserRole
   ) {}
+
+  async getUserRolesByCompanyUserId({
+    companyUserId,
+    trx: transaction
+  }: GetUserRolesByCompanyUserIdInterface) {
+    const userRoles = await this.userRoleRepository.findAll({
+      where: { companyUserId },
+      transaction
+    });
+
+    const userRolesIds = userRoles.map(({ roleId }) => roleId);
+
+    const roles = await this.roleRepository.findAll({
+      where: {
+        id: {
+          [Op.in]: userRolesIds
+        }
+      }
+    });
+
+    return roles.map(({ id, name, description }) => {
+      return { name, description, id };
+    });
+  }
 
   async grantInitRole({
     companyUserId,

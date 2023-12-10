@@ -5,7 +5,6 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { CompanyUser } from '@models/company-user.model';
 import { AuthModule } from '@modules/auth.module';
 import { UsersModule } from '@modules/users.module';
-import { RolesModule } from '@modules/roles.module';
 import { CompanyModule } from '@modules/company.module';
 
 @Module({
@@ -14,7 +13,6 @@ import { CompanyModule } from '@modules/company.module';
   imports: [
     SequelizeModule.forFeature([CompanyUser]),
     forwardRef(() => UsersModule),
-    forwardRef(() => RolesModule),
     forwardRef(() => CompanyModule),
     AuthModule
   ],

@@ -132,10 +132,6 @@ export class UsersService {
           attributes: ['confirmed', 'createdAt'],
           where: { confirmationType: Confirmation.REGISTRATION }
         }
-        // {
-        //   model: Role,
-        //   attributes: ['id', 'value']
-        // }
       ],
       where: { id: ids },
       limit,
