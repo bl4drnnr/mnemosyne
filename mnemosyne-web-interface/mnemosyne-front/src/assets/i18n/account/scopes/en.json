@@ -1,0 +1,8 @@
+{
+  "USER_MANAGEMENT": "User management",
+  "USER_MANAGEMENT_DESC": "Allows to add, delete and edit all users in the company.",
+  "ROLES_MANAGEMENT": "Roles management",
+  "ROLES_MANAGEMENT_DESC": "Allows to create, delete and modify roles along with their scopes and assign them to users in the company.",
+  "COMPANY_INFORMATION_MANAGEMENT": "Company information management",
+  "COMPANY_INFORMATION_MANAGEMENT_DESC": "Allows to edit company information."
+}

@@ -45,6 +45,10 @@ export const DefaultTranslation = {
     {
       scope: AccountTranslation.SETTINGS,
       alias: AccountTranslation.SETTINGS_ALIAS
+    },
+    {
+      scope: AccountTranslation.SCOPES,
+      alias: AccountTranslation.SCOPES_ALIAS
     }
   ]
 };

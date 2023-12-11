@@ -39,6 +39,10 @@
     border-radius: 5px;
     transition: .2s;
 
+    &.desc {
+      top: 25%;
+    }
+
     &:after {
       content: "";
       position: absolute;
@@ -64,7 +68,7 @@
 .label {
   padding-top: 4px;
   margin: 0;
-  font-size: 12px;
+  font-size: 14px;
 
   .tac-box {
     display: flex;

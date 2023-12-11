@@ -3,5 +3,6 @@
   "photo-uploaded": "Zdjęcie przesłane",
   "user-updated": "Użytkownik został pomyślnie zaktualizowany",
   "company-updated": "Informacje o firmie zostały pomyślnie zaktualizowane",
-  "company-member-deleted": "Członek firmy został pomyślnie usunięty"
+  "company-member-deleted": "Członek firmy został pomyślnie usunięty",
+  "company-role-created": "Niestandardowa rola użytkownika firmy została pomyślnie utworzona"
 }

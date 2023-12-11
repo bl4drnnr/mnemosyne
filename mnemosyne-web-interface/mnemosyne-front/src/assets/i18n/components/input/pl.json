@@ -92,7 +92,9 @@
   "newRoleName": "Nowa nazwa roli",
   "provideNewRoleName": "Podaj nazwę nowej roli",
   "provideNewRoleNameDesc": "Podaj nazwę roli, która będzie wyświetlana na ekranie.",
+  "newRoleNameError": "Minimalna długość nowej nazwy roli to 2 symbole, maksymalna to 64 symbole.",
   "newRoleDescription": "Nowy opis roli",
   "provideNewRoleDescription": "Podaj opis nowej roli",
-  "provideNewRoleDescriptionDesc": "Opis roli jest Ci potrzebny, abyś wiedział, po co ta rola jest tworzona i kto powinien być przypisany."
+  "provideNewRoleDescriptionDesc": "Opis roli jest Ci potrzebny, abyś wiedział, po co ta rola jest tworzona i kto powinien być przypisany.",
+  "newRoleDescriptionError": "Minimalna długość opisu nowej roli to 2 symbole, maksymalna to 128 symboli."
 }

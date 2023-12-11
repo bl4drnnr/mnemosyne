@@ -1,9 +1,12 @@
 <div class="checkbox-container">
   <label class="label-box">
     <input type="checkbox" [checked]="checked" (change)="toggleChecked()">
-    <span class="checkmark"></span>
+    <span [ngClass]="{ 'checkmark': true, 'desc': isWithDescription }"></span>
   </label>
   <div class="label">
     <ng-content select="[content]"></ng-content>
+    <div *ngIf="isWithDescription">
+      <ng-content select="[desc]"></ng-content>
+    </div>
   </div>
 </div>

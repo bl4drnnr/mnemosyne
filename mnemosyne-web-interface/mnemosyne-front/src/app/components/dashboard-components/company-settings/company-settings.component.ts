@@ -80,7 +80,8 @@ export class CompanySettingsComponent implements OnInit {
     this.rolesService.createCompanyRole(payload).subscribe({
       next: async ({ message }) => {
         await this.handleGlobalMessage(message);
-      }
+      },
+      error: () => this.refreshTokensService.handleLogout()
     });
   }
 

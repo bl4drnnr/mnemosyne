@@ -164,7 +164,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   }
 
   inviteUsers() {
-    //
+    // @TODO Implement this function
   }
 
   fetchCompanyMemberInformation(memberId: string) {

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { RoleScope } from '@interfaces/role-scope.type';
-import { Scopes } from '@interfaces/role-scopes.enum';
 import { CreateCompanyRolePayload } from '@payloads/create-company-role.interface';
 
 @Component({
@@ -12,14 +11,10 @@ import { CreateCompanyRolePayload } from '@payloads/create-company-role.interfac
   ]
 })
 export class CompanyRolesManagementComponent implements OnInit {
-  roleScopes = [
-    Scopes.USER_MANAGEMENT,
-    Scopes.ROLES_MANAGEMENT,
-    Scopes.COMPANY_INFORMATION_MANAGEMENT
-  ];
-
   newRoleName: string;
+  incorrectNewRoleName: boolean;
   newRoleDescription: string;
+  incorrectNewRoleDescription: boolean;
   newRoleScopes: Array<RoleScope> = [];
   showCreateNewRoleModal: boolean;
 
@@ -33,6 +28,10 @@ export class CompanyRolesManagementComponent implements OnInit {
     });
   }
 
+  fetchCompanyRoles() {
+    // @TODO Implement this function
+  }
+
   pushNewRoleScope(scope: RoleScope) {
     if (!this.newRoleScopes.includes(scope)) this.newRoleScopes.push(scope);
     else this.newRoleScopes = this.newRoleScopes.filter((s) => s !== scope);
@@ -42,6 +41,8 @@ export class CompanyRolesManagementComponent implements OnInit {
     return (
       !this.newRoleName ||
       !this.newRoleDescription ||
+      this.incorrectNewRoleName ||
+      this.incorrectNewRoleDescription ||
       this.newRoleScopes.length === 0
     );
   }
