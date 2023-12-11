@@ -4,7 +4,6 @@ import { CompanyMembersType } from '@interfaces/company-members.type';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { Role } from '@interfaces/role.type';
 import { CredentialsTranslation } from '@translations/credentials.enum';
-import { Roles } from '@interfaces/roles.enum';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { TranslationService } from '@services/translation.service';
 import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
@@ -22,6 +21,7 @@ import { DeleteCompanyMemberPayload } from '@payloads/delete-company-member.inte
 import { CompanyMemberDeletedResponse } from '@responses/company-member-deleted.enum';
 import { PhoneService } from '@services/phone.service';
 import { ValidationService } from '@services/validation.service';
+import { DefaultRoles } from '@interfaces/default-roles.enum';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -132,17 +132,17 @@ export class CompanyUsersSettingsComponent implements OnInit {
 
     this.companyRoles = [
       {
-        key: Roles.ADMIN,
+        key: DefaultRoles.ADMIN,
         value: roles.admin
       },
       {
-        key: Roles.DEFAULT,
+        key: DefaultRoles.DEFAULT,
         value: roles.default
       }
     ];
 
     this.companyMemberDefaultRoleValue = roles.default;
-    this.companyMemberDefaultRoleKey = Roles.DEFAULT;
+    this.companyMemberDefaultRoleKey = DefaultRoles.DEFAULT;
   }
 
   removeMember(memberEmail: string) {

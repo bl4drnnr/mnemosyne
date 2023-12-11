@@ -4,6 +4,7 @@ export type CompanyUserType = {
   roles?: Array<{
     id: string;
     name: string;
+    description: string;
   }>;
   registrationHash: {
     confirmed: boolean;

@@ -46,6 +46,7 @@ import { GetUserSecResponseDto } from '@dto/get-user-sec-response.dto';
 import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface';
 import { GetUsersByIdsInterface } from '@interfaces/get-users-by-ids.interface';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
+import { CompanyUser } from '@models/company-user.model';
 
 @Injectable()
 export class UsersService {
@@ -131,6 +132,9 @@ export class UsersService {
           model: ConfirmationHash,
           attributes: ['confirmed', 'createdAt'],
           where: { confirmationType: Confirmation.REGISTRATION }
+        },
+        {
+          model: CompanyUser
         }
       ],
       where: { id: ids },

@@ -200,5 +200,11 @@ export enum DocsProperty {
   COMPANY_MEMBER_DELETED_DESC = 'Company member deleted from the company response message',
   COMPANY_MEMBER_DELETED_EXAMPLE = 'company-member-deleted',
   COMPANY_DELETED_DESC = 'Company deleted response message',
-  COMPANY_DELETED_EXAMPLE = 'company-deleted'
+  COMPANY_DELETED_EXAMPLE = 'company-deleted',
+  COMPANY_ROLE_NAME_DESC = 'Company custom role name',
+  COMPANY_ROLE_NAME_EXAMPLE = 'My Test Role',
+  COMPANY_ROLE_DESC_DESC = 'Company custom role description',
+  COMPANY_ROLE_DESC_EXAMPLE = 'My Test Role Description',
+  COMPANY_ROLE_SCOPES_DESC = 'The array of the scopes for company custom role',
+  COMPANY_ROLE_SCOPES_EXAMPLE = '["USER_MANAGEMENT"]'
 }

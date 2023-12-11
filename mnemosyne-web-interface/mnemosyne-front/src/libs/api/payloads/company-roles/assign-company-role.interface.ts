@@ -1,1 +1,1 @@
-export interface AssignCompanyRoleIPayload {}
+export interface AssignCompanyRolePayload {}

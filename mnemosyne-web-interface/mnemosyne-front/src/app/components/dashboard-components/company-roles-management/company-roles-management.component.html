@@ -36,12 +36,25 @@
       (valueChange)="newRoleDescription = $event"
     />
 
-    <basic-button
-      [onWhite]="true"
-      [label]="t('button.createNewRole')"
-      [disabled]="disableCreateNewRoleButton()"
-      (buttonClick)="createNewRole()"
-    />
+    <div *ngFor="let scope of roleScopes">
+      <basic-checkbox
+        [checked]="false"
+        (checkedChange)="pushNewRoleScope(scope)"
+      >
+        <span class="on-white-checkbox" content>
+          {{ scope }}
+        </span>
+      </basic-checkbox>
+    </div>
+
+    <div class="last-button">
+      <basic-button
+        [onWhite]="true"
+        [label]="t('button.createNewRole')"
+        [disabled]="disableCreateNewRoleButton()"
+        (buttonClick)="createNewRole()"
+      />
+    </div>
   </basic-modal>
 
 </ng-container>

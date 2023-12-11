@@ -267,8 +267,9 @@ export class CompanyService {
       trx: transaction
     });
 
-    // @TODO Get company users roles in order to display them on the page section with the users
-    const users = rows.map(({ id, email, companyUser, confirmationHashes }) => {
+    const users: Array<CompanyUserType> = [];
+
+    for (const { id, email, companyUser, confirmationHashes } of rows) {
       const registrationHash = confirmationHashes[0];
 
       const payload: CompanyUserType = {
@@ -281,13 +282,14 @@ export class CompanyService {
       };
 
       if (companyUser) {
-        payload.roles = companyUser.roles.map(({ id, name }) => {
-          return { id, name };
+        payload.roles = await this.rolesService.getUserRolesByCompanyUserId({
+          companyUserId: companyUser.id,
+          trx: transaction
         });
       }
 
-      return payload;
-    });
+      users.push(payload);
+    }
 
     return new GetCompanyUsersDto({
       companyUsers: users,

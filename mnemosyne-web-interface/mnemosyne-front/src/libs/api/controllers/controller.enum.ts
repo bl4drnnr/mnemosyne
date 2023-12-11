@@ -6,5 +6,5 @@ export enum Controller {
   RECOVERY = 'recovery',
   COMPANY = 'company',
   COMPANY_USERS = 'company-users',
-  COMPANY_ROLES = 'company-roles'
+  ROLES = 'roles'
 }

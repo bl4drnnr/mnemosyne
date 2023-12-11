@@ -79,7 +79,9 @@
       </div>
 
       <div *ngIf="companySettingsSection === 'roles'">
-        <dashboard-company-roles-management/>
+        <dashboard-company-roles-management
+          (createNewRoleEvent)="createNewRole($event)"
+        />
       </div>
 
       <div *ngIf="companySettingsSection === 'security'">
