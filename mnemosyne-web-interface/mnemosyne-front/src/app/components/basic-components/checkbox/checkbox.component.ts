@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class CheckboxComponent {
   @Input() checked: boolean;
+  @Input() isWithDescription: boolean;
   @Output() checkedChange = new EventEmitter<boolean>();
 
   toggleChecked() {

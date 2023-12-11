@@ -4,6 +4,82 @@
     <h1 class="section-title">{{ t('settings.companySettingsSection.rolesManagement') }}</h1>
   </div>
 
-  <p>The purpose of this section is to allow the administrator to manage roles created for the company and assign different permissions for them.</p>
+  <p>{{ t('settings.companySettingsSection.roleManagementDesc') }}</p>
+
+  <div class="create-new-role-button-box">
+    <basic-button
+      [label]="t('button.createNewRole')"
+      (buttonClick)="openCreateNewRoleModal()"
+    />
+  </div>
+
+  <basic-modal
+    [header]="t('settings.companySettingsSection.createNewRoleHeader')"
+    [description]="t('settings.companySettingsSection.createNewRoleDesc')"
+    [showModal]="showCreateNewRoleModal"
+    (closeModal)="closeCreateNewRoleModal()"
+  >
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.newRoleName')"
+      [placeholder]="t('input.provideNewRoleName')"
+      [inputDescription]="t('input.provideNewRoleNameDesc')"
+      [errorMessage]="t('input.newRoleNameError')"
+      [minLength]="2"
+      [maxLength]="64"
+      [value]="newRoleName"
+      (valueChange)="newRoleName = $event"
+      (incorrectInput)="incorrectNewRoleName = $event"
+    />
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.newRoleDescription')"
+      [placeholder]="t('input.provideNewRoleDescription')"
+      [inputDescription]="t('input.provideNewRoleDescriptionDesc')"
+      [errorMessage]="t('input.newRoleDescriptionError')"
+      [minLength]="2"
+      [maxLength]="128"
+      [value]="newRoleDescription"
+      (valueChange)="newRoleDescription = $event"
+      (incorrectInput)="incorrectNewRoleDescription = $event"
+    />
+
+    <basic-checkbox
+      [checked]="false"
+      [isWithDescription]="true"
+      (checkedChange)="pushNewRoleScope('USER_MANAGEMENT')"
+    >
+      <span class="on-white-checkbox" content>{{ t('scopes.USER_MANAGEMENT') }}</span>
+      <span class="on-white-checkbox-desc" desc>{{ t('scopes.USER_MANAGEMENT_DESC') }}</span>
+    </basic-checkbox>
+
+    <basic-checkbox
+      [checked]="false"
+      [isWithDescription]="true"
+      (checkedChange)="pushNewRoleScope('ROLES_MANAGEMENT')"
+    >
+      <span class="on-white-checkbox" content>{{ t('scopes.ROLES_MANAGEMENT') }}</span>
+      <span class="on-white-checkbox-desc" desc>{{ t('scopes.ROLES_MANAGEMENT_DESC') }}</span>
+
+    </basic-checkbox>
+
+    <basic-checkbox
+      [checked]="false"
+      [isWithDescription]="true"
+      (checkedChange)="pushNewRoleScope('COMPANY_INFORMATION_MANAGEMENT')"
+    >
+      <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
+      <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
+    </basic-checkbox>
+
+    <div class="last-button">
+      <basic-button
+        [onWhite]="true"
+        [label]="t('button.createNewRole')"
+        [disabled]="disableCreateNewRoleButton()"
+        (buttonClick)="createNewRole()"
+      />
+    </div>
+  </basic-modal>
 
 </ng-container>

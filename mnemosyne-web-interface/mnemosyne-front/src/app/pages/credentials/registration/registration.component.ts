@@ -10,12 +10,12 @@ import { RegistrationType } from '@interfaces/registration.type';
 import { CompanyService } from '@services/company.service';
 import { CredentialsTranslation } from '@translations/credentials.enum';
 import { Role } from '@interfaces/role.type';
-import { Roles } from '@interfaces/roles.enum';
 import { CompanyMembersType } from '@interfaces/company-members.type';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { RegistrationPayload } from '@payloads/registration.interface';
+import { DefaultRoles } from '@interfaces/default-roles.enum';
 
 @Component({
   selector: 'page-registration',
@@ -251,17 +251,17 @@ export class RegistrationComponent implements OnInit {
 
     this.companyRoles = [
       {
-        key: Roles.ADMIN,
+        key: DefaultRoles.ADMIN,
         value: roles.admin
       },
       {
-        key: Roles.DEFAULT,
+        key: DefaultRoles.DEFAULT,
         value: roles.default
       }
     ];
 
     this.companyMemberDefaultRoleValue = roles.default;
-    this.companyMemberDefaultRoleKey = Roles.DEFAULT;
+    this.companyMemberDefaultRoleKey = DefaultRoles.DEFAULT;
   }
 
   async handleRedirect(path: string) {

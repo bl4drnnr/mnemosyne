@@ -7,12 +7,14 @@ import { ApiConfigService } from '@shared/config.service';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { Session } from '@models/session.model';
 import { UserSettings } from '@models/user-settings.model';
+import { RolesModule } from '@modules/roles.module';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService],
   imports: [
     forwardRef(() => UsersModule),
+    forwardRef(() => RolesModule),
     SequelizeModule.forFeature([Session, UserSettings]),
     JwtModule.registerAsync({
       useFactory: async (configService: ApiConfigService) => ({

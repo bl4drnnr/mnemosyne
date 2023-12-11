@@ -47,7 +47,12 @@
     "wrong-two-fa-token-format": "Niewłaściwy format tokena MFA",
     "wrong-two-fa-token-length": "Niewłaściwa długość tokena MFA",
     "corrupted-recovery-keys": "Uszkodzone klucze odzyskiwania",
-    "wrong-role-value": "Nieprawidłowa wartość roli członka"
+    "wrong-role-value": "Nieprawidłowa wartość roli członka",
+    "wrong-company-role-name-format": "Nieprawidłowy, niestandardowy format nazwy roli firmy",
+    "wrong-company-role-name-length": "Nieprawidłowa niestandardowa długość nazwy roli firmy",
+    "wrong-company-role-description-format": "Nieprawidłowy, niestandardowy format opisu roli firmy",
+    "wrong-company-role-description-length": "Nieprawidłowa długość opisu roli niestandardowej firmy",
+    "wrong-company-role-scope-length": "Nieprawidłowa długość niestandardowych zakresów ról firmy"
   },
   "wrong-timeframe": "Niewłaściwy przedział czasowy",
   "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania",

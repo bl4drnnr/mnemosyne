@@ -26,5 +26,6 @@
   "deleteAccount": "Permanently delete account",
   "transferOwnershipButton": "Transfer ownership",
   "deleteCompany": "Delete company",
-  "deleteCompanyMember": "Delete company member"
+  "deleteCompanyMember": "Delete company member",
+  "createNewRole": "Create new role"
 }

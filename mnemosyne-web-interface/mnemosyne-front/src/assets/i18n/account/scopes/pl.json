@@ -1,0 +1,8 @@
+{
+  "USER_MANAGEMENT": "Zarządzanie użytkownikami",
+  "USER_MANAGEMENT_DESC": "Pozwala dodawać, usuwać i edytować wszystkich użytkowników w firmie.",
+  "ROLES_MANAGEMENT": "Zarządzanie rolami",
+  "ROLES_MANAGEMENT_DESC": "Pozwala tworzyć, usuwać i modyfikować role wraz z ich zakresami oraz przypisywać je użytkownikom w firmie.",
+  "COMPANY_INFORMATION_MANAGEMENT": "Zarządzanie informacjami w firmie",
+  "COMPANY_INFORMATION_MANAGEMENT_DESC": "Pozwala edytować informacje o firmie."
+}

@@ -3,5 +3,6 @@
   "photo-uploaded": "Photo uploaded",
   "user-updated": "User has been successfully updated",
   "company-updated": "Company information has been successfully updated",
-  "company-member-deleted": "Company member has been successfully deleted"
+  "company-member-deleted": "Company member has been successfully deleted",
+  "company-role-created": "Company user custom role has been successfully created"
 }

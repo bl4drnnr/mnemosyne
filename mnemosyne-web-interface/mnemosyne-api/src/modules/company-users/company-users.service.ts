@@ -9,7 +9,6 @@ import { UsersService } from '@modules/users.service';
 import { UserInvitedDto } from '@dto/user-invited.dto';
 import { VerificationEmailInterface } from '@interfaces/verification-email.interface';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
-import { RolesService } from '@modules/roles.service';
 import { User } from '@models/user.model';
 import { UserInfoInterface } from '@interfaces/user-info.interface';
 import { EmailService } from '@shared/email.service';
@@ -32,8 +31,6 @@ export class CompanyUsersService {
     private readonly companyService: CompanyService,
     @Inject(forwardRef(() => UsersService))
     private readonly usersService: UsersService,
-    @Inject(forwardRef(() => RolesService))
-    private readonly rolesService: RolesService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
     @Inject(forwardRef(() => AuthService))
@@ -63,23 +60,14 @@ export class CompanyUsersService {
       trx
     });
 
-    if (existingUser) {
-      await this.rolesService.grantRole({
-        value: role,
-        userId: existingUser.id,
-        trx
-      });
-    } else {
+    if (!existingUser) {
       createdUser = await this.usersService.createUser({
         payload: { email },
         trx
       });
-      await this.rolesService.grantRole({
-        userId: createdUser.id,
-        value: role,
-        trx
-      });
     }
+
+    // @TODO Grant custom role to the user
 
     userInfo.email = existingUser ? existingUser.email : email;
     userInfo.firstName = existingUser ? existingUser.firstName : null;

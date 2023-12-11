@@ -10,6 +10,8 @@ import { RefreshTokensService } from '@services/refresh-tokens.service';
 import { UsersList } from '@interfaces/users-list.type';
 import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 import { CompanyUsersService } from '@services/company-users.service';
+import { CreateCompanyRolePayload } from '@payloads/create-company-role.interface';
+import { RolesService } from '@services/roles.service';
 
 @Component({
   selector: 'dashboard-company-settings',
@@ -26,6 +28,7 @@ export class CompanySettingsComponent implements OnInit {
   companyUsers: UsersList;
 
   constructor(
+    private readonly rolesService: RolesService,
     private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly refreshTokensService: RefreshTokensService,
@@ -66,6 +69,15 @@ export class CompanySettingsComponent implements OnInit {
 
   saveCompanyMemberInformation(payload: UpdateUserInfoPayload) {
     this.companyUsersService.updateCompanyMemberInformation(payload).subscribe({
+      next: async ({ message }) => {
+        await this.handleGlobalMessage(message);
+      },
+      error: () => this.refreshTokensService.handleLogout()
+    });
+  }
+
+  createNewRole(payload: CreateCompanyRolePayload) {
+    this.rolesService.createCompanyRole(payload).subscribe({
       next: async ({ message }) => {
         await this.handleGlobalMessage(message);
       },

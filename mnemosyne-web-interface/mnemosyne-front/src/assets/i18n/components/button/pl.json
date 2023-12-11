@@ -26,5 +26,6 @@
   "deleteAccount": "Trwale usuń konto",
   "transferOwnershipButton": "Przenieś własność",
   "deleteCompany": "Usuń firmę",
-  "deleteCompanyMember": "Usuń członka firmy"
+  "deleteCompanyMember": "Usuń członka firmy",
+  "createNewRole": "Utwórz nową rolę"
 }

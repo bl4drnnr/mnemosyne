@@ -1,1 +1,18 @@
 @import 'variables';
+
+.create-new-role-button-box {
+  display: flex;
+  margin-top: 25px;
+  justify-content: flex-end;
+}
+
+.on-white-checkbox {
+  color: $color-black;
+}
+
+.on-white-checkbox-desc {
+  color: $color-black;
+  font-size: 12px;
+  opacity: .75;
+}
+

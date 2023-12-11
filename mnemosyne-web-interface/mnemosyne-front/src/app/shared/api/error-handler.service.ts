@@ -25,16 +25,16 @@ export class ErrorHandlerService {
         message: errorPayload.message
       });
     } else if (errorPayload.messages) {
-      errorPayload.messages.forEach((messageItem: ErrorMessagesInterface) => {
-        messageItem.error.forEach((message: string) => {
-          const errorText = this.translationService.translateText(
+      for (const messageItem of errorPayload.messages) {
+        for (const message of messageItem.error) {
+          const errorText = await this.translationService.translateText(
             `validation.${message}`,
             MessagesTranslation.ERRORS
           );
 
           displayErrorMessage += `${errorText}<br>`;
-        });
-      });
+        }
+      }
 
       this.globalMessageService.handle({
         message: displayErrorMessage,

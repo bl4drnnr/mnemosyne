@@ -86,27 +86,12 @@ export class CompanyService {
       trx
     });
 
-    if (ownerExistingAccount) {
-      await this.rolesService.grantRole({
-        value: Roles.PRIMARY_ADMIN,
-        userId: ownerExistingAccount.id,
-        trx
-      });
-    } else {
+    if (!ownerExistingAccount) {
       createdOwnerAccount = await this.usersService.createUser({
         payload: { email: companyOwnerEmail, tac: true },
         trx
       });
-      await this.rolesService.grantRole({
-        userId: createdOwnerAccount.id,
-        value: Roles.PRIMARY_ADMIN,
-        trx
-      });
     }
-
-    const to = ownerExistingAccount
-      ? ownerExistingAccount.email
-      : companyOwnerEmail;
 
     const userId = ownerExistingAccount
       ? ownerExistingAccount.id
@@ -125,11 +110,23 @@ export class CompanyService {
       ...companyCreationPayload
     });
 
-    await this.companyUsersService.createCompanyUser({
-      userId,
+    const { id: companyUserId } =
+      await this.companyUsersService.createCompanyUser({
+        userId,
+        companyId,
+        trx
+      });
+
+    await this.rolesService.grantInitRole({
+      role: Roles.PRIMARY_ADMIN,
+      companyUserId,
       companyId,
       trx
     });
+
+    const to = ownerExistingAccount
+      ? ownerExistingAccount.email
+      : companyOwnerEmail;
 
     for (const companyMember of companyMembers) {
       let createdUser: User;
@@ -141,23 +138,30 @@ export class CompanyService {
         trx
       });
 
-      if (existingCompanyMember) {
-        await this.rolesService.grantRole({
-          value: companyMember.role,
-          userId: existingCompanyMember.id,
-          trx
-        });
-      } else {
+      if (!existingCompanyMember) {
         createdUser = await this.usersService.createUser({
           payload: { email: companyMember.email },
           trx
         });
-        await this.rolesService.grantRole({
-          userId: createdUser.id,
-          value: companyMember.role,
+      }
+
+      const userId = existingCompanyMember
+        ? existingCompanyMember.id
+        : createdUser.id;
+
+      const { id: companyUserId } =
+        await this.companyUsersService.createCompanyUser({
+          userId,
+          companyId,
           trx
         });
-      }
+
+      await this.rolesService.grantInitRole({
+        role: companyMember.role,
+        companyUserId,
+        companyId,
+        trx
+      });
 
       userInfo.email = existingCompanyMember
         ? existingCompanyMember.email
@@ -168,16 +172,6 @@ export class CompanyService {
       userInfo.lastName = existingCompanyMember
         ? existingCompanyMember.lastName
         : null;
-
-      const userId = existingCompanyMember
-        ? existingCompanyMember.id
-        : createdUser.id;
-
-      await this.companyUsersService.createCompanyUser({
-        userId,
-        companyId,
-        trx
-      });
 
       const companyMemberRegEmailPayload: VerificationEmailInterface = {
         to: userInfo.email,
@@ -273,7 +267,9 @@ export class CompanyService {
       trx: transaction
     });
 
-    const users = rows.map(({ id, email, companyUser, confirmationHashes }) => {
+    const users: Array<CompanyUserType> = [];
+
+    for (const { id, email, companyUser, confirmationHashes } of rows) {
       const registrationHash = confirmationHashes[0];
 
       const payload: CompanyUserType = {
@@ -286,13 +282,14 @@ export class CompanyService {
       };
 
       if (companyUser) {
-        payload.roles = companyUser.roles.map(({ id, name }) => {
-          return { id, name };
+        payload.roles = await this.rolesService.getUserRolesByCompanyUserId({
+          companyUserId: companyUser.id,
+          trx: transaction
         });
       }
 
-      return payload;
-    });
+      users.push(payload);
+    }
 
     return new GetCompanyUsersDto({
       companyUsers: users,
@@ -541,6 +538,7 @@ export class CompanyService {
     }
 
     // @TODO Refactor this part of code once the database is rebuilt
+    // Basically, it means, check if the deletion process is the cascade one
     await this.companyRepository.destroy({
       where: { id: companyId },
       transaction: trx

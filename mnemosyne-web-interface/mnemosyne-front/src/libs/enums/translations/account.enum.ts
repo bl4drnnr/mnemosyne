@@ -1,5 +1,6 @@
 export enum AccountTranslation {
   SETTINGS = 'account/settings',
-  DASHBOARD = 'account/dashboard',
-  SETTINGS_ALIAS = 'settings'
+  SETTINGS_ALIAS = 'settings',
+  SCOPES = 'account/scopes',
+  SCOPES_ALIAS = 'scopes'
 }

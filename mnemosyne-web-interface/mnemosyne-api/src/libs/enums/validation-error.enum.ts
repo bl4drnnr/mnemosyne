@@ -19,5 +19,10 @@ export enum ValidationError {
   WRONG_LAST_NAME_LENGTH = 'wrong-last-name-length',
   WRONG_PASSPHRASE_FORMAT = 'wrong-passphrase-format',
   WRONG_PASSPHRASE_LENGTH = 'wrong-passphrase-length',
-  WRONG_REC_KEYS = 'corrupted-recovery-keys'
+  WRONG_REC_KEYS = 'corrupted-recovery-keys',
+  WRONG_COMPANY_ROLE_NAME_FORMAT = 'wrong-company-role-name-format',
+  WRONG_COMPANY_ROLE_NAME_LENGTH = 'wrong-company-role-name-length',
+  WRONG_COMPANY_ROLE_DESC_FORMAT = 'wrong-company-role-description-format',
+  WRONG_COMPANY_ROLE_DESC_LENGTH = 'wrong-company-role-description-format',
+  WRONG_COMPANY_ROLE_SCOPE_LENGTH = 'wrong-company-role-scope-length'
 }

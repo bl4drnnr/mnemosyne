@@ -36,7 +36,7 @@ export class ProxyHttpService {
       ...this.configService.allowedEndpoints.usersEndpoints,
       ...this.configService.allowedEndpoints.companyEndpoints,
       ...this.configService.allowedEndpoints.companyUsersEndpoints,
-      ...this.configService.allowedEndpoints.companyRolesEndpoints
+      ...this.configService.allowedEndpoints.rolesEndpoints
     ];
 
     const originApiUrl = this.configService.originApiUrl;

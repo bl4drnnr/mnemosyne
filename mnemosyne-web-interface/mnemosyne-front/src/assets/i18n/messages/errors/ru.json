@@ -47,7 +47,12 @@
     "wrong-two-fa-token-format": "Неверный формат токена MFA",
     "wrong-two-fa-token-length": "Неправильная длина токена MFA",
     "corrupted-recovery-keys": "Поврежденные ключи восстановления",
-    "wrong-role-value": "Неверное значение роли участника"
+    "wrong-role-value": "Неверное значение роли участника",
+    "wrong-company-role-name-format": "Неправильный формат имени роли компании",
+    "wrong-company-role-name-length": "Неверная длина имени пользовательской роли компании",
+    "wrong-company-role-description-format": "Неправильный формат описания роли компании",
+    "wrong-company-role-description-length": "Неверная длина пользовательского описания роли компании",
+    "wrong-company-role-scope-length": "Неверная длина пользовательских ролей компании"
   },
   "wrong-timeframe": "Неверный таймфрейм",
   "invalid-recovery-keys": "Недействительные ключи восстановления",

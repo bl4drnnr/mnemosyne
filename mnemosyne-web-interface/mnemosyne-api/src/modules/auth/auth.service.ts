@@ -37,6 +37,7 @@ import { GetTokenInterface } from '@interfaces/get-token.interface';
 import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
 import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
 import { CryptographicService } from '@shared/cryptographic.service';
+import { RolesService } from '@modules/roles.service';
 
 @Injectable()
 export class AuthService {
@@ -46,6 +47,8 @@ export class AuthService {
     private readonly configService: ApiConfigService,
     private readonly phoneService: PhoneService,
     private readonly timeService: TimeService,
+    @Inject(forwardRef(() => RolesService))
+    private readonly rolesService: RolesService,
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
     @Inject(forwardRef(() => UsersService))
@@ -109,11 +112,11 @@ export class AuthService {
     };
 
     if (companyUser) {
-      generateTokensPayload.roles = companyUser.roles.map(
-        ({ id, name, description }) => {
-          return { id, name, description };
-        }
-      );
+      generateTokensPayload.roles =
+        await this.rolesService.getUserRolesByCompanyUserId({
+          companyUserId: companyUser.id,
+          trx
+        });
     }
 
     const { _rt, _at } = await this.generateTokens(generateTokensPayload);
@@ -195,11 +198,11 @@ export class AuthService {
     };
 
     if (companyUser) {
-      generateTokensPayload.roles = companyUser.roles.map(
-        ({ id, name, description }) => {
-          return { id, name, description };
-        }
-      );
+      generateTokensPayload.roles =
+        await this.rolesService.getUserRolesByCompanyUserId({
+          companyUserId: companyUser.id,
+          trx
+        });
     }
 
     const { _at, _rt } = await this.generateTokens(generateTokensPayload);

@@ -88,6 +88,9 @@
     "modifyCompanyMemberDesc": "You are allowed to modify only certain fields, like company member first name, last name and other data. Some data, like email address, can be modified only by the user themself.",
     "userDeletionHeader": "User deletion",
     "userDeletionDesc": "Be careful! You are about to delete the member from the company. The account itself won't be deleted, but the membership will be suspended and the user won't have access to the company until they are invited back.",
-    "companyDeletionMessage": "In order to continue with company deletion, except your password you need to provide the recovery keys you have generated while account creation process along with MFA later on."
+    "companyDeletionMessage": "In order to continue with company deletion, except your password you need to provide the recovery keys you have generated while account creation process along with MFA later on.",
+    "createNewRoleHeader": "Create new role",
+    "createNewRoleDesc": "Here you can create the new role. In order to do that, provide the name and the description of the new role and select scopes. After that, you will be able to assign this new role to users.",
+    "roleManagementDesc": "The purpose of this section is to allow the administrator to manage roles created for the company and assign different permissions for them."
   }
 }
