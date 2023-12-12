@@ -12,7 +12,7 @@ import {
 } from '@nestjs/swagger';
 import { Body, Controller, Get, Post, Query, UsePipes } from '@nestjs/common';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
-import { TransactionParam } from '@decorators/transaction.decorator';
+import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { ConfirmEmailChangeDto } from '@dto/confirm-email-change.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
@@ -37,7 +37,7 @@ export class ConfirmationHashController {
   @ApiBasicAuth('basicAuth')
   @Get('account-confirmation')
   confirmAccount(
-    @TransactionParam() trx: Transaction,
+    @TrxDecorator() trx: Transaction,
     @Query('confirmationHash') confirmationHash: string,
     @Query('language') language?: Language
   ) {
@@ -59,7 +59,7 @@ export class ConfirmationHashController {
   @UsePipes(ValidationPipe)
   @Post('company-account-confirmation')
   confirmCompanyAccount(
-    @TransactionParam() trx: Transaction,
+    @TrxDecorator() trx: Transaction,
     @Body() payload: ConfirmCompanyAccDto,
     @Query('confirmationHash') confirmationHash: string
   ) {
@@ -85,7 +85,7 @@ export class ConfirmationHashController {
   @UsePipes(ValidationPipe)
   @Post('company-member-account-confirmation')
   companyMemberAccountConfirmation(
-    @TransactionParam() trx: Transaction,
+    @TrxDecorator() trx: Transaction,
     @Body() payload: ConfirmCompanyAccDto,
     @Query('confirmationHash') confirmationHash: string
   ) {
@@ -111,7 +111,7 @@ export class ConfirmationHashController {
   confirmEmailChange(
     @Query('confirmationHash') confirmationHash: string,
     @Body() payload: ConfirmEmailChangeDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.confirmationHashService.confirmEmailChange({
       confirmationHash,
@@ -139,7 +139,7 @@ export class ConfirmationHashController {
   resetUserPassword(
     @Query('confirmationHash') confirmationHash: string,
     @Body() payload: ResetUserPasswordDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.confirmationHashService.confirmResetUserPassword({
       hash: confirmationHash,

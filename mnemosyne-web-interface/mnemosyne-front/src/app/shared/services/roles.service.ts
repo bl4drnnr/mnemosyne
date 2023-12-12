@@ -14,12 +14,21 @@ import { CompanyRoleAssignedResponse } from '@responses/company-role-assigned.en
 import { Injectable } from '@angular/core';
 import { RevokeCompanyRolePayload } from '@payloads/revoke-company-role.interface';
 import { CompanyRoleRevokedResponse } from '@responses/company-role-revoked.enum';
+import { GetCompanyRolesPayload } from '@responses/get-company-roles.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
   constructor(private readonly apiService: ApiService) {}
+
+  getCompanyRoles(): Observable<GetCompanyRolesPayload> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.ROLES,
+      action: RolesEndpoint.GET_COMPANY_ROLES
+    });
+  }
 
   createCompanyRole(
     payload: CreateCompanyRolePayload

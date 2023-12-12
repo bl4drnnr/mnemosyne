@@ -691,6 +691,25 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/roles/get-company-roles:
+    get:
+      operationId: RolesController_getCompanyRoles
+      summary: Endpoint is responsible for getting all roles of the company.
+      parameters: []
+      responses:
+        "201":
+          description: As a response user gets the array with all roles, their names,
+            descriptions and scopes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCompanyRolesDto"
+      tags:
+        &a5
+        - Roles
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/roles/create-role:
     post:
       operationId: RolesController_createCompanyRole
@@ -704,9 +723,7 @@ paths:
       responses:
         "201":
           description: ""
-      tags:
-        &a5
-        - Roles
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
@@ -2537,7 +2554,7 @@ components:
           example: "123123123"
         recoveryKeys:
           description: List of recovery keys
-          example: e54ee7e285fbb....
+          example: "[e54ee7e285fbb...."
           type: array
           items:
             type: array
@@ -2580,6 +2597,33 @@ components:
           example: wrong-recovery-keys
       required:
         - message
+    GetCompanyRolesDto:
+      type: object
+      properties:
+        companyRoles:
+          description: Getting company roles response
+          example: |-
+            [
+                    {
+                        "name": "PRIMARY_ADMIN",
+                        "description": "The owner of the company account.",
+                        "roleScopes": [
+                            "USER_MANAGEMENT",
+                            "ROLES_MANAGEMENT",
+                            "COMPANY_INFORMATION_MANAGEMENT"
+                        ]
+                    },
+                    {
+                        "name": "DEFAULT",
+                        "description": "The role of the default user",
+                        "roleScopes": []
+                    }
+                ]
+          type: array
+          items:
+            type: array
+      required:
+        - companyRoles
     CreateCompanyRoleDto:
       type: object
       properties:
@@ -2606,7 +2650,13 @@ components:
       properties: {}
     DeleteCompanyRoleDto:
       type: object
-      properties: {}
+      properties:
+        name:
+          type: string
+          description: Company custom role name
+          example: My Test Role
+      required:
+        - name
     AssignRoleDto:
       type: object
       properties: {}
@@ -3039,7 +3089,7 @@ components:
       properties:
         recoveryKeys:
           description: List of recovery keys
-          example: e54ee7e285fbb....
+          example: "[e54ee7e285fbb...."
           type: array
           items:
             type: array
@@ -3084,7 +3134,7 @@ components:
           example: "123123123"
         recoveryKeys:
           description: List of recovery keys
-          example: e54ee7e285fbb....
+          example: "[e54ee7e285fbb...."
           type: array
           items:
             type: array

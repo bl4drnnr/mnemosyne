@@ -25,7 +25,7 @@ import { AuthGuard } from '@guards/auth.guard';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { RoleGuard } from '@guards/role.guard';
 import { UserId } from '@decorators/user-id.decorator';
-import { TransactionParam } from '@decorators/transaction.decorator';
+import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { Roles } from '@decorators/roles.decorator';
 import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
@@ -52,7 +52,7 @@ export class CompanyUsersController {
   inviteUser(
     @UserId() userId: string,
     @Body() payload: InviteUserToCompanyDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyUsersService.inviteUserToCompany({
       userId,
@@ -78,7 +78,7 @@ export class CompanyUsersController {
   getCompanyMemberInfo(
     @CompanyId() companyId: string,
     @Query('memberId') memberId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyUsersService.getCompanyMemberInfo({
       companyId,
@@ -106,7 +106,7 @@ export class CompanyUsersController {
     @CompanyId() companyId: string,
     @Body() payload: UpdateUserInfoDto,
     @Query('memberId') memberId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyUsersService.updateCompanyMemberInfo({
       companyId,
@@ -134,7 +134,7 @@ export class CompanyUsersController {
     @CompanyId() companyId: string,
     @Body() payload: DeleteCompanyMemberDto,
     @Query('memberId') memberId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyUsersService.deleteCompanyMember({
       userId,

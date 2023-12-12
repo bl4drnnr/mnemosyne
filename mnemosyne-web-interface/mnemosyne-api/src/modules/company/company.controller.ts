@@ -24,7 +24,7 @@ import {
 import { CompanyService } from '@modules/company.service';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { CreateCompanyDto } from '@dto/create-company.dto';
-import { TransactionParam } from '@decorators/transaction.decorator';
+import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { CompanyDocs } from '@docs/company.docs';
 import { AuthGuard } from '@guards/auth.guard';
@@ -52,7 +52,7 @@ export class CompanyController {
   @Post('create-company')
   createCompany(
     @Body() payload: CreateCompanyDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.createCompany({ payload, trx });
   }
@@ -66,7 +66,7 @@ export class CompanyController {
   @Get('company-information')
   getCompanyInformationById(
     @CompanyId() companyId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.getCompanyInformationById({
       companyId,
@@ -88,7 +88,7 @@ export class CompanyController {
     @CompanyId() companyId: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.getCompanyUsers({
       companyId,
@@ -112,7 +112,7 @@ export class CompanyController {
   updateCompanyInformation(
     @CompanyId() companyId: string,
     @Body() payload: UpdateCompanyDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.updateCompanyInformation({
       companyId,
@@ -133,7 +133,7 @@ export class CompanyController {
     @CompanyId() companyId: string,
     @UserId() userId: string,
     @Body() payload: TransferOwnershipDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.transferCompanyOwnership({
       companyId,
@@ -159,7 +159,7 @@ export class CompanyController {
     @CompanyId() companyId: string,
     @UserId() userId: string,
     @Body() payload: DeleteCompanyDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.deleteCompanyAccount({
       companyId,

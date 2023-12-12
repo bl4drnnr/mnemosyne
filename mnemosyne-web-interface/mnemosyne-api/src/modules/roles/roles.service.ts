@@ -18,13 +18,60 @@ import { AssignRoleInterface } from '@interfaces/assign-role.interface';
 import { CompanyRoleAssignedDto } from '@dto/company-role-assigned.dto';
 import { RevokeRoleInterface } from '@interfaces/revoke-role.interface';
 import { CompanyRoleRevokedDto } from '@dto/company-role-revoked.dto';
+import { GetCompanyRolesInterface } from '@interfaces/get-company-roles.interface';
+import { Company } from '@models/company.model';
+import { UtilsService } from '@shared/utils.service';
+import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
 
 @Injectable()
 export class RolesService {
   constructor(
+    private readonly utilsService: UtilsService,
     @InjectModel(Role) private readonly roleRepository: typeof Role,
     @InjectModel(UserRole) private readonly userRoleRepository: typeof UserRole
   ) {}
+
+  async getCompanyRoles({
+    companyId,
+    trx: transaction
+  }: GetCompanyRolesInterface) {
+    const allAssignedRoles = await this.roleRepository.findAll({
+      include: {
+        model: Company,
+        where: { id: companyId }
+      },
+      transaction
+    });
+
+    const roles = allAssignedRoles.map(({ name, description, roleScopes }) => {
+      return { name, description, roleScopes };
+    });
+
+    const companyRoles = this.utilsService.removeDuplicates(roles, 'name');
+
+    return new GetCompanyRolesDto(companyRoles);
+  }
+
+  createCompanyRole({ companyId, payload, trx }: CreateCompanyRoleInterface) {
+    return new CompanyRoleCreatedDto();
+  }
+
+  updateCompanyRole({ companyId, payload, trx }: UpdateCompanyRoleInterface) {
+    return new CompanyRoleUpdatedDto();
+  }
+
+  deleteCompanyRole({ companyId, payload, trx }: DeleteCompanyRoleInterface) {
+    const { name } = payload;
+    return new CompanyRoleDeletedDto();
+  }
+
+  assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
+    return new CompanyRoleAssignedDto();
+  }
+
+  revokeUserRole({ companyId, payload, trx }: RevokeRoleInterface) {
+    return new CompanyRoleRevokedDto();
+  }
 
   async getUserRolesByCompanyUserId({
     companyUserId,
@@ -92,26 +139,6 @@ export class RolesService {
       },
       { transaction }
     );
-  }
-
-  createCompanyRole({ companyId, payload, trx }: CreateCompanyRoleInterface) {
-    return new CompanyRoleCreatedDto();
-  }
-
-  updateCompanyRole({ companyId, payload, trx }: UpdateCompanyRoleInterface) {
-    return new CompanyRoleUpdatedDto();
-  }
-
-  deleteCompanyRole({ companyId, payload, trx }: DeleteCompanyRoleInterface) {
-    return new CompanyRoleDeletedDto();
-  }
-
-  assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
-    return new CompanyRoleAssignedDto();
-  }
-
-  revokeUserRole({ companyId, payload, trx }: RevokeRoleInterface) {
-    return new CompanyRoleRevokedDto();
   }
 
   private async createInitRole({

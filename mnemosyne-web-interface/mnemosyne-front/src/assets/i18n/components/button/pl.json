@@ -27,5 +27,7 @@
   "transferOwnershipButton": "Przenieś własność",
   "deleteCompany": "Usuń firmę",
   "deleteCompanyMember": "Usuń członka firmy",
-  "createNewRole": "Utwórz nową rolę"
+  "createNewRole": "Utwórz nową rolę",
+  "saveChanges": "Zapisz zmiany",
+  "deleteRole": "Usuń rolę"
 }

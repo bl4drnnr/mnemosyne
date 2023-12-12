@@ -77,7 +77,7 @@ export enum DocsProperty {
   PASSPHRASE_DESC = 'Passphrase',
   PASSPHRASE_EXAMPLE = '123123123',
   RECOVERY_KEYS_DESC = 'List of recovery keys',
-  RECOVERY_KEYS_EXAMPLE = 'e54ee7e285fbb....',
+  RECOVERY_KEYS_EXAMPLE = '[e54ee7e285fbb....',
   ACCOUNT_RECOVERED_DESC = 'Account recovered response message',
   ACCOUNT_RECOVERED_EXAMPLE = 'account-recovered',
   FULL_NAME_DESC = 'Full name',
@@ -206,5 +206,22 @@ export enum DocsProperty {
   COMPANY_ROLE_DESC_DESC = 'Company custom role description',
   COMPANY_ROLE_DESC_EXAMPLE = 'My Test Role Description',
   COMPANY_ROLE_SCOPES_DESC = 'The array of the scopes for company custom role',
-  COMPANY_ROLE_SCOPES_EXAMPLE = '["USER_MANAGEMENT"]'
+  COMPANY_ROLE_SCOPES_EXAMPLE = '["USER_MANAGEMENT"]',
+  COMPANY_ROLES_DESC = 'Getting company roles response',
+  COMPANY_ROLES_EXAMPLE = '[\n' +
+    '        {\n' +
+    '            "name": "PRIMARY_ADMIN",\n' +
+    '            "description": "The owner of the company account.",\n' +
+    '            "roleScopes": [\n' +
+    '                "USER_MANAGEMENT",\n' +
+    '                "ROLES_MANAGEMENT",\n' +
+    '                "COMPANY_INFORMATION_MANAGEMENT"\n' +
+    '            ]\n' +
+    '        },\n' +
+    '        {\n' +
+    '            "name": "DEFAULT",\n' +
+    '            "description": "The role of the default user",\n' +
+    '            "roleScopes": []\n' +
+    '        }\n' +
+    '    ]'
 }

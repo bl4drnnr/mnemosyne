@@ -16,3 +16,54 @@
   opacity: .75;
 }
 
+.company-roles-container {
+  margin: 25px 0;
+}
+
+.company-roles-header {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  opacity: .5;
+}
+
+.company-roles-id {
+  width: 10%;
+  padding: 15px;
+}
+
+.company-roles-name {
+  width: 20%;
+  border-left: 1px solid var(--border-color);
+  padding: 15px;
+}
+
+.company-roles-desc {
+  width: 50%;
+  border-left: 1px solid var(--border-color);
+  padding: 15px;
+}
+
+.company-roles-more {
+  width: 20%;
+  border-left: 1px solid var(--border-color);
+  padding: 15px;
+}
+
+.company-roles-more-icon {
+  display: flex;
+  width: 20%;
+  border-left: 1px solid var(--border-color);
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.company-role {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  transition: .2s;
+
+  &:hover {
+    background-color: var(--disabled-color);
+  }
+}

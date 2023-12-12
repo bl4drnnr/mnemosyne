@@ -20,7 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { GenerateRecoveryKeysDto } from '@dto/generate-recovery-keys.dto';
-import { TransactionParam } from '@decorators/transaction.decorator';
+import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
@@ -46,7 +46,7 @@ export class RecoveryController {
   registrationGenerateRecoveryKeys(
     @Query('confirmationHash') confirmationHash: string,
     @Body() payload: GenerateRecoveryKeysDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.recoveryService.registrationGenerateRecoveryKeys({
       confirmationHash,
@@ -65,7 +65,7 @@ export class RecoveryController {
   @Post('login-generate-recovery-keys')
   loginGenerateRecoveryKeys(
     @Body() payload: LoginGenerateRecoveryKeysDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.recoveryService.loginGenerateRecoveryKeys({
       payload,
@@ -85,7 +85,7 @@ export class RecoveryController {
   generateRecoveryKeys(
     @Body() payload: GenerateRecoveryKeysDto,
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.recoveryService.generateRecoveryKeys({
       payload,
@@ -104,7 +104,7 @@ export class RecoveryController {
   @Post('recover-account')
   recoverUserAccount(
     @Body() payload: RecoverAccountDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.recoveryService.recoverUserAccount({ payload, trx });
   }

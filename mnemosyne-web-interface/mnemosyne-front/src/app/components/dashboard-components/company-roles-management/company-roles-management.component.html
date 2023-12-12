@@ -13,6 +13,80 @@
     />
   </div>
 
+  <div class="company-roles-container">
+    <div class="company-roles-header">
+      <p class="company-roles-id">ID</p>
+      <p class="company-roles-name">
+        {{ t('settings.companySettingsSection.roleNameHeader') }}
+      </p>
+      <p class="company-roles-desc">
+        {{ t('settings.companySettingsSection.roleDescHeader') }}
+      </p>
+      <p class="company-roles-more">
+        {{ t('settings.companySettingsSection.roleMoreInfoHeader') }}
+      </p>
+    </div>
+
+    <div class="company-role" *ngFor="let role of companyRoles; let idx = index">
+      <p class="company-roles-id">{{ idx + 1 }}</p>
+      <p class="company-roles-name">{{ role.name }}</p>
+      <p class="company-roles-desc">{{ role.description }}</p>
+      <p
+        (click)="showRoleMoreInfo(role)"
+        class="company-roles-more-icon"
+      >
+        <basic-emoji emoji="three-dots.svg" [isSvg]="true" [width]="16" [height]="16"/>
+      </p>
+    </div>
+  </div>
+
+  <basic-modal
+    [header]="t('settings.companySettingsSection.roleInfoHeader')"
+    [description]="t('settings.companySettingsSection.roleInfoDesc')"
+    [showModal]="showRoleMoreInfoModal"
+    (closeModal)="closeRoleMoreInfoModal()"
+  >
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.roleName')"
+      [placeholder]="t('input.provideRoleName')"
+      [inputDescription]="t('input.provideRoleNameDesc')"
+      [errorMessage]="t('input.roleNameError')"
+      [minLength]="2"
+      [maxLength]="64"
+      [value]="currentRoleName"
+      (valueChange)="currentRoleName = $event"
+      (incorrectInput)="incorrectCurrentRoleName = $event"
+    />
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.roleDescription')"
+      [placeholder]="t('input.provideRoleDescription')"
+      [inputDescription]="t('input.provideRoleDescriptionDesc')"
+      [errorMessage]="t('input.roleDescriptionError')"
+      [minLength]="2"
+      [maxLength]="128"
+      [value]="currentRoleDescription"
+      (valueChange)="currentRoleDescription = $event"
+      (incorrectInput)="incorrectCurrentRoleDescription = $event"
+    />
+
+<!--  Checkboxes and save changes function  -->
+    <basic-button
+      [onWhite]="true"
+      [label]="t('button.saveChanges')"
+    />
+
+    <div class="last-button">
+      <basic-button
+        [onWhite]="true"
+        [danger]="true"
+        [label]="t('button.deleteRole')"
+        (buttonClick)="deleteRole(currentRoleName)"
+      />
+    </div>
+  </basic-modal>
+
   <basic-modal
     [header]="t('settings.companySettingsSection.createNewRoleHeader')"
     [description]="t('settings.companySettingsSection.createNewRoleDesc')"

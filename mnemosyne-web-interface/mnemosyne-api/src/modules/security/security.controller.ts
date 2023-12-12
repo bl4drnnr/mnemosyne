@@ -28,7 +28,7 @@ import { RegistrationSendSmsCodeDto } from '@dto/registration-send-sms-code.dto'
 import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';
 import { LoginSendSmsDto } from '@dto/login-send-sms.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
-import { TransactionParam } from '@decorators/transaction.decorator';
+import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
@@ -54,7 +54,7 @@ export class SecurityController {
   @Get('registration-generate-2fa-qr')
   registrationGenerateTwoFaQrCode(
     @Query('confirmationHash') confirmationHash: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.registrationGenerateTwoFaQrCode({
       confirmationHash,
@@ -72,7 +72,7 @@ export class SecurityController {
   @Post('login-generate-2fa-qr')
   loginGenerateTwoFaQrCode(
     @Body() payload: LoginGenerate2faQrDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.loginGenerateTwoFaQrCode({ payload, trx });
   }
@@ -86,7 +86,7 @@ export class SecurityController {
   @Get('generate-2fa-qr')
   generateTwoFaQrCode(
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.generateTwoFaQrCode({ userId, trx });
   }
@@ -104,7 +104,7 @@ export class SecurityController {
   registrationVerifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
     @Query('confirmationHash') confirmationHash: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.registrationVerifyTwoFaQrCode({
       payload,
@@ -123,7 +123,7 @@ export class SecurityController {
   @Post('login-verify-2fa')
   loginVerifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.loginVerifyTwoFaQrCode({ payload, trx });
   }
@@ -141,7 +141,7 @@ export class SecurityController {
   verifyTwoFaQrCode(
     @Body() payload: VerifyTwoFaDto,
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.verifyTwoFaQrCode({ payload, userId, trx });
   }
@@ -159,7 +159,7 @@ export class SecurityController {
   disableTwoFa(
     @Body() payload: DisableTwoFaDto,
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.disableTwoFa({ payload, userId, trx });
   }
@@ -175,7 +175,7 @@ export class SecurityController {
   registrationSendSmsCode(
     @Body() payload: RegistrationSendSmsCodeDto,
     @Query('confirmationHash') confirmationHash: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.registrationSendSmsCode({
       payload,
@@ -194,7 +194,7 @@ export class SecurityController {
   @Post('login-send-sms-code')
   loginSendSmsCode(
     @Body() payload: LoginSendSmsDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.loginSendSmsCode({ payload, trx });
   }
@@ -212,7 +212,7 @@ export class SecurityController {
   sendSmsCode(
     @Body() payload: RegistrationSendSmsCodeDto,
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.sendSmsCode({ payload, userId, trx });
   }
@@ -227,7 +227,7 @@ export class SecurityController {
   @ApiBasicAuth('basicAuth')
   @Get('hash-send-sms-code')
   hashSendSmsCode(
-    @TransactionParam() trx: Transaction,
+    @TrxDecorator() trx: Transaction,
     @Query('confirmationHash') confirmationHash: string,
     @Query('language') language?: Language
   ) {
@@ -250,7 +250,7 @@ export class SecurityController {
   getSmsCode(
     @Query('language') language: Language,
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.getSmsCode({ userId, language, trx });
   }
@@ -263,7 +263,7 @@ export class SecurityController {
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Post('clear-sms-code')
-  clearSmsCode(@UserId() userId: string, @TransactionParam() trx: Transaction) {
+  clearSmsCode(@UserId() userId: string, @TrxDecorator() trx: Transaction) {
     return this.securityService.clearSmsCode({ userId, trx });
   }
 
@@ -282,7 +282,7 @@ export class SecurityController {
   registrationVerifyMobilePhone(
     @Body() payload: VerifyMobilePhoneDto,
     @Query('confirmationHash') confirmationHash: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.registrationVerifyMobilePhone({
       payload,
@@ -303,7 +303,7 @@ export class SecurityController {
   @Post('login-verify-mobile-phone')
   loginVerifyMobilePhone(
     @Body() payload: VerifyMobilePhoneDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.loginVerifyMobilePhone({
       payload,
@@ -324,7 +324,7 @@ export class SecurityController {
   verifyMobilePhone(
     @Body() payload: VerifyMobilePhoneDto,
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.verifyMobilePhone({ payload, userId, trx });
   }
@@ -342,7 +342,7 @@ export class SecurityController {
   disablePhone(
     @Body() payload: DisableTwoFaDto,
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.disablePhone({ payload, userId, trx });
   }
@@ -359,7 +359,7 @@ export class SecurityController {
   deleteUserAccount(
     @UserId() userId: string,
     @Body() payload: DeleteAccountDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.deleteUserAccount({
       userId,
@@ -381,7 +381,7 @@ export class SecurityController {
   changePassword(
     @UserId() userId: string,
     @Body() payload: ChangePasswordDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.changePassword({
       userId,
@@ -404,7 +404,7 @@ export class SecurityController {
   changeEmail(
     @UserId() userId: string,
     @Body() payload: ChangeEmailDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.securityService.changeEmail({
       userId,

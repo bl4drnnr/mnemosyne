@@ -1,1 +1,3 @@
-export interface DeleteCompanyRolePayload {}
+export interface DeleteCompanyRolePayload {
+  name: string;
+}

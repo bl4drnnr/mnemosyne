@@ -1,6 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { RoleScope } from '@interfaces/role-scope.type';
 import { CreateCompanyRolePayload } from '@payloads/create-company-role.interface';
+import { CompanyRoleType } from '@interfaces/company-role.type';
+import { OneCompanyRoleType } from '@interfaces/one-company-role.type';
+import { RolesService } from '@services/roles.service';
+import { CompanyRoleDeletedResponse } from '@responses/company-role-deleted.enum';
 
 @Component({
   selector: 'dashboard-company-roles-management',
@@ -18,7 +22,19 @@ export class CompanyRolesManagementComponent implements OnInit {
   newRoleScopes: Array<RoleScope> = [];
   showCreateNewRoleModal: boolean;
 
+  showRoleMoreInfoModal: boolean;
+  currentRoleName: string;
+  incorrectCurrentRoleName: boolean;
+  currentRoleDescription: string;
+  incorrectCurrentRoleDescription: boolean;
+  currentRoleScopes: Array<RoleScope>;
+
+  @Input() companyRoles: CompanyRoleType;
   @Output() createNewRoleEvent = new EventEmitter<CreateCompanyRolePayload>();
+  @Output() getCompanyRoles = new EventEmitter<void>();
+  @Output() deleteCompanyRole = new EventEmitter<string>();
+
+  constructor(private readonly rolesService: RolesService) {}
 
   createNewRole() {
     this.createNewRoleEvent.emit({
@@ -28,8 +44,32 @@ export class CompanyRolesManagementComponent implements OnInit {
     });
   }
 
-  fetchCompanyRoles() {
-    // @TODO Implement this function
+  deleteRole(roleName: string) {
+    this.rolesService.deleteCompanyRole({ name: roleName }).subscribe({
+      next: ({ message }) => {
+        switch (message) {
+          case CompanyRoleDeletedResponse.COMPANY_ROLE_DELETED:
+            this.showRoleMoreInfoModal = false;
+            this.currentRoleName = '';
+            this.currentRoleDescription = '';
+            this.currentRoleScopes = [];
+            this.deleteCompanyRole.emit(message);
+            this.getCompanyRoles.emit();
+            break;
+        }
+      }
+    });
+  }
+
+  showRoleMoreInfo(role: OneCompanyRoleType) {
+    this.showRoleMoreInfoModal = true;
+    this.currentRoleName = role.name;
+    this.currentRoleDescription = role.description;
+    this.currentRoleScopes = role.roleScopes;
+  }
+
+  closeRoleMoreInfoModal() {
+    this.showRoleMoreInfoModal = false;
   }
 
   pushNewRoleScope(scope: RoleScope) {
@@ -58,5 +98,11 @@ export class CompanyRolesManagementComponent implements OnInit {
     this.showCreateNewRoleModal = false;
   }
 
-  ngOnInit() {}
+  fetchCompanyRoles() {
+    this.getCompanyRoles.emit();
+  }
+
+  ngOnInit() {
+    this.fetchCompanyRoles();
+  }
 }

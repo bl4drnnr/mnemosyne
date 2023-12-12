@@ -91,6 +91,11 @@
     "companyDeletionMessage": "Aby kontynuować usuwanie firmy, oprócz hasła, musisz podać klucze odzyskiwania wygenerowane podczas procesu tworzenia konta wraz z późniejszym MFA.",
     "createNewRoleHeader": "Utwórz nową rolę",
     "createNewRoleDesc": "Tutaj możesz utworzyć nową rolę. W tym celu podaj nazwę i opis nowej roli oraz wybierz zakresy. Następnie będziesz mógł przypisać tę nową rolę użytkownikom.",
-    "roleManagementDesc": "Celem tej sekcji jest umożliwienie administratorowi zarządzania rolami utworzonymi dla firmy i przydzielania im różnych uprawnień."
+    "roleManagementDesc": "Celem tej sekcji jest umożliwienie administratorowi zarządzania rolami utworzonymi dla firmy i przydzielania im różnych uprawnień.",
+    "roleInfoHeader": "Informacje o roli",
+    "roleInfoDesc": "Tutaj możesz zmodyfikować nazwę, opis roli wraz z jej zakresami. Pamiętaj też, że nie możesz usunąć roli, jeśli jest ona już przypisana do istniejącego użytkownika. Dlatego zanim to zrobisz, odejmij rolę istniejącym użytkownikom.",
+    "roleNameHeader": "Nazwa",
+    "roleDescHeader": "Opis",
+    "roleMoreInfoHeader": "Więcej informacji"
   }
 }

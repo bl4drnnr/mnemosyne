@@ -8,6 +8,7 @@ import { CryptographicService } from '@shared/cryptographic.service';
 import { TimeService } from '@shared/time.service';
 import { EmailTemplatesService } from '@shared/email-templates.service';
 import { SmsTemplatesService } from '@shared/sms-templates.service';
+import { UtilsService } from '@shared/utils.service';
 
 const providers = [
   ApiConfigService,
@@ -16,7 +17,8 @@ const providers = [
   CryptographicService,
   TimeService,
   EmailTemplatesService,
-  SmsTemplatesService
+  SmsTemplatesService,
+  UtilsService
 ];
 
 @Global()

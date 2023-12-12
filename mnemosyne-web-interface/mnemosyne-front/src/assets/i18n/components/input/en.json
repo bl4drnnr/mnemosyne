@@ -95,6 +95,14 @@
   "newRoleNameError": "Min length of the new role name is 2 symbols, max is 64 symbols.",
   "newRoleDescription": "New role description",
   "provideNewRoleDescription": "Provide the description of the new role",
-  "provideNewRoleDescriptionDesc": "The description of the role is need for you in order to know for what this role is created and who should be assignee.",
-  "newRoleDescriptionError": "Min length of the new role description is 2 symbols, max is 128 symbols."
+  "provideNewRoleDescriptionDesc": "The description of the role is needed for you in order to know for what this role is created and who should be assignee.",
+  "newRoleDescriptionError": "Min length of the new role description is 2 symbols, max is 128 symbols.",
+  "roleName": "Role name",
+  "provideRoleName": "Provide the role name",
+  "provideRoleNameDesc": "Provide the name of the role that will be displayed on the screen.",
+  "roleNameError": "Min length of the new role name is 2 symbols, max is 64 symbols.",
+  "roleDescription": "Role description",
+  "provideRoleDescription": "Provide the role description",
+  "provideRoleDescriptionDesc": "The description of the role is needed for you in order to know for what this role is created and who should be assignee.",
+  "roleDescriptionError": "Min length of the new role description is 2 symbols, max is 128 symbols."
 }

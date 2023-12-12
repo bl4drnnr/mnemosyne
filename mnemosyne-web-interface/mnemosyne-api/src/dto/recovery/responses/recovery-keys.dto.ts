@@ -11,4 +11,8 @@ export class RecoveryKeysResponseDto {
     maxLength: 5
   })
   readonly recoveryKeys: Array<string>;
+
+  constructor(recoveryKeys: Array<string>) {
+    this.recoveryKeys = recoveryKeys;
+  }
 }
