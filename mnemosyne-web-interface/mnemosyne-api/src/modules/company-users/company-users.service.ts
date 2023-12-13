@@ -21,6 +21,7 @@ import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { AuthService } from '@modules/auth.service';
 import { CompanyMemberDeletedDto } from '@dto/company-member-deleted.dto';
 import { DeleteCompanyMemberInterface } from '@interfaces/delete-company-member.interface';
+import { SearchCompanyMemberInterface } from '@interfaces/search-company-member.interface';
 
 @Injectable()
 export class CompanyUsersService {
@@ -229,6 +230,21 @@ export class CompanyUsersService {
     });
 
     return new CompanyMemberDeletedDto();
+  }
+
+  async searchCompanyMember({
+    companyId,
+    query,
+    trx
+  }: SearchCompanyMemberInterface) {
+    const users = await this.usersService.searchUser({
+      query,
+      trx
+    });
+
+    console.log('users', users);
+
+    const usersIds = users.map(({ id }) => id);
   }
 
   async createCompanyUser({

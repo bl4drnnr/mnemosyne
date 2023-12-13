@@ -66,5 +66,6 @@
   "wrong-deletion-confirmation": "Неправильные данные подтверждения удаления",
   "parse-error": "Ошибка синтаксического анализа",
   "company-not-found": "Компания не найдена",
-  "company-member-not-found": "Участник компании не найден"
+  "company-member-not-found": "Участник компании не найден",
+  "role-still-assigned": "Роль по-прежнему назначена пользователям"
 }

@@ -744,23 +744,6 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
-  /api/roles/delete-role:
-    delete:
-      operationId: RolesController_deleteCompanyRole
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeleteCompanyRoleDto"
-      responses:
-        "200":
-          description: ""
-      tags: *a5
-      security:
-        - x-access-token: []
-        - basicAuth: []
   /api/roles/assign-role:
     patch:
       operationId: RolesController_assignRoleToUser
@@ -923,6 +906,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CompanyMemberNotFoundException"
+      tags: *a6
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-users/search-company-member:
+    get:
+      operationId: CompanyUsersController_searchCompanyMember
+      parameters:
+        - name: query
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
       tags: *a6
       security:
         - x-access-token: []
@@ -2647,16 +2646,25 @@ components:
         - roleScopes
     UpdateCompanyRoleDto:
       type: object
-      properties: {}
-    DeleteCompanyRoleDto:
-      type: object
       properties:
         name:
           type: string
           description: Company custom role name
           example: My Test Role
+        description:
+          type: string
+          description: Company custom role description
+          example: My Test Role Description
+        roleScopes:
+          description: The array of the scopes for company custom role
+          example: '["USER_MANAGEMENT"]'
+          type: array
+          items:
+            type: array
       required:
         - name
+        - description
+        - roleScopes
     AssignRoleDto:
       type: object
       properties: {}

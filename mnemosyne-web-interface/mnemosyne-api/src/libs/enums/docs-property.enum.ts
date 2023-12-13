@@ -223,5 +223,7 @@ export enum DocsProperty {
     '            "description": "The role of the default user",\n' +
     '            "roleScopes": []\n' +
     '        }\n' +
-    '    ]'
+    '    ]',
+  ROLE_STILL_ASSIGNED_DESC = 'Role is still assigned error message',
+  ROLE_STILL_ASSIGNED_EXAMPLE = 'role-still-assigned'
 }

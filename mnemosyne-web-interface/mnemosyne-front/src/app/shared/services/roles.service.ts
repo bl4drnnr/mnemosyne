@@ -7,8 +7,6 @@ import { Controller } from '@interfaces/controller.enum';
 import { RolesEndpoint } from '@interfaces/roles.enum';
 import { UpdateCompanyRolePayload } from '@payloads/update-company-role.interface';
 import { CompanyRoleUpdatedResponse } from '@responses/company-role-updated.enum';
-import { DeleteCompanyRolePayload } from '@payloads/delete-company-role.interface';
-import { CompanyRoleDeletedResponse } from '@responses/company-role-deleted.enum';
 import { AssignCompanyRolePayload } from '@payloads/assign-company-role.interface';
 import { CompanyRoleAssignedResponse } from '@responses/company-role-assigned.enum';
 import { Injectable } from '@angular/core';
@@ -48,17 +46,6 @@ export class RolesService {
       method: Method.PATCH,
       controller: Controller.ROLES,
       action: RolesEndpoint.UPDATE_ROLE,
-      payload
-    });
-  }
-
-  deleteCompanyRole(
-    payload: DeleteCompanyRolePayload
-  ): Observable<{ message: CompanyRoleDeletedResponse }> {
-    return this.apiService.apiProxyRequest({
-      method: Method.DELETE,
-      controller: Controller.ROLES,
-      action: RolesEndpoint.DELETE_ROLE,
       payload
     });
   }

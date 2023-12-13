@@ -4,5 +4,7 @@
   "user-updated": "Użytkownik został pomyślnie zaktualizowany",
   "company-updated": "Informacje o firmie zostały pomyślnie zaktualizowane",
   "company-member-deleted": "Członek firmy został pomyślnie usunięty",
-  "company-role-created": "Niestandardowa rola użytkownika firmy została pomyślnie utworzona"
+  "company-role-created": "Niestandardowa rola użytkownika firmy została pomyślnie utworzona",
+  "company-role-deleted": "Niestandardowa rola firmy została pomyślnie usunięta",
+  "company-role-updated": "Rola firmy została pomyślnie zaktualizowana"
 }

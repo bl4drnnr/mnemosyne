@@ -66,5 +66,6 @@
   "wrong-deletion-confirmation": "Błędne dane potwierdzające usunięcie",
   "parse-error": "Błąd analizy",
   "company-not-found": "Firma nie została znaleziona",
-  "company-member-not-found": "Nie znaleziono członka firmy"
+  "company-member-not-found": "Nie znaleziono członka firmy",
+  "role-still-assigned": "Rola jest nadal przypisana użytkownikom"
 }

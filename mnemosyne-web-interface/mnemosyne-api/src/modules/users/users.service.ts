@@ -47,6 +47,8 @@ import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface
 import { GetUsersByIdsInterface } from '@interfaces/get-users-by-ids.interface';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { CompanyUser } from '@models/company-user.model';
+import { SearchUserInterface } from '@interfaces/search-user.interface';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UsersService {
@@ -475,6 +477,24 @@ export class UsersService {
       case Confirmation.COMPANY_INVITATION:
         return new CompanyMemberAccConfirmedDto();
     }
+  }
+
+  async searchUser({
+    query,
+    attributes = ['id', 'email', 'first_name', 'last_name'],
+    trx: transaction
+  }: SearchUserInterface) {
+    return this.userRepository.findAll({
+      where: {
+        [Op.or]: [
+          { email: { [Op.iLike]: `%${query}%` } },
+          { firstName: { [Op.iLike]: `%${query}%` } },
+          { lastName: { [Op.iLike]: `%${query}%` } }
+        ]
+      },
+      attributes,
+      transaction
+    });
   }
 
   private async createUserSettings({

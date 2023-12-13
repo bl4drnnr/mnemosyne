@@ -75,6 +75,7 @@ export class RolesController {
     });
   }
 
+  // @TODO Write docs here
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
@@ -88,25 +89,6 @@ export class RolesController {
     @TrxDecorator() trx: Transaction
   ) {
     return this.rolesService.updateCompanyRole({
-      companyId,
-      payload,
-      trx
-    });
-  }
-
-  @ApiBasicAuth('basicAuth')
-  @ApiBearerAuth('x-access-token')
-  @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
-  @Delete('delete-role')
-  deleteCompanyRole(
-    @CompanyId() companyId: string,
-    @Body() payload: DeleteCompanyRoleDto,
-    @TrxDecorator() trx: Transaction
-  ) {
-    return this.rolesService.deleteCompanyRole({
       companyId,
       payload,
       trx

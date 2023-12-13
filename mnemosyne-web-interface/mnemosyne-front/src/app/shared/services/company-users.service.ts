@@ -12,6 +12,7 @@ import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 import { UserUpdatedResponse } from '@responses/user-updated.enum';
 import { DeleteCompanyMemberPayload } from '@payloads/delete-company-member.interface';
 import { CompanyMemberDeletedResponse } from '@responses/company-member-deleted.enum';
+import { SearchCompanyMemberPayload } from '@payloads/search-company-member.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -71,6 +72,19 @@ export class CompanyUsersService {
       action: CompanyUsersEndpoint.DELETE_COMPANY_MEMBER,
       params: { memberId },
       payload
+    });
+  }
+
+  searchCompanyMember(
+    payload: SearchCompanyMemberPayload
+  ): Observable<SearchCompanyMemberPayload> {
+    const { query } = payload;
+
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.COMPANY_USERS,
+      action: CompanyUsersEndpoint.SEARCH_COMPANY_MEMBER,
+      params: { query }
     });
   }
 }

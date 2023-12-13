@@ -22,6 +22,7 @@ import { GetCompanyRolesInterface } from '@interfaces/get-company-roles.interfac
 import { Company } from '@models/company.model';
 import { UtilsService } from '@shared/utils.service';
 import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
+import { RoleStillAssignedException } from '@exceptions/role-still-assigned.exception';
 
 @Injectable()
 export class RolesService {
@@ -56,13 +57,38 @@ export class RolesService {
     return new CompanyRoleCreatedDto();
   }
 
-  updateCompanyRole({ companyId, payload, trx }: UpdateCompanyRoleInterface) {
-    return new CompanyRoleUpdatedDto();
-  }
-
-  deleteCompanyRole({ companyId, payload, trx }: DeleteCompanyRoleInterface) {
+  async updateCompanyRole({
+    companyId,
+    payload,
+    trx: transaction
+  }: UpdateCompanyRoleInterface) {
     const { name } = payload;
-    return new CompanyRoleDeletedDto();
+
+    const companyRoles = await this.roleRepository.findAll({
+      where: { name },
+      include: {
+        model: Company,
+        where: { id: companyId }
+      },
+      transaction
+    });
+
+    const companyRolesIds = companyRoles.map(({ id }) => id);
+
+    await this.roleRepository.update(
+      {
+        ...payload
+      },
+      {
+        returning: false,
+        where: {
+          id: { [Op.in]: companyRolesIds }
+        },
+        transaction
+      }
+    );
+
+    return new CompanyRoleUpdatedDto();
   }
 
   assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {

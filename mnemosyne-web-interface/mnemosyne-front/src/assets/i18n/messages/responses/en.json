@@ -4,5 +4,7 @@
   "user-updated": "User has been successfully updated",
   "company-updated": "Company information has been successfully updated",
   "company-member-deleted": "Company member has been successfully deleted",
-  "company-role-created": "Company user custom role has been successfully created"
+  "company-role-created": "Company user custom role has been successfully created",
+  "company-role-deleted": "Company custom role has been successfully deleted",
+  "company-role-updated": "Company role has been successfully updated"
 }

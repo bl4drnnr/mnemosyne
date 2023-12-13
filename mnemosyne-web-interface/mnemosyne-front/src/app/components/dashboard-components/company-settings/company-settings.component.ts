@@ -13,6 +13,7 @@ import { CompanyUsersService } from '@services/company-users.service';
 import { CreateCompanyRolePayload } from '@payloads/create-company-role.interface';
 import { RolesService } from '@services/roles.service';
 import { CompanyRoleType } from '@interfaces/company-role.type';
+import { UpdateCompanyRolePayload } from '@payloads/update-company-role.interface';
 
 @Component({
   selector: 'dashboard-company-settings',
@@ -88,6 +89,15 @@ export class CompanySettingsComponent implements OnInit {
     this.rolesService.createCompanyRole(payload).subscribe({
       next: async ({ message }) => {
         await this.handleGlobalMessage(message);
+      }
+    });
+  }
+
+  updateRole(payload: UpdateCompanyRolePayload) {
+    this.rolesService.updateCompanyRole(payload).subscribe({
+      next: async ({ message }) => {
+        await this.handleGlobalMessage(message);
+        this.fetchCompanyRoles();
       }
     });
   }

@@ -144,4 +144,23 @@ export class CompanyUsersController {
       trx
     });
   }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Get('search-company-member')
+  searchCompanyMember(
+    @CompanyId() companyId: string,
+    @Query('query') query: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.companyUsersService.searchCompanyMember({
+      companyId,
+      query,
+      trx
+    });
+  }
 }
