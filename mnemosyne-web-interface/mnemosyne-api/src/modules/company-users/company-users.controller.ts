@@ -151,13 +151,13 @@ export class CompanyUsersController {
   @Roles('ADMIN', 'PRIMARY_ADMIN')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
-  @Get('search-company-member')
-  searchCompanyMember(
+  @Get('search-company-members')
+  searchCompanyMembers(
     @CompanyId() companyId: string,
     @Query('query') query: string,
     @TrxDecorator() trx: Transaction
   ) {
-    return this.companyUsersService.searchCompanyMember({
+    return this.companyUsersService.searchCompanyMembers({
       companyId,
       query,
       trx

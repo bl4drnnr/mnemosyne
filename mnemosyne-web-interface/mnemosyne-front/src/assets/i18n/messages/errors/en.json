@@ -67,5 +67,6 @@
   "parse-error": "Parse error",
   "company-not-found": "Company has not been found",
   "company-member-not-found": "Company member has not been found",
-  "role-still-assigned": "Role is still assigned to users"
+  "role-still-assigned": "Role is still assigned to users",
+  "role-doesnt-exists": "Role does not exist"
 }

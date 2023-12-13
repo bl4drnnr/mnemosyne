@@ -77,7 +77,7 @@ export enum DocsProperty {
   PASSPHRASE_DESC = 'Passphrase',
   PASSPHRASE_EXAMPLE = '123123123',
   RECOVERY_KEYS_DESC = 'List of recovery keys',
-  RECOVERY_KEYS_EXAMPLE = '[e54ee7e285fbb....',
+  RECOVERY_KEY_EXAMPLE = 'e54ee7e285fbb....*length 1024*',
   ACCOUNT_RECOVERED_DESC = 'Account recovered response message',
   ACCOUNT_RECOVERED_EXAMPLE = 'account-recovered',
   FULL_NAME_DESC = 'Full name',
@@ -150,8 +150,8 @@ export enum DocsProperty {
   PREVIOUS_PASSWORD_EXAMPLE = 'previous-password',
   WRONG_PICTURE_FORMAT_DESC = 'Wrong picture format error message',
   WRONG_PICTURE_FORMAT_EXAMPLE = 'wrong-picture-format',
-  USER_ID_DESC = 'Hashed (MD5) user ID',
-  USER_ID_EXAMPLE = '7630e8093291151b656de0dd48a60017',
+  USER_ID_DESC = 'User ID',
+  USER_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c',
   IS_USER_PROFILE_PIC_DESC = 'Is user profile picture present',
   IS_USER_PROFILE_PIC_EXAMPLE = 'true',
   IS_TWO_FA_SET_UP_DESC = 'Is 2FA set up',
@@ -206,24 +206,9 @@ export enum DocsProperty {
   COMPANY_ROLE_DESC_DESC = 'Company custom role description',
   COMPANY_ROLE_DESC_EXAMPLE = 'My Test Role Description',
   COMPANY_ROLE_SCOPES_DESC = 'The array of the scopes for company custom role',
-  COMPANY_ROLE_SCOPES_EXAMPLE = '["USER_MANAGEMENT"]',
+  COMPANY_ROLE_SCOPE_EXAMPLE = 'USER_MANAGEMENT',
   COMPANY_ROLES_DESC = 'Getting company roles response',
-  COMPANY_ROLES_EXAMPLE = '[\n' +
-    '        {\n' +
-    '            "name": "PRIMARY_ADMIN",\n' +
-    '            "description": "The owner of the company account.",\n' +
-    '            "roleScopes": [\n' +
-    '                "USER_MANAGEMENT",\n' +
-    '                "ROLES_MANAGEMENT",\n' +
-    '                "COMPANY_INFORMATION_MANAGEMENT"\n' +
-    '            ]\n' +
-    '        },\n' +
-    '        {\n' +
-    '            "name": "DEFAULT",\n' +
-    '            "description": "The role of the default user",\n' +
-    '            "roleScopes": []\n' +
-    '        }\n' +
-    '    ]',
   ROLE_STILL_ASSIGNED_DESC = 'Role is still assigned error message',
-  ROLE_STILL_ASSIGNED_EXAMPLE = 'role-still-assigned'
+  ROLE_STILL_ASSIGNED_EXAMPLE = 'role-still-assigned',
+  COMPANY_MEMBERS_EMAILS_DESC = 'Array with the id of the user and their emails'
 }

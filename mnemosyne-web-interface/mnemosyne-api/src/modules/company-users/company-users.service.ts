@@ -22,6 +22,9 @@ import { AuthService } from '@modules/auth.service';
 import { CompanyMemberDeletedDto } from '@dto/company-member-deleted.dto';
 import { DeleteCompanyMemberInterface } from '@interfaces/delete-company-member.interface';
 import { SearchCompanyMemberInterface } from '@interfaces/search-company-member.interface';
+import { Company } from '@models/company.model';
+import { Op } from 'sequelize';
+import { SearchCompanyMembersDto } from '@dto/search-company-members.dto';
 
 @Injectable()
 export class CompanyUsersService {
@@ -232,19 +235,37 @@ export class CompanyUsersService {
     return new CompanyMemberDeletedDto();
   }
 
-  async searchCompanyMember({
+  async searchCompanyMembers({
     companyId,
     query,
-    trx
+    trx: transaction
   }: SearchCompanyMemberInterface) {
-    const users = await this.usersService.searchUser({
-      query,
-      trx
+    const users = await this.companyUserRepository.findAll({
+      include: [
+        {
+          model: Company,
+          where: { id: companyId }
+        },
+        {
+          model: User,
+          where: {
+            [Op.or]: [
+              { email: { [Op.iLike]: `%${query}%` } },
+              { firstName: { [Op.iLike]: `%${query}%` } },
+              { lastName: { [Op.iLike]: `%${query}%` } }
+            ]
+          },
+          attributes: ['id', 'email']
+        }
+      ],
+      transaction
     });
 
-    console.log('users', users);
+    const companyMembersEmails = users.map(({ user }) => {
+      return { email: user.email, id: user.id };
+    });
 
-    const usersIds = users.map(({ id }) => id);
+    return new SearchCompanyMembersDto(companyMembersEmails);
   }
 
   async createCompanyUser({

@@ -96,6 +96,7 @@
     "roleInfoDesc": "Tutaj możesz zmodyfikować nazwę, opis roli wraz z jej zakresami. Pamiętaj też, że nie możesz usunąć roli, jeśli jest ona już przypisana do istniejącego użytkownika. Dlatego zanim to zrobisz, odejmij rolę istniejącym użytkownikom.",
     "roleNameHeader": "Nazwa",
     "roleDescHeader": "Opis",
-    "roleMoreInfoHeader": "Więcej informacji"
+    "roleMoreInfoHeader": "Więcej informacji",
+    "roleDeletionRule": "Jeśli chcesz usunąć rolę, będziesz musiał odebrać tę rolę każdemu użytkownikowi w firmie. Gdy to zrobisz, rola zostanie automatycznie usunięta."
   }
 }

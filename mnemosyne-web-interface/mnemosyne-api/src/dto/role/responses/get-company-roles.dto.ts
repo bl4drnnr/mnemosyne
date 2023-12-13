@@ -6,7 +6,13 @@ export class GetCompanyRolesDto {
   @ApiProperty({
     type: Array<CompanyRoleType>,
     description: DocsProperty.COMPANY_ROLES_DESC,
-    example: DocsProperty.COMPANY_ROLES_EXAMPLE,
+    example: [
+      {
+        name: DocsProperty.COMPANY_ROLE_NAME_EXAMPLE,
+        description: DocsProperty.COMPANY_ROLE_DESC_EXAMPLE,
+        roleScope: [DocsProperty.COMPANY_ROLE_SCOPE_EXAMPLE]
+      }
+    ],
     isArray: true
   })
   companyRoles: CompanyRoleType;

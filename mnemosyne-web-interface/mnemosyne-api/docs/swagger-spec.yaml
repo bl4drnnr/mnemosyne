@@ -730,16 +730,30 @@ paths:
   /api/roles/update-role:
     patch:
       operationId: RolesController_updateCompanyRole
+      summary: Endpoint is responsible for updating the company role.
       parameters: []
       requestBody:
         required: true
+        description: In the body user provides the same fields as for role creation.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UpdateCompanyRoleDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets message that the role has been successfully
+            updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyRoleUpdatedDto"
+        "404":
+          description: In case if the name of role has been modified and the company does
+            not have this role Not Found exception will be thrown.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDoesntExistException"
       tags: *a5
       security:
         - x-access-token: []
@@ -910,9 +924,9 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
-  /api/company-users/search-company-member:
+  /api/company-users/search-company-members:
     get:
-      operationId: CompanyUsersController_searchCompanyMember
+      operationId: CompanyUsersController_searchCompanyMembers
       parameters:
         - name: query
           required: true
@@ -1851,8 +1865,8 @@ components:
       properties:
         userId:
           type: string
-          description: Hashed (MD5) user ID
-          example: 7630e8093291151b656de0dd48a60017
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         firstName:
           type: string
           description: First name
@@ -2443,8 +2457,8 @@ components:
           example: apple.com
         companyOwnerId:
           type: string
-          description: Hashed (MD5) user ID
-          example: 7630e8093291151b656de0dd48a60017
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         companyOwnerEmail:
           type: string
           description: Email address
@@ -2461,7 +2475,7 @@ components:
         companyUsers:
           description: List of company users (id and email)
           example:
-            - id: 7630e8093291151b656de0dd48a60017
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
               email: joe@doe.com
               roles:
                 - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
@@ -2553,7 +2567,12 @@ components:
           example: "123123123"
         recoveryKeys:
           description: List of recovery keys
-          example: "[e54ee7e285fbb...."
+          example:
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
           type: array
           items:
             type: array
@@ -2601,23 +2620,11 @@ components:
       properties:
         companyRoles:
           description: Getting company roles response
-          example: |-
-            [
-                    {
-                        "name": "PRIMARY_ADMIN",
-                        "description": "The owner of the company account.",
-                        "roleScopes": [
-                            "USER_MANAGEMENT",
-                            "ROLES_MANAGEMENT",
-                            "COMPANY_INFORMATION_MANAGEMENT"
-                        ]
-                    },
-                    {
-                        "name": "DEFAULT",
-                        "description": "The role of the default user",
-                        "roleScopes": []
-                    }
-                ]
+          example:
+            - name: My Test Role
+              description: My Test Role Description
+              roleScope:
+                - USER_MANAGEMENT
           type: array
           items:
             type: array
@@ -2636,7 +2643,8 @@ components:
           example: My Test Role Description
         roleScopes:
           description: The array of the scopes for company custom role
-          example: '["USER_MANAGEMENT"]'
+          example:
+            - USER_MANAGEMENT
           type: array
           items:
             type: array
@@ -2657,7 +2665,8 @@ components:
           example: My Test Role Description
         roleScopes:
           description: The array of the scopes for company custom role
-          example: '["USER_MANAGEMENT"]'
+          example:
+            - USER_MANAGEMENT
           type: array
           items:
             type: array
@@ -2665,6 +2674,24 @@ components:
         - name
         - description
         - roleScopes
+    CompanyRoleUpdatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company role updated response message
+          example: company-role-updated
+      required:
+        - message
+    RoleDoesntExistException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Roles does not exist error message
+          example: role-doesnt-exists
+      required:
+        - message
     AssignRoleDto:
       type: object
       properties: {}
@@ -2709,8 +2736,8 @@ components:
       properties:
         memberId:
           type: string
-          description: Hashed (MD5) user ID
-          example: 7630e8093291151b656de0dd48a60017
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         email:
           type: string
           description: Email address
@@ -3097,7 +3124,12 @@ components:
       properties:
         recoveryKeys:
           description: List of recovery keys
-          example: "[e54ee7e285fbb...."
+          example:
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
           type: array
           items:
             type: array
@@ -3142,7 +3174,12 @@ components:
           example: "123123123"
         recoveryKeys:
           description: List of recovery keys
-          example: "[e54ee7e285fbb...."
+          example:
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
           type: array
           items:
             type: array

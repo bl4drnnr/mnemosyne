@@ -26,7 +26,7 @@ export class UpdateCompanyRoleDto {
   @ApiProperty({
     type: Array<RoleScope>,
     description: DocsProperty.COMPANY_ROLE_SCOPES_DESC,
-    example: DocsProperty.COMPANY_ROLE_SCOPES_EXAMPLE,
+    example: [DocsProperty.COMPANY_ROLE_SCOPE_EXAMPLE],
     isArray: true
   })
   @ArrayMinSize(1, { message: ValidationError.WRONG_COMPANY_ROLE_SCOPE_LENGTH })

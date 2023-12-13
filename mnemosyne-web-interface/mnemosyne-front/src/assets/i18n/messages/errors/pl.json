@@ -67,5 +67,6 @@
   "parse-error": "Błąd analizy",
   "company-not-found": "Firma nie została znaleziona",
   "company-member-not-found": "Nie znaleziono członka firmy",
-  "role-still-assigned": "Rola jest nadal przypisana użytkownikom"
+  "role-still-assigned": "Rola jest nadal przypisana użytkownikom",
+  "role-doesnt-exists": "Rola nie istnieje"
 }

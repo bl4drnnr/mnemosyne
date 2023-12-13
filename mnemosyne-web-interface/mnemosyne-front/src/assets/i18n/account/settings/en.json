@@ -96,6 +96,7 @@
     "roleInfoDesc": "Here you can modify the name, description of the role along with its scopes. Also, keep in mind that you cannot delete the role if it is already assigned to existing user. Therefore, before doing that, revoke the role from existing users.",
     "roleNameHeader": "Name",
     "roleDescHeader": "Description",
-    "roleMoreInfoHeader": "More information"
+    "roleMoreInfoHeader": "More information",
+    "roleDeletionRule": "If you want to delete the role, you will have to revoke this role from each user in the company. Once it is done, the role will be deleted automatically."
   }
 }

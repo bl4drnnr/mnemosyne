@@ -13,6 +13,7 @@ import {
   transition,
   trigger
 } from '@angular/animations';
+import { CompanyUsersService } from '@services/company-users.service';
 
 @Component({
   selector: 'dashboard-company-roles-management',
@@ -31,12 +32,15 @@ import {
   ]
 })
 export class CompanyRolesManagementComponent implements OnInit {
+  showCreateNewRoleModal: boolean;
   newRoleName: string;
   incorrectNewRoleName: boolean;
   newRoleDescription: string;
   incorrectNewRoleDescription: boolean;
   newRoleScopes: Array<RoleScope> = [];
-  showCreateNewRoleModal: boolean;
+  newRoleMemberQuery: string;
+  newRoleMembers: Array<string>;
+  newRoleFoundMembers: Array<{ id: string; email: string }>;
 
   showRoleMoreInfoModal: boolean;
   currentRole: OneCompanyRoleType;
@@ -54,7 +58,10 @@ export class CompanyRolesManagementComponent implements OnInit {
   @Output() deleteCompanyRole = new EventEmitter<string>();
   @Output() updateRole = new EventEmitter<UpdateCompanyRolePayload>();
 
-  constructor(private readonly utilsService: UtilsService) {}
+  constructor(
+    private readonly utilsService: UtilsService,
+    private readonly companyUsersService: CompanyUsersService
+  ) {}
 
   createNewRole() {
     this.createNewRoleEvent.emit({
@@ -120,6 +127,28 @@ export class CompanyRolesManagementComponent implements OnInit {
   pushNewRoleScope(scope: RoleScope) {
     if (!this.newRoleScopes.includes(scope)) this.newRoleScopes.push(scope);
     else this.newRoleScopes = this.newRoleScopes.filter((s) => s !== scope);
+  }
+
+  searchForCompanyMember(companyMember: string) {
+    this.newRoleMemberQuery = companyMember;
+
+    if (companyMember.length > 2) {
+      this.companyUsersService
+        .searchCompanyMembers({
+          query: companyMember
+        })
+        .subscribe({
+          next: async ({ companyMembers }) => {
+            this.newRoleFoundMembers = companyMembers;
+          }
+        });
+    }
+  }
+
+  showFoundCompanyMember() {
+    return (
+      this.newRoleMemberQuery.length > 0 && this.newRoleFoundMembers.length > 0
+    );
   }
 
   disableCreateNewRoleButton() {

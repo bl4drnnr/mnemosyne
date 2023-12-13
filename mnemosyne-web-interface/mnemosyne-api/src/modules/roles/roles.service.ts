@@ -12,8 +12,6 @@ import { CreateCompanyRoleInterface } from '@interfaces/create-company-role.inte
 import { CompanyRoleCreatedDto } from '@dto/company-role-created.dto';
 import { UpdateCompanyRoleInterface } from '@interfaces/update-company-role.interface';
 import { CompanyRoleUpdatedDto } from '@dto/company-role-updated.dto';
-import { DeleteCompanyRoleInterface } from '@interfaces/delete-company-role.interface';
-import { CompanyRoleDeletedDto } from '@dto/company-role-deleted.dto';
 import { AssignRoleInterface } from '@interfaces/assign-role.interface';
 import { CompanyRoleAssignedDto } from '@dto/company-role-assigned.dto';
 import { RevokeRoleInterface } from '@interfaces/revoke-role.interface';
@@ -22,7 +20,7 @@ import { GetCompanyRolesInterface } from '@interfaces/get-company-roles.interfac
 import { Company } from '@models/company.model';
 import { UtilsService } from '@shared/utils.service';
 import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
-import { RoleStillAssignedException } from '@exceptions/role-still-assigned.exception';
+import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
 
 @Injectable()
 export class RolesService {
@@ -73,6 +71,8 @@ export class RolesService {
       transaction
     });
 
+    if (!companyRoles) throw new RoleDoesntExistException();
+
     const companyRolesIds = companyRoles.map(({ id }) => id);
 
     await this.roleRepository.update(
@@ -118,7 +118,6 @@ export class RolesService {
       }
     });
 
-    // @TODO I might need to delete duplicates
     return roles.map(({ id, name, description }) => {
       return { name, description, id };
     });

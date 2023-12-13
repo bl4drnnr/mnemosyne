@@ -1,7 +1,6 @@
 import {
   Body,
   Controller,
-  Delete,
   Get,
   Patch,
   Post,
@@ -12,7 +11,9 @@ import { RolesService } from '@modules/roles.service';
 import {
   ApiBasicAuth,
   ApiBearerAuth,
+  ApiBody,
   ApiExtraModels,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiResponse,
   ApiTags
@@ -26,7 +27,6 @@ import { CreateCompanyRoleDto } from '@dto/create-company-role.dto';
 import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { UpdateCompanyRoleDto } from '@dto/update-company-role.dto';
-import { DeleteCompanyRoleDto } from '@dto/delete-company-role.dto';
 import { AssignRoleDto } from '@dto/assign-role.dto';
 import { RevokeRoleDto } from '@dto/revoke-role.dto';
 import { RolesDocs } from '@docs/roles.docs';
@@ -75,7 +75,11 @@ export class RolesController {
     });
   }
 
-  // @TODO Write docs here
+  @ApiOperation(RolesDocs.UpdateCompanyRole.ApiOperation)
+  @ApiExtraModels(...RolesDocs.UpdateCompanyRole.ApiExtraModels)
+  @ApiResponse(RolesDocs.UpdateCompanyRole.ApiResponse)
+  @ApiNotFoundResponse(RolesDocs.UpdateCompanyRole.ApiNotFoundResponse)
+  @ApiBody(RolesDocs.UpdateCompanyRole.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
