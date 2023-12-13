@@ -90,3 +90,26 @@
     }
   }
 }
+
+.found-company-member-container {
+  border-left: 1px solid rgba($color-black, .1);
+  border-top: 1px solid rgba($color-black, .1);
+  border-right: 1px solid rgba($color-black, .1);
+  display: flex;
+  justify-content: space-between;
+
+  .found-company-member {
+    font-size: 14px;
+    opacity: .75;
+    color: $color-black;
+    padding: 15px;
+  }
+
+  .remove-found-company-member {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    border-left: 1px solid rgba($color-black, .1);
+  }
+}

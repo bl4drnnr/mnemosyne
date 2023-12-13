@@ -49,7 +49,7 @@
   }
 
   &.danger {
-    border: 1px solid var(--warn-color);
+    border: 1px solid var(--error-color-light);
 
     &.disabled {
       background-color: var(--disabled-color);
@@ -57,14 +57,14 @@
     }
 
     &:hover {
-      border: 1px solid var(--warn-color);
-      background-color: var(--warn-color);
+      border: 1px solid var(--error-color-light);
+      background-color: var(--error-color-light);
     }
   }
 
   &.fill-danger {
     border: 1px solid var(--error-color);
-    background-color: var(--warn-color);
+    background-color: var(--error-color-light);
 
     &:hover {
       border: 1px solid var(--error-color);

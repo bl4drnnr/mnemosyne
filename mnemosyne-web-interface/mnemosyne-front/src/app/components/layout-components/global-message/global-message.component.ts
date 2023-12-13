@@ -25,6 +25,7 @@ import { GlobalMessageTranslation } from '@components/global-message/global-mess
 export class GlobalMessageComponent implements OnInit {
   successIcon: string;
   errorIcon: string;
+  warningIcon: string;
 
   constructor(
     public globalMessageService: GlobalMessageService,
@@ -33,8 +34,15 @@ export class GlobalMessageComponent implements OnInit {
 
   staticStorageLink: string = this.envService.getStaticStorageLink;
 
+  getAlertStyles() {
+    if (this.globalMessageService.isError) return 'alert error';
+    else if (this.globalMessageService.isWarning) return 'alert warning';
+    else return 'alert success';
+  }
+
   ngOnInit() {
     this.successIcon = `${this.staticStorageLink}/icons/check-circle.svg`;
     this.errorIcon = `${this.staticStorageLink}/icons/error.svg`;
+    this.warningIcon = `${this.staticStorageLink}/icons/warning.svg`;
   }
 }

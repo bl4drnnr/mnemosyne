@@ -1,5 +1,6 @@
 {
   "error": "Error",
+  "warning": "Warning",
   "wrong-credentials": "Wrong credentials",
   "corrupted-token": "Corrupted token",
   "token-expired": "Token expired",

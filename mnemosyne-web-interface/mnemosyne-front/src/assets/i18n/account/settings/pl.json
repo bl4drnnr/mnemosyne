@@ -97,6 +97,8 @@
     "roleNameHeader": "Nazwa",
     "roleDescHeader": "Opis",
     "roleMoreInfoHeader": "Więcej informacji",
-    "roleDeletionRule": "Jeśli chcesz usunąć rolę, będziesz musiał odebrać tę rolę każdemu użytkownikowi w firmie. Gdy to zrobisz, rola zostanie automatycznie usunięta."
+    "roleDeletionRule": "Jeśli chcesz usunąć rolę, będziesz musiał odebrać tę rolę każdemu użytkownikowi w firmie. Gdy to zrobisz, rola zostanie automatycznie usunięta.",
+    "foundCompanyMembers": "Znaleziono członków firmy",
+    "roleWillBeAssigned": "Rola zostanie przypisana następującym osobom"
   }
 }

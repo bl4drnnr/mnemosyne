@@ -97,6 +97,8 @@
     "roleNameHeader": "Name",
     "roleDescHeader": "Description",
     "roleMoreInfoHeader": "More information",
-    "roleDeletionRule": "If you want to delete the role, you will have to revoke this role from each user in the company. Once it is done, the role will be deleted automatically."
+    "roleDeletionRule": "If you want to delete the role, you will have to revoke this role from each user in the company. Once it is done, the role will be deleted automatically.",
+    "foundCompanyMembers": "Found company members",
+    "roleWillBeAssigned": "Role will be assigned to the following"
   }
 }

@@ -1,5 +1,6 @@
 {
   "error": "Ошибка",
+  "warning": "Внимание",
   "wrong-credentials": "Неверные учетные данные",
   "corrupted-token": "Повреждённый токен",
   "token-expired": "Срок действия токена истек",

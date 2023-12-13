@@ -1,5 +1,6 @@
 {
   "error": "Błąd",
+  "warning": "Uwaga",
   "wrong-credentials": "Błędne dane uwierzytelniające",
   "corrupted-token": "Uszkodzony token",
   "token-expired": "Token wygasł",

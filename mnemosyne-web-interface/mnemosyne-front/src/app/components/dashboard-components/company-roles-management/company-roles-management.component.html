@@ -155,14 +155,23 @@
     />
 
     <div *ngIf="showFoundCompanyMember()">
+      <p class="modal-paragraph">
+        {{ t('settings.companySettingsSection.foundCompanyMembers') }}:
+      </p>
       <div class="role-assignee-container" *ngFor="let user of newRoleFoundMembers">
         <p class="role-assignee" (click)="pushNewRoleAssignee(user)">{{ user.email }}</p>
       </div>
     </div>
 
     <div *ngIf="newRoleMembers.length > 0">
-      <div *ngFor="let user of newRoleMembers">
-        {{ user.email }}
+      <p class="modal-paragraph">
+        {{ t('settings.companySettingsSection.roleWillBeAssigned') }}:
+      </p>
+      <div class="found-company-member-container" *ngFor="let user of newRoleMembers">
+        <p class="found-company-member">{{ user.email }}</p>
+        <span class="remove-found-company-member" (click)="removeNewRoleAssignee(user.id)">
+          <basic-emoji emoji="cross-mark.png" [width]="24" [height]="24"/>
+        </span>
       </div>
     </div>
 

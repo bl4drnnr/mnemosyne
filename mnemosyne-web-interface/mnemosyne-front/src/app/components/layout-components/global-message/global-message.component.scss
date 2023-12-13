@@ -32,11 +32,15 @@
     margin-right: 16px;
 
     &.error {
-      filter: var(--warn-color-svg);
+      filter: var(--error-color-light-svg);
     }
 
     &.success {
       filter: var(--success-color-svg);
+    }
+
+    &.warning {
+      filter: var(--warning-color-svg);
     }
   }
 }
@@ -87,10 +91,10 @@
   }
 
   &.error {
-    border-left: 10px solid var(--warn-color);
+    border-left: 10px solid var(--error-color-light);
 
     &:hover {
-      border-left: 90px solid var(--warn-color);
+      border-left: 90px solid var(--error-color-light);
     }
   }
 
@@ -99,6 +103,14 @@
 
     &:hover {
       border-left: 90px solid var(--success-color);
+    }
+  }
+
+  &.warning {
+    border-left: 10px solid var(--warning-color);
+
+    &:hover {
+      border-left: 90px solid var(--warning-color);
     }
   }
 }

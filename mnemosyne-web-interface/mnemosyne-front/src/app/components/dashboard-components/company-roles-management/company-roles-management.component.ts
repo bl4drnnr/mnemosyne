@@ -135,6 +135,10 @@ export class CompanyRolesManagementComponent implements OnInit {
     this.newRoleFoundMembers = [];
   }
 
+  removeNewRoleAssignee(userId: string) {
+    this.newRoleMembers = this.newRoleMembers.filter(({ id }) => id !== userId);
+  }
+
   searchForCompanyMember(companyMember: string) {
     this.newRoleMemberQuery = companyMember;
 

@@ -104,7 +104,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
     );
 
     if (isEmailPresent) {
-      await this.globalMessageService.handleError({
+      await this.globalMessageService.handleWarning({
         message: 'member-already-on-list'
       });
     }

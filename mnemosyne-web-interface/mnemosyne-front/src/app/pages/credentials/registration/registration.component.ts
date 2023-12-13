@@ -190,13 +190,13 @@ export class RegistrationComponent implements OnInit {
   }
 
   async companyMembersLimitReached() {
-    await this.globalMessageService.handleError({
+    await this.globalMessageService.handleWarning({
       message: 'company-members-limit-reached'
     });
   }
 
   async memberAlreadyOnList() {
-    await this.globalMessageService.handleError({
+    await this.globalMessageService.handleWarning({
       message: 'member-already-on-list'
     });
   }
