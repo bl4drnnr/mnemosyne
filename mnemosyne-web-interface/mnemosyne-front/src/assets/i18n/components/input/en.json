@@ -104,5 +104,8 @@
   "roleDescription": "Role description",
   "provideRoleDescription": "Provide the role description",
   "provideRoleDescriptionDesc": "The description of the role is needed for you in order to know for what this role is created and who should be assignee.",
-  "roleDescriptionError": "Min length of the new role description is 2 symbols, max is 128 symbols."
+  "roleDescriptionError": "Min length of the new role description is 2 symbols, max is 128 symbols.",
+  "newRoleAssignee": "New role assignee",
+  "provideNewRoleAssignee": "Provide assignee for the new role",
+  "newRoleAssigneeDesc": "In order to create new role, you need to assignee it to at least one user in your company."
 }

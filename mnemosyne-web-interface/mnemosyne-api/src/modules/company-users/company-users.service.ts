@@ -25,6 +25,7 @@ import { SearchCompanyMemberInterface } from '@interfaces/search-company-member.
 import { Company } from '@models/company.model';
 import { Op } from 'sequelize';
 import { SearchCompanyMembersDto } from '@dto/search-company-members.dto';
+import { ParseException } from '@exceptions/parse.exception';
 
 @Injectable()
 export class CompanyUsersService {
@@ -238,8 +239,18 @@ export class CompanyUsersService {
   async searchCompanyMembers({
     companyId,
     query,
+    page,
+    pageSize,
     trx: transaction
   }: SearchCompanyMemberInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
     const users = await this.companyUserRepository.findAll({
       include: [
         {
@@ -258,6 +269,8 @@ export class CompanyUsersService {
           attributes: ['id', 'email']
         }
       ],
+      limit,
+      offset,
       transaction
     });
 

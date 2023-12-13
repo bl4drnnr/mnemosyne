@@ -92,7 +92,7 @@ export abstract class CompanyDocs {
     const pageSizeQueryDesc =
       'Query for limit in order to get list of company users.';
     const pageQueryDesc =
-      'Query for page in order to get list of comapny users.';
+      'Query for page in order to get list of company users.';
 
     const pageSizeQuery = {
       description: pageSizeQueryDesc,

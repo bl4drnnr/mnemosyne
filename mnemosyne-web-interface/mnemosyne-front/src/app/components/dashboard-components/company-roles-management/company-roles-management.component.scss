@@ -67,3 +67,26 @@
     background-color: var(--disabled-color);
   }
 }
+
+.role-assignee-container {
+  max-height: 90px;
+  border: 1px solid rgba($color-black, .1);
+  border-radius: 8px;
+
+  .role-assignee {
+    display: flex;
+    align-items: center;
+    height: 30px;
+    padding-left: 16px;
+    transition: .2s;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: .75;
+    color: $color-black;
+    border-radius: 8px;
+
+    &:hover {
+      background-color: rgba($block-color, .2);
+    }
+  }
+}

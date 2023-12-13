@@ -38,9 +38,9 @@ export class CompanyRolesManagementComponent implements OnInit {
   newRoleDescription: string;
   incorrectNewRoleDescription: boolean;
   newRoleScopes: Array<RoleScope> = [];
-  newRoleMemberQuery: string;
-  newRoleMembers: Array<string>;
-  newRoleFoundMembers: Array<{ id: string; email: string }>;
+  newRoleMemberQuery: string = '';
+  newRoleMembers: Array<{ id: string; email: string }> = [];
+  newRoleFoundMembers: Array<{ id: string; email: string }> = [];
 
   showRoleMoreInfoModal: boolean;
   currentRole: OneCompanyRoleType;
@@ -129,13 +129,21 @@ export class CompanyRolesManagementComponent implements OnInit {
     else this.newRoleScopes = this.newRoleScopes.filter((s) => s !== scope);
   }
 
+  pushNewRoleAssignee(user: { id: string; email: string }) {
+    this.newRoleMembers.push(user);
+    this.newRoleMemberQuery = '';
+    this.newRoleFoundMembers = [];
+  }
+
   searchForCompanyMember(companyMember: string) {
     this.newRoleMemberQuery = companyMember;
 
     if (companyMember.length > 2) {
       this.companyUsersService
         .searchCompanyMembers({
-          query: companyMember
+          query: companyMember,
+          page: '0',
+          pageSize: '3'
         })
         .subscribe({
           next: async ({ companyMembers }) => {
@@ -157,7 +165,8 @@ export class CompanyRolesManagementComponent implements OnInit {
       !this.newRoleDescription ||
       this.incorrectNewRoleName ||
       this.incorrectNewRoleDescription ||
-      this.newRoleScopes.length === 0
+      this.newRoleScopes.length === 0 ||
+      this.newRoleMembers.length === 0
     );
   }
 
@@ -180,10 +189,12 @@ export class CompanyRolesManagementComponent implements OnInit {
   }
 
   closeCreateNewRoleModal() {
+    this.showCreateNewRoleModal = false;
     this.newRoleName = '';
     this.newRoleDescription = '';
+    this.newRoleMemberQuery = '';
     this.newRoleScopes = [];
-    this.showCreateNewRoleModal = false;
+    this.newRoleFoundMembers = [];
   }
 
   fetchCompanyRoles() {

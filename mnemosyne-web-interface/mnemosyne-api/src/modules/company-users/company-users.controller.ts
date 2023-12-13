@@ -145,6 +145,12 @@ export class CompanyUsersController {
     });
   }
 
+  @ApiOperation(CompanyUsersDocs.SearchCompanyMembers.ApiOperation)
+  @ApiExtraModels(...CompanyUsersDocs.SearchCompanyMembers.ApiExtraModels)
+  @ApiResponse(CompanyUsersDocs.SearchCompanyMembers.ApiResponse)
+  @ApiQuery(CompanyUsersDocs.SearchCompanyMembers.ApiMemberQuery)
+  @ApiQuery(CompanyUsersDocs.SearchCompanyMembers.ApiPageSizeQuery)
+  @ApiQuery(CompanyUsersDocs.SearchCompanyMembers.ApiPageQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
@@ -155,11 +161,15 @@ export class CompanyUsersController {
   searchCompanyMembers(
     @CompanyId() companyId: string,
     @Query('query') query: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
     @TrxDecorator() trx: Transaction
   ) {
     return this.companyUsersService.searchCompanyMembers({
       companyId,
       query,
+      page,
+      pageSize,
       trx
     });
   }

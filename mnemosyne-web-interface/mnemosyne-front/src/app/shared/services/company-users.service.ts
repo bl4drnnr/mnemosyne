@@ -79,13 +79,13 @@ export class CompanyUsersService {
   searchCompanyMembers(
     payload: SearchCompanyMemberPayload
   ): Observable<CompanyMemberResponse> {
-    const { query } = payload;
+    const { query, page, pageSize } = payload;
 
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.COMPANY_USERS,
       action: CompanyUsersEndpoint.SEARCH_COMPANY_MEMBERS,
-      params: { query }
+      params: { query, page, pageSize }
     });
   }
 }

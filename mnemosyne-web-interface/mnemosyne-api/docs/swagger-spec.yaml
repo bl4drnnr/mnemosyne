@@ -584,7 +584,7 @@ paths:
         - name: page
           required: true
           in: query
-          description: Query for page in order to get list of comapny users.
+          description: Query for page in order to get list of company users.
           schema:
             type: string
         - name: pageSize
@@ -927,15 +927,33 @@ paths:
   /api/company-users/search-company-members:
     get:
       operationId: CompanyUsersController_searchCompanyMembers
+      summary: Endpoint is responsible for searching company members.
       parameters:
         - name: query
           required: true
           in: query
+          description: Member query
+          schema:
+            type: string
+        - name: page
+          required: true
+          in: query
+          description: Query for page in order to get list of company users.
+          schema:
+            type: string
+        - name: pageSize
+          required: true
+          in: query
+          description: Query for limit in order to get list of company users.
           schema:
             type: string
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets the array of users with id and email.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchCompanyMembersDto"
       tags: *a6
       security:
         - x-access-token: []
@@ -2807,6 +2825,19 @@ components:
           example: company-member-deleted
       required:
         - message
+    SearchCompanyMembersDto:
+      type: object
+      properties:
+        companyMembers:
+          description: Array with the id of the user and their emails
+          example:
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              email: joe@doe.com
+          type: array
+          items:
+            type: array
+      required:
+        - companyMembers
     QrCodeDto:
       type: object
       properties:

@@ -10,6 +10,7 @@ import { FullMfaRequiredDto } from '@dto/full-mfa-required.dto';
 import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
 import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
 import { DeleteCompanyMemberDto } from '@dto/delete-company-member.dto';
+import { SearchCompanyMembersDto } from '@dto/search-company-members.dto';
 
 export abstract class CompanyUsersDocs {
   static get InviteUser() {
@@ -169,6 +170,55 @@ export abstract class CompanyUsersDocs {
         schema: { $ref: getSchemaPath(DeleteCompanyMemberDto) }
       } as ApiBodyOptions,
       ApiMemberIdQuery: memberIdQuery
+    };
+  }
+
+  static get SearchCompanyMembers() {
+    const ApiModels = [SearchCompanyMembersDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for searching company members.';
+    const apiResponseDesc =
+      'As a response user gets the array of users with id and email.';
+
+    const memberQueryDesc = 'Member query';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of company users.';
+    const pageQueryDesc =
+      'Query for page in order to get list of company users.';
+
+    const memberQuery = {
+      description: memberQueryDesc,
+      name: 'query',
+      type: String,
+      required: true
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: true
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(SearchCompanyMembersDto) }
+      },
+      ApiMemberQuery: memberQuery,
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery
     };
   }
 }

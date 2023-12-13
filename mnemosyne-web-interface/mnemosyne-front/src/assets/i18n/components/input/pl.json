@@ -104,5 +104,8 @@
   "roleDescription": "Opis roli",
   "provideRoleDescription": "Podaj opis roli",
   "provideRoleDescriptionDesc": "Opis roli jest Ci potrzebny, abyś wiedział, do czego ta rola jest tworzona i kto powinien być jej przypisany.",
-  "roleDescriptionError": "Minimalna długość nowego opisu roli to 2 symbole, maksymalna to 128 symboli."
+  "roleDescriptionError": "Minimalna długość nowego opisu roli to 2 symbole, maksymalna to 128 symboli.",
+  "newRoleAssignee": "Nowa osoba przypisana roli",
+  "provideNewRoleAssignee": "Podaj osobę przypisaną do nowej roli",
+  "newRoleAssigneeDesc": "Aby utworzyć nową rolę, musisz przypisać ją przynajmniej jednemu użytkownikowi w Twojej firmie."
 }

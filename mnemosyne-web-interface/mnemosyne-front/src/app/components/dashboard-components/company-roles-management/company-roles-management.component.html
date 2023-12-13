@@ -145,6 +145,26 @@
       (valueChange)="newRoleDescription = $event"
       (incorrectInput)="incorrectNewRoleDescription = $event"
     />
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.newRoleAssignee')"
+      [placeholder]="t('input.provideNewRoleAssignee')"
+      [inputDescription]="t('input.newRoleAssigneeDesc')"
+      [value]="newRoleMemberQuery"
+      (valueChange)="searchForCompanyMember($event)"
+    />
+
+    <div *ngIf="showFoundCompanyMember()">
+      <div class="role-assignee-container" *ngFor="let user of newRoleFoundMembers">
+        <p class="role-assignee" (click)="pushNewRoleAssignee(user)">{{ user.email }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="newRoleMembers.length > 0">
+      <div *ngFor="let user of newRoleMembers">
+        {{ user.email }}
+      </div>
+    </div>
 
     <basic-checkbox
       [checked]="false"
@@ -173,20 +193,6 @@
       <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
     </basic-checkbox>
-
-    <basic-input
-      [label]="'New role assignee'"
-      [placeholder]="''"
-      [inputDescription]="''"
-      [value]="newRoleMemberQuery"
-      (valueChange)="searchForCompanyMember($event)"
-    />
-
-    <div *ngIf="showFoundCompanyMember()">
-      <div *ngFor="let user of newRoleFoundMembers">
-
-      </div>
-    </div>
 
     <div class="last-button">
       <basic-button
