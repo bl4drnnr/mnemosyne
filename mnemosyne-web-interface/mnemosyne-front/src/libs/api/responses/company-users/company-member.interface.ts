@@ -1,3 +1,5 @@
+import { RoleAssigneeInterface } from '@interfaces/role-assignee.interface';
+
 export interface CompanyMemberResponse {
-  companyMembers: Array<{ id: string; email: string }>;
+  companyMembers: Array<RoleAssigneeInterface>;
 }

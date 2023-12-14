@@ -21,6 +21,7 @@ import { Company } from '@models/company.model';
 import { UtilsService } from '@shared/utils.service';
 import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
+import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
 
 @Injectable()
 export class RolesService {
@@ -51,7 +52,46 @@ export class RolesService {
     return new GetCompanyRolesDto(companyRoles);
   }
 
-  createCompanyRole({ companyId, payload, trx }: CreateCompanyRoleInterface) {
+  async createCompanyRole({
+    companyId,
+    payload,
+    trx: transaction
+  }: CreateCompanyRoleInterface) {
+    const { name, description, roleScopes, roleAssignees } = payload;
+
+    const alreadyExistingRoles = await this.roleRepository.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
+      },
+      include: {
+        model: Company,
+        where: { id: companyId }
+      },
+      transaction
+    });
+
+    if (alreadyExistingRoles.length > 0) throw new RoleAlreadyExistsException();
+
+    const createdRole = await this.roleRepository.create(
+      {
+        name,
+        description,
+        roleScopes
+      },
+      { transaction, returning: ['id'] }
+    );
+
+    // @TODO 1 user - 1 role
+    for (const companyUserId of roleAssignees) {
+      await this.userRoleRepository.create({
+        companyId,
+        companyUserId,
+        roleId: createdRole.id
+      });
+    }
+
     return new CompanyRoleCreatedDto();
   }
 

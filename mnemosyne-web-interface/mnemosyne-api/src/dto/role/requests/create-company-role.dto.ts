@@ -31,4 +31,13 @@ export class CreateCompanyRoleDto {
   })
   @ArrayMinSize(1, { message: ValidationError.WRONG_COMPANY_ROLE_SCOPE_LENGTH })
   readonly roleScopes: Array<RoleScope>;
+
+  @ApiProperty({
+    type: Array<string>,
+    description: DocsProperty.NEW_ROLE_ASSIGNEES_DESC,
+    example: [DocsProperty.USER_ID_EXAMPLE],
+    isArray: true
+  })
+  @ArrayMinSize(1, { message: ValidationError.WRONG_NEW_ROLE_ASSIGNEES_LENGTH })
+  readonly roleAssignees: Array<string>;
 }

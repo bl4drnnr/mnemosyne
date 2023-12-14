@@ -14,6 +14,8 @@ import {
   trigger
 } from '@angular/animations';
 import { CompanyUsersService } from '@services/company-users.service';
+import { GlobalMessageService } from '@shared/global-message.service';
+import { RoleAssigneeInterface } from '@interfaces/role-assignee.interface';
 
 @Component({
   selector: 'dashboard-company-roles-management',
@@ -39,8 +41,8 @@ export class CompanyRolesManagementComponent implements OnInit {
   incorrectNewRoleDescription: boolean;
   newRoleScopes: Array<RoleScope> = [];
   newRoleMemberQuery: string = '';
-  newRoleMembers: Array<{ id: string; email: string }> = [];
-  newRoleFoundMembers: Array<{ id: string; email: string }> = [];
+  newRoleMembers: Array<RoleAssigneeInterface> = [];
+  newRoleFoundMembers: Array<RoleAssigneeInterface> = [];
 
   showRoleMoreInfoModal: boolean;
   currentRole: OneCompanyRoleType;
@@ -60,15 +62,22 @@ export class CompanyRolesManagementComponent implements OnInit {
 
   constructor(
     private readonly utilsService: UtilsService,
-    private readonly companyUsersService: CompanyUsersService
+    private readonly companyUsersService: CompanyUsersService,
+    private readonly globalMessageService: GlobalMessageService
   ) {}
 
   createNewRole() {
     this.createNewRoleEvent.emit({
       name: this.newRoleName,
       description: this.newRoleDescription,
-      roleScopes: this.newRoleScopes
+      roleScopes: this.newRoleScopes,
+      roleAssignees: this.newRoleMembers.map(
+        ({ companyUserId }) => companyUserId
+      )
     });
+
+    this.closeCreateNewRoleModal();
+    this.getCompanyRoles.emit();
   }
 
   saveRoleChanges() {
@@ -129,14 +138,28 @@ export class CompanyRolesManagementComponent implements OnInit {
     else this.newRoleScopes = this.newRoleScopes.filter((s) => s !== scope);
   }
 
-  pushNewRoleAssignee(user: { id: string; email: string }) {
-    this.newRoleMembers.push(user);
-    this.newRoleMemberQuery = '';
-    this.newRoleFoundMembers = [];
+  async pushNewRoleAssignee(user: RoleAssigneeInterface) {
+    const existingAssignee = this.newRoleMembers.find(
+      ({ companyUserId, email }) => {
+        return companyUserId === user.companyUserId && email === user.email;
+      }
+    );
+
+    if (existingAssignee) {
+      await this.globalMessageService.handleWarning({
+        message: 'member-already-on-list'
+      });
+    } else {
+      this.newRoleMembers.push(user);
+      this.newRoleMemberQuery = '';
+      this.newRoleFoundMembers = [];
+    }
   }
 
   removeNewRoleAssignee(userId: string) {
-    this.newRoleMembers = this.newRoleMembers.filter(({ id }) => id !== userId);
+    this.newRoleMembers = this.newRoleMembers.filter(
+      ({ companyUserId }) => companyUserId !== userId
+    );
   }
 
   searchForCompanyMember(companyMember: string) {
@@ -199,6 +222,7 @@ export class CompanyRolesManagementComponent implements OnInit {
     this.newRoleMemberQuery = '';
     this.newRoleScopes = [];
     this.newRoleFoundMembers = [];
+    this.newRoleMembers = [];
   }
 
   fetchCompanyRoles() {

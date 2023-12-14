@@ -2,15 +2,15 @@ import { BadRequestException } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
 
-export class RoleStillAssignedException extends BadRequestException {
+export class RoleAlreadyExistsException extends BadRequestException {
   @ApiProperty({
     type: String,
-    description: DocsProperty.ROLE_STILL_ASSIGNED_DESC,
-    example: DocsProperty.ROLE_STILL_ASSIGNED_EXAMPLE
+    description: DocsProperty.ROLE_ALREADY_EXISTS_DESC,
+    example: DocsProperty.ROLE_ALREADY_EXISTS_EXAMPLE
   })
   readonly message: string;
 
-  constructor(message = 'role-still-assigned') {
+  constructor(message = 'role-already-exists') {
     super(message);
     this.message = message;
   }

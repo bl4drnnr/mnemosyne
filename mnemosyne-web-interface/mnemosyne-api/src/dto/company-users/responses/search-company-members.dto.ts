@@ -1,18 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
+import { RoleAssigneeInterface } from '@interfaces/role-assignee.interface';
 
 export class SearchCompanyMembersDto {
   @ApiProperty({
-    type: Array<{ id: string; email: string }>,
+    type: Array<RoleAssigneeInterface>,
     description: DocsProperty.COMPANY_MEMBERS_EMAILS_DESC,
     example: [
-      { id: DocsProperty.USER_ID_EXAMPLE, email: DocsProperty.EMAIL_EXAMPLE }
+      {
+        companyUserId: DocsProperty.USER_ID_EXAMPLE,
+        email: DocsProperty.EMAIL_EXAMPLE
+      }
     ],
     isArray: true
   })
-  companyMembers: Array<{ id: string; email: string }>;
+  companyMembers: Array<RoleAssigneeInterface>;
 
-  constructor(companyMembers: Array<{ id: string; email: string }>) {
+  constructor(companyMembers: Array<RoleAssigneeInterface>) {
     this.companyMembers = companyMembers;
   }
 }

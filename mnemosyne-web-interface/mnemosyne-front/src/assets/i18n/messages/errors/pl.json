@@ -53,7 +53,8 @@
     "wrong-company-role-name-length": "Nieprawidłowa niestandardowa długość nazwy roli firmy",
     "wrong-company-role-description-format": "Nieprawidłowy, niestandardowy format opisu roli firmy",
     "wrong-company-role-description-length": "Nieprawidłowa długość opisu roli niestandardowej firmy",
-    "wrong-company-role-scope-length": "Nieprawidłowa długość niestandardowych zakresów ról firmy"
+    "wrong-company-role-scope-length": "Nieprawidłowa długość niestandardowych zakresów ról firmy",
+    "wrong-new-role-assignees-length": "Nieprawidłowa długość nowych przypisanych ról"
   },
   "wrong-timeframe": "Niewłaściwy przedział czasowy",
   "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania",
@@ -68,6 +69,5 @@
   "parse-error": "Błąd analizy",
   "company-not-found": "Firma nie została znaleziona",
   "company-member-not-found": "Nie znaleziono członka firmy",
-  "role-still-assigned": "Rola jest nadal przypisana użytkownikom",
   "role-doesnt-exists": "Rola nie istnieje"
 }

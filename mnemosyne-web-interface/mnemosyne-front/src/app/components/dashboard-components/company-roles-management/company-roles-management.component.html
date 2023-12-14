@@ -167,10 +167,11 @@
       <p class="modal-paragraph">
         {{ t('settings.companySettingsSection.roleWillBeAssigned') }}:
       </p>
+
       <div class="found-company-member-container" *ngFor="let user of newRoleMembers">
         <p class="found-company-member">{{ user.email }}</p>
-        <span class="remove-found-company-member" (click)="removeNewRoleAssignee(user.id)">
-          <basic-emoji emoji="cross-mark.png" [width]="24" [height]="24"/>
+        <span class="remove-found-company-member" (click)="removeNewRoleAssignee(user.companyUserId)">
+          <basic-emoji emoji="cross-mark.png" [width]="16" [height]="16"/>
         </span>
       </div>
     </div>

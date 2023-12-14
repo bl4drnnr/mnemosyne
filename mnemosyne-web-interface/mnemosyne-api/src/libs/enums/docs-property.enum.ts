@@ -208,7 +208,8 @@ export enum DocsProperty {
   COMPANY_ROLE_SCOPES_DESC = 'The array of the scopes for company custom role',
   COMPANY_ROLE_SCOPE_EXAMPLE = 'USER_MANAGEMENT',
   COMPANY_ROLES_DESC = 'Getting company roles response',
-  ROLE_STILL_ASSIGNED_DESC = 'Role is still assigned error message',
-  ROLE_STILL_ASSIGNED_EXAMPLE = 'role-still-assigned',
-  COMPANY_MEMBERS_EMAILS_DESC = 'Array with the id of the user and their emails'
+  COMPANY_MEMBERS_EMAILS_DESC = 'Array with the id of the user and their emails',
+  NEW_ROLE_ASSIGNEES_DESC = 'The array with user IDs for new role',
+  ROLE_ALREADY_EXISTS_DESC = 'Role already exists error message',
+  ROLE_ALREADY_EXISTS_EXAMPLE = 'role-already-exists'
 }

@@ -53,7 +53,8 @@
     "wrong-company-role-name-length": "Неверная длина имени пользовательской роли компании",
     "wrong-company-role-description-format": "Неправильный формат описания роли компании",
     "wrong-company-role-description-length": "Неверная длина пользовательского описания роли компании",
-    "wrong-company-role-scope-length": "Неверная длина пользовательских ролей компании"
+    "wrong-company-role-scope-length": "Неверная длина пользовательских ролей компании",
+    "wrong-new-role-assignees-length": "Неверная длина новых исполнителей роли"
   },
   "wrong-timeframe": "Неверный таймфрейм",
   "invalid-recovery-keys": "Недействительные ключи восстановления",
@@ -68,6 +69,5 @@
   "parse-error": "Ошибка синтаксического анализа",
   "company-not-found": "Компания не найдена",
   "company-member-not-found": "Участник компании не найден",
-  "role-still-assigned": "Роль по-прежнему назначена пользователям",
   "role-doesnt-exists": "Роль не существует"
 }

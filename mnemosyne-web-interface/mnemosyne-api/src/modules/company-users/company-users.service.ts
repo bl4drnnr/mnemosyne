@@ -266,19 +266,20 @@ export class CompanyUsersService {
               { lastName: { [Op.iLike]: `%${query}%` } }
             ]
           },
-          attributes: ['id', 'email']
+          attributes: ['email']
         }
       ],
+      attributes: ['id'],
       limit,
       offset,
       transaction
     });
 
-    const companyMembersEmails = users.map(({ user }) => {
-      return { email: user.email, id: user.id };
+    const companyMembers = users.map(({ id, user }) => {
+      return { email: user.email, companyUserId: id };
     });
 
-    return new SearchCompanyMembersDto(companyMembersEmails);
+    return new SearchCompanyMembersDto(companyMembers);
   }
 
   async createCompanyUser({

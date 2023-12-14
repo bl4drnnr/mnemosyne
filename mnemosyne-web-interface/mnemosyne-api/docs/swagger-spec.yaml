@@ -2666,10 +2666,18 @@ components:
           type: array
           items:
             type: array
+        roleAssignees:
+          description: The array with user IDs for new role
+          example:
+            - 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+          type: array
+          items:
+            type: array
       required:
         - name
         - description
         - roleScopes
+        - roleAssignees
     UpdateCompanyRoleDto:
       type: object
       properties:
@@ -2831,7 +2839,7 @@ components:
         companyMembers:
           description: Array with the id of the user and their emails
           example:
-            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+            - companyUserId: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
               email: joe@doe.com
           type: array
           items:
