@@ -21,7 +21,7 @@ import {
 import { UsersService } from '@modules/users.service';
 import { ForgotPasswordDto } from '@dto/forgot-password.dto';
 import { ValidationPipe } from '@pipes/validation.pipe';
-import { TransactionParam } from '@decorators/transaction.decorator';
+import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
@@ -45,7 +45,7 @@ export class UsersController {
   @Post('forgot-password')
   forgotPassword(
     @Body() payload: ForgotPasswordDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.usersService.forgotPassword({ payload, trx });
   }
@@ -74,7 +74,7 @@ export class UsersController {
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('user-info')
-  getUserInfo(@UserId() userId: string, @TransactionParam() trx: Transaction) {
+  getUserInfo(@UserId() userId: string, @TrxDecorator() trx: Transaction) {
     return this.usersService.getUserInfo({ userId, trx });
   }
 
@@ -87,7 +87,7 @@ export class UsersController {
   @Get('user-security')
   getUserSecuritySettings(
     @UserId() userId: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.usersService.getUserSecuritySettings({ userId, trx });
   }
@@ -104,7 +104,7 @@ export class UsersController {
   updateUserInfo(
     @UserId() userId: string,
     @Body() payload: UpdateUserInfoDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.usersService.updateUserInfo({
       userId,

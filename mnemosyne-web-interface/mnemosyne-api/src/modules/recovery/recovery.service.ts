@@ -11,6 +11,7 @@ import { RecoverAccountInterface } from '@interfaces/recover-account.interface';
 import { GenerateAndSaveKeysInterface } from '@interfaces/generate-and-save-keys.interface';
 import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
+import { RecoveryKeysResponseDto } from '@dto/recovery-keys.dto';
 
 @Injectable()
 export class RecoveryService {
@@ -157,6 +158,6 @@ export class RecoveryService {
       trx
     });
 
-    return { recoveryKeys };
+    return new RecoveryKeysResponseDto(recoveryKeys);
   }
 }

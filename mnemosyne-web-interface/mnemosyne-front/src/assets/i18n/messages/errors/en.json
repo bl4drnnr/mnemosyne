@@ -1,5 +1,6 @@
 {
   "error": "Error",
+  "warning": "Warning",
   "wrong-credentials": "Wrong credentials",
   "corrupted-token": "Corrupted token",
   "token-expired": "Token expired",
@@ -52,7 +53,8 @@
     "wrong-company-role-name-length": "Wrong custom company role name length",
     "wrong-company-role-description-format": "Wrong custom company role description format",
     "wrong-company-role-description-length": "Wrong custom company role description length",
-    "wrong-company-role-scope-length": "Wrong custom company role scopes length"
+    "wrong-company-role-scope-length": "Wrong custom company role scopes length",
+    "wrong-new-role-assignees-length": "Wrong length of new role assignees"
   },
   "wrong-timeframe": "Wrong timeframe",
   "invalid-recovery-keys": "Invalid recovery keys",
@@ -66,5 +68,6 @@
   "wrong-deletion-confirmation": "Wrong deletion confirmation data",
   "parse-error": "Parse error",
   "company-not-found": "Company has not been found",
-  "company-member-not-found": "Company member has not been found"
+  "company-member-not-found": "Company member has not been found",
+  "role-doesnt-exists": "Role does not exist"
 }

@@ -4,4 +4,5 @@ export interface CreateCompanyRolePayload {
   name: string;
   description: string;
   roleScopes: Array<RoleScope>;
+  roleAssignees: Array<string>;
 }

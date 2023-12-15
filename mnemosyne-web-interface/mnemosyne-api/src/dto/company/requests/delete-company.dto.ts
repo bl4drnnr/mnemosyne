@@ -38,7 +38,13 @@ export class DeleteCompanyDto {
   @ApiProperty({
     type: Array<string>,
     description: DocsProperty.RECOVERY_KEYS_DESC,
-    example: DocsProperty.RECOVERY_KEYS_EXAMPLE,
+    example: [
+      DocsProperty.RECOVERY_KEY_EXAMPLE,
+      DocsProperty.RECOVERY_KEY_EXAMPLE,
+      DocsProperty.RECOVERY_KEY_EXAMPLE,
+      DocsProperty.RECOVERY_KEY_EXAMPLE,
+      DocsProperty.RECOVERY_KEY_EXAMPLE
+    ],
     isArray: true,
     minLength: 5,
     maxLength: 5

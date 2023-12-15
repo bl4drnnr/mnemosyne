@@ -584,7 +584,7 @@ paths:
         - name: page
           required: true
           in: query
-          description: Query for page in order to get list of comapny users.
+          description: Query for page in order to get list of company users.
           schema:
             type: string
         - name: pageSize
@@ -691,6 +691,25 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/roles/get-company-roles:
+    get:
+      operationId: RolesController_getCompanyRoles
+      summary: Endpoint is responsible for getting all roles of the company.
+      parameters: []
+      responses:
+        "201":
+          description: As a response user gets the array with all roles, their names,
+            descriptions and scopes.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCompanyRolesDto"
+      tags:
+        &a5
+        - Roles
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/roles/create-role:
     post:
       operationId: RolesController_createCompanyRole
@@ -704,42 +723,37 @@ paths:
       responses:
         "201":
           description: ""
-      tags:
-        &a5
-        - Roles
+      tags: *a5
       security:
         - x-access-token: []
         - basicAuth: []
   /api/roles/update-role:
     patch:
       operationId: RolesController_updateCompanyRole
+      summary: Endpoint is responsible for updating the company role.
       parameters: []
       requestBody:
         required: true
+        description: In the body user provides the same fields as for role creation.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/UpdateCompanyRoleDto"
       responses:
-        "200":
-          description: ""
-      tags: *a5
-      security:
-        - x-access-token: []
-        - basicAuth: []
-  /api/roles/delete-role:
-    delete:
-      operationId: RolesController_deleteCompanyRole
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/DeleteCompanyRoleDto"
-      responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets message that the role has been successfully
+            updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyRoleUpdatedDto"
+        "404":
+          description: In case if the name of role has been modified and the company does
+            not have this role Not Found exception will be thrown.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleDoesntExistException"
       tags: *a5
       security:
         - x-access-token: []
@@ -906,6 +920,40 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/CompanyMemberNotFoundException"
+      tags: *a6
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/company-users/search-company-members:
+    get:
+      operationId: CompanyUsersController_searchCompanyMembers
+      summary: Endpoint is responsible for searching company members.
+      parameters:
+        - name: query
+          required: true
+          in: query
+          description: Member query
+          schema:
+            type: string
+        - name: page
+          required: true
+          in: query
+          description: Query for page in order to get list of company users.
+          schema:
+            type: string
+        - name: pageSize
+          required: true
+          in: query
+          description: Query for limit in order to get list of company users.
+          schema:
+            type: string
+      responses:
+        "201":
+          description: As a response user gets the array of users with id and email.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchCompanyMembersDto"
       tags: *a6
       security:
         - x-access-token: []
@@ -1835,8 +1883,8 @@ components:
       properties:
         userId:
           type: string
-          description: Hashed (MD5) user ID
-          example: 7630e8093291151b656de0dd48a60017
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         firstName:
           type: string
           description: First name
@@ -2427,8 +2475,8 @@ components:
           example: apple.com
         companyOwnerId:
           type: string
-          description: Hashed (MD5) user ID
-          example: 7630e8093291151b656de0dd48a60017
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         companyOwnerEmail:
           type: string
           description: Email address
@@ -2445,7 +2493,7 @@ components:
         companyUsers:
           description: List of company users (id and email)
           example:
-            - id: 7630e8093291151b656de0dd48a60017
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
               email: joe@doe.com
               roles:
                 - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
@@ -2537,7 +2585,12 @@ components:
           example: "123123123"
         recoveryKeys:
           description: List of recovery keys
-          example: e54ee7e285fbb....
+          example:
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
           type: array
           items:
             type: array
@@ -2580,6 +2633,21 @@ components:
           example: wrong-recovery-keys
       required:
         - message
+    GetCompanyRolesDto:
+      type: object
+      properties:
+        companyRoles:
+          description: Getting company roles response
+          example:
+            - name: My Test Role
+              description: My Test Role Description
+              roleScope:
+                - USER_MANAGEMENT
+          type: array
+          items:
+            type: array
+      required:
+        - companyRoles
     CreateCompanyRoleDto:
       type: object
       properties:
@@ -2593,7 +2661,15 @@ components:
           example: My Test Role Description
         roleScopes:
           description: The array of the scopes for company custom role
-          example: '["USER_MANAGEMENT"]'
+          example:
+            - USER_MANAGEMENT
+          type: array
+          items:
+            type: array
+        roleAssignees:
+          description: The array with user IDs for new role
+          example:
+            - 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
           type: array
           items:
             type: array
@@ -2601,12 +2677,47 @@ components:
         - name
         - description
         - roleScopes
+        - roleAssignees
     UpdateCompanyRoleDto:
       type: object
-      properties: {}
-    DeleteCompanyRoleDto:
+      properties:
+        name:
+          type: string
+          description: Company custom role name
+          example: My Test Role
+        description:
+          type: string
+          description: Company custom role description
+          example: My Test Role Description
+        roleScopes:
+          description: The array of the scopes for company custom role
+          example:
+            - USER_MANAGEMENT
+          type: array
+          items:
+            type: array
+      required:
+        - name
+        - description
+        - roleScopes
+    CompanyRoleUpdatedDto:
       type: object
-      properties: {}
+      properties:
+        message:
+          type: string
+          description: Company role updated response message
+          example: company-role-updated
+      required:
+        - message
+    RoleDoesntExistException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Roles does not exist error message
+          example: role-doesnt-exists
+      required:
+        - message
     AssignRoleDto:
       type: object
       properties: {}
@@ -2651,8 +2762,8 @@ components:
       properties:
         memberId:
           type: string
-          description: Hashed (MD5) user ID
-          example: 7630e8093291151b656de0dd48a60017
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         email:
           type: string
           description: Email address
@@ -2722,6 +2833,19 @@ components:
           example: company-member-deleted
       required:
         - message
+    SearchCompanyMembersDto:
+      type: object
+      properties:
+        companyMembers:
+          description: Array with the id of the user and their emails
+          example:
+            - companyUserId: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              email: joe@doe.com
+          type: array
+          items:
+            type: array
+      required:
+        - companyMembers
     QrCodeDto:
       type: object
       properties:
@@ -3039,7 +3163,12 @@ components:
       properties:
         recoveryKeys:
           description: List of recovery keys
-          example: e54ee7e285fbb....
+          example:
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
           type: array
           items:
             type: array
@@ -3084,7 +3213,12 @@ components:
           example: "123123123"
         recoveryKeys:
           description: List of recovery keys
-          example: e54ee7e285fbb....
+          example:
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
+            - e54ee7e285fbb....*length 1024*
           type: array
           items:
             type: array

@@ -3,7 +3,6 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { throwError } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { ErrorPayloadInterface } from '@interfaces/error-payload.interface';
-import { ErrorMessagesInterface } from '@interfaces/error-messages.interface';
 import { TranslationService } from '@services/translation.service';
 import { MessagesTranslation } from '@translations/messages.enum';
 

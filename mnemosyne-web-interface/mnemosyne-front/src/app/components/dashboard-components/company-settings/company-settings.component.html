@@ -80,7 +80,11 @@
 
       <div *ngIf="companySettingsSection === 'roles'">
         <dashboard-company-roles-management
+          [companyRoles]="companyRoles"
+          (getCompanyRoles)="fetchCompanyRoles()"
           (createNewRoleEvent)="createNewRole($event)"
+          (deleteCompanyRole)="deleteCompanyRole($event)"
+          (updateRole)="updateRole($event)"
         />
       </div>
 

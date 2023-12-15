@@ -91,6 +91,14 @@
     "companyDeletionMessage": "In order to continue with company deletion, except your password you need to provide the recovery keys you have generated while account creation process along with MFA later on.",
     "createNewRoleHeader": "Create new role",
     "createNewRoleDesc": "Here you can create the new role. In order to do that, provide the name and the description of the new role and select scopes. After that, you will be able to assign this new role to users.",
-    "roleManagementDesc": "The purpose of this section is to allow the administrator to manage roles created for the company and assign different permissions for them."
+    "roleManagementDesc": "The purpose of this section is to allow the administrator to manage roles created for the company and assign different permissions for them.",
+    "roleInfoHeader": "Role information",
+    "roleInfoDesc": "Here you can modify the name, description of the role along with its scopes. Also, keep in mind that you cannot delete the role if it is already assigned to existing user. Therefore, before doing that, revoke the role from existing users.",
+    "roleNameHeader": "Name",
+    "roleDescHeader": "Description",
+    "roleMoreInfoHeader": "More information",
+    "roleDeletionRule": "If you want to delete the role, you will have to revoke this role from each user in the company. Once it is done, the role will be deleted automatically.",
+    "foundCompanyMembers": "Found company members",
+    "roleWillBeAssigned": "Role will be assigned to the following"
   }
 }

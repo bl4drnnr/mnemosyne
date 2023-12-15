@@ -13,6 +13,108 @@
     />
   </div>
 
+  <div class="company-roles-container">
+    <div class="company-roles-header">
+      <p class="company-roles-id">ID</p>
+      <p class="company-roles-name">
+        {{ t('settings.companySettingsSection.roleNameHeader') }}
+      </p>
+      <p class="company-roles-desc">
+        {{ t('settings.companySettingsSection.roleDescHeader') }}
+      </p>
+      <p class="company-roles-more">
+        {{ t('settings.companySettingsSection.roleMoreInfoHeader') }}
+      </p>
+    </div>
+
+    <div class="company-role" *ngFor="let role of companyRoles; let idx = index">
+      <p class="company-roles-id">{{ idx + 1 }}</p>
+      <p class="company-roles-name">{{ role.name }}</p>
+      <p class="company-roles-desc">{{ role.description }}</p>
+      <p
+        (click)="showRoleMoreInfo(role)"
+        class="company-roles-more-icon"
+      >
+        <basic-emoji emoji="three-dots.svg" [isSvg]="true" [width]="16" [height]="16"/>
+      </p>
+    </div>
+  </div>
+
+  <div *ngIf="currentRole">
+    <basic-modal
+      [header]="t('settings.companySettingsSection.roleInfoHeader')"
+      [description]="t('settings.companySettingsSection.roleInfoDesc')"
+      [showModal]="showRoleMoreInfoModal"
+      (closeModal)="closeRoleMoreInfoModal()"
+    >
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.roleName')"
+        [placeholder]="t('input.provideRoleName')"
+        [inputDescription]="t('input.provideRoleNameDesc')"
+        [errorMessage]="t('input.roleNameError')"
+        [minLength]="2"
+        [maxLength]="64"
+        [value]="currentRoleName"
+        (valueChange)="currentRoleName = $event"
+        (incorrectInput)="incorrectCurrentRoleName = $event"
+      />
+      <basic-input
+        [onWhite]="true"
+        [label]="t('input.roleDescription')"
+        [placeholder]="t('input.provideRoleDescription')"
+        [inputDescription]="t('input.provideRoleDescriptionDesc')"
+        [errorMessage]="t('input.roleDescriptionError')"
+        [minLength]="2"
+        [maxLength]="128"
+        [value]="currentRoleDescription"
+        (valueChange)="currentRoleDescription = $event"
+        (incorrectInput)="incorrectCurrentRoleDescription = $event"
+      />
+
+      <basic-checkbox
+        [checked]="currentRoleUsersManagementScope"
+        [isWithDescription]="true"
+        (checkedChange)="changeCurrentRoleScope(Scopes.USER_MANAGEMENT)"
+      >
+        <span class="on-white-checkbox" content>{{ t('scopes.USER_MANAGEMENT') }}</span>
+        <span class="on-white-checkbox-desc" desc>{{ t('scopes.USER_MANAGEMENT_DESC') }}</span>
+      </basic-checkbox>
+
+      <basic-checkbox
+        [checked]="currentRoleRolesManagementScope"
+        [isWithDescription]="true"
+        (checkedChange)="changeCurrentRoleScope(Scopes.ROLES_MANAGEMENT)"
+      >
+        <span class="on-white-checkbox" content>{{ t('scopes.ROLES_MANAGEMENT') }}</span>
+        <span class="on-white-checkbox-desc" desc>{{ t('scopes.ROLES_MANAGEMENT_DESC') }}</span>
+
+      </basic-checkbox>
+
+      <basic-checkbox
+        [checked]="currentRoleCompanyInfoManagementScope"
+        [isWithDescription]="true"
+        (checkedChange)="changeCurrentRoleScope(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
+      >
+        <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
+        <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
+      </basic-checkbox>
+
+      <p class="modal-paragraph">
+        {{ t('settings.companySettingsSection.roleDeletionRule') }}
+      </p>
+
+      <div class="last-button">
+        <basic-button
+          [onWhite]="true"
+          [label]="t('button.saveChanges')"
+          [disabled]="disableSaveRoleChangesButton()"
+          (buttonClick)="saveRoleChanges()"
+        />
+      </div>
+    </basic-modal>
+  </div>
+
   <basic-modal
     [header]="t('settings.companySettingsSection.createNewRoleHeader')"
     [description]="t('settings.companySettingsSection.createNewRoleDesc')"
@@ -43,11 +145,41 @@
       (valueChange)="newRoleDescription = $event"
       (incorrectInput)="incorrectNewRoleDescription = $event"
     />
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.newRoleAssignee')"
+      [placeholder]="t('input.provideNewRoleAssignee')"
+      [inputDescription]="t('input.newRoleAssigneeDesc')"
+      [value]="newRoleMemberQuery"
+      (valueChange)="searchForCompanyMember($event)"
+    />
+
+    <div *ngIf="showFoundCompanyMember()">
+      <p class="modal-paragraph">
+        {{ t('settings.companySettingsSection.foundCompanyMembers') }}:
+      </p>
+      <div class="role-assignee-container" *ngFor="let user of newRoleFoundMembers">
+        <p class="role-assignee" (click)="pushNewRoleAssignee(user)">{{ user.email }}</p>
+      </div>
+    </div>
+
+    <div *ngIf="newRoleMembers.length > 0">
+      <p class="modal-paragraph">
+        {{ t('settings.companySettingsSection.roleWillBeAssigned') }}:
+      </p>
+
+      <div class="found-company-member-container" *ngFor="let user of newRoleMembers">
+        <p class="found-company-member">{{ user.email }}</p>
+        <span class="remove-found-company-member" (click)="removeNewRoleAssignee(user.companyUserId)">
+          <basic-emoji emoji="cross-mark.png" [width]="16" [height]="16"/>
+        </span>
+      </div>
+    </div>
 
     <basic-checkbox
       [checked]="false"
       [isWithDescription]="true"
-      (checkedChange)="pushNewRoleScope('USER_MANAGEMENT')"
+      (checkedChange)="pushNewRoleScope(Scopes.USER_MANAGEMENT)"
     >
       <span class="on-white-checkbox" content>{{ t('scopes.USER_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.USER_MANAGEMENT_DESC') }}</span>
@@ -56,7 +188,7 @@
     <basic-checkbox
       [checked]="false"
       [isWithDescription]="true"
-      (checkedChange)="pushNewRoleScope('ROLES_MANAGEMENT')"
+      (checkedChange)="pushNewRoleScope(Scopes.ROLES_MANAGEMENT)"
     >
       <span class="on-white-checkbox" content>{{ t('scopes.ROLES_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.ROLES_MANAGEMENT_DESC') }}</span>
@@ -66,7 +198,7 @@
     <basic-checkbox
       [checked]="false"
       [isWithDescription]="true"
-      (checkedChange)="pushNewRoleScope('COMPANY_INFORMATION_MANAGEMENT')"
+      (checkedChange)="pushNewRoleScope(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
     >
       <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>

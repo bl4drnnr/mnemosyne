@@ -9,7 +9,7 @@
   align-items: center;
 
   &.danger {
-    border-bottom: 1px solid var(--warn-color);
+    border-bottom: 1px solid var(--error-color-light);
     &:hover {
       border-bottom: 1px solid var(--error-color);
     }
@@ -95,4 +95,5 @@
   font-size: 14px;
   opacity: .75;
   margin: 20px 0;
+  color: $color-black;
 }

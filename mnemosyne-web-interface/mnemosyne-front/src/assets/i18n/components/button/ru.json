@@ -27,5 +27,7 @@
   "transferOwnershipButton": "Передать право собственности",
   "deleteCompany": "Удалить компанию",
   "deleteCompanyMember": "Удалить члена компании",
-  "createNewRole": "Создать новую роль"
+  "createNewRole": "Создать новую роль",
+  "saveChanges": "Сохранить изменения",
+  "deleteRole": "Удалить роль"
 }

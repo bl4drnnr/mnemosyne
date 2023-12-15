@@ -27,5 +27,7 @@
   "transferOwnershipButton": "Transfer ownership",
   "deleteCompany": "Delete company",
   "deleteCompanyMember": "Delete company member",
-  "createNewRole": "Create new role"
+  "createNewRole": "Create new role",
+  "saveChanges": "Save changes",
+  "deleteRole": "Delete role"
 }

@@ -10,12 +10,18 @@ import { MessagesTranslation } from '@translations/messages.enum';
 export class GlobalMessageService {
   message$ = new Subject<string>();
   isError = false;
+  isWarning = false;
 
   constructor(private readonly translationService: TranslationService) {}
 
-  handle({ message, isError = false }: HandleGlobalMessageInterface) {
+  handle({
+    message,
+    isError = false,
+    isWarning = false
+  }: HandleGlobalMessageInterface) {
     this.message$.next(message);
     this.isError = isError;
+    this.isWarning = isWarning;
   }
 
   async handleError({ message }: HandleGlobalMessageInterface) {
@@ -25,6 +31,15 @@ export class GlobalMessageService {
     );
 
     this.handle({ message: translationMessage, isError: true });
+  }
+
+  async handleWarning({ message }: HandleGlobalMessageInterface) {
+    const translationMessage = await this.translationService.translateText(
+      message,
+      MessagesTranslation.ERRORS
+    );
+
+    this.handle({ message: translationMessage, isWarning: true });
   }
 
   clear() {

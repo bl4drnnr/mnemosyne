@@ -1,5 +1,6 @@
 {
   "error": "Ошибка",
+  "warning": "Внимание",
   "wrong-credentials": "Неверные учетные данные",
   "corrupted-token": "Повреждённый токен",
   "token-expired": "Срок действия токена истек",
@@ -52,7 +53,8 @@
     "wrong-company-role-name-length": "Неверная длина имени пользовательской роли компании",
     "wrong-company-role-description-format": "Неправильный формат описания роли компании",
     "wrong-company-role-description-length": "Неверная длина пользовательского описания роли компании",
-    "wrong-company-role-scope-length": "Неверная длина пользовательских ролей компании"
+    "wrong-company-role-scope-length": "Неверная длина пользовательских ролей компании",
+    "wrong-new-role-assignees-length": "Неверная длина новых исполнителей роли"
   },
   "wrong-timeframe": "Неверный таймфрейм",
   "invalid-recovery-keys": "Недействительные ключи восстановления",
@@ -66,5 +68,6 @@
   "wrong-deletion-confirmation": "Неправильные данные подтверждения удаления",
   "parse-error": "Ошибка синтаксического анализа",
   "company-not-found": "Компания не найдена",
-  "company-member-not-found": "Участник компании не найден"
+  "company-member-not-found": "Участник компании не найден",
+  "role-doesnt-exists": "Роль не существует"
 }

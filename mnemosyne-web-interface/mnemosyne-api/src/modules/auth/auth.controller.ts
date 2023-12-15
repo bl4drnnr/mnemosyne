@@ -26,7 +26,7 @@ import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { LogInUserDto } from '@dto/log-in-user.dto';
-import { TransactionParam } from '@decorators/transaction.decorator';
+import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import { AuthDocs } from '@docs/auth.docs';
@@ -45,7 +45,7 @@ export class AuthController {
   @ApiBasicAuth('basicAuth')
   @UsePipes(ValidationPipe)
   @Post('login')
-  login(@Body() payload: LogInUserDto, @TransactionParam() trx: Transaction) {
+  login(@Body() payload: LogInUserDto, @TrxDecorator() trx: Transaction) {
     return this.authService.login({ payload, trx });
   }
 
@@ -60,7 +60,7 @@ export class AuthController {
   @Post('registration')
   registration(
     @Body() payload: CreateUserDto,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.authService.registration({ payload, trx });
   }
@@ -75,7 +75,7 @@ export class AuthController {
   async logout(
     @UserId() userId: string,
     @Res() res: any,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     res.clearCookie('_rt');
 
@@ -93,7 +93,7 @@ export class AuthController {
   @Get('refresh')
   refreshTokens(
     @CookieRefreshToken() refreshToken: string,
-    @TransactionParam() trx: Transaction
+    @TrxDecorator() trx: Transaction
   ) {
     return this.authService.refreshToken({
       refreshToken,

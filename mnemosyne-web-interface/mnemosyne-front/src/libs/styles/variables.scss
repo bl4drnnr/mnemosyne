@@ -37,10 +37,12 @@ $placeholder-color: #b3b3b3;
 $image-placeholder: #f5f5f5;
 
 $success-color: #53be62;
-$warn-color: #fc6161;
+$error-color: #fc6161;
+$warning-color: #ffcc00;
 
 $success-color-svg: invert(59%) sepia(51%) saturate(481%) hue-rotate(77deg) brightness(99%) contrast(87%);
-$warn-color-svg: invert(54%) sepia(12%) saturate(2947%) hue-rotate(314deg) brightness(100%) contrast(98%);
+$error-color-svg: invert(54%) sepia(12%) saturate(2947%) hue-rotate(314deg) brightness(100%) contrast(98%);
+$warning-color-svg: invert(82%) sepia(36%) saturate(3389%) hue-rotate(359deg) brightness(104%) contrast(104%);
 $svg-color-dark: invert(0%) sepia(3%) saturate(43%) hue-rotate(58deg) brightness(87%) contrast(101%);
 $svg-color-light: invert(100%) sepia(100%) saturate(2%) hue-rotate(35deg) brightness(103%) contrast(101%);
 $svg-color-main: invert(78%) sepia(50%) saturate(1498%) hue-rotate(358deg) brightness(101%) contrast(104%);
@@ -340,8 +342,10 @@ p, spam, ul, li, ol {
   --disabled-color: #{rgba($block-color, .2)};
   --success-color: #{$success-color};
   --success-color-svg: #{$success-color-svg};
-  --warn-color: #{$warn-color};
-  --warn-color-svg: #{$warn-color-svg};
+  --error-color-light: #{$error-color};
+  --error-color-light-svg: #{$error-color-svg};
+  --warning-color: #{$warning-color};
+  --warning-color-svg: #{$warning-color-svg};
   --svg-color: #{$svg-color-dark};
   --svg-color-main: #{$svg-color-main};
   --error-color: #{$color-error};
@@ -365,8 +369,10 @@ p, spam, ul, li, ol {
   --disabled-color: #{rgba($color-white, .1)};
   --success-color: #{$success-color};
   --success-color-svg: #{$success-color-svg};
-  --warn-color: #{$warn-color};
-  --warn-color-svg: #{$warn-color-svg};
+  --error-color-light: #{$error-color};
+  --error-color-light-svg: #{$error-color-svg};
+  --warning-color: #{$warning-color};
+  --warning-color-svg: #{$warning-color-svg};
   --svg-color: #{$svg-color-light};
   --svg-color-main: #{$svg-color-main};
   --error-color: #{$color-error};

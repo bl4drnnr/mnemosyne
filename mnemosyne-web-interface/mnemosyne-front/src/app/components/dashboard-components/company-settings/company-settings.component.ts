@@ -12,6 +12,8 @@ import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 import { CompanyUsersService } from '@services/company-users.service';
 import { CreateCompanyRolePayload } from '@payloads/create-company-role.interface';
 import { RolesService } from '@services/roles.service';
+import { CompanyRoleType } from '@interfaces/company-role.type';
+import { UpdateCompanyRolePayload } from '@payloads/update-company-role.interface';
 
 @Component({
   selector: 'dashboard-company-settings',
@@ -26,6 +28,7 @@ export class CompanySettingsComponent implements OnInit {
   pageSize: string = '10';
   totalItems: number;
   companyUsers: UsersList;
+  companyRoles: CompanyRoleType;
 
   constructor(
     private readonly rolesService: RolesService,
@@ -58,6 +61,12 @@ export class CompanySettingsComponent implements OnInit {
       });
   }
 
+  fetchCompanyRoles() {
+    this.rolesService.getCompanyRoles().subscribe({
+      next: ({ companyRoles }) => (this.companyRoles = companyRoles)
+    });
+  }
+
   saveCompanyInformation(payload: UpdateCompanyInfoPayload) {
     this.companyService.saveCompanyInformation(payload).subscribe({
       next: async ({ message }) => {
@@ -80,9 +89,21 @@ export class CompanySettingsComponent implements OnInit {
     this.rolesService.createCompanyRole(payload).subscribe({
       next: async ({ message }) => {
         await this.handleGlobalMessage(message);
-      },
-      error: () => this.refreshTokensService.handleLogout()
+      }
     });
+  }
+
+  updateRole(payload: UpdateCompanyRolePayload) {
+    this.rolesService.updateCompanyRole(payload).subscribe({
+      next: async ({ message }) => {
+        await this.handleGlobalMessage(message);
+        this.fetchCompanyRoles();
+      }
+    });
+  }
+
+  async deleteCompanyRole(message: string) {
+    await this.handleGlobalMessage(message);
   }
 
   async deleteCompanyMember(message: string) {

@@ -12,19 +12,132 @@ import { CreateCompanyRoleInterface } from '@interfaces/create-company-role.inte
 import { CompanyRoleCreatedDto } from '@dto/company-role-created.dto';
 import { UpdateCompanyRoleInterface } from '@interfaces/update-company-role.interface';
 import { CompanyRoleUpdatedDto } from '@dto/company-role-updated.dto';
-import { DeleteCompanyRoleInterface } from '@interfaces/delete-company-role.interface';
-import { CompanyRoleDeletedDto } from '@dto/company-role-deleted.dto';
 import { AssignRoleInterface } from '@interfaces/assign-role.interface';
 import { CompanyRoleAssignedDto } from '@dto/company-role-assigned.dto';
 import { RevokeRoleInterface } from '@interfaces/revoke-role.interface';
 import { CompanyRoleRevokedDto } from '@dto/company-role-revoked.dto';
+import { GetCompanyRolesInterface } from '@interfaces/get-company-roles.interface';
+import { Company } from '@models/company.model';
+import { UtilsService } from '@shared/utils.service';
+import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
+import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
+import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
 
 @Injectable()
 export class RolesService {
   constructor(
+    private readonly utilsService: UtilsService,
     @InjectModel(Role) private readonly roleRepository: typeof Role,
     @InjectModel(UserRole) private readonly userRoleRepository: typeof UserRole
   ) {}
+
+  async getCompanyRoles({
+    companyId,
+    trx: transaction
+  }: GetCompanyRolesInterface) {
+    const allAssignedRoles = await this.roleRepository.findAll({
+      include: {
+        model: Company,
+        where: { id: companyId }
+      },
+      transaction
+    });
+
+    const roles = allAssignedRoles.map(({ name, description, roleScopes }) => {
+      return { name, description, roleScopes };
+    });
+
+    const companyRoles = this.utilsService.removeDuplicates(roles, 'name');
+
+    return new GetCompanyRolesDto(companyRoles);
+  }
+
+  async createCompanyRole({
+    companyId,
+    payload,
+    trx: transaction
+  }: CreateCompanyRoleInterface) {
+    const { name, description, roleScopes, roleAssignees } = payload;
+
+    const alreadyExistingRoles = await this.roleRepository.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`
+        }
+      },
+      include: {
+        model: Company,
+        where: { id: companyId }
+      },
+      transaction
+    });
+
+    if (alreadyExistingRoles.length > 0) throw new RoleAlreadyExistsException();
+
+    const createdRole = await this.roleRepository.create(
+      {
+        name,
+        description,
+        roleScopes
+      },
+      { transaction, returning: ['id'] }
+    );
+
+    // @TODO 1 user - 1 role
+    for (const companyUserId of roleAssignees) {
+      await this.userRoleRepository.create({
+        companyId,
+        companyUserId,
+        roleId: createdRole.id
+      });
+    }
+
+    return new CompanyRoleCreatedDto();
+  }
+
+  async updateCompanyRole({
+    companyId,
+    payload,
+    trx: transaction
+  }: UpdateCompanyRoleInterface) {
+    const { name } = payload;
+
+    const companyRoles = await this.roleRepository.findAll({
+      where: { name },
+      include: {
+        model: Company,
+        where: { id: companyId }
+      },
+      transaction
+    });
+
+    if (!companyRoles) throw new RoleDoesntExistException();
+
+    const companyRolesIds = companyRoles.map(({ id }) => id);
+
+    await this.roleRepository.update(
+      {
+        ...payload
+      },
+      {
+        returning: false,
+        where: {
+          id: { [Op.in]: companyRolesIds }
+        },
+        transaction
+      }
+    );
+
+    return new CompanyRoleUpdatedDto();
+  }
+
+  assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
+    return new CompanyRoleAssignedDto();
+  }
+
+  revokeUserRole({ companyId, payload, trx }: RevokeRoleInterface) {
+    return new CompanyRoleRevokedDto();
+  }
 
   async getUserRolesByCompanyUserId({
     companyUserId,
@@ -45,7 +158,6 @@ export class RolesService {
       }
     });
 
-    // @TODO I might need to delete duplicates
     return roles.map(({ id, name, description }) => {
       return { name, description, id };
     });
@@ -92,26 +204,6 @@ export class RolesService {
       },
       { transaction }
     );
-  }
-
-  createCompanyRole({ companyId, payload, trx }: CreateCompanyRoleInterface) {
-    return new CompanyRoleCreatedDto();
-  }
-
-  updateCompanyRole({ companyId, payload, trx }: UpdateCompanyRoleInterface) {
-    return new CompanyRoleUpdatedDto();
-  }
-
-  deleteCompanyRole({ companyId, payload, trx }: DeleteCompanyRoleInterface) {
-    return new CompanyRoleDeletedDto();
-  }
-
-  assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
-    return new CompanyRoleAssignedDto();
-  }
-
-  revokeUserRole({ companyId, payload, trx }: RevokeRoleInterface) {
-    return new CompanyRoleRevokedDto();
   }
 
   private async createInitRole({
