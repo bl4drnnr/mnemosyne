@@ -713,16 +713,31 @@ paths:
   /api/roles/create-role:
     post:
       operationId: RolesController_createCompanyRole
+      summary: Endpoint is responsible for the creation of the custom company role.
       parameters: []
       requestBody:
         required: true
+        description: In the body user has to provide the name, description, scopes and
+          assignees for the new role.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/CreateCompanyRoleDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets the message with the information that the
+            role has been successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyRoleCreatedDto"
+        "400":
+          description: Bad request error is thrown in case if the role with this name in
+            the company already exists.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RoleAlreadyExistsException"
       tags: *a5
       security:
         - x-access-token: []
@@ -2678,6 +2693,24 @@ components:
         - description
         - roleScopes
         - roleAssignees
+    CompanyRoleCreatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company role created response message
+          example: company-role-created
+      required:
+        - message
+    RoleAlreadyExistsException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Role already exists error message
+          example: role-already-exists
+      required:
+        - message
     UpdateCompanyRoleDto:
       type: object
       properties:

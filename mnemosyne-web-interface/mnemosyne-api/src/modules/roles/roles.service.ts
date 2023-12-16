@@ -83,7 +83,6 @@ export class RolesService {
       { transaction, returning: ['id'] }
     );
 
-    // @TODO 1 user - 1 role
     for (const companyUserId of roleAssignees) {
       await this.userRoleRepository.create({
         companyId,

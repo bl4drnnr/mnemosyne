@@ -73,6 +73,18 @@
   border: 1px solid rgba($color-black, .1);
   border-radius: 8px;
 
+  &.first {
+    border-radius: 8px 8px 0 0;
+  }
+
+  &.last {
+    border-radius: 0 0 8px 8px;
+  }
+
+  &:hover {
+    background-color: rgba($block-color, .2);
+  }
+
   .role-assignee {
     display: flex;
     align-items: center;
@@ -83,11 +95,6 @@
     font-size: 14px;
     opacity: .75;
     color: $color-black;
-    border-radius: 8px;
-
-    &:hover {
-      background-color: rgba($block-color, .2);
-    }
   }
 }
 

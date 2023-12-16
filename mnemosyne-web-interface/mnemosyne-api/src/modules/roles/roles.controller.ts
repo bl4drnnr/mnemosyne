@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { RolesService } from '@modules/roles.service';
 import {
+  ApiBadRequestResponse,
   ApiBasicAuth,
   ApiBearerAuth,
   ApiBody,
@@ -56,6 +57,11 @@ export class RolesController {
     });
   }
 
+  @ApiOperation(RolesDocs.CreateRole.ApiOperation)
+  @ApiExtraModels(...RolesDocs.CreateRole.ApiExtraModels)
+  @ApiResponse(RolesDocs.CreateRole.ApiResponse)
+  @ApiBadRequestResponse(RolesDocs.CreateRole.ApiBadRequestResponse)
+  @ApiBody(RolesDocs.CreateRole.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
