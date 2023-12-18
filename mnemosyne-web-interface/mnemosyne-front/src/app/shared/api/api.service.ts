@@ -43,14 +43,9 @@ export class ApiService {
       headers
     });
 
-    const loaderTimeout$ = timer(0).pipe(
-      mergeMap(() => {
-        this.loaderService.start();
-        return request$;
-      })
-    );
+    this.loaderService.start();
 
-    return loaderTimeout$.pipe(
+    return request$.pipe(
       catchError(async (error) => {
         await this.errorHandler.errorHandler(error);
         throw error;

@@ -158,7 +158,14 @@
       <p class="modal-paragraph">
         {{ t('settings.companySettingsSection.foundCompanyMembers') }}:
       </p>
-      <div class="role-assignee-container" *ngFor="let user of newRoleFoundMembers">
+      <div
+        class="role-assignee-container"
+        *ngFor="let user of newRoleFoundMembers; let idx = index"
+        [ngClass]="{
+          'first': idx === 0 && newRoleFoundMembers.length > 1,
+          'last': idx === newRoleFoundMembers.length - 1
+        }"
+      >
         <p class="role-assignee" (click)="pushNewRoleAssignee(user)">{{ user.email }}</p>
       </div>
     </div>

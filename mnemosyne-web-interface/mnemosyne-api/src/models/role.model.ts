@@ -42,7 +42,7 @@ export class Role extends Model<Role> {
   roleScopes: Array<RoleScope>;
 
   @BelongsToMany(() => CompanyUser, () => UserRole)
-  users: Array<CompanyUser>;
+  companyUsers: Array<CompanyUser>;
 
   @BelongsToMany(() => Company, () => UserRole)
   companies: Array<Company>;
