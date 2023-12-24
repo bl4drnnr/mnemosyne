@@ -38,6 +38,7 @@ import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
 import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { RolesService } from '@modules/roles.service';
+import {LogInUserResponseDto} from "@dto/log-in-user.dto";
 
 @Injectable()
 export class AuthService {
@@ -121,7 +122,7 @@ export class AuthService {
 
     const { _rt, _at } = await this.generateTokens(generateTokensPayload);
 
-    return { _rt, _at };
+    return new LogInUserResponseDto({ _rt, _at });
   }
 
   async registration({ payload, trx }: RegistrationInterface) {
