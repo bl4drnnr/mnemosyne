@@ -34,6 +34,7 @@ export abstract class AuthDocs {
       WrongCodeException
     ];
     const ApiResponses = [
+      LogInUserResponseDto,
       MfaNotSetDto,
       RecoveryKeysNotSetDto,
       FullMfaRequiredDto,

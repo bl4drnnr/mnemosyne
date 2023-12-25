@@ -407,6 +407,7 @@ paths:
             application/json:
               schema:
                 oneOf:
+                  - $ref: "#/components/schemas/LogInUserResponseDto"
                   - $ref: "#/components/schemas/MfaNotSetDto"
                   - $ref: "#/components/schemas/RecoveryKeysNotSetDto"
                   - $ref: "#/components/schemas/FullMfaRequiredDto"
