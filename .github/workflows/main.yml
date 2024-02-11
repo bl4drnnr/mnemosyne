@@ -10,3 +10,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Create the .ssh directory
+        run: mkdir ~/.ssh && chmod 700 ~/.ssh
+      - name: Install the deploy key for the front-end
+        run: echo "${{ secrets.FE_DEPLOY_KEY }}" > ~/.ssh/fe_deploy && chmod 600 ~/.ssh/fe_deploy
+      - name: Install the deploy key for the back-end
+        run: echo "${{ secrets.BE_DEPLOY_KEY }}" > ~/.ssh/be_deploy && chmod 600 ~/.ssh/be_deploy
+      - name: Install the deploy key for the proxy
+        run: echo "${{ secrets.PROXY_DEPLOY_KEY }}" > ~/.ssh/proxy_deploy && chmod 600 ~/.ssh/proxy_deploy
+      - name: Create the known hosts file
+        run: echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: Remotely trigger building and deployment script for the front-end
+        run: ssh -i ~/.ssh/deploy deployer@${{ secrets.FE_HOST_IP }}
+      - name: Remotely trigger building and deployment script for the back-end
+        run: ssh -i ~/.ssh/deploy deployer@${{ secrets.BE_HOST_IP }}
+      - name: Remotely trigger building and deployment script for the proxy
+        run: ssh -i ~/.ssh/deploy deployer@${{ secrets.PROXY_HOST_IP }}
