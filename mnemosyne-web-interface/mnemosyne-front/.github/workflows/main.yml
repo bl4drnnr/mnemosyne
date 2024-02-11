@@ -1,0 +1,21 @@
+name: Build and deployment
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Create the .ssh directory
+        run: mkdir ~/.ssh && chmod 700 ~/.ssh
+      - name: Install the deploy key
+        run: echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+      - name: Create the known hosts file
+        run: echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+      - name: Remotely trigger building and deployment script
+        run: ssh -i ~/.ssh/deploy deployer@${{ secrets.HOST_IP }}
