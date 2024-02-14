@@ -22,8 +22,8 @@ jobs:
       - name: Create the known hosts file
         run: echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
       - name: Remotely trigger building and deployment script for the front-end
-        run: ssh -i ~/.ssh/deploy deployer@${{ secrets.FE_HOST_IP }}
+        run: ssh -i ~/.ssh/fe_deploy deployer@${{ secrets.FE_HOST_IP }}
       - name: Remotely trigger building and deployment script for the back-end
-        run: ssh -i ~/.ssh/deploy deployer@${{ secrets.BE_HOST_IP }}
+        run: ssh -i ~/.ssh/be_deploy deployer@${{ secrets.BE_HOST_IP }}
       - name: Remotely trigger building and deployment script for the proxy
-        run: ssh -i ~/.ssh/deploy deployer@${{ secrets.PROXY_HOST_IP }}
+        run: ssh -i ~/.ssh/proxy_deploy deployer@${{ secrets.PROXY_HOST_IP }}
