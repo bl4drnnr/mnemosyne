@@ -9,7 +9,7 @@
     "test": "ng test",
     "format": "prettier --write \"{src,packages}/**/*.ts\" && eslint \"{src,packages}/**/*.ts\" --fix",
     "start:prod": "ng serve --port 8080 --disable-host-check",
-    "restart": "pm2 restart blog"
+    "restart": "pm2 restart mnemosyne-front"
   },
   "private": true,
   "dependencies": {
