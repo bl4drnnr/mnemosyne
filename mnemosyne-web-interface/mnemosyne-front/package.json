@@ -8,7 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier --write \"{src,packages}/**/*.ts\" && eslint \"{src,packages}/**/*.ts\" --fix",
-    "start:prod": "ng serve --port 8080 --disable-host-check"
+    "start:prod": "ng serve --port 8080 --disable-host-check",
+    "restart": "pm2 restart blog"
   },
   "private": true,
   "dependencies": {
@@ -26,6 +27,7 @@
     "lottie-web": "^5.12.2",
     "ngx-lottie": "^10.0.0",
     "ngx-typed-js": "^2.1.1",
+    "pm2": "^5.3.1",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
     "zone.js": "~0.13.1"
