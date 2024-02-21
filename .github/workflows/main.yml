@@ -15,6 +15,11 @@ jobs:
         id: ip
         uses: haythem/public-ip@v1.2
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: us-east-1
+
 #      - name: Configure AWS Credentials
 #        uses: aws-actions/configure-aws-credentials@v4
 #        with:
@@ -28,10 +33,10 @@ jobs:
           echo "AWS_SG_NAME=mnemosyne-front" >> $GITHUB_ENV
 
       - name: Add Github Actions IP to Security group
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+#        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
         run: |
           aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
 
@@ -53,10 +58,10 @@ jobs:
         run: ssh -i ~/.ssh/proxy_deploy deployer@${{ secrets.PROXY_HOST_IP }}
 
       - name: Remove Github Actions IP from security group
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+#        env:
+#          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+#          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
         run: |
           aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
         if: always()
