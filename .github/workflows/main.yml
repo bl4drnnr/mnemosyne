@@ -11,19 +11,45 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Get Github action IP
+        id: ip
+        uses: haythem/public-ip@v1.2
+
+      - name: Setting environment variables..
+        run: |
+          echo "AWS_DEFAULT_REGION=eu-central-1" &gt;&gt; $GITHUB_ENV
+          echo "AWS_SG_NAME=mnemosyne-front" &gt;&gt; $GITHUB_ENV
+
+      - name: Add Github Actions IP to Security group
+        run: |
+          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+
       - name: Create the .ssh directory
         run: mkdir ~/.ssh && chmod 700 ~/.ssh
       - name: Install the deploy key for the front-end
         run: echo "${{ secrets.FE_DEPLOY_KEY }}" >> ~/.ssh/fe_deploy && chmod 600 ~/.ssh/fe_deploy
-#      - name: Install the deploy key for the back-end
-#        run: echo "${{ secrets.BE_DEPLOY_KEY }}" >> ~/.ssh/be_deploy && chmod 600 ~/.ssh/be_deploy
-#      - name: Install the deploy key for the proxy
-#        run: echo "${{ secrets.PROXY_DEPLOY_KEY }}" >> ~/.ssh/proxy_deploy && chmod 600 ~/.ssh/proxy_deploy
+      - name: Install the deploy key for the back-end
+        run: echo "${{ secrets.BE_DEPLOY_KEY }}" >> ~/.ssh/be_deploy && chmod 600 ~/.ssh/be_deploy
+      - name: Install the deploy key for the proxy
+        run: echo "${{ secrets.PROXY_DEPLOY_KEY }}" >> ~/.ssh/proxy_deploy && chmod 600 ~/.ssh/proxy_deploy
       - name: Create the known hosts file
         run: echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
       - name: Remotely trigger building and deployment script for the front-end
         run: ssh -i ~/.ssh/fe_deploy deployer@${{ secrets.FE_HOST_IP }}
-#      - name: Remotely trigger building and deployment script for the back-end
-#        run: ssh -i ~/.ssh/be_deploy deployer@${{ secrets.BE_HOST_IP }}
-#      - name: Remotely trigger building and deployment script for the proxy
-#        run: ssh -i ~/.ssh/proxy_deploy deployer@${{ secrets.PROXY_HOST_IP }}
+      - name: Remotely trigger building and deployment script for the back-end
+        run: ssh -i ~/.ssh/be_deploy deployer@${{ secrets.BE_HOST_IP }}
+      - name: Remotely trigger building and deployment script for the proxy
+        run: ssh -i ~/.ssh/proxy_deploy deployer@${{ secrets.PROXY_HOST_IP }}
+
+      - name: Remove Github Actions IP from security group
+        run: |
+          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ env.AWS_DEFAULT_REGION }}
+        if: always()
