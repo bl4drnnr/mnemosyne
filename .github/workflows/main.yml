@@ -24,11 +24,15 @@ jobs:
       - name: Setting environment variables
         run: |
           echo "AWS_DEFAULT_REGION=eu-central-1" >> $GITHUB_ENV
-          echo "AWS_SG_NAME=mnemosyne-front" >> $GITHUB_ENV
+          echo "AWS_FRONT_SG_NAME=mnemosyne-front" >> $GITHUB_ENV
+          echo "AWS_PROXY_SG_NAME=mnemosyne-proxy" >> $GITHUB_ENV
+          echo "AWS_API_SG_NAME=mnemosyne-api" >> $GITHUB_ENV
 
       - name: Add Github Actions IP to Security group
         run: |
-          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_FRONT_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32;
+          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_PROXY_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32;
+          aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_API_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32;
 
       - name: Create the .ssh directory
         run: mkdir ~/.ssh && chmod 700 ~/.ssh
@@ -49,5 +53,7 @@ jobs:
 
       - name: Remove Github Actions IP from security group
         run: |
-          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32
+          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_FRONT_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32;
+          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_PROXY_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32;
+          aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_API_SG_NAME }} --protocol tcp --port 22 --cidr ${{ steps.ip.outputs.ipv4 }}/32;
         if: always()
