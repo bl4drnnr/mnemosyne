@@ -21,7 +21,7 @@ jobs:
           aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }};
           aws configure set region eu-central-1;
 
-      - name: Setting environment variables..
+      - name: Setting environment variables
         run: |
           echo "AWS_DEFAULT_REGION=eu-central-1" >> $GITHUB_ENV
           echo "AWS_SG_NAME=mnemosyne-front" >> $GITHUB_ENV
