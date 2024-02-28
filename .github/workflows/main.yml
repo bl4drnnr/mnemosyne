@@ -48,7 +48,7 @@ jobs:
           aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_PROXY_SG_NAME }} --protocol all --cidr 0.0.0.0/0;
           aws ec2 authorize-security-group-ingress --group-name ${{ env.AWS_API_SG_NAME }} --protocol all --cidr 0.0.0.0/0;
           aws ec2 authorize-security-group-egress --group-id ${{ steps.get_proxy_sg_id.outputs.proxy_security_group_id }} --protocol all --cidr 0.0.0.0/0;
-          aws ec2 authorize-security-group-egress --group-id ${{ steps.get_proxy_sg_id.outputs.api_security_group_id }} --protocol all --cidr 0.0.0.0/0;
+          aws ec2 authorize-security-group-egress --group-id ${{ steps.get_api_sg_id.outputs.api_security_group_id }} --protocol all --cidr 0.0.0.0/0;
 
       - name: Create the .ssh directory
         run: mkdir ~/.ssh && chmod 700 ~/.ssh
@@ -75,5 +75,5 @@ jobs:
           aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_PROXY_SG_NAME }} --protocol all --cidr 0.0.0.0/0;
           aws ec2 revoke-security-group-ingress --group-name ${{ env.AWS_API_SG_NAME }} --protocol all --cidr 0.0.0.0/0;
           aws ec2 revoke-security-group-egress --group-id ${{ steps.get_proxy_sg_id.outputs.proxy_security_group_id }} --protocol all --cidr 0.0.0.0/0;
-          aws ec2 revoke-security-group-egress --group-id ${{ steps.get_proxy_sg_id.outputs.api_security_group_id }} --protocol all --cidr 0.0.0.0/0;
+          aws ec2 revoke-security-group-egress --group-id ${{ steps.get_api_sg_id.outputs.api_security_group_id }} --protocol all --cidr 0.0.0.0/0;
         if: always()
