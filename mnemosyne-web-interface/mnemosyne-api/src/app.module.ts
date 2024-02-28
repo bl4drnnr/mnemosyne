@@ -37,7 +37,12 @@ import { UserRole } from '@models/user-role.model';
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DATABASE,
-      ssl: true,
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      },
       transactionType: TYPES.EXCLUSIVE,
       models: [
         User,
