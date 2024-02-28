@@ -12,6 +12,8 @@
     "start:dev": "NODE_ENV=development nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "process-start:prod": "pm2 start npm --name \"mnemosyne-api\" -- run start:prod",
+    "restart": "pm2 restart mnemosyne-api",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
