@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "format": "prettier --write \"{src,packages}/**/*.ts\" && eslint \"{src,packages}/**/*.ts\" --fix",
-    "start:prod": "ng serve --ssl --port 8080 --disable-host-check",
+    "start:prod": "ng serve --port 8080 --disable-host-check",
     "process-start:prod": "pm2 start npm --name \"mnemosyne-front\" -- run start:prod",
     "restart": "pm2 restart mnemosyne-front"
   },
