@@ -11,12 +11,11 @@ import * as yaml from 'yaml';
 
   app.setGlobalPrefix('/api');
 
-  // working configuration
   app.enableCors({
-    origin: function (origin, callback) {
-      console.log("allowed cors for api:", origin)
-      callback(null, true)
-    },
+    origin: [
+      'http://localhost:4201',
+      'https://proxy.mnemosyne.io'
+    ],
     credentials: true
   });
 

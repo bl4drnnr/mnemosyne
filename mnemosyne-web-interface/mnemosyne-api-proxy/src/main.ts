@@ -11,12 +11,11 @@ import * as bodyParser from 'body-parser';
 
   app.setGlobalPrefix('/api');
 
-  // working configuration
   app.enableCors({
-    origin: function (origin, callback) {
-      console.log("allowed cors for proxy api:", origin)
-      callback(null, true)
-    },
+    origin: [
+      'http://localhost:4200',
+      'https://mnemosyne.io'
+    ],
     credentials: true
   });
 
