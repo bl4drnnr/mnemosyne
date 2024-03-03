@@ -11,18 +11,35 @@ import * as bodyParser from 'body-parser';
 
   app.setGlobalPrefix('/api');
 
+  const whitelist = [
+    'http://localhost:4200',
+    'https://mnemosyne.io',
+    'http://mnemosyne.io',
+    'http://api.mnemosyne.io',
+    'https://api.mnemosyne.io'
+  ];
+
+  app.enableCors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        console.log("allowed cors for:", origin)
+        callback(null, true)
+      } else {
+        console.log("blocked cors for:", origin)
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  });
+
   // app.enableCors({
   //   origin: [
   //     'http://localhost:4200',
-  //     'https://mnemosyne.io'
+  //     'https://mnemosyne.io',
+  //     'http://mnemosyne.io',
+  //     'http://api.mnemosyne.io',
+  //     'https://api.mnemosyne.io'
   //   ],
-  //   credentials: true
   // });
-
-  app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-  });
 
   const config = new DocumentBuilder()
     .setTitle('Mnemosyne')
