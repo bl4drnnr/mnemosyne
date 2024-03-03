@@ -11,9 +11,17 @@ import * as bodyParser from 'body-parser';
 
   app.setGlobalPrefix('/api');
 
-  app.enableCors({
-    origin: '*',
-    credentials: true
+  // app.enableCors({
+  //   origin: [
+  //     'http://localhost:4200',
+  //     'https://mnemosyne.io'
+  //   ],
+  //   credentials: true
+  // });
+
+  app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
   });
 
   const config = new DocumentBuilder()
