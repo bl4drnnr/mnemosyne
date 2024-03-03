@@ -20,13 +20,13 @@ import * as yaml from 'yaml';
   //   credentials: true
   // });
 
-  // app.enableCors({
-  //   origin: [
-  //     'http://localhost:4200',
-  //     'https://mnemosyne.io'
-  //   ],
-  //   credentials: true
-  // });
+  app.enableCors({
+    origin: [
+      'http://localhost:4200',
+      'https://proxy.mnemosyne.io'
+    ],
+    credentials: true
+  });
 
   const config = new DocumentBuilder()
     .setTitle('Mnemosyne')
