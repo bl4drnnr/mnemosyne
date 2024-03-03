@@ -11,6 +11,26 @@ import * as yaml from 'yaml';
 
   app.setGlobalPrefix('/api');
 
+  const whitelist = [
+    'http://localhost:4200',
+    'https://mnemosyne.io',
+    'http://mnemosyne.io',
+    'http://proxy.mnemosyne.io',
+    'https://proxy.mnemosyne.io'
+  ];
+
+  app.enableCors({
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        console.log("allowed cors for:", origin)
+        callback(null, true)
+      } else {
+        console.log("blocked cors for:", origin)
+        callback(new Error('Not allowed by CORS'))
+      }
+    }
+  });
+
   const config = new DocumentBuilder()
     .setTitle('Mnemosyne')
     .setDescription('Documentation of Mnemosyne API.')
