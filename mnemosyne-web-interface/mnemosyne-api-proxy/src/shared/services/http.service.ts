@@ -69,8 +69,6 @@ export class ProxyHttpService {
       }
     };
 
-    console.log('requestConfig', requestConfig);
-
     const bodySupportMethod = ['POST', 'PATCH', 'DELETE'];
 
     requestConfig.data = bodySupportMethod.includes(method) ? payload : {};
@@ -91,11 +89,9 @@ export class ProxyHttpService {
     return new Promise((resolve, reject) => {
       this.httpService.request(requestConfig).subscribe({
         next: (res) => {
-          console.log('res', res);
           resolve(res.data);
         },
         error: async (error: any) => {
-          console.log('error', error);
           await this.loggerService.log({
             logType: ActionController.PROXY_SERVICE,
             status: Status.ERROR,
