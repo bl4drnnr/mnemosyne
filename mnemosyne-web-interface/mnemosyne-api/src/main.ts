@@ -15,7 +15,8 @@ import * as yaml from 'yaml';
     origin: function (origin, callback) {
       console.log("allowed cors for api:", origin)
       callback(null, true)
-    }
+    },
+    credentials: true
   });
 
   const config = new DocumentBuilder()

@@ -35,7 +35,8 @@ import * as bodyParser from 'body-parser';
     origin: function (origin, callback) {
       console.log("allowed cors for proxy api:", origin)
       callback(null, true)
-    }
+    },
+    credentials: true
   });
 
   const config = new DocumentBuilder()
