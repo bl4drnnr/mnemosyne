@@ -6,7 +6,7 @@ describe('ConfirmationHashService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ConfirmationHashService]
+      providers: [{ provide: ConfirmationHashService, useValue: {} }]
     }).compile();
 
     service = module.get<ConfirmationHashService>(ConfirmationHashService);
