@@ -38,7 +38,7 @@ import { PhoneMfaRequiredDto } from '@dto/phone-mfa-required.dto';
 import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { RolesService } from '@modules/roles.service';
-import {LogInUserResponseDto} from "@dto/log-in-user.dto";
+import { LogInUserResponseDto } from '@dto/log-in-user.dto';
 
 @Injectable()
 export class AuthService {

@@ -12,10 +12,7 @@ import * as yaml from 'yaml';
   app.setGlobalPrefix('/api');
 
   app.enableCors({
-    origin: [
-      'http://localhost:4201',
-      'https://proxy.mnemosyne.io'
-    ],
+    origin: ['http://localhost:4201', 'https://proxy.mnemosyne.io'],
     credentials: true
   });
 

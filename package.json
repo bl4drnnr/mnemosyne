@@ -24,7 +24,8 @@
     "format": "npm run format --workspace=mnemosyne-front; npm run format --workspace=mnemosyne-api-proxy; npm run format --workspace=mnemosyne-api",
     "format:front": "npm run format --workspace=mnemosyne-front",
     "format:api-proxy": "npm run format --workspace=mnemosyne-api-proxy",
-    "format:api": "npm run format --workspace=mnemosyne-api"
+    "format:api": "npm run format --workspace=mnemosyne-api",
+    "api:test": "npm run test --workspace=mnemosyne-api"
   },
   "keywords": [
     "blockchain",
