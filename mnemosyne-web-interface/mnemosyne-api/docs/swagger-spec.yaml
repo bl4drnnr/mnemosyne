@@ -326,7 +326,7 @@ paths:
         - basicAuth: []
   /api/confirmation-hash/reset-user-password-confirmation:
     post:
-      operationId: ConfirmationHashController_resetUserPassword
+      operationId: ConfirmationHashController_confirmResetUserPassword
       summary: Endpoint is responsible for user reset password confirmation.
       parameters:
         - name: confirmationHash
@@ -488,7 +488,7 @@ paths:
         - basicAuth: []
   /api/auth/refresh:
     get:
-      operationId: AuthController_refreshTokens
+      operationId: AuthController_refreshToken
       summary: Endpoint is responsible for refresh tokens.
       parameters: []
       responses:

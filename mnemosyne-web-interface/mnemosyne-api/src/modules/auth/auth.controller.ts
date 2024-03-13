@@ -91,7 +91,7 @@ export class AuthController {
   @ApiUnauthorizedResponse(AuthDocs.RefreshTokens.ApiUnauthorizedResponse)
   @ApiBasicAuth('basicAuth')
   @Get('refresh')
-  refreshTokens(
+  refreshToken(
     @CookieRefreshToken() refreshToken: string,
     @TrxDecorator() trx: Transaction
   ) {
