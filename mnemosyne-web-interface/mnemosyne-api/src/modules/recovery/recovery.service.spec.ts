@@ -1,18 +1,50 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RecoveryService } from './recovery.service';
+import { UsersService } from '@modules/users.service';
+import { CryptographicService } from '@shared/cryptographic.service';
+import { ConfirmationHashService } from '@modules/confirmation-hash.service';
+import { User } from '@models/user.model';
+import { getModelToken } from '@nestjs/sequelize';
 
 describe('RecoveryService', () => {
   let service: RecoveryService;
+  let userRepository: typeof User;
+
+  const userRepositoryToken: string | Function = getModelToken(User);
+
+  // const mockConfirmationHashService = {};
+  // const mockCryptographicService = {};
+  // const mockUsersService = {
+  //   getUserById: jest.fn(),
+  //   getUserByEmail: jest.fn()
+  // };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [{ provide: RecoveryService, useValue: {} }]
+      providers: [
+        RecoveryService,
+        {
+          provide: userRepositoryToken,
+          useValue: User
+        }
+      ]
     }).compile();
 
     service = module.get<RecoveryService>(RecoveryService);
+    userRepository = module.get<typeof User>(userRepositoryToken);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should return true when input is 5', async () => {
+    const userEmail = 'test@test.';
+
+    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(undefined);
+
+    const result = await service.testFunc(userEmail);
+
+    console.log('result', result);
   });
 });

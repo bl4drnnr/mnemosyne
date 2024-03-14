@@ -21,6 +21,15 @@ export class RecoveryService {
     private readonly usersService: UsersService
   ) {}
 
+  async testFunc(email: string) {
+    const user = await this.usersService.getUserByEmail({
+      email
+    });
+    console.log('user', user);
+    if (!user) throw new WrongRecoveryKeysException();
+    return user;
+  }
+
   async registrationGenerateRecoveryKeys({
     confirmationHash,
     payload,
