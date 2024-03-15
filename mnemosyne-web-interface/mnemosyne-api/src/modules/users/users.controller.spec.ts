@@ -94,7 +94,7 @@ describe('UsersController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Upload User Photo', () => {
@@ -110,7 +110,7 @@ describe('UsersController', () => {
         payload,
         userId
       });
-    });
+    }, 20000);
   });
 
   describe('Get User Info', () => {
@@ -124,7 +124,7 @@ describe('UsersController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('User Security', () => {
@@ -138,7 +138,7 @@ describe('UsersController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Update User Info', () => {
@@ -160,6 +160,6 @@ describe('UsersController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 });

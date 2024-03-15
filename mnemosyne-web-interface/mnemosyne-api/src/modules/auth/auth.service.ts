@@ -341,7 +341,7 @@ export class AuthService {
     );
   }
 
-  private async generateTokens({
+  async generateTokens({
     roles,
     userId,
     companyId,

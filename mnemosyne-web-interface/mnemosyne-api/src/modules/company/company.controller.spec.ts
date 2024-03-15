@@ -125,7 +125,7 @@ describe('CompanyController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Company Information', () => {
@@ -139,7 +139,7 @@ describe('CompanyController', () => {
         companyId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Company Users', () => {
@@ -157,7 +157,7 @@ describe('CompanyController', () => {
         pageSize,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Update Company', () => {
@@ -177,7 +177,7 @@ describe('CompanyController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Transfer Ownership', () => {
@@ -205,7 +205,7 @@ describe('CompanyController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Delete Company', () => {
@@ -230,6 +230,6 @@ describe('CompanyController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 });

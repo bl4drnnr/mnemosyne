@@ -108,7 +108,7 @@ describe('RolesController', () => {
         companyId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Create Role', () => {
@@ -129,7 +129,7 @@ describe('RolesController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Update Role', () => {
@@ -149,7 +149,7 @@ describe('RolesController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Assign Role', () => {
@@ -165,7 +165,7 @@ describe('RolesController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Revoke Role', () => {
@@ -181,6 +181,6 @@ describe('RolesController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 });

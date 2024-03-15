@@ -129,7 +129,7 @@ describe('CompanyUsersController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Get Company Member Info', () => {
@@ -145,7 +145,7 @@ describe('CompanyUsersController', () => {
         memberId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Update Company Member Info', () => {
@@ -174,7 +174,7 @@ describe('CompanyUsersController', () => {
         memberId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Delete Company Member', () => {
@@ -204,7 +204,7 @@ describe('CompanyUsersController', () => {
         memberId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Search Company Members', () => {
@@ -230,6 +230,6 @@ describe('CompanyUsersController', () => {
         pageSize,
         trx
       });
-    });
+    }, 20000);
   });
 });

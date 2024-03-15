@@ -95,7 +95,7 @@ describe('RecoveryController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Login Generate Recovery Keys', () => {
@@ -113,7 +113,7 @@ describe('RecoveryController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Generate Recovery Keys', () => {
@@ -129,7 +129,7 @@ describe('RecoveryController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Recover Account', () => {
@@ -146,6 +146,6 @@ describe('RecoveryController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 });

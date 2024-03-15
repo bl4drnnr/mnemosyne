@@ -12,13 +12,6 @@ describe('RecoveryService', () => {
 
   const userRepositoryToken: string | Function = getModelToken(User);
 
-  // const mockConfirmationHashService = {};
-  // const mockCryptographicService = {};
-  // const mockUsersService = {
-  //   getUserById: jest.fn(),
-  //   getUserByEmail: jest.fn()
-  // };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -36,15 +29,5 @@ describe('RecoveryService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
-  });
-
-  it('should return true when input is 5', async () => {
-    const userEmail = 'test@test.';
-
-    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(undefined);
-
-    const result = await service.testFunc(userEmail);
-
-    console.log('result', result);
   });
 });

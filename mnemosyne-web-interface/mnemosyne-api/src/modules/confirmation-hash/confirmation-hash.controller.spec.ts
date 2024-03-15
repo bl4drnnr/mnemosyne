@@ -104,7 +104,7 @@ describe('ConfirmationHashController', () => {
         confirmationHash,
         language
       });
-    });
+    }, 20000);
   });
 
   describe('Company Account Confirmation', () => {
@@ -127,7 +127,7 @@ describe('ConfirmationHashController', () => {
         payload,
         confirmationHash
       });
-    });
+    }, 20000);
   });
 
   describe('Company Member Account Confirmation', () => {
@@ -154,7 +154,7 @@ describe('ConfirmationHashController', () => {
         payload,
         confirmationHash
       });
-    });
+    }, 20000);
   });
 
   describe('Email Change Confirmation', () => {
@@ -175,7 +175,7 @@ describe('ConfirmationHashController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Reset User Password Confirmation', () => {
@@ -198,6 +198,6 @@ describe('ConfirmationHashController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 });

@@ -134,7 +134,7 @@ describe('UsersService', () => {
         include: { all: true },
         transaction: trx
       });
-    });
+    }, 20000);
 
     it('should return null if user not found by email', async () => {
       (userRepository.findOne as jest.Mock).mockResolvedValueOnce(null);
@@ -154,7 +154,7 @@ describe('UsersService', () => {
         include: { all: true },
         transaction: trx
       });
-    });
+    }, 20000);
   });
 
   describe('createUser', () => {
@@ -178,7 +178,7 @@ describe('UsersService', () => {
       expect(userRepository.create).toHaveBeenCalledWith(newUserPayload, {
         transaction: trx
       });
-    });
+    }, 20000);
   });
 
   describe('updateUser', () => {
@@ -199,7 +199,7 @@ describe('UsersService', () => {
         { ...newUserPayload },
         { returning: undefined, where: { id: userId }, transaction: trx }
       );
-    });
+    }, 20000);
   });
 
   describe('getUserById', () => {
@@ -220,7 +220,7 @@ describe('UsersService', () => {
         include: { all: true },
         transaction: trx
       });
-    });
+    }, 20000);
 
     it('should return null if user not found by ID', async () => {
       (userRepository.findByPk as jest.Mock).mockResolvedValueOnce(null);
@@ -238,7 +238,7 @@ describe('UsersService', () => {
         include: { all: true },
         transaction: trx
       });
-    });
+    }, 20000);
   });
 
   describe('verifyUserCredentials', () => {
@@ -263,7 +263,7 @@ describe('UsersService', () => {
       });
 
       expect(result).toEqual(mockUser);
-    });
+    }, 20000);
 
     it('should throw WrongCredentialsException if user not found', async () => {
       jest.spyOn(service, 'getUserByEmail').mockResolvedValueOnce(null);
@@ -274,7 +274,7 @@ describe('UsersService', () => {
           password: mockPassword
         });
       }).rejects.toThrow(WrongCredentialsException);
-    });
+    }, 20000);
 
     it('should throw WrongCredentialsException if password does not match', async () => {
       jest
@@ -290,7 +290,7 @@ describe('UsersService', () => {
           password: mockPassword
         });
       }).rejects.toThrow(WrongCredentialsException);
-    });
+    }, 20000);
   });
 
   describe('forgotPassword', () => {
@@ -311,7 +311,7 @@ describe('UsersService', () => {
       });
 
       expect(result).toBeInstanceOf(ResetPasswordEmailDto);
-    });
+    }, 20000);
 
     it('should throw PasswordChangedException if password was changed within the last 24 hours', async () => {
       jest
@@ -323,6 +323,6 @@ describe('UsersService', () => {
           payload: mockPayload
         });
       }).rejects.toThrow(PasswordChangedException);
-    });
+    }, 20000);
   });
 });

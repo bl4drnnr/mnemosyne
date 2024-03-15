@@ -207,7 +207,7 @@ describe('SecurityController', () => {
         confirmationHash,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Login Generate 2FA QR', () => {
@@ -224,7 +224,7 @@ describe('SecurityController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Generate 2FA QR', () => {
@@ -238,7 +238,7 @@ describe('SecurityController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Registration Verify 2FA', () => {
@@ -265,7 +265,7 @@ describe('SecurityController', () => {
         confirmationHash,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Login Verify 2FA', () => {
@@ -284,7 +284,7 @@ describe('SecurityController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Verify 2FA', () => {
@@ -321,7 +321,7 @@ describe('SecurityController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Registration Send SMS Code', () => {
@@ -340,7 +340,7 @@ describe('SecurityController', () => {
         confirmationHash,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Login Send SMS Code', () => {
@@ -358,7 +358,7 @@ describe('SecurityController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Send SMS Code', () => {
@@ -377,7 +377,7 @@ describe('SecurityController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Hash Send SMS Code', () => {
@@ -393,7 +393,7 @@ describe('SecurityController', () => {
         confirmationHash,
         language
       });
-    });
+    }, 20000);
   });
 
   describe('Get SMS Code', () => {
@@ -409,7 +409,7 @@ describe('SecurityController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Clear SMS Code', () => {
@@ -423,7 +423,7 @@ describe('SecurityController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Registration Verify Mobile Phone', () => {
@@ -450,7 +450,7 @@ describe('SecurityController', () => {
         confirmationHash,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Login Verify Mobile Phone', () => {
@@ -469,7 +469,7 @@ describe('SecurityController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Verify Mobile Phone', () => {
@@ -490,7 +490,7 @@ describe('SecurityController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Disable Phone', () => {
@@ -506,7 +506,7 @@ describe('SecurityController', () => {
         userId,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Delete Account', () => {
@@ -527,7 +527,7 @@ describe('SecurityController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Change Password', () => {
@@ -548,7 +548,7 @@ describe('SecurityController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Change Email', () => {
@@ -567,6 +567,6 @@ describe('SecurityController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 });

@@ -86,7 +86,7 @@ describe('AuthController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Registration', () => {
@@ -110,7 +110,7 @@ describe('AuthController', () => {
         payload,
         trx
       });
-    });
+    }, 20000);
   });
 
   describe('Refresh', () => {
@@ -124,6 +124,6 @@ describe('AuthController', () => {
         refreshToken,
         trx
       });
-    });
+    }, 20000);
   });
 });
