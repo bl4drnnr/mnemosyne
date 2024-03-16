@@ -3,11 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
 import { AuthService } from '@modules/auth.service';
 import { AuthGuard } from '@guards/auth.guard';
-import { Sequelize } from 'sequelize-typescript';
-import { LoginInterface } from '@interfaces/login.interface';
-import { RegistrationInterface } from '@interfaces/registration.interface';
-import { LogoutInterface } from '@interfaces/logout.interface';
-import { RefreshTokenInterface } from '@interfaces/refresh-token.interface';
 import { LogInUserDto } from '@dto/log-in-user.dto';
 import { CreateUserDto } from '@dto/create-user.dto';
 import { Language } from '@interfaces/language.enum';
@@ -17,25 +12,20 @@ dotenv.config({ path: '.env.test' });
 describe('AuthController', () => {
   let controller: AuthController;
   let authService: AuthService;
-  let sequelize: Sequelize;
 
   const mockAuthService = {
-    login: jest.fn().mockImplementation(({ payload, trx }: LoginInterface) => {
+    login: jest.fn().mockImplementation(() => {
       return;
     }),
-    registration: jest
-      .fn()
-      .mockImplementation(({ payload, trx }: RegistrationInterface) => {
-        return;
-      }),
-    logout: jest.fn().mockImplementation(({ userId, trx }: LogoutInterface) => {
+    registration: jest.fn().mockImplementation(() => {
       return;
     }),
-    refreshToken: jest
-      .fn()
-      .mockImplementation(({ refreshToken, trx }: RefreshTokenInterface) => {
-        return;
-      })
+    logout: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    refreshToken: jest.fn().mockImplementation(() => {
+      return;
+    })
   };
 
   beforeEach(async () => {
@@ -56,14 +46,6 @@ describe('AuthController', () => {
 
     controller = module.get<AuthController>(AuthController);
     authService = module.get<AuthService>(AuthService);
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -78,7 +60,7 @@ describe('AuthController', () => {
         phoneCode: '123123',
         mfaCode: '123123'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.login(payload, trx);
 
@@ -102,7 +84,7 @@ describe('AuthController', () => {
         homeAddress: '5th Avenu',
         homePhone: '123123123'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.registration(payload, trx);
 
@@ -116,7 +98,7 @@ describe('AuthController', () => {
   describe('Refresh', () => {
     it('Should call refresh with correct parameters', async () => {
       const refreshToken = 'refresh-token';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.refreshToken(refreshToken, trx);
 

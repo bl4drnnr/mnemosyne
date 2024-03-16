@@ -1,29 +1,9 @@
 import * as dotenv from 'dotenv';
+import * as uuid from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SecurityController } from './security.controller';
 import { AuthGuard } from '@guards/auth.guard';
 import { SecurityService } from '@modules/security.service';
-import { Sequelize } from 'sequelize-typescript';
-import { RegistrationGenerate2faInterface } from '@interfaces/registration-generate-2fa.interface';
-import { LoginGenerate2faInterface } from '@interfaces/login-generate-2fa.interface';
-import { Generate2faInterface } from '@interfaces/generate-2fa.interface';
-import { RegistrationVerify2faInterface } from '@interfaces/registration-verify-2fa.interface';
-import { LoginVerify2faInterface } from '@interfaces/login-verify-2fa.interface';
-import { Verify2faInterface } from '@interfaces/verify-2fa.interface';
-import { Disable2faInterface } from '@interfaces/disable-2fa.interface';
-import { RegistrationSendSmsInterface } from '@interfaces/registration-send-sms.interface';
-import { LoginSendSmsInterface } from '@interfaces/login-send-sms.interface';
-import { SendSmsInterface } from '@interfaces/send-sms.interface';
-import { HashSendSmsInterface } from '@interfaces/hash-send-sms.interface';
-import { GetSmsInterface } from '@interfaces/get-sms.interface';
-import { ClearSmsInterface } from '@interfaces/clear-sms.interface';
-import { RegistrationVerifyPhoneInterface } from '@interfaces/registration-verify-phone.interface';
-import { LoginVerifyPhoneInterface } from '@interfaces/login-verify-phone.interface';
-import { VerifyPhoneInterface } from '@interfaces/verify-phone.interface';
-import { DisablePhoneInterface } from '@interfaces/disable-phone.interface';
-import { DeleteAccountInterface } from '@interfaces/delete-account.interface';
-import { ChangePasswordInterface } from '@interfaces/change-password.interface';
-import { ChangeEmailInterface } from '@interfaces/change-email.interface';
 import { LoginGenerate2faQrDto } from '@dto/login-generate-2fa-qr.dto';
 import { VerifyTwoFaDto } from '@dto/verify-two-fa.dto';
 import { DisableTwoFaDto } from '@dto/disable-two-fa.dto';
@@ -40,131 +20,68 @@ dotenv.config({ path: '.env.test' });
 describe('SecurityController', () => {
   let controller: SecurityController;
   let securityService: SecurityService;
-  let sequelize: Sequelize;
 
   const mockSecurityService = {
-    registrationGenerateTwoFaQrCode: jest
-      .fn()
-      .mockImplementation(
-        ({ confirmationHash, trx }: RegistrationGenerate2faInterface) => {
-          return;
-        }
-      ),
-    loginGenerateTwoFaQrCode: jest
-      .fn()
-      .mockImplementation(({ payload, trx }: LoginGenerate2faInterface) => {
-        return;
-      }),
-    generateTwoFaQrCode: jest
-      .fn()
-      .mockImplementation(({ userId, trx }: Generate2faInterface) => {
-        return;
-      }),
-    registrationVerifyTwoFaQrCode: jest
-      .fn()
-      .mockImplementation(
-        ({
-          payload,
-          confirmationHash,
-          trx
-        }: RegistrationVerify2faInterface) => {
-          return;
-        }
-      ),
-    loginVerifyTwoFaQrCode: jest
-      .fn()
-      .mockImplementation(({ payload, trx }: LoginVerify2faInterface) => {
-        return;
-      }),
-    verifyTwoFaQrCode: jest
-      .fn()
-      .mockImplementation(({ payload, userId, trx }: Verify2faInterface) => {
-        return;
-      }),
-    disableTwoFa: jest
-      .fn()
-      .mockImplementation(({ payload, userId, trx }: Disable2faInterface) => {
-        return;
-      }),
-    registrationSendSmsCode: jest
-      .fn()
-      .mockImplementation(
-        ({ payload, confirmationHash, trx }: RegistrationSendSmsInterface) => {
-          return;
-        }
-      ),
-    loginSendSmsCode: jest
-      .fn()
-      .mockImplementation(({ payload, trx }: LoginSendSmsInterface) => {
-        return;
-      }),
-    sendSmsCode: jest
-      .fn()
-      .mockImplementation(({ payload, userId, trx }: SendSmsInterface) => {
-        return;
-      }),
-    hashSendSmsCode: jest
-      .fn()
-      .mockImplementation(
-        ({ confirmationHash, language, trx }: HashSendSmsInterface) => {
-          return;
-        }
-      ),
-    getSmsCode: jest
-      .fn()
-      .mockImplementation(({ userId, language, trx }: GetSmsInterface) => {
-        return;
-      }),
-    clearSmsCode: jest
-      .fn()
-      .mockImplementation(({ userId, trx }: ClearSmsInterface) => {
-        return;
-      }),
-    registrationVerifyMobilePhone: jest
-      .fn()
-      .mockImplementation(
-        ({
-          payload,
-          confirmationHash,
-          trx
-        }: RegistrationVerifyPhoneInterface) => {
-          return;
-        }
-      ),
-    loginVerifyMobilePhone: jest
-      .fn()
-      .mockImplementation(({ payload, trx }: LoginVerifyPhoneInterface) => {
-        return;
-      }),
-    verifyMobilePhone: jest
-      .fn()
-      .mockImplementation(({ payload, userId, trx }: VerifyPhoneInterface) => {
-        return;
-      }),
-    disablePhone: jest
-      .fn()
-      .mockImplementation(({ payload, userId, trx }: DisablePhoneInterface) => {
-        return;
-      }),
-    deleteUserAccount: jest
-      .fn()
-      .mockImplementation(
-        ({ userId, payload, trx }: DeleteAccountInterface) => {
-          return;
-        }
-      ),
-    changePassword: jest
-      .fn()
-      .mockImplementation(
-        ({ userId, payload, trx }: ChangePasswordInterface) => {
-          return;
-        }
-      ),
-    changeEmail: jest
-      .fn()
-      .mockImplementation(({ userId, payload, trx }: ChangeEmailInterface) => {
-        return;
-      })
+    registrationGenerateTwoFaQrCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    loginGenerateTwoFaQrCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    generateTwoFaQrCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    registrationVerifyTwoFaQrCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    loginVerifyTwoFaQrCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    verifyTwoFaQrCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    disableTwoFa: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    registrationSendSmsCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    loginSendSmsCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    sendSmsCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    hashSendSmsCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    getSmsCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    clearSmsCode: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    registrationVerifyMobilePhone: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    loginVerifyMobilePhone: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    verifyMobilePhone: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    disablePhone: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    deleteUserAccount: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    changePassword: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    changeEmail: jest.fn().mockImplementation(() => {
+      return;
+    })
   };
 
   beforeEach(async () => {
@@ -180,24 +97,16 @@ describe('SecurityController', () => {
 
     controller = module.get<SecurityController>(SecurityController);
     securityService = module.get<SecurityService>(SecurityService);
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('Registration Generate 2FA QR', () => {
+  describe('registrationGenerateTwoFaQrCode', () => {
     it('Should call registrationGenerateTwoFaQrCode method with correct parameters', async () => {
       const confirmationHash = 'test-confirmation-hash';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.registrationGenerateTwoFaQrCode(confirmationHash, trx);
 
@@ -210,13 +119,13 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Login Generate 2FA QR', () => {
+  describe('loginGenerateTwoFaQrCode', () => {
     it('Should call loginGenerateTwoFaQrCode method with correct parameters', async () => {
       const payload: LoginGenerate2faQrDto = {
         email: 'test@test.com',
         password: '12qw!@QW'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.loginGenerateTwoFaQrCode(payload, trx);
 
@@ -227,10 +136,10 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Generate 2FA QR', () => {
+  describe('generateTwoFaQrCode', () => {
     it('Should call generateTwoFaQrCode method with correct parameters', async () => {
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.generateTwoFaQrCode(userId, trx);
 
@@ -241,7 +150,7 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Registration Verify 2FA', () => {
+  describe('registrationVerifyTwoFaQrCode', () => {
     it('Should call registrationVerifyTwoFaQrCode method with correct parameters', async () => {
       const payload: VerifyTwoFaDto = {
         code: '123123',
@@ -250,7 +159,7 @@ describe('SecurityController', () => {
         password: '12qw!@QW'
       };
       const confirmationHash = 'test-confirmation-hash';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.registrationVerifyTwoFaQrCode(
         payload,
@@ -268,7 +177,7 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Login Verify 2FA', () => {
+  describe('loginVerifyTwoFaQrCode', () => {
     it('Should call loginVerifyTwoFaQrCode method with correct parameters', async () => {
       const payload: VerifyTwoFaDto = {
         code: '123123',
@@ -276,7 +185,7 @@ describe('SecurityController', () => {
         email: 'test@test.com',
         password: '12qw!@QW'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.loginVerifyTwoFaQrCode(payload, trx);
 
@@ -287,7 +196,7 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Verify 2FA', () => {
+  describe('verifyTwoFaQrCode', () => {
     it('Should call verifyTwoFaQrCode method with correct parameters', async () => {
       const payload: VerifyTwoFaDto = {
         code: '123123',
@@ -295,8 +204,8 @@ describe('SecurityController', () => {
         email: 'test@test.com',
         password: '12qw!@QW'
       };
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.verifyTwoFaQrCode(payload, userId, trx);
 
@@ -308,11 +217,11 @@ describe('SecurityController', () => {
     });
   });
 
-  describe('Disable 2FA', () => {
+  describe('disableTwoFa', () => {
     it('Should call disableTwoFa method with correct parameters', async () => {
       const payload: DisableTwoFaDto = { code: '123123' };
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.disableTwoFa(payload, userId, trx);
 
@@ -324,14 +233,14 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Registration Send SMS Code', () => {
+  describe('registrationSendSmsCode', () => {
     it('Should call registrationSendSmsCode method with correct parameters', async () => {
       const payload: RegistrationSendSmsCodeDto = {
         phone: '123123123',
         language: Language.PL
       };
       const confirmationHash = 'test-confirmation-hash';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.registrationSendSmsCode(payload, confirmationHash, trx);
 
@@ -343,14 +252,14 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Login Send SMS Code', () => {
+  describe('loginSendSmsCode', () => {
     it('Should call loginSendSmsCode method with correct parameters', async () => {
       const payload: LoginSendSmsDto = {
         email: 'test@test.com',
         password: '12qw!@QW',
         language: Language.PL
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.loginSendSmsCode(payload, trx);
 
@@ -361,14 +270,14 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Send SMS Code', () => {
+  describe('sendSmsCode', () => {
     it('Should call sendSmsCode method with correct parameters', async () => {
       const payload: RegistrationSendSmsCodeDto = {
         phone: '123123123',
         language: Language.PL
       };
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.sendSmsCode(payload, userId, trx);
 
@@ -380,9 +289,9 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Hash Send SMS Code', () => {
+  describe('hashSendSmsCode', () => {
     it('Should call hashSendSmsCode method with correct parameters', async () => {
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const confirmationHash = 'test-confirmation-hash';
       const language = Language.PL;
 
@@ -396,11 +305,11 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Get SMS Code', () => {
+  describe('getSmsCode', () => {
     it('Should call getSmsCode method with correct parameters', async () => {
       const language = Language.PL;
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.getSmsCode(language, userId, trx);
 
@@ -412,10 +321,10 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Clear SMS Code', () => {
+  describe('clearSmsCode', () => {
     it('Should call clearSmsCode method with correct parameters', async () => {
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.clearSmsCode(userId, trx);
 
@@ -426,7 +335,7 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Registration Verify Mobile Phone', () => {
+  describe('registrationVerifyMobilePhone', () => {
     it('Should call registrationVerifyMobilePhone method with correct parameters', async () => {
       const payload: VerifyMobilePhoneDto = {
         phone: '123123123',
@@ -435,7 +344,7 @@ describe('SecurityController', () => {
         password: '12qw!@QW'
       };
       const confirmationHash = 'test-confirmation-hash';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.registrationVerifyMobilePhone(
         payload,
@@ -453,7 +362,7 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Login Verify Mobile Phone', () => {
+  describe('loginVerifyMobilePhone', () => {
     it('Should call loginVerifyMobilePhone method with correct parameters', async () => {
       const payload: VerifyMobilePhoneDto = {
         phone: '123123123',
@@ -461,7 +370,7 @@ describe('SecurityController', () => {
         email: 'test@test.com',
         password: '12qw!@QW'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.loginVerifyMobilePhone(payload, trx);
 
@@ -472,7 +381,7 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Verify Mobile Phone', () => {
+  describe('verifyMobilePhone', () => {
     it('Should call verifyMobilePhone method with correct parameters', async () => {
       const payload: VerifyMobilePhoneDto = {
         phone: '123123123',
@@ -480,8 +389,8 @@ describe('SecurityController', () => {
         email: 'test@test.com',
         password: '12qw!@QW'
       };
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.verifyMobilePhone(payload, userId, trx);
 
@@ -493,11 +402,11 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Disable Phone', () => {
+  describe('disablePhone', () => {
     it('Should call disablePhone method with correct parameters', async () => {
       const payload: DisableTwoFaDto = { code: '123123' };
-      const userId = 'test-user-id';
-      const trx = await sequelize.transaction();
+      const userId = uuid.v4();
+      const trx: any = {};
 
       await controller.disablePhone(payload, userId, trx);
 
@@ -509,16 +418,16 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Delete Account', () => {
+  describe('deleteUserAccount', () => {
     it('Should call deleteUserAccount method with correct parameters', async () => {
-      const userId = 'test-user-id';
+      const userId = uuid.v4();
       const payload: DeleteAccountDto = {
         password: '12qw!@QW',
         mfaCode: '123123',
         phoneCode: '123123',
         fullName: 'Jon Doe'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.deleteUserAccount(userId, payload, trx);
 
@@ -530,16 +439,16 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Change Password', () => {
+  describe('changePassword', () => {
     it('Should call changePassword method with correct parameters', async () => {
-      const userId = 'test-user-id';
+      const userId = uuid.v4();
       const payload: ChangePasswordDto = {
         currentPassword: '12qw!@QW',
         newPassword: '12qw!@QWv2',
         mfaCode: '123123',
         phoneCode: '123123'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.changePassword(userId, payload, trx);
 
@@ -551,14 +460,14 @@ describe('SecurityController', () => {
     }, 20000);
   });
 
-  describe('Change Email', () => {
+  describe('changeEmail', () => {
     it('Should call changeEmail method with correct parameters', async () => {
-      const userId = 'test-user-id';
+      const userId = uuid.v4();
       const payload: ChangeEmailDto = {
         newEmail: 'test2@test.com',
         language: Language.PL
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.changeEmail(userId, payload, trx);
 

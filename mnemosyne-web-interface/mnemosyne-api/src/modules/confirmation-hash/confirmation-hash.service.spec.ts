@@ -11,7 +11,6 @@ import { AuthService } from '@modules/auth.service';
 import { UsersService } from '@modules/users.service';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { getModelToken } from '@nestjs/sequelize';
-import { Sequelize } from 'sequelize-typescript';
 import { ConfigService } from '@nestjs/config';
 import { ApiConfigService } from '@shared/config.service';
 import { HashNotFoundException } from '@exceptions/hash-not-found.exception';
@@ -20,14 +19,6 @@ dotenv.config({ path: '.env.test' });
 
 describe('ConfirmationHashService', () => {
   let service: ConfirmationHashService;
-  let sequelize: Sequelize;
-  let cryptographicService: CryptographicService;
-  let timeService: TimeService;
-  let companyService: CompanyService;
-  let emailService: EmailService;
-  let authService: AuthService;
-  let usersService: UsersService;
-  let confirmationHashRepository: typeof ConfirmationHash;
 
   const confirmationHashRepositoryToken = getModelToken(ConfirmationHash);
 
@@ -64,24 +55,6 @@ describe('ConfirmationHashService', () => {
     }).compile();
 
     service = module.get<ConfirmationHashService>(ConfirmationHashService);
-    cryptographicService =
-      module.get<CryptographicService>(CryptographicService);
-    timeService = module.get<TimeService>(TimeService);
-    companyService = module.get<CompanyService>(CompanyService);
-    emailService = module.get<EmailService>(EmailService);
-    authService = module.get<AuthService>(AuthService);
-    usersService = module.get<UsersService>(UsersService);
-    confirmationHashRepository = module.get<typeof ConfirmationHash>(
-      confirmationHashRepositoryToken
-    );
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -89,7 +62,7 @@ describe('ConfirmationHashService', () => {
   });
 
   describe('createConfirmationHash', () => {
-    it('should create confirmation hash with the given payload', async () => {
+    it('Should create confirmation hash with the given payload', async () => {
       const userId = uuid.v4();
       const confirmationType = Confirmation.REGISTRATION;
       const confirmationHash = 'confirmation-hash';
@@ -100,7 +73,7 @@ describe('ConfirmationHashService', () => {
         confirmationHash,
         changingEmail
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await service.createConfirmationHash({ payload, trx });
 
@@ -117,10 +90,10 @@ describe('ConfirmationHashService', () => {
   });
 
   describe('getUserIdByConfirmationHash', () => {
-    it('should return userId for the given confirmation hash', async () => {
+    it('Should return userId for the given confirmation hash', async () => {
       const confirmationHash = 'hash';
       const userId = uuid.v4();
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const getByHashInterface = {
         confirmationHash,
         trx
@@ -143,9 +116,9 @@ describe('ConfirmationHashService', () => {
       expect(result).toEqual({ userId });
     });
 
-    it('should throw HashNotFoundException if confirmation hash is not found', async () => {
+    it('Should throw HashNotFoundException if confirmation hash is not found', async () => {
       const confirmationHash = 'hash';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const getByHashInterface = {
         confirmationHash,
         trx
@@ -165,11 +138,11 @@ describe('ConfirmationHashService', () => {
   });
 
   describe('getUserByConfirmationHash', () => {
-    it('should return user and found hash for the given confirmation hash', async () => {
+    it('Should return user and found hash for the given confirmation hash', async () => {
       const confirmationHash = 'hash';
       const confirmationType = Confirmation.REGISTRATION;
       const userId = uuid.v4();
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const getByHashInterface = {
         confirmationHash,
         confirmationType,
@@ -197,10 +170,10 @@ describe('ConfirmationHashService', () => {
       expect(result).toEqual({ foundHash, user });
     });
 
-    it('should throw HashNotFoundException if confirmation hash is not found', async () => {
+    it('Should throw HashNotFoundException if confirmation hash is not found', async () => {
       const confirmationHash = 'non-existing-hash';
       const confirmationType = Confirmation.REGISTRATION;
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const getByHashInterface = {
         confirmationHash,
         confirmationType,

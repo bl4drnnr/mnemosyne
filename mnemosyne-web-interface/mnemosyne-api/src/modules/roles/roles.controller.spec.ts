@@ -4,12 +4,6 @@ import { RolesController } from './roles.controller';
 import { AuthGuard } from '@guards/auth.guard';
 import { RoleGuard } from '@guards/role.guard';
 import { RolesService } from '@modules/roles.service';
-import { Sequelize } from 'sequelize-typescript';
-import { GetCompanyRolesInterface } from '@interfaces/get-company-roles.interface';
-import { CreateCompanyRoleInterface } from '@interfaces/create-company-role.interface';
-import { UpdateCompanyRoleInterface } from '@interfaces/update-company-role.interface';
-import { AssignRoleInterface } from '@interfaces/assign-role.interface';
-import { RevokeRoleInterface } from '@interfaces/revoke-role.interface';
 import { CreateCompanyRoleDto } from '@dto/create-company-role.dto';
 import { UpdateCompanyRoleDto } from '@dto/update-company-role.dto';
 import { AssignRoleDto } from '@dto/assign-role.dto';
@@ -20,52 +14,23 @@ dotenv.config({ path: '.env.test' });
 describe('RolesController', () => {
   let controller: RolesController;
   let rolesService: RolesService;
-  let sequelize: Sequelize;
 
   const mockRolesService = {
-    getCompanyRoles: jest
-      .fn()
-      .mockImplementation(
-        ({ companyId, trx: transaction }: GetCompanyRolesInterface) => {
-          return;
-        }
-      ),
-    createCompanyRole: jest
-      .fn()
-      .mockImplementation(
-        ({
-          companyId,
-          payload,
-          trx: transaction
-        }: CreateCompanyRoleInterface) => {
-          return;
-        }
-      ),
-    updateCompanyRole: jest
-      .fn()
-      .mockImplementation(
-        ({
-          companyId,
-          payload,
-          trx: transaction
-        }: UpdateCompanyRoleInterface) => {
-          return;
-        }
-      ),
-    assignRoleToUser: jest
-      .fn()
-      .mockImplementation(
-        ({ companyId, payload, trx }: AssignRoleInterface) => {
-          return;
-        }
-      ),
-    revokeUserRole: jest
-      .fn()
-      .mockImplementation(
-        ({ companyId, payload, trx }: RevokeRoleInterface) => {
-          return;
-        }
-      )
+    getCompanyRoles: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    createCompanyRole: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    updateCompanyRole: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    assignRoleToUser: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    revokeUserRole: jest.fn().mockImplementation(() => {
+      return;
+    })
   };
 
   beforeEach(async () => {
@@ -83,24 +48,16 @@ describe('RolesController', () => {
 
     controller = module.get<RolesController>(RolesController);
     rolesService = module.get<RolesService>(RolesService);
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('Get Company Roles', () => {
+  describe('getCompanyRoles', () => {
     it('Should call getCompanyRoles method with correct parameters', async () => {
       const companyId = 'test-company-id';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.getCompanyRoles(companyId, trx);
 
@@ -111,7 +68,7 @@ describe('RolesController', () => {
     }, 20000);
   });
 
-  describe('Create Role', () => {
+  describe('createCompanyRole', () => {
     it('Should call createCompanyRole method with correct parameters', async () => {
       const companyId = 'test-company-id';
       const payload: CreateCompanyRoleDto = {
@@ -120,7 +77,7 @@ describe('RolesController', () => {
         roleScopes: ['USER_MANAGEMENT'],
         roleAssignees: ['test2@test.com']
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.createCompanyRole(companyId, payload, trx);
 
@@ -132,7 +89,7 @@ describe('RolesController', () => {
     }, 20000);
   });
 
-  describe('Update Role', () => {
+  describe('updateCompanyRole', () => {
     it('Should call updateCompanyRole method with correct parameters', async () => {
       const companyId = 'test-company-id';
       const payload: UpdateCompanyRoleDto = {
@@ -140,7 +97,7 @@ describe('RolesController', () => {
         description: 'New role description',
         roleScopes: ['USER_MANAGEMENT']
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.updateCompanyRole(companyId, payload, trx);
 
@@ -152,11 +109,11 @@ describe('RolesController', () => {
     }, 20000);
   });
 
-  describe('Assign Role', () => {
+  describe('assignRoleToUser', () => {
     it('Should call assignRoleToUser method with correct parameters', async () => {
       const companyId = 'test-company-id';
       const payload: AssignRoleDto = {};
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.assignRoleToUser(companyId, payload, trx);
 
@@ -168,11 +125,11 @@ describe('RolesController', () => {
     }, 20000);
   });
 
-  describe('Revoke Role', () => {
+  describe('revokeUserRole', () => {
     it('Should call revokeUserRole method with correct parameters', async () => {
       const companyId = 'test-company-id';
       const payload: RevokeRoleDto = {};
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.revokeUserRole(companyId, payload, trx);
 

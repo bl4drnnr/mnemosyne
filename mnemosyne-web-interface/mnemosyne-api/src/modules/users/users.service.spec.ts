@@ -12,7 +12,6 @@ import { UserSettings } from '@models/user-settings.model';
 import { CompanyService } from '@modules/company.service';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { ConfigService } from '@nestjs/config';
-import { Sequelize } from 'sequelize-typescript';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { Language } from '@interfaces/language.enum';
 import { ResetPasswordEmailDto } from '@dto/reset-password-email.dto';
@@ -26,12 +25,7 @@ dotenv.config({ path: '.env.test' });
 describe('UsersService', () => {
   let service: UsersService;
   let cryptographicService: CryptographicService;
-  let confirmationHashService: ConfirmationHashService;
-  let emailService: EmailService;
-  let sequelize: Sequelize;
   let userRepository: typeof User;
-  let userSettingsRepository: typeof UserSettings;
-  let confirmationHashRepository: typeof ConfirmationHash;
 
   const userRepositoryToken = getModelToken(User);
   const userSettingsRepositoryToken = getModelToken(UserSettings);
@@ -92,22 +86,7 @@ describe('UsersService', () => {
     service = module.get<UsersService>(UsersService);
     cryptographicService =
       module.get<CryptographicService>(CryptographicService);
-    confirmationHashService = module.get<ConfirmationHashService>(
-      ConfirmationHashService
-    );
-    emailService = module.get<EmailService>(EmailService);
     userRepository = module.get<typeof User>(userRepositoryToken);
-    userSettingsRepository = module.get<typeof UserSettings>(
-      userSettingsRepositoryToken
-    );
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -115,12 +94,12 @@ describe('UsersService', () => {
   });
 
   describe('getUserByEmail', () => {
-    it('should return user if found by email', async () => {
+    it('Should return user if found by email', async () => {
       const mockUser = { email: 'test@test.com' };
       (userRepository.findOne as jest.Mock).mockResolvedValueOnce(mockUser);
 
       const newUserEmail = 'test@test.com';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const result = await service.getUserByEmail({
         email: newUserEmail,
@@ -136,11 +115,11 @@ describe('UsersService', () => {
       });
     }, 20000);
 
-    it('should return null if user not found by email', async () => {
+    it('Should return null if user not found by email', async () => {
       (userRepository.findOne as jest.Mock).mockResolvedValueOnce(null);
 
       const newUserEmail = 'nonexistent@test.com';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const result = await service.getUserByEmail({
         email: newUserEmail,
@@ -158,7 +137,7 @@ describe('UsersService', () => {
   });
 
   describe('createUser', () => {
-    it('should create a new user and return it', async () => {
+    it('Should create a new user and return it', async () => {
       const mockUser = { email: 'test@test.com' };
       (userRepository.create as jest.Mock).mockResolvedValueOnce(mockUser);
 
@@ -167,7 +146,7 @@ describe('UsersService', () => {
         email: 'test@test.com',
         password: '123'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const result = await service.createUser({
         payload: newUserPayload,
@@ -182,12 +161,12 @@ describe('UsersService', () => {
   });
 
   describe('updateUser', () => {
-    it('should update the user and return void', async () => {
+    it('Should update the user and return void', async () => {
       (userRepository.update as jest.Mock).mockResolvedValueOnce([1]);
 
       const userId = uuid.v4();
       const newUserPayload = { email: 'updated@test.com' };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await service.updateUser({
         payload: newUserPayload,
@@ -203,12 +182,12 @@ describe('UsersService', () => {
   });
 
   describe('getUserById', () => {
-    it('should return the user if found by ID', async () => {
+    it('Should return the user if found by ID', async () => {
       const id = uuid.v4();
       const mockUser = { id, email: 'test@test.com' };
       (userRepository.findByPk as jest.Mock).mockResolvedValueOnce(mockUser);
 
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const result = await service.getUserById({
         id,
@@ -222,11 +201,11 @@ describe('UsersService', () => {
       });
     }, 20000);
 
-    it('should return null if user not found by ID', async () => {
+    it('Should return null if user not found by ID', async () => {
       (userRepository.findByPk as jest.Mock).mockResolvedValueOnce(null);
 
       const nonExistentUserId = uuid.v4();
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const result = await service.getUserById({
         id: nonExistentUserId,
@@ -249,7 +228,7 @@ describe('UsersService', () => {
     };
     const mockPassword = 'password';
 
-    it('should return the user if credentials are valid', async () => {
+    it('Should return the user if credentials are valid', async () => {
       jest
         .spyOn(service, 'getUserByEmail')
         .mockResolvedValueOnce(mockUser as unknown as Promise<User>);
@@ -265,7 +244,7 @@ describe('UsersService', () => {
       expect(result).toEqual(mockUser);
     }, 20000);
 
-    it('should throw WrongCredentialsException if user not found', async () => {
+    it('Should throw WrongCredentialsException if user not found', async () => {
       jest.spyOn(service, 'getUserByEmail').mockResolvedValueOnce(null);
 
       await expect(async () => {
@@ -276,7 +255,7 @@ describe('UsersService', () => {
       }).rejects.toThrow(WrongCredentialsException);
     }, 20000);
 
-    it('should throw WrongCredentialsException if password does not match', async () => {
+    it('Should throw WrongCredentialsException if password does not match', async () => {
       jest
         .spyOn(service, 'getUserByEmail')
         .mockResolvedValueOnce(mockUser as unknown as Promise<User>);
@@ -303,7 +282,7 @@ describe('UsersService', () => {
       userSettings: { passwordChanged: new Date() }
     };
 
-    it('should return ResetPasswordEmailDto if user does not exist', async () => {
+    it('Should return ResetPasswordEmailDto if user does not exist', async () => {
       jest.spyOn(service, 'getUserByEmail').mockResolvedValueOnce(null);
 
       const result = await service.forgotPassword({
@@ -313,7 +292,7 @@ describe('UsersService', () => {
       expect(result).toBeInstanceOf(ResetPasswordEmailDto);
     }, 20000);
 
-    it('should throw PasswordChangedException if password was changed within the last 24 hours', async () => {
+    it('Should throw PasswordChangedException if password was changed within the last 24 hours', async () => {
       jest
         .spyOn(service, 'getUserByEmail')
         .mockResolvedValueOnce(mockUser as unknown as Promise<User>);

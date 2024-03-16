@@ -8,7 +8,6 @@ import { Role } from '@custom-types/role.type';
 import { UsersService } from '@modules/users.service';
 import { User } from '@models/user.model';
 import { Company } from '@models/company.model';
-import { Sequelize } from 'sequelize-typescript';
 import { CompanyUsersService } from '@modules/company-users.service';
 import { CompanyUser } from '@models/company-user.model';
 import { RolesService } from '@modules/roles.service';
@@ -31,20 +30,6 @@ dotenv.config({ path: '.env.test' });
 
 describe('CompanyService', () => {
   let service: CompanyService;
-  let cryptographicService: CryptographicService;
-  let companyUsersService: CompanyUsersService;
-  let rolesService: RolesService;
-  let usersService: UsersService;
-  let emailService: EmailService;
-  let confirmationHashService: ConfirmationHashService;
-  let sequelize: Sequelize;
-  let companyRepository: typeof Company;
-  let companyUserRepository: typeof CompanyUser;
-  let roleRepository: typeof RoleModel;
-  let userRoleRepository: typeof UserRole;
-  let confirmationHashRepository: typeof ConfirmationHash;
-  let userRepository: typeof User;
-  let userSettingsRepository: typeof UserSettings;
 
   const userRepositoryToken = getModelToken(User);
   const companyRepositoryToken = getModelToken(Company);
@@ -144,33 +129,6 @@ describe('CompanyService', () => {
     }).compile();
 
     service = module.get<CompanyService>(CompanyService);
-    usersService = module.get<UsersService>(UsersService);
-    companyUsersService = module.get<CompanyUsersService>(CompanyUsersService);
-    rolesService = module.get<RolesService>(RolesService);
-    emailService = module.get<EmailService>(EmailService);
-    cryptographicService =
-      module.get<CryptographicService>(CryptographicService);
-    confirmationHashService = module.get<ConfirmationHashService>(
-      ConfirmationHashService
-    );
-    userRepository = module.get<typeof User>(userRepositoryToken);
-    companyRepository = module.get<typeof Company>(companyRepositoryToken);
-    companyUserRepository = module.get<typeof CompanyUser>(
-      companyUserRepositoryToken
-    );
-    userSettingsRepository = module.get<typeof UserSettings>(
-      userSettingsRepositoryToken
-    );
-    roleRepository = module.get<typeof RoleModel>(roleRepositoryToken);
-    userRoleRepository = module.get<typeof UserRole>(userRoleRepositoryToken);
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {

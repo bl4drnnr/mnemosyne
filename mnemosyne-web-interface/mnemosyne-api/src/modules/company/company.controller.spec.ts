@@ -4,13 +4,6 @@ import { CompanyController } from './company.controller';
 import { AuthGuard } from '@guards/auth.guard';
 import { RoleGuard } from '@guards/role.guard';
 import { CompanyService } from '@modules/company.service';
-import { Sequelize } from 'sequelize-typescript';
-import { RegistrationCompanyInterface } from '@interfaces/registration-company.interface';
-import { GetCompanyInfoByIdInterface } from '@interfaces/get-company-info-by-id.interface';
-import { GetCompanyUsersInterface } from '@interfaces/get-company-users.interface';
-import { UpdateCompanyInfoInterface } from '@interfaces/update-company-info.interface';
-import { TransferOwnershipInterface } from '@interfaces/transfer-ownership.interface';
-import { DeleteCompanyInterface } from '@interfaces/delete-company.interface';
 import { CreateCompanyDto } from '@dto/create-company.dto';
 import { Language } from '@interfaces/language.enum';
 import { UpdateCompanyDto } from '@dto/update-company.dto';
@@ -22,54 +15,26 @@ dotenv.config({ path: '.env.test' });
 describe('CompanyController', () => {
   let controller: CompanyController;
   let companyService: CompanyService;
-  let sequelize: Sequelize;
 
   const mockCompanyService = {
-    createCompany: jest
-      .fn()
-      .mockImplementation(({ payload, trx }: RegistrationCompanyInterface) => {
-        return;
-      }),
-    getCompanyInformationById: jest
-      .fn()
-      .mockImplementation(
-        ({ companyId, trx: transaction }: GetCompanyInfoByIdInterface) => {
-          return;
-        }
-      ),
-    getCompanyUsers: jest
-      .fn()
-      .mockImplementation(
-        ({
-          companyId,
-          page,
-          pageSize,
-          trx: transaction
-        }: GetCompanyUsersInterface) => {
-          return;
-        }
-      ),
-    updateCompanyInformation: jest
-      .fn()
-      .mockImplementation(
-        ({ companyId, payload, trx }: UpdateCompanyInfoInterface) => {
-          return;
-        }
-      ),
-    transferCompanyOwnership: jest
-      .fn()
-      .mockImplementation(
-        ({ companyId, userId, payload, trx }: TransferOwnershipInterface) => {
-          return;
-        }
-      ),
-    deleteCompanyAccount: jest
-      .fn()
-      .mockImplementation(
-        ({ companyId, userId, payload, trx }: DeleteCompanyInterface) => {
-          return;
-        }
-      )
+    createCompany: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    getCompanyInformationById: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    getCompanyUsers: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    updateCompanyInformation: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    transferCompanyOwnership: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    deleteCompanyAccount: jest.fn().mockImplementation(() => {
+      return;
+    })
   };
 
   beforeEach(async () => {
@@ -92,14 +57,6 @@ describe('CompanyController', () => {
 
     controller = module.get<CompanyController>(CompanyController);
     companyService = module.get<CompanyService>(CompanyService);
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -117,7 +74,7 @@ describe('CompanyController', () => {
         tac: true,
         language: Language.PL
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.createCompany(payload, trx);
 
@@ -131,7 +88,7 @@ describe('CompanyController', () => {
   describe('Company Information', () => {
     it('Should call getCompanyInformationById method with correct parameters', async () => {
       const companyId = 'test-company-id';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.getCompanyInformationById(companyId, trx);
 
@@ -147,7 +104,7 @@ describe('CompanyController', () => {
       const companyId = 'test-company-id';
       const page = '0';
       const pageSize = '5';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.getCompanyUsers(companyId, page, pageSize, trx);
 
@@ -168,7 +125,7 @@ describe('CompanyController', () => {
         companyName: 'Test2',
         companyWebsite: 'test2.com'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.updateCompanyInformation(companyId, payload, trx);
 
@@ -190,7 +147,7 @@ describe('CompanyController', () => {
         phoneCode: '123123',
         language: Language.PL
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.transferCompanyOwnership(
         companyId,
@@ -220,7 +177,7 @@ describe('CompanyController', () => {
         phoneCode: '123123',
         language: Language.PL
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.deleteCompanyAccount(companyId, userId, payload, trx);
 

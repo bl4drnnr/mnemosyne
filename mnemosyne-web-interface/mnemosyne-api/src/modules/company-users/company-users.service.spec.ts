@@ -6,7 +6,6 @@ import { UsersService } from '@modules/users.service';
 import { CompanyService } from '@modules/company.service';
 import { EmailService } from '@shared/email.service';
 import { AuthService } from '@modules/auth.service';
-import { Sequelize } from 'sequelize-typescript';
 import { CompanyUser } from '@models/company-user.model';
 import { getModelToken } from '@nestjs/sequelize';
 import { Language } from '@interfaces/language.enum';
@@ -22,17 +21,14 @@ dotenv.config({ path: '.env.test' });
 
 describe('CompanyUsersService', () => {
   let service: CompanyUsersService;
-  let sequelize: Sequelize;
   let usersService: UsersService;
   let companyService: CompanyService;
-  let companyUsersService: CompanyUsersService;
   let emailService: EmailService;
   let authService: AuthService;
   let companyUserRepository: typeof CompanyUser;
 
   const companyUserRepositoryToken = getModelToken(CompanyUser);
 
-  const mockCompanyUsersService = {};
   const mockCompanyUsersRepository = {
     create: jest.fn(),
     findOne: jest.fn(),
@@ -91,14 +87,6 @@ describe('CompanyUsersService', () => {
     companyUserRepository = module.get<typeof CompanyUser>(
       companyUserRepositoryToken
     );
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -113,7 +101,7 @@ describe('CompanyUsersService', () => {
         role: 'ADMIN' as Role,
         language: Language.PL
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const companyOwnerId = uuid.v4();
       const companyOwnerEmail = 'owner@example.com';
@@ -190,7 +178,7 @@ describe('CompanyUsersService', () => {
     it('should get company member info if member exists', async () => {
       const companyId = uuid.v4();
       const userId = uuid.v4();
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const companyMember = {
         id: uuid.v4(),
@@ -234,7 +222,7 @@ describe('CompanyUsersService', () => {
     it('should throw CompanyMemberNotFoundException if member does not exist', async () => {
       const companyId = uuid.v4();
       const userId = uuid.v4();
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       jest.spyOn(companyUserRepository, 'findOne').mockResolvedValueOnce(null);
 
@@ -253,7 +241,7 @@ describe('CompanyUsersService', () => {
         firstName: 'Updated',
         lastName: 'Member'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const companyMember = {
         id: uuid.v4(),
@@ -294,7 +282,7 @@ describe('CompanyUsersService', () => {
         firstName: 'Updated',
         lastName: 'Member'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       jest.spyOn(companyUserRepository, 'findOne').mockResolvedValueOnce(null);
 
@@ -319,7 +307,7 @@ describe('CompanyUsersService', () => {
         phoneCode: '123456',
         language: Language.EN
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const companyMember = {
         id: uuid.v4(),
@@ -387,7 +375,7 @@ describe('CompanyUsersService', () => {
         phoneCode: '123456',
         language: Language.EN
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       jest.spyOn(usersService, 'getUserById').mockResolvedValueOnce({} as any);
       jest.spyOn(companyUserRepository, 'findOne').mockResolvedValueOnce(null);
@@ -412,7 +400,7 @@ describe('CompanyUsersService', () => {
         phoneCode: '123456',
         language: Language.EN
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       jest.spyOn(usersService, 'getUserById').mockResolvedValueOnce({} as any);
       jest.spyOn(authService, 'checkUserMfaStatus').mockRejectedValueOnce({

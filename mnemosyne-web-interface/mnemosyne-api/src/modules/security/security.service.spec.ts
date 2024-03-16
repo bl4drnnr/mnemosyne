@@ -18,13 +18,6 @@ dotenv.config({ path: '.env.test' });
 
 describe('SecurityService', () => {
   let service: SecurityService;
-  let confirmationHashService: ConfirmationHashService;
-  let cryptographicService: CryptographicService;
-  let phoneService: PhoneService;
-  let authService: AuthService;
-  let timeService: TimeService;
-  let emailService: EmailService;
-  let usersService: UsersService;
 
   const mockConfirmationHashService = {
     getUserIdByConfirmationHash: jest.fn()
@@ -77,16 +70,6 @@ describe('SecurityService', () => {
     }).compile();
 
     service = module.get<SecurityService>(SecurityService);
-    confirmationHashService = module.get<ConfirmationHashService>(
-      ConfirmationHashService
-    );
-    cryptographicService =
-      module.get<CryptographicService>(CryptographicService);
-    phoneService = module.get<PhoneService>(PhoneService);
-    authService = module.get<AuthService>(AuthService);
-    timeService = module.get<TimeService>(TimeService);
-    emailService = module.get<EmailService>(EmailService);
-    usersService = module.get<UsersService>(UsersService);
   });
 
   it('Should be defined', () => {
@@ -94,7 +77,7 @@ describe('SecurityService', () => {
   });
 
   describe('registrationGenerateTwoFaQrCode', () => {
-    it('should generate 2FA QR code for registration', async () => {
+    it('Should generate 2FA QR code for registration', async () => {
       const confirmationHash = 'confirmation-hash';
       const userId = uuid.v4();
       const email = 'test@example.com';
@@ -140,7 +123,7 @@ describe('SecurityService', () => {
   });
 
   describe('loginGenerateTwoFaQrCode', () => {
-    it('should generate 2FA QR code for login', async () => {
+    it('Should generate 2FA QR code for login', async () => {
       const email = 'test@example.com';
       const password = 'password';
       const qrCodeData = {
@@ -175,7 +158,7 @@ describe('SecurityService', () => {
   });
 
   describe('generateTwoFaQrCode', () => {
-    it('should generate 2FA QR code', async () => {
+    it('Should generate 2FA QR code', async () => {
       const userId = uuid.v4();
       const email = 'test@example.com';
       const qrCodeData = {
@@ -207,18 +190,11 @@ describe('SecurityService', () => {
   });
 
   describe('registrationVerifyTwoFaQrCode', () => {
-    it('should verify 2FA QR code and set MFA status', async () => {
+    it('Should verify 2FA QR code and set MFA status', async () => {
       const userId = uuid.v4();
       const code = '123123';
       const twoFaToken = '2fa-token';
       const confirmationHash = 'confirmation-hash';
-
-      const verifyQrCodeInterface = {
-        userId,
-        code,
-        twoFaToken,
-        trx: null
-      };
 
       mockConfirmationHashService.getUserIdByConfirmationHash.mockResolvedValueOnce(
         { userId }
@@ -251,7 +227,7 @@ describe('SecurityService', () => {
       });
     });
 
-    it('should throw WrongCodeException when verification fails', async () => {
+    it('Should throw WrongCodeException when verification fails', async () => {
       const userId = uuid.v4;
       const code = '123123';
       const twoFaToken = '2fa-token';

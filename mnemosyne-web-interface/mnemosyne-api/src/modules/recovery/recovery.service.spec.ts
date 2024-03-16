@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import * as uuid from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
 import { RecoveryService } from './recovery.service';
-import { Sequelize } from 'sequelize-typescript';
 import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { UsersService } from '@modules/users.service';
 import { CryptographicService } from '@shared/cryptographic.service';
@@ -17,10 +16,6 @@ dotenv.config({ path: '.env.test' });
 
 describe('RecoveryService', () => {
   let service: RecoveryService;
-  let sequelize: Sequelize;
-  let confirmationHashService: ConfirmationHashService;
-  let usersService: UsersService;
-  let cryptoService: CryptographicService;
 
   const mockConfirmationHashService = {
     getUserIdByConfirmationHash: jest.fn()
@@ -57,20 +52,7 @@ describe('RecoveryService', () => {
       ]
     }).compile();
 
-    confirmationHashService = module.get<ConfirmationHashService>(
-      ConfirmationHashService
-    );
-    usersService = module.get<UsersService>(UsersService);
-    cryptoService = module.get<CryptographicService>(CryptographicService);
     service = module.get<RecoveryService>(RecoveryService);
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -78,11 +60,11 @@ describe('RecoveryService', () => {
   });
 
   describe('registrationGenerateRecoveryKeys', () => {
-    it('should generate and save recovery keys for registration', async () => {
+    it('Should generate and save recovery keys for registration', async () => {
       const confirmationHash = 'hash';
       const passphrase = 'passphrase';
       const userId = uuid.v4();
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const recoveryKeys = [
         'recoveryKey1',
         'recoveryKey2',
@@ -140,7 +122,7 @@ describe('RecoveryService', () => {
       expect(result).toEqual(expectedResult);
     }, 20009);
 
-    it('should throw HttpException if an error occurs during the process', async () => {
+    it('Should throw HttpException if an error occurs during the process', async () => {
       const confirmationHash = 'hash';
       const passphrase = 'passphrase';
       const trx: any = {};
@@ -174,7 +156,7 @@ describe('RecoveryService', () => {
   });
 
   describe('loginGenerateRecoveryKeys', () => {
-    it('should generate and save recovery keys for login', async () => {
+    it('Should generate and save recovery keys for login', async () => {
       const payload = {
         email: 'test@example.com',
         password: 'password',
@@ -188,7 +170,7 @@ describe('RecoveryService', () => {
         'recoveryKey5'
       ];
       const userId = uuid.v4();
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const loginKeysInterface = {
         payload,
@@ -222,13 +204,13 @@ describe('RecoveryService', () => {
       expect(result).toEqual(expectedResult);
     }, 20000);
 
-    it('should throw HttpException if an error occurs during the process', async () => {
+    it('Should throw HttpException if an error occurs during the process', async () => {
       const payload = {
         email: 'test@example.com',
         password: 'password',
         passphrase: 'passphrase'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       const loginKeysInterface = {
         payload,
@@ -252,7 +234,7 @@ describe('RecoveryService', () => {
   });
 
   describe('recoverUserAccount', () => {
-    it('should recover user account', async () => {
+    it('Should recover user account', async () => {
       const recoveryKeys = [
         'recoveryKey1',
         'recoveryKey2',
@@ -264,7 +246,7 @@ describe('RecoveryService', () => {
         passphrase: 'passphrase',
         recoveryKeys
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const userId = uuid.v4();
       const userSettings = {
         recoveryKeysFingerprint: 'recoveryKeysFingerprint'
@@ -324,7 +306,7 @@ describe('RecoveryService', () => {
       expect(result).toBeInstanceOf(AccountRecoveredDto);
     }, 20000);
 
-    it('should throw WrongRecoveryKeysException if recovery keys fingerprint does not match', async () => {
+    it('Should throw WrongRecoveryKeysException if recovery keys fingerprint does not match', async () => {
       const recoveryKeys = [
         'recoveryKey1',
         'recoveryKey2',
@@ -336,7 +318,7 @@ describe('RecoveryService', () => {
         passphrase: 'passphrase',
         recoveryKeys
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
       const userId = uuid.v4();
       const userSettings = {
         recoveryKeysFingerprint: 'differentRecoveryKeysFingerprint'

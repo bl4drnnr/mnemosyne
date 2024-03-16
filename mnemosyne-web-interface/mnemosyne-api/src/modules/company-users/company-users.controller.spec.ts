@@ -4,12 +4,6 @@ import { CompanyUsersController } from './company-users.controller';
 import { CompanyUsersService } from '@modules/company-users.service';
 import { AuthGuard } from '@guards/auth.guard';
 import { RoleGuard } from '@guards/role.guard';
-import { Sequelize } from 'sequelize-typescript';
-import { InviteUserToCompanyInterface } from '@interfaces/invite-user-to-company.interface';
-import { GetCompanyMemberInfoInterface } from '@interfaces/get-company-member-info.interface';
-import { UpdateCompanyMemberInfoInterface } from '@interfaces/update-company-member-info.interface';
-import { DeleteCompanyMemberInterface } from '@interfaces/delete-company-member.interface';
-import { SearchCompanyMemberInterface } from '@interfaces/search-company-member.interface';
 import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
 import { Language } from '@interfaces/language.enum';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
@@ -20,65 +14,23 @@ dotenv.config({ path: '.env.test' });
 describe('CompanyUsersController', () => {
   let controller: CompanyUsersController;
   let companyUsersService: CompanyUsersService;
-  let sequelize: Sequelize;
 
   const mockCompanyUsersService = {
-    inviteUserToCompany: jest
-      .fn()
-      .mockImplementation(
-        ({ userId, payload, trx }: InviteUserToCompanyInterface) => {
-          return;
-        }
-      ),
-    getCompanyMemberInfo: jest
-      .fn()
-      .mockImplementation(
-        ({
-          companyId,
-          memberId: userId,
-          trx
-        }: GetCompanyMemberInfoInterface) => {
-          return;
-        }
-      ),
-    updateCompanyMemberInfo: jest
-      .fn()
-      .mockImplementation(
-        ({
-          companyId,
-          payload,
-          memberId: userId,
-          trx
-        }: UpdateCompanyMemberInfoInterface) => {
-          return;
-        }
-      ),
-    deleteCompanyMember: jest
-      .fn()
-      .mockImplementation(
-        ({
-          userId,
-          companyId,
-          payload,
-          memberId,
-          trx
-        }: DeleteCompanyMemberInterface) => {
-          return;
-        }
-      ),
-    searchCompanyMembers: jest
-      .fn()
-      .mockImplementation(
-        ({
-          companyId,
-          query,
-          page,
-          pageSize,
-          trx: transaction
-        }: SearchCompanyMemberInterface) => {
-          return;
-        }
-      )
+    inviteUserToCompany: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    getCompanyMemberInfo: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    updateCompanyMemberInfo: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    deleteCompanyMember: jest.fn().mockImplementation(() => {
+      return;
+    }),
+    searchCompanyMembers: jest.fn().mockImplementation(() => {
+      return;
+    })
   };
 
   beforeEach(async () => {
@@ -98,14 +50,6 @@ describe('CompanyUsersController', () => {
 
     controller = module.get<CompanyUsersController>(CompanyUsersController);
     companyUsersService = module.get<CompanyUsersService>(CompanyUsersService);
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -120,7 +64,7 @@ describe('CompanyUsersController', () => {
         language: Language.PL,
         role: 'ADMIN'
       };
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.inviteUser(userId, payload, trx);
 
@@ -136,7 +80,7 @@ describe('CompanyUsersController', () => {
     it('Should call getCompanyMemberInfo method with correct parameters', async () => {
       const companyId = 'test-company-id';
       const memberId = 'member-id';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.getCompanyMemberInfo(companyId, memberId, trx);
 
@@ -159,7 +103,7 @@ describe('CompanyUsersController', () => {
         homePhone: ''
       };
       const memberId = 'member-id';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.updateCompanyMemberInfo(
         companyId,
@@ -187,7 +131,7 @@ describe('CompanyUsersController', () => {
         language: Language.PL
       };
       const memberId = 'member-id';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.deleteCompanyMember(
         userId,
@@ -213,7 +157,7 @@ describe('CompanyUsersController', () => {
       const query = 'test';
       const page = '0';
       const pageSize = '5';
-      const trx = await sequelize.transaction();
+      const trx: any = {};
 
       await controller.searchCompanyMembers(
         companyId,

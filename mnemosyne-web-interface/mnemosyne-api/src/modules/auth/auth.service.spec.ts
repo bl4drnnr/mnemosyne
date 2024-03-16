@@ -2,7 +2,6 @@ import * as dotenv from 'dotenv';
 import * as uuid from 'uuid';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import { Sequelize } from 'sequelize-typescript';
 import { Session } from '@models/session.model';
 import { MfaNotSetDto } from '@dto/mfa-not-set.dto';
 import { LogInUserResponseDto } from '@dto/log-in-user.dto';
@@ -43,14 +42,8 @@ describe('AuthService', () => {
   let usersService: UsersService;
   let cryptographicService: CryptographicService;
   let phoneService: PhoneService;
-  let companyService: CompanyService;
-  let confirmationHashService: ConfirmationHashService;
   let emailService: EmailService;
-  let sequelize: Sequelize;
   let sessionRepository: typeof Session;
-  let userRepository: typeof User;
-  let userSettingsRepository: typeof UserSettings;
-  let confirmationHashRepository: typeof ConfirmationHash;
 
   const userRepositoryToken = getModelToken(User);
   const sessionRepositoryToken = getModelToken(Session);
@@ -137,26 +130,10 @@ describe('AuthService', () => {
     service = module.get<AuthService>(AuthService);
     usersService = module.get<UsersService>(UsersService);
     emailService = module.get<EmailService>(EmailService);
-    companyService = module.get<CompanyService>(CompanyService);
     phoneService = module.get<PhoneService>(PhoneService);
     cryptographicService =
       module.get<CryptographicService>(CryptographicService);
-    confirmationHashService = module.get<ConfirmationHashService>(
-      ConfirmationHashService
-    );
-    userRepository = module.get<typeof User>(userRepositoryToken);
     sessionRepository = module.get<typeof Session>(sessionRepositoryToken);
-    userSettingsRepository = module.get<typeof UserSettings>(
-      userSettingsRepositoryToken
-    );
-    sequelize = new Sequelize({
-      dialect: 'postgres',
-      host: process.env.POSTGRES_HOST,
-      port: Number(process.env.POSTGRES_PORT),
-      username: process.env.POSTGRES_USERNAME,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE
-    });
   });
 
   it('Should be defined', () => {
@@ -182,7 +159,6 @@ describe('AuthService', () => {
       confirmed: false,
       confirmationType: Confirmation.REGISTRATION
     } as unknown as ConfirmationHash;
-    const mockMfaStatusResponse = new MfaNotSetDto();
     const mockAccessToken = 'access-token';
     const mockRefreshToken = 'refresh-token';
 

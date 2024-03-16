@@ -19,9 +19,6 @@ dotenv.config({ path: '.env.test' });
 
 describe('RolesService', () => {
   let service: RolesService;
-  let utilsService: UtilsService;
-  let roleRepository: typeof Role;
-  let userRoleRepository: typeof UserRole;
 
   const roleRepositoryToken = getModelToken(Role);
   const userRoleRepositoryToken = getModelToken(UserRole);
@@ -58,9 +55,6 @@ describe('RolesService', () => {
     }).compile();
 
     service = module.get<RolesService>(RolesService);
-    utilsService = module.get<UtilsService>(UtilsService);
-    roleRepository = module.get<typeof Role>(roleRepositoryToken);
-    userRoleRepository = module.get<typeof UserRole>(userRoleRepositoryToken);
   });
 
   it('Should be defined', () => {
@@ -68,7 +62,7 @@ describe('RolesService', () => {
   });
 
   describe('getCompanyRoles', () => {
-    it('should get company roles', async () => {
+    it('Should get company roles', async () => {
       const companyId = uuid.v4();
       const trx: any = {};
       const allAssignedRoles = [
@@ -123,7 +117,7 @@ describe('RolesService', () => {
   });
 
   describe('createCompanyRole', () => {
-    it('should create a new company role', async () => {
+    it('Should create a new company role', async () => {
       const companyId = uuid.v4();
       const payload = {
         name: 'roleName',
@@ -175,7 +169,7 @@ describe('RolesService', () => {
       expect(result).toEqual(new CompanyRoleCreatedDto());
     });
 
-    it('should throw RoleAlreadyExistsException if role already exists', async () => {
+    it('Should throw RoleAlreadyExistsException if role already exists', async () => {
       const companyId = uuid.v4();
       const payload = {
         name: 'roleName',
@@ -201,7 +195,7 @@ describe('RolesService', () => {
   });
 
   describe('updateCompanyRole', () => {
-    it('should update company roles', async () => {
+    it('Should update company roles', async () => {
       const companyId = uuid.v4();
       const payload = {
         name: 'updatedRoleName',
@@ -246,7 +240,7 @@ describe('RolesService', () => {
       expect(result).toEqual(new CompanyRoleUpdatedDto());
     });
 
-    it('should throw RoleDoesntExistException if no company roles are found', async () => {
+    it('Should throw RoleDoesntExistException if no company roles are found', async () => {
       const companyId = uuid.v4();
       const payload = {
         name: 'nonExistingRoleName',
