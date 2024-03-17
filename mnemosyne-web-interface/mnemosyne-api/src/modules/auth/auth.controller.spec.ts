@@ -63,7 +63,6 @@ describe('AuthController', () => {
       const trx: any = {};
 
       await controller.login(payload, trx);
-      expect(2+2).toEqual(5);
 
       expect(authService.login).toHaveBeenCalledWith({
         payload,
