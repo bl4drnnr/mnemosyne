@@ -547,7 +547,7 @@ export class CompanyService {
     return new CompanyDeletedDto();
   }
 
-  private async createCompanyAccount({
+  async createCompanyAccount({
     companyName,
     companyLocation,
     companyWebsite,

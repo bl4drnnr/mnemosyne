@@ -34,8 +34,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/PasswordChangedException"
-      tags:
-        &a1
+      tags: &a1
         - Users
       security:
         - basicAuth: []
@@ -164,8 +163,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AccountAlreadyConfirmedException"
-      tags:
-        &a2
+      tags: &a2
         - Confirmation Hashes
       security:
         - basicAuth: []
@@ -328,7 +326,7 @@ paths:
         - basicAuth: []
   /api/confirmation-hash/reset-user-password-confirmation:
     post:
-      operationId: ConfirmationHashController_resetUserPassword
+      operationId: ConfirmationHashController_confirmResetUserPassword
       summary: Endpoint is responsible for user reset password confirmation.
       parameters:
         - name: confirmationHash
@@ -431,8 +429,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/AccountNotConfirmedException"
-      tags:
-        &a3
+      tags: &a3
         - Authentication
       security:
         - basicAuth: []
@@ -491,7 +488,7 @@ paths:
         - basicAuth: []
   /api/auth/refresh:
     get:
-      operationId: AuthController_refreshTokens
+      operationId: AuthController_refreshToken
       summary: Endpoint is responsible for refresh tokens.
       parameters: []
       responses:
@@ -555,8 +552,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/TacNotAcceptedException"
-      tags:
-        &a4
+      tags: &a4
         - Company
       security:
         - basicAuth: []
@@ -705,8 +701,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/GetCompanyRolesDto"
-      tags:
-        &a5
+      tags: &a5
         - Roles
       security:
         - x-access-token: []
@@ -826,8 +821,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserInvitedDto"
-      tags:
-        &a6
+      tags: &a6
         - Company Users
       security:
         - x-access-token: []
@@ -1002,8 +996,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags:
-        &a7
+      tags: &a7
         - Security
       security:
         - basicAuth: []
@@ -1708,8 +1701,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HashNotFoundException"
-      tags:
-        &a8
+      tags: &a8
         - Recovery
       security:
         - basicAuth: []

@@ -68,7 +68,8 @@
         "src/modules/recovery/*",
         "src/modules/company/*",
         "src/modules/company-users/*",
-        "src/modules/company-roles/*"
+        "src/modules/company-roles/*",
+        "src/modules/security/*"
       ],
       "@custom-types/*": [
         "src/libs/types/company/*",
@@ -93,9 +94,7 @@
         "src/libs/interfaces/company-roles/*",
         "src/libs/interfaces/roles/*"
       ],
-      "@docs/*": [
-        "src/libs/docs/*"
-      ],
+      "@docs/*": ["src/libs/docs/*"],
       "@email-templates/*": [
         "src/libs/email-templates/*",
         "src/libs/email-templates/security/*"

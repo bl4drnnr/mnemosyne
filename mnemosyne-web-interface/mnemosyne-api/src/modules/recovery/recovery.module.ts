@@ -18,6 +18,7 @@ import { ApiConfigService } from '@shared/config.service';
     }),
     ConfirmationHashModule,
     UsersModule
-  ]
+  ],
+  exports: [RecoveryService]
 })
 export class RecoveryModule {}

@@ -129,7 +129,7 @@ export class RecoveryService {
     return new AccountRecoveredDto();
   }
 
-  private async generateAndSaveRecoveryKeys({
+  async generateAndSaveRecoveryKeys({
     passphrase,
     userId,
     trx

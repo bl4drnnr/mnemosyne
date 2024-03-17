@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ApiConfigService } from '@shared/config.service';
 import * as SendGrid from '@sendgrid/mail';
-import { ConfirmationHashService } from '@modules/confirmation-hash/confirmation-hash.service';
+import { ConfirmationHashService } from '@modules/confirmation-hash.service';
 import { EmailTemplatesService } from '@shared/email-templates.service';
 import { SecurityInitEmailInterface } from '@interfaces/security-init-email.interface';
 import { CompletedSecurityEmailInterface } from '@interfaces/completed-security-email.interface';

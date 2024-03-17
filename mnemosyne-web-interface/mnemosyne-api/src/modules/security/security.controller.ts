@@ -22,7 +22,7 @@ import {
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
-import { SecurityService } from '@modules/security/security.service';
+import { SecurityService } from '@modules/security.service';
 import { VerifyTwoFaDto } from '@dto/verify-two-fa.dto';
 import { RegistrationSendSmsCodeDto } from '@dto/registration-send-sms-code.dto';
 import { VerifyMobilePhoneDto } from '@dto/verify-mobile-phone.dto';

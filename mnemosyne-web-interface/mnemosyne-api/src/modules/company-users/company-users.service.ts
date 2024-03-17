@@ -98,7 +98,7 @@ export class CompanyUsersService {
         trx
       });
 
-    const { email: companyOwnerEmail } = await this.usersService.getUserById({
+    const companyOwner = await this.usersService.getUserById({
       id: companyOwnerId,
       trx
     });
@@ -107,7 +107,7 @@ export class CompanyUsersService {
       companyName,
       companyLocation,
       companyWebsite,
-      companyOwnerEmail
+      companyOwnerEmail: companyOwner.email
     };
     const isUserExists = !!existingUser;
 

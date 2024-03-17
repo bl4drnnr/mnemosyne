@@ -96,6 +96,93 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@shared/(.*)": [
+        "<rootDir>/shared/services/$1.ts",
+        "<rootDir>/shared/$1.ts"
+      ],
+      "@models/(.*)": "<rootDir>/models/$1.ts",
+      "@pipes/(.*)": "<rootDir>/pipes/$1.ts",
+      "@exceptions/(.*)": [
+        "<rootDir>/exceptions/$1.ts",
+        "<rootDir>/exceptions/user/$1.ts",
+        "<rootDir>/exceptions/role/$1.ts",
+        "<rootDir>/exceptions/auth/$1.ts",
+        "<rootDir>/exceptions/confirmation-hash/$1.ts",
+        "<rootDir>/exceptions/security/$1.ts",
+        "<rootDir>/exceptions/validation/$1.ts",
+        "<rootDir>/exceptions/recovery/$1.ts",
+        "<rootDir>/exceptions/company/$1.ts",
+        "<rootDir>/exceptions/company-users/$1.ts",
+        "<rootDir>/exceptions/company-roles$/1.ts*"
+      ],
+      "@dto/(.*)": [
+        "<rootDir>/dto/$1.ts",
+        "<rootDir>/dto/user/requests/$1.ts",
+        "<rootDir>/dto/user/responses/$1.ts",
+        "<rootDir>/dto/role/responses/$1.ts",
+        "<rootDir>/dto/role/requests/$1.ts",
+        "<rootDir>/dto/security/requests/$1.ts",
+        "<rootDir>/dto/security/responses/$1.ts",
+        "<rootDir>/dto/confirmation-hash/requests/$1.ts",
+        "<rootDir>/dto/confirmation-hash/responses/$1.ts",
+        "<rootDir>/dto/auth/requests/$1.ts",
+        "<rootDir>/dto/auth/responses/$1.ts",
+        "<rootDir>/dto/recovery/requests/$1.ts",
+        "<rootDir>/dto/recovery/responses/$1.ts",
+        "<rootDir>/dto/company/requests/$1.ts",
+        "<rootDir>/dto/company/responses/$1.ts",
+        "<rootDir>/dto/company-users/requests/$1.ts",
+        "<rootDir>/dto/company-users/responses/$1.ts",
+        "<rootDir>/dto/company-roles/requests/$1.ts",
+        "<rootDir>/dto/company-roles/responses/$1.ts*"
+      ],
+      "@events/(.*)": "<rootDir>/events/$1.ts",
+      "@guards/(.*)": "<rootDir>/guards/$1.ts",
+      "@decorators/(.*)": "<rootDir>/decorators/$1.ts",
+      "@middlewares/(.*)": "<rootDir>/middlewares/$1.ts",
+      "@modules/(.*)": [
+        "<rootDir>/modules/users/$1.ts",
+        "<rootDir>/modules/roles/$1.ts",
+        "<rootDir>/modules/auth/$1.ts",
+        "<rootDir>/modules/confirmation-hash/$1.ts",
+        "<rootDir>/modules/recovery/$1.ts",
+        "<rootDir>/modules/company/$1.ts",
+        "<rootDir>/modules/company-users/$1.ts",
+        "<rootDir>/modules/company-roles/$1.ts",
+        "<rootDir>/modules/security/$1.ts"
+      ],
+      "@custom-types/(.*)": [
+        "<rootDor>/libs/types/company/$1.ts",
+        "<rootDor>/libs/types/roles/$.ts"
+      ],
+      "@interfaces/(.*)": [
+        "<rootDir>/libs/enums/$1.ts",
+        "<rootDir>/libs/interfaces/auth/$1.ts",
+        "<rootDir>/libs/interfaces/confirmation-hash/$1.ts",
+        "<rootDir>/libs/interfaces/email/$1.ts",
+        "<rootDir>/libs/interfaces/email/common/$1.ts",
+        "<rootDir>/libs/interfaces/email/company/$1.ts",
+        "<rootDir>/libs/interfaces/email/private/$1.ts",
+        "<rootDir>/libs/interfaces/recovery/$1.ts",
+        "<rootDir>/libs/interfaces/security/$1.ts",
+        "<rootDir>/libs/interfaces/users/$1.ts",
+        "<rootDir>/libs/interfaces/cryptography/$1.ts",
+        "<rootDir>/libs/interfaces/phone/$1.ts",
+        "<rootDir>/libs/interfaces/time/$1.ts",
+        "<rootDir>/libs/interfaces/company/$1.ts",
+        "<rootDir>/libs/interfaces/company-users/$1.ts",
+        "<rootDir>/libs/interfaces/company-roles/$1.ts",
+        "<rootDir>/libs/interfaces/roles/$1.ts*"
+      ],
+      "@docs/(.*)": "<rootDir>/libs/docs/$1.ts",
+      "@email-templates/(.*)": [
+        "<rootDir>/libs/email-templates/$1.ts",
+        "<rootDir>/libs/email-templates/security/$1.ts"
+      ],
+      "@interceptors/(.*)": "<rootDir>/interceptors/$1.ts",
+      "@regex/(.*)": "<rootDir>/libs/regex/$1.ts"
+    }
   }
 }

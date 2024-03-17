@@ -20,7 +20,7 @@ import {
   ApiTags,
   ApiUnauthorizedResponse
 } from '@nestjs/swagger';
-import { AuthService } from '@modules/auth/auth.service';
+import { AuthService } from '@modules/auth.service';
 import { CreateUserDto } from '@dto/create-user.dto';
 import { AuthGuard } from '@guards/auth.guard';
 import { UserId } from '@decorators/user-id.decorator';
@@ -91,7 +91,7 @@ export class AuthController {
   @ApiUnauthorizedResponse(AuthDocs.RefreshTokens.ApiUnauthorizedResponse)
   @ApiBasicAuth('basicAuth')
   @Get('refresh')
-  refreshTokens(
+  refreshToken(
     @CookieRefreshToken() refreshToken: string,
     @TrxDecorator() trx: Transaction
   ) {

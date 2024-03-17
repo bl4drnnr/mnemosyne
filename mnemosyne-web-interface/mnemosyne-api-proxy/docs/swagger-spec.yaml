@@ -1,6 +1,6 @@
 openapi: 3.0.0
 paths:
-  "/api/proxy/{controller}/{action}":
+  /api/proxy/{controller}/{action}:
     post:
       operationId: ProxyController_proxyAction
       summary: Endpoint is responsible for proxying requests to the BE.
