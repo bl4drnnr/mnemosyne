@@ -55,3 +55,4 @@ mnemosyne-web-interface/mnemosyne-front/typings
 
 .env
 .env.*
+!.env.test
