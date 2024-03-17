@@ -2,16 +2,19 @@ name: Test the application
 
 on: [pull_request]
 
+env:
+  IMAGE_TAG: mnemosyne-api
+
 jobs:
-  build:
+  test:
+    name: Run tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Setup Node 20.x
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-          cache: npm
-      - run: npm install --force --workspace=mnemosyne-api
-      - run: npm run api:build
-      - run: npm run api:test
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Build the Docker image
+        run: docker build -f mnemosyne-web-interface/mnemosyne-api/Dockerfile.api-tests -t $IMAGE_TAG --target=create-build .
+
+      - name: Run tests
+        run: docker run $IMAGE_TAG sh -c 'npm run test'
