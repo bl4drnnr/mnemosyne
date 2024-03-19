@@ -49,6 +49,9 @@ import { Titles } from '@interfaces/titles.enum';
 })
 export class HomeComponent implements OnInit {
   currentTypingText = 1;
+  title1: string;
+  title2: string;
+  title3: string;
 
   constructor(
     private readonly envService: EnvService,
@@ -64,7 +67,10 @@ export class HomeComponent implements OnInit {
     await this.router.navigate([path]);
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.translationService.setPageTitle(Titles.HOME);
+    // this.title1 = await this.translationService.translateText('', '');
+    // this.title2 = await this.translationService.translateText('', '');
+    // this.title3 = await this.translationService.translateText('', '');
   }
 }

@@ -7,6 +7,7 @@ import { LottieComponent } from 'ngx-lottie';
 import { NgxTypedJsModule } from 'ngx-typed-js';
 import { LayoutsModule } from '@layouts/layouts.module';
 import { RouterModule, Routes } from '@angular/router';
+import {TranslocoModule} from "@ngneat/transloco";
 
 const components = [TermsAndConditionsComponent, HomeComponent];
 
@@ -38,7 +39,8 @@ const routes: Routes = [
     LottieComponent,
     NgxTypedJsModule,
     NgOptimizedImage,
-    LayoutsModule
+    LayoutsModule,
+    TranslocoModule
   ],
   exports: [...components]
 })

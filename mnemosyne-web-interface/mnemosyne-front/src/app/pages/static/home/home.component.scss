@@ -18,7 +18,7 @@
   position: absolute;
   right: 0;
   left: 10%;
-  top: 20%;
+  top: 10%;
 
   @include respond_device(to_m) {
     margin: 0 auto;
@@ -38,8 +38,8 @@
 }
 
 .welcome-header-subtitle-wrapper {
-  display: flex;
-  margin-left: 10px;
+  display: block;
+  padding-left: 10px;
 
   @include respond_device(to_m) {
     flex-direction: column;
@@ -61,15 +61,11 @@
 
 .welcome-header-subtitle {
   font-weight: 200;
-  font-size: 48px;
+  font-size: 36px;
 
   @include respond_device(to_m) {
     font-size: 32px;
     padding: 0 !important;
-  }
-
-  &.padding {
-    padding-left: 10px;
   }
 }
 
@@ -77,6 +73,7 @@
   font-weight: 300;
   font-size: 24px;
   padding-left: 5px;
+  height: 50px;
 
   @include respond_device(to_m) {
     padding: 0;

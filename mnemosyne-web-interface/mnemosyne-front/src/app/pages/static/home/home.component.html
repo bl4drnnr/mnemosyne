@@ -3,95 +3,95 @@
   [showSideBar]="false"
   [showHeaderBurger]="false"
 >
-  <div class="home-welcome-window">
+  <ng-container *transloco="let t">
+    <div class="home-welcome-window">
 
-    <div class="home-welcome-animation">
-      <ng-lottie [options]="animationOptions" />
-    </div>
-
-    <div class="home-welcome-text-container">
-      <ngx-typed-js
-        [showCursor]="true"
-        [strings]="['Mnemosyne']"
-        [startDelay]="1000"
-        [typeSpeed]="100"
-      >
-        <h1 class="welcome-header-title"><span class="typing"></span></h1>
-      </ngx-typed-js>
-
-      <div class="welcome-header-subtitle-wrapper">
-        <ngx-typed-js
-          [strings]="['Secure.']"
-          [showCursor]="false"
-          [startDelay]="1500"
-          [typeSpeed]="70"
-          (completed)="currentTypingText = 2"
-        >
-          <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
-        </ngx-typed-js>
-        <ngx-typed-js
-          *ngIf="currentTypingText > 1"
-          [strings]="['Transparent.']"
-          [showCursor]="false"
-          [typeSpeed]="70"
-          (completed)="currentTypingText = 3"
-        >
-          <h2 class="welcome-header-subtitle padding"><span class="typing"></span></h2>
-        </ngx-typed-js>
-        <ngx-typed-js
-          [startDelay]="3600"
-          [strings]="['Immutable.']"
-          [typeSpeed]="70"
-          (completed)="currentTypingText = 4"
-        >
-          <h2 [ngClass]="currentTypingText >= 3 ? 'welcome-header-subtitle padding' : 'welcome-header-subtitle'">
-            <span class="typing"></span>
-          </h2>
-        </ngx-typed-js>
+      <div class="home-welcome-animation">
+        <ng-lottie [options]="animationOptions" />
       </div>
 
-      <div
-        *ngIf="currentTypingText >= 3"
-        [@fadeIn]="true"
-        class="welcome-header-p-wrapper"
-      >
+      <div class="home-welcome-text-container">
         <ngx-typed-js
-          contentType="html"
-          [loop]="true"
-          [startDelay]="2200"
-          [strings]="[
-          '<b>secured with the blockchain.</b>',
-          '<b>decentralized with the blockchain.</b>',
-          '<b>tamper-proofed by the blockchain.</b>'
+          [showCursor]="true"
+          [strings]="['Mnemosyne']"
+          [startDelay]="1000"
+          [typeSpeed]="100"
+        >
+          <h1 class="welcome-header-title"><span class="typing"></span></h1>
+        </ngx-typed-js>
+
+        <div class="welcome-header-subtitle-wrapper">
+          <ngx-typed-js
+            [strings]="['Whatever you need']"
+            [showCursor]="false"
+            [startDelay]="1500"
+            [typeSpeed]="70"
+            (completed)="currentTypingText = 2"
+          >
+            <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
+          </ngx-typed-js>
+          <ngx-typed-js
+            *ngIf="currentTypingText > 1"
+            [strings]="['Whenever you want']"
+            [showCursor]="false"
+            [typeSpeed]="70"
+            (completed)="currentTypingText = 3"
+          >
+            <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
+          </ngx-typed-js>
+          <ngx-typed-js
+            [startDelay]="4200"
+            [strings]="['Whenever you are']"
+            [typeSpeed]="70"
+            (completed)="currentTypingText = 4"
+          >
+            <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
+          </ngx-typed-js>
+        </div>
+
+        <div
+          *ngIf="currentTypingText >= 3"
+          [@fadeIn]="true"
+          class="welcome-header-p-wrapper"
+        >
+          <ngx-typed-js
+            contentType="html"
+            [loop]="true"
+            [startDelay]="2200"
+            [strings]="[
+          '<b>where buyers and sellers thrive in the digital marketplace.</b>',
+          '<b>empower your business.</b>',
+          '<b>and explore limitless opportunities.</b>'
         ]"
-          [typeSpeed]="50"
-          [backSpeed]="10"
+            [typeSpeed]="50"
+            [backSpeed]="10"
+          >
+            <p class="welcome-header-p">
+              Your marketplace for digital excellence: <span class="typing"></span>
+            </p>
+          </ngx-typed-js>
+        </div>
+
+        <div
+          [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
+          class="home-start-button-wrapper"
         >
-          <p class="welcome-header-p">
-            Discover the limitless possibilities of blockchain-driven storage where you can be sure that you data is <span class="typing"></span>
-          </p>
-        </ngx-typed-js>
-      </div>
+          <basic-button
+            label="Sign Up"
+            [highHeight]="true"
+            [fillButton]="true"
+            (buttonClick)="handleRedirect('registration')"
+          />
+        </div>
 
-      <div
-        [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
-        class="home-start-button-wrapper"
-      >
-        <basic-button
-          label="Sign Up"
-          [highHeight]="true"
-          [fillButton]="true"
-          (buttonClick)="handleRedirect('registration')"
-        />
-      </div>
+        <div
+          class="home-start-button-wrapper"
+          [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
+        >
+          <page-component-alt-registration [block]="false"/>
+        </div>
 
-      <div
-        class="home-start-button-wrapper"
-        [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
-      >
-        <page-component-alt-registration [block]="false"/>
       </div>
-
     </div>
-  </div>
+  </ng-container>
 </layout-default>
