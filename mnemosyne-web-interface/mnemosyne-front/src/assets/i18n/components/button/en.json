@@ -29,5 +29,6 @@
   "deleteCompanyMember": "Delete company member",
   "createNewRole": "Create new role",
   "saveChanges": "Save changes",
-  "deleteRole": "Delete role"
+  "deleteRole": "Delete role",
+  "seeMore": "See more"
 }

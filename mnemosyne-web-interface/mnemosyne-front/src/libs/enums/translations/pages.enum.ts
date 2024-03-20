@@ -1,3 +1,5 @@
 export enum PageTranslation {
-  TITLES = 'pages/titles'
+  TITLES = 'pages/titles',
+  HOME = 'pages/home',
+  HOME_ALIAS = 'home'
 }

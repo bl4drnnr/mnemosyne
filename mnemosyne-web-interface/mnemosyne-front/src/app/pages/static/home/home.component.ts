@@ -10,6 +10,7 @@ import {
 } from '@angular/animations';
 import { TranslationService } from '@services/translation.service';
 import { Titles } from '@interfaces/titles.enum';
+import { PageTranslation } from '@translations/pages.enum';
 
 @Component({
   selector: 'basic-home',
@@ -49,9 +50,20 @@ import { Titles } from '@interfaces/titles.enum';
 })
 export class HomeComponent implements OnInit {
   currentTypingText = 1;
-  title1: string;
-  title2: string;
-  title3: string;
+  whateverYouNeedTitle: string;
+  wheneverYouWantTitle: string;
+  whereverYouAreaTile: string;
+  subtitle: string;
+  typedTitle1: string;
+  typedTitle2: string;
+  typedTitle3: string;
+
+  stockItemsForHousePic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-house.jpeg`;
+  stockItemsForTravelsPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-travels.jpeg`;
+  stockItemsForBusinessPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-business.jpeg`;
+  stockItemsForCookingPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-cooking.jpeg`;
+  stockItemsForSportPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-sport.jpeg`;
+  stockItemsForComputerPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-computer.jpeg`;
 
   constructor(
     private readonly envService: EnvService,
@@ -69,8 +81,33 @@ export class HomeComponent implements OnInit {
 
   async ngOnInit() {
     this.translationService.setPageTitle(Titles.HOME);
-    // this.title1 = await this.translationService.translateText('', '');
-    // this.title2 = await this.translationService.translateText('', '');
-    // this.title3 = await this.translationService.translateText('', '');
+    this.whateverYouNeedTitle = await this.translationService.translateText(
+      'whateverYouNeedTitle',
+      PageTranslation.HOME
+    );
+    this.wheneverYouWantTitle = await this.translationService.translateText(
+      'wheneverYouWantTitle',
+      PageTranslation.HOME
+    );
+    this.whereverYouAreaTile = await this.translationService.translateText(
+      'whereverYouAreaTile',
+      PageTranslation.HOME
+    );
+    this.subtitle = await this.translationService.translateText(
+      'subtitle',
+      PageTranslation.HOME
+    );
+    this.typedTitle1 = await this.translationService.translateText(
+      'typedTitle1',
+      PageTranslation.HOME
+    );
+    this.typedTitle2 = await this.translationService.translateText(
+      'typedTitle2',
+      PageTranslation.HOME
+    );
+    this.typedTitle3 = await this.translationService.translateText(
+      'typedTitle3',
+      PageTranslation.HOME
+    );
   }
 }
