@@ -1,0 +1,35 @@
+<div class="textarea-container">
+  <p
+    class="textarea-label"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngIf="label"
+  >{{ label }}</p>
+  <textarea
+    class="textarea-field"
+    [ngClass]="{
+        'disabled': disabled || loaderService.getStatus(),
+        'error': showError,
+        'on-white': onWhite
+      }"
+    [disabled]="disabled"
+    [(ngModel)]="value"
+    [placeholder]="placeholder"
+    (input)="onInput()"
+  ></textarea>
+  <p
+    class="error-message"
+    *ngIf="showError"
+    [@showErrorAnimation]="true"
+    [class.show-error]="showError"
+  >
+    {{ errorMessage }}
+  </p>
+  <p
+    class="input-description"
+    [ngClass]="{ 'on-white': onWhite }"
+    [@descriptionAnimation]="true"
+    *ngIf="inputDescription && !showError"
+  >
+    {{ inputDescription }}
+  </p>
+</div>

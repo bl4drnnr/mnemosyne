@@ -28,6 +28,12 @@ export class ApiConfigService {
     return value.replace(/\\n/g, '\n');
   }
 
+  private getArray(key: string): Array<string> {
+    const value = this.getString(key);
+
+    return value.split(',');
+  }
+
   get jwtAuthConfig() {
     return {
       accessExpiresIn: this.getString('JWT_ACCESS_EXPIRES_IN'),
@@ -81,5 +87,9 @@ export class ApiConfigService {
       salt: this.getString('RECOVERY_ENCRYPTION_SALT'),
       iv: this.getString('RECOVERY_ENCRYPTION_IV')
     };
+  }
+
+  get contactUsReceiver() {
+    return this.getString('CONTACT_US_RECEIVERS');
   }
 }

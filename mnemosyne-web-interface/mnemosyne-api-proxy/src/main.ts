@@ -12,10 +12,7 @@ import * as bodyParser from 'body-parser';
   app.setGlobalPrefix('/api');
 
   app.enableCors({
-    origin: [
-      'http://localhost:4200',
-      'https://mnemosyne.io'
-    ],
+    origin: ['http://localhost:4200', 'https://mnemosyne.io'],
     credentials: true
   });
 

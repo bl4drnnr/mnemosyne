@@ -30,6 +30,7 @@ import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { CookieRefreshToken } from '@decorators/cookie-refresh-token.decorator';
 import { AuthDocs } from '@docs/auth.docs';
+import { ContactUsDto } from '@dto/contact-us.dto';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -97,6 +98,19 @@ export class AuthController {
   ) {
     return this.authService.refreshToken({
       refreshToken,
+      trx
+    });
+  }
+
+  @ApiOperation(AuthDocs.ContactUs.ApiOperation)
+  @ApiExtraModels(...AuthDocs.ContactUs.ApiExtraModels)
+  @ApiResponse(AuthDocs.ContactUs.ApiResponse)
+  @ApiBody(AuthDocs.ContactUs.ApiBody)
+  @ApiBasicAuth('basicAuth')
+  @Post('contact-us')
+  contactUs(@Body() payload: ContactUsDto, @TrxDecorator() trx: Transaction) {
+    return this.authService.contactUs({
+      payload,
       trx
     });
   }

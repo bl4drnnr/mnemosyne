@@ -56,7 +56,7 @@ HASH_PASSWORD_ROUNDS=10
 
 ALLOWED_METHODS=POST,GET,PATCH,DELETE
 
-ALLOWED_ENDPOINTS_AUTH=login,registration,logout,refresh
+ALLOWED_ENDPOINTS_AUTH=login,registration,logout,refresh,contact-us
 ALLOWED_ENDPOINTS_HASH=account-confirmation,reset-user-password-confirmation,email-change-confirmation,company-account-confirmation,company-member-account-confirmation
 ALLOWED_ENDPOINTS_RECOVERY=registration-generate-recovery-keys,login-generate-recovery-keys,generate-recovery-keys,recover-account
 ALLOWED_ENDPOINTS_SECURITY=registration-generate-2fa-qr,login-generate-2fa-qr,generate-2fa-qr,registration-verify-2fa,login-verify-2fa,verify-2fa,disable-2fa,registration-send-sms-code,login-send-sms-code,send-sms-code,registration-verify-mobile-phone,login-verify-mobile-phone,verify-mobile-phone,disable-phone,delete-account,change-password,get-sms-code,change-email,hash-send-sms-code,clear-sms-code

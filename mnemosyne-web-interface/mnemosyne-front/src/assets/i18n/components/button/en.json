@@ -30,5 +30,6 @@
   "createNewRole": "Create new role",
   "saveChanges": "Save changes",
   "deleteRole": "Delete role",
-  "seeMore": "See more"
+  "seeMore": "See more",
+  "sendContactMessage": "Send a contact message"
 }

@@ -13,6 +13,7 @@ import { CryptographicService } from '@shared/cryptographic.service';
 import { Confirmation } from '@interfaces/confirmation-type.enum';
 import { Routes } from '@interfaces/routes.enum';
 import { CompanyActionInterface } from '@interfaces/company-action.interface';
+import { ContactUsEmailInterface } from '@interfaces/contact-us-email.interface';
 
 @Injectable()
 export class EmailService {
@@ -354,6 +355,16 @@ export class EmailService {
     });
 
     await this.sendEmail({ to, html, subject });
+  }
+
+  async contactUsEmail({ from, message, language }: ContactUsEmailInterface) {
+    const { html, subject, receiver } = this.emailTemplatesService.contactUs({
+      from,
+      message,
+      language
+    });
+
+    await this.sendEmail({ to: receiver, html, subject });
   }
 
   private getConfirmationLink({ hash, route }: GetConfirmLinkInterface) {

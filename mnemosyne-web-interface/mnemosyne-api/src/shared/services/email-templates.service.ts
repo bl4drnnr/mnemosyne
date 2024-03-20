@@ -15,9 +15,14 @@ import { companyMemberConfirmInviteTemplate } from '@email-templates/company-mem
 import { CompanyPayloadInterface } from '@interfaces/company-payload.interface';
 import { companyMemberDeletedTemplate } from '@email-templates/company-member-deleted.template';
 import { companyDeletionTemplate } from '@email-templates/company-deletion.template';
+import { ContactUsEmailInterface } from '@interfaces/contact-us-email.interface';
+import { ApiConfigService } from '@shared/config.service';
+import { contactUsTemplate } from '@email-templates/contact-us.template';
 
 @Injectable()
 export class EmailTemplatesService {
+  constructor(private readonly apiConfigService: ApiConfigService) {}
+
   companyRegistrationEmailTemplate({
     companyInfo,
     link,
@@ -392,5 +397,29 @@ export class EmailTemplatesService {
     });
 
     return { html, subject };
+  }
+
+  contactUs({ from, message, language }: ContactUsEmailInterface) {
+    let subject: string;
+
+    switch (language) {
+      case Language.EN:
+        subject = 'Mnemosyne - User Feedback';
+        break;
+      case Language.RU:
+        subject = 'Mnemosyne - Отзывы Пользователей';
+        break;
+      case Language.PL:
+        subject = 'Mnemosyne - Opinie Użytkowników';
+        break;
+      default:
+        subject = 'Mnemosyne - User Feedback';
+        break;
+    }
+
+    const receiver = this.apiConfigService.contactUsReceiver;
+    const html = contactUsTemplate({ from, message, language });
+
+    return { html, subject, receiver };
   }
 }

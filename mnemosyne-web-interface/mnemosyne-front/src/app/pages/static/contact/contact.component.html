@@ -1,0 +1,43 @@
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="contact-description-container">
+      <div class="contact-description">
+        <h1>{{ t('contact.contactUsTitle') }}</h1>
+        <p>{{ t('contact.contactUsDesc') }}</p>
+      </div>
+    </div>
+
+    <div class="contact-container">
+      <div class="contact-container-inputs">
+        <basic-input
+          type="email"
+          [label]="t('input.contactEmail')"
+          [placeholder]="t('input.provideContactEmail')"
+          [inputDescription]="t('input.contactEmailDesc')"
+          [errorMessage]="t('input.wrongEmailFormat')"
+          [value]="contactEmail"
+          (valueChange)="contactEmail = $event"
+          (incorrectInput)="incorrectContactEmail = $event"
+        />
+        <basic-textarea
+          [label]="t('input.contactMessage')"
+          [placeholder]="t('input.provideContactMessage')"
+          [inputDescription]="t('input.contactMessageDesc')"
+          [errorMessage]="t('input.wrongContactMessage')"
+          [minLength]="2"
+          [maxLength]="1024"
+          [value]="contactMessage"
+          (valueChange)="contactMessage = $event"
+          (incorrectInput)="incorrectContactMessage = $event"
+        />
+        <basic-button
+          [label]="t('button.sendContactMessage')"
+          [disabled]="disableSentButton()"
+          (buttonClick)="sendContactMessage()"
+        />
+      </div>
+    </div>
+  </ng-container>
+</layout-default>

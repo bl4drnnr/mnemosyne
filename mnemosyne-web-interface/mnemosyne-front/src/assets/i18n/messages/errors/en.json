@@ -54,7 +54,9 @@
     "wrong-company-role-description-format": "Wrong custom company role description format",
     "wrong-company-role-description-length": "Wrong custom company role description length",
     "wrong-company-role-scope-length": "Wrong custom company role scopes length",
-    "wrong-new-role-assignees-length": "Wrong length of new role assignees"
+    "wrong-new-role-assignees-length": "Wrong length of new role assignees",
+    "wrong-contact-message-format": "Wrong contact message format",
+    "wrong-contact-message-length": "Wrong contact message length"
   },
   "wrong-timeframe": "Wrong timeframe",
   "invalid-recovery-keys": "Invalid recovery keys",

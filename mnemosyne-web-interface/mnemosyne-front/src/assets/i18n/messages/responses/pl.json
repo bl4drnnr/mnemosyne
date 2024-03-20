@@ -6,5 +6,6 @@
   "company-member-deleted": "Członek firmy został pomyślnie usunięty",
   "company-role-created": "Niestandardowa rola użytkownika firmy została pomyślnie utworzona",
   "company-role-deleted": "Niestandardowa rola firmy została pomyślnie usunięta",
-  "company-role-updated": "Rola firmy została pomyślnie zaktualizowana"
+  "company-role-updated": "Rola firmy została pomyślnie zaktualizowana",
+  "contact-message-sent": "Wiadomość kontaktowa została pomyślnie wysłana"
 }

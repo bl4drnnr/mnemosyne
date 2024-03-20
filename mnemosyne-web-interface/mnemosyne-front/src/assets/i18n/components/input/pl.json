@@ -107,5 +107,12 @@
   "roleDescriptionError": "Minimalna długość nowego opisu roli to 2 symbole, maksymalna to 128 symboli.",
   "newRoleAssignee": "Nowa osoba przypisana roli",
   "provideNewRoleAssignee": "Podaj osobę przypisaną do nowej roli",
-  "newRoleAssigneeDesc": "Aby utworzyć nową rolę, musisz przypisać ją przynajmniej jednemu użytkownikowi w Twojej firmie."
+  "newRoleAssigneeDesc": "Aby utworzyć nową rolę, musisz przypisać ją przynajmniej jednemu użytkownikowi w Twojej firmie.",
+  "contactEmail": "Twój kontaktowy e-mail",
+  "provideContactEmail": "podaj swój kontaktowy adres e-mail",
+  "contactEmailDesc": "podaj wiadomość e-mail, której możemy użyć, aby skontaktować się z Tobą",
+  "contactMessage": "Twoja wiadomość kontaktowa",
+  "provideContactMessage": "Podaj swoją wiadomość kontaktową",
+  "contactMessageDesc": "pisz, co chcesz. Z przyjemnością porozmawiamy!",
+  "wrongContactMessage": "Niewłaściwa długość wiadomości kontaktowej. Powinien wynosić od 2 do 1024."
 }

@@ -518,6 +518,30 @@ paths:
       tags: *a3
       security:
         - basicAuth: []
+  /api/auth/contact-us:
+    post:
+      operationId: AuthController_contactUs
+      summary: Endpoint is responsible for contacting the company staff
+      parameters: []
+      requestBody:
+        required: true
+        description: Body contains the email that will be used to contact back along
+          with the message.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactUsDto"
+      responses:
+        "201":
+          description: As a response functions returns the message that the message to the
+            company has been sent.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactMessageSentDto"
+      tags: *a3
+      security:
+        - basicAuth: []
   /api/company/create-company:
     post:
       operationId: CompanyController_createCompany
@@ -2404,6 +2428,36 @@ components:
           example: token-expired
       required:
         - message
+    ContactMessageSentDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Contact message sent response message
+          example: contact-message-sent
+      required:
+        - message
+    ContactUsDto:
+      type: object
+      properties:
+        contactEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        contactMessage:
+          type: string
+          description: Contact Us message
+          example: Thank you!
+        language:
+          type: string
+          enum:
+            - ru
+            - pl
+            - en
+          description: One of 3 available languages
+      required:
+        - contactEmail
+        - contactMessage
     CreateCompanyDto:
       type: object
       properties:

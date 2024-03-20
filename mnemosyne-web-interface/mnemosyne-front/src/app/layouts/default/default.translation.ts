@@ -59,6 +59,10 @@ export const DefaultTranslation = {
     {
       scope: PageTranslation.HOME,
       alias: PageTranslation.HOME_ALIAS
+    },
+    {
+      scope: PageTranslation.CONTACT,
+      alias: PageTranslation.CONTACT_ALIAS
     }
   ]
 };

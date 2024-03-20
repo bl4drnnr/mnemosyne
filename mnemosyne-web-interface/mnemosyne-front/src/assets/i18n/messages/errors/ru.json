@@ -54,7 +54,9 @@
     "wrong-company-role-description-format": "Неправильный формат описания роли компании",
     "wrong-company-role-description-length": "Неверная длина пользовательского описания роли компании",
     "wrong-company-role-scope-length": "Неверная длина пользовательских ролей компании",
-    "wrong-new-role-assignees-length": "Неверная длина новых исполнителей роли"
+    "wrong-new-role-assignees-length": "Неверная длина новых исполнителей роли",
+    "wrong-contact-message-format": "Неправильный формат контактного сообщения",
+    "wrong-contact-message-length": "Неправильная длина контактного сообщения"
   },
   "wrong-timeframe": "Неверный таймфрейм",
   "invalid-recovery-keys": "Недействительные ключи восстановления",

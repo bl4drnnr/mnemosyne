@@ -54,7 +54,9 @@
     "wrong-company-role-description-format": "Nieprawidłowy, niestandardowy format opisu roli firmy",
     "wrong-company-role-description-length": "Nieprawidłowa długość opisu roli niestandardowej firmy",
     "wrong-company-role-scope-length": "Nieprawidłowa długość niestandardowych zakresów ról firmy",
-    "wrong-new-role-assignees-length": "Nieprawidłowa długość nowych przypisanych ról"
+    "wrong-new-role-assignees-length": "Nieprawidłowa długość nowych przypisanych ról",
+    "wrong-contact-message-format": "Niewłaściwy format wiadomości kontaktowych",
+    "wrong-contact-message-length": "Niewłaściwa długość wiadomości kontaktowej"
   },
   "wrong-timeframe": "Niewłaściwy przedział czasowy",
   "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania",

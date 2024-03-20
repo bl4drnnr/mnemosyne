@@ -1,3 +1,12 @@
 <footer>
-
+  <div class="footer-container">
+    <h3
+      (click)="handleRedirect('/')"
+      class="footer-title"
+    >Mnemosyne</h3>
+    <div class="footer-links">
+      <p (click)="handleRedirect('terms-and-conditions')">Terms and Conditions</p>
+      <p (click)="handleRedirect('contact')">Contact</p>
+    </div>
+  </div>
 </footer>

@@ -25,5 +25,7 @@ export enum ValidationError {
   WRONG_COMPANY_ROLE_DESC_FORMAT = 'wrong-company-role-description-format',
   WRONG_COMPANY_ROLE_DESC_LENGTH = 'wrong-company-role-description-format',
   WRONG_COMPANY_ROLE_SCOPE_LENGTH = 'wrong-company-role-scope-length',
-  WRONG_NEW_ROLE_ASSIGNEES_LENGTH = 'wrong-new-role-assignees-length'
+  WRONG_NEW_ROLE_ASSIGNEES_LENGTH = 'wrong-new-role-assignees-length',
+  WRONG_CONTACT_MESSAGE_FORMAT = 'wrong-contact-message-format',
+  WRONG_CONTACT_MESSAGE_LENGTH = 'wrong-contact-message-length'
 }

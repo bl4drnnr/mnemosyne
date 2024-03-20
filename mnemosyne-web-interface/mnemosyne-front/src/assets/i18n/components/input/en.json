@@ -107,5 +107,12 @@
   "roleDescriptionError": "Min length of the new role description is 2 symbols, max is 128 symbols.",
   "newRoleAssignee": "New role assignee",
   "provideNewRoleAssignee": "Provide assignee for the new role",
-  "newRoleAssigneeDesc": "In order to create new role, you need to assignee it to at least one user in your company."
+  "newRoleAssigneeDesc": "In order to create new role, you need to assignee it to at least one user in your company.",
+  "contactEmail": "Your contact email",
+  "provideContactEmail": "Provide your contact email",
+  "contactEmailDesc": "Provide the email that we can use in order to reach out back to you",
+  "contactMessage": "Your contact message",
+  "provideContactMessage": "Provide your contact message",
+  "contactMessageDesc": "Write whatever you want. We will be glad to talk!",
+  "wrongContactMessage": "Wrong contact message length. Should be between 2 and 1024."
 }

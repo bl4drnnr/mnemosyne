@@ -8,8 +8,13 @@ import { NgxTypedJsModule } from 'ngx-typed-js';
 import { LayoutsModule } from '@layouts/layouts.module';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
+import { ContactComponent } from '@pages/contact/contact.component';
 
-const components = [TermsAndConditionsComponent, HomeComponent];
+const components = [
+  TermsAndConditionsComponent,
+  HomeComponent,
+  ContactComponent
+];
 
 const routes: Routes = [
   {
@@ -27,11 +32,15 @@ const routes: Routes = [
   {
     path: 'index',
     redirectTo: ''
+  },
+  {
+    path: 'contact',
+    component: ContactComponent
   }
 ];
 
 @NgModule({
-  declarations: [...components],
+  declarations: [...components, ContactComponent],
   imports: [
     RouterModule.forRoot(routes),
     CommonModule,

@@ -3,5 +3,6 @@ export enum AuthEndpoint {
   LOGIN = 'login',
   FORGOT_PASSWORD = 'forgot-password',
   REFRESH = 'refresh',
-  LOGOUT = 'logout'
+  LOGOUT = 'logout',
+  CONTACT_US = 'contact-us'
 }

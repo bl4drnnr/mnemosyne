@@ -19,6 +19,8 @@ import { ConfirmAccountPayload } from '@payloads/confirm-account.interface';
 import { ConfirmCompanyAccountPayload } from '@payloads/confirm-company-account.interface';
 import { ConfirmCompanyAccountResponse } from '@responses/confirm-company-account.enum';
 import { ConfirmCompanyMemberAccResponse } from '@responses/confirm-company-member-acc.enum';
+import { ContactUsPayload } from '@payloads/contact-us.interface';
+import { ContactUsResponse } from '@responses/contact-us.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -147,6 +149,21 @@ export class AuthenticationService {
       method: Method.GET,
       controller: Controller.AUTH,
       action: AuthEndpoint.LOGOUT
+    });
+  }
+
+  contactUs(
+    payload: ContactUsPayload
+  ): Observable<{ message: ContactUsResponse }> {
+    const language = localStorage.getItem('translocoLang');
+
+    if (language) payload.language = language;
+
+    return this.apiService.apiProxyRequest({
+      method: Method.POST,
+      controller: Controller.AUTH,
+      action: AuthEndpoint.CONTACT_US,
+      payload
     });
   }
 }

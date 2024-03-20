@@ -6,5 +6,6 @@
   "company-member-deleted": "Company member has been successfully deleted",
   "company-role-created": "Company user custom role has been successfully created",
   "company-role-deleted": "Company custom role has been successfully deleted",
-  "company-role-updated": "Company role has been successfully updated"
+  "company-role-updated": "Company role has been successfully updated",
+  "contact-message-sent": "Contact message has been successfully sent"
 }

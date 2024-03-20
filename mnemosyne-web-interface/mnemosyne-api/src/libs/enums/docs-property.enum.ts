@@ -211,5 +211,9 @@ export enum DocsProperty {
   COMPANY_MEMBERS_EMAILS_DESC = 'Array with the id of the user and their emails',
   NEW_ROLE_ASSIGNEES_DESC = 'The array with user IDs for new role',
   ROLE_ALREADY_EXISTS_DESC = 'Role already exists error message',
-  ROLE_ALREADY_EXISTS_EXAMPLE = 'role-already-exists'
+  ROLE_ALREADY_EXISTS_EXAMPLE = 'role-already-exists',
+  CONTACT_MESSAGE_DESC = 'Contact Us message',
+  CONTACT_MESSAGE_EXAMPLE = 'Thank you!',
+  CONTACT_MESSAGE_SENT_DESC = 'Contact message sent response message',
+  CONTACT_MESSAGE_SENT_EXAMPLE = 'contact-message-sent'
 }
