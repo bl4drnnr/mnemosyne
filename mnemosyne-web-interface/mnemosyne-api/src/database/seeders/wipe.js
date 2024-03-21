@@ -4,7 +4,7 @@ module.exports = {
     try {
       //
     } catch (e) {
-      console.log(`Error while initiation of the database: ${e}`);
+      console.log(`Error while wipe of the database: ${e}`);
     }
   },
 

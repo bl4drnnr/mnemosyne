@@ -226,5 +226,12 @@ export enum DocsProperty {
   PRODUCT_CREATED_AT_DESC = 'Product creation date',
   PRODUCT_CREATED_AT_EXAMPLE = '2023-11-17T11:42:26.534Z',
   PRODUCT_PRICE_DESC = 'Product price',
-  PRODUCT_PRICE_EXAMPLE = '15000'
+  PRODUCT_PRICE_EXAMPLE = '15000',
+  CATEGORY_NAME_DESC = 'Category name',
+  CATEGORY_NAME_EXAMPLE = 'travels',
+  CATEGORY_DESC_DESC = 'Category description',
+  CATEGORY_DESC_EXAMPLE = 'travels_docs',
+  SUBCATEGORY_DESC = 'Subcategory description',
+  SUBCATEGORY_EXAMPLE = 'it_books',
+  GET_ALL_CATEGORIES_DESC = 'All categories'
 }

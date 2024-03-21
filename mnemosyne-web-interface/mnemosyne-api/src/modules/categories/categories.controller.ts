@@ -1,4 +1,20 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CategoriesService } from '@modules/categories.service';
+import { TrxDecorator } from '@decorators/transaction.decorator';
+import { Transaction } from 'sequelize';
+import { CategoriesDocs } from '@docs/categories.docs';
 
+@ApiTags('Categories')
 @Controller('categories')
-export class CategoriesController {}
+export class CategoriesController {
+  constructor(private readonly categoriesService: CategoriesService) {}
+
+  @ApiOperation(CategoriesDocs.GetAllCategories.ApiOperation)
+  @ApiExtraModels(...CategoriesDocs.GetAllCategories.ApiExtraModels)
+  @ApiOperation(CategoriesDocs.GetAllCategories.ApiOperation)
+  @Get('all-categories')
+  getAllCategories(@TrxDecorator() trx: Transaction) {
+    return this.categoriesService.getAllCategories({ trx });
+  }
+}

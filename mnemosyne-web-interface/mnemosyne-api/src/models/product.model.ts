@@ -12,6 +12,7 @@ import {
 } from 'sequelize-typescript';
 import { ProductCurrency } from '@interfaces/product-currency.enum';
 import { User } from '@models/user.model';
+import { Category } from '@models/category.model';
 
 const currencyTypes = [
   ProductCurrency.EUR,
@@ -56,6 +57,16 @@ export class Product extends Model<Product, ProductCreationAttributes> {
 
   @Column({ type: DataType.DOUBLE, allowNull: false })
   price: number;
+
+  @Column({ type: DataType.STRING, allowNull: false })
+  subcategory: string;
+
+  @ForeignKey(() => Category)
+  @Column({ type: DataType.UUID, allowNull: false, field: 'category_id' })
+  categoryId: string;
+
+  @BelongsTo(() => Category)
+  category: Category;
 
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID, allowNull: false, field: 'user_id' })

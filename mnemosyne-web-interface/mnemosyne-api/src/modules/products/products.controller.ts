@@ -19,7 +19,6 @@ export class ProductsController {
 
   @Get('search-product')
   searchProduct(
-    @Query('category') category: string,
     @Query('query') query: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,

@@ -1855,6 +1855,23 @@ paths:
         "200":
           description: ""
       tags: *a9
+  /api/products/create-product:
+    post:
+      operationId: ProductsController_createProduct
+      parameters: []
+      responses:
+        "201":
+          description: ""
+      tags: *a9
+  /api/categories/all-categories:
+    get:
+      operationId: CategoriesController_getAllCategories
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags:
+        - Categories
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.

@@ -81,7 +81,8 @@
       ],
       "@custom-types/*": [
         "src/libs/types/company/*",
-        "src/libs/types/roles/*"
+        "src/libs/types/roles/*",
+        "src/libs/types/categories/*"
       ],
       "@interfaces/*": [
         "src/libs/enums/*",

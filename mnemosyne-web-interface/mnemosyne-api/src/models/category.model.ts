@@ -3,11 +3,13 @@ import {
   CreatedAt,
   DataType,
   Default,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
   UpdatedAt
 } from 'sequelize-typescript';
+import { Product } from '@models/product.model';
 
 interface CategoryCreationAttributes {
   name: string;
@@ -34,6 +36,9 @@ export class Category extends Model<Category, CategoryCreationAttributes> {
     field: 'sub_categories'
   })
   subCategories: Array<string>;
+
+  @HasMany(() => Product)
+  products: Array<Product>;
 
   @CreatedAt
   @Column({ field: 'created_at' })

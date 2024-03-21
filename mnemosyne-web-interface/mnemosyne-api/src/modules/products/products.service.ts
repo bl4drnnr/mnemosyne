@@ -40,7 +40,7 @@ export class ProductsService {
           { slug: { [Op.iLike]: `%${query}%` } }
         ]
       },
-      include: [{ model: User }],
+      include: [{ model: User, attributes: ['first_name', 'last_name'] }],
       attributes: ['picture', 'slug', 'name', 'created_at', 'price'],
       limit,
       offset,
