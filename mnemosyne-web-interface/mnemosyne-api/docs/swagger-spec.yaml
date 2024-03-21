@@ -1821,17 +1821,35 @@ paths:
   /api/products/product:
     get:
       operationId: ProductsController_getProductBySlug
+      summary: Endpoint is responsible for getting the product by the slug.
       parameters:
         - name: slug
           required: true
           in: query
+          description: Slug that is used in order to get the product by slug.
           schema:
             type: string
       responses:
         "200":
-          description: ""
+          description: As an endpoint user gets an instance of the product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductBySlugDto"
       tags: &a9
         - Products
+      security:
+        - basicAuth: []
+  /api/products/latest-products:
+    get:
+      operationId: ProductsController_getLatestProducts
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags: *a9
+      security:
+        - basicAuth: []
   /api/products/search-product:
     get:
       operationId: ProductsController_searchProduct
@@ -1855,6 +1873,8 @@ paths:
         "200":
           description: ""
       tags: *a9
+      security:
+        - basicAuth: []
   /api/products/create-product:
     post:
       operationId: ProductsController_createProduct
@@ -1863,15 +1883,25 @@ paths:
         "201":
           description: ""
       tags: *a9
+      security:
+        - basicAuth: []
   /api/categories/all-categories:
     get:
       operationId: CategoriesController_getAllCategories
+      summary: Endpoint is responsible for getting all categories.
       parameters: []
       responses:
         "200":
-          description: ""
+          description: As a response user gets the array of the all categories along with
+            subcategories
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetAllCategoriesDto"
       tags:
         - Categories
+      security:
+        - basicAuth: []
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.
@@ -3370,3 +3400,41 @@ components:
           example: account-recovered
       required:
         - message
+    Product:
+      type: object
+      properties: {}
+    ProductBySlugDto:
+      type: object
+      properties:
+        product:
+          description: Product instance by the slug
+          example:
+            name: My product
+            description: travels_docs
+            picture: asd
+            currency: PLN
+            price: "15000"
+            subcategory:
+              - it_books
+            category: travels
+            productUserFirstName: Joe
+            productUserLastName: Doe
+          allOf:
+            - $ref: "#/components/schemas/Product"
+      required:
+        - product
+    GetAllCategoriesDto:
+      type: object
+      properties:
+        categories:
+          description: All categories
+          example:
+            - name: travels
+              description: travels_docs
+              subCategories:
+                - it_books
+          type: array
+          items:
+            type: string
+      required:
+        - categories

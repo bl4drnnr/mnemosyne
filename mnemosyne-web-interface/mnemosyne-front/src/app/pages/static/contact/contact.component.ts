@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '@services/authentication.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { TranslationService } from '@services/translation.service';
 import { MessagesTranslation } from '@translations/messages.enum';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss']
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
   contactEmail: string;
   incorrectContactEmail: boolean;
   contactMessage: string;
@@ -53,5 +54,9 @@ export class ContactComponent {
       this.incorrectContactEmail ||
       this.incorrectContactMessage
     );
+  }
+
+  ngOnInit() {
+    this.translationService.setPageTitle(Titles.CONTACT);
   }
 }

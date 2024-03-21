@@ -1,7 +1,7 @@
 export interface SearchedProductsInterface {
-  picture: string;
+  pictures: Array<string>;
   slug: string;
-  name: string;
+  title: string;
   createdAt: Date;
   price: number;
   productUserFirstName: string;

@@ -24,10 +24,11 @@ interface ProductCreationAttributes {
   name: string;
   slug: string;
   description: string;
-  picture: string;
+  pictures: Array<string>;
   currency: ProductCurrency;
   price: number;
   userId: string;
+  location: string;
 }
 
 @Table({ tableName: 'products' })
@@ -38,7 +39,7 @@ export class Product extends Model<Product, ProductCreationAttributes> {
   id: string;
 
   @Column({ type: DataType.STRING, allowNull: false })
-  name: string;
+  title: string;
 
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
   slug: string;
@@ -46,8 +47,11 @@ export class Product extends Model<Product, ProductCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false })
   description: string;
 
+  @Column({ type: DataType.ARRAY(DataType.STRING), allowNull: false })
+  pictures: Array<string>;
+
   @Column({ type: DataType.STRING, allowNull: false })
-  picture: string;
+  location: string;
 
   @Column({
     type: DataType.ENUM(...currencyTypes),

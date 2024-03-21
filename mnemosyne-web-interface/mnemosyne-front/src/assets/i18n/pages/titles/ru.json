@@ -11,5 +11,7 @@
   "settings": "Mnemosyne | Настройки",
   "recoverAccount": "Mnemosyne | Восстановить аккаунт",
   "emailChangeConfirm": "Mnemosyne | Подтверждение изменения по электронной почте",
-  "login": "Mnemosyne | Войти"
+  "login": "Mnemosyne | Войти",
+  "contact": "Mnemosyne | Контакт",
+  "createProduct": "Mnemosyne | Добавить продукт"
 }

@@ -22,6 +22,10 @@ const routes: Routes = [
   {
     path: 'marketplace/product/:product-slug',
     component: ProductComponent
+  },
+  {
+    path: 'marketplace/create-product',
+    component: CreateProductComponent
   }
 ];
 

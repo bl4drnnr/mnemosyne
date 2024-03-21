@@ -8,9 +8,9 @@ export class SearchProductsDto {
     description: DocsProperty.SEARCHED_PRODUCTS_DESC,
     example: [
       {
-        picture: DocsProperty.PRODUCT_PIC_EXAMPLE,
+        pictures: [DocsProperty.PRODUCT_PIC_EXAMPLE],
         slug: DocsProperty.PRODUCT_SLUG_EXAMPLE,
-        name: DocsProperty.PRODUCT_NAME_EXAMPLE,
+        title: DocsProperty.PRODUCT_TITLE_EXAMPLE,
         created_at: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE,
         price: DocsProperty.PRODUCT_PRICE_EXAMPLE
       }

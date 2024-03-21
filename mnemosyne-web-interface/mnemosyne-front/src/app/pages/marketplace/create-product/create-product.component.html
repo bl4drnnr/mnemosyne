@@ -1,1 +1,45 @@
-<p>create-product works!</p>
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="create-product-container">
+      <div class="create-product-block">
+        <h1>Add your product to the marketplace</h1>
+
+        <div class="info-product-container">
+          <h2>More details, the better</h2>
+          <basic-input
+            [label]="'Product title'"
+            [placeholder]="'For example: New Fancy Ford Mustang'"
+            [inputDescription]="'This is going to be the main title of the product that everyone is going to see'"
+            [errorMessage]="'The length of the title should be between 16 and 70.'"
+            [minLength]="16"
+            [maxLength]="70"
+            [value]="productTitle"
+            (valueChange)="productTitle = $event"
+            (incorrectInput)="incorrectProductTitle = $event"
+          />
+        </div>
+
+        <div class="info-product-container">
+          <h2>Show everyone here what you are offering</h2>
+        </div>
+
+        <div class="info-product-container">
+          <h2>Let's add more details on what this is going to be</h2>
+          <basic-textarea
+            [label]="'Product description'"
+            [placeholder]="'Write here a couple of words of important information that would be useful for someone who is going to purchase your product.'"
+            [inputDescription]="'Should be at least 40 characters'"
+            [errorMessage]="'The length of the product description should be between 40 and 9000 characters'"
+            [minLength]="40"
+            [maxLength]="9000"
+            [value]="productDescription"
+            (valueChange)="productDescription = $event"
+            (incorrectInput)="incorrectProductDescription = $event"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</layout-default>

@@ -11,5 +11,7 @@ export enum Titles {
   SETTINGS = 'settings',
   RECOVER_ACCOUNT = 'recoverAccount',
   EMAIL_CHANGE_CONFIRMATION = 'emailChangeConfirm',
-  LOGIN = 'login'
+  LOGIN = 'login',
+  CONTACT = 'contact',
+  CREATE_PRODUCT = 'createProduct'
 }

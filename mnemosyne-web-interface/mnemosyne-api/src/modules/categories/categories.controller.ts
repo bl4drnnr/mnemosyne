@@ -1,5 +1,11 @@
 import { Controller, Get } from '@nestjs/common';
-import { ApiExtraModels, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBasicAuth,
+  ApiExtraModels,
+  ApiOperation,
+  ApiResponse,
+  ApiTags
+} from '@nestjs/swagger';
 import { CategoriesService } from '@modules/categories.service';
 import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
@@ -12,7 +18,8 @@ export class CategoriesController {
 
   @ApiOperation(CategoriesDocs.GetAllCategories.ApiOperation)
   @ApiExtraModels(...CategoriesDocs.GetAllCategories.ApiExtraModels)
-  @ApiOperation(CategoriesDocs.GetAllCategories.ApiOperation)
+  @ApiResponse(CategoriesDocs.GetAllCategories.ApiResponse)
+  @ApiBasicAuth('basicAuth')
   @Get('all-categories')
   getAllCategories(@TrxDecorator() trx: Transaction) {
     return this.categoriesService.getAllCategories({ trx });

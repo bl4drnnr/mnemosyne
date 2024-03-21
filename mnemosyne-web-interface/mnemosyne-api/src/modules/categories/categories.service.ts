@@ -13,7 +13,7 @@ export class CategoriesService {
 
   async getAllCategories({ trx }: GetAllCategoriesInterface) {
     const allCategories = await this.categoryRepository.findAll({
-      attributes: ['name', 'description', 'sub_categories'],
+      attributes: ['name', 'description', 'subCategories'],
       transaction: trx
     });
 

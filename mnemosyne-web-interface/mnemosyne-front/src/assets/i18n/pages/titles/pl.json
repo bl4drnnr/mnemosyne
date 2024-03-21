@@ -11,5 +11,7 @@
   "settings": "Mnemosyne | Ustawienia",
   "recoverAccount": "Mnemosyne | Odzyskaj konto",
   "emailChangeConfirm": "Mnemosyne | Potwierdzenie zmiany adresu e-mail",
-  "login": "Mnemosyne | Logowanie"
+  "login": "Mnemosyne | Logowanie",
+  "contact": "Mnemosyne | Kontakt",
+  "createProduct": "Mnemosyne | Dodaj produkt"
 }
