@@ -1818,6 +1818,43 @@ paths:
       tags: *a8
       security:
         - basicAuth: []
+  /api/products/product:
+    get:
+      operationId: ProductsController_getProductBySlug
+      parameters:
+        - name: slug
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: &a9
+        - Products
+  /api/products/search-product:
+    get:
+      operationId: ProductsController_searchProduct
+      parameters:
+        - name: query
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: pageSize
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a9
 info:
   title: Mnemosyne
   description: Documentation of Mnemosyne API.

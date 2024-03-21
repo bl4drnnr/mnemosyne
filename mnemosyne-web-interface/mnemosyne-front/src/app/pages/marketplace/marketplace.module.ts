@@ -6,8 +6,13 @@ import { ComponentsModule } from '@components/components.module';
 import { LayoutsModule } from '@layouts/layouts.module';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ProductComponent } from '@pages/product/product.component';
+import { CreateProductComponent } from '@pages/create-product/create-product.component';
 
-const components = [MarketplaceComponent, ProductComponent];
+const components = [
+  MarketplaceComponent,
+  ProductComponent,
+  CreateProductComponent
+];
 
 const routes: Routes = [
   {

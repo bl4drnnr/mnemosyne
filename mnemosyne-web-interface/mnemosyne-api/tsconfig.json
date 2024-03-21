@@ -32,7 +32,9 @@
         "src/exceptions/recovery/*",
         "src/exceptions/company/*",
         "src/exceptions/company-users/*",
-        "src/exceptions/company-roles/*"
+        "src/exceptions/company-roles/*",
+        "src/exceptions/products/*",
+        "src/exceptions/categories/*"
       ],
       "@dto/*": [
         "src/dto/*",
@@ -53,7 +55,11 @@
         "src/dto/company-users/requests/*",
         "src/dto/company-users/responses/*",
         "src/dto/company-roles/requests/*",
-        "src/dto/company-roles/responses/*"
+        "src/dto/company-roles/responses/*",
+        "src/dto/products/requests/*",
+        "src/dto/products/responses/*",
+        "src/dto/categories/requests/*",
+        "src/dto/categories/responses/*"
       ],
       "@events/*": ["src/events/*"],
       "@guards/*": ["src/guards/*"],
@@ -69,7 +75,9 @@
         "src/modules/company/*",
         "src/modules/company-users/*",
         "src/modules/company-roles/*",
-        "src/modules/security/*"
+        "src/modules/security/*",
+        "src/modules/products/*",
+        "src/modules/categories/*"
       ],
       "@custom-types/*": [
         "src/libs/types/company/*",
@@ -92,7 +100,9 @@
         "src/libs/interfaces/company/*",
         "src/libs/interfaces/company-users/*",
         "src/libs/interfaces/company-roles/*",
-        "src/libs/interfaces/roles/*"
+        "src/libs/interfaces/roles/*",
+        "src/libs/interfaces/products/*",
+        "src/libs/interfaces/categories/*"
       ],
       "@docs/*": ["src/libs/docs/*"],
       "@email-templates/*": [

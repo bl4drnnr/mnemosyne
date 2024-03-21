@@ -23,6 +23,10 @@ import { CompanyUser } from '@models/company-user.model';
 import { CompanyUsersModule } from '@modules/company-users.module';
 import { Role } from '@models/role.model';
 import { UserRole } from '@models/user-role.model';
+import { ProductsModule } from '@modules/products.module';
+import { CategoriesModule } from '@modules/categories.module';
+import { Product } from '@models/product.model';
+import { Category } from '@models/category.model';
 
 @Module({
   imports: [
@@ -52,7 +56,9 @@ import { UserRole } from '@models/user-role.model';
         Company,
         CompanyUser,
         Role,
-        UserRole
+        UserRole,
+        Product,
+        Category
       ],
       autoLoadModels: true
     }),
@@ -64,7 +70,9 @@ import { UserRole } from '@models/user-role.model';
     SecurityModule,
     RecoveryModule,
     CompanyModule,
-    CompanyUsersModule
+    CompanyUsersModule,
+    ProductsModule,
+    CategoriesModule
   ],
   providers: [
     {
