@@ -9,7 +9,7 @@
         <div class="info-product-container">
           <h2>{{ t('create-product.productDetailsTitle') }}</h2>
           <basic-input
-            [label]="t('input.productTitle')"
+            [label]="t('input.productLabel')"
             [placeholder]="t('input.productPlaceholder')"
             [inputDescription]="t('input.productInputDesc')"
             [errorMessage]="t('input.productError')"
@@ -46,6 +46,34 @@
 
         <div class="info-product-container">
           <h2>{{ t('create-product.productPicsTitle') }}</h2>
+
+          <img
+            *ngIf="preview"
+            [src]="preview"
+            [width]="300"
+            [height]="300"
+          />
+          <img
+            *ngIf="!preview"
+            [ngSrc]="userProfilePictureLink"
+            [width]="300"
+            [height]="300"
+          />
+
+          <div
+            class="select-photo-button"
+            (click)="fileInput.click();"
+          >
+            <span class="select-photo-button-text">select photo</span>
+          </div>
+
+          <input
+            type="file"
+            accept="image/*"
+            (change)="selectFile($event)"
+            #fileInput
+            hidden
+          />
         </div>
 
         <div class="info-product-container">
@@ -64,7 +92,82 @@
         </div>
 
         <div class="info-product-container">
-          <h2>Contact data</h2>
+          <h2>{{ t('create-product.contactInfoTitle') }}</h2>
+          <div class="product-contact-fields">
+            <basic-input
+              [label]="t('input.contactPersonLabel')"
+              [placeholder]="t('input.contactPersonPlaceholder')"
+              [inputDescription]="t('input.contactPersonInputDesc')"
+              [errorMessage]="t('input.contactPersonError')"
+              [value]="contactPerson"
+              [minLength]="1"
+              [maxLength]="64"
+              (valueChange)="contactPerson = $event"
+              (incorrectInput)="incorrectContactPerson = $event"
+            />
+            <basic-input
+              [label]="t('input.email')"
+              [placeholder]="t('input.provideEmail')"
+              [value]="contactEmail"
+              [readOnly]="true"
+              [disabled]="true"
+              [inputDescription]="t('input.productContactEmailInputDesc')"
+            />
+            <basic-input
+              [label]="t('input.phone')"
+              [placeholder]="t('input.productPhonePlaceholder')"
+              [inputDescription]="t('input.productPhoneInputDesc')"
+              [errorMessage]="t('input.productPhoneError')"
+              [showError]="!!contactPhoneNumber && !isMobilePhoneCorrect()"
+              [value]="contactPhoneNumber"
+              (valueChange)="contactPhoneNumber = $event"
+            />
+            <basic-input
+              [label]="t('input.productLocationLabel')"
+              [placeholder]="t('input.productLocationPlaceholder')"
+              [inputDescription]="t('input.productLocationInputDesc')"
+              [value]="productLocation"
+              (valueChange)="productLocation = $event"
+            />
+          </div>
+        </div>
+
+        <div class="info-product-container">
+          <h2>{{ t('create-product.productPriceTitle') }}</h2>
+          <div class="product-category-dropdown">
+            <basic-dropdown
+              [label]="t('dropdown.selectCurrency')"
+              [options]="productPriceDropdown"
+              [defaultValue]="productPriceDropdownValue"
+              (selectedOption)="selectProductCurrency($event)"
+            />
+          </div>
+          <basic-input
+            type="number"
+            [label]="t('input.productPriceLabel')"
+            [placeholder]="t('input.productPricePlaceholder')"
+            [inputDescription]="t('input.productPriceInputDesc')"
+            [errorMessage]="t('input.productPriceError')"
+            [min]="'0'"
+            [showError]="checkProductPrice()"
+            [value]="productPrice"
+            (valueChange)="productPrice = $event"
+          />
+        </div>
+
+        <div class="buttons-product-container">
+          <div>
+            <p>{{ t('create-product.postProductAccept') }}&nbsp;<basic-link
+              [label]="t('reg.tac')" href="/terms-and-conditions"
+            /></p>
+          </div>
+          <div class="post-button-container">
+            <basic-button
+              [label]="t('button.postProduct')"
+              [disabled]="disablePostProductButton()"
+              (buttonClick)="postProduct()"
+            />
+          </div>
         </div>
       </div>
     </div>

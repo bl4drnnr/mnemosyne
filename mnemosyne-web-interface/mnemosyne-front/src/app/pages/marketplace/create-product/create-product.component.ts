@@ -5,6 +5,15 @@ import { GetAllCategoriesResponse } from '@responses/get-all-categories.interfac
 import { Titles } from '@interfaces/titles.enum';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { ComponentsTranslation } from '@translations/components.enum';
+import { RefreshTokensService } from '@services/refresh-tokens.service';
+import { ValidationService } from '@services/validation.service';
+import { ProductsService } from '@services/products.service';
+import { Currency } from '@interfaces/currency.type';
+import { ProductCategory } from '@interfaces/product-category.type';
+import { ProductSubcategory } from '@interfaces/product-subcategory.type';
+import { GlobalMessageService } from '@shared/global-message.service';
+import { MessagesTranslation } from '@translations/messages.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-product',
@@ -16,6 +25,13 @@ export class CreateProductComponent implements OnInit {
   incorrectProductTitle: boolean;
   productDescription: string;
   incorrectProductDescription: boolean;
+  contactPerson: string;
+  incorrectContactPerson: boolean;
+  contactEmail: string;
+  contactPhoneNumber: string;
+  productPrice: string = '0';
+  productPictures: Array<string>;
+  productLocation: string;
 
   categories: Array<GetAllCategoriesResponse>;
   categoriesDropdown: Array<DropdownInterface>;
@@ -35,10 +51,74 @@ export class CreateProductComponent implements OnInit {
   categoriesNames: Array<string>;
   selectProductSubcategoryTitle: string;
 
+  productPriceDropdown: Array<DropdownInterface> = [
+    { key: 'PLN', value: 'PLN' },
+    { key: 'EUR', value: 'EUR' },
+    { key: 'USD', value: 'USD' }
+  ];
+  productPriceDropdownValue: DropdownInterface = { key: 'PLN', value: 'PLN' };
+
+  selectedPicture?: FileList;
+  preview: string | ArrayBuffer | null = '';
+  userProfilePictureLink: string;
+
   constructor(
+    private readonly router: Router,
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly validationService: ValidationService,
+    private readonly refreshTokensService: RefreshTokensService,
     private readonly categoriesService: CategoriesService,
+    private readonly productsService: ProductsService,
     private readonly translationService: TranslationService
   ) {}
+
+  postProduct() {
+    this.productsService
+      .postProduct({
+        name: this.productTitle,
+        description: this.productDescription,
+        pictures: this.productPictures,
+        currency: this.productPriceDropdownValue.key as Currency,
+        price: Number(this.productPrice),
+        location: this.productLocation,
+        contactPhone: this.contactPhoneNumber,
+        contactPerson: this.contactPerson,
+        category: this.categoryDropdownValue.key as ProductCategory,
+        subcategory: this.subcategoryDropdownValue.key as ProductSubcategory
+      })
+      .subscribe({
+        next: async ({ message, link }) => {
+          await this.handleRedirect(link);
+          const globalMessage = await this.translationService.translateText(
+            message,
+            MessagesTranslation.RESPONSES
+          );
+          this.globalMessageService.handle({
+            message: globalMessage
+          });
+        }
+      });
+  }
+
+  disablePostProductButton() {
+    return (
+      this.incorrectProductTitle ||
+      this.incorrectProductDescription ||
+      this.incorrectContactPerson ||
+      !this.productTitle ||
+      !this.productDescription ||
+      !this.contactPerson ||
+      !this.contactPhoneNumber ||
+      !this.isMobilePhoneCorrect() ||
+      !this.categoryDropdownValue.key ||
+      !this.subcategoryDropdownValue.key ||
+      !this.productLocation
+    );
+  }
+
+  isMobilePhoneCorrect() {
+    return this.validationService.checkPhoneFormat(this.contactPhoneNumber);
+  }
 
   getSubcategoryDropdownLabel(category: string) {
     switch (category) {
@@ -80,6 +160,15 @@ export class CreateProductComponent implements OnInit {
 
   selectProductSubcategory({ key, value }: DropdownInterface) {
     this.subcategoryDropdownValue = { key, value };
+  }
+
+  selectProductCurrency({ key, value }: DropdownInterface) {
+    this.productPriceDropdownValue = { key, value };
+  }
+
+  checkProductPrice() {
+    const productPriceNumber = Number(this.productPrice);
+    return productPriceNumber < 0;
   }
 
   initSubcategoryDropdown(category: string) {
@@ -143,6 +232,24 @@ export class CreateProductComponent implements OnInit {
     };
   }
 
+  selectFile(event: any): void {
+    this.selectedPicture = event.target.files;
+
+    if (!this.selectedPicture) return;
+
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = () => {
+      this.preview = reader.result;
+    };
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
+  }
+
   ngOnInit() {
     this.translationService.setPageTitle(Titles.CREATE_PRODUCT);
 
@@ -150,6 +257,14 @@ export class CreateProductComponent implements OnInit {
       next: async ({ categories }) => {
         this.categories = categories;
         this.categoriesNames = categories.map(({ name }) => name);
+        // const userInfoRequest = await this.refreshTokensService.refreshTokens();
+        //
+        // if (userInfoRequest) {
+        //   userInfoRequest.subscribe({
+        //     next: (userInfo) => (this.contactEmail = userInfo.email)
+        //   });
+        // }
+
         await this.initCategoriesDropdown();
         await this.initSubcategoriesDropdowns();
       }

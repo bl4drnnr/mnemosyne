@@ -14,11 +14,36 @@
   border-radius: 8px;
   padding: 18px;
   margin-bottom: 30px;
+  border: 1px solid var(--border-color);
 
   h2 {
     padding: 0;
     margin: 0;
   }
+}
+
+.buttons-product-container {
+  background-color: var(--disabled-color);
+  border-radius: 8px;
+  padding: 18px;
+  margin-bottom: 30px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  p {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.product-contact-fields {
+  width: 700px;
+}
+
+.post-button-container {
+  width: 300px;
 }
 
 .product-category-dropdown {

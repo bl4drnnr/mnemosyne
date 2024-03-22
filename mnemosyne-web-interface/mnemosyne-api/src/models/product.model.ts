@@ -13,11 +13,34 @@ import {
 import { ProductCurrency } from '@interfaces/product-currency.enum';
 import { User } from '@models/user.model';
 import { Category } from '@models/category.model';
+import { ProductSubcategory } from '@interfaces/product-subcategory.enum';
 
 const currencyTypes = [
   ProductCurrency.EUR,
   ProductCurrency.USD,
   ProductCurrency.PLN
+];
+
+const productSubcategories = [
+  ProductSubcategory.KITCHEN,
+  ProductSubcategory.BEDROOM,
+  ProductSubcategory.BATHROOM,
+  ProductSubcategory.DECORATION,
+  ProductSubcategory.HIKING,
+  ProductSubcategory.CYCLING,
+  ProductSubcategory.SWIMMING,
+  ProductSubcategory.FINANCE,
+  ProductSubcategory.EQUIPMENT,
+  ProductSubcategory.BUSINESS_SOFTWARE,
+  ProductSubcategory.SERVICE,
+  ProductSubcategory.INGREDIENTS,
+  ProductSubcategory.DISHES,
+  ProductSubcategory.COOKING_BOOKS,
+  ProductSubcategory.SPORTS_EQUIPMENT,
+  ProductSubcategory.TRAIN,
+  ProductSubcategory.HARDWARE,
+  ProductSubcategory.SOFTWARE,
+  ProductSubcategory.IT_BOOKS
 ];
 
 interface ProductCreationAttributes {
@@ -62,8 +85,14 @@ export class Product extends Model<Product, ProductCreationAttributes> {
   @Column({ type: DataType.DOUBLE, allowNull: false })
   price: number;
 
-  @Column({ type: DataType.STRING, allowNull: false })
-  subcategory: string;
+  @Column({ type: DataType.ENUM(...productSubcategories), allowNull: false })
+  subcategory: ProductSubcategory;
+
+  @Column({ type: DataType.STRING, allowNull: false, field: 'contact_person' })
+  contactPerson: string;
+
+  @Column({ type: DataType.STRING, allowNull: false, field: 'contact_phone' })
+  contactPhone: string;
 
   @ForeignKey(() => Category)
   @Column({ type: DataType.UUID, allowNull: false, field: 'category_id' })

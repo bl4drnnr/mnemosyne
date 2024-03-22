@@ -53,5 +53,6 @@
     "hardware": "Hardware",
     "software": "Oprogramowanie",
     "it_books": "Książki informatyczne"
-  }
+  },
+  "selectCurrency": "Wybierz walutę"
 }

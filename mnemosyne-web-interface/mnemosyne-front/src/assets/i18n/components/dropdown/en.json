@@ -53,5 +53,6 @@
     "hardware": "Hardware",
     "software": "Software",
     "it_books": "IT books"
-  }
+  },
+  "selectCurrency": "Select the currency"
 }
