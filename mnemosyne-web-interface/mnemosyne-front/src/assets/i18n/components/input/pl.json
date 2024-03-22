@@ -114,5 +114,13 @@
   "contactMessage": "Twoja wiadomość kontaktowa",
   "provideContactMessage": "Podaj swoją wiadomość kontaktową",
   "contactMessageDesc": "pisz, co chcesz. Z przyjemnością porozmawiamy!",
-  "wrongContactMessage": "Niewłaściwa długość wiadomości kontaktowej. Powinien wynosić od 2 do 1024."
+  "wrongContactMessage": "Niewłaściwa długość wiadomości kontaktowej. Powinien wynosić od 2 do 1024.",
+  "productTitle": "Tytuł produktu",
+  "productPlaceholder": "Na przykład: Nowy fantazyjny Ford Mustang",
+  "productInputDesc": "To będzie główny tytuł produktu, który wszyscy zobaczą.",
+  "productError": "Długość tytułu powinna wynosić od 16 do 70.",
+  "productDescriptionTitle": "Opis produktu",
+  "productDescriptionPlaceholder": "Napisz tutaj kilka słów ważnych informacji, które byłyby przydatne dla kogoś, kto zamierza kupić twój produkt.",
+  "productDescriptionInputDesc": "Powinien mieć co najmniej 40 znaków.",
+  "productDescriptionError": "Długość opisu produktu powinna wynosić od 40 do 9000 znaków."
 }

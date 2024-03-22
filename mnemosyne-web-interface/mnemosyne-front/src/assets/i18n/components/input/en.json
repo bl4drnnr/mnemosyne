@@ -114,5 +114,13 @@
   "contactMessage": "Your contact message",
   "provideContactMessage": "Provide your contact message",
   "contactMessageDesc": "Write whatever you want. We will be glad to talk!",
-  "wrongContactMessage": "Wrong contact message length. Should be between 2 and 1024."
+  "wrongContactMessage": "Wrong contact message length. Should be between 2 and 1024.",
+  "productTitle": "Product title",
+  "productPlaceholder": "For example: New Fancy Ford Mustang",
+  "productInputDesc": "This is going to be the main title of the product that everyone is going to see.",
+  "productError": "The length of the title should be between 16 and 70.",
+  "productDescriptionTitle": "Product description",
+  "productDescriptionPlaceholder": "Write here a couple of words of important information that would be useful for someone who is going to purchase your product.",
+  "productDescriptionInputDesc": "Should be at least 40 characters.",
+  "productDescriptionError": "The length of the product description should be between 40 and 9000 characters."
 }

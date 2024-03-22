@@ -20,3 +20,23 @@
     margin: 0;
   }
 }
+
+.product-category-dropdown {
+  max-width: 300px;
+}
+
+.subcategory-description {
+  margin-top: 15px;
+}
+
+.dived-line {
+  width: 100%;
+  height: 1px;
+  background-color: var(--border-color);
+  margin-top: 20px;
+  margin-bottom: 10px;
+
+  &.no-bottom {
+    margin-bottom: 0;
+  }
+}

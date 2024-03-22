@@ -3409,9 +3409,10 @@ components:
         product:
           description: Product instance by the slug
           example:
-            name: My product
+            title: My product
             description: travels_docs
-            picture: asd
+            pictures:
+              - asd
             currency: PLN
             price: "15000"
             subcategory:
