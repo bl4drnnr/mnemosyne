@@ -95,7 +95,7 @@ export class CreateProductComponent implements OnInit {
       this.productPic6,
       this.productPic7,
       this.productPic8
-    ];
+    ].filter((pic) => !!pic);
     this.productsService
       .postProduct({
         title: this.productTitle,
@@ -135,7 +135,12 @@ export class CreateProductComponent implements OnInit {
       !this.isMobilePhoneCorrect() ||
       !this.categoryDropdownValue.key ||
       !this.subcategoryDropdownValue.key ||
-      !this.productLocation
+      this.categoryDropdownValue.key === '' ||
+      this.subcategoryDropdownValue.key === '' ||
+      this.categoryDropdownValue.key === 'selectProductCategory' ||
+      this.subcategoryDropdownValue.key === 'selectProductSubcategory' ||
+      !this.productLocation ||
+      !this.productPrice
     );
   }
 

@@ -68,15 +68,15 @@ export class ProductsController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post('create-product')
   createProduct(
-    // @UserId() userId: string,
+    @UserId() userId: string,
     @Body() payload: PostProductDto,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.createProduct({
-      userId: '',
+      userId,
       payload,
       trx
     });

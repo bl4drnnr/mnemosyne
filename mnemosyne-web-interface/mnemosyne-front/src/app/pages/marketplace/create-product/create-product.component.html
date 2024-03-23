@@ -4,10 +4,16 @@
   <ng-container *transloco="let t">
     <div class="create-product-container">
       <div class="create-product-block">
-        <h1>{{ t('create-product.createProductTitle') }}</h1>
+        <h1 class="flex">
+          <span>{{ t('create-product.createProductTitle') }}&nbsp;</span>
+          <basic-emoji emoji="fire.png" [width]="42" [height]="42"/>
+        </h1>
 
         <div class="info-product-container">
-          <h2>{{ t('create-product.productDetailsTitle') }}</h2>
+          <h2 class="flex">
+            <span>{{ t('create-product.productDetailsTitle') }}&nbsp;</span>
+            <basic-emoji emoji="writing-hand.png" [width]="32" [height]="32"/>
+          </h2>
           <basic-input
             [label]="t('input.productLabel')"
             [placeholder]="t('input.productPlaceholder')"
@@ -45,9 +51,14 @@
         </div>
 
         <div class="info-product-container">
-          <h2>{{ t('create-product.productPicsTitle') }}</h2>
+          <h2 class="flex">
+            <span>{{ t('create-product.productPicsTitle') }}&nbsp;</span>
+            <basic-emoji emoji="camera.png" [width]="32" [height]="32"/>
+          </h2>
 
           <p>{{ t('create-product.productPicsUploadDesc') }}</p>
+
+          <p><b>{{ t('create-product.onlyPngAllowed') }}</b></p>
 
           <div class="pictures-container">
             <page-upload-product-picture
@@ -101,7 +112,10 @@
         </div>
 
         <div class="info-product-container">
-          <h2>{{ t('create-product.productDescTitle') }}</h2>
+          <h2 class="flex">
+            <span>{{ t('create-product.productDescTitle') }}&nbsp;</span>
+            <basic-emoji emoji="books.png" [width]="32" [height]="32"/>
+          </h2>
           <basic-textarea
             [label]="t('input.productDescriptionTitle')"
             [placeholder]="t('input.productDescriptionPlaceholder')"
@@ -116,7 +130,10 @@
         </div>
 
         <div class="info-product-container">
-          <h2>{{ t('create-product.contactInfoTitle') }}</h2>
+          <h2 class="flex">
+            <span>{{ t('create-product.contactInfoTitle') }}&nbsp;</span>
+            <basic-emoji emoji="envelope.png" [width]="32" [height]="32"/>
+          </h2>
           <div class="product-contact-fields">
             <basic-input
               [label]="t('input.contactPersonLabel')"
@@ -160,7 +177,10 @@
         </div>
 
         <div class="info-product-container">
-          <h2>{{ t('create-product.productPriceTitle') }}</h2>
+          <h2 class="flex">
+            <span>{{ t('create-product.productPriceTitle') }}&nbsp;</span>
+            <basic-emoji emoji="money-with-wings.png" [width]="32" [height]="32"/>
+          </h2>
           <div class="product-category-dropdown">
             <basic-dropdown
               [label]="t('dropdown.selectCurrency')"

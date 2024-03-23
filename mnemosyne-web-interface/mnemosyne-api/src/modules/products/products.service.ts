@@ -12,10 +12,19 @@ import { GetLatestProductsInterface } from '@interfaces/get-latest-products.inte
 import { LatestProductsDto } from '@dto/latest-products.dto';
 import { ProductPostedDto } from '@dto/product-posted.dto';
 import { PostProductInterface } from '@interfaces/post-product.interface';
+import { ApiConfigService } from '@shared/config.service';
+import { S3 } from 'aws-sdk';
+import { WrongPictureException } from '@exceptions/wrong-picture.exception';
+import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
+import { CryptographicService } from '@shared/cryptographic.service';
+import { CategoriesService } from '@modules/categories.service';
 
 @Injectable()
 export class ProductsService {
   constructor(
+    private readonly configService: ApiConfigService,
+    private readonly cryptographicService: CryptographicService,
+    private readonly categoriesService: CategoriesService,
     @InjectModel(Product)
     private readonly productRepository: typeof Product
   ) {}
@@ -117,7 +126,7 @@ export class ProductsService {
     return new SearchProductsDto(foundProducts);
   }
 
-  createProduct({ userId, payload, trx }: PostProductInterface) {
+  async createProduct({ userId, payload, trx }: PostProductInterface) {
     const {
       title,
       description,
@@ -131,6 +140,81 @@ export class ProductsService {
       subcategory
     } = payload;
 
-    return new ProductPostedDto('');
+    const slug = this.generateProductSlug(title);
+    const picturesHashes = [];
+
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    for (const pic of pictures) {
+      const base64Data = Buffer.from(
+        pic.replace(/^data:image\/\w+;base64,/, ''),
+        'base64'
+      );
+
+      const type = pic.split(';')[0].split('/')[1];
+
+      if (type !== 'png') throw new WrongPictureException();
+
+      const pictureHash = this.cryptographicService.hash({
+        data: base64Data.toString(),
+        algorithm: CryptoHashAlgorithm.MD5
+      });
+
+      picturesHashes.push(pictureHash);
+
+      const params = {
+        Bucket: bucketName,
+        Key: `products/${pictureHash}.${type}`,
+        Body: base64Data,
+        ContentEncoding: 'base64',
+        ContentType: `image/${type}`
+      };
+
+      await s3.upload(params).promise();
+    }
+
+    const { id: categoryId } = await this.categoriesService.getCategoryByName({
+      name: category,
+      trx
+    });
+
+    await this.productRepository.create(
+      {
+        title,
+        slug,
+        description,
+        pictures: picturesHashes,
+        location,
+        currency,
+        price,
+        subcategory,
+        contactPhone,
+        contactPerson,
+        userId,
+        categoryId
+      },
+      {
+        transaction: trx
+      }
+    );
+
+    const productLink = `/marketplace/product/${slug}`;
+
+    return new ProductPostedDto(productLink);
+  }
+
+  private generateProductSlug(productName: string) {
+    let slug = productName.toLowerCase();
+    slug = slug.replace(/\s+/g, '-');
+    slug = slug.replace(/[^\w\-]+/g, '');
+
+    const randomNumber = String((Date.now() + Math.random()) * 10000).slice(-6);
+
+    slug += `-${randomNumber}`;
+
+    return slug;
   }
 }

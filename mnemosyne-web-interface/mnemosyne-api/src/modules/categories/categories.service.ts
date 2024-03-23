@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Category } from '@models/category.model';
 import { GetAllCategoriesInterface } from '@interfaces/get-all-categories.interface';
 import { GetAllCategoriesDto } from '@dto/get-all-categories.dto';
+import { GetCategoryByNameInterface } from '@interfaces/get-category-by-name.interface';
 
 @Injectable()
 export class CategoriesService {
@@ -24,5 +25,12 @@ export class CategoriesService {
     );
 
     return new GetAllCategoriesDto(categories);
+  }
+
+  async getCategoryByName({ name, trx }: GetCategoryByNameInterface) {
+    return await this.categoryRepository.findOne({
+      where: { name },
+      transaction: trx
+    });
   }
 }

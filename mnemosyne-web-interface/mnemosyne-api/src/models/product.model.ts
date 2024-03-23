@@ -44,14 +44,18 @@ const productSubcategories = [
 ];
 
 interface ProductCreationAttributes {
-  name: string;
+  title: string;
   slug: string;
   description: string;
   pictures: Array<string>;
+  location: string;
   currency: ProductCurrency;
   price: number;
+  subcategory: ProductSubcategory;
+  contactPerson: string;
+  contactPhone: string;
   userId: string;
-  location: string;
+  categoryId: string;
 }
 
 @Table({ tableName: 'products' })
