@@ -18,6 +18,8 @@ import { CorruptedTokenException } from '@exceptions/corrupted-token.exception';
 import { InvalidTokenException } from '@exceptions/invalid-token.exception';
 import { ExpiredTokenException } from '@exceptions/expired-token.exception';
 import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
+import { ContactMessageSentDto } from '@dto/contact-message-sent.dto';
+import { ContactUsDto } from '@dto/contact-us.dto';
 
 export abstract class AuthDocs {
   static get Login() {
@@ -173,6 +175,32 @@ export abstract class AuthDocs {
         description: apiUnauthorizedRespDesc,
         schema: { $ref: getSchemaPath(ExpiredTokenException) }
       }
+    };
+  }
+
+  static get ContactUs() {
+    const ApiModels = [ContactMessageSentDto, ContactUsDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for contacting the company staff';
+    const apiResponseDesc =
+      'As a response functions returns the message that the message to the company has been sent.';
+    const apiBodyDesc =
+      'Body contains the email that will be used to contact back along with the message.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(ContactMessageSentDto) }
+      },
+      ApiBody: {
+        type: ContactUsDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(ContactUsDto) }
+      } as ApiBodyOptions
     };
   }
 }

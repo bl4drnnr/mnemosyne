@@ -1,0 +1,222 @@
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="create-product-container">
+      <div class="create-product-block">
+        <h1 class="flex">
+          <span>{{ t('create-product.createProductTitle') }}&nbsp;</span>
+          <basic-emoji emoji="fire.png" [width]="42" [height]="42"/>
+        </h1>
+
+        <div class="info-product-container">
+          <h2 class="flex">
+            <span>{{ t('create-product.productDetailsTitle') }}&nbsp;</span>
+            <basic-emoji emoji="writing-hand.png" [width]="32" [height]="32"/>
+          </h2>
+          <basic-input
+            [label]="t('input.productLabel')"
+            [placeholder]="t('input.productPlaceholder')"
+            [inputDescription]="t('input.productInputDesc')"
+            [errorMessage]="t('input.productError')"
+            [minLength]="16"
+            [maxLength]="70"
+            [value]="productTitle"
+            (valueChange)="productTitle = $event"
+            (incorrectInput)="incorrectProductTitle = $event"
+          />
+
+          <div class="product-category-dropdown">
+             <basic-dropdown
+              [label]="t('dropdown.selectProductCategoryLabel')"
+              [options]="categoriesDropdown"
+              [defaultValue]="categoryDropdownValue"
+              (selectedOption)="selectProductCategory($event)"
+            />
+          </div>
+
+          <div class="dived-line" *ngIf="categoryDropdownValue.key !== 'selectProductCategory'"></div>
+
+          <div class="product-category-dropdown" *ngIf="categoryDropdownValue.key !== 'selectProductCategory'">
+            <basic-dropdown
+              [label]="t(getSubcategoryDropdownLabel(categoryDropdownValue.key))"
+              [options]="subcategoriesDropdown"
+              [defaultValue]="subcategoryDropdownValue"
+              (selectedOption)="selectProductSubcategory($event)"
+            />
+          </div>
+          <p class="subcategory-description" *ngIf="categoryDropdownValue.key !== 'selectProductCategory'">
+            {{ t(getCategoryDescription(categoryDropdownValue.key)) }}
+          </p>
+        </div>
+
+        <div class="info-product-container">
+          <h2 class="flex">
+            <span>{{ t('create-product.productPicsTitle') }}&nbsp;</span>
+            <basic-emoji emoji="camera.png" [width]="32" [height]="32"/>
+          </h2>
+
+          <p>{{ t('create-product.productPicsUploadDesc') }}</p>
+
+          <p><b>{{ t('create-product.onlyPngAllowed') }}</b></p>
+
+          <div class="pictures-container">
+            <page-upload-product-picture
+              (uploadedPicture)="productPic1 = $event"
+              (deletePicture)="clearFileInput(0)"
+              #fileInput1
+            />
+            <page-upload-product-picture
+              [disabled]="disablePhotoUpload(1)"
+              (uploadedPicture)="productPic2 = $event"
+              (deletePicture)="clearFileInput(1)"
+              #fileInput2
+            />
+            <page-upload-product-picture
+              [disabled]="disablePhotoUpload(2)"
+              (uploadedPicture)="productPic3 = $event"
+              (deletePicture)="clearFileInput(2)"
+              #fileInput3
+            />
+            <page-upload-product-picture
+              [disabled]="disablePhotoUpload(3)"
+              (uploadedPicture)="productPic4 = $event"
+              (deletePicture)="clearFileInput(3)"
+              #fileInput4
+            />
+            <page-upload-product-picture
+              [disabled]="disablePhotoUpload(4)"
+              (uploadedPicture)="productPic5 = $event"
+              (deletePicture)="clearFileInput(4)"
+              #fileInput5
+            />
+            <page-upload-product-picture
+              [disabled]="disablePhotoUpload(5)"
+              (uploadedPicture)="productPic6 = $event"
+              (deletePicture)="clearFileInput(5)"
+              #fileInput6
+            />
+            <page-upload-product-picture
+              [disabled]="disablePhotoUpload(6)"
+              (uploadedPicture)="productPic7 = $event"
+              (deletePicture)="clearFileInput(6)"
+              #fileInput7
+            />
+            <page-upload-product-picture
+              [disabled]="disablePhotoUpload(7)"
+              (uploadedPicture)="productPic8 = $event"
+              (deletePicture)="clearFileInput(7)"
+              #fileInput8
+            />
+          </div>
+        </div>
+
+        <div class="info-product-container">
+          <h2 class="flex">
+            <span>{{ t('create-product.productDescTitle') }}&nbsp;</span>
+            <basic-emoji emoji="books.png" [width]="32" [height]="32"/>
+          </h2>
+          <basic-textarea
+            [label]="t('input.productDescriptionTitle')"
+            [placeholder]="t('input.productDescriptionPlaceholder')"
+            [inputDescription]="t('input.productDescriptionInputDesc')"
+            [errorMessage]="t('input.productDescriptionError')"
+            [minLength]="40"
+            [maxLength]="9000"
+            [value]="productDescription"
+            (valueChange)="productDescription = $event"
+            (incorrectInput)="incorrectProductDescription = $event"
+          />
+        </div>
+
+        <div class="info-product-container">
+          <h2 class="flex">
+            <span>{{ t('create-product.contactInfoTitle') }}&nbsp;</span>
+            <basic-emoji emoji="envelope.png" [width]="32" [height]="32"/>
+          </h2>
+          <div class="product-contact-fields">
+            <basic-input
+              [label]="t('input.contactPersonLabel')"
+              [placeholder]="t('input.contactPersonPlaceholder')"
+              [inputDescription]="t('input.contactPersonInputDesc')"
+              [errorMessage]="t('input.contactPersonError')"
+              [value]="contactPerson"
+              [minLength]="1"
+              [maxLength]="64"
+              (valueChange)="contactPerson = $event"
+              (incorrectInput)="incorrectContactPerson = $event"
+            />
+            <basic-input
+              [label]="t('input.email')"
+              [placeholder]="t('input.provideEmail')"
+              [value]="contactEmail"
+              [readOnly]="true"
+              [disabled]="true"
+              [inputDescription]="t('input.productContactEmailInputDesc')"
+            />
+            <basic-input
+              [label]="t('input.phone')"
+              [placeholder]="t('input.productPhonePlaceholder')"
+              [inputDescription]="t('input.productPhoneInputDesc')"
+              [errorMessage]="t('input.productPhoneError')"
+              [showError]="!!contactPhoneNumber && !isMobilePhoneCorrect()"
+              [value]="contactPhoneNumber"
+              (valueChange)="contactPhoneNumber = $event"
+            />
+            <basic-input
+              [label]="t('input.productLocationLabel')"
+              [placeholder]="t('input.productLocationPlaceholder')"
+              [inputDescription]="t('input.productLocationInputDesc')"
+              [errorMessage]="t('input.productLocationError')"
+              [minLength]="4"
+              [maxLength]="64"
+              [value]="productLocation"
+              (valueChange)="productLocation = $event"
+            />
+          </div>
+        </div>
+
+        <div class="info-product-container">
+          <h2 class="flex">
+            <span>{{ t('create-product.productPriceTitle') }}&nbsp;</span>
+            <basic-emoji emoji="money-with-wings.png" [width]="32" [height]="32"/>
+          </h2>
+          <div class="product-category-dropdown">
+            <basic-dropdown
+              [label]="t('dropdown.selectCurrency')"
+              [options]="productPriceDropdown"
+              [defaultValue]="productPriceDropdownValue"
+              (selectedOption)="selectProductCurrency($event)"
+            />
+          </div>
+          <basic-input
+            type="number"
+            [label]="t('input.productPriceLabel')"
+            [placeholder]="t('input.productPricePlaceholder')"
+            [inputDescription]="t('input.productPriceInputDesc')"
+            [errorMessage]="t('input.productPriceError')"
+            [min]="'0'"
+            [showError]="checkProductPrice()"
+            [value]="productPrice"
+            (valueChange)="productPrice = $event"
+          />
+        </div>
+
+        <div class="buttons-product-container">
+          <div>
+            <p>{{ t('create-product.postProductAccept') }}&nbsp;<basic-link
+              [label]="t('reg.tac')" href="/terms-and-conditions"
+            /></p>
+          </div>
+          <div class="post-button-container">
+            <basic-button
+              [label]="t('button.postProduct')"
+              [disabled]="disablePostProductButton()"
+              (buttonClick)="postProduct()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</layout-default>

@@ -1,5 +1,58 @@
 {
   "mobilePhone": "Telefon komórkowy",
   "authApp": "Aplikacja authenticator",
-  "selectMfaOption": "Wybierz opcję uwierzytelniania wieloskładnikowego"
+  "selectMfaOption": "Wybierz opcję uwierzytelniania wieloskładnikowego",
+  "selectProductCategory": "Wybierz kategorię produktu",
+  "selectProductSubcategory": "Wybierz podkategorię produktu",
+  "selectProductCategoryLabel": "Wybierz kategorię tego, co oferujesz",
+  "house": "Dom",
+  "travels": "Podróże",
+  "business": "Biznes",
+  "cooking": "Gotowanie",
+  "sports": "Sport",
+  "computers": "Komputery",
+  "houseSubcategoryTitle": "Wybierz podkategorię dla domu",
+  "travelsSubcategoryTitle": "Wybierz podkategorię dla podróży",
+  "businessSubcategoryTitle": "Wybierz podkategorię dla biznesu",
+  "cookingSubcategoryTitle": "Wybierz podkategorię do gotowania",
+  "sportsSubcategoryTitle": "Wybierz podkategorię dla sportu",
+  "computersSubcategoryTitle": "Wybierz podkategorię dla komputerów",
+  "house_desc": "Niezależnie od tego, czy chcesz kupić, sprzedać lub wymienić przedmioty na swoją przestrzeń życiową, ta kategoria jest twoim celem podróży. Od mebli i dekoracji po urządzenia i narzędzia do majsterkowania, przeglądaj różnorodne oferty, aby ulepszyć, udekorować lub utrzymać swój dom.",
+  "travels_desc": "Gdzie zaczyna się każda podróż. Niezależnie od tego, czy szukasz przygody, relaksu czy zanurzenia kulturowego, ta kategoria jest twoją bramą do odkrywania nowych horyzontów. Odkryj szereg niezbędnych rzeczy do podróży, od bagażu i sprzętu po zakwaterowanie i doświadczenia, wszystko dostosowane do twojego zamiłowania do wędrówek.",
+  "business_desc": "Gdzie innowacja spotyka się z szansą. Niezależnie od tego, czy jesteś przedsiębiorcą, freelancerem, czy doświadczonym profesjonalistą, ta kategoria jest twoim centrum dla wszystkich rzeczy związanych z biznesem. Poznaj różnorodną gamę produktów i usług zaprojektowanych w celu podniesienia wydajności, zwiększenia wydajności i osiągnięcia sukcesu. Od materiałów biurowych i rozwiązań technologicznych po profesjonalne usługi i możliwości nawiązywania kontaktów-znajdź wszystko, czego potrzebujesz, aby rozwijać się w dynamicznym świecie biznesu.",
+  "cooking_desc": "Gdzie smak nie zna granic. Niezależnie od tego, czy jesteś doświadczonym szefem kuchni, czy nowicjuszem w kuchni, Ta kategoria jest Twoim kulinarnym placem zabaw. Poznaj kuszącą gamę naczyń kuchennych, gadżetów i składników, które rozpalą Twoją kreatywność i podniosą twoje kulinarne kreacje. Od klasycznych przepisów po innowacyjne techniki-Odkryj wszystko, czego potrzebujesz, aby przygotować pyszne posiłki, kuszące smakołyki i przysmaki dla smakoszy.",
+  "sports_desc": "Gdzie powstają mistrzowie i zapalają się pasje. Niezależnie od tego, czy jesteś doświadczonym sportowcem, czy entuzjastą sportu, ta kategoria jest twoim ostatecznym celem. Poznaj szeroką gamę sprzętu, odzieży i akcesoriów zaprojektowanych, aby podnieść Twoją grę i podsycić ducha rywalizacji. Od sportów zespołowych po indywidualne zajęcia-Odkryj wszystko, czego potrzebujesz, aby osiągnąć sukces na boisku, korcie lub torze. ",
+  "computers_desc": "Gdzie innowacja spotyka się z funkcjonalnością. Niezależnie od tego, czy jesteś entuzjastą technologii, profesjonalistą w tej dziedzinie, czy zwykłym użytkownikiem, ta kategoria jest twoją bramą do cyfrowego świata. Poznaj szeroką gamę komputerów, urządzeń peryferyjnych i rozwiązań programowych dostosowanych do Twoich różnorodnych potrzeb. Od najnowocześniejszych laptopów i wydajnych komputerów stacjonarnych po wszechstronne akcesoria i oprogramowanie zwiększające produktywność-znajdź wszystko, czego potrzebujesz, aby pozostać w kontakcie i produktywnym.",
+  "houseSubcategory": {
+    "kitchen": "Kuchnia",
+    "bedroom": "Sypialnia",
+    "bathroom": "Łazienka",
+    "decoration": "Dekoracja"
+  },
+  "travelsSubcategory": {
+    "hiking": "Piesze wycieczki",
+    "cycling": "Kolarstwo",
+    "swimming": "Pływanie"
+  },
+  "businessSubcategory": {
+    "finance": "Finanse",
+    "equipment": "Wyposażenie",
+    "business_software": "Oprogramowanie biznesowe",
+    "service": "Serwis"
+  },
+  "cookingSubcategory": {
+    "ingredients": "Składniki",
+    "dishes": "Naczynia",
+    "cooking_books": "Książki kucharskie"
+  },
+  "sportsSubcategory": {
+    "sports_equipment": "Sprzęt sportowy",
+    "train": "Szkolenia"
+  },
+  "computersSubcategory": {
+    "hardware": "Hardware",
+    "software": "Oprogramowanie",
+    "it_books": "Książki informatyczne"
+  },
+  "selectCurrency": "Wybierz walutę"
 }

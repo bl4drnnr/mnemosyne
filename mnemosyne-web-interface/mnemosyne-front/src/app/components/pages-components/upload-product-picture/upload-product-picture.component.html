@@ -1,0 +1,37 @@
+<div *ngIf="!disabled && !preview" class="picture-preview" (click)="fileInput.click()">
+  <img
+    class="upload-picture-icon"
+    [src]="uploadPictureIcon"
+    [width]="32"
+    [height]="32"
+    alt="Add Photo"
+  >
+</div>
+
+<div *ngIf="!disabled && preview" class="picture-preview" (click)="onDeletePicture()">
+  <img
+    class="uploaded-picture"
+    [src]="preview"
+    [width]="150"
+    [height]="100"
+    alt="Uploaded Picture"
+  >
+</div>
+
+<div *ngIf="disabled" class="picture-preview disabled">
+  <img
+    class="upload-picture-icon"
+    [src]="uploadPictureIcon"
+    [width]="32"
+    [height]="32"
+    alt="Add Photo"
+  >
+</div>
+
+<input
+  type="file"
+  accept="image/*"
+  (change)="selectFile($event)"
+  #fileInput
+  hidden
+/>

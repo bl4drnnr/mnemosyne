@@ -8,6 +8,7 @@ import { EnvService } from '@shared/env.service';
 })
 export class AltRegistrationComponent {
   @Input() block = false;
+  @Input() continueWithTitle: string;
 
   constructor(private envService: EnvService) {}
 

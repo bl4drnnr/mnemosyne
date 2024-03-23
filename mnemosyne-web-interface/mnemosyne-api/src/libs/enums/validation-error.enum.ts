@@ -25,5 +25,16 @@ export enum ValidationError {
   WRONG_COMPANY_ROLE_DESC_FORMAT = 'wrong-company-role-description-format',
   WRONG_COMPANY_ROLE_DESC_LENGTH = 'wrong-company-role-description-format',
   WRONG_COMPANY_ROLE_SCOPE_LENGTH = 'wrong-company-role-scope-length',
-  WRONG_NEW_ROLE_ASSIGNEES_LENGTH = 'wrong-new-role-assignees-length'
+  WRONG_NEW_ROLE_ASSIGNEES_LENGTH = 'wrong-new-role-assignees-length',
+  WRONG_CONTACT_MESSAGE_FORMAT = 'wrong-contact-message-format',
+  WRONG_CONTACT_MESSAGE_LENGTH = 'wrong-contact-message-length',
+  WRONG_PRODUCT_TITLE_FORMAT = 'wrong-product-title-format',
+  WRONG_PRODUCT_TITLE_LENGTH = 'wrong-product-title-length',
+  WRONG_PRODUCT_DESCRIPTION_FORMAT = 'wrong-product-description-format',
+  WRONG_PRODUCT_DESCRIPTION_LENGTH = 'wrong-product-description-length',
+  WRONG_PRODUCT_CONTACT_PERSON_FORMAT = 'wrong-product-contact-person-format',
+  WRONG_PRODUCT_CONTACT_PERSON_LENGTH = 'wrong-product-contact-person-length',
+  WRONG_PRODUCT_LOCATION_FORMAT = 'wrong-product-location-format',
+  WRONG_PRODUCT_LOCATION_LENGTH = 'wrong-product-location-length',
+  WRONG_PRODUCT_PRICE_FORMAT = 'wrong-product-price-format'
 }

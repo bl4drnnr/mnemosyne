@@ -29,5 +29,8 @@
   "deleteCompanyMember": "Удалить члена компании",
   "createNewRole": "Создать новую роль",
   "saveChanges": "Сохранить изменения",
-  "deleteRole": "Удалить роль"
+  "deleteRole": "Удалить роль",
+  "seeMore": "Смотрите больше",
+  "sendContactMessage": "Отправить контактное сообщение",
+  "postProduct": "Опубликовать продукт"
 }

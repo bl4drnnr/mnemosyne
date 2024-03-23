@@ -7,10 +7,41 @@ footer {
   transition: transform 0.3s ease-in-out;
   box-shadow: var(--card-shadow);
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
   position: absolute;
   width: 100%;
   background-color: var(--bg-color);
   @include z-index(header);
+}
+
+.footer-container {
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer-title {
+  transition: .3s;
+  cursor: pointer;
+
+  &:hover {
+    color: $color-main;
+  }
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  p {
+    margin-left: 15px;
+    transition: .3s;
+
+    &:hover {
+      color: $color-main;
+    }
+  }
 }

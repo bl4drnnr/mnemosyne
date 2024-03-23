@@ -306,7 +306,7 @@ export class CompanySecuritySettingsComponent {
     });
   }
 
-  selectFile(event: any): void {
+  selectFile(event: any) {
     const file = event.target.files[0];
 
     const fileReader = new FileReader();

@@ -15,6 +15,7 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { UserSettings } from '@models/user-settings.model';
 import { Company } from '@models/company.model';
 import { CompanyUser } from '@models/company-user.model';
+import { Product } from '@models/product.model';
 
 interface UserCreationAttributes {
   email: string;
@@ -67,6 +68,9 @@ export class User extends Model<User, UserCreationAttributes> {
     field: 'tac'
   })
   tac: boolean;
+
+  @HasMany(() => Product)
+  products: Array<Product>;
 
   @HasMany(() => ConfirmationHash)
   confirmationHashes: Array<ConfirmationHash>;

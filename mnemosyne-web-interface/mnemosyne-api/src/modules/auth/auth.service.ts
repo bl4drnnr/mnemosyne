@@ -39,6 +39,8 @@ import { TokenTwoFaRequiredDto } from '@dto/token-two-fa-required.dto';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { RolesService } from '@modules/roles.service';
 import { LogInUserResponseDto } from '@dto/log-in-user.dto';
+import { ContactUsInterface } from '@interfaces/contact-us.interface';
+import { ContactMessageSentDto } from '@dto/contact-message-sent.dto';
 
 @Injectable()
 export class AuthService {
@@ -339,6 +341,18 @@ export class AuthService {
       },
       { transaction }
     );
+  }
+
+  async contactUs({ payload, trx }: ContactUsInterface) {
+    const { contactEmail, contactMessage, language } = payload;
+
+    await this.emailService.contactUsEmail({
+      from: contactEmail,
+      message: contactMessage,
+      language
+    });
+
+    return new ContactMessageSentDto();
   }
 
   async generateTokens({

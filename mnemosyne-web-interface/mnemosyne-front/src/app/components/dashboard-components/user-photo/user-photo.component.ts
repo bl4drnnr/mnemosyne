@@ -31,7 +31,7 @@ export class UserPhotoComponent implements OnInit {
     private readonly validationService: ValidationService
   ) {}
 
-  selectFile(event: any): void {
+  selectFile(event: any) {
     this.selectedFiles = event.target.files;
 
     if (!this.selectedFiles) return;

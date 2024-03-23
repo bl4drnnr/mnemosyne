@@ -1,5 +1,58 @@
 {
   "mobilePhone": "Mobile phone",
   "authApp": "Authenticator application",
-  "selectMfaOption": "Select an MFA option"
+  "selectMfaOption": "Select an MFA option",
+  "selectProductCategory": "Select product category",
+  "selectProductSubcategory": "Select product subcategory",
+  "selectProductCategoryLabel": "Select the category of what you are offering",
+  "house": "House",
+  "travels": "Travels",
+  "business": "Business",
+  "cooking": "Cooking",
+  "sports": "Sports",
+  "computers": "Computers",
+  "houseSubcategoryTitle": "Select the subcategory for house",
+  "travelsSubcategoryTitle": "Select the subcategory for travels",
+  "businessSubcategoryTitle": "Select the subcategory for business",
+  "cookingSubcategoryTitle": "Select the subcategory for cooking",
+  "sportsSubcategoryTitle": "Select the subcategory for sports",
+  "computersSubcategoryTitle": "Select the subcategory for computers",
+  "house_desc": "Whether you're looking to buy, sell, or exchange items for your living space, this category is your go-to destination. From furniture and decor to appliances and home improvement tools, explore a diverse range of listings to enhance, decorate, or maintain your house.",
+  "travels_desc": "Where every journey begins. Whether you're seeking adventure, relaxation, or cultural immersion, this category is your gateway to exploring new horizons. Discover an array of travel essentials, from luggage and gear to accommodations and experiences, all tailored to fuel your wanderlust.",
+  "business_desc": "Where innovation meets opportunity. Whether you're an entrepreneur, freelancer, or seasoned professional, this category is your hub for all things business-related. Explore a diverse range of products and services designed to elevate your operations, enhance productivity, and drive success. From office supplies and technology solutions to professional services and networking opportunities, find everything you need to thrive in the fast-paced world of business.",
+  "cooking_desc": "Where flavor knows no bounds. Whether you're a seasoned chef or a kitchen novice, this category is your culinary playground. Explore a tantalizing array of cookware, gadgets, and ingredients to ignite your creativity and elevate your culinary creations. From classic recipes to innovative techniques, discover everything you need to whip up delicious meals, tantalizing treats, and gourmet delights.",
+  "sports_desc": "Where champions are made and passions ignite. Whether you're a seasoned athlete or a sports enthusiast, this category is your ultimate destination. Explore a vast array of equipment, apparel, and accessories designed to elevate your game and fuel your competitive spirit. From team sports to individual pursuits, discover everything you need to excel on the field, court, or track. ",
+  "computers_desc": "Where innovation meets functionality. Whether you're a tech enthusiast, a professional in the field, or a casual user, this category is your gateway to the digital world. Explore a comprehensive range of computers, peripherals, and software solutions tailored to meet your diverse needs. From cutting-edge laptops and powerful desktops to versatile accessories and productivity software, find everything you need to stay connected and productive.",
+  "houseSubcategory": {
+    "kitchen": "Kitchen",
+    "bedroom": "Bedroom",
+    "bathroom": "Bathroom",
+    "decoration": "Decoration"
+  },
+  "travelsSubcategory": {
+    "hiking": "Hiking",
+    "cycling": "Cycling",
+    "swimming": "Swimming"
+  },
+  "businessSubcategory": {
+    "finance": "Finance",
+    "equipment": "Equipment",
+    "business_software": "Business software",
+    "service": "Service"
+  },
+  "cookingSubcategory": {
+    "ingredients": "Ingredients",
+    "dishes": "Dishes",
+    "cooking_books": "Cooking books"
+  },
+  "sportsSubcategory": {
+    "sports_equipment": "Sports equipment",
+    "train": "Train"
+  },
+  "computersSubcategory": {
+    "hardware": "Hardware",
+    "software": "Software",
+    "it_books": "IT books"
+  },
+  "selectCurrency": "Select the currency"
 }

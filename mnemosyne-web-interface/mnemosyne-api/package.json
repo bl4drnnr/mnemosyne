@@ -20,7 +20,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "database:dev:undo": "npx sequelize-cli db:seed:undo --seed wipe.js"
+    "database:dev:undo": "npx sequelize-cli db:seed:undo --seed wipe.js",
+    "database:categories": "npx sequelize-cli db:seed --seed categories.js",
+    "database:categories:undo": "npx sequelize-cli db:seed:undo --seed categories.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.2.4",
@@ -136,7 +138,11 @@
         "<rootDir>/dto/company-users/requests/$1.ts",
         "<rootDir>/dto/company-users/responses/$1.ts",
         "<rootDir>/dto/company-roles/requests/$1.ts",
-        "<rootDir>/dto/company-roles/responses/$1.ts*"
+        "<rootDir>/dto/company-roles/responses/$1.ts*",
+        "<rootDir>/dto/products/requests/$1.ts",
+        "<rootDir>/dto/products/responses/$1.ts*",
+        "<rootDir>/dto/categories/requests/$1.ts",
+        "<rootDir>/dto/categories/responses/$1.ts*"
       ],
       "@events/(.*)": "<rootDir>/events/$1.ts",
       "@guards/(.*)": "<rootDir>/guards/$1.ts",
@@ -151,7 +157,9 @@
         "<rootDir>/modules/company/$1.ts",
         "<rootDir>/modules/company-users/$1.ts",
         "<rootDir>/modules/company-roles/$1.ts",
-        "<rootDir>/modules/security/$1.ts"
+        "<rootDir>/modules/security/$1.ts",
+        "<rootDir>/modules/categories/$1.ts",
+        "<rootDir>/modules/products/$1.ts"
       ],
       "@custom-types/(.*)": [
         "<rootDor>/libs/types/company/$1.ts",
@@ -174,7 +182,9 @@
         "<rootDir>/libs/interfaces/company/$1.ts",
         "<rootDir>/libs/interfaces/company-users/$1.ts",
         "<rootDir>/libs/interfaces/company-roles/$1.ts",
-        "<rootDir>/libs/interfaces/roles/$1.ts*"
+        "<rootDir>/libs/interfaces/roles/$1.ts*",
+        "<rootDir>/libs/interfaces/categories/$1.ts*",
+        "<rootDir>/libs/interfaces/products/$1.ts*"
       ],
       "@docs/(.*)": "<rootDir>/libs/docs/$1.ts",
       "@email-templates/(.*)": [

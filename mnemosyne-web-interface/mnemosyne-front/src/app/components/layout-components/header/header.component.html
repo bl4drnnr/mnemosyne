@@ -34,6 +34,13 @@
 
     <div class="header-side" *ngIf="isUserLoggedIn">
       <ng-container *transloco="let t">
+        <div class="header-button-wrapper">
+          <basic-button
+            [label]="t('button.postProduct')"
+            [fillButton]="true"
+            (buttonClick)="handleRedirect('marketplace/create-product')"
+          />
+        </div>
         <basic-button
           [label]="t('button.dashboard')"
           (buttonClick)="handleRedirect('account/dashboard')"

@@ -19,6 +19,7 @@ import { QrMfaComponent } from '@components/qr-mfa/qr-mfa.component';
 import { PhoneComponent } from '@components/phone/phone.component';
 import { ArrowComponent } from '@components/arrow/arrow.component';
 import { PaginationComponent } from '@components/pagination/pagination.component';
+import { TextareaComponent } from '@components/textarea/textarea.component';
 
 const components = [
   ButtonComponent,
@@ -35,7 +36,8 @@ const components = [
   QrMfaComponent,
   PhoneComponent,
   ArrowComponent,
-  PaginationComponent
+  PaginationComponent,
+  TextareaComponent
 ];
 
 @NgModule({

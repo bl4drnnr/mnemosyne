@@ -1,97 +1,177 @@
 <layout-default
-  [showFooter]="false"
+  [showFooter]="true"
   [showSideBar]="false"
   [showHeaderBurger]="false"
 >
-  <div class="home-welcome-window">
+  <ng-container *transloco="let t">
+    <div class="home-welcome-window">
 
-    <div class="home-welcome-animation">
-      <ng-lottie [options]="animationOptions" />
+      <div class="home-welcome-animation">
+        <ng-lottie [options]="animationOptions" />
+      </div>
+
+      <div class="home-welcome-text-container">
+        <ngx-typed-js
+          [showCursor]="true"
+          [strings]="['Mnemosyne']"
+          [startDelay]="1000"
+          [typeSpeed]="100"
+        >
+          <h1 class="welcome-header-title"><span class="typing"></span></h1>
+        </ngx-typed-js>
+
+        <div class="welcome-header-subtitle-wrapper">
+          <ngx-typed-js
+            [strings]="[whateverYouNeedTitle]"
+            [showCursor]="false"
+            [startDelay]="1500"
+            [typeSpeed]="70"
+            (completed)="currentTypingText = 2"
+          >
+            <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
+          </ngx-typed-js>
+          <ngx-typed-js
+            *ngIf="currentTypingText > 1"
+            [strings]="[wheneverYouWantTitle]"
+            [showCursor]="false"
+            [typeSpeed]="70"
+            (completed)="currentTypingText = 3"
+          >
+            <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
+          </ngx-typed-js>
+          <ngx-typed-js
+            [startDelay]="4200"
+            [strings]="[whereverYouAreaTile]"
+            [typeSpeed]="70"
+            (completed)="currentTypingText = 4"
+          >
+            <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
+          </ngx-typed-js>
+        </div>
+
+        <div
+          *ngIf="currentTypingText >= 3"
+          [@fadeIn]="true"
+          class="welcome-header-p-wrapper"
+        >
+          <ngx-typed-js
+            contentType="html"
+            [loop]="true"
+            [startDelay]="2200"
+            [strings]="[
+              typedTitle1,
+              typedTitle2,
+              typedTitle3
+            ]"
+            [typeSpeed]="50"
+            [backSpeed]="10"
+          >
+            <p class="welcome-header-p">
+              {{ subtitle }}<span class="typing"></span>
+            </p>
+          </ngx-typed-js>
+        </div>
+
+        <div
+          [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
+          class="home-start-button-wrapper"
+        >
+          <basic-button
+            [label]="t('button.createAcc')"
+            [highHeight]="true"
+            [fillButton]="true"
+            (buttonClick)="handleRedirect('registration')"
+          />
+        </div>
+
+        <div
+          class="home-start-button-wrapper"
+          [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
+        >
+          <page-component-alt-registration
+            [continueWithTitle]="t('reg.continueWith')"
+            [block]="false"
+          />
+        </div>
+
+      </div>
     </div>
 
-    <div class="home-welcome-text-container">
-      <ngx-typed-js
-        [showCursor]="true"
-        [strings]="['Mnemosyne']"
-        [startDelay]="1000"
-        [typeSpeed]="100"
-      >
-        <h1 class="welcome-header-title"><span class="typing"></span></h1>
-      </ngx-typed-js>
+    <div class="product-types-container">
 
-      <div class="welcome-header-subtitle-wrapper">
-        <ngx-typed-js
-          [strings]="['Secure.']"
-          [showCursor]="false"
-          [startDelay]="1500"
-          [typeSpeed]="70"
-          (completed)="currentTypingText = 2"
+      <div class="product-type-block">
+        <div class="product-type-desc"><h1>{{ t('home.houseTile') }}</h1></div>
+        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
+        <img
+          [src]="stockItemsForHousePic"
+          width="100%"
+          height="100%"
+          alt="stock-items-for-house"
         >
-          <h2 class="welcome-header-subtitle"><span class="typing"></span></h2>
-        </ngx-typed-js>
-        <ngx-typed-js
-          *ngIf="currentTypingText > 1"
-          [strings]="['Transparent.']"
-          [showCursor]="false"
-          [typeSpeed]="70"
-          (completed)="currentTypingText = 3"
-        >
-          <h2 class="welcome-header-subtitle padding"><span class="typing"></span></h2>
-        </ngx-typed-js>
-        <ngx-typed-js
-          [startDelay]="3600"
-          [strings]="['Immutable.']"
-          [typeSpeed]="70"
-          (completed)="currentTypingText = 4"
-        >
-          <h2 [ngClass]="currentTypingText >= 3 ? 'welcome-header-subtitle padding' : 'welcome-header-subtitle'">
-            <span class="typing"></span>
-          </h2>
-        </ngx-typed-js>
       </div>
 
-      <div
-        *ngIf="currentTypingText >= 3"
-        [@fadeIn]="true"
-        class="welcome-header-p-wrapper"
-      >
-        <ngx-typed-js
-          contentType="html"
-          [loop]="true"
-          [startDelay]="2200"
-          [strings]="[
-          '<b>secured with the blockchain.</b>',
-          '<b>decentralized with the blockchain.</b>',
-          '<b>tamper-proofed by the blockchain.</b>'
-        ]"
-          [typeSpeed]="50"
-          [backSpeed]="10"
+      <div class="product-type-block">
+        <div class="product-type-desc"><h1>{{ t('home.travelsTile') }}</h1></div>
+        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
+        <img
+          [src]="stockItemsForTravelsPic"
+          width="100%"
+          height="100%"
+          alt="stock-items-for-travels"
         >
-          <p class="welcome-header-p">
-            Discover the limitless possibilities of blockchain-driven storage where you can be sure that you data is <span class="typing"></span>
-          </p>
-        </ngx-typed-js>
       </div>
-
-      <div
-        [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
-        class="home-start-button-wrapper"
-      >
-        <basic-button
-          label="Sign Up"
-          [highHeight]="true"
-          [fillButton]="true"
-          (buttonClick)="handleRedirect('registration')"
-        />
-      </div>
-
-      <div
-        class="home-start-button-wrapper"
-        [@buttonAnimation]="currentTypingText >= 3 ? 'visible' : 'hidden'"
-      >
-        <page-component-alt-registration [block]="false"/>
-      </div>
-
     </div>
-  </div>
+
+    <div class="product-types-container">
+      <div class="product-type-block">
+        <div class="product-type-desc"><h1>{{ t('home.businessTile') }}</h1></div>
+        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
+        <img
+          [src]="stockItemsForBusinessPic"
+          width="100%"
+          height="100%"
+          alt="stock-items-for-business"
+        >
+      </div>
+      <div class="product-type-block">
+        <div class="product-type-desc"><h1>{{ t('home.cookingTile') }}</h1></div>
+        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
+        <img
+          [src]="stockItemsForCookingPic"
+          width="100%"
+          height="100%"
+          alt="stock-items-for-cooking"
+        >
+      </div>
+    </div>
+
+    <div class="product-types-container">
+      <div class="product-type-block">
+        <div class="product-type-desc"><h1>{{ t('home.sportsTile') }}</h1></div>
+        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
+        <img
+          class="product-type-pic"
+          [src]="stockItemsForSportPic"
+          width="100%"
+          height="100%"
+          alt="stock-items-for-sport"
+        >
+      </div>
+
+      <div class="product-type-block">
+        <div class="product-type-desc"><h1>{{ t('home.computerTile') }}</h1></div>
+        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
+        <img
+          [src]="stockItemsForComputerPic"
+          width="100%"
+          height="100%"
+          alt="stock-items-for-computer"
+        >
+      </div>
+    </div>
+
+    <div class="recent-products-container">
+      <h1>See the most recent products</h1>
+    </div>
+  </ng-container>
 </layout-default>
