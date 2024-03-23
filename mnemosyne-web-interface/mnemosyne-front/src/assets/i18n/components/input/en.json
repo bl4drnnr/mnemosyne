@@ -137,5 +137,6 @@
   "productPriceError": "The price cannot be a negative number",
   "productLocationLabel": "Product location",
   "productLocationPlaceholder": "Provide the location of the product",
-  "productLocationInputDesc": "Provide the location of the product or the service that you are going to post."
+  "productLocationInputDesc": "Provide the location of the product or the service that you are going to post.",
+  "productLocationError": "The length of the product location should be between 4 and 64"
 }

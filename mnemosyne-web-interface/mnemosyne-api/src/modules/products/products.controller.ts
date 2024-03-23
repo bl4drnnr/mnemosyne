@@ -1,6 +1,15 @@
-import { Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  UseGuards,
+  UsePipes
+} from '@nestjs/common';
 import {
   ApiBasicAuth,
+  ApiBearerAuth,
   ApiExtraModels,
   ApiOperation,
   ApiQuery,
@@ -11,6 +20,10 @@ import { ProductsService } from '@modules/products.service';
 import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { ProductsDocs } from '@docs/products.docs';
+import { UserId } from '@decorators/user-id.decorator';
+import { AuthGuard } from '@guards/auth.guard';
+import { ValidationPipe } from '@pipes/validation.pipe';
+import { PostProductDto } from '@dto/post-product.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -53,8 +66,19 @@ export class ProductsController {
   }
 
   @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  // @UseGuards(AuthGuard)
   @Post('create-product')
-  createProduct() {
-    return this.productsService.createProduct();
+  createProduct(
+    // @UserId() userId: string,
+    @Body() payload: PostProductDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.createProduct({
+      userId: '',
+      payload,
+      trx
+    });
   }
 }

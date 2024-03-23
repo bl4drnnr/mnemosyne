@@ -10,6 +10,8 @@ import { SearchProductsDto } from '@dto/search-products.dto';
 import { ProductBySlugDto } from '@dto/product-by-slug.dto';
 import { GetLatestProductsInterface } from '@interfaces/get-latest-products.interface';
 import { LatestProductsDto } from '@dto/latest-products.dto';
+import { ProductPostedDto } from '@dto/product-posted.dto';
+import { PostProductInterface } from '@interfaces/post-product.interface';
 
 @Injectable()
 export class ProductsService {
@@ -115,5 +117,20 @@ export class ProductsService {
     return new SearchProductsDto(foundProducts);
   }
 
-  createProduct() {}
+  createProduct({ userId, payload, trx }: PostProductInterface) {
+    const {
+      title,
+      description,
+      pictures,
+      currency,
+      price,
+      location,
+      contactPhone,
+      contactPerson,
+      category,
+      subcategory
+    } = payload;
+
+    return new ProductPostedDto('');
+  }
 }

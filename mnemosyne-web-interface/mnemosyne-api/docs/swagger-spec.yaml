@@ -1879,11 +1879,18 @@ paths:
     post:
       operationId: ProductsController_createProduct
       parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostProductDto"
       responses:
         "201":
           description: ""
       tags: *a9
       security:
+        - x-access-token: []
         - basicAuth: []
   /api/categories/all-categories:
     get:
@@ -1947,6 +1954,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - email
     PasswordChangedException:
@@ -2212,6 +2220,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
     CompanyMemberAccConfirmedDto:
       type: object
       properties:
@@ -2315,6 +2324,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
     PasswordResetDto:
       type: object
       properties:
@@ -2355,6 +2365,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
     LogInUserResponseDto:
       type: object
       properties:
@@ -2457,6 +2468,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
         namePronunciation:
           type: string
           description: This could be a phonetic pronunciation, or an example of something
@@ -2539,6 +2551,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - contactEmail
         - contactMessage
@@ -2580,6 +2593,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - companyLocation
         - companyName
@@ -2716,6 +2730,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - newCompanyOwnerEmail
     DeleteCompanyDto:
@@ -2757,6 +2772,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - password
         - passphrase
@@ -2909,6 +2925,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - email
         - role
@@ -2988,6 +3005,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
     CompanyMemberDeletedDto:
       type: object
       properties:
@@ -3119,6 +3137,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - phone
     SmsCodeSentDto:
@@ -3157,6 +3176,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - email
         - password
@@ -3293,6 +3313,7 @@ components:
             - pl
             - en
           description: One of 3 available languages
+          example: pl
       required:
         - newEmail
     EmailChangeEmailSentDto:
@@ -3424,6 +3445,94 @@ components:
             - $ref: "#/components/schemas/Product"
       required:
         - product
+    PostProductDto:
+      type: object
+      properties:
+        title:
+          type: string
+          description: Product name
+          example: My product
+        description:
+          type: string
+          description: Product description
+          example: My product desc
+        pictures:
+          description: Product picture name
+          example:
+            - asd
+          type: array
+          items:
+            type: array
+        currency:
+          type: string
+          enum:
+            - PLN
+            - USD
+            - EUR
+          description: Product currency
+          example: PLN
+        price:
+          type: number
+          description: Product price
+          example: "15000"
+        location:
+          type: string
+          description: The location of the product
+          example: 5th Avenu
+        contactPhone:
+          type: string
+          description: The phone to contact a product owner
+          example: "123123123"
+        contactPerson:
+          type: string
+          description: Contact person or the owner of the product
+          example: John Doe
+        category:
+          type: string
+          enum:
+            - house
+            - travels
+            - business
+            - cooking
+            - sports
+            - computers
+          description: Category name
+          example: travels
+        subcategory:
+          type: string
+          enum:
+            - kitchen
+            - bedroom
+            - bathroom
+            - decoration
+            - hiking
+            - cycling
+            - swimming
+            - finance
+            - equipment
+            - business_software
+            - service
+            - ingredients
+            - dishes
+            - cooking_books
+            - sports_equipment
+            - train
+            - hardware
+            - software
+            - it_books
+          description: Subcategory description
+          example: it_books
+      required:
+        - title
+        - description
+        - pictures
+        - currency
+        - price
+        - location
+        - contactPhone
+        - contactPerson
+        - category
+        - subcategory
     GetAllCategoriesDto:
       type: object
       properties:

@@ -56,7 +56,16 @@
     "wrong-company-role-scope-length": "Nieprawidłowa długość niestandardowych zakresów ról firmy",
     "wrong-new-role-assignees-length": "Nieprawidłowa długość nowych przypisanych ról",
     "wrong-contact-message-format": "Niewłaściwy format wiadomości kontaktowych",
-    "wrong-contact-message-length": "Niewłaściwa długość wiadomości kontaktowej"
+    "wrong-contact-message-length": "Niewłaściwa długość wiadomości kontaktowej",
+    "wrong-product-title-format": "Niewłaściwy format tytułu produktu",
+    "wrong-product-title-length": "Niewłaściwa długość tytułu produktu",
+    "wrong-product-description-format": "Niewłaściwy format opisu produktu",
+    "wrong-product-description-length": "Niewłaściwa długość opisu produktu",
+    "wrong-product-contact-person-format": "Niewłaściwy format osoby kontaktowej produktu",
+    "wrong-product-contact-person-length": "Niewłaściwa długość osoby kontaktowej produktu",
+    "wrong-product-location-format": "Niewłaściwy format lokalizacji produktu",
+    "wrong-product-location-length": "Niewłaściwa długość lokalizacji produktu",
+    "wrong-product-price-format": "Niewłaściwy format ceny produktu"
   },
   "wrong-timeframe": "Niewłaściwy przedział czasowy",
   "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania",

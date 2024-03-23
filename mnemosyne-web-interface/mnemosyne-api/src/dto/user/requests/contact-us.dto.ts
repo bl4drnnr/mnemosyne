@@ -26,7 +26,8 @@ export class ContactUsDto {
   @ApiProperty({
     type: Language,
     enum: Language,
-    description: DocsProperty.LANGUAGE_DESC
+    description: DocsProperty.LANGUAGE_DESC,
+    example: DocsProperty.LANGUAGE_EXAMPLE
   })
   @ApiPropertyOptional()
   @IsOptional()

@@ -27,7 +27,7 @@ export class ProductsService {
     return this.apiService.apiProxyRequest({
       method: Method.POST,
       controller: Controller.PRODUCTS,
-      action: ProductsEndpoint.POST_PRODUCT,
+      action: ProductsEndpoint.CREATE_PRODUCT,
       payload
     });
   }

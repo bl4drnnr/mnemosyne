@@ -3,9 +3,9 @@ import { ProductCategory } from '@interfaces/product-category.type';
 import { ProductSubcategory } from '@interfaces/product-subcategory.type';
 
 export interface PostProductPayload {
-  name: string;
+  title: string;
   description: string;
-  pictures: Array<string>;
+  pictures: Array<string | ArrayBuffer | null>;
   currency: Currency;
   price: number;
   location: string;

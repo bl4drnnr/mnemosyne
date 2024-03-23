@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CategoriesService } from '@services/categories.service';
 import { TranslationService } from '@services/translation.service';
 import { GetAllCategoriesResponse } from '@responses/get-all-categories.interface';
@@ -14,6 +14,7 @@ import { ProductSubcategory } from '@interfaces/product-subcategory.type';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { Router } from '@angular/router';
+import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
 
 @Component({
   selector: 'app-create-product',
@@ -30,8 +31,15 @@ export class CreateProductComponent implements OnInit {
   contactEmail: string;
   contactPhoneNumber: string;
   productPrice: string = '0';
-  productPictures: Array<string>;
   productLocation: string;
+  productPic1: string | ArrayBuffer | null;
+  productPic2: string | ArrayBuffer | null;
+  productPic3: string | ArrayBuffer | null;
+  productPic4: string | ArrayBuffer | null;
+  productPic5: string | ArrayBuffer | null;
+  productPic6: string | ArrayBuffer | null;
+  productPic7: string | ArrayBuffer | null;
+  productPic8: string | ArrayBuffer | null;
 
   categories: Array<GetAllCategoriesResponse>;
   categoriesDropdown: Array<DropdownInterface>;
@@ -58,9 +66,14 @@ export class CreateProductComponent implements OnInit {
   ];
   productPriceDropdownValue: DropdownInterface = { key: 'PLN', value: 'PLN' };
 
-  selectedPicture?: FileList;
-  preview: string | ArrayBuffer | null = '';
-  userProfilePictureLink: string;
+  @ViewChild('fileInput1') fileInput1!: UploadProductPictureComponent;
+  @ViewChild('fileInput2') fileInput2!: UploadProductPictureComponent;
+  @ViewChild('fileInput3') fileInput3!: UploadProductPictureComponent;
+  @ViewChild('fileInput4') fileInput4!: UploadProductPictureComponent;
+  @ViewChild('fileInput5') fileInput5!: UploadProductPictureComponent;
+  @ViewChild('fileInput6') fileInput6!: UploadProductPictureComponent;
+  @ViewChild('fileInput7') fileInput7!: UploadProductPictureComponent;
+  @ViewChild('fileInput8') fileInput8!: UploadProductPictureComponent;
 
   constructor(
     private readonly router: Router,
@@ -73,11 +86,21 @@ export class CreateProductComponent implements OnInit {
   ) {}
 
   postProduct() {
+    const productPictures = [
+      this.productPic1,
+      this.productPic2,
+      this.productPic3,
+      this.productPic4,
+      this.productPic5,
+      this.productPic6,
+      this.productPic7,
+      this.productPic8
+    ];
     this.productsService
       .postProduct({
-        name: this.productTitle,
+        title: this.productTitle,
         description: this.productDescription,
-        pictures: this.productPictures,
+        pictures: productPictures,
         currency: this.productPriceDropdownValue.key as Currency,
         price: Number(this.productPrice),
         location: this.productLocation,
@@ -232,18 +255,97 @@ export class CreateProductComponent implements OnInit {
     };
   }
 
-  selectFile(event: any): void {
-    this.selectedPicture = event.target.files;
+  disablePhotoUpload(idx: number) {
+    if (idx === 1) {
+      return !this.productPic1;
+    } else if (idx === 2) {
+      return !this.productPic1 || !this.productPic2;
+    } else if (idx === 3) {
+      return !this.productPic1 || !this.productPic2 || !this.productPic3;
+    } else if (idx === 4) {
+      return (
+        !this.productPic1 ||
+        !this.productPic2 ||
+        !this.productPic3 ||
+        !this.productPic4
+      );
+    } else if (idx === 5) {
+      return (
+        !this.productPic1 ||
+        !this.productPic2 ||
+        !this.productPic3 ||
+        !this.productPic4 ||
+        !this.productPic5
+      );
+    } else if (idx === 6) {
+      return (
+        !this.productPic1 ||
+        !this.productPic2 ||
+        !this.productPic3 ||
+        !this.productPic4 ||
+        !this.productPic5 ||
+        !this.productPic6
+      );
+    } else if (idx === 7) {
+      return (
+        !this.productPic1 ||
+        !this.productPic2 ||
+        !this.productPic3 ||
+        !this.productPic4 ||
+        !this.productPic5 ||
+        !this.productPic6 ||
+        !this.productPic7
+      );
+    } else {
+      return false;
+    }
+  }
 
-    if (!this.selectedPicture) return;
-
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-
-    reader.onload = () => {
-      this.preview = reader.result;
-    };
+  clearFileInput(idx: number) {
+    if (idx === 0) {
+      this.fileInput1.clearFileInput();
+      this.fileInput2.clearFileInput();
+      this.fileInput3.clearFileInput();
+      this.fileInput4.clearFileInput();
+      this.fileInput5.clearFileInput();
+      this.fileInput6.clearFileInput();
+      this.fileInput7.clearFileInput();
+      this.fileInput8.clearFileInput();
+    } else if (idx === 1) {
+      this.fileInput2.clearFileInput();
+      this.fileInput3.clearFileInput();
+      this.fileInput4.clearFileInput();
+      this.fileInput5.clearFileInput();
+      this.fileInput6.clearFileInput();
+      this.fileInput7.clearFileInput();
+      this.fileInput8.clearFileInput();
+    } else if (idx === 2) {
+      this.fileInput3.clearFileInput();
+      this.fileInput4.clearFileInput();
+      this.fileInput5.clearFileInput();
+      this.fileInput6.clearFileInput();
+      this.fileInput7.clearFileInput();
+      this.fileInput8.clearFileInput();
+    } else if (idx === 3) {
+      this.fileInput4.clearFileInput();
+      this.fileInput5.clearFileInput();
+      this.fileInput6.clearFileInput();
+      this.fileInput7.clearFileInput();
+      this.fileInput8.clearFileInput();
+    } else if (idx === 4) {
+      this.fileInput5.clearFileInput();
+      this.fileInput6.clearFileInput();
+      this.fileInput7.clearFileInput();
+      this.fileInput8.clearFileInput();
+    } else if (idx === 5) {
+      this.fileInput6.clearFileInput();
+      this.fileInput7.clearFileInput();
+      this.fileInput8.clearFileInput();
+    } else if (idx === 6) {
+      this.fileInput7.clearFileInput();
+    } else if (idx === 7) {
+      this.fileInput8.clearFileInput();
+    }
   }
 
   async handleRedirect(path: string) {
@@ -257,13 +359,13 @@ export class CreateProductComponent implements OnInit {
       next: async ({ categories }) => {
         this.categories = categories;
         this.categoriesNames = categories.map(({ name }) => name);
-        // const userInfoRequest = await this.refreshTokensService.refreshTokens();
-        //
-        // if (userInfoRequest) {
-        //   userInfoRequest.subscribe({
-        //     next: (userInfo) => (this.contactEmail = userInfo.email)
-        //   });
-        // }
+        const userInfoRequest = await this.refreshTokensService.refreshTokens();
+
+        if (userInfoRequest) {
+          userInfoRequest.subscribe({
+            next: (userInfo) => (this.contactEmail = userInfo.email)
+          });
+        }
 
         await this.initCategoriesDropdown();
         await this.initSubcategoriesDropdowns();

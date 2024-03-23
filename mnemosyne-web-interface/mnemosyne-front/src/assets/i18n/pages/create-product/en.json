@@ -5,5 +5,6 @@
   "productDescTitle": "Let's add more details on what this is going to be",
   "contactInfoTitle": "Contact information",
   "postProductAccept": "By clicking \"Post product\" button I accept",
-  "productPriceTitle": "Product price information"
+  "productPriceTitle": "Product price information",
+  "productPicsUploadDesc": "Pictures will be shown in the order you are uploading them. The first picture will be the main picture of the post. To upload the picture, click on the preview button below. In order to delete picture that you do not want to be in the post, click on it once again."
 }

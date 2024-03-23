@@ -1,0 +1,38 @@
+@import 'variables';
+
+.picture-preview {
+  min-width: 150px;
+  min-height: 100px;
+  border-radius: 8px;
+  background-color: var(--disabled-color);
+  border: 1px solid var(--border-color);
+  margin-right: 10px;
+  margin-top: 10px;
+  transition: .3s;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.disabled {
+    border: none;
+    cursor: auto;
+    opacity: .5;
+
+    &:hover {
+      background-color: var(--disabled-color);
+    }
+  }
+
+  &:hover {
+    background-color: var(--card-shadow);
+  }
+}
+
+.upload-picture-icon {
+  filter: var(--svg-color);
+}
+
+.uploaded-picture {
+  border-radius: 8px;
+}

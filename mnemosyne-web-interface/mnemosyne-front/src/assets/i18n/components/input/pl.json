@@ -137,5 +137,6 @@
   "productPriceError": "Cena nie może być liczbą ujemną",
   "productLocationLabel": "Lokalizacja produktu",
   "productLocationPlaceholder": "Podaj lokalizację produktu",
-  "productLocationInputDesc": "Podaj lokalizację produktu lub usługi, którą zamierzasz opublikować."
+  "productLocationInputDesc": "Podaj lokalizację produktu lub usługi, którą zamierzasz opublikować.",
+  "productLocationError": "Długość lokalizacji produktu powinna wynosić od 4 do 64"
 }
