@@ -249,5 +249,7 @@ export enum DocsProperty {
   PRODUCT_CONTACT_PHONE_DESC = 'The phone to contact a product owner',
   PRODUCT_CONTACT_PHONE_EXAMPLE = '123123123',
   PRODUCT_CONTACT_PERSON_DESC = 'Contact person or the owner of the product',
-  PRODUCT_CONTACT_PERSON_EXAMPLE = 'John Doe'
+  PRODUCT_CONTACT_PERSON_EXAMPLE = 'John Doe',
+  PRODUCT_NOT_FOUND_DESC = 'Product not found error message',
+  PRODUCT_NOT_FOUND_EXAMPLE = 'product-not-found'
 }

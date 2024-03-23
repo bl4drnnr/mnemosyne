@@ -18,6 +18,7 @@ import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CategoriesService } from '@modules/categories.service';
+import { ProductNotFoundException } from '@exceptions/product-not-found.exception';
 
 @Injectable()
 export class ProductsService {
@@ -36,14 +37,19 @@ export class ProductsService {
       transaction: trx
     });
 
+    if (!foundProduct) throw new ProductNotFoundException();
+
     const product = {
       title: foundProduct.title,
       description: foundProduct.description,
       pictures: foundProduct.pictures,
+      location: foundProduct.location,
       currency: foundProduct.currency,
       price: foundProduct.price,
       subcategory: foundProduct.subcategory,
       category: foundProduct.category,
+      contactPerson: foundProduct.contactPerson,
+      contactPhone: foundProduct.contactPhone,
       productUserFirstName: foundProduct.user.firstName,
       productUserLastName: foundProduct.user.lastName
     };

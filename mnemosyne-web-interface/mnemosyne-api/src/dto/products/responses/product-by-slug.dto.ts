@@ -12,10 +12,13 @@ export class ProductBySlugDto {
       title: DocsProperty.PRODUCT_TITLE_EXAMPLE,
       description: DocsProperty.CATEGORY_DESC_EXAMPLE,
       pictures: [DocsProperty.PRODUCT_PIC_EXAMPLE],
+      location: DocsProperty.PRODUCT_LOCATION_EXAMPLE,
       currency: ProductCurrency.PLN,
       price: DocsProperty.PRODUCT_PRICE_EXAMPLE,
       subcategory: [DocsProperty.SUBCATEGORY_EXAMPLE],
       category: DocsProperty.CATEGORY_NAME_EXAMPLE,
+      contactPerson: DocsProperty.PRODUCT_CONTACT_PERSON_EXAMPLE,
+      contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE,
       productUserFirstName: DocsProperty.FIRST_NAME_EXAMPLE,
       productUserLastName: DocsProperty.LAST_NAME_EXAMPLE
     }

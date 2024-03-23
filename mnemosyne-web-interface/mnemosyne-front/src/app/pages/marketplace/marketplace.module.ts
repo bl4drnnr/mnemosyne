@@ -7,11 +7,13 @@ import { LayoutsModule } from '@layouts/layouts.module';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ProductComponent } from '@pages/product/product.component';
 import { CreateProductComponent } from '@pages/create-product/create-product.component';
+import { ProductNotFoundComponent } from '@pages/product-not-found/product-not-found.component';
 
 const components = [
   MarketplaceComponent,
   ProductComponent,
-  CreateProductComponent
+  CreateProductComponent,
+  ProductNotFoundComponent
 ];
 
 const routes: Routes = [
@@ -26,6 +28,10 @@ const routes: Routes = [
   {
     path: 'marketplace/create-product',
     component: CreateProductComponent
+  },
+  {
+    path: 'marketplace/product-not-found',
+    component: ProductNotFoundComponent
   }
 ];
 

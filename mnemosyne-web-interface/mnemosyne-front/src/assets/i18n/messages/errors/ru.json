@@ -80,5 +80,6 @@
   "parse-error": "Ошибка синтаксического анализа",
   "company-not-found": "Компания не найдена",
   "company-member-not-found": "Участник компании не найден",
-  "role-doesnt-exists": "Роль не существует"
+  "role-doesnt-exists": "Роль не существует",
+  "product-not-found": "Товар не найден, пожалуйста, проверьте ссылку еще раз"
 }

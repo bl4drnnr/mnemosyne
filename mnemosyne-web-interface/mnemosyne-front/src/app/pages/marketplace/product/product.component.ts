@@ -1,8 +1,53 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ProductsService } from '@services/products.service';
+import { TranslationService } from '@services/translation.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { GetProductBySlug } from '@responses/get-product-by-slug.interface';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
-  selector: 'app-product',
+  selector: 'page-product',
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent {}
+export class ProductComponent implements OnInit {
+  productSlug: string;
+  product: GetProductBySlug;
+
+  constructor(
+    private readonly productsService: ProductsService,
+    private readonly translationService: TranslationService,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router
+  ) {}
+
+  getProductBySlug() {
+    this.productsService
+      .getProductBySlug({
+        slug: this.productSlug
+      })
+      .subscribe({
+        next: ({ product }) => {
+          this.product = product;
+          this.translationService.setPageTitle(Titles.PRODUCT, {
+            product: product.title
+          });
+        },
+        error: async () =>
+          await this.router.navigate(['marketplace/product-not-found'])
+      });
+  }
+
+  ngOnInit() {
+    this.route.paramMap.subscribe(async (params) => {
+      const productSlug = params.get('product-slug');
+
+      if (!productSlug) {
+        await this.router.navigate(['marketplace/product-not-found']);
+      } else {
+        this.productSlug = productSlug;
+        this.getProductBySlug();
+      }
+    });
+  }
+}

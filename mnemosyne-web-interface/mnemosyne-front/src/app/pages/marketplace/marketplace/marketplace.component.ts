@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-marketplace',
+  selector: 'page-marketplace',
   templateUrl: './marketplace.component.html',
   styleUrls: ['./marketplace.component.scss']
 })

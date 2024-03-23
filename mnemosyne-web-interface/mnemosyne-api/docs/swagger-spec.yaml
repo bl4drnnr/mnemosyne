@@ -1836,6 +1836,13 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductBySlugDto"
+        "404":
+          description: In case if the slug of the product has not been found, user gets
+            this error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
       tags: &a9
         - Products
       security:
@@ -1878,16 +1885,31 @@ paths:
   /api/products/create-product:
     post:
       operationId: ProductsController_createProduct
+      summary: Endpoint is responsible for the creation of the product on the
+        marketplace.
       parameters: []
       requestBody:
         required: true
+        description: Body contains all needed fields in order to create a product.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/PostProductDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets a message that the product has been created
+            and user gets redirected to the product page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPostedDto"
+        "400":
+          description: If user tries to upload something else except of base64-encoded PNG
+            picture.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongPictureException"
       tags: *a9
       security:
         - x-access-token: []
@@ -3434,17 +3456,29 @@ components:
             description: travels_docs
             pictures:
               - asd
+            location: 5th Avenu
             currency: PLN
             price: "15000"
             subcategory:
               - it_books
             category: travels
+            contactPerson: John Doe
+            contactPhone: "123123123"
             productUserFirstName: Joe
             productUserLastName: Doe
           allOf:
             - $ref: "#/components/schemas/Product"
       required:
         - product
+    ProductNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Product not found error message
+          example: product-not-found
+      required:
+        - message
     PostProductDto:
       type: object
       properties:
@@ -3533,6 +3567,20 @@ components:
         - contactPerson
         - category
         - subcategory
+    ProductPostedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message that the product has been posted
+          example: product-posted
+        link:
+          type: string
+          description: Link where user will be redirected when the product is posted
+          example: https://mnemosyne.io/marketplace/product/my-product-123
+      required:
+        - message
+        - link
     GetAllCategoriesDto:
       type: object
       properties:

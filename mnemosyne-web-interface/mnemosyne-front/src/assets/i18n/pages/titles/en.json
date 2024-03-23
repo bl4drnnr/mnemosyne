@@ -13,5 +13,7 @@
   "emailChangeConfirm": "Mnemosyne | Email Change Confirmation",
   "login": "Mnemosyne | Login",
   "contact": "Mnemosyne | Contact",
-  "createProduct": "Mnemosyne | Create Product"
+  "createProduct": "Mnemosyne | Create Product",
+  "product": "Mnemosyne | Product - {{ product }}",
+  "productNotFound": "Mnemosyne | Oops... Product not found"
 }

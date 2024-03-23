@@ -8,9 +8,12 @@ import {
   UsePipes
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBasicAuth,
   ApiBearerAuth,
+  ApiBody,
   ApiExtraModels,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -33,6 +36,7 @@ export class ProductsController {
   @ApiOperation(ProductsDocs.GetProductBySlug.ApiOperation)
   @ApiExtraModels(...ProductsDocs.GetProductBySlug.ApiExtraModels)
   @ApiResponse(ProductsDocs.GetProductBySlug.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.GetProductBySlug.ApiNotFoundResponse)
   @ApiQuery(ProductsDocs.GetProductBySlug.ApiSlugQuery)
   @ApiBasicAuth('basicAuth')
   @Get('product')
@@ -65,6 +69,11 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.CreateProduct.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.CreateProduct.ApiExtraModels)
+  @ApiResponse(ProductsDocs.CreateProduct.ApiResponse)
+  @ApiBadRequestResponse(ProductsDocs.CreateProduct.ApiBadRequestResponse)
+  @ApiBody(ProductsDocs.CreateProduct.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)

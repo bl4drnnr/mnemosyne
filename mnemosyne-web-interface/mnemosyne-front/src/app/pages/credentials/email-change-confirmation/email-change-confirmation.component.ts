@@ -12,7 +12,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Status } from '@interfaces/statuses.enum';
 
 @Component({
-  selector: 'app-email-change-confirmation',
+  selector: 'page-email-change-confirmation',
   templateUrl: './email-change-confirmation.component.html',
   styleUrls: ['../shared/credentials.component.scss'],
   animations: [

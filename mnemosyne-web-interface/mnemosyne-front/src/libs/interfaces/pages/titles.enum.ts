@@ -13,5 +13,7 @@ export enum Titles {
   EMAIL_CHANGE_CONFIRMATION = 'emailChangeConfirm',
   LOGIN = 'login',
   CONTACT = 'contact',
-  CREATE_PRODUCT = 'createProduct'
+  CREATE_PRODUCT = 'createProduct',
+  PRODUCT = 'product',
+  PRODUCT_NOT_FOUND = 'productNotFound'
 }

@@ -7,6 +7,7 @@ import { GetProductBySlugPayload } from '@payloads/get-product-by-slug.interface
 import { PostProductPayload } from '@payloads/post-product.interface';
 import { Observable } from 'rxjs';
 import { ProductPostedResponse } from '@responses/product-posted.interface';
+import { GetProductBySlugResponse } from '@responses/get-product-by-slug.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ import { ProductPostedResponse } from '@responses/product-posted.interface';
 export class ProductsService {
   constructor(private readonly apiService: ApiService) {}
 
-  getProductBySlug({ slug }: GetProductBySlugPayload) {
+  getProductBySlug({
+    slug
+  }: GetProductBySlugPayload): Observable<GetProductBySlugResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.PRODUCTS,

@@ -17,7 +17,7 @@ import { Router } from '@angular/router';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
 
 @Component({
-  selector: 'app-create-product',
+  selector: 'page-create-product',
   templateUrl: './create-product.component.html',
   styleUrls: ['./create-product.component.scss']
 })

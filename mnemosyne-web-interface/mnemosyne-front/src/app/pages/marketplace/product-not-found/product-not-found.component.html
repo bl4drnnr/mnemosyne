@@ -1,0 +1,19 @@
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="product-not-found-container">
+      <div class="product-not-found-block">
+        <basic-emoji emoji="face-with-spiral-eyes.png" [width]="200" [height]="200"/>
+        <div>
+          <h1>{{ t('product-not-found.productNotFoundTitle') }}</h1>
+          <p>{{ t('product-not-found.productNotFoundMessage') }}</p>
+          <p class="product-not-found-block-link">
+            <span>{{ t('product-not-found.productNotFoundMessageLinkP1') }}&nbsp;</span>
+            <basic-link [label]="t('product-not-found.productNotFoundMessageLinkP2')" href="/"/>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</layout-default>
