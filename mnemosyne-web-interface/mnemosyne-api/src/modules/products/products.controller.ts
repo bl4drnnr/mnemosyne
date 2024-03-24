@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Patch,
   Post,
   Query,
   UseGuards,
@@ -85,6 +86,39 @@ export class ProductsController {
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.createProduct({
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('get-product-by-slug-to-edit')
+  getProductBySlugToEdit(
+    @UserId() userId: string,
+    @Query('slug') slug: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getProductBySlugToEdit({
+      userId,
+      slug,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UsePipes(ValidationPipe)
+  @UseGuards(AuthGuard)
+  @Patch('update-product')
+  updateProduct(
+    @UserId() userId: string,
+    @Body() payload: PostProductDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.updateProduct({
       userId,
       payload,
       trx

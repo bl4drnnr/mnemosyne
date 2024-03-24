@@ -251,5 +251,9 @@ export enum DocsProperty {
   PRODUCT_CONTACT_PERSON_DESC = 'Contact person or the owner of the product',
   PRODUCT_CONTACT_PERSON_EXAMPLE = 'John Doe',
   PRODUCT_NOT_FOUND_DESC = 'Product not found error message',
-  PRODUCT_NOT_FOUND_EXAMPLE = 'product-not-found'
+  PRODUCT_NOT_FOUND_EXAMPLE = 'product-not-found',
+  PRODUCT_UPDATED_MESSAGE_DESC = 'Response message that the product has been successfully updated',
+  PRODUCT_UPDATED_MESSAGE_EXAMPLE = 'product-updated',
+  PRODUCT_UPDATED_LINK_DESC = 'Link where user will be redirected when the product is updated',
+  PRODUCT_UPDATED_LINK_EXAMPLE = 'https://mnemosyne.io/marketplace/product/my-product-123'
 }

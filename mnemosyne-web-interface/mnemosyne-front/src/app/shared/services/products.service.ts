@@ -8,6 +8,7 @@ import { PostProductPayload } from '@payloads/post-product.interface';
 import { Observable } from 'rxjs';
 import { ProductPostedResponse } from '@responses/product-posted.interface';
 import { GetProductBySlugResponse } from '@responses/get-product-by-slug.interface';
+import { ProductUpdatedResponse } from '@responses/product-updated.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -31,6 +32,28 @@ export class ProductsService {
       method: Method.POST,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.CREATE_PRODUCT,
+      payload
+    });
+  }
+
+  getProductBySlugToEdit({
+    slug
+  }: GetProductBySlugPayload): Observable<GetProductBySlugResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.GET_PRODUCT_TO_UPDATE,
+      params: { slug }
+    });
+  }
+
+  updateProduct(
+    payload: PostProductPayload
+  ): Observable<ProductUpdatedResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.PATCH,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.UPDATE_PRODUCT,
       payload
     });
   }

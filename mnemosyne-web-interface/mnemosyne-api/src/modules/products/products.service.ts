@@ -19,6 +19,9 @@ import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CategoriesService } from '@modules/categories.service';
 import { ProductNotFoundException } from '@exceptions/product-not-found.exception';
+import { ProductUpdatedDto } from '@dto/product-updated.dto';
+import { GetProductBySlugToEditInterface } from '@interfaces/get-product-by-slug-to-edit.interface';
+import { ProductBySlugToEditDto } from '@dto/product-by-slug-to-edit.dto';
 
 @Injectable()
 export class ProductsService {
@@ -57,6 +60,7 @@ export class ProductsService {
     return new ProductBySlugDto(product);
   }
 
+  // @TODO Fix here as well
   async getLatestProducts({ trx }: GetLatestProductsInterface) {
     const products = await this.productRepository.findAll({
       attributes: [
@@ -91,6 +95,7 @@ export class ProductsService {
     return new LatestProductsDto(latestProducts);
   }
 
+  // @TODO Fix here as well v2
   async searchProduct({ query, page, pageSize, trx }: SearchProductInterface) {
     const offset = Number(page) * Number(pageSize);
     const limit = Number(pageSize);
@@ -210,6 +215,38 @@ export class ProductsService {
     const productLink = `/marketplace/product/${slug}`;
 
     return new ProductPostedDto(productLink);
+  }
+
+  async getProductBySlugToEdit({
+    userId,
+    slug,
+    trx
+  }: GetProductBySlugToEditInterface) {
+    const productToEdit = await this.productRepository.findOne({
+      where: { userId, slug },
+      transaction: trx
+    });
+
+    if (!productToEdit) throw new ProductNotFoundException();
+
+    const product = {
+      title: productToEdit.title,
+      description: productToEdit.description,
+      pictures: productToEdit.pictures,
+      location: productToEdit.location,
+      currency: productToEdit.currency,
+      price: productToEdit.price,
+      subcategory: productToEdit.subcategory,
+      category: productToEdit.category,
+      contactPerson: productToEdit.contactPerson,
+      contactPhone: productToEdit.contactPhone
+    };
+
+    return new ProductBySlugToEditDto(product);
+  }
+
+  async updateProduct({ userId, payload, trx }: PostProductInterface) {
+    return new ProductUpdatedDto('');
   }
 
   private generateProductSlug(productName: string) {

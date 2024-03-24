@@ -1,35 +1,35 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductsService } from '@services/products.service';
-import { TranslationService } from '@services/translation.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GetProductBySlug } from '@responses/get-product-by-slug.interface';
+import { TranslationService } from '@services/translation.service';
+import { ProductsService } from '@services/products.service';
 import { Titles } from '@interfaces/titles.enum';
+import { GetProductBySlug } from '@responses/get-product-by-slug.interface';
 
 @Component({
-  selector: 'page-product',
-  templateUrl: './product.component.html',
-  styleUrls: ['./product.component.scss']
+  selector: 'page-edit-product',
+  templateUrl: './edit-product.component.html',
+  styleUrls: ['../shared/create-product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class EditProductComponent implements OnInit {
   productSlug: string;
   product: GetProductBySlug;
 
   constructor(
-    private readonly productsService: ProductsService,
-    private readonly translationService: TranslationService,
+    private readonly router: Router,
     private readonly route: ActivatedRoute,
-    private readonly router: Router
+    private readonly translationService: TranslationService,
+    private readonly productsService: ProductsService
   ) {}
 
-  getProductBySlug() {
+  getProductBySlugToEdit() {
     this.productsService
-      .getProductBySlug({
+      .getProductBySlugToEdit({
         slug: this.productSlug
       })
       .subscribe({
         next: ({ product }) => {
           this.product = product;
-          this.translationService.setPageTitle(Titles.PRODUCT, {
+          this.translationService.setPageTitle(Titles.EDIT_PRODUCT, {
             product: product.title
           });
         },
@@ -50,7 +50,7 @@ export class ProductComponent implements OnInit {
         await this.handleRedirect('marketplace/product-not-found');
       } else {
         this.productSlug = productSlug;
-        this.getProductBySlug();
+        this.getProductBySlugToEdit();
       }
     });
   }

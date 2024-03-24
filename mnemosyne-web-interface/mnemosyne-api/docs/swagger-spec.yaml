@@ -1914,6 +1914,39 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/products/get-product-by-slug-to-edit:
+    get:
+      operationId: ProductsController_getProductBySlugToEdit
+      parameters:
+        - name: slug
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/products/update-product:
+    patch:
+      operationId: ProductsController_updateProduct
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostProductDto"
+      responses:
+        "200":
+          description: ""
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/categories/all-categories:
     get:
       operationId: CategoriesController_getAllCategories

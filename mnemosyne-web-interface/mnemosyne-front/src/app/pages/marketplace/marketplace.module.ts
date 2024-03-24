@@ -8,12 +8,14 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { ProductComponent } from '@pages/product/product.component';
 import { CreateProductComponent } from '@pages/create-product/create-product.component';
 import { ProductNotFoundComponent } from '@pages/product-not-found/product-not-found.component';
+import { EditProductComponent } from '@pages/edit-product/edit-product.component';
 
 const components = [
   MarketplaceComponent,
   ProductComponent,
   CreateProductComponent,
-  ProductNotFoundComponent
+  ProductNotFoundComponent,
+  EditProductComponent
 ];
 
 const routes: Routes = [
@@ -32,6 +34,10 @@ const routes: Routes = [
   {
     path: 'marketplace/product-not-found',
     component: ProductNotFoundComponent
+  },
+  {
+    path: 'marketplace/product/:product-slug/edit',
+    component: EditProductComponent
   }
 ];
 

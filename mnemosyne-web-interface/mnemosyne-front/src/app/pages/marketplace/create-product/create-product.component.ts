@@ -19,7 +19,7 @@ import { UploadProductPictureComponent } from '@components/upload-product-pictur
 @Component({
   selector: 'page-create-product',
   templateUrl: './create-product.component.html',
-  styleUrls: ['./create-product.component.scss']
+  styleUrls: ['../shared/create-product.component.scss']
 })
 export class CreateProductComponent implements OnInit {
   productTitle: string;

@@ -12,6 +12,6 @@ export interface ProductBySlugInterface {
   contactPerson: string;
   contactPhone: string;
   category: Category;
-  productUserFirstName: string;
-  productUserLastName: string;
+  productUserFirstName?: string;
+  productUserLastName?: string;
 }

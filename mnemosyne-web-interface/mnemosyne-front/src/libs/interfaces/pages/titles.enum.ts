@@ -15,5 +15,6 @@ export enum Titles {
   CONTACT = 'contact',
   CREATE_PRODUCT = 'createProduct',
   PRODUCT = 'product',
-  PRODUCT_NOT_FOUND = 'productNotFound'
+  PRODUCT_NOT_FOUND = 'productNotFound',
+  EDIT_PRODUCT = 'editProduct'
 }

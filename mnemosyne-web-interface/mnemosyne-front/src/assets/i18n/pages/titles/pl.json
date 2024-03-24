@@ -15,5 +15,6 @@
   "contact": "Mnemosyne | Kontakt",
   "createProduct": "Mnemosyne | Dodaj produkt",
   "product": "Mnemosyne | Produkt - {{ product }}",
-  "productNotFound": "Mnemosyne | Ups... Nie znaleziono produktu"
+  "productNotFound": "Mnemosyne | Ups... Nie znaleziono produktu",
+  "editProduct": "Mnemosyne | Edytuj produkt - {{ product }}"
 }

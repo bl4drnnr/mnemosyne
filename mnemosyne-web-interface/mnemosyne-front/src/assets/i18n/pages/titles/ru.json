@@ -15,5 +15,6 @@
   "contact": "Mnemosyne | Контакт",
   "createProduct": "Mnemosyne | Добавить продукт",
   "product": "Mnemosyne | Продукт - {{ product }}",
-  "productNotFound": "Mnemosyne | Ой... Товар не найден"
+  "productNotFound": "Mnemosyne | Ой... Товар не найден",
+  "editProduct": "Mnemosyne | Модификация продукта - {{ product }}"
 }

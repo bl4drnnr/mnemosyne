@@ -12,8 +12,8 @@ export interface GetProductBySlug {
   contactPerson: string;
   contactPhone: string;
   category: ProductCategory;
-  productUserFirstName: string;
-  productUserLastName: string;
+  productUserFirstName?: string;
+  productUserLastName?: string;
 }
 
 export interface GetProductBySlugResponse {

@@ -15,5 +15,6 @@
   "contact": "Mnemosyne | Contact",
   "createProduct": "Mnemosyne | Create Product",
   "product": "Mnemosyne | Product - {{ product }}",
-  "productNotFound": "Mnemosyne | Oops... Product not found"
+  "productNotFound": "Mnemosyne | Oops... Product not found",
+  "editProduct": "Mnemosyne | Edit product - {{ product }}"
 }
