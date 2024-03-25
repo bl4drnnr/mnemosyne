@@ -22,6 +22,7 @@ import { ProductNotFoundException } from '@exceptions/product-not-found.exceptio
 import { ProductUpdatedDto } from '@dto/product-updated.dto';
 import { GetProductBySlugToEditInterface } from '@interfaces/get-product-by-slug-to-edit.interface';
 import { ProductBySlugToEditDto } from '@dto/product-by-slug-to-edit.dto';
+import { Category } from '@models/category.model';
 
 @Injectable()
 export class ProductsService {
@@ -35,7 +36,10 @@ export class ProductsService {
 
   async getProductBySlug({ slug, trx }: GetProductBySlugInterface) {
     const foundProduct = await this.productRepository.findOne({
-      include: [{ model: User, attributes: ['firstName', 'lastName'] }],
+      include: [
+        { model: User, attributes: ['firstName', 'lastName'] },
+        { model: Category, attributes: ['name'] }
+      ],
       where: { slug },
       transaction: trx
     });
@@ -50,7 +54,7 @@ export class ProductsService {
       currency: foundProduct.currency,
       price: foundProduct.price,
       subcategory: foundProduct.subcategory,
-      category: foundProduct.category,
+      category: foundProduct.category.name,
       contactPerson: foundProduct.contactPerson,
       contactPhone: foundProduct.contactPhone,
       productUserFirstName: foundProduct.user.firstName,
@@ -224,6 +228,7 @@ export class ProductsService {
   }: GetProductBySlugToEditInterface) {
     const productToEdit = await this.productRepository.findOne({
       where: { userId, slug },
+      include: [{ model: Category, attributes: ['name'] }],
       transaction: trx
     });
 
@@ -237,7 +242,7 @@ export class ProductsService {
       currency: productToEdit.currency,
       price: productToEdit.price,
       subcategory: productToEdit.subcategory,
-      category: productToEdit.category,
+      category: productToEdit.category.name,
       contactPerson: productToEdit.contactPerson,
       contactPhone: productToEdit.contactPhone
     };

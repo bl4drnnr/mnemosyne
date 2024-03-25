@@ -11,7 +11,7 @@ export interface ProductBySlugInterface {
   subcategory: string;
   contactPerson: string;
   contactPhone: string;
-  category: Category;
+  category: string;
   productUserFirstName?: string;
   productUserLastName?: string;
 }

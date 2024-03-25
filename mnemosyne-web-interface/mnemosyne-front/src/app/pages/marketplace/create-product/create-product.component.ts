@@ -56,7 +56,6 @@ export class CreateProductComponent implements OnInit {
     key: '',
     value: ''
   };
-  categoriesNames: Array<string>;
   selectProductSubcategoryTitle: string;
 
   productPriceDropdown: Array<DropdownInterface> = [
@@ -363,7 +362,6 @@ export class CreateProductComponent implements OnInit {
     this.categoriesService.getAllCategories().subscribe({
       next: async ({ categories }) => {
         this.categories = categories;
-        this.categoriesNames = categories.map(({ name }) => name);
         const userInfoRequest = await this.refreshTokensService.refreshTokens();
 
         if (userInfoRequest) {
