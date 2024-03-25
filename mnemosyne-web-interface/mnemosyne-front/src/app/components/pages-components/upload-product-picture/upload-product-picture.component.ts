@@ -13,6 +13,7 @@ import { EnvService } from '@shared/env.service';
   styleUrls: ['./upload-product-picture.component.scss']
 })
 export class UploadProductPictureComponent {
+  @Input() pictureName: string | ArrayBuffer | null;
   @Input() disabled: boolean = false;
   @Output() uploadedPicture = new EventEmitter<string | ArrayBuffer | null>();
   @Output() deletePicture = new EventEmitter<void>();
@@ -20,6 +21,7 @@ export class UploadProductPictureComponent {
   selectedPicture?: FileList;
   preview: string | ArrayBuffer | null = '';
   uploadPictureIcon = `${this.envService.getStaticStorageLink}/icons/add-photo.svg`;
+  productPicturesBucket = `${this.envService.getStaticStorageLink}/products/`;
 
   constructor(
     private readonly envService: EnvService,
@@ -37,6 +39,7 @@ export class UploadProductPictureComponent {
 
   onDeletePicture() {
     this.preview = null;
+    this.pictureName = null;
     this.uploadedPicture.emit(null);
     this.selectedPicture = undefined;
     this.deletePicture.emit();

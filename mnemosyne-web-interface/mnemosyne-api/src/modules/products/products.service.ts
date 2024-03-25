@@ -156,40 +156,7 @@ export class ProductsService {
     } = payload;
 
     const slug = this.generateProductSlug(title);
-    const picturesHashes = [];
-
-    const { accessKeyId, secretAccessKey, bucketName } =
-      this.configService.awsSdkCredentials;
-
-    const s3 = new S3({ accessKeyId, secretAccessKey });
-
-    for (const pic of pictures) {
-      const base64Data = Buffer.from(
-        pic.replace(/^data:image\/\w+;base64,/, ''),
-        'base64'
-      );
-
-      const type = pic.split(';')[0].split('/')[1];
-
-      if (type !== 'png') throw new WrongPictureException();
-
-      const pictureHash = this.cryptographicService.hash({
-        data: base64Data.toString(),
-        algorithm: CryptoHashAlgorithm.MD5
-      });
-
-      picturesHashes.push(pictureHash);
-
-      const params = {
-        Bucket: bucketName,
-        Key: `products/${pictureHash}.${type}`,
-        Body: base64Data,
-        ContentEncoding: 'base64',
-        ContentType: `image/${type}`
-      };
-
-      await s3.upload(params).promise();
-    }
+    const picturesHashes = await this.uploadProductPictures(pictures);
 
     const { id: categoryId } = await this.categoriesService.getCategoryByName({
       name: category,
@@ -235,6 +202,7 @@ export class ProductsService {
     if (!productToEdit) throw new ProductNotFoundException();
 
     const product = {
+      id: productToEdit.id,
       title: productToEdit.title,
       description: productToEdit.description,
       pictures: productToEdit.pictures,
@@ -251,7 +219,71 @@ export class ProductsService {
   }
 
   async updateProduct({ userId, payload, trx }: PostProductInterface) {
-    return new ProductUpdatedDto('');
+    const {
+      id,
+      title,
+      description,
+      pictures,
+      currency,
+      price,
+      location,
+      contactPhone,
+      contactPerson,
+      category,
+      subcategory
+    } = payload;
+
+    const editedProduct = await this.productRepository.findOne({
+      where: { userId, id },
+      transaction: trx
+    });
+
+    if (!editedProduct) throw new ProductNotFoundException();
+
+    const updatedSlug =
+      editedProduct.title !== title
+        ? this.generateProductSlug(title)
+        : editedProduct.slug;
+
+    const existingPictures = editedProduct.pictures;
+    const updatedPictures = this.updatePictures(existingPictures, pictures);
+    const replacedPicturesHashes = [];
+
+    for (const pic of updatedPictures) {
+      if (this.isBase64Image(pic))
+        replacedPicturesHashes.push(await this.uploadProductPicture(pic));
+      else replacedPicturesHashes.push(pic);
+    }
+
+    const { id: categoryId } = await this.categoriesService.getCategoryByName({
+      name: category,
+      trx
+    });
+
+    await this.productRepository.update(
+      {
+        title,
+        slug: updatedSlug,
+        description,
+        pictures: replacedPicturesHashes,
+        currency,
+        price,
+        location,
+        contactPhone,
+        contactPerson,
+        categoryId,
+        subcategory
+      },
+      {
+        returning: false,
+        where: { userId, id },
+        transaction: trx
+      }
+    );
+
+    const productLink = `/marketplace/product/${updatedSlug}`;
+
+    return new ProductUpdatedDto(productLink);
   }
 
   private generateProductSlug(productName: string) {
@@ -264,5 +296,72 @@ export class ProductsService {
     slug += `-${randomNumber}`;
 
     return slug;
+  }
+
+  private async uploadProductPictures(productPictures: Array<string>) {
+    const picturesHashes = [];
+
+    for (const pic of productPictures) {
+      picturesHashes.push(await this.uploadProductPicture(pic));
+    }
+
+    return picturesHashes;
+  }
+
+  private async uploadProductPicture(productPicture: string) {
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    const base64Data = Buffer.from(
+      productPicture.replace(/^data:image\/\w+;base64,/, ''),
+      'base64'
+    );
+
+    const type = productPicture.split(';')[0].split('/')[1];
+
+    if (type !== 'png') throw new WrongPictureException();
+
+    const pictureHash = this.cryptographicService.hash({
+      data: base64Data.toString() + Date.now().toString(),
+      algorithm: CryptoHashAlgorithm.MD5
+    });
+
+    const params = {
+      Bucket: bucketName,
+      Key: `products/${pictureHash}.${type}`,
+      Body: base64Data,
+      ContentEncoding: 'base64',
+      ContentType: `image/${type}`
+    };
+
+    await s3.upload(params).promise();
+
+    return pictureHash;
+  }
+
+  private updatePictures(existingPics: Array<string>, newPics: Array<string>) {
+    if (newPics.length > existingPics.length) {
+      const newIndexes = newPics.filter((pic) => !existingPics.includes(pic));
+      existingPics.push(...newIndexes);
+    }
+
+    if (newPics.length < existingPics.length) {
+      const deleteIndexes = existingPics.filter(
+        (pic) => !newPics.includes(pic)
+      );
+      deleteIndexes.forEach((pic) => {
+        const index = existingPics.indexOf(pic);
+        if (index !== -1) existingPics.splice(index, 1);
+      });
+    }
+
+    return existingPics;
+  }
+
+  private isBase64Image(str: string): boolean {
+    const base64Pattern = /^data:image\/(png);base64,([A-Za-z0-9+/=])+$/;
+    return base64Pattern.test(str);
   }
 }

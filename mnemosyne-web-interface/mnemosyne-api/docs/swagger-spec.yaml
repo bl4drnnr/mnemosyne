@@ -1917,6 +1917,7 @@ paths:
   /api/products/get-product-by-slug-to-edit:
     get:
       operationId: ProductsController_getProductBySlugToEdit
+      summary: Endpoint is responsible for getting the product by the slug to edition.
       parameters:
         - name: slug
           required: true
@@ -1925,7 +1926,18 @@ paths:
             type: string
       responses:
         "200":
-          description: ""
+          description: As an endpoint user gets an instance of the product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductBySlugToEditDto"
+        "404":
+          description: In case if the slug of the product has not been found, user gets
+            this error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
       tags: *a9
       security:
         - x-access-token: []
@@ -3515,6 +3527,10 @@ components:
     PostProductDto:
       type: object
       properties:
+        id:
+          type: string
+          description: Product ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         title:
           type: string
           description: Product name
@@ -3614,6 +3630,28 @@ components:
       required:
         - message
         - link
+    ProductBySlugToEditDto:
+      type: object
+      properties:
+        product:
+          description: Product instance by the slug
+          example:
+            title: My product
+            description: travels_docs
+            pictures:
+              - asd
+            location: 5th Avenu
+            currency: PLN
+            price: "15000"
+            subcategory:
+              - it_books
+            category: travels
+            contactPerson: John Doe
+            contactPhone: "123123123"
+          allOf:
+            - $ref: "#/components/schemas/Product"
+      required:
+        - product
     GetAllCategoriesDto:
       type: object
       properties:

@@ -92,6 +92,10 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.GetProductBySlugToEdit.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductBySlugToEdit.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductBySlugToEdit.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.GetProductBySlugToEdit.ApiNotFoundResponse)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -108,6 +112,11 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.UpdateProduct.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.UpdateProduct.ApiExtraModels)
+  @ApiResponse(ProductsDocs.UpdateProduct.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.UpdateProduct.ApiNotFoundResponse)
+  @ApiBody(ProductsDocs.UpdateProduct.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)

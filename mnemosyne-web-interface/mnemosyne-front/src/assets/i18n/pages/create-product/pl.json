@@ -8,5 +8,7 @@
   "postProductAccept": "Klikając przycisk \"Opublikuj produkt\" akceptuję",
   "productPriceTitle": "Informacje o cenie produktu",
   "productPicsUploadDesc": "Zdjęcia będą wyświetlane w kolejności, w jakiej je przesyłasz. Pierwsze zdjęcie będzie głównym zdjęciem postu. Aby przesłać zdjęcie, kliknij przycisk Podgląd poniżej. Aby usunąć zdjęcie, którego nie chcesz być w poście, kliknij go ponownie.",
-  "onlyPngAllowed": "Dozwolone są tylko zdjęcia PNG! Różne formaty spowodują błąd i nie będziesz mógł ich przesłać!"
+  "onlyPngAllowed": "Dozwolone są tylko zdjęcia PNG! Różne formaty spowodują błąd i nie będziesz mógł ich przesłać!",
+  "productWasModified": "Produkt został zmodyfikowany. Zapisz zmiany, w przeciwnym razie postęp zostanie utracony.",
+  "productWasNotModified": "Produkt nie został zmodyfikowany"
 }

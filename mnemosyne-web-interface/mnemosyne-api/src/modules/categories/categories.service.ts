@@ -4,6 +4,7 @@ import { Category } from '@models/category.model';
 import { GetAllCategoriesInterface } from '@interfaces/get-all-categories.interface';
 import { GetAllCategoriesDto } from '@dto/get-all-categories.dto';
 import { GetCategoryByNameInterface } from '@interfaces/get-category-by-name.interface';
+import { CategoryNotFoundException } from '@exceptions/category-not-found.exception';
 
 @Injectable()
 export class CategoriesService {
@@ -28,9 +29,13 @@ export class CategoriesService {
   }
 
   async getCategoryByName({ name, trx }: GetCategoryByNameInterface) {
-    return await this.categoryRepository.findOne({
+    const category = await this.categoryRepository.findOne({
       where: { name },
       transaction: trx
     });
+
+    if (!category) throw new CategoryNotFoundException();
+
+    return category;
   }
 }

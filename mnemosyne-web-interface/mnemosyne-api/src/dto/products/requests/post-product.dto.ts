@@ -1,7 +1,7 @@
 import { ProductCurrency } from '@interfaces/product-currency.enum';
 import { ProductSubcategory } from '@interfaces/product-subcategory.enum';
 import { ProductCategory } from '@interfaces/product-category.enum';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
 import {
   ArrayMaxSize,
@@ -9,7 +9,9 @@ import {
   IsArray,
   IsEnum,
   IsNumber,
+  IsOptional,
   IsString,
+  IsUUID,
   Length,
   Matches,
   Min
@@ -18,6 +20,16 @@ import { ValidationError } from '@interfaces/validation-error.enum';
 import { PhoneRegex } from '@regex/phone.regex';
 
 export class PostProductDto {
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.PRODUCT_ID_DESC,
+    example: DocsProperty.PRODUCT_ID_EXAMPLE
+  })
+  @IsUUID('4')
+  @ApiPropertyOptional()
+  @IsOptional()
+  readonly id?: string;
+
   @ApiProperty({
     type: String,
     description: DocsProperty.PRODUCT_TITLE_DESC,

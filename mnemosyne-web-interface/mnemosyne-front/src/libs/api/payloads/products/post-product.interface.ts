@@ -3,6 +3,7 @@ import { ProductCategory } from '@interfaces/product-category.type';
 import { ProductSubcategory } from '@interfaces/product-subcategory.type';
 
 export interface PostProductPayload {
+  id?: string;
   title: string;
   description: string;
   pictures: Array<string | ArrayBuffer | null>;

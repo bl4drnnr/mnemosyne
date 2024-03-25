@@ -255,5 +255,9 @@ export enum DocsProperty {
   PRODUCT_UPDATED_MESSAGE_DESC = 'Response message that the product has been successfully updated',
   PRODUCT_UPDATED_MESSAGE_EXAMPLE = 'product-updated',
   PRODUCT_UPDATED_LINK_DESC = 'Link where user will be redirected when the product is updated',
-  PRODUCT_UPDATED_LINK_EXAMPLE = 'https://mnemosyne.io/marketplace/product/my-product-123'
+  PRODUCT_UPDATED_LINK_EXAMPLE = 'https://mnemosyne.io/marketplace/product/my-product-123',
+  CATEGORY_NOT_FOUND_DESC = 'Category not found error message',
+  CATEGORY_NOT_FOUND_EXAMPLE = 'category-not-found',
+  PRODUCT_ID_DESC = 'Product ID',
+  PRODUCT_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c'
 }

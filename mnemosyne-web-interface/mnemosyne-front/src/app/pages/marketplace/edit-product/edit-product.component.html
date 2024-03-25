@@ -22,8 +22,8 @@
             [errorMessage]="t('input.productError')"
             [minLength]="16"
             [maxLength]="70"
-            [value]="product.title"
-            (valueChange)="product.title = $event"
+            [value]="productTitle"
+            (valueChange)="productTitle = $event"
             (incorrectInput)="incorrectProductTitle = $event"
           />
 
@@ -61,55 +61,63 @@
 
           <p><b>{{ t('create-product.onlyPngAllowed') }}</b></p>
 
-<!--          <div class="pictures-container">-->
-<!--            <page-upload-product-picture-->
-<!--              (uploadedPicture)="productPic1 = $event"-->
-<!--              (deletePicture)="clearFileInput(0)"-->
-<!--              #fileInput1-->
-<!--            />-->
-<!--            <page-upload-product-picture-->
-<!--              [disabled]="disablePhotoUpload(1)"-->
-<!--              (uploadedPicture)="productPic2 = $event"-->
-<!--              (deletePicture)="clearFileInput(1)"-->
-<!--              #fileInput2-->
-<!--            />-->
-<!--            <page-upload-product-picture-->
-<!--              [disabled]="disablePhotoUpload(2)"-->
-<!--              (uploadedPicture)="productPic3 = $event"-->
-<!--              (deletePicture)="clearFileInput(2)"-->
-<!--              #fileInput3-->
-<!--            />-->
-<!--            <page-upload-product-picture-->
-<!--              [disabled]="disablePhotoUpload(3)"-->
-<!--              (uploadedPicture)="productPic4 = $event"-->
-<!--              (deletePicture)="clearFileInput(3)"-->
-<!--              #fileInput4-->
-<!--            />-->
-<!--            <page-upload-product-picture-->
-<!--              [disabled]="disablePhotoUpload(4)"-->
-<!--              (uploadedPicture)="productPic5 = $event"-->
-<!--              (deletePicture)="clearFileInput(4)"-->
-<!--              #fileInput5-->
-<!--            />-->
-<!--            <page-upload-product-picture-->
-<!--              [disabled]="disablePhotoUpload(5)"-->
-<!--              (uploadedPicture)="productPic6 = $event"-->
-<!--              (deletePicture)="clearFileInput(5)"-->
-<!--              #fileInput6-->
-<!--            />-->
-<!--            <page-upload-product-picture-->
-<!--              [disabled]="disablePhotoUpload(6)"-->
-<!--              (uploadedPicture)="productPic7 = $event"-->
-<!--              (deletePicture)="clearFileInput(6)"-->
-<!--              #fileInput7-->
-<!--            />-->
-<!--            <page-upload-product-picture-->
-<!--              [disabled]="disablePhotoUpload(7)"-->
-<!--              (uploadedPicture)="productPic8 = $event"-->
-<!--              (deletePicture)="clearFileInput(7)"-->
-<!--              #fileInput8-->
-<!--            />-->
-<!--          </div>-->
+          <div class="pictures-container">
+            <page-upload-product-picture
+              [pictureName]="productPic1"
+              (uploadedPicture)="productPic1 = $event"
+              (deletePicture)="clearFileInput(0)"
+              #fileInput1
+            />
+            <page-upload-product-picture
+              [pictureName]="productPic2"
+              [disabled]="disablePhotoUpload(1)"
+              (uploadedPicture)="productPic2 = $event"
+              (deletePicture)="clearFileInput(1)"
+              #fileInput2
+            />
+            <page-upload-product-picture
+              [pictureName]="productPic3"
+              [disabled]="disablePhotoUpload(2)"
+              (uploadedPicture)="productPic3 = $event"
+              (deletePicture)="clearFileInput(2)"
+              #fileInput3
+            />
+            <page-upload-product-picture
+              [pictureName]="productPic4"
+              [disabled]="disablePhotoUpload(3)"
+              (uploadedPicture)="productPic4 = $event"
+              (deletePicture)="clearFileInput(3)"
+              #fileInput4
+            />
+            <page-upload-product-picture
+              [pictureName]="productPic5"
+              [disabled]="disablePhotoUpload(4)"
+              (uploadedPicture)="productPic5 = $event"
+              (deletePicture)="clearFileInput(4)"
+              #fileInput5
+            />
+            <page-upload-product-picture
+              [pictureName]="productPic6"
+              [disabled]="disablePhotoUpload(5)"
+              (uploadedPicture)="productPic6 = $event"
+              (deletePicture)="clearFileInput(5)"
+              #fileInput6
+            />
+            <page-upload-product-picture
+              [pictureName]="productPic7"
+              [disabled]="disablePhotoUpload(6)"
+              (uploadedPicture)="productPic7 = $event"
+              (deletePicture)="clearFileInput(6)"
+              #fileInput7
+            />
+            <page-upload-product-picture
+              [pictureName]="productPic8"
+              [disabled]="disablePhotoUpload(7)"
+              (uploadedPicture)="productPic8 = $event"
+              (deletePicture)="clearFileInput(7)"
+              #fileInput8
+            />
+          </div>
         </div>
 
         <div *ngIf="product" class="info-product-container">
@@ -124,8 +132,8 @@
             [errorMessage]="t('input.productDescriptionError')"
             [minLength]="40"
             [maxLength]="9000"
-            [value]="product.description"
-            (valueChange)="product.description = $event"
+            [value]="productDescription"
+            (valueChange)="productDescription = $event"
             (incorrectInput)="incorrectProductDescription = $event"
           />
         </div>
@@ -141,10 +149,10 @@
               [placeholder]="t('input.contactPersonPlaceholder')"
               [inputDescription]="t('input.contactPersonInputDesc')"
               [errorMessage]="t('input.contactPersonError')"
-              [value]="product.contactPerson"
+              [value]="contactPerson"
               [minLength]="1"
               [maxLength]="64"
-              (valueChange)="product.contactPerson = $event"
+              (valueChange)="contactPerson = $event"
               (incorrectInput)="incorrectContactPerson = $event"
             />
             <basic-input
@@ -160,9 +168,9 @@
               [placeholder]="t('input.productPhonePlaceholder')"
               [inputDescription]="t('input.productPhoneInputDesc')"
               [errorMessage]="t('input.productPhoneError')"
-              [showError]="!!product.contactPhone && !isMobilePhoneCorrect()"
-              [value]="product.contactPhone"
-              (valueChange)="product.contactPhone = $event"
+              [showError]="!!contactPhoneNumber && !isMobilePhoneCorrect()"
+              [value]="contactPhoneNumber"
+              (valueChange)="contactPhoneNumber = $event"
             />
             <basic-input
               [label]="t('input.productLocationLabel')"
@@ -171,8 +179,8 @@
               [errorMessage]="t('input.productLocationError')"
               [minLength]="4"
               [maxLength]="64"
-              [value]="product.location"
-              (valueChange)="product.location = $event"
+              [value]="productLocation"
+              (valueChange)="productLocation = $event"
             />
           </div>
         </div>
@@ -210,6 +218,14 @@
               [disabled]="disableEditProductButton()"
               (buttonClick)="editProduct()"
             />
+            <p
+              *ngIf="checkIfProductWasChanged()"
+              class="product-modification-notification changed"
+            >{{ t('create-product.productWasModified') }}</p>
+            <p
+              *ngIf="!checkIfProductWasChanged()"
+              class="product-modification-notification"
+            >{{ t('create-product.productWasNotModified') }}</p>
           </div>
         </div>
       </div>

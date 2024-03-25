@@ -2,6 +2,7 @@ import { Category } from '@models/category.model';
 import { ProductCurrency } from '@interfaces/product-currency.enum';
 
 export interface ProductBySlugInterface {
+  id?: string;
   title: string;
   description: string;
   pictures: Array<string>;

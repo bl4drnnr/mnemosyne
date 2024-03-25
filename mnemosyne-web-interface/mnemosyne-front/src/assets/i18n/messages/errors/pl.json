@@ -81,5 +81,6 @@
   "company-not-found": "Firma nie została znaleziona",
   "company-member-not-found": "Nie znaleziono członka firmy",
   "role-doesnt-exists": "Rola nie istnieje",
-  "product-not-found": "Produkt nie został znaleziony, proszę sprawdzić link jeszcze raz"
+  "product-not-found": "Produkt nie został znaleziony, proszę sprawdzić link jeszcze raz",
+  "category-not-found": "Kategorii nie znaleziono"
 }

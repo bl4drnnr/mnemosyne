@@ -1,4 +1,4 @@
-<div *ngIf="!disabled && !preview" class="picture-preview" (click)="fileInput.click()">
+<div *ngIf="!disabled && !preview && !pictureName" class="picture-preview" (click)="fileInput.click()">
   <img
     class="upload-picture-icon"
     [src]="uploadPictureIcon"
@@ -8,7 +8,27 @@
   >
 </div>
 
-<div *ngIf="!disabled && preview" class="picture-preview" (click)="onDeletePicture()">
+<div *ngIf="!disabled && preview && !pictureName" class="picture-preview" (click)="onDeletePicture()">
+  <img
+    class="uploaded-picture"
+    [src]="preview"
+    [width]="150"
+    [height]="100"
+    alt="Uploaded Picture"
+  >
+</div>
+
+<div *ngIf="!preview && pictureName" class="picture-preview" (click)="onDeletePicture()">
+  <img
+    class="uploaded-picture"
+    [src]="productPicturesBucket + pictureName + '.png'"
+    [width]="150"
+    [height]="100"
+    [alt]="preview"
+  >
+</div>
+
+<div *ngIf="preview && pictureName" class="picture-preview" (click)="onDeletePicture()">
   <img
     class="uploaded-picture"
     [src]="preview"
