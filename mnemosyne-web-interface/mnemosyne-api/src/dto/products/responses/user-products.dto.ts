@@ -8,6 +8,7 @@ export class UserProductsDto {
     description: DocsProperty.USER_PRODUCTS_PRIVATE_DESC,
     example: [
       {
+        id: DocsProperty.PRODUCT_ID_EXAMPLE,
         title: DocsProperty.PRODUCT_TITLE_EXAMPLE,
         slug: DocsProperty.PRODUCT_SLUG_EXAMPLE,
         mainPicture: DocsProperty.PRODUCT_PIC_EXAMPLE,

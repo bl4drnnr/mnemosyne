@@ -8,6 +8,13 @@ import { ProductNotFoundException } from '@exceptions/product-not-found.exceptio
 import { ProductBySlugToEditDto } from '@dto/product-by-slug-to-edit.dto';
 import { ProductUpdatedDto } from '@dto/product-updated.dto';
 import { CategoryNotFoundException } from '@exceptions/category-not-found.exception';
+import { DeleteProductDto } from '@dto/delete-product.dto';
+import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-confirmation.exception';
+import { ProductDeletedDto } from '@dto/product-deleted.dto';
+import { UserProductsDto } from '@dto/user-products.dto';
+import { ParseException } from '@exceptions/parse.exception';
+import { OrderException } from '@exceptions/order.exception';
+import { OrderByException } from '@exceptions/order-by.exception';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -139,6 +146,126 @@ export abstract class ProductsDocs {
         type: PostProductDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(PostProductDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get GetUserProducts() {
+    const ApiModels = [
+      UserProductsDto,
+      ParseException,
+      OrderException,
+      OrderByException
+    ];
+    const BadRequests = [ParseException, OrderException, OrderByException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting users product for listing, edition or deletion. Used privately.';
+    const apiResponseDesc =
+      'As a response user gets the list of their products along with count numbers that is used in the pagination component';
+    const apiBadRequestRespDesc =
+      'Bad request error is thrown in case if there is something wrong with parsing params like pagination, order by and/or order (the message will be the different as well).';
+
+    const productQueryDesc = 'Product query';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of products.';
+    const pageQueryDesc = 'Query for page in order to get list of products.';
+    const orderQueryDesc = 'Query to perform sorting by';
+    const orderByQueryDesc = 'ASC or DESC';
+
+    const productQuery = {
+      description: productQueryDesc,
+      name: 'query',
+      type: String,
+      required: true
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: true
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: true
+    };
+
+    const orderQuery = {
+      description: orderQueryDesc,
+      name: 'order',
+      type: String,
+      required: true
+    };
+
+    const orderByQuery = {
+      description: orderByQueryDesc,
+      name: 'orderBy',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(UserProductsDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery,
+      ApiProductQuery: productQuery,
+      ApiOrderQuery: orderQuery,
+      ApiOrderByQuery: orderByQuery
+    };
+  }
+
+  static get DeleteProduct() {
+    const ApiModels = [
+      DeleteProductDto,
+      ProductNotFoundException,
+      WrongDeletionConfirmationException,
+      ProductDeletedDto
+    ];
+
+    const apiOperationSum = 'Endpoint is responsible for product deletion.';
+    const apiResponseDesc =
+      'As a response user gets a message with the information that the product has been successfully deleted.';
+    const apiBodyDesc =
+      'Body contains the ID of the product along with the full name of the user for the confirmation.';
+    const apiNotFoundDesc =
+      'In case if the product was not found, user gets this error message.';
+    const apiBadRequestRespDesc =
+      'In case if the user provided the wrong full name, the following error is thrown.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(ProductDeletedDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(ProductNotFoundException) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(WrongDeletionConfirmationException) }
+      },
+      ApiBody: {
+        type: DeleteProductDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(DeleteProductDto) }
       } as ApiBodyOptions
     };
   }

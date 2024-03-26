@@ -2,6 +2,7 @@ import { Currency } from '@interfaces/currency.type';
 import { ProductCategory } from '@interfaces/product-category.type';
 
 export interface UserProduct {
+  id: string;
   title: string;
   slug: string;
   mainPicture: string;

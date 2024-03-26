@@ -7,6 +7,9 @@ import { ProductsService } from '@services/products.service';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { ComponentsTranslation } from '@translations/components.enum';
 import { UserProduct } from '@responses/user-products.interface';
+import { DeleteProductPayload } from '@payloads/delete-product.interface';
+import { MessagesTranslation } from '@translations/messages.enum';
+import { GlobalMessageService } from '@shared/global-message.service';
 
 @Component({
   selector: 'component-dashboard',
@@ -26,6 +29,7 @@ export class DashboardComponent implements OnInit {
   userProducts: Array<UserProduct>;
 
   constructor(
+    private readonly globalMessageService: GlobalMessageService,
     private readonly refreshTokensService: RefreshTokensService,
     private readonly translationService: TranslationService,
     private readonly productsService: ProductsService
@@ -72,6 +76,21 @@ export class DashboardComponent implements OnInit {
   changeQuery(query: string) {
     this.query = query;
     this.getUserProducts();
+  }
+
+  deleteProduct(payload: DeleteProductPayload) {
+    this.productsService.deleteProduct(payload).subscribe({
+      next: async ({ message }) => {
+        const globalMessage = await this.translationService.translateText(
+          message,
+          MessagesTranslation.RESPONSES
+        );
+        this.globalMessageService.handle({
+          message: globalMessage
+        });
+        this.getUserProducts();
+      }
+    });
   }
 
   getUserProducts() {

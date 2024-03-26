@@ -6,5 +6,8 @@
   "productLocation": "Lokalizacja",
   "productContactPerson": "Osoba kontaktowa",
   "productContactPhone": "Telefon kontaktowy",
-  "productCreatedAt": "Opublikowano o:"
+  "productCreatedAt": "Opublikowano o:",
+  "productDeletionInstruction": "Aby kontynuować usuwanie produktu, podaj swoje pełne imię i nazwisko (imię i nazwisko oddzielone spacją).",
+  "deleteProductModalHeader": "Usuwanie produktu",
+  "deleteProductModalDesc": "Wygląda na to, że masz zamiar usunąć produkt, co? Ok, ale oto, co musisz wiedzieć, po usunięciu produktu link do tego produktu staje się nieaktywny i nie będziesz mógł go przywrócić i będziesz musiał odtworzyć post produktu."
 }

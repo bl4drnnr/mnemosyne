@@ -265,5 +265,7 @@ export enum DocsProperty {
   ORDER_EXCEPTION_DESC = 'Order exception',
   ORDER_EXCEPTION_EXAMPLE = 'order-error',
   ORDER_BY_EXCEPTION_DESC = 'Order by exception',
-  ORDER_BY_EXCEPTION_EXAMPLE = 'order-by-error'
+  ORDER_BY_EXCEPTION_EXAMPLE = 'order-by-error',
+  PRODUCT_DELETED_DESC = 'Product deleted response message',
+  PRODUCT_DELETED_EXAMPLE = 'product-deleted'
 }

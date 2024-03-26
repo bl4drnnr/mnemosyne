@@ -9,8 +9,10 @@ import { Observable } from 'rxjs';
 import { ProductPostedResponse } from '@responses/product-posted.interface';
 import { GetProductBySlugResponse } from '@responses/get-product-by-slug.interface';
 import { ProductUpdatedResponse } from '@responses/product-updated.interface';
-import { GetUserProductsInterface } from '@payloads/get-user-products.interface';
+import { GetUserProductsPayload } from '@payloads/get-user-products.interface';
 import { UserProductsResponse } from '@responses/user-products.interface';
+import { DeleteProductPayload } from '@payloads/delete-product.interface';
+import { ProductDeletedResponse } from '@responses/product-deleted.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -61,13 +63,24 @@ export class ProductsService {
   }
 
   getUserProducts(
-    params: GetUserProductsInterface
+    params: GetUserProductsPayload
   ): Observable<UserProductsResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.USER_PRODUCTS,
       params
+    });
+  }
+
+  deleteProduct(
+    payload: DeleteProductPayload
+  ): Observable<{ message: ProductDeletedResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.DELETE,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.DELETE_PRODUCT,
+      payload
     });
   }
 }

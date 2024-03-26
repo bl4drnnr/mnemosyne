@@ -1,4 +1,4 @@
-export interface GetUserProductsInterface {
+export interface GetUserProductsPayload {
   query: string;
   page: string;
   pageSize: string;

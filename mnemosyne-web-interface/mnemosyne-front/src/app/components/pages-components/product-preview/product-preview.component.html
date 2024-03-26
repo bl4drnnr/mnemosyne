@@ -38,7 +38,10 @@
           (buttonClick)="handleRedirect('/marketplace/product/' + slug + '/edit')"
         />
       </div>
-      <div class="product-management-button margin-left">
+      <div
+        class="product-management-button margin-left"
+        (click)="openDeleteProductModal($event)"
+      >
         <basic-button
           [label]="t('button.deleteProduct')"
           [danger]="true"
@@ -46,5 +49,31 @@
       </div>
     </div>
   </div>
+
+  <basic-modal
+    [header]="t('product.deleteProductModalHeader')"
+    [description]="t('product.deleteProductModalDesc')"
+    [showModal]="showDeleteProductModal"
+    (closeModal)="closeDeleteProductModal()"
+  >
+    <p class="modal-paragraph">{{ t('product.productDeletionInstruction') }}</p>
+    <basic-input
+      [onWhite]="true"
+      [label]="t('input.provideFullName')"
+      [placeholder]="t('input.fullName')"
+      [inputDescription]="t('input.accDeletionFullName')"
+      [value]="deleteProductFullName"
+      (valueChange)="deleteProductFullName = $event"
+    />
+    <div class="deletion-button">
+      <basic-button
+        [label]="t('button.deleteProduct')"
+        (buttonClick)="deleteProduct()"
+        [disabled]="!deleteProductFullName"
+        [onWhite]="true"
+        [danger]="true"
+      />
+    </div>
+  </basic-modal>
 </ng-container>
 

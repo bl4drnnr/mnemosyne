@@ -29,6 +29,7 @@ import { UserId } from '@decorators/user-id.decorator';
 import { AuthGuard } from '@guards/auth.guard';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { PostProductDto } from '@dto/post-product.dto';
+import { DeleteProductDto } from '@dto/delete-product.dto';
 
 @ApiTags('Products')
 @Controller('products')
@@ -135,6 +136,15 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.GetUserProducts.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetUserProducts.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetUserProducts.ApiResponse)
+  @ApiBadRequestResponse(ProductsDocs.GetUserProducts.ApiBadRequestResponse)
+  @ApiQuery(ProductsDocs.GetUserProducts.ApiPageSizeQuery)
+  @ApiQuery(ProductsDocs.GetUserProducts.ApiPageQuery)
+  @ApiQuery(ProductsDocs.GetUserProducts.ApiProductQuery)
+  @ApiQuery(ProductsDocs.GetUserProducts.ApiOrderQuery)
+  @ApiQuery(ProductsDocs.GetUserProducts.ApiOrderByQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -159,8 +169,25 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.DeleteProduct.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.DeleteProduct.ApiExtraModels)
+  @ApiResponse(ProductsDocs.DeleteProduct.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.DeleteProduct.ApiNotFoundResponse)
+  @ApiBadRequestResponse(ProductsDocs.DeleteProduct.ApiBadRequestResponse)
+  @ApiBody(ProductsDocs.DeleteProduct.ApiBody)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
   @Delete('product')
-  deleteProduct() {
-    return this.productsService.deleteProduct();
+  deleteProduct(
+    @UserId() userId: string,
+    @Body() payload: DeleteProductDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.deleteProduct({
+      userId,
+      payload,
+      trx
+    });
   }
 }

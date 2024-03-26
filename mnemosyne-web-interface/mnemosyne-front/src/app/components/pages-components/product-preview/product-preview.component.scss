@@ -50,3 +50,16 @@
   padding-top: 10px;
   margin: 10px 0;
 }
+
+.deletion-button {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid $color-lightgray-third;
+}
+
+.modal-paragraph {
+  font-size: 14px;
+  opacity: .75;
+  margin: 20px 0;
+  color: $color-black;
+}

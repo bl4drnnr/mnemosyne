@@ -1849,11 +1849,41 @@ paths:
         - basicAuth: []
     delete:
       operationId: ProductsController_deleteProduct
+      summary: Endpoint is responsible for product deletion.
       parameters: []
+      requestBody:
+        required: true
+        description: Body contains the ID of the product along with the full name of the
+          user for the confirmation.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteProductDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets a message with the information that the
+            product has been successfully deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDeletedDto"
+        "400":
+          description: In case if the user provided the wrong full name, the following
+            error is thrown.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongDeletionConfirmationException"
+        "404":
+          description: In case if the product was not found, user gets this error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
       tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/products/latest-products:
     get:
       operationId: ProductsController_getLatestProducts
@@ -1985,35 +2015,58 @@ paths:
   /api/products/user-products:
     get:
       operationId: ProductsController_getUserProducts
+      summary: Endpoint is responsible for getting users product for listing, edition
+        or deletion. Used privately.
       parameters:
         - name: query
           required: true
           in: query
+          description: Product query
           schema:
             type: string
         - name: page
           required: true
           in: query
+          description: Query for page in order to get list of products.
           schema:
             type: string
         - name: pageSize
           required: true
           in: query
+          description: Query for limit in order to get list of products.
           schema:
             type: string
         - name: order
           required: true
           in: query
+          description: Query to perform sorting by
           schema:
             type: string
         - name: orderBy
           required: true
           in: query
+          description: ASC or DESC
           schema:
             type: string
       responses:
         "200":
-          description: ""
+          description: As a response user gets the list of their products along with count
+            numbers that is used in the pagination component
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProductsDto"
+        "400":
+          description: Bad request error is thrown in case if there is something wrong
+            with parsing params like pagination, order by and/or order (the
+            message will be the different as well).
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ParseException"
+                  - $ref: "#/components/schemas/OrderException"
+                  - $ref: "#/components/schemas/OrderByException"
       tags: *a9
       security:
         - x-access-token: []
@@ -3732,6 +3785,76 @@ components:
           type: string
           description: Category not found error message
           example: category-not-found
+      required:
+        - message
+    UserProductsDto:
+      type: object
+      properties:
+        userProducts:
+          description: Payload contains the list of user products that the end user will
+            be able to see on their private dashboard
+          example:
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              title: My product
+              slug: my-product-123
+              mainPicture: asd
+              location: 5th Avenu
+              currency: PLN
+              price: "15000"
+              subcategory: it_books
+              category: travels
+              createdAt: 2023-11-17T11:42:26.534Z
+              contactPerson: "123123123"
+              contactPhone: "123123123"
+          type: array
+          items:
+            type: string
+        count:
+          type: number
+          description: Count for the pagination
+          example: "5"
+      required:
+        - userProducts
+        - count
+    OrderException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Order exception
+          example: order-error
+      required:
+        - message
+    OrderByException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Order by exception
+          example: order-by-error
+      required:
+        - message
+    DeleteProductDto:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: Full name
+          example: Joe Doe
+        productId:
+          type: string
+          description: Product ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+      required:
+        - fullName
+        - productId
+    ProductDeletedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Product deleted response message
+          example: product-deleted
       required:
         - message
     GetAllCategoriesDto:

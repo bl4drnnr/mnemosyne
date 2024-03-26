@@ -1,9 +1,10 @@
 import * as dayjs from 'dayjs';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { ProductCategory } from '@interfaces/product-category.type';
 import { Currency } from '@interfaces/currency.type';
 import { Router } from '@angular/router';
+import { DeleteProductPayload } from '@payloads/delete-product.interface';
 
 @Component({
   selector: 'page-product-preview',
@@ -11,6 +12,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./product-preview.component.scss']
 })
 export class ProductPreviewComponent {
+  showDeleteProductModal: boolean = false;
+  deleteProductFullName: string;
+
+  @Input() productId: string;
   @Input() slug: string;
   @Input() mainPicture: string;
   @Input() productTitle: string;
@@ -25,6 +30,8 @@ export class ProductPreviewComponent {
   @Input() showAdditionalInfo: boolean = false;
   @Input() showManagementButtons: boolean = false;
 
+  @Output() deleteProductEvent = new EventEmitter<DeleteProductPayload>();
+
   productPicturesBucket = `${this.envService.getStaticStorageLink}/products/`;
   uploadPictureIcon = `${this.envService.getStaticStorageLink}/icons/add-photo.svg`;
 
@@ -35,6 +42,24 @@ export class ProductPreviewComponent {
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  deleteProduct() {
+    this.deleteProductEvent.emit({
+      productId: this.productId,
+      fullName: this.deleteProductFullName
+    });
+    this.closeDeleteProductModal();
+  }
+
+  openDeleteProductModal(event: MouseEvent) {
+    event.stopPropagation();
+    this.showDeleteProductModal = true;
+  }
+
+  closeDeleteProductModal() {
+    this.showDeleteProductModal = false;
+    this.deleteProductFullName = '';
   }
 
   transformDate(date: Date) {

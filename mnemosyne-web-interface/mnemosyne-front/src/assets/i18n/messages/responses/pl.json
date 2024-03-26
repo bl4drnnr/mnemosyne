@@ -9,5 +9,6 @@
   "company-role-updated": "Rola firmy została pomyślnie zaktualizowana",
   "contact-message-sent": "Wiadomość kontaktowa została pomyślnie wysłana",
   "product-posted": "Produkt został pomyślnie opublikowany",
-  "product-updated": "Produkt został pomyślnie zaktualizowany"
+  "product-updated": "Produkt został pomyślnie zaktualizowany",
+  "product-deleted": "Produkt został pomyślnie usunięty"
 }

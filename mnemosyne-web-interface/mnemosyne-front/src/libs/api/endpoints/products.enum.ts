@@ -5,5 +5,6 @@ export enum ProductsEndpoint {
   CREATE_PRODUCT = 'create-product',
   GET_PRODUCT_TO_UPDATE = 'get-product-by-slug-to-edit',
   UPDATE_PRODUCT = 'update-product',
-  USER_PRODUCTS = 'user-products'
+  USER_PRODUCTS = 'user-products',
+  DELETE_PRODUCT = 'product'
 }

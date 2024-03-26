@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { Product } from '@models/product.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { GetProductBySlugInterface } from '@interfaces/get-product-by-slug.interface';
@@ -27,6 +27,9 @@ import { GetUserProductsInterface } from '@interfaces/get-user-products.interfac
 import { UserProductsDto } from '@dto/user-products.dto';
 import { OrderException } from '@exceptions/order.exception';
 import { OrderByException } from '@exceptions/order-by.exception';
+import { DeleteProductInterface } from '@interfaces/delete-product.interface';
+import { ProductDeletedDto } from '@dto/product-deleted.dto';
+import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-confirmation.exception';
 
 @Injectable()
 export class ProductsService {
@@ -315,6 +318,7 @@ export class ProductsService {
     if (paginationParseError) throw new ParseException();
 
     const attributes = [
+      'id',
       'title',
       'slug',
       'pictures',
@@ -353,6 +357,7 @@ export class ProductsService {
 
     const foundProducts = rows.map(
       ({
+        id,
         title,
         slug,
         pictures,
@@ -365,6 +370,7 @@ export class ProductsService {
         contactPerson,
         contactPhone
       }) => ({
+        id,
         title,
         slug,
         mainPicture: pictures[0],
@@ -382,8 +388,28 @@ export class ProductsService {
     return new UserProductsDto(foundProducts, count);
   }
 
-  deleteProduct() {
-    return {};
+  async deleteProduct({ userId, payload, trx }: DeleteProductInterface) {
+    const { productId, fullName } = payload;
+
+    const deletedProduct = await this.productRepository.findOne({
+      where: { userId, id: productId },
+      include: [{ model: User, attributes: ['firstName', 'lastName'] }],
+      transaction: trx
+    });
+
+    if (!deletedProduct) throw new ProductNotFoundException();
+
+    const { firstName, lastName } = deletedProduct.user;
+
+    if (fullName !== `${firstName} ${lastName}`)
+      throw new WrongDeletionConfirmationException();
+
+    await this.productRepository.destroy({
+      where: { userId, id: productId },
+      transaction: trx
+    });
+
+    return new ProductDeletedDto();
   }
 
   private generateProductSlug(productName: string) {

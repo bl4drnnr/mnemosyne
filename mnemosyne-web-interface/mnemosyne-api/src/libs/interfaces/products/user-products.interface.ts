@@ -1,6 +1,7 @@
 import { ProductCurrency } from '@interfaces/product-currency.enum';
 
 export interface UserProductsInterface {
+  id: string;
   title: string;
   slug: string;
   mainPicture: string;
