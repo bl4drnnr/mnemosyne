@@ -1847,6 +1847,13 @@ paths:
         - Products
       security:
         - basicAuth: []
+    delete:
+      operationId: ProductsController_deleteProduct
+      parameters: []
+      responses:
+        "200":
+          description: ""
+      tags: *a9
   /api/products/latest-products:
     get:
       operationId: ProductsController_getLatestProducts
@@ -1945,13 +1952,65 @@ paths:
   /api/products/update-product:
     patch:
       operationId: ProductsController_updateProduct
+      summary: Endpoint is responsible for a product update.
       parameters: []
       requestBody:
         required: true
+        description: Body contains all needed fields in order to create a product.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/PostProductDto"
+      responses:
+        "201":
+          description: As a response user gets a message that the product has been updated
+            and user gets redirected to the product page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductUpdatedDto"
+        "404":
+          description: Not found exception is thrown in case if product category or
+            product itself is not found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ProductNotFoundException"
+                  - $ref: "#/components/schemas/CategoryNotFoundException"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/products/user-products:
+    get:
+      operationId: ProductsController_getUserProducts
+      parameters:
+        - name: query
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: page
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: pageSize
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: order
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: orderBy
+          required: true
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: ""
@@ -3652,6 +3711,29 @@ components:
             - $ref: "#/components/schemas/Product"
       required:
         - product
+    ProductUpdatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message that the product has been successfully updated
+          example: product-updated
+        link:
+          type: string
+          description: Link where user will be redirected when the product is updated
+          example: https://mnemosyne.io/marketplace/product/my-product-123
+      required:
+        - message
+        - link
+    CategoryNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Category not found error message
+          example: category-not-found
+      required:
+        - message
     GetAllCategoriesDto:
       type: object
       properties:

@@ -14,7 +14,7 @@ export class SearchCompanyMembersDto {
     ],
     isArray: true
   })
-  companyMembers: Array<RoleAssigneeInterface>;
+  readonly companyMembers: Array<RoleAssigneeInterface>;
 
   constructor(companyMembers: Array<RoleAssigneeInterface>) {
     this.companyMembers = companyMembers;

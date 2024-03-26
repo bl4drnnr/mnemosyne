@@ -54,5 +54,18 @@
     "software": "Software",
     "it_books": "IT books"
   },
-  "selectCurrency": "Select the currency"
+  "selectCurrency": "Select the currency",
+  "productOrderOptions": {
+    "title": "Title",
+    "slug": "Slug",
+    "location": "Location",
+    "currency": "Currency",
+    "price": "Price",
+    "subcategory": "Subcategory",
+    "contact_person": "Contact person",
+    "contact_phone": "Contact phone",
+    "created_at": "Creation date"
+  },
+  "selectProductOrder": "Select product order",
+  "productsPerPage": "Products per page"
 }

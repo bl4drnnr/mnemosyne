@@ -23,6 +23,10 @@ import { ProductUpdatedDto } from '@dto/product-updated.dto';
 import { GetProductBySlugToEditInterface } from '@interfaces/get-product-by-slug-to-edit.interface';
 import { ProductBySlugToEditDto } from '@dto/product-by-slug-to-edit.dto';
 import { Category } from '@models/category.model';
+import { GetUserProductsInterface } from '@interfaces/get-user-products.interface';
+import { UserProductsDto } from '@dto/user-products.dto';
+import { OrderException } from '@exceptions/order.exception';
+import { OrderByException } from '@exceptions/order-by.exception';
 
 @Injectable()
 export class ProductsService {
@@ -64,18 +68,20 @@ export class ProductsService {
     return new ProductBySlugDto(product);
   }
 
-  // @TODO Fix here as well
   async getLatestProducts({ trx }: GetLatestProductsInterface) {
+    const attributes = [
+      'title',
+      'slug',
+      'pictures',
+      'location',
+      'currency',
+      'price',
+      'subcategory',
+      'category'
+    ];
+
     const products = await this.productRepository.findAll({
-      attributes: [
-        'title',
-        'slug',
-        'pictures',
-        'currency',
-        'price',
-        'category',
-        'subcategory'
-      ],
+      attributes,
       order: [['created_at', 'DESC']],
       limit: 10,
       offset: 0,
@@ -83,17 +89,25 @@ export class ProductsService {
     });
 
     const latestProducts = products.map(
-      ({ title, slug, pictures, currency, price, category, subcategory }) => {
-        return {
-          title,
-          slug,
-          pictures,
-          currency,
-          price,
-          category,
-          subcategory
-        };
-      }
+      ({
+        title,
+        slug,
+        pictures,
+        location,
+        currency,
+        price,
+        category,
+        subcategory
+      }) => ({
+        title,
+        slug,
+        mainPicture: pictures[0],
+        location,
+        currency,
+        price,
+        category: category.name,
+        subcategory
+      })
     );
 
     return new LatestProductsDto(latestProducts);
@@ -117,7 +131,6 @@ export class ProductsService {
           { slug: { [Op.iLike]: `%${query}%` } }
         ]
       },
-      include: [{ model: User, attributes: ['first_name', 'last_name'] }],
       attributes: ['picture', 'slug', 'name', 'created_at', 'price'],
       limit,
       offset,
@@ -131,14 +144,12 @@ export class ProductsService {
           slug,
           title,
           createdAt,
-          price,
-          productUserFirstName: user.firstName,
-          productUserLastName: user.lastName
+          price
         };
       }
     );
 
-    return new SearchProductsDto(foundProducts);
+    // return new SearchProductsDto(foundProducts);
   }
 
   async createProduct({ userId, payload, trx }: PostProductInterface) {
@@ -284,6 +295,92 @@ export class ProductsService {
     const productLink = `/marketplace/product/${updatedSlug}`;
 
     return new ProductUpdatedDto(productLink);
+  }
+
+  async getUserProducts({
+    query,
+    page,
+    pageSize,
+    order,
+    orderBy,
+    userId,
+    trx
+  }: GetUserProductsInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
+    const attributes = [
+      'title',
+      'slug',
+      'pictures',
+      'location',
+      'currency',
+      'price',
+      'subcategory',
+      'contact_person',
+      'contact_phone',
+      'created_at'
+    ];
+    const where = { userId };
+
+    if (query) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${query}%` } },
+        { description: { [Op.iLike]: `%${query}%` } },
+        { slug: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    if (!attributes.includes(order)) throw new OrderException();
+    if (!['DESC', 'ASC'].includes(orderBy.toUpperCase()))
+      throw new OrderByException();
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where,
+      attributes,
+      limit,
+      offset,
+      include: [{ model: Category, attributes: ['name'] }],
+      order: [[order, orderBy]],
+      transaction: trx
+    });
+
+    const foundProducts = rows.map(
+      ({
+        title,
+        slug,
+        pictures,
+        location,
+        currency,
+        price,
+        subcategory,
+        category,
+        contactPerson,
+        contactPhone
+      }) => ({
+        title,
+        slug,
+        mainPicture: pictures[0],
+        location,
+        currency,
+        price,
+        subcategory,
+        category: category.name,
+        contactPerson,
+        contactPhone
+      })
+    );
+
+    return new UserProductsDto(foundProducts, count);
+  }
+
+  deleteProduct() {
+    return {};
   }
 
   private generateProductSlug(productName: string) {

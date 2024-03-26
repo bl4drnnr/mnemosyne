@@ -16,7 +16,7 @@ export class SearchProductsDto {
       }
     ]
   })
-  products: Array<SearchedProductsInterface>;
+  readonly products: Array<SearchedProductsInterface>;
 
   constructor(products: Array<SearchedProductsInterface>) {
     this.products = products;

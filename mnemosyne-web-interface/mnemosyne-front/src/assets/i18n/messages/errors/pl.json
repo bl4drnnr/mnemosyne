@@ -82,5 +82,7 @@
   "company-member-not-found": "Nie znaleziono członka firmy",
   "role-doesnt-exists": "Rola nie istnieje",
   "product-not-found": "Produkt nie został znaleziony, proszę sprawdzić link jeszcze raz",
-  "category-not-found": "Kategorii nie znaleziono"
+  "category-not-found": "Kategorii nie znaleziono",
+  "order-by-error": "Niewłaściwa kolejność według wartości",
+  "order-error": "Nieprawidłowa wartość kolejności"
 }

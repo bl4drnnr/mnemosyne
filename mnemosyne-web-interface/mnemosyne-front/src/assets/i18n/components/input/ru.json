@@ -138,5 +138,8 @@
   "productLocationLabel": "Местоположение продукта",
   "productLocationPlaceholder": "Укажите местоположение продукта",
   "productLocationInputDesc": "Укажите местоположение продукта или услуги, которые вы собираетесь опубликовать.",
-  "productLocationError": "Длина местоположения продукта должна составлять от 4 до 64"
+  "productLocationError": "Длина местоположения продукта должна составлять от 4 до 64",
+  "searchForYourProductsLabel": "Поиск ваших продуктов",
+  "searchForProductsPlaceholder": "Укажите любые данные о вашем продукте, чтобы найти его",
+  "searchForProductsInputDesc": "Вы можете выполнить поиск ваших продуктов по названию, описанию или ссылке"
 }

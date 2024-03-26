@@ -54,5 +54,18 @@
     "software": "Oprogramowanie",
     "it_books": "Książki informatyczne"
   },
-  "selectCurrency": "Wybierz walutę"
+  "selectCurrency": "Wybierz walutę",
+  "productOrderOptions": {
+    "title": "Tytuł",
+    "slug": "Link",
+    "location": "Lokalizacja",
+    "currency": "Waluta",
+    "price": "Cena",
+    "subcategory": "Podkategoria",
+    "contact_person": "Osoba kontaktowa",
+    "contact_phone": "Telefon kontaktowy",
+    "created_at": "Data utworzenia"
+  },
+  "selectProductOrder": "Wybierz pole sortowania produktów",
+  "productsPerPage": "Produktów na stronie"
 }

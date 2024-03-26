@@ -54,5 +54,18 @@
     "software": "Программное обеспечение",
     "it_books": "IT-книги"
   },
-  "selectCurrency": "Выберите валюту"
+  "selectCurrency": "Выберите валюту",
+  "productOrderOptions": {
+    "title": "Заголовок",
+    "slug": "Ссылка",
+    "location": "Локализация",
+    "currency": "Валюта",
+    "price": "Цена",
+    "subcategory": "Подкатегория",
+    "contact_person": "Контактное лицо",
+    "contact_phone": "Контактный телефон",
+    "created_at": "Дата создания"
+  },
+  "selectProductOrder": "Выберите поле сортировки продуктов",
+  "productsPerPage": "Товаров на странице"
 }

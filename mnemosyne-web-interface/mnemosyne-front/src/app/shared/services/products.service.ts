@@ -9,6 +9,8 @@ import { Observable } from 'rxjs';
 import { ProductPostedResponse } from '@responses/product-posted.interface';
 import { GetProductBySlugResponse } from '@responses/get-product-by-slug.interface';
 import { ProductUpdatedResponse } from '@responses/product-updated.interface';
+import { GetUserProductsInterface } from '@payloads/get-user-products.interface';
+import { UserProductsResponse } from '@responses/user-products.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -55,6 +57,17 @@ export class ProductsService {
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.UPDATE_PRODUCT,
       payload
+    });
+  }
+
+  getUserProducts(
+    params: GetUserProductsInterface
+  ): Observable<UserProductsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.USER_PRODUCTS,
+      params
     });
   }
 }

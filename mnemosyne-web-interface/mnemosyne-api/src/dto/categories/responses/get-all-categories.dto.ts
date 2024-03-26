@@ -14,7 +14,7 @@ export class GetAllCategoriesDto {
       }
     ]
   })
-  categories: Array<AllCategoriesInterface>;
+  readonly categories: Array<AllCategoriesInterface>;
 
   constructor(categories: Array<AllCategoriesInterface>) {
     this.categories = categories;

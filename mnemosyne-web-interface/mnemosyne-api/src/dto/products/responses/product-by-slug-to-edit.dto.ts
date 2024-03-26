@@ -21,7 +21,7 @@ export class ProductBySlugToEditDto {
       contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE
     }
   })
-  product: ProductBySlugInterface;
+  readonly product: ProductBySlugInterface;
 
   constructor(product: ProductBySlugInterface) {
     this.product = product;

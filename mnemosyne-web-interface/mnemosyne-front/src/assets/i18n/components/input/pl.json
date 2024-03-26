@@ -138,5 +138,8 @@
   "productLocationLabel": "Lokalizacja produktu",
   "productLocationPlaceholder": "Podaj lokalizację produktu",
   "productLocationInputDesc": "Podaj lokalizację produktu lub usługi, którą zamierzasz opublikować.",
-  "productLocationError": "Długość lokalizacji produktu powinna wynosić od 4 do 64"
+  "productLocationError": "Długość lokalizacji produktu powinna wynosić od 4 do 64",
+  "searchForYourProductsLabel": "Wyszukaj swoje produkty",
+  "searchForProductsPlaceholder": "Podaj wszelkie dane o swoim produkcie, aby go znaleźć",
+  "searchForProductsInputDesc": "Możesz przeprowadzić wyszukiwanie swoich produktów na podstawie tytułu, opisu lub linka."
 }

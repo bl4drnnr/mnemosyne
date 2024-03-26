@@ -23,7 +23,7 @@ export class ProductBySlugDto {
       productUserLastName: DocsProperty.LAST_NAME_EXAMPLE
     }
   })
-  product: ProductBySlugInterface;
+  readonly product: ProductBySlugInterface;
 
   constructor(product: ProductBySlugInterface) {
     this.product = product;

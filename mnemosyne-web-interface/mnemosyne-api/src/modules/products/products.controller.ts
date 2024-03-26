@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Patch,
   Post,
@@ -132,5 +133,34 @@ export class ProductsController {
       payload,
       trx
     });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('user-products')
+  getUserProducts(
+    @Query('query') query: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+    @Query('order') order: string,
+    @Query('orderBy') orderBy: string,
+    @UserId() userId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getUserProducts({
+      query,
+      page,
+      pageSize,
+      order,
+      orderBy,
+      userId,
+      trx
+    });
+  }
+
+  @Delete('product')
+  deleteProduct() {
+    return this.productsService.deleteProduct();
   }
 }

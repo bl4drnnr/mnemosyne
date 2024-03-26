@@ -259,5 +259,11 @@ export enum DocsProperty {
   CATEGORY_NOT_FOUND_DESC = 'Category not found error message',
   CATEGORY_NOT_FOUND_EXAMPLE = 'category-not-found',
   PRODUCT_ID_DESC = 'Product ID',
-  PRODUCT_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c'
+  PRODUCT_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c',
+  USER_PRODUCTS_PRIVATE_DESC = 'Payload contains the list of user products that the end user will be able to see on their private dashboard',
+  LATEST_PRODUCTS_DESC = 'Latest products will be shown on the main page',
+  ORDER_EXCEPTION_DESC = 'Order exception',
+  ORDER_EXCEPTION_EXAMPLE = 'order-error',
+  ORDER_BY_EXCEPTION_DESC = 'Order by exception',
+  ORDER_BY_EXCEPTION_EXAMPLE = 'order-by-error'
 }
