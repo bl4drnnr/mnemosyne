@@ -23,7 +23,6 @@
 
 .dashboard-order-items {
   display: flex;
-  height: 36px;
 }
 
 .dashboard-order-item {
@@ -45,7 +44,6 @@
 }
 
 .dashboard-products-pagination {
-  min-height: 250px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
@@ -86,4 +84,12 @@
   margin: 5px;
   font-size: 14px;
   font-weight: 400;
+}
+
+.dashboard-products-block {
+  padding: 25px 0;
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }

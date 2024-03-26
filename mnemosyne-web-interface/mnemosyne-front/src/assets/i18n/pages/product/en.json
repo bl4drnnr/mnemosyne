@@ -1,0 +1,10 @@
+{
+  "productCategory": "Category",
+  "productSubcategory": "Subcategory",
+  "productPrice": "Price",
+  "productAdditionalInfo": "Additional info",
+  "productLocation": "Location",
+  "productContactPerson": "Contact person",
+  "productContactPhone": "Contact phone",
+  "productCreatedAt": "Created at"
+}

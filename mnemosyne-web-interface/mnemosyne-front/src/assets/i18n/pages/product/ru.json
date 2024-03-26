@@ -1,0 +1,10 @@
+{
+  "productCategory": "Категория",
+  "productSubcategory": "Подкатегория",
+  "productPrice": "Цена",
+  "productAdditionalInfo": "Дополнительная информация",
+  "productLocation": "Местоположение",
+  "productContactPerson": "Контактное лицо",
+  "productContactPhone": "Контактный телефон",
+  "productCreatedAt": "Дата публикации"
+}

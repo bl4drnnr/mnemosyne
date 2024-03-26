@@ -10,6 +10,7 @@ export interface UserProduct {
   price: number;
   subcategory: string;
   category: ProductCategory;
+  createdAt: Date;
   contactPerson: string;
   contactPhone: string;
 }

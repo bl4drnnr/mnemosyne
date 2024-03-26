@@ -322,8 +322,9 @@ export class ProductsService {
       'currency',
       'price',
       'subcategory',
-      'contact_person',
-      'contact_phone',
+      'contactPerson',
+      'contactPhone',
+      'createdAt',
       'created_at'
     ];
     const where = { userId };
@@ -360,6 +361,7 @@ export class ProductsService {
         price,
         subcategory,
         category,
+        createdAt,
         contactPerson,
         contactPhone
       }) => ({
@@ -371,6 +373,7 @@ export class ProductsService {
         price,
         subcategory,
         category: category.name,
+        createdAt,
         contactPerson,
         contactPhone
       })

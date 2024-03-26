@@ -8,6 +8,7 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { RecoveryKeysComponent } from './recovery-keys/recovery-keys.component';
 import { InviteCompanyUsersComponent } from './invite-company-users/invite-company-users.component';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
+import { ProductPreviewComponent } from '@components/product-preview/product-preview.component';
 
 const components = [
   AltRegistrationComponent,
@@ -15,7 +16,8 @@ const components = [
   CreateMfaComponent,
   RecoveryKeysComponent,
   InviteCompanyUsersComponent,
-  UploadProductPictureComponent
+  UploadProductPictureComponent,
+  ProductPreviewComponent
 ];
 
 @NgModule({

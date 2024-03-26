@@ -1,0 +1,10 @@
+{
+  "productCategory": "Kategoria",
+  "productSubcategory": "Podkategoria",
+  "productPrice": "Cena",
+  "productAdditionalInfo": "Dodatkowe informacje",
+  "productLocation": "Lokalizacja",
+  "productContactPerson": "Osoba kontaktowa",
+  "productContactPhone": "Telefon kontaktowy",
+  "productCreatedAt": "Opublikowano o:"
+}

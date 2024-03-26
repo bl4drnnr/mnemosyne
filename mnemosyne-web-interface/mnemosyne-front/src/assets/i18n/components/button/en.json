@@ -33,5 +33,6 @@
   "seeMore": "See more",
   "sendContactMessage": "Send a contact message",
   "postProduct": "Post product",
-  "editProduct": "Edit product"
+  "editProduct": "Edit product",
+  "deleteProduct": "Delete product"
 }

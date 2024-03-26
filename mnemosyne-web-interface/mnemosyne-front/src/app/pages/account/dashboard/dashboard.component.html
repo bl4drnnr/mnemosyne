@@ -1,4 +1,6 @@
-<layout-default>
+<layout-default
+  [showFooter]="false"
+>
   <ng-container *transloco="let t">
     <div class="dashboard-container">
       <div class="dashboard-block">
@@ -51,6 +53,25 @@
               />
             </div>
           </div>
+        </div>
+
+        <div class="dashboard-products-block">
+          <page-product-preview
+            *ngFor="let product of userProducts"
+            [slug]="product.slug"
+            [mainPicture]="product.mainPicture"
+            [productTitle]="product.title"
+            [category]="product.category"
+            [subcategory]="product.subcategory"
+            [price]="product.price"
+            [currency]="product.currency"
+            [location]="product.location"
+            [contactPerson]="product.contactPerson"
+            [contactPhone]="product.contactPhone"
+            [createdAt]="product.createdAt"
+            [showAdditionalInfo]="true"
+            [showManagementButtons]="true"
+          />
         </div>
 
         <div class="dashboard-products-pagination">

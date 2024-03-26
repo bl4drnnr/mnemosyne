@@ -1,0 +1,50 @@
+<ng-container *transloco="let t">
+  <div class="product-block" (click)="handleRedirect('/marketplace/product/' + slug)">
+    <img
+      *ngIf="mainPicture"
+      class="product-picture-preview"
+      [src]="productPicturesBucket + mainPicture + '.png'"
+      [width]="300"
+      [height]="200"
+      alt="Product picture"
+    >
+    <img
+      *ngIf="!mainPicture"
+      class="no-picture-icon"
+      [src]="uploadPictureIcon"
+      [width]="300"
+      [height]="200"
+      alt="Product picture"
+    >
+    <h3>{{ productTitle }}</h3>
+    <p><b>{{ t('product.productCategory') }}:</b> {{ t(translateCategory(category)) }}</p>
+    <p><b>{{ t('product.productSubcategory') }}:</b> {{ t(translateSubcategory(category, subcategory)) }}</p>
+    <p><b>{{ t('product.productPrice') }}:</b> {{ price }} {{ currency }}</p>
+
+    <div *ngIf="showAdditionalInfo">
+      <h4 class="product-additional-info">{{ t('product.productAdditionalInfo') }}</h4>
+
+      <p><b>{{ t('product.productLocation') }}:</b> {{ location }}</p>
+      <p><b>{{ t('product.productContactPerson') }}:</b> {{ contactPerson }}</p>
+      <p><b>{{ t('product.productContactPhone') }}:</b> {{ contactPhone }}</p>
+      <p><b>{{ t('product.productCreatedAt') }}:</b> {{ transformDate(createdAt) }}</p>
+    </div>
+
+    <div class="product-management-buttons" *ngIf="showManagementButtons">
+      <div class="product-management-button margin-right">
+        <basic-button
+          [label]="t('button.editProduct')"
+          [fillButton]="true"
+          (buttonClick)="handleRedirect('/marketplace/product/' + slug + '/edit')"
+        />
+      </div>
+      <div class="product-management-button margin-left">
+        <basic-button
+          [label]="t('button.deleteProduct')"
+          [danger]="true"
+        />
+      </div>
+    </div>
+  </div>
+</ng-container>
+

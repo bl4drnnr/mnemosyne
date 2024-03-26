@@ -9,6 +9,7 @@ export interface UserProductsInterface {
   price: number;
   subcategory: string;
   category: string;
+  createdAt: Date;
   contactPerson: string;
   contactPhone: string;
 }
