@@ -34,5 +34,6 @@
   "sendContactMessage": "Wyślij wiadomość kontaktową",
   "postProduct": "Opublikuj produkt",
   "editProduct": "Edytuj produkt",
-  "deleteProduct": "Usuń produkt"
+  "deleteProduct": "Usuń produkt",
+  "clearFilters": "Wyczyść filtry"
 }

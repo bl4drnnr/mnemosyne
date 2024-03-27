@@ -34,5 +34,6 @@
   "sendContactMessage": "Send a contact message",
   "postProduct": "Post product",
   "editProduct": "Edit product",
-  "deleteProduct": "Delete product"
+  "deleteProduct": "Delete product",
+  "clearFilters": "Clear filters"
 }

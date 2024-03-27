@@ -141,5 +141,16 @@
   "productLocationError": "The length of the product location should be between 4 and 64",
   "searchForYourProductsLabel": "Search for your products",
   "searchForProductsPlaceholder": "Provide any data about your product in order to find it",
-  "searchForProductsInputDesc": "You can perform the search of your products based on title, description or slug."
+  "searchForProductsInputDesc": "You can perform the search of your products based on title, description or slug.",
+  "priceFromLabel": "Price from",
+  "priceFromPlaceholder": "The minimal price",
+  "priceFromInputDesc": "The minimal price in the range of searched products.",
+  "priceFromError": "Wrong minimal price! Make sure it is not a negative number.",
+  "priceToLabel": "Price to",
+  "priceToPlaceholder": "The maximum price",
+  "priceToInputDesc": "The maximum price in the range of searched products.",
+  "priceToError": "Wrong maximum price! Make sure it is not a negative number.",
+  "marketplaceSearchLabel": "Search for whatever goods you want",
+  "marketplaceSearchPlaceholder": "Provide the query for the product",
+  "marketplaceSearchInputDesc": "The search of the product will be based on the name, category, subcategory, description, title and slug."
 }

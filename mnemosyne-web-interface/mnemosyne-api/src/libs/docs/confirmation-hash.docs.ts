@@ -264,7 +264,7 @@ export abstract class ConfirmHashDocs {
       },
       ApiNotFoundResponse: {
         description: apiNotFoundDesc,
-        schema: { $ref: refs(...NotFound) }
+        schema: { oneOf: refs(...NotFound) }
       },
       ApiBody: {
         type: ConfirmEmailChangeDto,

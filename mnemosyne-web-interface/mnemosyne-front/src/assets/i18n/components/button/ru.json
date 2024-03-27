@@ -34,5 +34,6 @@
   "sendContactMessage": "Отправить контактное сообщение",
   "postProduct": "Опубликовать продукт",
   "editProduct": "Модифицировать продукт",
-  "deleteProduct": "Удалить продукт"
+  "deleteProduct": "Удалить продукт",
+  "clearFilters": "Очистить фильтры"
 }

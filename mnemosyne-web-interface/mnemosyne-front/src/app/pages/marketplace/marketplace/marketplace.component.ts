@@ -22,7 +22,10 @@ export class MarketplaceComponent implements OnInit {
   orderBy: string = 'DESC';
   productSearchQuery: string;
   minPrice: string;
+  minPriceError: boolean;
   maxPrice: string;
+  maxPriceError: boolean;
+  wrongPriceError: boolean;
   orderOptions: Array<DropdownInterface> = [];
   orderOptionsValue: DropdownInterface;
   categories: Array<GetAllCategoriesResponse>;
@@ -34,6 +37,8 @@ export class MarketplaceComponent implements OnInit {
     subcategories: Array<DropdownInterface>;
   }>;
   selectedSubcategories: Array<DropdownInterface> = [];
+  productCurrencyDropdown: Array<DropdownInterface>;
+  productCurrencyDropdownValue: DropdownInterface;
   totalItems: number;
   layoutView: 'list' | 'grid' = 'list';
   listIcon = `${this.envService.getStaticStorageLink}/icons/list-icon.svg`;
@@ -77,6 +82,8 @@ export class MarketplaceComponent implements OnInit {
         (sub) => !categorySubcategories.find((sub2) => sub.key === sub2.key)
       );
     }
+
+    this.getProducts();
   }
 
   addSubcategory(subcategory: DropdownInterface) {
@@ -92,10 +99,48 @@ export class MarketplaceComponent implements OnInit {
     } else {
       this.selectedSubcategories.splice(index, 1);
     }
+
+    this.getProducts();
+  }
+
+  checkProductPrice(price: string, priceType: 'min' | 'max') {
+    const priceNumber = Number(price);
+
+    if (priceType === 'min' && priceNumber < 0) {
+      this.minPrice = '';
+      this.minPriceError = true;
+      return;
+    } else if (priceType === 'max' && priceNumber < 0) {
+      this.maxPrice = '';
+      this.maxPriceError = true;
+      return;
+    } else if (priceType === 'min' && priceNumber >= 0) {
+      this.minPrice = price;
+      this.minPriceError = false;
+    } else if (priceType === 'max' && priceNumber >= 0) {
+      this.maxPrice = price;
+      this.maxPriceError = false;
+    }
+
+    if (
+      this.minPrice &&
+      this.maxPrice &&
+      Number(this.minPrice) > Number(this.maxPrice)
+    ) {
+      this.wrongPriceError = true;
+      return;
+    }
+
+    this.getProducts();
   }
 
   setLayout(layoutView: 'list' | 'grid') {
     this.layoutView = layoutView;
+  }
+
+  selectProductCurrency({ key, value }: DropdownInterface) {
+    this.productCurrencyDropdownValue = { key, value };
+    this.getProducts();
   }
 
   selectOrderOption({ key, value }: DropdownInterface) {
@@ -107,6 +152,33 @@ export class MarketplaceComponent implements OnInit {
   changeProductSearchQuery(query: string) {
     this.productSearchQuery = query;
     this.getProducts();
+  }
+
+  clearFilters() {
+    this.initCurrencies().then(async () => {
+      this.page = '0';
+      this.pageSize = '10';
+      this.order = 'created_at';
+      this.orderBy = 'DESC';
+      this.productSearchQuery = '';
+      this.minPrice = '';
+      this.minPriceError = false;
+      this.maxPrice = '';
+      this.maxPriceError = false;
+      this.wrongPriceError = false;
+      this.orderOptions = [];
+      this.orderOptionsValue = {
+        key: 'selectProductOrder',
+        value: await this.translationService.translateText(
+          'selectProductOrder',
+          ComponentsTranslation.DROPDOWN
+        )
+      };
+      this.products = [];
+      this.selectedCategories = [];
+      this.selectedSubcategories = [];
+      this.getProducts();
+    });
   }
 
   getOrderOptionDropdownLabel(orderOption: string) {
@@ -171,14 +243,43 @@ export class MarketplaceComponent implements OnInit {
     );
   }
 
+  async initCurrencies() {
+    const allCurrencies = await this.translationService.translateText(
+      'allCurrencies',
+      ComponentsTranslation.DROPDOWN
+    );
+    this.productCurrencyDropdown = [
+      { key: 'PLN', value: 'PLN' },
+      { key: 'EUR', value: 'EUR' },
+      { key: 'USD', value: 'USD' },
+      { key: 'all', value: allCurrencies }
+    ];
+    this.productCurrencyDropdownValue = { key: 'all', value: allCurrencies };
+  }
+
   getProducts() {
+    if (this.minPriceError || this.maxPriceError || this.wrongPriceError)
+      return;
+
+    const selectedCategories = this.selectedCategories
+      .map(({ key }) => key)
+      .join(',');
+    const selectedSubcategories = this.selectedSubcategories
+      .map(({ key }) => key)
+      .join(',');
+
     this.productsService
       .searchProducts({
         page: this.page,
         pageSize: this.pageSize,
         order: this.order,
         orderBy: this.orderBy,
-        query: this.productSearchQuery
+        query: this.productSearchQuery,
+        categories: selectedCategories,
+        currency: this.productCurrencyDropdownValue.key,
+        maxPrice: this.maxPrice,
+        minPrice: this.minPrice,
+        subcategories: selectedSubcategories
       })
       .subscribe({
         next: async ({ products, count }) => {
@@ -227,6 +328,7 @@ export class MarketplaceComponent implements OnInit {
 
         this.categories = categories;
 
+        await this.initCurrencies();
         await this.initCategories();
         await this.initSubcategories();
         this.getProducts();

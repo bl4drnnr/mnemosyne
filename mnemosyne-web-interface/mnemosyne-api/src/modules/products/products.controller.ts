@@ -56,6 +56,21 @@ export class ProductsController {
     return this.productsService.getLatestProducts({ trx });
   }
 
+  @ApiOperation(ProductsDocs.SearchProduct.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.SearchProduct.ApiExtraModels)
+  @ApiResponse(ProductsDocs.SearchProduct.ApiResponse)
+  @ApiBadRequestResponse(ProductsDocs.SearchProduct.ApiBadRequestResponse)
+  @ApiNotFoundResponse(ProductsDocs.SearchProduct.ApiNotFoundResponse)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiProductQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiPageSizeQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiPageQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiOrderQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiOrderByQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiMinPriceQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiMaxPriceQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiCurrencyQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiCategoryQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiSubcategoryQuery)
   @ApiBasicAuth('basicAuth')
   @Get('search-product')
   searchProduct(
@@ -64,6 +79,11 @@ export class ProductsController {
     @Query('pageSize') pageSize: string,
     @Query('order') order: string,
     @Query('orderBy') orderBy: string,
+    @Query('minPrice') minPrice: string,
+    @Query('maxPrice') maxPrice: string,
+    @Query('currency') currency: string,
+    @Query('categories') categories: string,
+    @Query('subcategories') subcategories: string,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.searchProduct({
@@ -72,6 +92,11 @@ export class ProductsController {
       pageSize,
       order,
       orderBy,
+      minPrice,
+      maxPrice,
+      currency,
+      categories,
+      subcategories,
       trx
     });
   }

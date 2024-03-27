@@ -15,6 +15,9 @@ import { UserProductsDto } from '@dto/user-products.dto';
 import { ParseException } from '@exceptions/parse.exception';
 import { OrderException } from '@exceptions/order.exception';
 import { OrderByException } from '@exceptions/order-by.exception';
+import { SearchProductsDto } from '@dto/search-products.dto';
+import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
+import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -49,6 +52,146 @@ export abstract class ProductsDocs {
         schema: { $ref: getSchemaPath(ProductNotFoundException) }
       },
       ApiSlugQuery: slugQuery
+    };
+  }
+
+  static get SearchProduct() {
+    const ApiModels = [
+      SearchProductsDto,
+      ParseException,
+      WrongCurrencyException,
+      CategoryNotFoundException,
+      SubcategoryNotFoundException,
+      OrderException,
+      OrderByException
+    ];
+
+    const BadRequests = [
+      ParseException,
+      WrongCurrencyException,
+      OrderException,
+      OrderByException
+    ];
+
+    const NotFound = [CategoryNotFoundException, SubcategoryNotFoundException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for product search on the marketplace.';
+    const apiResponseDesc =
+      'As a response user gets a list of products under certain criteria along with number for pagination.';
+    const apiBadRequestRespDesc =
+      'Bad request exception is thrown in case if there is a wrong value for number, currency or orders.';
+    const apiNotFoundDesc =
+      'Not found exception is thrown in case if category or subcategory has not been found.';
+
+    const productQueryDesc = 'Product query';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of products.';
+    const pageQueryDesc = 'Query for page in order to get list of products.';
+    const orderQueryDesc = 'Query to perform sorting by';
+    const orderByQueryDesc = 'ASC or DESC';
+    const minPriceQueryDesc = 'Minimal price';
+    const maxPriceQueryDesc = 'Maximum price';
+    const currencyQueryDesc = 'Product currency';
+    const categoryQueryDesc = 'Products categories';
+    const subcategoryQueryDesc = 'Products subcategories';
+
+    const productQuery = {
+      description: productQueryDesc,
+      name: 'query',
+      type: String,
+      required: false
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: false
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: false
+    };
+
+    const orderQuery = {
+      description: orderQueryDesc,
+      name: 'order',
+      type: String,
+      required: false
+    };
+
+    const orderByQuery = {
+      description: orderByQueryDesc,
+      name: 'orderBy',
+      type: String,
+      required: false
+    };
+
+    const minPriceQuery = {
+      description: minPriceQueryDesc,
+      name: 'minPrice',
+      type: String,
+      required: false
+    };
+
+    const maxPriceQuery = {
+      description: maxPriceQueryDesc,
+      name: 'maxPrice',
+      type: String,
+      required: false
+    };
+
+    const currencyQuery = {
+      description: currencyQueryDesc,
+      name: 'currency',
+      type: String,
+      required: false
+    };
+
+    const categoryQuery = {
+      description: categoryQueryDesc,
+      name: 'categories',
+      type: String,
+      required: false
+    };
+
+    const subcategoryQuery = {
+      description: subcategoryQueryDesc,
+      name: 'subcategories',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(SearchProductsDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { oneOf: refs(...NotFound) }
+      },
+      ApiProductQuery: productQuery,
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery,
+      ApiOrderQuery: orderQuery,
+      ApiOrderByQuery: orderByQuery,
+      ApiMinPriceQuery: minPriceQuery,
+      ApiMaxPriceQuery: maxPriceQuery,
+      ApiCurrencyQuery: currencyQuery,
+      ApiCategoryQuery: categoryQuery,
+      ApiSubcategoryQuery: subcategoryQuery
     };
   }
 
@@ -177,35 +320,35 @@ export abstract class ProductsDocs {
       description: productQueryDesc,
       name: 'query',
       type: String,
-      required: true
+      required: false
     };
 
     const pageSizeQuery = {
       description: pageSizeQueryDesc,
       name: 'pageSize',
       type: String,
-      required: true
+      required: false
     };
 
     const pageQuery = {
       description: pageQueryDesc,
       name: 'page',
       type: String,
-      required: true
+      required: false
     };
 
     const orderQuery = {
       description: orderQueryDesc,
       name: 'order',
       type: String,
-      required: true
+      required: false
     };
 
     const orderByQuery = {
       description: orderByQueryDesc,
       name: 'orderBy',
       type: String,
-      required: true
+      required: false
     };
 
     return {

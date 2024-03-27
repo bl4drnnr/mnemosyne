@@ -1,0 +1,14 @@
+{
+  "marketplaceFiltersTitle": "Укажите ваш поисковый запрос",
+  "marketplaceFiltersCategories": "Категории",
+  "marketplaceFiltersSubcategories": "Подкатегории для",
+  "marketplaceFiltersPriceRange": "Диапазон цен",
+  "marketplaceFiltersLayout": "Вид макета",
+  "marketplaceWelcomeTitle": "Добро пожаловать на marketplace!",
+  "marketplaceOrderBySubtitle": "Выберите порядок, в котором вы хотите отсортировать товары. ASC представляет сортировку в порядке возрастания, а DESC представляет сортировку в порядке убывания.",
+  "marketplaceOrderSubtitle": "Выберите поле, по которому будет выполняться порядок (ASC или DESC). Полем по умолчанию является дата создания продукта.",
+  "marketplaceCurrency": "Валюта",
+  "marketplaceClearFilters": "Очистить фильтры",
+  "marketplaceWrongPriceRange": "Неправильный диапазон цен! Минимальная цена не может быть больше максимальной!",
+  "marketplaceProductsNotFound": "Продукты не найдены... :("
+}

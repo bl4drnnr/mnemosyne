@@ -318,7 +318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref:
+                oneOf:
                   - $ref: "#/components/schemas/HashNotFoundException"
                   - $ref: "#/components/schemas/LinkExpiredException"
       tags: *a2
@@ -1897,35 +1897,96 @@ paths:
   /api/products/search-product:
     get:
       operationId: ProductsController_searchProduct
+      summary: Endpoint is responsible for product search on the marketplace.
       parameters:
         - name: query
-          required: true
+          required: false
           in: query
+          description: Product query
           schema:
             type: string
         - name: page
-          required: true
+          required: false
           in: query
+          description: Query for page in order to get list of products.
           schema:
             type: string
         - name: pageSize
-          required: true
+          required: false
           in: query
+          description: Query for limit in order to get list of products.
           schema:
             type: string
         - name: order
-          required: true
+          required: false
           in: query
+          description: Query to perform sorting by
           schema:
             type: string
         - name: orderBy
-          required: true
+          required: false
           in: query
+          description: ASC or DESC
+          schema:
+            type: string
+        - name: minPrice
+          required: false
+          in: query
+          description: Minimal price
+          schema:
+            type: string
+        - name: maxPrice
+          required: false
+          in: query
+          description: Maximum price
+          schema:
+            type: string
+        - name: currency
+          required: false
+          in: query
+          description: Product currency
+          schema:
+            type: string
+        - name: categories
+          required: false
+          in: query
+          description: Products categories
+          schema:
+            type: string
+        - name: subcategories
+          required: false
+          in: query
+          description: Products subcategories
           schema:
             type: string
       responses:
         "200":
-          description: ""
+          description: As a response user gets a list of products under certain criteria
+            along with number for pagination.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchProductsDto"
+        "400":
+          description: Bad request exception is thrown in case if there is a wrong value
+            for number, currency or orders.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ParseException"
+                  - $ref: "#/components/schemas/WrongCurrencyException"
+                  - $ref: "#/components/schemas/OrderException"
+                  - $ref: "#/components/schemas/OrderByException"
+        "404":
+          description: Not found exception is thrown in case if category or subcategory
+            has not been found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CategoryNotFoundException"
+                  - $ref: "#/components/schemas/SubcategoryNotFoundException"
       tags: *a9
       security:
         - basicAuth: []
@@ -2029,31 +2090,31 @@ paths:
         or deletion. Used privately.
       parameters:
         - name: query
-          required: true
+          required: false
           in: query
           description: Product query
           schema:
             type: string
         - name: page
-          required: true
+          required: false
           in: query
           description: Query for page in order to get list of products.
           schema:
             type: string
         - name: pageSize
-          required: true
+          required: false
           in: query
           description: Query for limit in order to get list of products.
           schema:
             type: string
         - name: order
-          required: true
+          required: false
           in: query
           description: Query to perform sorting by
           schema:
             type: string
         - name: orderBy
-          required: true
+          required: false
           in: query
           description: ASC or DESC
           schema:
@@ -3646,6 +3707,75 @@ components:
           example: product-not-found
       required:
         - message
+    SearchProductsDto:
+      type: object
+      properties:
+        products:
+          description: The list of found by the user query products
+          example:
+            - title: My product
+              slug: my-product-123
+              mainPicture: asd
+              currency: PLN
+              price: "15000"
+              category: travels
+              subcategory: it_books
+              created_at: 2023-11-17T11:42:26.534Z
+          type: array
+          items:
+            type: string
+        count:
+          type: number
+          description: Count for the pagination
+          example: "5"
+      required:
+        - products
+        - count
+    WrongCurrencyException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong currency error message
+          example: wrong-currency
+      required:
+        - message
+    CategoryNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Category not found error message
+          example: category-not-found
+      required:
+        - message
+    SubcategoryNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Subcategory not found error message
+          example: subcategory-not-found
+      required:
+        - message
+    OrderException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Order exception
+          example: order-error
+      required:
+        - message
+    OrderByException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Order by exception
+          example: order-by-error
+      required:
+        - message
     PostProductDto:
       type: object
       properties:
@@ -3788,15 +3918,6 @@ components:
       required:
         - message
         - link
-    CategoryNotFoundException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Category not found error message
-          example: category-not-found
-      required:
-        - message
     UserProductsDto:
       type: object
       properties:
@@ -3826,24 +3947,6 @@ components:
       required:
         - userProducts
         - count
-    OrderException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Order exception
-          example: order-error
-      required:
-        - message
-    OrderByException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Order by exception
-          example: order-by-error
-      required:
-        - message
     DeleteProductDto:
       type: object
       properties:

@@ -67,5 +67,6 @@
     "created_at": "Дата создания"
   },
   "selectProductOrder": "Выберите поле сортировки продуктов",
-  "productsPerPage": "Товаров на странице"
+  "productsPerPage": "Товаров на странице",
+  "allCurrencies": "Все валюты"
 }

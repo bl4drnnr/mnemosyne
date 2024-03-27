@@ -1,6 +1,7 @@
 @import 'variables';
 
 .marketplace-container {
+  min-height: 100vh;
   width: 100%;
   margin-top: 50px;
 }
@@ -135,6 +136,11 @@
   padding-top: 10px;
 }
 
+.marketplace-price-error {
+  opacity: .75;
+  color: var(--error-color);
+}
+
 .marketplace-products-grid {
   padding: 25px 0;
   margin-top: 25px;
@@ -153,4 +159,12 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
+}
+
+.marketplace-clear-filters-button-wrapper {
+  margin-top: 5px;
+}
+
+.marketplace-products-not-found {
+  text-align: center;
 }

@@ -84,5 +84,7 @@
   "product-not-found": "Product has not been found, please, check the link once again",
   "category-not-found": "Category not found",
   "order-by-error": "Wrong order by value",
-  "order-error": "Wrong order value"
+  "order-error": "Wrong order value",
+  "subcategory-not-found": "Subcategory not found",
+  "wrong-currency": "Wrong currency"
 }

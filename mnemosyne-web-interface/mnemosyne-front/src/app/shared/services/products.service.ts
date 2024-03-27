@@ -14,6 +14,7 @@ import { UserProductsResponse } from '@responses/user-products.interface';
 import { DeleteProductPayload } from '@payloads/delete-product.interface';
 import { ProductDeletedResponse } from '@responses/product-deleted.enum';
 import { SearchProductsResponse } from '@responses/search-products.interface';
+import { SearchProductsPayload } from '@payloads/search-products.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,7 @@ export class ProductsService {
   }
 
   searchProducts(
-    params: GetUserProductsPayload
+    params: SearchProductsPayload
   ): Observable<SearchProductsResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,

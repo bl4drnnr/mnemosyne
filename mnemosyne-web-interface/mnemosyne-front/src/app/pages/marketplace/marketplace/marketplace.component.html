@@ -5,9 +5,11 @@
     <div class="marketplace-container">
       <div class="marketplace-area">
         <div class="marketplace-filters">
-          <h3 class="marketplace-filters-title">Specify your search query</h3>
+          <h3 class="marketplace-filters-title">
+            {{ t('marketplace.marketplaceFiltersTitle') }}
+          </h3>
           <div class="marketplace-filters-container">
-            <p><b>Categories:</b></p>
+            <p><b>{{ t('marketplace.marketplaceFiltersCategories') }}:</b></p>
             <basic-checkbox
               *ngFor="let category of categoriesList"
               (checkedChange)="addCategory(category)"
@@ -18,7 +20,7 @@
           <div *ngIf="selectedCategories.length > 0" class="marketplace-filters-container">
             <div *ngFor="let selectedCategory of selectedCategories">
               <p class="marketplace-filters-subtitle">
-                Subcategories for <b>{{ selectedCategory.value }}</b>
+                {{ t('marketplace.marketplaceFiltersSubcategories') }} <b>{{ selectedCategory.value }}</b>
               </p>
               <basic-checkbox
                 *ngFor="let subcategory of getSubcategories(selectedCategory.key)"
@@ -29,24 +31,60 @@
             </div>
           </div>
           <div class="marketplace-filters-container">
-            <p class="marketplace-filters-subtitle"><b>Price range:</b></p>
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceFiltersPriceRange') }}:</b>
+            </p>
             <basic-input
               type="number"
-              [label]="'From'"
-              [placeholder]="'The minimal price'"
+              [label]="t('input.priceFromLabel')"
+              [placeholder]="t('input.priceFromPlaceholder')"
+              [inputDescription]="t('input.priceFromInputDesc')"
+              [errorMessage]="t('input.priceFromError')"
+              [min]="'0'"
+              [showError]="minPriceError"
               [value]="minPrice"
-              (valueChange)="minPrice = $event"
+              (valueChange)="checkProductPrice($event, 'min')"
             />
             <basic-input
               type="number"
-              [label]="'To'"
-              [placeholder]="'The maximum price'"
+              [label]="t('input.priceToLabel')"
+              [placeholder]="t('input.priceToPlaceholder')"
+              [inputDescription]="t('input.priceToInputDesc')"
+              [errorMessage]="t('input.priceToError')"
+              [showError]="maxPriceError"
               [value]="maxPrice"
-              (valueChange)="maxPrice = $event"
+              (valueChange)="checkProductPrice($event, 'max')"
+            />
+            <p class="marketplace-price-error" *ngIf="wrongPriceError">
+              {{ t('marketplace.marketplaceWrongPriceRange') }}
+            </p>
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceCurrency') }}:</b>
+            </p>
+            <basic-dropdown
+              [label]="t('dropdown.selectCurrency')"
+              [options]="productCurrencyDropdown"
+              [defaultValue]="productCurrencyDropdownValue"
+              (selectedOption)="selectProductCurrency($event)"
             />
           </div>
           <div class="marketplace-filters-container">
-            <p class="marketplace-filters-subtitle"><b>Layout view:</b></p>
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceClearFilters') }}:</b>
+            </p>
+            <div class="marketplace-clear-filters-button-wrapper">
+              <basic-button
+                [label]="t('button.clearFilters')"
+                (buttonClick)="clearFilters()"
+              />
+            </div>
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceFiltersLayout') }}:</b>
+            </p>
             <div class="marketplace-filters-layouts">
               <button
                 (click)="setLayout('list')"
@@ -77,16 +115,16 @@
         </div>
 
         <h1 class="marketplace-title">
-          <span>Welcome to the marketplace!&nbsp;</span>
+          <span>{{ t('marketplace.marketplaceWelcomeTitle') }}&nbsp;</span>
           <basic-emoji emoji="coin.png" [width]="48" [height]="48" />
         </h1>
 
         <div class="marketplace-search-area">
           <div class="marketplace-search">
             <basic-input
-              [label]="'Search for whatever goods you want'"
-              [placeholder]="'Provide the query for the product'"
-              [inputDescription]="'The search of the product will be based on the name, category, subcategory, description, title and slug.'"
+              [label]="t('input.marketplaceSearchLabel')"
+              [placeholder]="t('input.marketplaceSearchPlaceholder')"
+              [inputDescription]="t('input.marketplaceSearchInputDesc')"
               [value]="productSearchQuery"
               (valueChange)="changeProductSearchQuery($event)"
             />
@@ -94,7 +132,7 @@
 
           <div class="marketplace-order-items">
             <div class="marketplace-order-item margin-right">
-              <p class="marketplace-order-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur distinctio illo impedit obcaecati qui quisquam! Deserunt hic nihil voluptatem. Similique!</p>
+              <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderBySubtitle') }}</p>
               <div class="marketplace-order-items-buttons">
                 <button
                   (click)="changeOrderBy('DESC')"
@@ -112,7 +150,7 @@
             </div>
 
             <div class="marketplace-order-item margin-left">
-              <p class="marketplace-order-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque distinctio earum est facere fugiat molestiae nemo perferendis, veritatis. Dignissimos, laboriosam!</p>
+              <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderSubtitle') }}</p>
               <div>
                 <basic-dropdown
                   [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
@@ -124,7 +162,16 @@
             </div>
           </div>
 
-          <div class="marketplace-products-grid" *ngIf="layoutView === 'grid'">
+          <div *ngIf="products.length === 0">
+            <h1 class="marketplace-products-not-found">
+              {{ t('marketplace.marketplaceProductsNotFound') }}
+            </h1>
+          </div>
+
+          <div
+            class="marketplace-products-grid"
+            *ngIf="products.length > 0 && layoutView === 'grid'"
+          >
             <page-product-preview
               *ngFor="let product of products"
               [layoutView]="'grid'"
@@ -141,7 +188,10 @@
             />
           </div>
 
-          <div class="marketplace-products-list" *ngIf="layoutView === 'list'">
+          <div
+            class="marketplace-products-list"
+            *ngIf="products.length > 0 && layoutView === 'list'"
+          >
             <page-product-preview
               *ngFor="let product of products"
               [layoutView]="'list'"
@@ -158,7 +208,7 @@
             />
           </div>
 
-          <div class="marketplace-pagination">
+          <div class="marketplace-pagination" *ngIf="products.length > 0">
             <basic-pagination
               [itemsPerPageLabel]="t('dropdown.productsPerPage')"
               [currentPage]="page"

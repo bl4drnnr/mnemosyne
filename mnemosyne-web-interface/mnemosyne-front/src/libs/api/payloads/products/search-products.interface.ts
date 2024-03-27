@@ -1,6 +1,6 @@
-import { Transaction } from 'sequelize';
+import { Currency } from '@interfaces/currency.type';
 
-export interface SearchProductInterface {
+export interface SearchProductsPayload {
   query: string;
   page: string;
   pageSize: string;
@@ -8,8 +8,7 @@ export interface SearchProductInterface {
   orderBy: string;
   minPrice: string;
   maxPrice: string;
-  currency: string;
+  currency: Currency | string;
   categories: string;
   subcategories: string;
-  trx?: Transaction;
 }

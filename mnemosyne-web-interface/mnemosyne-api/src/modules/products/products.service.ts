@@ -1,4 +1,4 @@
-import { HttpException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Product } from '@models/product.model';
 import { InjectModel } from '@nestjs/sequelize';
 import { GetProductBySlugInterface } from '@interfaces/get-product-by-slug.interface';
@@ -30,6 +30,9 @@ import { OrderByException } from '@exceptions/order-by.exception';
 import { DeleteProductInterface } from '@interfaces/delete-product.interface';
 import { ProductDeletedDto } from '@dto/product-deleted.dto';
 import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-confirmation.exception';
+import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
+import { CategoryNotFoundException } from '@exceptions/category-not-found.exception';
+import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
 
 @Injectable()
 export class ProductsService {
@@ -122,6 +125,11 @@ export class ProductsService {
     pageSize,
     order,
     orderBy,
+    minPrice,
+    maxPrice,
+    currency,
+    categories,
+    subcategories,
     trx
   }: SearchProductInterface) {
     const offset = Number(page) * Number(pageSize);
@@ -131,6 +139,59 @@ export class ProductsService {
       isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
 
     if (paginationParseError) throw new ParseException();
+
+    let minPriceNumber: number;
+    let maxPriceNumber: number;
+
+    if (minPrice) {
+      minPriceNumber = Number(minPrice);
+
+      if (isNaN(minPriceNumber) || minPriceNumber < 0)
+        throw new ParseException();
+    }
+
+    if (maxPrice) {
+      maxPriceNumber = Number(maxPrice);
+
+      if (isNaN(maxPriceNumber) || maxPriceNumber < 0)
+        throw new ParseException();
+    }
+
+    if (!['PLN', 'USD', 'EUR', 'all'].includes(currency))
+      throw new WrongCurrencyException();
+
+    const providedCategories = categories
+      .split(',')
+      .map((c) => c.toLowerCase())
+      .filter((c) => c !== '');
+    const providedSubcategories = subcategories
+      .split(',')
+      .map((c) => c.toLowerCase())
+      .filter((c) => c !== '');
+
+    if (providedCategories.length > 0) {
+      const allCategories = await this.categoriesService.getAllCategories({
+        trx
+      });
+      const allCategoriesNames = allCategories.categories.map(
+        ({ name }) => name
+      );
+
+      providedCategories.forEach((categoryName) => {
+        if (!allCategoriesNames.includes(categoryName))
+          throw new CategoryNotFoundException();
+      });
+    }
+
+    if (providedSubcategories.length > 0) {
+      const allSubcategoriesNames =
+        await this.categoriesService.getAllSubcategories({ trx });
+
+      providedSubcategories.forEach((subcategoryName) => {
+        if (!allSubcategoriesNames.includes(subcategoryName))
+          throw new SubcategoryNotFoundException();
+      });
+    }
 
     const attributes = [
       'title',
@@ -143,15 +204,41 @@ export class ProductsService {
       'created_at'
     ];
 
-    const where = {};
+    const where = {
+      [Op.and]: []
+    };
 
     if (query) {
       where[Op.or] = [
         { title: { [Op.iLike]: `%${query}%` } },
         { description: { [Op.iLike]: `%${query}%` } },
-        { slug: { [Op.iLike]: `%${query}%` } },
-        { subcategory: { [Op.iLike]: `%${query}%` } }
+        { slug: { [Op.iLike]: `%${query}%` } }
       ];
+    }
+
+    if (minPrice && maxPrice) {
+      where[Op.and].push([
+        { price: { [Op.gte]: minPrice } },
+        { price: { [Op.lte]: maxPrice } }
+      ]);
+    } else if (minPrice) {
+      where[Op.and].push([{ price: { [Op.gte]: minPrice } }]);
+    } else if (maxPrice) {
+      where[Op.and].push([{ price: { [Op.lte]: maxPrice } }]);
+    }
+
+    if (currency !== 'all') {
+      where[Op.and].push([{ currency }]);
+    }
+
+    if (providedSubcategories.length > 0) {
+      where[Op.and].push({ subcategory: { [Op.in]: providedSubcategories } });
+    }
+
+    if (providedCategories.length > 0) {
+      where[Op.and].push({
+        '$category.name$': { [Op.in]: providedCategories }
+      });
     }
 
     if (!attributes.includes(order)) throw new OrderException();

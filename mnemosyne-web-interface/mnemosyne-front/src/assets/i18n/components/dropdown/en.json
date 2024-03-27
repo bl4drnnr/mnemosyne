@@ -67,5 +67,6 @@
     "created_at": "Creation date"
   },
   "selectProductOrder": "Select product order",
-  "productsPerPage": "Products per page"
+  "productsPerPage": "Products per page",
+  "allCurrencies": "All currencies"
 }

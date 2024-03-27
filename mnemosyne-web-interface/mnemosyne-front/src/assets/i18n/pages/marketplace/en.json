@@ -1,0 +1,14 @@
+{
+  "marketplaceFiltersTitle": "Specify your search query",
+  "marketplaceFiltersCategories": "Categories",
+  "marketplaceFiltersSubcategories": "Subcategories for",
+  "marketplaceFiltersPriceRange": "Price range",
+  "marketplaceFiltersLayout": "Layout view",
+  "marketplaceWelcomeTitle": "Welcome to the marketplace!",
+  "marketplaceOrderBySubtitle": "Select the order you want products to be sorted. ASC represents sorting in ascending order, and DESC represents sorting in descending order.",
+  "marketplaceOrderSubtitle": "Select the field by which the order (ASC or DESC) will be performed. The default field is the creation date of the product.",
+  "marketplaceCurrency": "Currency",
+  "marketplaceClearFilters": "Clear filters",
+  "marketplaceWrongPriceRange": "Wrong price range! Min price cannot be more than max price!",
+  "marketplaceProductsNotFound": "No products found... :("
+}

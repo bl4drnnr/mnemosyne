@@ -67,5 +67,6 @@
     "created_at": "Data utworzenia"
   },
   "selectProductOrder": "Wybierz pole sortowania produktów",
-  "productsPerPage": "Produktów na stronie"
+  "productsPerPage": "Produktów na stronie",
+  "allCurrencies": "Wszystkie waluty"
 }

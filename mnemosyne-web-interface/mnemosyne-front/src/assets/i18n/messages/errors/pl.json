@@ -84,5 +84,7 @@
   "product-not-found": "Produkt nie został znaleziony, proszę sprawdzić link jeszcze raz",
   "category-not-found": "Kategorii nie znaleziono",
   "order-by-error": "Niewłaściwa kolejność według wartości",
-  "order-error": "Nieprawidłowa wartość kolejności"
+  "order-error": "Nieprawidłowa wartość kolejności",
+  "subcategory-not-found": "Nie znaleziono podkategorii",
+  "wrong-currency": "Zła waluta"
 }
