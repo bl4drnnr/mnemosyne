@@ -1913,6 +1913,16 @@ paths:
           in: query
           schema:
             type: string
+        - name: order
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: orderBy
+          required: true
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: ""

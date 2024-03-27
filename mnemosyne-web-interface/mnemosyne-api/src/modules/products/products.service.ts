@@ -116,8 +116,14 @@ export class ProductsService {
     return new LatestProductsDto(latestProducts);
   }
 
-  // @TODO Fix here as well v2
-  async searchProduct({ query, page, pageSize, trx }: SearchProductInterface) {
+  async searchProduct({
+    query,
+    page,
+    pageSize,
+    order,
+    orderBy,
+    trx
+  }: SearchProductInterface) {
     const offset = Number(page) * Number(pageSize);
     const limit = Number(pageSize);
 
@@ -126,33 +132,65 @@ export class ProductsService {
 
     if (paginationParseError) throw new ParseException();
 
-    const products = await this.productRepository.findAll({
-      where: {
-        [Op.or]: [
-          { title: { [Op.iLike]: `%${query}%` } },
-          { description: { [Op.iLike]: `%${query}%` } },
-          { slug: { [Op.iLike]: `%${query}%` } }
-        ]
-      },
-      attributes: ['picture', 'slug', 'name', 'created_at', 'price'],
+    const attributes = [
+      'title',
+      'slug',
+      'pictures',
+      'currency',
+      'price',
+      'subcategory',
+      'createdAt',
+      'created_at'
+    ];
+
+    const where = {};
+
+    if (query) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${query}%` } },
+        { description: { [Op.iLike]: `%${query}%` } },
+        { slug: { [Op.iLike]: `%${query}%` } },
+        { subcategory: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    if (!attributes.includes(order)) throw new OrderException();
+    if (!['DESC', 'ASC'].includes(orderBy.toUpperCase()))
+      throw new OrderByException();
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where,
+      attributes,
       limit,
       offset,
+      include: [{ model: Category, attributes: ['name'] }],
+      order: [[order, orderBy]],
       transaction: trx
     });
 
-    const foundProducts = products.map(
-      ({ pictures, slug, title, createdAt, price, user }) => {
-        return {
-          pictures,
-          slug,
-          title,
-          createdAt,
-          price
-        };
-      }
+    const foundProducts = rows.map(
+      ({
+        title,
+        slug,
+        pictures,
+        currency,
+        price,
+        category,
+        subcategory,
+        createdAt
+      }) => ({
+        title,
+        slug,
+        mainPicture: pictures[0],
+        currency,
+        price,
+        category: category.name,
+        subcategory,
+        createdAt
+      })
     );
 
-    // return new SearchProductsDto(foundProducts);
+    return new SearchProductsDto(foundProducts, count);
   }
 
   async createProduct({ userId, payload, trx }: PostProductInterface) {

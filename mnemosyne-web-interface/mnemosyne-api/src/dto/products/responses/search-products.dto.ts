@@ -8,17 +8,28 @@ export class SearchProductsDto {
     description: DocsProperty.SEARCHED_PRODUCTS_DESC,
     example: [
       {
-        pictures: [DocsProperty.PRODUCT_PIC_EXAMPLE],
-        slug: DocsProperty.PRODUCT_SLUG_EXAMPLE,
         title: DocsProperty.PRODUCT_TITLE_EXAMPLE,
-        created_at: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE,
-        price: DocsProperty.PRODUCT_PRICE_EXAMPLE
+        slug: DocsProperty.PRODUCT_SLUG_EXAMPLE,
+        mainPicture: DocsProperty.PRODUCT_PIC_EXAMPLE,
+        currency: DocsProperty.PRODUCT_CURRENCY_EXAMPLE,
+        price: DocsProperty.PRODUCT_PRICE_EXAMPLE,
+        category: DocsProperty.CATEGORY_NAME_EXAMPLE,
+        subcategory: DocsProperty.SUBCATEGORY_EXAMPLE,
+        created_at: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE
       }
     ]
   })
   readonly products: Array<SearchedProductsInterface>;
 
-  constructor(products: Array<SearchedProductsInterface>) {
+  @ApiProperty({
+    type: Number,
+    description: DocsProperty.COUNT_DESC,
+    example: DocsProperty.COUNT_EXAMPLE
+  })
+  readonly count: number;
+
+  constructor(products: Array<SearchedProductsInterface>, count: number) {
     this.products = products;
+    this.count = count;
   }
 }

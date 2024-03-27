@@ -10,6 +10,7 @@ import { UserProduct } from '@responses/user-products.interface';
 import { DeleteProductPayload } from '@payloads/delete-product.interface';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { GlobalMessageService } from '@shared/global-message.service';
+import { EnvService } from '@shared/env.service';
 
 @Component({
   selector: 'component-dashboard',
@@ -27,8 +28,12 @@ export class DashboardComponent implements OnInit {
   totalItems: number;
   userInfo: UserInfoResponse;
   userProducts: Array<UserProduct>;
+  layoutView: 'list' | 'grid' = 'list';
+  listIcon = `${this.envService.getStaticStorageLink}/icons/list-icon.svg`;
+  gridIcon = `${this.envService.getStaticStorageLink}/icons/grid-icon.svg`;
 
   constructor(
+    private readonly envService: EnvService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly refreshTokensService: RefreshTokensService,
     private readonly translationService: TranslationService,
@@ -39,6 +44,10 @@ export class DashboardComponent implements OnInit {
     this.orderOptionsValue = { key, value };
     this.order = key;
     this.getUserProducts();
+  }
+
+  setLayout(layoutView: 'list' | 'grid') {
+    this.layoutView = layoutView;
   }
 
   getOrderOptionDropdownLabel(orderOption: string) {

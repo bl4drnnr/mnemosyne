@@ -13,6 +13,7 @@ import { GetUserProductsPayload } from '@payloads/get-user-products.interface';
 import { UserProductsResponse } from '@responses/user-products.interface';
 import { DeleteProductPayload } from '@payloads/delete-product.interface';
 import { ProductDeletedResponse } from '@responses/product-deleted.enum';
+import { SearchProductsResponse } from '@responses/search-products.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,17 @@ export class ProductsService {
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.GET_PRODUCT,
       params: { slug }
+    });
+  }
+
+  searchProducts(
+    params: GetUserProductsPayload
+  ): Observable<SearchProductsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.SEARCH_PRODUCTS,
+      params
     });
   }
 

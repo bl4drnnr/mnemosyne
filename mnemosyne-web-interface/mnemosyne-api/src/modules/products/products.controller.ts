@@ -62,12 +62,16 @@ export class ProductsController {
     @Query('query') query: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
+    @Query('order') order: string,
+    @Query('orderBy') orderBy: string,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.searchProduct({
       query,
       page,
       pageSize,
+      order,
+      orderBy,
       trx
     });
   }

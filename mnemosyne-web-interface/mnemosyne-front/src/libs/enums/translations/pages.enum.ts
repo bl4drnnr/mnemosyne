@@ -11,5 +11,7 @@ export enum PageTranslation {
   DASHBOARD = 'pages/dashboard',
   DASHBOARD_ALIAS = 'dashboard',
   PRODUCT = 'pages/product',
-  PRODUCT_ALIAS = 'product'
+  PRODUCT_ALIAS = 'product',
+  MARKETPLACE = 'pages/marketplace',
+  MARKETPLACE_ALIAS = 'marketplace'
 }

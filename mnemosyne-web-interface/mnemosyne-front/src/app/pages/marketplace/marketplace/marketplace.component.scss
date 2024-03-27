@@ -1,0 +1,156 @@
+@import 'variables';
+
+.marketplace-container {
+  width: 100%;
+  margin-top: 50px;
+}
+
+.marketplace-area {
+  width: 60%;
+  height: 100%;
+  //border: 1px solid blue;
+  margin: 0 auto;
+  position: relative;
+}
+
+.marketplace-filters {
+  position: absolute;
+  width: 250px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  left: -250px;
+}
+
+.marketplace-title {
+  font-size: 48px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+  margin: 0 20px;
+}
+
+.marketplace-search-area {
+  border-bottom: 1px solid var(--border-color);
+  margin: 0 20px;
+  padding-bottom: 20px;
+}
+
+.marketplace-search {
+  margin: 0 20px;
+}
+
+.marketplace-order-items {
+  display: flex;
+}
+
+.marketplace-order-items-buttons {
+  display: flex;
+}
+
+.marketplace-filters-layouts {
+  display: flex;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.layout-icon {
+  filter: var(--svg-color);
+}
+
+.marketplace-order-item {
+  width: 100%;
+
+  &.margin-right {
+    margin-left: 20px;
+    margin-right: 5px;
+  }
+
+  &.margin-left {
+    margin-left: 5px;
+    margin-right: 20px;
+  }
+}
+
+.marketplace-order-desc {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.order-by-button {
+  min-height: 36px;
+  width: 100%;
+  cursor: pointer;
+  border: 1px solid var(--main-color-border);
+  transition: .3s;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+
+  &.left-border {
+    border-radius: 5px 0 0 5px;
+  }
+
+  &.right-border {
+    border-radius: 0 5px 5px 0;
+  }
+
+  &:hover {
+    background-color: var(--color-hover);
+  }
+
+  &.active {
+    border: 1px solid var(--main-color);
+    background-color: var(--main-color);
+
+    &:hover {
+      background-color: var(--main-color-hover) !important;
+    }
+  }
+}
+
+.order-by-button-label {
+  margin: 5px;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.marketplace-filters-title {
+  text-align: center;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.marketplace-filters-container {
+  padding: 0 20px;
+}
+
+.marketplace-filters-subtitle {
+  border-top: 1px solid var(--border-color);
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.marketplace-products-grid {
+  padding: 25px 0;
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.marketplace-products-list {
+  margin-top: 25px;
+}
+
+.marketplace-pagination {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { DashboardComponent } from '@pages/dashboard/dashboard.component';
 import { LayoutsModule } from '@layouts/layouts.module';
 import { ComponentsModule } from '@components/components.module';
@@ -31,7 +31,8 @@ const router: Routes = [
     CommonModule,
     LayoutsModule,
     ComponentsModule,
-    TranslocoModule
+    TranslocoModule,
+    NgOptimizedImage
   ],
   exports: [...components]
 })

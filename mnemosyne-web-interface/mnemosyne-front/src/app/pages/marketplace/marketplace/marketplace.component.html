@@ -1,1 +1,176 @@
-<p>marketplace works!</p>
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="marketplace-container">
+      <div class="marketplace-area">
+        <div class="marketplace-filters">
+          <h3 class="marketplace-filters-title">Specify your search query</h3>
+          <div class="marketplace-filters-container">
+            <p><b>Categories:</b></p>
+            <basic-checkbox
+              *ngFor="let category of categoriesList"
+              (checkedChange)="addCategory(category)"
+            >
+              <span content>{{ category.value }}</span>
+            </basic-checkbox>
+          </div>
+          <div *ngIf="selectedCategories.length > 0" class="marketplace-filters-container">
+            <div *ngFor="let selectedCategory of selectedCategories">
+              <p class="marketplace-filters-subtitle">
+                Subcategories for <b>{{ selectedCategory.value }}</b>
+              </p>
+              <basic-checkbox
+                *ngFor="let subcategory of getSubcategories(selectedCategory.key)"
+                (checkedChange)="addSubcategory(subcategory)"
+              >
+                <span content>{{ subcategory.value }}</span>
+              </basic-checkbox>
+            </div>
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle"><b>Price range:</b></p>
+            <basic-input
+              type="number"
+              [label]="'From'"
+              [placeholder]="'The minimal price'"
+              [value]="minPrice"
+              (valueChange)="minPrice = $event"
+            />
+            <basic-input
+              type="number"
+              [label]="'To'"
+              [placeholder]="'The maximum price'"
+              [value]="maxPrice"
+              (valueChange)="maxPrice = $event"
+            />
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle"><b>Layout view:</b></p>
+            <div class="marketplace-filters-layouts">
+              <button
+                (click)="setLayout('list')"
+                [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
+              >
+                <img
+                  [ngSrc]="listIcon"
+                  [width]="22"
+                  [height]="22"
+                  alt="list"
+                  class="layout-icon"
+                >
+              </button>
+              <button
+                (click)="setLayout('grid')"
+                [ngClass]="layoutView === 'grid' ? 'order-by-button right-border active': 'order-by-button right-border'"
+              >
+                <img
+                  [ngSrc]="gridIcon"
+                  [width]="24"
+                  [height]="24"
+                  alt="gird"
+                  class="layout-icon"
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="marketplace-title">
+          <span>Welcome to the marketplace!&nbsp;</span>
+          <basic-emoji emoji="coin.png" [width]="48" [height]="48" />
+        </h1>
+
+        <div class="marketplace-search-area">
+          <div class="marketplace-search">
+            <basic-input
+              [label]="'Search for whatever goods you want'"
+              [placeholder]="'Provide the query for the product'"
+              [inputDescription]="'The search of the product will be based on the name, category, subcategory, description, title and slug.'"
+              [value]="productSearchQuery"
+              (valueChange)="changeProductSearchQuery($event)"
+            />
+          </div>
+
+          <div class="marketplace-order-items">
+            <div class="marketplace-order-item margin-right">
+              <p class="marketplace-order-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur distinctio illo impedit obcaecati qui quisquam! Deserunt hic nihil voluptatem. Similique!</p>
+              <div class="marketplace-order-items-buttons">
+                <button
+                  (click)="changeOrderBy('DESC')"
+                  [ngClass]="orderBy === 'DESC' ? 'order-by-button left-border active': 'order-by-button left-border'"
+                >
+                  <p class="order-by-button-label">DESC</p>
+                </button>
+                <button
+                  (click)="changeOrderBy('ASC')"
+                  [ngClass]="orderBy === 'ASC' ? 'order-by-button right-border active': 'order-by-button right-border'"
+                >
+                  <p class="order-by-button-label">ASC</p>
+                </button>
+              </div>
+            </div>
+
+            <div class="marketplace-order-item margin-left">
+              <p class="marketplace-order-desc">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque distinctio earum est facere fugiat molestiae nemo perferendis, veritatis. Dignissimos, laboriosam!</p>
+              <div>
+                <basic-dropdown
+                  [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
+                  [options]="orderOptions"
+                  [defaultValue]="orderOptionsValue"
+                  (selectedOption)="selectOrderOption($event)"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="marketplace-products-grid" *ngIf="layoutView === 'grid'">
+            <page-product-preview
+              *ngFor="let product of products"
+              [layoutView]="'grid'"
+              [slug]="product.slug"
+              [mainPicture]="product.mainPicture"
+              [productTitle]="product.title"
+              [category]="product.category"
+              [subcategory]="product.subcategory"
+              [price]="product.price"
+              [currency]="product.currency"
+              [createdAt]="product.createdAt"
+              [showAdditionalInfo]="false"
+              [showManagementButtons]="false"
+            />
+          </div>
+
+          <div class="marketplace-products-list" *ngIf="layoutView === 'list'">
+            <page-product-preview
+              *ngFor="let product of products"
+              [layoutView]="'list'"
+              [slug]="product.slug"
+              [mainPicture]="product.mainPicture"
+              [productTitle]="product.title"
+              [category]="product.category"
+              [subcategory]="product.subcategory"
+              [price]="product.price"
+              [currency]="product.currency"
+              [createdAt]="product.createdAt"
+              [showAdditionalInfo]="false"
+              [showManagementButtons]="false"
+            />
+          </div>
+
+          <div class="marketplace-pagination">
+            <basic-pagination
+              [itemsPerPageLabel]="t('dropdown.productsPerPage')"
+              [currentPage]="page"
+              [itemsPerPage]="pageSize"
+              [totalItems]="totalItems"
+              (setCurrentPage)="page = $event"
+              (setItemsPerPage)="pageSize = $event"
+              (fetchItems)="getProducts()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</layout-default>

@@ -1,5 +1,9 @@
 <ng-container *transloco="let t">
-  <div class="product-block" (click)="handleRedirect('/marketplace/product/' + slug)">
+  <div
+    class="product-block"
+    (click)="handleRedirect('/marketplace/product/' + slug)"
+    *ngIf="layoutView === 'grid'"
+  >
     <img
       *ngIf="mainPicture"
       class="product-picture-preview"
@@ -20,6 +24,7 @@
     <p><b>{{ t('product.productCategory') }}:</b> {{ t(translateCategory(category)) }}</p>
     <p><b>{{ t('product.productSubcategory') }}:</b> {{ t(translateSubcategory(category, subcategory)) }}</p>
     <p><b>{{ t('product.productPrice') }}:</b> {{ price }} {{ currency }}</p>
+    <p><b>{{ t('product.productCreatedAt') }}:</b> {{ transformDate(createdAt) }}</p>
 
     <div *ngIf="showAdditionalInfo">
       <h4 class="product-additional-info">{{ t('product.productAdditionalInfo') }}</h4>
@@ -27,7 +32,6 @@
       <p><b>{{ t('product.productLocation') }}:</b> {{ location }}</p>
       <p><b>{{ t('product.productContactPerson') }}:</b> {{ contactPerson }}</p>
       <p><b>{{ t('product.productContactPhone') }}:</b> {{ contactPhone }}</p>
-      <p><b>{{ t('product.productCreatedAt') }}:</b> {{ transformDate(createdAt) }}</p>
     </div>
 
     <div class="product-management-buttons" *ngIf="showManagementButtons">
@@ -46,6 +50,70 @@
           [label]="t('button.deleteProduct')"
           [danger]="true"
         />
+      </div>
+    </div>
+  </div>
+
+  <div
+    [ngClass]="showAdditionalInfo || showManagementButtons ? 'product-list-item center' : 'product-list-item'"
+    (click)="handleRedirect('/marketplace/product/' + slug)"
+    *ngIf="layoutView === 'list'"
+  >
+    <img
+      *ngIf="mainPicture"
+      class="product-picture-preview-list"
+      [src]="productPicturesBucket + mainPicture + '.png'"
+      [width]="300"
+      [height]="200"
+      alt="Product picture"
+    >
+    <div *ngIf="!mainPicture" class="no-picture-icon-list-wrapper">
+      <img
+        *ngIf="!mainPicture"
+        class="no-picture-icon-list"
+        [src]="uploadPictureIcon"
+        [width]="300"
+        [height]="200"
+        alt="Product picture"
+      >
+    </div>
+    <div class="product-info-list">
+      <div class="product-info-list-item">
+        <h1>{{ productTitle }}</h1>
+        <p>{{ price }} {{ currency }}</p>
+      </div>
+
+      <div>
+        <p><b>{{ t('product.productCategory') }}:</b> {{ t(translateCategory(category)) }}</p>
+        <p><b>{{ t('product.productSubcategory') }}:</b> {{ t(translateSubcategory(category, subcategory)) }}</p>
+        <p><b>{{ t('product.productCreatedAt') }}:</b> {{ transformDate(createdAt) }}</p>
+      </div>
+
+      <div *ngIf="showAdditionalInfo">
+        <h4 class="product-additional-info">{{ t('product.productAdditionalInfo') }}</h4>
+
+        <p><b>{{ t('product.productLocation') }}:</b> {{ location }}</p>
+        <p><b>{{ t('product.productContactPerson') }}:</b> {{ contactPerson }}</p>
+        <p><b>{{ t('product.productContactPhone') }}:</b> {{ contactPhone }}</p>
+      </div>
+
+      <div class="product-management-buttons" *ngIf="showManagementButtons">
+        <div class="product-management-button margin-right">
+          <basic-button
+            [label]="t('button.editProduct')"
+            [fillButton]="true"
+            (buttonClick)="handleRedirect('/marketplace/product/' + slug + '/edit')"
+          />
+        </div>
+        <div
+          class="product-management-button margin-left"
+          (click)="openDeleteProductModal($event)"
+        >
+          <basic-button
+            [label]="t('button.deleteProduct')"
+            [danger]="true"
+          />
+        </div>
       </div>
     </div>
   </div>

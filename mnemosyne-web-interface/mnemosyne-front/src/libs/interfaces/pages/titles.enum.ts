@@ -16,5 +16,6 @@ export enum Titles {
   CREATE_PRODUCT = 'createProduct',
   PRODUCT = 'product',
   PRODUCT_NOT_FOUND = 'productNotFound',
-  EDIT_PRODUCT = 'editProduct'
+  EDIT_PRODUCT = 'editProduct',
+  MARKETPLACE = 'marketplace'
 }

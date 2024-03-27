@@ -15,6 +15,7 @@ export class ProductPreviewComponent {
   showDeleteProductModal: boolean = false;
   deleteProductFullName: string;
 
+  @Input() layoutView: 'list' | 'grid' = 'grid';
   @Input() productId: string;
   @Input() slug: string;
   @Input() mainPicture: string;

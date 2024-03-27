@@ -1,6 +1,4 @@
-<layout-default
-  [showFooter]="false"
->
+<layout-default>
   <ng-container *transloco="let t">
     <div class="dashboard-container">
       <div class="dashboard-block">
@@ -14,13 +12,41 @@
         <h2>{{ t('dashboard.productsListTitle') }}</h2>
 
         <div class="dashboard-products-input">
-          <basic-input
-            [label]="t('input.searchForYourProductsLabel')"
-            [placeholder]="t('input.searchForProductsPlaceholder')"
-            [inputDescription]="t('input.searchForProductsInputDesc')"
-            [value]="query"
-            (valueChange)="changeQuery($event)"
-          />
+          <div class="dashboard-search-input">
+            <basic-input
+              [label]="t('input.searchForYourProductsLabel')"
+              [placeholder]="t('input.searchForProductsPlaceholder')"
+              [inputDescription]="t('input.searchForProductsInputDesc')"
+              [value]="query"
+              (valueChange)="changeQuery($event)"
+            />
+          </div>
+          <div class="dashboard-layouts">
+            <button
+              (click)="setLayout('list')"
+              [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
+            >
+              <img
+                [ngSrc]="listIcon"
+                [width]="22"
+                [height]="22"
+                alt="list"
+                class="layout-icon"
+              >
+            </button>
+            <button
+              (click)="setLayout('grid')"
+              [ngClass]="layoutView === 'grid' ? 'order-by-button right-border active': 'order-by-button right-border'"
+            >
+              <img
+                [ngSrc]="gridIcon"
+                [width]="24"
+                [height]="24"
+                alt="gird"
+                class="layout-icon"
+              >
+            </button>
+          </div>
         </div>
 
         <div class="dashboard-order-items">
@@ -55,9 +81,32 @@
           </div>
         </div>
 
-        <div class="dashboard-products-block">
+        <div class="dashboard-products-grid" *ngIf="layoutView === 'grid'">
           <page-product-preview
             *ngFor="let product of userProducts"
+            [layoutView]="'grid'"
+            [productId]="product.id"
+            [slug]="product.slug"
+            [mainPicture]="product.mainPicture"
+            [productTitle]="product.title"
+            [category]="product.category"
+            [subcategory]="product.subcategory"
+            [price]="product.price"
+            [currency]="product.currency"
+            [location]="product.location"
+            [contactPerson]="product.contactPerson"
+            [contactPhone]="product.contactPhone"
+            [createdAt]="product.createdAt"
+            [showAdditionalInfo]="true"
+            [showManagementButtons]="true"
+            (deleteProductEvent)="deleteProduct($event)"
+          />
+        </div>
+
+        <div class="dashboard-products-list" *ngIf="layoutView === 'list'">
+          <page-product-preview
+            *ngFor="let product of userProducts"
+            [layoutView]="'list'"
             [productId]="product.id"
             [slug]="product.slug"
             [mainPicture]="product.mainPicture"
