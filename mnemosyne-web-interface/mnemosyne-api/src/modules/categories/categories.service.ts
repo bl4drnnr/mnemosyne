@@ -4,6 +4,8 @@ import { Category } from '@models/category.model';
 import { GetAllCategoriesInterface } from '@interfaces/get-all-categories.interface';
 import { GetAllCategoriesDto } from '@dto/get-all-categories.dto';
 import { GetCategoryByNameInterface } from '@interfaces/get-category-by-name.interface';
+import { CategoryNotFoundException } from '@exceptions/category-not-found.exception';
+import { GetAllSubcategoriesInterface } from '@interfaces/get-all-subcategories.interface';
 
 @Injectable()
 export class CategoriesService {
@@ -27,10 +29,27 @@ export class CategoriesService {
     return new GetAllCategoriesDto(categories);
   }
 
+  async getAllSubcategories({ trx }: GetAllSubcategoriesInterface) {
+    const { categories } = await this.getAllCategories({ trx });
+    const allSubcategories = [];
+
+    categories.forEach(({ subCategories }) => {
+      subCategories.forEach((subCategory) => {
+        allSubcategories.push(subCategory);
+      });
+    });
+
+    return allSubcategories;
+  }
+
   async getCategoryByName({ name, trx }: GetCategoryByNameInterface) {
-    return await this.categoryRepository.findOne({
+    const category = await this.categoryRepository.findOne({
       where: { name },
       transaction: trx
     });
+
+    if (!category) throw new CategoryNotFoundException();
+
+    return category;
   }
 }

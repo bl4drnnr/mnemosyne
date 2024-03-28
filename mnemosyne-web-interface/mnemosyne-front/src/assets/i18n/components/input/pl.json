@@ -138,5 +138,19 @@
   "productLocationLabel": "Lokalizacja produktu",
   "productLocationPlaceholder": "Podaj lokalizację produktu",
   "productLocationInputDesc": "Podaj lokalizację produktu lub usługi, którą zamierzasz opublikować.",
-  "productLocationError": "Długość lokalizacji produktu powinna wynosić od 4 do 64"
+  "productLocationError": "Długość lokalizacji produktu powinna wynosić od 4 do 64",
+  "searchForYourProductsLabel": "Wyszukaj swoje produkty",
+  "searchForProductsPlaceholder": "Podaj wszelkie dane o swoim produkcie, aby go znaleźć",
+  "searchForProductsInputDesc": "Możesz przeprowadzić wyszukiwanie swoich produktów na podstawie tytułu, opisu lub linka.",
+  "priceFromLabel": "Cena od",
+  "priceFromPlaceholder": "Minimalna cena",
+  "priceFromInputDesc": "Minimalna cena w zakresie wyszukiwanych produktów.",
+  "priceFromError": "Zła minimalna cena! Upewnij się, że nie jest to liczba ujemna.",
+  "priceToLabel": "Cena do",
+  "priceToPlaceholder": "Maksymalna cena",
+  "priceToInputDesc": "Maksymalna cena w asortymencie wyszukiwanych produktów.",
+  "priceToError": "Zła maksymalna cena! Upewnij się, że nie jest to liczba ujemna.",
+  "marketplaceSearchLabel": "Wyszukaj dowolne towary",
+  "marketplaceSearchPlaceholder": "Podaj zapytanie dotyczące produktu",
+  "marketplaceSearchInputDesc": "Wyszukiwanie produktu będzie oparte na nazwie, kategorii, podkategorii, opisie, tytule i linku."
 }

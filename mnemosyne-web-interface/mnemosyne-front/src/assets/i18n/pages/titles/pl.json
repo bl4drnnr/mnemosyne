@@ -13,5 +13,9 @@
   "emailChangeConfirm": "Mnemosyne | Potwierdzenie zmiany adresu e-mail",
   "login": "Mnemosyne | Logowanie",
   "contact": "Mnemosyne | Kontakt",
-  "createProduct": "Mnemosyne | Dodaj produkt"
+  "createProduct": "Mnemosyne | Dodaj produkt",
+  "product": "Mnemosyne | Produkt - {{ product }}",
+  "productNotFound": "Mnemosyne | Ups... Nie znaleziono produktu",
+  "editProduct": "Mnemosyne | Edytuj produkt - {{ product }}",
+  "marketplace": "Mnemosyne | Marketplace"
 }

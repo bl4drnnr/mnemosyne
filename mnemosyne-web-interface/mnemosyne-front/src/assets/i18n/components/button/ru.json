@@ -32,5 +32,8 @@
   "deleteRole": "Удалить роль",
   "seeMore": "Смотрите больше",
   "sendContactMessage": "Отправить контактное сообщение",
-  "postProduct": "Опубликовать продукт"
+  "postProduct": "Опубликовать продукт",
+  "editProduct": "Модифицировать продукт",
+  "deleteProduct": "Удалить продукт",
+  "clearFilters": "Очистить фильтры"
 }

@@ -17,9 +17,9 @@ import { Router } from '@angular/router';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
 
 @Component({
-  selector: 'app-create-product',
+  selector: 'page-create-product',
   templateUrl: './create-product.component.html',
-  styleUrls: ['./create-product.component.scss']
+  styleUrls: ['../shared/create-product.component.scss']
 })
 export class CreateProductComponent implements OnInit {
   productTitle: string;
@@ -56,7 +56,6 @@ export class CreateProductComponent implements OnInit {
     key: '',
     value: ''
   };
-  categoriesNames: Array<string>;
   selectProductSubcategoryTitle: string;
 
   productPriceDropdown: Array<DropdownInterface> = [
@@ -363,7 +362,6 @@ export class CreateProductComponent implements OnInit {
     this.categoriesService.getAllCategories().subscribe({
       next: async ({ categories }) => {
         this.categories = categories;
-        this.categoriesNames = categories.map(({ name }) => name);
         const userInfoRequest = await this.refreshTokensService.refreshTokens();
 
         if (userInfoRequest) {

@@ -32,5 +32,8 @@
   "deleteRole": "Delete role",
   "seeMore": "See more",
   "sendContactMessage": "Send a contact message",
-  "postProduct": "Post product"
+  "postProduct": "Post product",
+  "editProduct": "Edit product",
+  "deleteProduct": "Delete product",
+  "clearFilters": "Clear filters"
 }

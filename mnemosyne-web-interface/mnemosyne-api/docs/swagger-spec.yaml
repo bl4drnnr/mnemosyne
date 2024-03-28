@@ -318,7 +318,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref:
+                oneOf:
                   - $ref: "#/components/schemas/HashNotFoundException"
                   - $ref: "#/components/schemas/LinkExpiredException"
       tags: *a2
@@ -1836,9 +1836,53 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductBySlugDto"
+        "404":
+          description: In case if the slug of the product has not been found, user gets
+            this error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
       tags: &a9
         - Products
       security:
+        - basicAuth: []
+    delete:
+      operationId: ProductsController_deleteProduct
+      summary: Endpoint is responsible for product deletion.
+      parameters: []
+      requestBody:
+        required: true
+        description: Body contains the ID of the product along with the full name of the
+          user for the confirmation.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteProductDto"
+      responses:
+        "201":
+          description: As a response user gets a message with the information that the
+            product has been successfully deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDeletedDto"
+        "400":
+          description: In case if the user provided the wrong full name, the following
+            error is thrown.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongDeletionConfirmationException"
+        "404":
+          description: In case if the product was not found, user gets this error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
+      tags: *a9
+      security:
+        - x-access-token: []
         - basicAuth: []
   /api/products/latest-products:
     get:
@@ -1853,41 +1897,247 @@ paths:
   /api/products/search-product:
     get:
       operationId: ProductsController_searchProduct
+      summary: Endpoint is responsible for product search on the marketplace.
       parameters:
         - name: query
-          required: true
+          required: false
           in: query
+          description: Product query
           schema:
             type: string
         - name: page
-          required: true
+          required: false
           in: query
+          description: Query for page in order to get list of products.
           schema:
             type: string
         - name: pageSize
-          required: true
+          required: false
           in: query
+          description: Query for limit in order to get list of products.
+          schema:
+            type: string
+        - name: order
+          required: false
+          in: query
+          description: Query to perform sorting by
+          schema:
+            type: string
+        - name: orderBy
+          required: false
+          in: query
+          description: ASC or DESC
+          schema:
+            type: string
+        - name: minPrice
+          required: false
+          in: query
+          description: Minimal price
+          schema:
+            type: string
+        - name: maxPrice
+          required: false
+          in: query
+          description: Maximum price
+          schema:
+            type: string
+        - name: currency
+          required: false
+          in: query
+          description: Product currency
+          schema:
+            type: string
+        - name: categories
+          required: false
+          in: query
+          description: Products categories
+          schema:
+            type: string
+        - name: subcategories
+          required: false
+          in: query
+          description: Products subcategories
           schema:
             type: string
       responses:
         "200":
-          description: ""
+          description: As a response user gets a list of products under certain criteria
+            along with number for pagination.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SearchProductsDto"
+        "400":
+          description: Bad request exception is thrown in case if there is a wrong value
+            for number, currency or orders.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ParseException"
+                  - $ref: "#/components/schemas/WrongCurrencyException"
+                  - $ref: "#/components/schemas/OrderException"
+                  - $ref: "#/components/schemas/OrderByException"
+        "404":
+          description: Not found exception is thrown in case if category or subcategory
+            has not been found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CategoryNotFoundException"
+                  - $ref: "#/components/schemas/SubcategoryNotFoundException"
       tags: *a9
       security:
         - basicAuth: []
   /api/products/create-product:
     post:
       operationId: ProductsController_createProduct
+      summary: Endpoint is responsible for the creation of the product on the
+        marketplace.
       parameters: []
       requestBody:
         required: true
+        description: Body contains all needed fields in order to create a product.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/PostProductDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets a message that the product has been created
+            and user gets redirected to the product page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductPostedDto"
+        "400":
+          description: If user tries to upload something else except of base64-encoded PNG
+            picture.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongPictureException"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/products/get-product-by-slug-to-edit:
+    get:
+      operationId: ProductsController_getProductBySlugToEdit
+      summary: Endpoint is responsible for getting the product by the slug to edition.
+      parameters:
+        - name: slug
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: As an endpoint user gets an instance of the product.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductBySlugToEditDto"
+        "404":
+          description: In case if the slug of the product has not been found, user gets
+            this error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/products/update-product:
+    patch:
+      operationId: ProductsController_updateProduct
+      summary: Endpoint is responsible for a product update.
+      parameters: []
+      requestBody:
+        required: true
+        description: Body contains all needed fields in order to create a product.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostProductDto"
+      responses:
+        "201":
+          description: As a response user gets a message that the product has been updated
+            and user gets redirected to the product page.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductUpdatedDto"
+        "404":
+          description: Not found exception is thrown in case if product category or
+            product itself is not found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ProductNotFoundException"
+                  - $ref: "#/components/schemas/CategoryNotFoundException"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/products/user-products:
+    get:
+      operationId: ProductsController_getUserProducts
+      summary: Endpoint is responsible for getting users product for listing, edition
+        or deletion. Used privately.
+      parameters:
+        - name: query
+          required: false
+          in: query
+          description: Product query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Query for page in order to get list of products.
+          schema:
+            type: string
+        - name: pageSize
+          required: false
+          in: query
+          description: Query for limit in order to get list of products.
+          schema:
+            type: string
+        - name: order
+          required: false
+          in: query
+          description: Query to perform sorting by
+          schema:
+            type: string
+        - name: orderBy
+          required: false
+          in: query
+          description: ASC or DESC
+          schema:
+            type: string
+      responses:
+        "200":
+          description: As a response user gets the list of their products along with count
+            numbers that is used in the pagination component
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProductsDto"
+        "400":
+          description: Bad request error is thrown in case if there is something wrong
+            with parsing params like pagination, order by and/or order (the
+            message will be the different as well).
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ParseException"
+                  - $ref: "#/components/schemas/OrderException"
+                  - $ref: "#/components/schemas/OrderByException"
       tags: *a9
       security:
         - x-access-token: []
@@ -3434,20 +3684,105 @@ components:
             description: travels_docs
             pictures:
               - asd
+            location: 5th Avenu
             currency: PLN
             price: "15000"
             subcategory:
               - it_books
             category: travels
+            contactPerson: John Doe
+            contactPhone: "123123123"
             productUserFirstName: Joe
             productUserLastName: Doe
           allOf:
             - $ref: "#/components/schemas/Product"
       required:
         - product
+    ProductNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Product not found error message
+          example: product-not-found
+      required:
+        - message
+    SearchProductsDto:
+      type: object
+      properties:
+        products:
+          description: The list of found by the user query products
+          example:
+            - title: My product
+              slug: my-product-123
+              mainPicture: asd
+              currency: PLN
+              price: "15000"
+              category: travels
+              subcategory: it_books
+              created_at: 2023-11-17T11:42:26.534Z
+          type: array
+          items:
+            type: string
+        count:
+          type: number
+          description: Count for the pagination
+          example: "5"
+      required:
+        - products
+        - count
+    WrongCurrencyException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Wrong currency error message
+          example: wrong-currency
+      required:
+        - message
+    CategoryNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Category not found error message
+          example: category-not-found
+      required:
+        - message
+    SubcategoryNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Subcategory not found error message
+          example: subcategory-not-found
+      required:
+        - message
+    OrderException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Order exception
+          example: order-error
+      required:
+        - message
+    OrderByException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Order by exception
+          example: order-by-error
+      required:
+        - message
     PostProductDto:
       type: object
       properties:
+        id:
+          type: string
+          description: Product ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         title:
           type: string
           description: Product name
@@ -3533,6 +3868,108 @@ components:
         - contactPerson
         - category
         - subcategory
+    ProductPostedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message that the product has been posted
+          example: product-posted
+        link:
+          type: string
+          description: Link where user will be redirected when the product is posted
+          example: https://mnemosyne.io/marketplace/product/my-product-123
+      required:
+        - message
+        - link
+    ProductBySlugToEditDto:
+      type: object
+      properties:
+        product:
+          description: Product instance by the slug
+          example:
+            title: My product
+            description: travels_docs
+            pictures:
+              - asd
+            location: 5th Avenu
+            currency: PLN
+            price: "15000"
+            subcategory:
+              - it_books
+            category: travels
+            contactPerson: John Doe
+            contactPhone: "123123123"
+          allOf:
+            - $ref: "#/components/schemas/Product"
+      required:
+        - product
+    ProductUpdatedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Response message that the product has been successfully updated
+          example: product-updated
+        link:
+          type: string
+          description: Link where user will be redirected when the product is updated
+          example: https://mnemosyne.io/marketplace/product/my-product-123
+      required:
+        - message
+        - link
+    UserProductsDto:
+      type: object
+      properties:
+        userProducts:
+          description: Payload contains the list of user products that the end user will
+            be able to see on their private dashboard
+          example:
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              title: My product
+              slug: my-product-123
+              mainPicture: asd
+              location: 5th Avenu
+              currency: PLN
+              price: "15000"
+              subcategory: it_books
+              category: travels
+              createdAt: 2023-11-17T11:42:26.534Z
+              contactPerson: "123123123"
+              contactPhone: "123123123"
+          type: array
+          items:
+            type: string
+        count:
+          type: number
+          description: Count for the pagination
+          example: "5"
+      required:
+        - userProducts
+        - count
+    DeleteProductDto:
+      type: object
+      properties:
+        fullName:
+          type: string
+          description: Full name
+          example: Joe Doe
+        productId:
+          type: string
+          description: Product ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+      required:
+        - fullName
+        - productId
+    ProductDeletedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Product deleted response message
+          example: product-deleted
+      required:
+        - message
     GetAllCategoriesDto:
       type: object
       properties:

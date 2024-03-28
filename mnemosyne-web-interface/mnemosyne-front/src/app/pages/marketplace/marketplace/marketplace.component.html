@@ -1,1 +1,226 @@
-<p>marketplace works!</p>
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="marketplace-container">
+      <div class="marketplace-area">
+        <div class="marketplace-filters">
+          <h3 class="marketplace-filters-title">
+            {{ t('marketplace.marketplaceFiltersTitle') }}
+          </h3>
+          <div class="marketplace-filters-container">
+            <p><b>{{ t('marketplace.marketplaceFiltersCategories') }}:</b></p>
+            <basic-checkbox
+              *ngFor="let category of categoriesList"
+              (checkedChange)="addCategory(category)"
+            >
+              <span content>{{ category.value }}</span>
+            </basic-checkbox>
+          </div>
+          <div *ngIf="selectedCategories.length > 0" class="marketplace-filters-container">
+            <div *ngFor="let selectedCategory of selectedCategories">
+              <p class="marketplace-filters-subtitle">
+                {{ t('marketplace.marketplaceFiltersSubcategories') }} <b>{{ selectedCategory.value }}</b>
+              </p>
+              <basic-checkbox
+                *ngFor="let subcategory of getSubcategories(selectedCategory.key)"
+                (checkedChange)="addSubcategory(subcategory)"
+              >
+                <span content>{{ subcategory.value }}</span>
+              </basic-checkbox>
+            </div>
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceFiltersPriceRange') }}:</b>
+            </p>
+            <basic-input
+              type="number"
+              [label]="t('input.priceFromLabel')"
+              [placeholder]="t('input.priceFromPlaceholder')"
+              [inputDescription]="t('input.priceFromInputDesc')"
+              [errorMessage]="t('input.priceFromError')"
+              [min]="'0'"
+              [showError]="minPriceError"
+              [value]="minPrice"
+              (valueChange)="checkProductPrice($event, 'min')"
+            />
+            <basic-input
+              type="number"
+              [label]="t('input.priceToLabel')"
+              [placeholder]="t('input.priceToPlaceholder')"
+              [inputDescription]="t('input.priceToInputDesc')"
+              [errorMessage]="t('input.priceToError')"
+              [showError]="maxPriceError"
+              [value]="maxPrice"
+              (valueChange)="checkProductPrice($event, 'max')"
+            />
+            <p class="marketplace-price-error" *ngIf="wrongPriceError">
+              {{ t('marketplace.marketplaceWrongPriceRange') }}
+            </p>
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceCurrency') }}:</b>
+            </p>
+            <basic-dropdown
+              [label]="t('dropdown.selectCurrency')"
+              [options]="productCurrencyDropdown"
+              [defaultValue]="productCurrencyDropdownValue"
+              (selectedOption)="selectProductCurrency($event)"
+            />
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceClearFilters') }}:</b>
+            </p>
+            <div class="marketplace-clear-filters-button-wrapper">
+              <basic-button
+                [label]="t('button.clearFilters')"
+                (buttonClick)="clearFilters()"
+              />
+            </div>
+          </div>
+          <div class="marketplace-filters-container">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceFiltersLayout') }}:</b>
+            </p>
+            <div class="marketplace-filters-layouts">
+              <button
+                (click)="setLayout('list')"
+                [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
+              >
+                <img
+                  [ngSrc]="listIcon"
+                  [width]="22"
+                  [height]="22"
+                  alt="list"
+                  class="layout-icon"
+                >
+              </button>
+              <button
+                (click)="setLayout('grid')"
+                [ngClass]="layoutView === 'grid' ? 'order-by-button right-border active': 'order-by-button right-border'"
+              >
+                <img
+                  [ngSrc]="gridIcon"
+                  [width]="24"
+                  [height]="24"
+                  alt="gird"
+                  class="layout-icon"
+                >
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <h1 class="marketplace-title">
+          <span>{{ t('marketplace.marketplaceWelcomeTitle') }}&nbsp;</span>
+          <basic-emoji emoji="coin.png" [width]="48" [height]="48" />
+        </h1>
+
+        <div class="marketplace-search-area">
+          <div class="marketplace-search">
+            <basic-input
+              [label]="t('input.marketplaceSearchLabel')"
+              [placeholder]="t('input.marketplaceSearchPlaceholder')"
+              [inputDescription]="t('input.marketplaceSearchInputDesc')"
+              [value]="productSearchQuery"
+              (valueChange)="changeProductSearchQuery($event)"
+            />
+          </div>
+
+          <div class="marketplace-order-items">
+            <div class="marketplace-order-item margin-right">
+              <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderBySubtitle') }}</p>
+              <div class="marketplace-order-items-buttons">
+                <button
+                  (click)="changeOrderBy('DESC')"
+                  [ngClass]="orderBy === 'DESC' ? 'order-by-button left-border active': 'order-by-button left-border'"
+                >
+                  <p class="order-by-button-label">DESC</p>
+                </button>
+                <button
+                  (click)="changeOrderBy('ASC')"
+                  [ngClass]="orderBy === 'ASC' ? 'order-by-button right-border active': 'order-by-button right-border'"
+                >
+                  <p class="order-by-button-label">ASC</p>
+                </button>
+              </div>
+            </div>
+
+            <div class="marketplace-order-item margin-left">
+              <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderSubtitle') }}</p>
+              <div>
+                <basic-dropdown
+                  [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
+                  [options]="orderOptions"
+                  [defaultValue]="orderOptionsValue"
+                  (selectedOption)="selectOrderOption($event)"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="products.length === 0">
+            <h1 class="marketplace-products-not-found">
+              {{ t('marketplace.marketplaceProductsNotFound') }}
+            </h1>
+          </div>
+
+          <div
+            class="marketplace-products-grid"
+            *ngIf="products.length > 0 && layoutView === 'grid'"
+          >
+            <page-product-preview
+              *ngFor="let product of products"
+              [layoutView]="'grid'"
+              [slug]="product.slug"
+              [mainPicture]="product.mainPicture"
+              [productTitle]="product.title"
+              [category]="product.category"
+              [subcategory]="product.subcategory"
+              [price]="product.price"
+              [currency]="product.currency"
+              [createdAt]="product.createdAt"
+              [showAdditionalInfo]="false"
+              [showManagementButtons]="false"
+            />
+          </div>
+
+          <div
+            class="marketplace-products-list"
+            *ngIf="products.length > 0 && layoutView === 'list'"
+          >
+            <page-product-preview
+              *ngFor="let product of products"
+              [layoutView]="'list'"
+              [slug]="product.slug"
+              [mainPicture]="product.mainPicture"
+              [productTitle]="product.title"
+              [category]="product.category"
+              [subcategory]="product.subcategory"
+              [price]="product.price"
+              [currency]="product.currency"
+              [createdAt]="product.createdAt"
+              [showAdditionalInfo]="false"
+              [showManagementButtons]="false"
+            />
+          </div>
+
+          <div class="marketplace-pagination" *ngIf="products.length > 0">
+            <basic-pagination
+              [itemsPerPageLabel]="t('dropdown.productsPerPage')"
+              [currentPage]="page"
+              [itemsPerPage]="pageSize"
+              [totalItems]="totalItems"
+              (setCurrentPage)="page = $event"
+              (setItemsPerPage)="pageSize = $event"
+              (fetchItems)="getProducts()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</layout-default>

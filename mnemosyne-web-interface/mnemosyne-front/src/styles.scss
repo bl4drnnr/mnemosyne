@@ -7,6 +7,17 @@
   font-family: $main-font;
 }
 
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
 b {
   font-weight: 600;
 }

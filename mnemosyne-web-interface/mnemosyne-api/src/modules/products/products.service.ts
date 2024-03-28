@@ -18,6 +18,21 @@ import { WrongPictureException } from '@exceptions/wrong-picture.exception';
 import { CryptoHashAlgorithm } from '@interfaces/crypto-hash-algorithm.enum';
 import { CryptographicService } from '@shared/cryptographic.service';
 import { CategoriesService } from '@modules/categories.service';
+import { ProductNotFoundException } from '@exceptions/product-not-found.exception';
+import { ProductUpdatedDto } from '@dto/product-updated.dto';
+import { GetProductBySlugToEditInterface } from '@interfaces/get-product-by-slug-to-edit.interface';
+import { ProductBySlugToEditDto } from '@dto/product-by-slug-to-edit.dto';
+import { Category } from '@models/category.model';
+import { GetUserProductsInterface } from '@interfaces/get-user-products.interface';
+import { UserProductsDto } from '@dto/user-products.dto';
+import { OrderException } from '@exceptions/order.exception';
+import { OrderByException } from '@exceptions/order-by.exception';
+import { DeleteProductInterface } from '@interfaces/delete-product.interface';
+import { ProductDeletedDto } from '@dto/product-deleted.dto';
+import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-confirmation.exception';
+import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
+import { CategoryNotFoundException } from '@exceptions/category-not-found.exception';
+import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
 
 @Injectable()
 export class ProductsService {
@@ -31,19 +46,27 @@ export class ProductsService {
 
   async getProductBySlug({ slug, trx }: GetProductBySlugInterface) {
     const foundProduct = await this.productRepository.findOne({
-      include: [{ model: User, attributes: ['firstName', 'lastName'] }],
+      include: [
+        { model: User, attributes: ['firstName', 'lastName'] },
+        { model: Category, attributes: ['name'] }
+      ],
       where: { slug },
       transaction: trx
     });
+
+    if (!foundProduct) throw new ProductNotFoundException();
 
     const product = {
       title: foundProduct.title,
       description: foundProduct.description,
       pictures: foundProduct.pictures,
+      location: foundProduct.location,
       currency: foundProduct.currency,
       price: foundProduct.price,
       subcategory: foundProduct.subcategory,
-      category: foundProduct.category,
+      category: foundProduct.category.name,
+      contactPerson: foundProduct.contactPerson,
+      contactPhone: foundProduct.contactPhone,
       productUserFirstName: foundProduct.user.firstName,
       productUserLastName: foundProduct.user.lastName
     };
@@ -52,16 +75,19 @@ export class ProductsService {
   }
 
   async getLatestProducts({ trx }: GetLatestProductsInterface) {
+    const attributes = [
+      'title',
+      'slug',
+      'pictures',
+      'location',
+      'currency',
+      'price',
+      'subcategory',
+      'category'
+    ];
+
     const products = await this.productRepository.findAll({
-      attributes: [
-        'title',
-        'slug',
-        'pictures',
-        'currency',
-        'price',
-        'category',
-        'subcategory'
-      ],
+      attributes,
       order: [['created_at', 'DESC']],
       limit: 10,
       offset: 0,
@@ -69,23 +95,43 @@ export class ProductsService {
     });
 
     const latestProducts = products.map(
-      ({ title, slug, pictures, currency, price, category, subcategory }) => {
-        return {
-          title,
-          slug,
-          pictures,
-          currency,
-          price,
-          category,
-          subcategory
-        };
-      }
+      ({
+        title,
+        slug,
+        pictures,
+        location,
+        currency,
+        price,
+        category,
+        subcategory
+      }) => ({
+        title,
+        slug,
+        mainPicture: pictures[0],
+        location,
+        currency,
+        price,
+        category: category.name,
+        subcategory
+      })
     );
 
     return new LatestProductsDto(latestProducts);
   }
 
-  async searchProduct({ query, page, pageSize, trx }: SearchProductInterface) {
+  async searchProduct({
+    query,
+    page,
+    pageSize,
+    order,
+    orderBy,
+    minPrice,
+    maxPrice,
+    currency,
+    categories,
+    subcategories,
+    trx
+  }: SearchProductInterface) {
     const offset = Number(page) * Number(pageSize);
     const limit = Number(pageSize);
 
@@ -94,36 +140,144 @@ export class ProductsService {
 
     if (paginationParseError) throw new ParseException();
 
-    const products = await this.productRepository.findAll({
-      where: {
-        [Op.or]: [
-          { title: { [Op.iLike]: `%${query}%` } },
-          { description: { [Op.iLike]: `%${query}%` } },
-          { slug: { [Op.iLike]: `%${query}%` } }
-        ]
-      },
-      include: [{ model: User, attributes: ['first_name', 'last_name'] }],
-      attributes: ['picture', 'slug', 'name', 'created_at', 'price'],
+    let minPriceNumber: number;
+    let maxPriceNumber: number;
+
+    if (minPrice) {
+      minPriceNumber = Number(minPrice);
+
+      if (isNaN(minPriceNumber) || minPriceNumber < 0)
+        throw new ParseException();
+    }
+
+    if (maxPrice) {
+      maxPriceNumber = Number(maxPrice);
+
+      if (isNaN(maxPriceNumber) || maxPriceNumber < 0)
+        throw new ParseException();
+    }
+
+    if (!['PLN', 'USD', 'EUR', 'all'].includes(currency))
+      throw new WrongCurrencyException();
+
+    const providedCategories = categories
+      .split(',')
+      .map((c) => c.toLowerCase())
+      .filter((c) => c !== '');
+    const providedSubcategories = subcategories
+      .split(',')
+      .map((c) => c.toLowerCase())
+      .filter((c) => c !== '');
+
+    if (providedCategories.length > 0) {
+      const allCategories = await this.categoriesService.getAllCategories({
+        trx
+      });
+      const allCategoriesNames = allCategories.categories.map(
+        ({ name }) => name
+      );
+
+      providedCategories.forEach((categoryName) => {
+        if (!allCategoriesNames.includes(categoryName))
+          throw new CategoryNotFoundException();
+      });
+    }
+
+    if (providedSubcategories.length > 0) {
+      const allSubcategoriesNames =
+        await this.categoriesService.getAllSubcategories({ trx });
+
+      providedSubcategories.forEach((subcategoryName) => {
+        if (!allSubcategoriesNames.includes(subcategoryName))
+          throw new SubcategoryNotFoundException();
+      });
+    }
+
+    const attributes = [
+      'title',
+      'slug',
+      'pictures',
+      'currency',
+      'price',
+      'subcategory',
+      'createdAt',
+      'created_at'
+    ];
+
+    const where = {
+      [Op.and]: []
+    };
+
+    if (query) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${query}%` } },
+        { description: { [Op.iLike]: `%${query}%` } },
+        { slug: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    if (minPrice && maxPrice) {
+      where[Op.and].push([
+        { price: { [Op.gte]: minPrice } },
+        { price: { [Op.lte]: maxPrice } }
+      ]);
+    } else if (minPrice) {
+      where[Op.and].push([{ price: { [Op.gte]: minPrice } }]);
+    } else if (maxPrice) {
+      where[Op.and].push([{ price: { [Op.lte]: maxPrice } }]);
+    }
+
+    if (currency !== 'all') {
+      where[Op.and].push([{ currency }]);
+    }
+
+    if (providedSubcategories.length > 0) {
+      where[Op.and].push({ subcategory: { [Op.in]: providedSubcategories } });
+    }
+
+    if (providedCategories.length > 0) {
+      where[Op.and].push({
+        '$category.name$': { [Op.in]: providedCategories }
+      });
+    }
+
+    if (!attributes.includes(order)) throw new OrderException();
+    if (!['DESC', 'ASC'].includes(orderBy.toUpperCase()))
+      throw new OrderByException();
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where,
+      attributes,
       limit,
       offset,
+      include: [{ model: Category, attributes: ['name'] }],
+      order: [[order, orderBy]],
       transaction: trx
     });
 
-    const foundProducts = products.map(
-      ({ pictures, slug, title, createdAt, price, user }) => {
-        return {
-          pictures,
-          slug,
-          title,
-          createdAt,
-          price,
-          productUserFirstName: user.firstName,
-          productUserLastName: user.lastName
-        };
-      }
+    const foundProducts = rows.map(
+      ({
+        title,
+        slug,
+        pictures,
+        currency,
+        price,
+        category,
+        subcategory,
+        createdAt
+      }) => ({
+        title,
+        slug,
+        mainPicture: pictures[0],
+        currency,
+        price,
+        category: category.name,
+        subcategory,
+        createdAt
+      })
     );
 
-    return new SearchProductsDto(foundProducts);
+    return new SearchProductsDto(foundProducts, count);
   }
 
   async createProduct({ userId, payload, trx }: PostProductInterface) {
@@ -141,40 +295,7 @@ export class ProductsService {
     } = payload;
 
     const slug = this.generateProductSlug(title);
-    const picturesHashes = [];
-
-    const { accessKeyId, secretAccessKey, bucketName } =
-      this.configService.awsSdkCredentials;
-
-    const s3 = new S3({ accessKeyId, secretAccessKey });
-
-    for (const pic of pictures) {
-      const base64Data = Buffer.from(
-        pic.replace(/^data:image\/\w+;base64,/, ''),
-        'base64'
-      );
-
-      const type = pic.split(';')[0].split('/')[1];
-
-      if (type !== 'png') throw new WrongPictureException();
-
-      const pictureHash = this.cryptographicService.hash({
-        data: base64Data.toString(),
-        algorithm: CryptoHashAlgorithm.MD5
-      });
-
-      picturesHashes.push(pictureHash);
-
-      const params = {
-        Bucket: bucketName,
-        Key: `products/${pictureHash}.${type}`,
-        Body: base64Data,
-        ContentEncoding: 'base64',
-        ContentType: `image/${type}`
-      };
-
-      await s3.upload(params).promise();
-    }
+    const picturesHashes = await this.uploadProductPictures(pictures);
 
     const { id: categoryId } = await this.categoriesService.getCategoryByName({
       name: category,
@@ -206,6 +327,216 @@ export class ProductsService {
     return new ProductPostedDto(productLink);
   }
 
+  async getProductBySlugToEdit({
+    userId,
+    slug,
+    trx
+  }: GetProductBySlugToEditInterface) {
+    const productToEdit = await this.productRepository.findOne({
+      where: { userId, slug },
+      include: [{ model: Category, attributes: ['name'] }],
+      transaction: trx
+    });
+
+    if (!productToEdit) throw new ProductNotFoundException();
+
+    const product = {
+      id: productToEdit.id,
+      title: productToEdit.title,
+      description: productToEdit.description,
+      pictures: productToEdit.pictures,
+      location: productToEdit.location,
+      currency: productToEdit.currency,
+      price: productToEdit.price,
+      subcategory: productToEdit.subcategory,
+      category: productToEdit.category.name,
+      contactPerson: productToEdit.contactPerson,
+      contactPhone: productToEdit.contactPhone
+    };
+
+    return new ProductBySlugToEditDto(product);
+  }
+
+  async updateProduct({ userId, payload, trx }: PostProductInterface) {
+    const {
+      id,
+      title,
+      description,
+      pictures,
+      currency,
+      price,
+      location,
+      contactPhone,
+      contactPerson,
+      category,
+      subcategory
+    } = payload;
+
+    const editedProduct = await this.productRepository.findOne({
+      where: { userId, id },
+      transaction: trx
+    });
+
+    if (!editedProduct) throw new ProductNotFoundException();
+
+    const updatedSlug =
+      editedProduct.title !== title
+        ? this.generateProductSlug(title)
+        : editedProduct.slug;
+
+    const existingPictures = editedProduct.pictures;
+    const updatedPictures = this.updatePictures(existingPictures, pictures);
+    const replacedPicturesHashes = [];
+
+    for (const pic of updatedPictures) {
+      if (this.isBase64Image(pic))
+        replacedPicturesHashes.push(await this.uploadProductPicture(pic));
+      else replacedPicturesHashes.push(pic);
+    }
+
+    const { id: categoryId } = await this.categoriesService.getCategoryByName({
+      name: category,
+      trx
+    });
+
+    await this.productRepository.update(
+      {
+        title,
+        slug: updatedSlug,
+        description,
+        pictures: replacedPicturesHashes,
+        currency,
+        price,
+        location,
+        contactPhone,
+        contactPerson,
+        categoryId,
+        subcategory
+      },
+      {
+        returning: false,
+        where: { userId, id },
+        transaction: trx
+      }
+    );
+
+    const productLink = `/marketplace/product/${updatedSlug}`;
+
+    return new ProductUpdatedDto(productLink);
+  }
+
+  async getUserProducts({
+    query,
+    page,
+    pageSize,
+    order,
+    orderBy,
+    userId,
+    trx
+  }: GetUserProductsInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
+    const attributes = [
+      'id',
+      'title',
+      'slug',
+      'pictures',
+      'location',
+      'currency',
+      'price',
+      'subcategory',
+      'contactPerson',
+      'contactPhone',
+      'createdAt',
+      'created_at'
+    ];
+    const where = { userId };
+
+    if (query) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${query}%` } },
+        { description: { [Op.iLike]: `%${query}%` } },
+        { slug: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    if (!attributes.includes(order)) throw new OrderException();
+    if (!['DESC', 'ASC'].includes(orderBy.toUpperCase()))
+      throw new OrderByException();
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where,
+      attributes,
+      limit,
+      offset,
+      include: [{ model: Category, attributes: ['name'] }],
+      order: [[order, orderBy]],
+      transaction: trx
+    });
+
+    const foundProducts = rows.map(
+      ({
+        id,
+        title,
+        slug,
+        pictures,
+        location,
+        currency,
+        price,
+        subcategory,
+        category,
+        createdAt,
+        contactPerson,
+        contactPhone
+      }) => ({
+        id,
+        title,
+        slug,
+        mainPicture: pictures[0],
+        location,
+        currency,
+        price,
+        subcategory,
+        category: category.name,
+        createdAt,
+        contactPerson,
+        contactPhone
+      })
+    );
+
+    return new UserProductsDto(foundProducts, count);
+  }
+
+  async deleteProduct({ userId, payload, trx }: DeleteProductInterface) {
+    const { productId, fullName } = payload;
+
+    const deletedProduct = await this.productRepository.findOne({
+      where: { userId, id: productId },
+      include: [{ model: User, attributes: ['firstName', 'lastName'] }],
+      transaction: trx
+    });
+
+    if (!deletedProduct) throw new ProductNotFoundException();
+
+    const { firstName, lastName } = deletedProduct.user;
+
+    if (fullName !== `${firstName} ${lastName}`)
+      throw new WrongDeletionConfirmationException();
+
+    await this.productRepository.destroy({
+      where: { userId, id: productId },
+      transaction: trx
+    });
+
+    return new ProductDeletedDto();
+  }
+
   private generateProductSlug(productName: string) {
     let slug = productName.toLowerCase();
     slug = slug.replace(/\s+/g, '-');
@@ -216,5 +547,72 @@ export class ProductsService {
     slug += `-${randomNumber}`;
 
     return slug;
+  }
+
+  private async uploadProductPictures(productPictures: Array<string>) {
+    const picturesHashes = [];
+
+    for (const pic of productPictures) {
+      picturesHashes.push(await this.uploadProductPicture(pic));
+    }
+
+    return picturesHashes;
+  }
+
+  private async uploadProductPicture(productPicture: string) {
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    const base64Data = Buffer.from(
+      productPicture.replace(/^data:image\/\w+;base64,/, ''),
+      'base64'
+    );
+
+    const type = productPicture.split(';')[0].split('/')[1];
+
+    if (type !== 'png') throw new WrongPictureException();
+
+    const pictureHash = this.cryptographicService.hash({
+      data: base64Data.toString() + Date.now().toString(),
+      algorithm: CryptoHashAlgorithm.MD5
+    });
+
+    const params = {
+      Bucket: bucketName,
+      Key: `products/${pictureHash}.${type}`,
+      Body: base64Data,
+      ContentEncoding: 'base64',
+      ContentType: `image/${type}`
+    };
+
+    await s3.upload(params).promise();
+
+    return pictureHash;
+  }
+
+  private updatePictures(existingPics: Array<string>, newPics: Array<string>) {
+    if (newPics.length > existingPics.length) {
+      const newIndexes = newPics.filter((pic) => !existingPics.includes(pic));
+      existingPics.push(...newIndexes);
+    }
+
+    if (newPics.length < existingPics.length) {
+      const deleteIndexes = existingPics.filter(
+        (pic) => !newPics.includes(pic)
+      );
+      deleteIndexes.forEach((pic) => {
+        const index = existingPics.indexOf(pic);
+        if (index !== -1) existingPics.splice(index, 1);
+      });
+    }
+
+    return existingPics;
+  }
+
+  private isBase64Image(str: string): boolean {
+    const base64Pattern = /^data:image\/(png);base64,([A-Za-z0-9+/=])+$/;
+    return base64Pattern.test(str);
   }
 }

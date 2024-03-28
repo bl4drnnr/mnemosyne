@@ -9,7 +9,7 @@ import { StaticService } from '@services/static.service';
 import { ConfirmCompanyAccountPayload } from '@payloads/confirm-company-account.interface';
 
 @Component({
-  selector: 'app-company-member-account-confirmation',
+  selector: 'page-company-member-account-confirmation',
   templateUrl: './company-member-account-confirmation.component.html',
   styleUrls: ['../shared/credentials.component.scss'],
   animations: [

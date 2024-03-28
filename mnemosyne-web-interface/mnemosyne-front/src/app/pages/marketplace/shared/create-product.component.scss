@@ -74,3 +74,12 @@
 .flex {
   display: flex;
 }
+
+.product-modification-notification {
+  font-size: small;
+  margin-top: 10px !important;
+
+  &.changed {
+    color: var(--error-color);
+  }
+}

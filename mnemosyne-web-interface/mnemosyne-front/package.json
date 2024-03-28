@@ -24,6 +24,7 @@
     "@angular/router": "^16.2.3",
     "@ngneat/transloco": "^4.3.0",
     "@ngneat/transloco-persist-lang": "^4.0.0",
+    "dayjs": "^1.11.10",
     "file-saver": "^2.0.5",
     "lottie-web": "^5.12.2",
     "ngx-lottie": "^10.0.0",

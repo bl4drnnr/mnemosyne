@@ -1,0 +1,6 @@
+{
+  "welcomeTitle": "Witaj, {{ firstName }} {{ lastName }}! Miło cię widzieć!",
+  "productsListTitle": "Oto lista wszystkich Twoich produktów",
+  "selectOrderBySubtitle": "Wybierz kolejność, w jakiej chcesz posortować produkty. ASC reprezentuje sortowanie w porządku rosnącym, a DESC reprezentuje sortowanie w porządku malejącym.",
+  "selectOrderSubtitle": "Wybierz pole, w którym zostanie wykonane zamówienie (ASC lub DESC). Domyślnym polem jest data utworzenia produktu."
+}

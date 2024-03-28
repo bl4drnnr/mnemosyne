@@ -1,0 +1,128 @@
+@import 'variables';
+
+.product-block {
+  width: 100%;
+  border: 1px solid var(--border-color);
+  margin-bottom: 25px;
+  border-radius: 8px;
+  padding: 25px;
+  transition: .3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-hover);
+  }
+}
+
+.product-picture-preview {
+  border-radius: 8px;
+  width: 300px;
+  height: 200px;
+}
+
+.no-picture-icon {
+  filter: var(--svg-color);
+  border-radius: 8px;
+  width: 300px;
+  height: 200px;
+  border: 1px solid var(--border-color);
+}
+
+.product-management-buttons {
+  margin-top: 10px;
+  display: flex;
+}
+
+.product-management-button {
+  width: 100%;
+
+  &.margin-right {
+    margin-right: 5px;
+  }
+
+  &.margin-left {
+    margin-left: 5px;
+  }
+}
+
+.product-additional-info {
+  border-top: 1px solid var(--border-color);
+  padding-top: 10px;
+  margin: 10px 0;
+}
+
+.deletion-button {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid $color-lightgray-third;
+}
+
+.modal-paragraph {
+  font-size: 14px;
+  opacity: .75;
+  margin: 20px 0;
+  color: $color-black;
+}
+
+.product-list-item {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  margin-bottom: 25px;
+  border-radius: 8px;
+  padding: 25px;
+  transition: .3s;
+  cursor: pointer;
+
+  &.center {
+    align-items: center;
+  }
+
+  &:hover {
+    background-color: var(--color-hover);
+  }
+}
+
+.product-picture-preview-list {
+  border-radius: 8px;
+  width: 300px;
+  height: 200px;
+}
+
+.no-picture-icon-list-wrapper {
+  width: 300px;
+  height: 200px;
+}
+
+.no-picture-icon-list {
+  filter: var(--svg-color);
+  border-radius: 8px;
+  width: 300px;
+  height: 200px;
+  border: 1px solid var(--border-color);
+}
+
+.product-info-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  margin-left: 20px;
+}
+
+.product-info-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+.layout-subtitle {
+  border-top: 1px solid var(--border-color);
+  margin-top: 10px;
+  padding-top: 10px;
+}

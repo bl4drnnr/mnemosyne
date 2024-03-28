@@ -1,2 +1,142 @@
 <layout-default>
+  <ng-container *transloco="let t">
+    <div class="dashboard-container">
+      <div class="dashboard-block">
+        <h1 class="welcome-dashboard-title">
+          <span>{{ t('dashboard.welcomeTitle', { firstName: userInfo.firstName, lastName: userInfo.lastName }) }}&nbsp;</span>
+          <basic-emoji emoji="dizzy.png" [width]="48" [height]="48"/>
+        </h1>
+      </div>
+
+      <div class="dashboard-block">
+        <h2>{{ t('dashboard.productsListTitle') }}</h2>
+
+        <div class="dashboard-products-input">
+          <div class="dashboard-search-input">
+            <basic-input
+              [label]="t('input.searchForYourProductsLabel')"
+              [placeholder]="t('input.searchForProductsPlaceholder')"
+              [inputDescription]="t('input.searchForProductsInputDesc')"
+              [value]="query"
+              (valueChange)="changeQuery($event)"
+            />
+          </div>
+          <div class="dashboard-layouts">
+            <button
+              (click)="setLayout('list')"
+              [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
+            >
+              <img
+                [ngSrc]="listIcon"
+                [width]="22"
+                [height]="22"
+                alt="list"
+                class="layout-icon"
+              >
+            </button>
+            <button
+              (click)="setLayout('grid')"
+              [ngClass]="layoutView === 'grid' ? 'order-by-button right-border active': 'order-by-button right-border'"
+            >
+              <img
+                [ngSrc]="gridIcon"
+                [width]="24"
+                [height]="24"
+                alt="gird"
+                class="layout-icon"
+              >
+            </button>
+          </div>
+        </div>
+
+        <div class="dashboard-order-items">
+          <div class="dashboard-order-item margin-right">
+            <p class="dashboard-order-desc">{{ t('dashboard.selectOrderBySubtitle') }}</p>
+            <div class="dashboard-order-items">
+              <button
+                (click)="changeOrderBy('DESC')"
+                [ngClass]="orderBy === 'DESC' ? 'order-by-button left-border active': 'order-by-button left-border'"
+              >
+                <p class="order-by-button-label">DESC</p>
+              </button>
+              <button
+                (click)="changeOrderBy('ASC')"
+                [ngClass]="orderBy === 'ASC' ? 'order-by-button right-border active': 'order-by-button right-border'"
+              >
+                <p class="order-by-button-label">ASC</p>
+              </button>
+            </div>
+          </div>
+
+          <div class="dashboard-order-item margin-left">
+            <p class="dashboard-order-desc">{{ t('dashboard.selectOrderSubtitle') }}</p>
+            <div>
+              <basic-dropdown
+                [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
+                [options]="orderOptions"
+                [defaultValue]="orderOptionsValue"
+                (selectedOption)="selectOrderOption($event)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="dashboard-products-grid" *ngIf="layoutView === 'grid'">
+          <page-product-preview
+            *ngFor="let product of userProducts"
+            [layoutView]="'grid'"
+            [productId]="product.id"
+            [slug]="product.slug"
+            [mainPicture]="product.mainPicture"
+            [productTitle]="product.title"
+            [category]="product.category"
+            [subcategory]="product.subcategory"
+            [price]="product.price"
+            [currency]="product.currency"
+            [location]="product.location"
+            [contactPerson]="product.contactPerson"
+            [contactPhone]="product.contactPhone"
+            [createdAt]="product.createdAt"
+            [showAdditionalInfo]="true"
+            [showManagementButtons]="true"
+            (deleteProductEvent)="deleteProduct($event)"
+          />
+        </div>
+
+        <div class="dashboard-products-list" *ngIf="layoutView === 'list'">
+          <page-product-preview
+            *ngFor="let product of userProducts"
+            [layoutView]="'list'"
+            [productId]="product.id"
+            [slug]="product.slug"
+            [mainPicture]="product.mainPicture"
+            [productTitle]="product.title"
+            [category]="product.category"
+            [subcategory]="product.subcategory"
+            [price]="product.price"
+            [currency]="product.currency"
+            [location]="product.location"
+            [contactPerson]="product.contactPerson"
+            [contactPhone]="product.contactPhone"
+            [createdAt]="product.createdAt"
+            [showAdditionalInfo]="true"
+            [showManagementButtons]="true"
+            (deleteProductEvent)="deleteProduct($event)"
+          />
+        </div>
+
+        <div class="dashboard-products-pagination">
+          <basic-pagination
+            [itemsPerPageLabel]="t('dropdown.productsPerPage')"
+            [currentPage]="page"
+            [itemsPerPage]="pageSize"
+            [totalItems]="totalItems"
+            (setCurrentPage)="page = $event"
+            (setItemsPerPage)="pageSize = $event"
+            (fetchItems)="getUserProducts()"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </layout-default>

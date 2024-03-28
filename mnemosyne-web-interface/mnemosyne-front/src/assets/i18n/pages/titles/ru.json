@@ -13,5 +13,9 @@
   "emailChangeConfirm": "Mnemosyne | Подтверждение изменения по электронной почте",
   "login": "Mnemosyne | Войти",
   "contact": "Mnemosyne | Контакт",
-  "createProduct": "Mnemosyne | Добавить продукт"
+  "createProduct": "Mnemosyne | Добавить продукт",
+  "product": "Mnemosyne | Продукт - {{ product }}",
+  "productNotFound": "Mnemosyne | Ой... Товар не найден",
+  "editProduct": "Mnemosyne | Модификация продукта - {{ product }}",
+  "marketplace": "Mnemosyne | Маркетплейс"
 }

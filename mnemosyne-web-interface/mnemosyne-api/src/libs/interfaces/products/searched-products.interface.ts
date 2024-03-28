@@ -1,9 +1,12 @@
+import { ProductCurrency } from '@interfaces/product-currency.enum';
+
 export interface SearchedProductsInterface {
-  pictures: Array<string>;
-  slug: string;
   title: string;
-  createdAt: Date;
+  slug: string;
+  mainPicture: string;
+  currency: ProductCurrency;
   price: number;
-  productUserFirstName: string;
-  productUserLastName: string;
+  category: string;
+  subcategory: string;
+  createdAt: Date;
 }
