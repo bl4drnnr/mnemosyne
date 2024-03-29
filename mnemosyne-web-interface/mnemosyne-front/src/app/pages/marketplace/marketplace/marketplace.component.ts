@@ -154,6 +154,7 @@ export class MarketplaceComponent implements OnInit {
     this.getProducts();
   }
 
+  // @TODO REFACTOR HEADER, FIX CORS, CREATE PRODUCT PAGE, CREATE HOME PAGE
   clearFilters() {
     this.initCurrencies().then(async () => {
       this.page = '0';
