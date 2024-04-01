@@ -19,6 +19,7 @@ export class HeaderComponent implements OnInit {
   @Input() showHeaderBurger = true;
   @Output() openSidebar = new EventEmitter<void>();
 
+  
   scrolled = false;
   lastScrollPosition = 0;
   isUserLoggedIn = false;
