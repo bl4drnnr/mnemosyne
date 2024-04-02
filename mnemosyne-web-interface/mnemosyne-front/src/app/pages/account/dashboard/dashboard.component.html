@@ -1,4 +1,6 @@
-<layout-default>
+<layout-default
+  [userInfo]="userInfo"
+>
   <ng-container *transloco="let t">
     <div class="dashboard-container">
       <div class="dashboard-block">
@@ -70,7 +72,7 @@
 
           <div class="dashboard-order-item margin-left">
             <p class="dashboard-order-desc">{{ t('dashboard.selectOrderSubtitle') }}</p>
-            <div>
+            <div *ngIf="orderOptionsValue">
               <basic-dropdown
                 [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
                 [options]="orderOptions"

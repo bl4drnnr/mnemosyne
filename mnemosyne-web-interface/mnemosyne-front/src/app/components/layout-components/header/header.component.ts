@@ -19,10 +19,11 @@ export class HeaderComponent implements OnInit {
   @Input() showHeaderBurger = true;
   @Output() openSidebar = new EventEmitter<void>();
 
-  
   scrolled = false;
   lastScrollPosition = 0;
   isUserLoggedIn = false;
+
+  userIcon = `${this.envService.getStaticStorageLink}/icons/user-icon.svg`;
 
   constructor(
     private readonly authenticationService: AuthenticationService,

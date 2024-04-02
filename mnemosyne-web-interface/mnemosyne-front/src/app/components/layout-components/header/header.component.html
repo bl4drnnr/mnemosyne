@@ -1,19 +1,31 @@
-<header [ngClass]="{'hide': scrolled}">
-  <div class="header-content">
-    <div class="header-side">
-      <img
-        *ngIf="showHeaderBurger"
-        class="sidebar-burger"
-        (click)="openSidebar.emit()"
-        [ngSrc]="staticStorageLink + '/icons/hamburger.svg'"
-        [width]="25"
-        [height]="25"
-        alt="burger"
-      >
-    </div>
+<ng-container *transloco="let t">
+  <header [ngClass]="{'hide': scrolled}">
+    <div class="header-content">
+      <div class="header-side">
+        <img
+          *ngIf="showHeaderBurger"
+          class="sidebar-burger"
+          (click)="openSidebar.emit()"
+          [ngSrc]="staticStorageLink + '/icons/hamburger.svg'"
+          [width]="25"
+          [height]="25"
+          alt="burger"
+        >
+      </div>
 
-    <div class="header-side" *ngIf="!isUserLoggedIn">
-      <ng-container *transloco="let t">
+      <div class="header-products-search">
+        <div class="header-products-search-input">
+          <basic-input [placeholder]="t('input.searchForProductsHeader')"/>
+        </div>
+        <div class="header-products-search-btn">
+          <basic-button
+            [label]="t('button.goToMarketplace')"
+            (buttonClick)="handleRedirect('marketplace')"
+          />
+        </div>
+      </div>
+
+      <div class="header-side" *ngIf="!isUserLoggedIn">
         <basic-button
           [label]="t('button.logIn')"
           (buttonClick)="handleRedirect('login')"
@@ -25,26 +37,23 @@
             (buttonClick)="handleRedirect('registration')"
           />
         </div>
-      </ng-container>
-      <basic-theme-toggle/>
-      <div class="lang-button-wrapper">
-        <basic-change-language/>
-      </div>
-    </div>
-
-    <div class="header-side" *ngIf="isUserLoggedIn">
-      <ng-container *transloco="let t">
-        <div class="header-button-wrapper">
-          <basic-button
-            [label]="t('button.postProduct')"
-            [fillButton]="true"
-            (buttonClick)="handleRedirect('marketplace/create-product')"
-          />
+        <basic-theme-toggle/>
+        <div class="lang-button-wrapper">
+          <basic-change-language/>
         </div>
-        <basic-button
-          [label]="t('button.dashboard')"
-          (buttonClick)="handleRedirect('account/dashboard')"
-        />
+      </div>
+
+      <div class="header-side" *ngIf="isUserLoggedIn">
+        <div class="user-account-wrapper" (click)="handleRedirect('account/dashboard')">
+          <p class="user-account-title">{{ t('sidebar.yourAccountSidebarTitle') }}</p>
+          <img
+            class="user-account-icon"
+            [ngSrc]="userIcon"
+            [width]="24"
+            [height]="24"
+            alt="user"
+          >
+        </div>
         <div class="header-button-wrapper">
           <basic-button
             [label]="t('button.logOut')"
@@ -52,11 +61,11 @@
             (buttonClick)="logout()"
           />
         </div>
-      </ng-container>
-      <basic-theme-toggle/>
-      <div class="lang-button-wrapper">
-        <basic-change-language/>
+        <basic-theme-toggle/>
+        <div class="lang-button-wrapper">
+          <basic-change-language/>
+        </div>
       </div>
     </div>
-  </div>
-</header>
+  </header>
+</ng-container>

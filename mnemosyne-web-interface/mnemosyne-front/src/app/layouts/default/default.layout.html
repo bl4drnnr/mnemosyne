@@ -2,6 +2,7 @@
   <dashboard-sidebar
     *ngIf="showSideBar"
     [isSidebarOpen]="isSidebarOpen"
+    [userInfo]="userInfo"
     (closeSidebar)="isSidebarOpen = false"
   />
 

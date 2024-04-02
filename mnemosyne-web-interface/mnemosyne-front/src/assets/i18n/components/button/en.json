@@ -35,5 +35,6 @@
   "postProduct": "Post product",
   "editProduct": "Edit product",
   "deleteProduct": "Delete product",
-  "clearFilters": "Clear filters"
+  "clearFilters": "Clear filters",
+  "goToMarketplace": "Marketplace"
 }

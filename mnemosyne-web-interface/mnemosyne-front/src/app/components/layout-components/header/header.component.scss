@@ -26,6 +26,21 @@ header {
   align-items: center;
 }
 
+.header-products-search {
+  width: 500px;
+  display: flex;
+  margin-top: 20px;
+}
+
+.header-products-search-input {
+  width: 100%;
+  margin-right: 10px;
+}
+
+.header-products-search-btn {
+  min-width: 100px;
+}
+
 .header-button-wrapper {
   margin: 0 10px;
 }
@@ -41,4 +56,28 @@ header {
 
 .hide {
   transform: translateY(-100%);
+}
+
+.user-account-wrapper {
+  border: 1px solid var(--main-color);
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+  transition: .2s;
+  position: relative;
+
+  &:hover {
+    background-color: var(--color-hover);
+  }
+}
+
+.user-account-icon {
+  filter: var(--svg-color);
+}
+
+.user-account-title {
+  margin: 0 5px;
 }

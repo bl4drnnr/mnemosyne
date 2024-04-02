@@ -1,6 +1,9 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { Router } from '@angular/router';
+import {AuthenticationService} from "@services/authentication.service";
+import {UserInfoResponse} from "@responses/user-info.interface";
+import {EnvService} from "@shared/env.service";
 
 @Component({
   selector: 'dashboard-sidebar',
@@ -18,19 +21,47 @@ import { Router } from '@angular/router';
     ])
   ]
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
   @Input() isSidebarOpen = false;
-
+  @Input() userInfo: UserInfoResponse;
   @Output() closeSidebar = new EventEmitter<void>();
 
-  constructor(private readonly router: Router) {}
+  staticStorageLink = this.envService.getStaticStorageLink;
+
+  constructor(
+    private readonly authenticationService: AuthenticationService,
+    private readonly envService: EnvService,
+    private readonly router: Router
+  ) {}
+
+  userProfilePictureLink: string = `${this.staticStorageLink}/users-profile-pictures/default.png`;
 
   handleCloseSidebar() {
     this.isSidebarOpen = false;
     this.closeSidebar.emit();
   }
 
+  logout() {
+    this.authenticationService.logout().subscribe({
+      next: () => this.logoutUser(),
+      error: () => this.logoutUser()
+    });
+  }
+
+  async logoutUser() {
+    localStorage.removeItem('_at');
+    await this.handleRedirect('');
+  }
+
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  ngOnInit() {
+    if (this.userInfo) {
+      this.userProfilePictureLink = this.userInfo.isProfilePicPresent
+        ? `${this.staticStorageLink}/users-profile-pictures/${this.userInfo.userId}.png`
+        : `${this.staticStorageLink}/users-profile-pictures/default.png`;
+    }
   }
 }

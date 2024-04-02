@@ -35,5 +35,6 @@
   "postProduct": "Опубликовать продукт",
   "editProduct": "Модифицировать продукт",
   "deleteProduct": "Удалить продукт",
-  "clearFilters": "Очистить фильтры"
+  "clearFilters": "Очистить фильтры",
+  "goToMarketplace": "Маркетплейс"
 }

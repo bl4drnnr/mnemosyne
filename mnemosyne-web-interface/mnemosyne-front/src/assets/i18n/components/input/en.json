@@ -152,5 +152,6 @@
   "priceToError": "Wrong maximum price! Make sure it is not a negative number.",
   "marketplaceSearchLabel": "Search for whatever goods you want",
   "marketplaceSearchPlaceholder": "Provide the query for the product",
-  "marketplaceSearchInputDesc": "The search of the product will be based on the name, category, subcategory, description, title and slug."
+  "marketplaceSearchInputDesc": "The search of the product will be based on the name, category, subcategory, description, title and slug.",
+  "searchForProductsHeader": "Search for products..."
 }

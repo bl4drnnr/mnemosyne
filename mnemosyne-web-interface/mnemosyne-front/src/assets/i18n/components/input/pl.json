@@ -152,5 +152,6 @@
   "priceToError": "Zła maksymalna cena! Upewnij się, że nie jest to liczba ujemna.",
   "marketplaceSearchLabel": "Wyszukaj dowolne towary",
   "marketplaceSearchPlaceholder": "Podaj zapytanie dotyczące produktu",
-  "marketplaceSearchInputDesc": "Wyszukiwanie produktu będzie oparte na nazwie, kategorii, podkategorii, opisie, tytule i linku."
+  "marketplaceSearchInputDesc": "Wyszukiwanie produktu będzie oparte na nazwie, kategorii, podkategorii, opisie, tytule i linku.",
+  "searchForProductsHeader": "Szukaj produktów..."
 }
