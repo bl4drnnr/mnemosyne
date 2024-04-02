@@ -3,18 +3,23 @@
     <div class="header-content">
       <div class="header-side">
         <img
-          *ngIf="showHeaderBurger"
           class="sidebar-burger"
+          *ngIf="showHeaderBurger"
           (click)="openSidebar.emit()"
           [ngSrc]="staticStorageLink + '/icons/hamburger.svg'"
           [width]="25"
           [height]="25"
           alt="burger"
         >
+        <h3
+          class="sidebar-header"
+          (click)="handleRedirect('')"
+          *ngIf="!showHeaderBurger"
+        >Mnemosyne</h3>
       </div>
 
       <div class="header-products-search">
-        <div class="header-products-search-input">
+        <div class="header-products-search-input" (click)="showSearchProductsModal = true">
           <basic-input [placeholder]="t('input.searchForProductsHeader')"/>
         </div>
         <div class="header-products-search-btn">
@@ -69,3 +74,8 @@
     </div>
   </header>
 </ng-container>
+
+<page-products-modal-search
+  [showModal]="showSearchProductsModal"
+  (closeModal)="closeSearchProductsModal()"
+/>

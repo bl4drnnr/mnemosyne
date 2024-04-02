@@ -22,6 +22,7 @@ export class HeaderComponent implements OnInit {
   scrolled = false;
   lastScrollPosition = 0;
   isUserLoggedIn = false;
+  showSearchProductsModal = false;
 
   userIcon = `${this.envService.getStaticStorageLink}/icons/user-icon.svg`;
 
@@ -54,6 +55,10 @@ export class HeaderComponent implements OnInit {
     const currentScrollPosition = window.pageYOffset;
     this.scrolled = currentScrollPosition >= this.lastScrollPosition;
     this.lastScrollPosition = currentScrollPosition;
+  }
+
+  closeSearchProductsModal() {
+    this.showSearchProductsModal = false;
   }
 
   ngOnInit() {

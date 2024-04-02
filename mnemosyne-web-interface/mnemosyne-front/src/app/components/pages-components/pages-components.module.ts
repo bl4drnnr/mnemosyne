@@ -9,6 +9,7 @@ import { RecoveryKeysComponent } from './recovery-keys/recovery-keys.component';
 import { InviteCompanyUsersComponent } from './invite-company-users/invite-company-users.component';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
 import { ProductPreviewComponent } from '@components/product-preview/product-preview.component';
+import { ProductsModalSearchComponent } from '@components/products-modal-search/products-modal-search.component';
 
 const components = [
   AltRegistrationComponent,
@@ -17,7 +18,8 @@ const components = [
   RecoveryKeysComponent,
   InviteCompanyUsersComponent,
   UploadProductPictureComponent,
-  ProductPreviewComponent
+  ProductPreviewComponent,
+  ProductsModalSearchComponent
 ];
 
 @NgModule({

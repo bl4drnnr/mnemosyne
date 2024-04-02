@@ -7,4 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class ArrowComponent {
   @Input() isArrowOpen: boolean | undefined;
+  @Input() onWhite = false;
 }

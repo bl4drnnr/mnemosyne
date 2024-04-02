@@ -54,6 +54,17 @@ header {
   filter: var(--svg-color);
 }
 
+.sidebar-header {
+  margin: 0;
+  padding: 0;
+  transition: .2s;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--main-color);
+  }
+}
+
 .hide {
   transform: translateY(-100%);
 }

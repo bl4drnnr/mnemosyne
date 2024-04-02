@@ -36,5 +36,10 @@
   "editProduct": "Edit product",
   "deleteProduct": "Delete product",
   "clearFilters": "Clear filters",
-  "goToMarketplace": "Marketplace"
+  "goToMarketplace": "Marketplace",
+  "dashboardMainPage": "Main page",
+  "dashboardRedirect": "Dashboard",
+  "postProductRedirect": "Post product",
+  "settingsRedirect": "Account settings",
+  "showFilters": "Show filters"
 }

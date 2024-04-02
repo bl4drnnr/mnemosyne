@@ -1,10 +1,6 @@
 {
   "sidebarWelcomeTitle": "Miło cię widzieć, {{ firstName }} {{ lastName }}",
   "yourAccountSidebarTitle": "Twoje konto",
-  "settingsRedirect": "Ustawienia konta",
-  "dashboardRedirect": "Dashboard",
-  "postProductRedirect": "Opublikuj produkt",
-  "logout": "Wyloguj",
   "sidebarUserFullName": "Imię i nazwisko",
   "sidebarUserEmail": "Email",
   "sidebarUserId": "Identyfikator ID"

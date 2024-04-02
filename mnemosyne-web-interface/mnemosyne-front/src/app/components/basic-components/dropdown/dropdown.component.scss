@@ -18,6 +18,16 @@
   position: relative;
   overflow: hidden;
 
+  &.on-white {
+    color: $color-black;
+    background-color: $color-white;
+    border: 1px solid $color-shadow-hover-light;
+
+    &:hover {
+      background-color: $color-shadow-hover-light;
+    }
+  }
+
   &:disabled {
     opacity: .4;
     cursor: default;
@@ -51,8 +61,12 @@
   background-color: var(--bg-color);
   border: 1px solid var(--color-hover);
   border-radius: 4px;
-
   @include z-index(dropdown);
+
+  &.on-white {
+    background-color: $color-white;
+    border: 1px solid $color-shadow-hover-light;
+  }
 
   &.show {
     opacity: 1;
@@ -75,6 +89,19 @@
   width: 100%;
   cursor: pointer;
   transition: .2s;
+
+  &.on-white {
+    color: $text-color;
+
+    &:hover,
+    &:focus {
+      background-color: $color-shadow-hover-light;
+    }
+
+    &.active {
+      background-color: $color-shadow-hover-light;
+    }
+  }
 
   &:hover,
   &:focus {

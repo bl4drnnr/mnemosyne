@@ -1,10 +1,6 @@
 {
   "sidebarWelcomeTitle": "Nice to see you again, {{ firstName }} {{ lastName }}",
   "yourAccountSidebarTitle": "Your account",
-  "settingsRedirect": "Account settings",
-  "dashboardRedirect": "Dashboard",
-  "postProductRedirect": "Post product",
-  "logout": "Logout",
   "sidebarUserFullName": "Full name",
   "sidebarUserEmail": "Email",
   "sidebarUserId": "User ID"

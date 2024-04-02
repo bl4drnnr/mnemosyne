@@ -25,19 +25,25 @@
           <h5 class="sidebar-account-title">{{ t('sidebar.yourAccountSidebarTitle') }}</h5>
           <div class="sidebar-button-wrapper">
             <basic-button
-              [label]="t('sidebar.dashboardRedirect')"
+              [label]="t('button.dashboardMainPage')"
+              (buttonClick)="handleRedirect('')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper">
+            <basic-button
+              [label]="t('button.dashboardRedirect')"
               (buttonClick)="handleRedirect('account/dashboard')"
             />
           </div>
           <div class="sidebar-button-wrapper">
             <basic-button
-              [label]="t('sidebar.settingsRedirect')"
+              [label]="t('button.settingsRedirect')"
               (buttonClick)="handleRedirect('account/settings')"
             />
           </div>
           <div class="sidebar-button-wrapper">
             <basic-button
-              [label]="t('sidebar.postProductRedirect')"
+              [label]="t('button.postProductRedirect')"
               (buttonClick)="handleRedirect('marketplace/create-product')"
             />
           </div>
@@ -46,7 +52,7 @@
 
       <div class="logout-sidebar-side">
         <basic-button
-          [label]="t('sidebar.logout')"
+          [label]="t('button.logOut')"
           (buttonClick)="logout()"
         />
       </div>

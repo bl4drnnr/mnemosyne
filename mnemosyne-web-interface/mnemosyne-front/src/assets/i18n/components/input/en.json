@@ -153,5 +153,6 @@
   "marketplaceSearchLabel": "Search for whatever goods you want",
   "marketplaceSearchPlaceholder": "Provide the query for the product",
   "marketplaceSearchInputDesc": "The search of the product will be based on the name, category, subcategory, description, title and slug.",
+  "searchTitle": "Search",
   "searchForProductsHeader": "Search for products..."
 }

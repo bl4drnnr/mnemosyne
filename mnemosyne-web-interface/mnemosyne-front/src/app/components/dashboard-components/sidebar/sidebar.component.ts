@@ -1,9 +1,9 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { Router } from '@angular/router';
-import {AuthenticationService} from "@services/authentication.service";
-import {UserInfoResponse} from "@responses/user-info.interface";
-import {EnvService} from "@shared/env.service";
+import { AuthenticationService } from '@services/authentication.service';
+import { UserInfoResponse } from '@responses/user-info.interface';
+import { EnvService } from '@shared/env.service';
 
 @Component({
   selector: 'dashboard-sidebar',

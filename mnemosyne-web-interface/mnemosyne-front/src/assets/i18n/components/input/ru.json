@@ -153,5 +153,6 @@
   "marketplaceSearchLabel": "Ищите любые товары, которые вы хотите",
   "marketplaceSearchPlaceholder": "Введите запрос для продукта",
   "marketplaceSearchInputDesc": "Поиск продукта будет основан на названии, категории, подкатегории, описании, заголовке и ссылки",
+  "searchTitle": "Поиск",
   "searchForProductsHeader": "Поиск продуктов..."
 }

@@ -22,7 +22,7 @@ export class ModalComponent implements OnChanges {
 
   constructor(private readonly envService: EnvService) {}
 
-  staticStorageLink = this.envService.getStaticStorageLink;
+  backArrowModal = `${this.envService.getStaticStorageLink}/icons/backarrowmodal.svg`;
 
   ngOnChanges(changes: SimpleChanges) {
     document.body.style.overflow =

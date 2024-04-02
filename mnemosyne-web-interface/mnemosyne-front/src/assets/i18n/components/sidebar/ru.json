@@ -1,10 +1,6 @@
 {
   "sidebarWelcomeTitle": "Рады вас снова видеть, {{ firstName }} {{ lastName }}",
   "yourAccountSidebarTitle": "Ваш аккаунт",
-  "settingsRedirect": "Настройки аккаунта",
-  "dashboardRedirect": "Дашборд",
-  "postProductRedirect": "Опубликовать продукт",
-  "logout": "Выйти",
   "sidebarUserFullName": "Полное имя",
   "sidebarUserEmail": "Электронная почта",
   "sidebarUserId": "ID пользователя"

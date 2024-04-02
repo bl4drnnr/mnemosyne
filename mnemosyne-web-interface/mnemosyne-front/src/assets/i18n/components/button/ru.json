@@ -36,5 +36,10 @@
   "editProduct": "Модифицировать продукт",
   "deleteProduct": "Удалить продукт",
   "clearFilters": "Очистить фильтры",
-  "goToMarketplace": "Маркетплейс"
+  "goToMarketplace": "Маркетплейс",
+  "dashboardMainPage": "Главная",
+  "dashboardRedirect": "Дашборд",
+  "postProductRedirect": "Опубликовать продукт",
+  "settingsRedirect": "Настройки аккаунта",
+  "showFilters": "Показать фильтры"
 }

@@ -153,5 +153,6 @@
   "marketplaceSearchLabel": "Wyszukaj dowolne towary",
   "marketplaceSearchPlaceholder": "Podaj zapytanie dotyczące produktu",
   "marketplaceSearchInputDesc": "Wyszukiwanie produktu będzie oparte na nazwie, kategorii, podkategorii, opisie, tytule i linku.",
+  "searchTitle": "Wyszukaj",
   "searchForProductsHeader": "Szukaj produktów..."
 }

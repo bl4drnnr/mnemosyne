@@ -18,6 +18,7 @@ export class DropdownComponent {
   @Input() options: Array<DropdownInterface>;
   @Input() defaultLabel: string;
   @Input() disabled: boolean;
+  @Input() onWhite = false;
   @Input() defaultValue: DropdownInterface = {
     key: '',
     value: ''
