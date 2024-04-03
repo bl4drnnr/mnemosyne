@@ -79,7 +79,6 @@ export class ProductsService {
       'title',
       'slug',
       'pictures',
-      'location',
       'currency',
       'price',
       'subcategory'
@@ -95,20 +94,10 @@ export class ProductsService {
     });
 
     const latestProducts = products.map(
-      ({
-        title,
-        slug,
-        pictures,
-        location,
-        currency,
-        price,
-        category,
-        subcategory
-      }) => ({
+      ({ title, slug, pictures, currency, price, category, subcategory }) => ({
         title,
         slug,
         mainPicture: pictures[0],
-        location,
         currency,
         price,
         category: category.name,

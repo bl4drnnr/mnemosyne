@@ -50,6 +50,9 @@ export class ProductsController {
     return this.productsService.getProductBySlug({ slug, trx });
   }
 
+  @ApiOperation(ProductsDocs.LatestProducts.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.LatestProducts.ApiExtraModels)
+  @ApiResponse(ProductsDocs.LatestProducts.ApiResponse)
   @ApiBasicAuth('basicAuth')
   @Get('latest-products')
   getLatestProducts(@TrxDecorator() trx: Transaction) {

@@ -41,5 +41,7 @@
   "dashboardRedirect": "Dashboard",
   "postProductRedirect": "Post product",
   "settingsRedirect": "Account settings",
-  "showFilters": "Show filters"
+  "showFilters": "Show filters",
+  "createAccForMyself": "I want to create an account for myself",
+  "createAccForCompany": "I want to create an account for my company"
 }

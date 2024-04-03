@@ -5,7 +5,6 @@ export interface LatestProducts {
   title: string;
   slug: string;
   mainPicture: string;
-  location: string;
   currency: Currency;
   price: number;
   category: ProductCategory;

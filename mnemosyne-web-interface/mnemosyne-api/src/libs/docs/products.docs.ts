@@ -18,6 +18,7 @@ import { OrderByException } from '@exceptions/order-by.exception';
 import { SearchProductsDto } from '@dto/search-products.dto';
 import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
 import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
+import { LatestProductsDto } from '@dto/latest-products.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -52,6 +53,24 @@ export abstract class ProductsDocs {
         schema: { $ref: getSchemaPath(ProductNotFoundException) }
       },
       ApiSlugQuery: slugQuery
+    };
+  }
+
+  static get LatestProducts() {
+    const ApiModels = [LatestProductsDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting the list of latest products for the carousel on the main page.';
+    const apiResponseDesc = 'As a response user gets the list of 10 products.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(LatestProductsDto) }
+      }
     };
   }
 

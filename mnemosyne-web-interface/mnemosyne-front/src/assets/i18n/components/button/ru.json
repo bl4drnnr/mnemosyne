@@ -41,5 +41,7 @@
   "dashboardRedirect": "Дашборд",
   "postProductRedirect": "Опубликовать продукт",
   "settingsRedirect": "Настройки аккаунта",
-  "showFilters": "Показать фильтры"
+  "showFilters": "Показать фильтры",
+  "createAccForMyself": "Я хочу создать учетную запись для себя",
+  "createAccForCompany": "Я хочу создать учетную запись для моей компании"
 }

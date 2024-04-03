@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { animate, style, transition, trigger } from '@angular/animations';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { ValidationService } from '@services/validation.service';
 import { TranslationService } from '@services/translation.service';
@@ -73,6 +73,7 @@ export class RegistrationComponent implements OnInit {
     private readonly translationService: TranslationService,
     private readonly companyService: CompanyService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     public validationService: ValidationService
   ) {}
 
@@ -270,6 +271,12 @@ export class RegistrationComponent implements OnInit {
 
   async ngOnInit() {
     this.translationService.setPageTitle(Titles.REGISTRATION);
+
+    const accType = this.route.snapshot.queryParamMap.get('accType');
+
+    if (accType === 'company') this.accRegistrationType = 'company';
+    else if (accType === 'private') this.accRegistrationType = 'private';
+
     await this.setRoles();
   }
 }

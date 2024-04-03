@@ -143,41 +143,80 @@
       <h1>See the most recent products</h1>
     </div>
 
-    <p-carousel
-      [value]="products"
-      [numVisible]="3"
-      [numScroll]="3"
-      [circular]="false"
-      [responsiveOptions]="responsiveOptions"
-    >
-      <ng-template let-product pTemplate="item">
-        <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
-          <div class="mb-3">
-            <img
-              src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
-              [alt]="product.name"
-              class="w-6 shadow-2"
-            />
-          </div>
-          <div>
-            <h4 class="mb-1">{{ product.name }}</h4>
-            <h6 class="mt-0 mb-3">{{ '$' + product.price }}</h6>
-          </div>
-        </div>
-      </ng-template>
-    </p-carousel>
+    <div class="carousel-wrapper">
+      <div class="carousel-container">
+        <p-carousel
+          [value]="latestProducts"
+          [numVisible]="3"
+          [numScroll]="3"
+          [circular]="false"
+          [responsiveOptions]="responsiveOptions"
+        >
+          <ng-template let-product pTemplate="item">
+            <div
+              class="carousel-card"
+              (click)="handleRedirect('marketplace/product/' + product.slug)"
+            >
+              <div class="carousel-image-card">
+                <img
+                  *ngIf="product.mainPicture"
+                  class="carousel-image"
+                  [src]="productPicturesBucket + product.mainPicture + '.png'"
+                  [width]="300"
+                  [height]="200"
+                  [alt]="product.title"
+                />
+                <img
+                  *ngIf="!product.mainPicture"
+                  class="carousel-image no-picture"
+                  [src]="noProductPicture"
+                  [width]="300"
+                  [height]="200"
+                  [alt]="noProductPicture"
+                >
+              </div>
+              <div>
+                <h2>{{ product.title }}</h2>
+                <h3>{{ t(translateCategory(product.category)) }}: {{ t(translateSubcategory(product.category, product.subcategory)) }}</h3>
+                <h3>{{ product.price }}{{ product.currency }}</h3>
+                <basic-button
+                  [label]="'See more'"
+                  [fillButton]="true"
+                  (buttonClick)="handleRedirect('marketplace/product/' + product.slug)"
+                />
+              </div>
+            </div>
+          </ng-template>
+        </p-carousel>
+      </div>
+    </div>
 
     <div class="home-block">
       <div class="home-block-container">
         <div class="home-block-text-wrapper border-right">
           <div class="home-block-text">
-            <h1 class="home-block-title">{{ whereverYouAreaTile }}</h1>
-            <p class="home-block-paragraph">{{ homeSubtitle3 }}</p>
+            <h1 class="home-block-title">{{ loginTitle }}</h1>
+            <p class="home-block-paragraph">{{ loginSubtitle }}</p>
           </div>
         </div>
       </div>
-      <div class="home-block-container">
-        <ng-lottie [options]="homeAnimation3" />
+      <div class="home-block-buttons">
+        <div class="home-block-buttons-wrapper">
+          <div class="home-block-button-wrapper">
+            <basic-button
+              [label]="t('button.createAccForMyself')"
+              (buttonClick)="handleRedirect('registration', { accType: 'private' })"
+              [fillButton]="true"
+            />
+          </div>
+          <div class="home-block-button-wrapper">
+            <basic-button
+              [label]="t('button.createAccForCompany')"
+              (buttonClick)="handleRedirect('registration', { accType: 'company' })"
+              [fillButton]="true"
+            />
+          </div>
+        </div>
       </div>
     </div>
   </ng-container>
