@@ -1,5 +1,5 @@
-import {ProductCategory} from "@interfaces/product-category.type";
-import {Currency} from "@interfaces/currency.type";
+import { ProductCategory } from '@interfaces/product-category.type';
+import { Currency } from '@interfaces/currency.type';
 
 export interface LatestProducts {
   title: string;
@@ -15,4 +15,3 @@ export interface LatestProducts {
 export interface GetLatestProductsResponse {
   latestProducts: Array<LatestProducts>;
 }
-

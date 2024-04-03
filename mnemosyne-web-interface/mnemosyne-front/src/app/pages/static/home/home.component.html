@@ -142,5 +142,43 @@
     <div class="recent-products-container">
       <h1>See the most recent products</h1>
     </div>
+
+    <p-carousel
+      [value]="products"
+      [numVisible]="3"
+      [numScroll]="3"
+      [circular]="false"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template let-product pTemplate="item">
+        <div class="border-1 surface-border border-round m-2 text-center py-5 px-3">
+          <div class="mb-3">
+            <img
+              src="https://primefaces.org/cdn/primeng/images/demo/product/{{ product.image }}"
+              [alt]="product.name"
+              class="w-6 shadow-2"
+            />
+          </div>
+          <div>
+            <h4 class="mb-1">{{ product.name }}</h4>
+            <h6 class="mt-0 mb-3">{{ '$' + product.price }}</h6>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+
+    <div class="home-block">
+      <div class="home-block-container">
+        <div class="home-block-text-wrapper border-right">
+          <div class="home-block-text">
+            <h1 class="home-block-title">{{ whereverYouAreaTile }}</h1>
+            <p class="home-block-paragraph">{{ homeSubtitle3 }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="home-block-container">
+        <ng-lottie [options]="homeAnimation3" />
+      </div>
+    </div>
   </ng-container>
 </layout-default>

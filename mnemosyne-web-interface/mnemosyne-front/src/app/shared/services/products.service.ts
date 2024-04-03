@@ -1,21 +1,21 @@
-import {Injectable} from '@angular/core';
-import {ApiService} from '@shared/api.service';
-import {Controller} from '@interfaces/controller.enum';
-import {Method} from '@interfaces/methods.enum';
-import {ProductsEndpoint} from '@interfaces/products.enum';
-import {GetProductBySlugPayload} from '@payloads/get-product-by-slug.interface';
-import {PostProductPayload} from '@payloads/post-product.interface';
-import {Observable} from 'rxjs';
-import {ProductPostedResponse} from '@responses/product-posted.interface';
-import {GetProductBySlugResponse} from '@responses/get-product-by-slug.interface';
-import {ProductUpdatedResponse} from '@responses/product-updated.interface';
-import {GetUserProductsPayload} from '@payloads/get-user-products.interface';
-import {UserProductsResponse} from '@responses/user-products.interface';
-import {DeleteProductPayload} from '@payloads/delete-product.interface';
-import {ProductDeletedResponse} from '@responses/product-deleted.enum';
-import {SearchProductsResponse} from '@responses/search-products.interface';
-import {SearchProductsPayload} from '@payloads/search-products.interface';
-import {GetLatestProductsResponse} from "@responses/get-latest-products.interface";
+import { Injectable } from '@angular/core';
+import { ApiService } from '@shared/api.service';
+import { Controller } from '@interfaces/controller.enum';
+import { Method } from '@interfaces/methods.enum';
+import { ProductsEndpoint } from '@interfaces/products.enum';
+import { GetProductBySlugPayload } from '@payloads/get-product-by-slug.interface';
+import { PostProductPayload } from '@payloads/post-product.interface';
+import { Observable } from 'rxjs';
+import { ProductPostedResponse } from '@responses/product-posted.interface';
+import { GetProductBySlugResponse } from '@responses/get-product-by-slug.interface';
+import { ProductUpdatedResponse } from '@responses/product-updated.interface';
+import { GetUserProductsPayload } from '@payloads/get-user-products.interface';
+import { UserProductsResponse } from '@responses/user-products.interface';
+import { DeleteProductPayload } from '@payloads/delete-product.interface';
+import { ProductDeletedResponse } from '@responses/product-deleted.enum';
+import { SearchProductsResponse } from '@responses/search-products.interface';
+import { SearchProductsPayload } from '@payloads/search-products.interface';
+import { GetLatestProductsResponse } from '@responses/get-latest-products.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +33,7 @@ export class ProductsService {
       params: { slug }
     });
   }
-  
+
   getLatestProducts(): Observable<GetLatestProductsResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
