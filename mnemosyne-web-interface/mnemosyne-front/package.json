@@ -22,6 +22,8 @@
     "@angular/platform-browser": "^16.2.3",
     "@angular/platform-browser-dynamic": "^16.2.3",
     "@angular/router": "^16.2.3",
+    "@coreui/angular": "^4.7.18",
+    "@coreui/coreui": "^5.0.0",
     "@ngneat/transloco": "^4.3.0",
     "@ngneat/transloco-persist-lang": "^4.0.0",
     "dayjs": "^1.11.10",

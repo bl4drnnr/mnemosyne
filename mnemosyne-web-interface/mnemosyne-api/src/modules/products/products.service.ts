@@ -82,12 +82,12 @@ export class ProductsService {
       'location',
       'currency',
       'price',
-      'subcategory',
-      'category'
+      'subcategory'
     ];
 
     const products = await this.productRepository.findAll({
       attributes,
+      include: [{ model: Category, attributes: ['name'] }],
       order: [['created_at', 'DESC']],
       limit: 10,
       offset: 0,
