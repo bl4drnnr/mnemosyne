@@ -13,6 +13,7 @@ export interface GetProductBySlug {
   contactPerson: string;
   contactPhone: string;
   category: ProductCategory;
+  createdAt: Date;
   productUserFirstName?: string;
   productUserLastName?: string;
 }

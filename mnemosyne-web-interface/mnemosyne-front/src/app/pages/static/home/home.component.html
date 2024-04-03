@@ -145,49 +145,9 @@
 
     <div class="carousel-wrapper">
       <div class="carousel-container">
-        <p-carousel
-          [value]="latestProducts"
-          [numVisible]="3"
-          [numScroll]="3"
-          [circular]="false"
-          [responsiveOptions]="responsiveOptions"
-        >
-          <ng-template let-product pTemplate="item">
-            <div
-              class="carousel-card"
-              (click)="handleRedirect('marketplace/product/' + product.slug)"
-            >
-              <div class="carousel-image-card">
-                <img
-                  *ngIf="product.mainPicture"
-                  class="carousel-image"
-                  [src]="productPicturesBucket + product.mainPicture + '.png'"
-                  [width]="300"
-                  [height]="200"
-                  [alt]="product.title"
-                />
-                <img
-                  *ngIf="!product.mainPicture"
-                  class="carousel-image no-picture"
-                  [src]="noProductPicture"
-                  [width]="300"
-                  [height]="200"
-                  [alt]="noProductPicture"
-                >
-              </div>
-              <div>
-                <h2>{{ product.title }}</h2>
-                <h3>{{ t(translateCategory(product.category)) }}: {{ t(translateSubcategory(product.category, product.subcategory)) }}</h3>
-                <h3>{{ product.price }}{{ product.currency }}</h3>
-                <basic-button
-                  [label]="'See more'"
-                  [fillButton]="true"
-                  (buttonClick)="handleRedirect('marketplace/product/' + product.slug)"
-                />
-              </div>
-            </div>
-          </ng-template>
-        </p-carousel>
+        <page-products-carousel
+          [products]="latestProducts"
+        />
       </div>
     </div>
 

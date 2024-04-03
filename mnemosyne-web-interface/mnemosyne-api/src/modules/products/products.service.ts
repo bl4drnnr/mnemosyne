@@ -67,6 +67,7 @@ export class ProductsService {
       category: foundProduct.category.name,
       contactPerson: foundProduct.contactPerson,
       contactPhone: foundProduct.contactPhone,
+      createdAt: foundProduct.createdAt,
       productUserFirstName: foundProduct.user.firstName,
       productUserLastName: foundProduct.user.lastName
     };
@@ -339,6 +340,7 @@ export class ProductsService {
       price: productToEdit.price,
       subcategory: productToEdit.subcategory,
       category: productToEdit.category.name,
+      createdAt: productToEdit.createdAt,
       contactPerson: productToEdit.contactPerson,
       contactPhone: productToEdit.contactPhone
     };

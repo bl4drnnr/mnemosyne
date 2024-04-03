@@ -66,33 +66,12 @@ export class HomeComponent implements OnInit {
   loginSubtitle: string;
   latestProducts: Array<LatestProducts>;
 
-  responsiveOptions = [
-    {
-      breakpoint: '1199px',
-      numVisible: 1,
-      numScroll: 1
-    },
-    {
-      breakpoint: '991px',
-      numVisible: 2,
-      numScroll: 1
-    },
-    {
-      breakpoint: '767px',
-      numVisible: 1,
-      numScroll: 1
-    }
-  ];
-
   constructor(
     private readonly envService: EnvService,
     private readonly translationService: TranslationService,
     private readonly productsService: ProductsService,
     private readonly router: Router
   ) {}
-
-  productPicturesBucket = `${this.envService.getStaticStorageLink}/products/`;
-  noProductPicture = `${this.envService.getStaticStorageLink}/icons/add-photo.svg`;
 
   animationOptions = {
     path: `${this.envService.getStaticStorageLink}/animations/home_animation.json`
@@ -109,14 +88,6 @@ export class HomeComponent implements OnInit {
   homeAnimation3 = {
     path: `${this.envService.getStaticStorageLink}/animations/animation4.json`
   };
-
-  translateCategory(category: string) {
-    return `dropdown.${category}`;
-  }
-
-  translateSubcategory(category: string, subcategory: string) {
-    return `dropdown.${category}Subcategory.${subcategory}`;
-  }
 
   async handleRedirect(path: string, queryParams: any = {}) {
     await this.router.navigate([path], { queryParams });

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslationService } from '@services/translation.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CategoriesService } from '@services/categories.service';
 import { ProductsService } from '@services/products.service';
 import { Titles } from '@interfaces/titles.enum';
@@ -46,6 +46,7 @@ export class MarketplaceComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly envService: EnvService,
     private readonly translationService: TranslationService,
     private readonly categoriesService: CategoriesService,
@@ -328,6 +329,10 @@ export class MarketplaceComponent implements OnInit {
         };
 
         this.categories = categories;
+
+        const category = this.route.snapshot.queryParamMap.get('category');
+        const subcategory =
+          this.route.snapshot.queryParamMap.get('subcategory');
 
         await this.initCurrencies();
         await this.initCategories();

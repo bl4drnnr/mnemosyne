@@ -12,6 +12,7 @@ export interface ProductBySlugInterface {
   contactPerson: string;
   contactPhone: string;
   category: string;
+  createdAt: Date;
   productUserFirstName?: string;
   productUserLastName?: string;
 }

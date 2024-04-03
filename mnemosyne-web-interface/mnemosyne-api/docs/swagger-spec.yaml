@@ -1887,10 +1887,16 @@ paths:
   /api/products/latest-products:
     get:
       operationId: ProductsController_getLatestProducts
+      summary: Endpoint is responsible for getting the list of latest products for the
+        carousel on the main page.
       parameters: []
       responses:
         "200":
-          description: ""
+          description: As a response user gets the list of 10 products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/LatestProductsDto"
       tags: *a9
       security:
         - basicAuth: []
@@ -3692,6 +3698,7 @@ components:
             category: travels
             contactPerson: John Doe
             contactPhone: "123123123"
+            createdAt: 2023-11-17T11:42:26.534Z
             productUserFirstName: Joe
             productUserLastName: Doe
           allOf:
@@ -3707,6 +3714,24 @@ components:
           example: product-not-found
       required:
         - message
+    LatestProductsDto:
+      type: object
+      properties:
+        latestProducts:
+          description: Latest products will be shown on the main page
+          example:
+            - title: My product
+              slug: my-product-123
+              mainPicture: asd
+              currency: PLN
+              price: "15000"
+              subcategory: it_books
+              category: travels
+          type: array
+          items:
+            type: string
+      required:
+        - latestProducts
     SearchProductsDto:
       type: object
       properties:

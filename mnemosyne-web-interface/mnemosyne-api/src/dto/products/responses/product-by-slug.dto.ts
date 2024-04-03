@@ -19,6 +19,7 @@ export class ProductBySlugDto {
       category: DocsProperty.CATEGORY_NAME_EXAMPLE,
       contactPerson: DocsProperty.PRODUCT_CONTACT_PERSON_EXAMPLE,
       contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE,
+      createdAt: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE,
       productUserFirstName: DocsProperty.FIRST_NAME_EXAMPLE,
       productUserLastName: DocsProperty.LAST_NAME_EXAMPLE
     }

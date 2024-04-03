@@ -10,6 +10,8 @@ import { InviteCompanyUsersComponent } from './invite-company-users/invite-compa
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
 import { ProductPreviewComponent } from '@components/product-preview/product-preview.component';
 import { ProductsModalSearchComponent } from '@components/products-modal-search/products-modal-search.component';
+import { ProductsCarouselComponent } from '@components/products-carousel/products-carousel.component';
+import { CarouselModule } from 'primeng/carousel';
 
 const components = [
   AltRegistrationComponent,
@@ -19,7 +21,8 @@ const components = [
   InviteCompanyUsersComponent,
   UploadProductPictureComponent,
   ProductPreviewComponent,
-  ProductsModalSearchComponent
+  ProductsModalSearchComponent,
+  ProductsCarouselComponent
 ];
 
 @NgModule({
@@ -28,7 +31,8 @@ const components = [
     CommonModule,
     NgOptimizedImage,
     BasicComponentsModule,
-    TranslocoModule
+    TranslocoModule,
+    CarouselModule
   ],
   exports: [...components]
 })
