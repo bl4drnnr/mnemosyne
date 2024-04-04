@@ -9,6 +9,7 @@ export class ProductBySlugDto {
     type: Product,
     description: DocsProperty.PRODUCT_BY_SLUG,
     example: {
+      id: DocsProperty.PRODUCT_ID_EXAMPLE,
       title: DocsProperty.PRODUCT_TITLE_EXAMPLE,
       description: DocsProperty.CATEGORY_DESC_EXAMPLE,
       pictures: [DocsProperty.PRODUCT_PIC_EXAMPLE],
@@ -21,7 +22,8 @@ export class ProductBySlugDto {
       contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE,
       createdAt: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE,
       productUserFirstName: DocsProperty.FIRST_NAME_EXAMPLE,
-      productUserLastName: DocsProperty.LAST_NAME_EXAMPLE
+      productUserLastName: DocsProperty.LAST_NAME_EXAMPLE,
+      productInFavorites: DocsProperty.PRODUCT_IN_FAVORITES_EXAMPLE
     }
   })
   readonly product: ProductBySlugInterface;

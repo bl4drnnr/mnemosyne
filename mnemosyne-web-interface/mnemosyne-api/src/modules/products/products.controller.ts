@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
   UsePipes
 } from '@nestjs/common';
 import {
@@ -30,6 +31,9 @@ import { AuthGuard } from '@guards/auth.guard';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { PostProductDto } from '@dto/post-product.dto';
 import { DeleteProductDto } from '@dto/delete-product.dto';
+import { DeleteProductsFromFavoritesDto } from '@dto/delete-products-from-favorites.dto';
+import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
+import { UserInterceptor } from '@interceptors/user.interceptor';
 
 @ApiTags('Products')
 @Controller('products')
@@ -42,12 +46,14 @@ export class ProductsController {
   @ApiNotFoundResponse(ProductsDocs.GetProductBySlug.ApiNotFoundResponse)
   @ApiQuery(ProductsDocs.GetProductBySlug.ApiSlugQuery)
   @ApiBasicAuth('basicAuth')
+  @UseInterceptors(UserInterceptor)
   @Get('product')
   getProductBySlug(
     @Query('slug') slug: string,
+    @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
-    return this.productsService.getProductBySlug({ slug, trx });
+    return this.productsService.getProductBySlug({ slug, userId, trx });
   }
 
   @ApiOperation(ProductsDocs.LatestProducts.ApiOperation)
@@ -221,5 +227,48 @@ export class ProductsController {
       payload,
       trx
     });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Delete('favorites')
+  deleteProductFromFavorites(
+    @UserId() userId: string,
+    @Body() payload: DeleteProductsFromFavoritesDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.deleteProductFromFavorites({
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Post('favorites')
+  addProductToFavorites(
+    @UserId() userId: string,
+    @Body() payload: AddProductToFavoritesDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.addProductToFavorites({
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('favorites')
+  getUserFavoritesProducts(
+    @UserId() userId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getUserFavoritesProducts();
   }
 }

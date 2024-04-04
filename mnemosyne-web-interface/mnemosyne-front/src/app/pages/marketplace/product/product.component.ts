@@ -7,6 +7,8 @@ import { Titles } from '@interfaces/titles.enum';
 import { EnvService } from '@shared/env.service';
 import * as dayjs from 'dayjs';
 import * as LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import { MessagesTranslation } from '@translations/messages.enum';
+import { GlobalMessageService } from '@shared/global-message.service';
 dayjs.extend(LocalizedFormat);
 
 @Component({
@@ -20,6 +22,7 @@ export class ProductComponent implements OnInit {
   showSearchProductsModal = false;
 
   constructor(
+    private readonly globalMessageService: GlobalMessageService,
     private readonly productsService: ProductsService,
     private readonly translationService: TranslationService,
     private readonly envService: EnvService,
@@ -63,6 +66,56 @@ export class ProductComponent implements OnInit {
 
   transformDate(date: Date) {
     return dayjs(date).format('LL');
+  }
+
+  handleProductFavorite() {
+    if (this.product.productInFavorites) this.deleteProductFromFavorites();
+    else this.addProductToFavorites();
+    this.getProductBySlug();
+  }
+
+  // @TODO CREATE PAGE WITH FAVORITES AND HANDLE ERRORS THERE
+  // @TODO FAVORITE HEART CHANGE STYLES
+  deleteProductFromFavorites() {
+    this.productsService
+      .deleteProductFromFavorites({
+        productId: this.product.id
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          const globalMessage = await this.translationService.translateText(
+            message,
+            MessagesTranslation.RESPONSES
+          );
+          this.globalMessageService.handle({
+            message: globalMessage
+          });
+        },
+        error: (error) => {
+          console.log('deleteProductFromFavorites', error);
+        }
+      });
+  }
+
+  addProductToFavorites() {
+    this.productsService
+      .addProductToFavorites({
+        productId: this.product.id
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          const globalMessage = await this.translationService.translateText(
+            message,
+            MessagesTranslation.RESPONSES
+          );
+          this.globalMessageService.handle({
+            message: globalMessage
+          });
+        },
+        error: (error) => {
+          console.log('addProductToFavorites', error);
+        }
+      });
   }
 
   async handleRedirect(path: string) {

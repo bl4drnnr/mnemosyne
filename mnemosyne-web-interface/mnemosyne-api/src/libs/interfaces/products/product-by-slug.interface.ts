@@ -15,4 +15,5 @@ export interface ProductBySlugInterface {
   createdAt: Date;
   productUserFirstName?: string;
   productUserLastName?: string;
+  productInFavorites?: boolean;
 }

@@ -16,6 +16,10 @@ import { ProductDeletedResponse } from '@responses/product-deleted.enum';
 import { SearchProductsResponse } from '@responses/search-products.interface';
 import { SearchProductsPayload } from '@payloads/search-products.interface';
 import { GetLatestProductsResponse } from '@responses/get-latest-products.interface';
+import { AddProductToFavoritesPayload } from '@payloads/add-product-to-favorites.interface';
+import { ProductAddedToFavoritesResponse } from '@responses/product-added-to-favorites.interface';
+import { DeleteProductFromFavoritesPaylaod } from '@payloads/delete-product-from-favorites.interface';
+import { ProductDeletedFromFavoritesResponse } from '@responses/product-deleted-from-favorites.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -105,4 +109,28 @@ export class ProductsService {
       payload
     });
   }
+
+  deleteProductFromFavorites(
+    payload: DeleteProductFromFavoritesPaylaod
+  ): Observable<{ message: ProductDeletedFromFavoritesResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.DELETE,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.DELETE_FROM_FAVORITES,
+      payload
+    });
+  }
+
+  addProductToFavorites(
+    payload: AddProductToFavoritesPayload
+  ): Observable<{ message: ProductAddedToFavoritesResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.POST,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.ADD_TO_FAVORITES,
+      payload
+    });
+  }
+
+  getUserFavoritesProducts() {}
 }

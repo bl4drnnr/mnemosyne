@@ -6,11 +6,13 @@ import { Product } from '@models/product.model';
 import { JwtModule } from '@nestjs/jwt';
 import { ApiConfigService } from '@shared/config.service';
 import { CategoriesModule } from '@modules/categories.module';
+import { UsersModule } from '@modules/users.module';
 
 @Module({
   controllers: [ProductsController],
   providers: [ProductsService],
   imports: [
+    UsersModule,
     CategoriesModule,
     SequelizeModule.forFeature([Product]),
     JwtModule.registerAsync({

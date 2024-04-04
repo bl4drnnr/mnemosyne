@@ -47,6 +47,8 @@ import { GetUserByPhoneInterface } from '@interfaces/get-user-by-phone.interface
 import { GetUsersByIdsInterface } from '@interfaces/get-users-by-ids.interface';
 import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { CompanyUser } from '@models/company-user.model';
+import { GetUserFavoritesProductsInterface } from '@interfaces/get-user-favorites-products.interface';
+import { UpdateUserFavoritesInterface } from '@interfaces/update-user-favorites.interface';
 
 @Injectable()
 export class UsersService {
@@ -475,6 +477,34 @@ export class UsersService {
       case Confirmation.COMPANY_INVITATION:
         return new CompanyMemberAccConfirmedDto();
     }
+  }
+
+  async getUserFavoritesProducts({
+    userId,
+    trx
+  }: GetUserFavoritesProductsInterface) {
+    return await this.userRepository.findOne({
+      attributes: ['favoriteProductsIds'],
+      where: { id: userId },
+      transaction: trx
+    });
+  }
+
+  async updateUserFavoritesProducts({
+    userId,
+    favoriteProductsIds,
+    trx
+  }: UpdateUserFavoritesInterface) {
+    await this.userRepository.update(
+      {
+        favoriteProductsIds
+      },
+      {
+        returning: false,
+        where: { id: userId },
+        transaction: trx
+      }
+    );
   }
 
   private async createUserSettings({

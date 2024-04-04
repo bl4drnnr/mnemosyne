@@ -33,6 +33,13 @@ import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-c
 import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
 import { CategoryNotFoundException } from '@exceptions/category-not-found.exception';
 import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
+import { UsersService } from '@modules/users.service';
+import { DeleteProductFromFavoritesInterface } from '@interfaces/delete-product-from-favorites.interface';
+import { GetProductByIdInterface } from '@interfaces/get-product-by-id.interface';
+import { ProductAddedToFavoritesDto } from '@dto/product-added-to-favorites.dto';
+import { AddProductToFavoritesInterface } from '@interfaces/add-product-to-favorites.interface';
+import { ProductAlreadyInFavoritesException } from '@exceptions/product-already-in-favorites.exception';
+import { ProductDeletedFromFavoritesDto } from '@dto/product-deleted-from-favorites.dto';
 
 @Injectable()
 export class ProductsService {
@@ -40,11 +47,23 @@ export class ProductsService {
     private readonly configService: ApiConfigService,
     private readonly cryptographicService: CryptographicService,
     private readonly categoriesService: CategoriesService,
+    private readonly usersService: UsersService,
     @InjectModel(Product)
     private readonly productRepository: typeof Product
   ) {}
 
-  async getProductBySlug({ slug, trx }: GetProductBySlugInterface) {
+  async getProductById({ productId, trx }: GetProductByIdInterface) {
+    const foundProduct = await this.productRepository.findOne({
+      where: { id: productId },
+      transaction: trx
+    });
+
+    if (!foundProduct) throw new ProductNotFoundException();
+
+    return foundProduct;
+  }
+
+  async getProductBySlug({ slug, userId, trx }: GetProductBySlugInterface) {
     const foundProduct = await this.productRepository.findOne({
       include: [
         { model: User, attributes: ['firstName', 'lastName'] },
@@ -57,6 +76,7 @@ export class ProductsService {
     if (!foundProduct) throw new ProductNotFoundException();
 
     const product = {
+      id: foundProduct.id,
       title: foundProduct.title,
       description: foundProduct.description,
       pictures: foundProduct.pictures,
@@ -69,8 +89,23 @@ export class ProductsService {
       contactPhone: foundProduct.contactPhone,
       createdAt: foundProduct.createdAt,
       productUserFirstName: foundProduct.user.firstName,
-      productUserLastName: foundProduct.user.lastName
+      productUserLastName: foundProduct.user.lastName,
+      productInFavorites: false
     };
+
+    if (userId) {
+      const { favoriteProductsIds } =
+        await this.usersService.getUserFavoritesProducts({
+          userId,
+          trx
+        });
+
+      const productInFavorites = favoriteProductsIds.find(
+        (id) => id === foundProduct.id
+      );
+
+      product.productInFavorites = !!productInFavorites;
+    }
 
     return new ProductBySlugDto(product);
   }
@@ -527,6 +562,62 @@ export class ProductsService {
 
     return new ProductDeletedDto();
   }
+
+  async deleteProductFromFavorites({
+    userId,
+    payload,
+    trx
+  }: DeleteProductFromFavoritesInterface) {
+    const { productId } = payload;
+
+    const product = await this.getProductById({ productId, trx });
+
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({ userId, trx });
+
+    const updatedFavoriteProducts = favoriteProductsIds.filter(
+      (id) => id !== product.id
+    );
+
+    await this.usersService.updateUserFavoritesProducts({
+      userId,
+      favoriteProductsIds: updatedFavoriteProducts,
+      trx
+    });
+
+    return new ProductDeletedFromFavoritesDto();
+  }
+
+  async addProductToFavorites({
+    userId,
+    payload,
+    trx
+  }: AddProductToFavoritesInterface) {
+    const { productId } = payload;
+
+    const product = await this.getProductById({ productId, trx });
+
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({ userId, trx });
+
+    const foundFavoriteProduct = favoriteProductsIds.find(
+      (id) => id === product.id
+    );
+
+    if (foundFavoriteProduct) throw new ProductAlreadyInFavoritesException();
+
+    favoriteProductsIds.push(productId);
+
+    await this.usersService.updateUserFavoritesProducts({
+      userId,
+      favoriteProductsIds,
+      trx
+    });
+
+    return new ProductAddedToFavoritesDto();
+  }
+
+  getUserFavoritesProducts() {}
 
   private generateProductSlug(productName: string) {
     let slug = productName.toLowerCase();
