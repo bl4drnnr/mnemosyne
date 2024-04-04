@@ -13,4 +13,5 @@ export interface UserProductsInterface {
   createdAt: Date;
   contactPerson: string;
   contactPhone: string;
+  productInFavorites: boolean;
 }

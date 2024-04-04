@@ -9,5 +9,13 @@
   "productCreatedAt": "Created at",
   "productDeletionInstruction": "In order to continue with your product deletion, please, provide your full name (first name and last name separated by the space).",
   "deleteProductModalHeader": "Product deletion",
-  "deleteProductModalDesc": "It looks like you are about to delete the product, huh? Okay, but here is what you need to know, once the product is deleted, the link to this product becomes inactive and you will not be able restore it and you will have recreate the product post."
+  "deleteProductModalDesc": "It looks like you are about to delete the product, huh? Okay, but here is what you need to know, once the product is deleted, the link to this product becomes inactive and you will not be able restore it and you will have recreate the product post.",
+  "productGoBack": "Go back",
+  "productDescTitle": "Product description",
+  "productTagsTitle": "Product tags",
+  "productContactOwnerTitle": "Contact product owner",
+  "productPostedBy": "Posted by",
+  "productLocatedAt": "Product located at",
+  "similarProducts": "See also",
+  "addToFavorites": "Add to favorites"
 }

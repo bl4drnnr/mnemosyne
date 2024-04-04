@@ -13,7 +13,10 @@
         </div>
 
         <div class="product-navigation">
-          <div class="product-navigation-wrapper">
+          <div
+            class="product-navigation-wrapper"
+            (click)="handleRedirect('marketplace')"
+          >
             <img
               class="product-navigation-arrow"
               [ngSrc]="backArrowIcon"
@@ -21,11 +24,11 @@
               [height]="60"
               alt="close"
             >
-            <p>Go back</p>
+            <p>{{ t('product.productGoBack') }}</p>
           </div>
           <div class="product-category-navigation">
             <basic-link
-              [label]="'Main page'"
+              [label]="t('link.productGoToMainPage')"
               href="/marketplace"
             />
             <p class="product-category-navigation-separator">&gt;</p>
@@ -45,17 +48,17 @@
           <div class="product-main-content">
             <div class="product-pictures"></div>
             <div class="product-desc-block">
-              <h1>Product description</h1>
+              <h1>{{ t('product.productDescTitle') }}</h1>
               <p>{{ product.description }}</p>
-              <h1>Product tags</h1>
+              <h1>{{ t('product.productTagsTitle') }}</h1>
               <div class="product-tags">
-                <p class="product-tag">Private</p>
+<!--                <p class="product-tag">Private</p>-->
                 <p class="product-tag">{{ t(translateCategory(product.category)) }}</p>
                 <p class="product-tag">{{ t(translateSubcategory(product.category, product.subcategory)) }}</p>
               </div>
             </div>
             <div class="product-contact-block">
-              <h1>Contact product owner</h1>
+              <h1>{{ t('product.productContactOwnerTitle') }}</h1>
               <div class="product-contact-info">
                 <div class="product-contact-info-block">
                   <img
@@ -66,14 +69,21 @@
                   >
                   <div class="product-user-info-link">
                     <p>{{ product.productUserFirstName }} {{ product.productUserLastName }}</p>
-                    <basic-link [label]="'See more products'" [href]="''" />
+                    <basic-link
+                      [label]="t('link.seeMoreProducts')"
+                      [href]="''"
+                    />
                   </div>
                 </div>
                 <div class="product-contact-info-block buttons">
                   <div class="product-contact-info-button">
-                    <basic-button [label]="'Show contact email'"/>
+                    <basic-button
+                      [label]="t('button.showContactEmail')"
+                    />
                   </div>
-                  <basic-button [label]="'Show contact phone'"/>
+                  <basic-button
+                    [label]="t('button.showContactPhone')"
+                  />
                 </div>
               </div>
             </div>
@@ -86,6 +96,7 @@
                 </p>
                 <img
                   class="product-favorite-icon"
+                  [ngClass]="{ 'active': product.productInFavorites }"
                   [ngSrc]="addToFavoriteIcon"
                   [width]="32"
                   [height]="32"
@@ -99,17 +110,19 @@
               </div>
               <div class="products-contact-button no-padding">
                 <basic-button
-                  [label]="'Show contact email'"
+                  [label]="t('button.showContactEmail')"
                 />
               </div>
               <div class="products-contact-button">
                 <basic-button
-                  [label]="'Show contact phone'"
+                  [label]="t('button.showContactPhone')"
                 />
               </div>
             </div>
             <div class="product-additional-content-block">
-              <h4 class="product-posted-by-title">Posted by</h4>
+              <h4 class="product-posted-by-title">
+                {{ t('product.productPostedBy') }}
+              </h4>
               <div class="product-user-info-wrapper">
                 <div class="product-user-info">
                   <img
@@ -120,13 +133,16 @@
                   >
                   <div class="product-user-info-link">
                     <p>{{ product.productUserFirstName }} {{ product.productUserLastName }}</p>
-                    <basic-link [label]="'See more products'" [href]="''" />
+                    <basic-link
+                      [label]="t('link.seeMoreProducts')"
+                      [href]="''"
+                    />
                   </div>
                 </div>
               </div>
             </div>
             <div class="product-additional-content-block">
-              <h4 class="product-localization-title">Localization</h4>
+              <h4 class="product-localization-title">{{ t('product.productLocation') }}</h4>
               <div
                 class="product-localization-wrapper"
                 (click)="handleExternalRedirect('https://www.google.com/maps/place/' + product.location)"
@@ -139,7 +155,7 @@
                     alt="Google Maps"
                   >
                   <div class="product-localization-link">
-                    <p><b>Product located at:</b></p>
+                    <p><b>{{ t('product.productLocatedAt') }}:</b></p>
                     <p>{{ product.location }}</p>
                   </div>
                 </div>
@@ -152,7 +168,7 @@
 
     <div class="product-container">
       <div class="product-area">
-        <h1>See also</h1>
+        <h1>{{ t('product.similarProducts') }}</h1>
         <div class="similar-products"></div>
       </div>
     </div>

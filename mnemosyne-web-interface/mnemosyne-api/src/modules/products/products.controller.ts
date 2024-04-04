@@ -81,6 +81,7 @@ export class ProductsController {
   @ApiQuery(ProductsDocs.SearchProduct.ApiCategoryQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiSubcategoryQuery)
   @ApiBasicAuth('basicAuth')
+  @UseInterceptors(UserInterceptor)
   @Get('search-product')
   searchProduct(
     @Query('query') query: string,
@@ -93,6 +94,7 @@ export class ProductsController {
     @Query('currency') currency: string,
     @Query('categories') categories: string,
     @Query('subcategories') subcategories: string,
+    @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.searchProduct({
@@ -106,6 +108,7 @@ export class ProductsController {
       currency,
       categories,
       subcategories,
+      userId,
       trx
     });
   }
@@ -229,6 +232,13 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.DeleteProductFromFavoritesDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.DeleteProductFromFavoritesDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.DeleteProductFromFavoritesDocs.ApiResponse)
+  @ApiNotFoundResponse(
+    ProductsDocs.DeleteProductFromFavoritesDocs.ApiNotFoundResponse
+  )
+  @ApiBody(ProductsDocs.DeleteProductFromFavoritesDocs.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -245,6 +255,16 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.AddProductToFavoritesDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.AddProductToFavoritesDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.AddProductToFavoritesDocs.ApiResponse)
+  @ApiNotFoundResponse(
+    ProductsDocs.AddProductToFavoritesDocs.ApiNotFoundResponse
+  )
+  @ApiBadRequestResponse(
+    ProductsDocs.AddProductToFavoritesDocs.ApiBadRequestResponse
+  )
+  @ApiBody(ProductsDocs.AddProductToFavoritesDocs.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)

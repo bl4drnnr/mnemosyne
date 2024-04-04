@@ -43,5 +43,8 @@
   "settingsRedirect": "Account settings",
   "showFilters": "Show filters",
   "createAccForMyself": "I want to create an account for myself",
-  "createAccForCompany": "I want to create an account for my company"
+  "createAccForCompany": "I want to create an account for my company",
+  "dashboardFavorites": "Favorite products",
+  "showContactEmail": "Show contact email",
+  "showContactPhone": "Show contact phone"
 }

@@ -8,5 +8,6 @@ export interface SearchedProductsInterface {
   price: number;
   category: string;
   subcategory: string;
+  productInFavorites: boolean;
   createdAt: Date;
 }

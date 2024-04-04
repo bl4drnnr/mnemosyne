@@ -132,5 +132,6 @@ export class ProductsService {
     });
   }
 
+  // @TODO CREATE PAGE WITH FAVORITES
   getUserFavoritesProducts() {}
 }

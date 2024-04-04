@@ -5,6 +5,10 @@ import { ProductCategory } from '@interfaces/product-category.type';
 import { Currency } from '@interfaces/currency.type';
 import { Router } from '@angular/router';
 import { DeleteProductPayload } from '@payloads/delete-product.interface';
+import { MessagesTranslation } from '@translations/messages.enum';
+import { ProductsService } from '@services/products.service';
+import { TranslationService } from '@services/translation.service';
+import { GlobalMessageService } from '@shared/global-message.service';
 
 @Component({
   selector: 'page-product-preview',
@@ -28,6 +32,7 @@ export class ProductPreviewComponent {
   @Input() contactPerson: string;
   @Input() contactPhone: string;
   @Input() createdAt: Date;
+  @Input() productInFavorites: boolean;
   @Input() showAdditionalInfo: boolean = false;
   @Input() showManagementButtons: boolean = false;
 
@@ -35,14 +40,64 @@ export class ProductPreviewComponent {
 
   productPicturesBucket = `${this.envService.getStaticStorageLink}/products/`;
   uploadPictureIcon = `${this.envService.getStaticStorageLink}/icons/add-photo.svg`;
+  addToFavoriteIcon = `${this.envService.getStaticStorageLink}/icons/heart.svg`;
 
   constructor(
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly translationService: TranslationService,
+    private readonly productsService: ProductsService,
     private readonly envService: EnvService,
     private readonly router: Router
   ) {}
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  handleProductFavorite(event: MouseEvent) {
+    event.stopPropagation();
+    if (this.productInFavorites) this.deleteProductFromFavorites();
+    else this.addProductToFavorites();
+  }
+
+  deleteProductFromFavorites() {
+    this.productsService
+      .deleteProductFromFavorites({
+        productId: this.productId
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          const globalMessage = await this.translationService.translateText(
+            message,
+            MessagesTranslation.RESPONSES
+          );
+          this.globalMessageService.handle({
+            message: globalMessage
+          });
+          this.productInFavorites = false;
+        },
+        error: async () => await this.handleRedirect('login')
+      });
+  }
+
+  addProductToFavorites() {
+    this.productsService
+      .addProductToFavorites({
+        productId: this.productId
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          const globalMessage = await this.translationService.translateText(
+            message,
+            MessagesTranslation.RESPONSES
+          );
+          this.globalMessageService.handle({
+            message: globalMessage
+          });
+          this.productInFavorites = true;
+        },
+        error: async () => await this.handleRedirect('login')
+      });
   }
 
   deleteProduct() {

@@ -71,11 +71,8 @@ export class ProductComponent implements OnInit {
   handleProductFavorite() {
     if (this.product.productInFavorites) this.deleteProductFromFavorites();
     else this.addProductToFavorites();
-    this.getProductBySlug();
   }
 
-  // @TODO CREATE PAGE WITH FAVORITES AND HANDLE ERRORS THERE
-  // @TODO FAVORITE HEART CHANGE STYLES
   deleteProductFromFavorites() {
     this.productsService
       .deleteProductFromFavorites({
@@ -90,10 +87,9 @@ export class ProductComponent implements OnInit {
           this.globalMessageService.handle({
             message: globalMessage
           });
+          this.getProductBySlug();
         },
-        error: (error) => {
-          console.log('deleteProductFromFavorites', error);
-        }
+        error: async () => await this.handleRedirect('login')
       });
   }
 
@@ -111,10 +107,9 @@ export class ProductComponent implements OnInit {
           this.globalMessageService.handle({
             message: globalMessage
           });
+          this.getProductBySlug();
         },
-        error: (error) => {
-          console.log('addProductToFavorites', error);
-        }
+        error: async () => await this.handleRedirect('login')
       });
   }
 

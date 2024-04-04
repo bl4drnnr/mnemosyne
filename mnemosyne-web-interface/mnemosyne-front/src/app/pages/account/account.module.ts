@@ -3,11 +3,12 @@ import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { DashboardComponent } from '@pages/dashboard/dashboard.component';
 import { LayoutsModule } from '@layouts/layouts.module';
 import { ComponentsModule } from '@components/components.module';
-import { SettingsComponent } from './settings/settings.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { RouterModule, Routes } from '@angular/router';
+import { FavoritesComponent } from '@pages/favorites/favorites.component';
+import { SettingsComponent } from '@pages/settings/settings.component';
 
-const components = [DashboardComponent, SettingsComponent];
+const components = [DashboardComponent, SettingsComponent, FavoritesComponent];
 
 const router: Routes = [
   {
@@ -21,6 +22,10 @@ const router: Routes = [
   {
     path: 'account',
     redirectTo: 'account/dashboard'
+  },
+  {
+    path: 'account/favorites',
+    component: FavoritesComponent
   }
 ];
 

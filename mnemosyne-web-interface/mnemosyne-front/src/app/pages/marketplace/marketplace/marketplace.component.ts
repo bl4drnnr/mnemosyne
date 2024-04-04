@@ -137,6 +137,7 @@ export class MarketplaceComponent implements OnInit {
 
   setLayout(layoutView: 'list' | 'grid') {
     this.layoutView = layoutView;
+    localStorage.setItem('_lv', layoutView);
   }
 
   selectProductCurrency({ key, value }: DropdownInterface) {
@@ -330,9 +331,13 @@ export class MarketplaceComponent implements OnInit {
 
         this.categories = categories;
 
-        const category = this.route.snapshot.queryParamMap.get('category');
-        const subcategory =
-          this.route.snapshot.queryParamMap.get('subcategory');
+        const layoutView = localStorage.getItem('_lv') as 'list' | 'grid';
+        this.setLayout(layoutView || 'list');
+
+        // @TODO
+        // const category = this.route.snapshot.queryParamMap.get('category');
+        // const subcategory =
+        //   this.route.snapshot.queryParamMap.get('subcategory');
 
         await this.initCurrencies();
         await this.initCategories();

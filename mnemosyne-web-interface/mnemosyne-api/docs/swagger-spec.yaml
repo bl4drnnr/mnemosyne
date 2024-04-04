@@ -2151,32 +2151,66 @@ paths:
   /api/products/favorites:
     delete:
       operationId: ProductsController_deleteProductFromFavorites
+      summary: Endpoint is responsible for the for deletion the product from the list
+        of user favorite products.
       parameters: []
       requestBody:
         required: true
+        description: Body contains the ID of the product.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/DeleteProductsFromFavoritesDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets the message that the product has been
+            deleted from the list of favorite products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductDeletedFromFavoritesDto"
+        "404":
+          description: In case if product has not been found, not found exception is thrown.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
       tags: *a9
       security:
         - x-access-token: []
         - basicAuth: []
     post:
       operationId: ProductsController_addProductToFavorites
+      summary: Endpoint is responsible for the adding the product to the list of
+        favorite products.
       parameters: []
       requestBody:
         required: true
+        description: Body contains the ID of the product.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/AddProductToFavoritesDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets the message the product has been deleted
+            from the list of favorite products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAddedToFavoritesDto"
+        "400":
+          description: Bad request is thrown in case if product is already on the list.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAlreadyInFavoritesException"
+        "404":
+          description: In case if product has not been found, not found exception is thrown.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductNotFoundException"
       tags: *a9
       security:
         - x-access-token: []
@@ -3783,13 +3817,15 @@ components:
         products:
           description: The list of found by the user query products
           example:
-            - title: My product
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              title: My product
               slug: my-product-123
               mainPicture: asd
               currency: PLN
               price: "15000"
               category: travels
               subcategory: it_books
+              productInFavorites: "false"
               created_at: 2023-11-17T11:42:26.534Z
           type: array
           items:
@@ -4007,6 +4043,7 @@ components:
               createdAt: 2023-11-17T11:42:26.534Z
               contactPerson: "123123123"
               contactPhone: "123123123"
+              productInFavorites: "false"
           type: array
           items:
             type: string
@@ -4049,6 +4086,15 @@ components:
           example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
       required:
         - productId
+    ProductDeletedFromFavoritesDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Product deleted from favorites response message
+          example: product-deleted-from-favorites
+      required:
+        - message
     AddProductToFavoritesDto:
       type: object
       properties:
@@ -4058,6 +4104,24 @@ components:
           example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
       required:
         - productId
+    ProductAddedToFavoritesDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Product added to favorites response message
+          example: product-added-to-favorites
+      required:
+        - message
+    ProductAlreadyInFavoritesException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Product already in favorites error message
+          example: product-already-in-favorites
+      required:
+        - message
     GetAllCategoriesDto:
       type: object
       properties:

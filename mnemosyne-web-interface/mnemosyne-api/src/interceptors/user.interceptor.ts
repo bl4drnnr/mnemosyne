@@ -23,8 +23,8 @@ export class UserInterceptor implements NestInterceptor {
 
     if (!token || token === 'null') return next.handle();
 
-    // @TODO CHECK FOR ERROR HERE
     const { userId } = this.jwtService.verify(token);
+
     req.user = userId || null;
 
     return next.handle();

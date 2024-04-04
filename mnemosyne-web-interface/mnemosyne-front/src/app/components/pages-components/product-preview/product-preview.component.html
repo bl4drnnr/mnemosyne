@@ -26,6 +26,24 @@
     <p><b>{{ t('product.productPrice') }}:</b> {{ price }} {{ currency }}</p>
     <p><b>{{ t('product.productCreatedAt') }}:</b> {{ transformDate(createdAt) }}</p>
 
+    <div
+      class="product-add-to-favorites grid"
+      [ngClass]="{ 'active': productInFavorites }"
+      (click)="handleProductFavorite($event)"
+    >
+      <p class="product-add-to-favorites-p">
+        {{ t('product.addToFavorites') }}:
+      </p>
+      <img
+        class="product-favorite-icon"
+        [ngClass]="{ 'active': productInFavorites }"
+        [ngSrc]="addToFavoriteIcon"
+        [width]="16"
+        [height]="16"
+        alt="Add to favorite"
+      >
+    </div>
+
     <div *ngIf="showAdditionalInfo">
       <h4 class="product-additional-info">{{ t('product.productAdditionalInfo') }}</h4>
 
@@ -83,10 +101,29 @@
         <p>{{ price }} {{ currency }}</p>
       </div>
 
-      <div>
-        <p><b>{{ t('product.productCategory') }}:</b> {{ t(translateCategory(category)) }}</p>
-        <p><b>{{ t('product.productSubcategory') }}:</b> {{ t(translateSubcategory(category, subcategory)) }}</p>
-        <p><b>{{ t('product.productCreatedAt') }}:</b> {{ transformDate(createdAt) }}</p>
+      <div class="product-info">
+        <div>
+          <p><b>{{ t('product.productCategory') }}:</b> {{ t(translateCategory(category)) }}</p>
+          <p><b>{{ t('product.productSubcategory') }}:</b> {{ t(translateSubcategory(category, subcategory)) }}</p>
+          <p><b>{{ t('product.productCreatedAt') }}:</b> {{ transformDate(createdAt) }}</p>
+        </div>
+        <div
+          class="product-add-to-favorites"
+          [ngClass]="{ 'active': productInFavorites }"
+          (click)="handleProductFavorite($event)"
+        >
+          <p class="product-add-to-favorites-p">
+            {{ t('product.addToFavorites') }}:
+          </p>
+          <img
+            class="product-favorite-icon"
+            [ngClass]="{ 'active': productInFavorites }"
+            [ngSrc]="addToFavoriteIcon"
+            [width]="16"
+            [height]="16"
+            alt="Add to favorite"
+          >
+        </div>
       </div>
 
       <div *ngIf="showAdditionalInfo">

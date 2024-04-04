@@ -177,6 +177,7 @@
             <page-product-preview
               *ngFor="let product of products"
               [layoutView]="'grid'"
+              [productId]="product.id"
               [slug]="product.slug"
               [mainPicture]="product.mainPicture"
               [productTitle]="product.title"
@@ -185,6 +186,7 @@
               [price]="product.price"
               [currency]="product.currency"
               [createdAt]="product.createdAt"
+              [productInFavorites]="product.productInFavorites"
               [showAdditionalInfo]="false"
               [showManagementButtons]="false"
             />
@@ -197,6 +199,7 @@
             <page-product-preview
               *ngFor="let product of products"
               [layoutView]="'list'"
+              [productId]="product.id"
               [slug]="product.slug"
               [mainPicture]="product.mainPicture"
               [productTitle]="product.title"
@@ -205,6 +208,7 @@
               [price]="product.price"
               [currency]="product.currency"
               [createdAt]="product.createdAt"
+              [productInFavorites]="product.productInFavorites"
               [showAdditionalInfo]="false"
               [showManagementButtons]="false"
             />

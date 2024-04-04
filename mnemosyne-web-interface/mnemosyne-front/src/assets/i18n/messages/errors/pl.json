@@ -86,5 +86,6 @@
   "order-by-error": "Niewłaściwa kolejność według wartości",
   "order-error": "Nieprawidłowa wartość kolejności",
   "subcategory-not-found": "Nie znaleziono podkategorii",
-  "wrong-currency": "Zła waluta"
+  "wrong-currency": "Zła waluta",
+  "user-not-logged-in": "Użytkownik niezalogowany"
 }

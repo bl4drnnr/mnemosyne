@@ -43,5 +43,8 @@
   "settingsRedirect": "Настройки аккаунта",
   "showFilters": "Показать фильтры",
   "createAccForMyself": "Я хочу создать учетную запись для себя",
-  "createAccForCompany": "Я хочу создать учетную запись для моей компании"
+  "createAccForCompany": "Я хочу создать учетную запись для моей компании",
+  "dashboardFavorites": "Избранные продукты",
+  "showContactEmail": "Показать контактный адрес электронной почты",
+  "showContactPhone": "Показать контактный телефон"
 }

@@ -17,5 +17,6 @@ export enum Titles {
   PRODUCT = 'product',
   PRODUCT_NOT_FOUND = 'productNotFound',
   EDIT_PRODUCT = 'editProduct',
-  MARKETPLACE = 'marketplace'
+  MARKETPLACE = 'marketplace',
+  FAVORITES = 'favorites'
 }

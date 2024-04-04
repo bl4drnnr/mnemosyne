@@ -19,6 +19,11 @@ import { SearchProductsDto } from '@dto/search-products.dto';
 import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
 import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
 import { LatestProductsDto } from '@dto/latest-products.dto';
+import { ProductDeletedFromFavoritesDto } from '@dto/product-deleted-from-favorites.dto';
+import { DeleteProductsFromFavoritesDto } from '@dto/delete-products-from-favorites.dto';
+import { ProductAddedToFavoritesDto } from '@dto/product-added-to-favorites.dto';
+import { ProductAlreadyInFavoritesException } from '@exceptions/product-already-in-favorites.exception';
+import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -430,5 +435,86 @@ export abstract class ProductsDocs {
         schema: { $ref: getSchemaPath(DeleteProductDto) }
       } as ApiBodyOptions
     };
+  }
+
+  static get DeleteProductFromFavoritesDocs() {
+    const ApiModels = [
+      DeleteProductsFromFavoritesDto,
+      ProductDeletedFromFavoritesDto,
+      ProductNotFoundException
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for the for deletion the product from the list of user favorite products.';
+    const apiResponseDesc =
+      'As a response user gets the message that the product has been deleted from the list of favorite products.';
+    const apiBodyDesc = 'Body contains the ID of the product.';
+    const apiNotFoundDesc =
+      'In case if product has not been found, not found exception is thrown.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(ProductDeletedFromFavoritesDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(ProductNotFoundException) }
+      },
+      ApiBody: {
+        type: DeleteProductsFromFavoritesDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(DeleteProductsFromFavoritesDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get AddProductToFavoritesDocs() {
+    const ApiModels = [
+      AddProductToFavoritesDto,
+      ProductAddedToFavoritesDto,
+      ProductAlreadyInFavoritesException,
+      ProductNotFoundException
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for the adding the product to the list of favorite products.';
+    const apiResponseDesc =
+      'As a response user gets the message the product has been deleted from the list of favorite products.';
+    const apiBodyDesc = 'Body contains the ID of the product.';
+    const apiNotFoundDesc =
+      'In case if product has not been found, not found exception is thrown.';
+    const apiBadRequestRespDesc =
+      'Bad request is thrown in case if product is already on the list.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(ProductAddedToFavoritesDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(ProductNotFoundException) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(ProductAlreadyInFavoritesException) }
+      },
+      ApiBody: {
+        type: AddProductToFavoritesDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(AddProductToFavoritesDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get GetUserFavoritesProductsDocs() {
+    return {};
   }
 }

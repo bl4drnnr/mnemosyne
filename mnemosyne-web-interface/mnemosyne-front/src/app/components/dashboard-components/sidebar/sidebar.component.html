@@ -37,6 +37,12 @@
           </div>
           <div class="sidebar-button-wrapper">
             <basic-button
+              [label]="t('button.dashboardFavorites')"
+              (buttonClick)="handleRedirect('account/favorites')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper">
+            <basic-button
               [label]="t('button.settingsRedirect')"
               (buttonClick)="handleRedirect('account/settings')"
             />

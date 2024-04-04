@@ -155,6 +155,7 @@ export class ProductsService {
     currency,
     categories,
     subcategories,
+    userId,
     trx
   }: SearchProductInterface) {
     const offset = Number(page) * Number(pageSize);
@@ -219,6 +220,7 @@ export class ProductsService {
     }
 
     const attributes = [
+      'id',
       'title',
       'slug',
       'pictures',
@@ -280,8 +282,21 @@ export class ProductsService {
       transaction: trx
     });
 
+    let userFavoriteProductsIds: Array<string>;
+
+    if (userId) {
+      const { favoriteProductsIds } =
+        await this.usersService.getUserFavoritesProducts({
+          userId,
+          trx
+        });
+
+      userFavoriteProductsIds = favoriteProductsIds;
+    }
+
     const foundProducts = rows.map(
       ({
+        id,
         title,
         slug,
         pictures,
@@ -291,6 +306,7 @@ export class ProductsService {
         subcategory,
         createdAt
       }) => ({
+        id,
         title,
         slug,
         mainPicture: pictures[0],
@@ -298,6 +314,7 @@ export class ProductsService {
         price,
         category: category.name,
         subcategory,
+        productInFavorites: userFavoriteProductsIds.includes(id),
         createdAt
       })
     );
@@ -506,6 +523,12 @@ export class ProductsService {
       transaction: trx
     });
 
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({
+        userId,
+        trx
+      });
+
     const foundProducts = rows.map(
       ({
         id,
@@ -532,7 +555,8 @@ export class ProductsService {
         category: category.name,
         createdAt,
         contactPerson,
-        contactPhone
+        contactPhone,
+        productInFavorites: favoriteProductsIds.includes(id)
       })
     );
 
