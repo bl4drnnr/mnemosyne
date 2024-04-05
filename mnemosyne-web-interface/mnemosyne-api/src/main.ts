@@ -5,19 +5,41 @@ import * as bodyParser from 'body-parser';
 import * as fs from 'fs';
 import * as yaml from 'yaml';
 import { urlencoded, json } from 'express';
+import { ImATeapotException } from '@nestjs/common';
 
 (async () => {
-  const app = await NestFactory.create(AppModule);
+  const whitelist = ['http://localhost:4201', 'https://proxy.mnemosyne.io'];
+
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+      credentials: true,
+      origin: function (origin, callback) {
+        console.log('origin API: ', origin);
+        if (!origin) {
+          callback(null, true);
+          return;
+        }
+        if (whitelist.includes(origin) || !!origin.match(/mnemosyne\.io$/)) {
+          console.log('Allowed CORS (API) for: ', origin);
+          callback(null, true);
+        } else {
+          console.log('Blocked CORS (API) for: ', origin);
+          callback(new ImATeapotException('Not allowed by CORS'), false);
+        }
+      }
+    }
+  });
   const port = process.env.API_PORT || 3000;
 
   app.setGlobalPrefix('/api');
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
-  app.enableCors({
-    origin: 'https://proxy.mnemosyne.io',
-    credentials: true
-  });
+  // app.enableCors({
+  //   origin: 'https://proxy.mnemosyne.io',
+  //   credentials: true
+  // });
 
   // Working in the development mode
   // app.enableCors({
