@@ -20,5 +20,7 @@
   "addToFavorites": "Добавить в избранное",
   "noProductPictures": "Нет изображений продукта",
   "hideContactEmail": "Скрыть контактный адрес электронной почты",
-  "hideContactPhone": "Скрыть контактный телефон"
+  "hideContactPhone": "Скрыть контактный телефон",
+  "noSimilarProductsTitle": "Похожие товары не найдены",
+  "noSimilarProductsParagraph": "Мы не нашли похожих товаров..."
 }

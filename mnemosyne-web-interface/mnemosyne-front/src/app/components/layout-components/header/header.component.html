@@ -49,6 +49,11 @@
       </div>
 
       <div class="header-side" *ngIf="isUserLoggedIn">
+        <basic-button
+          [label]="t('button.postProduct')"
+          (buttonClick)="handleRedirect('marketplace/create-product')"
+          [fillButton]="true"
+        />
         <div class="user-account-wrapper" (click)="handleRedirect('account/dashboard')">
           <p class="user-account-title">{{ t('sidebar.yourAccountSidebarTitle') }}</p>
           <img

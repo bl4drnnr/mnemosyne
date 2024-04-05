@@ -20,5 +20,7 @@
   "addToFavorites": "Dodaj do ulubionych",
   "noProductPictures": "Brak zdjęć produktów",
   "hideContactEmail": "Ukryj kontaktowy adres e-mail",
-  "hideContactPhone": "Ukryj telefon kontaktowy"
+  "hideContactPhone": "Ukryj telefon kontaktowy",
+  "noSimilarProductsTitle": "Nie znaleziono podobnych produktów",
+  "noSimilarProductsParagraph": "Nie znaleźliśmy żadnych podobnych produktów..."
 }

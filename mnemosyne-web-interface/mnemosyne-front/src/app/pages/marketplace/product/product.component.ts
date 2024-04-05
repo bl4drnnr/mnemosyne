@@ -9,6 +9,7 @@ import { Titles } from '@interfaces/titles.enum';
 import { EnvService } from '@shared/env.service';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { GlobalMessageService } from '@shared/global-message.service';
+import { SearchedProducts } from '@responses/search-products.interface';
 
 dayjs.extend(LocalizedFormat);
 
@@ -23,6 +24,7 @@ export class ProductComponent implements OnInit {
   showSearchProductsModal = false;
   contactEmail: string;
   contactPhone: string;
+  similarProducts: Array<SearchedProducts>;
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
@@ -51,6 +53,7 @@ export class ProductComponent implements OnInit {
           this.translationService.setPageTitle(Titles.PRODUCT, {
             product: product.title
           });
+          this.getSimilarProducts();
         },
         error: async () =>
           await this.handleRedirect('marketplace/product-not-found')
@@ -73,9 +76,35 @@ export class ProductComponent implements OnInit {
     return dayjs(date).format('LL');
   }
 
-  handleProductFavorite() {
-    if (this.product.productInFavorites) this.deleteProductFromFavorites();
-    else this.addProductToFavorites();
+  handleSimilarProductsFavorite(product: SearchedProducts, event: MouseEvent) {
+    event.stopPropagation();
+    if (product.productInFavorites) this.deleteProductFromFavorites(product.id);
+    else this.addProductToFavorites(product.id);
+    this.getSimilarProducts();
+  }
+
+  handleProductFavorite(productId: string) {
+    if (this.product.productInFavorites)
+      this.deleteProductFromFavorites(productId);
+    else this.addProductToFavorites(productId);
+  }
+
+  getSimilarProducts() {
+    this.productsService
+      .searchProducts({
+        page: '0',
+        pageSize: '4',
+        order: 'created_at',
+        orderBy: 'DESC',
+        currency: this.product.currency,
+        categories: this.product.category,
+        maxPrice: String(this.product.price + this.product.price * 0.5),
+        minPrice: String(this.product.price - this.product.price * 0.5),
+        subcategories: this.product.subcategory
+      })
+      .subscribe({
+        next: ({ products }) => (this.similarProducts = products)
+      });
   }
 
   getProductContactEmail() {
@@ -96,10 +125,10 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  deleteProductFromFavorites() {
+  deleteProductFromFavorites(productId: string) {
     this.productsService
       .deleteProductFromFavorites({
-        productId: this.product.id
+        productId
       })
       .subscribe({
         next: async ({ message }) => {
@@ -116,10 +145,10 @@ export class ProductComponent implements OnInit {
       });
   }
 
-  addProductToFavorites() {
+  addProductToFavorites(productId: string) {
     this.productsService
       .addProductToFavorites({
-        productId: this.product.id
+        productId
       })
       .subscribe({
         next: async ({ message }) => {

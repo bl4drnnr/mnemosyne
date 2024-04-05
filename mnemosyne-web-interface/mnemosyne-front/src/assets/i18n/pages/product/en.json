@@ -20,5 +20,7 @@
   "addToFavorites": "Add to favorites",
   "noProductPictures": "No product pictures",
   "hideContactEmail": "Hide contact email",
-  "hideContactPhone": "Hide contact phone"
+  "hideContactPhone": "Hide contact phone",
+  "noSimilarProductsTitle": "No similar products found",
+  "noSimilarProductsParagraph": "We have not found any similar products..."
 }

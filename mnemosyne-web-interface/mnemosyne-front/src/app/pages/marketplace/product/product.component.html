@@ -160,7 +160,7 @@
                   [ngSrc]="addToFavoriteIcon"
                   [width]="32"
                   [height]="32"
-                  (click)="handleProductFavorite()"
+                  (click)="handleProductFavorite(product.id)"
                   alt="Add to favorite"
                 >
               </div>
@@ -254,10 +254,78 @@
       </div>
     </div>
 
-    <div class="product-container">
+    <div
+      class="product-container"
+      *ngIf="similarProducts && similarProducts.length > 0"
+    >
       <div class="product-area">
         <h1>{{ t('product.similarProducts') }}</h1>
-        <div class="similar-products"></div>
+        <div class="similar-products">
+          <div
+            *ngFor="let similarProduct of similarProducts"
+            (click)="handleRedirect('marketplace/product/' + similarProduct.slug)"
+          >
+            <div
+              class="similar-product-container"
+              *ngIf="similarProduct.id !== product.id"
+            >
+              <img
+                *ngIf="similarProduct.mainPicture"
+                class="similar-product-pic"
+                [ngSrc]="productPicturesBucket + similarProduct.mainPicture + '.png'"
+                [alt]="similarProduct.title"
+                [width]="298"
+                [height]="200"
+              >
+              <div
+                class="similar-product-no-pic-container"
+                *ngIf="!similarProduct.mainPicture"
+              >
+                <img
+                  class="similar-product-no-pic"
+                  [ngSrc]="noProductPicture"
+                  alt="No picture"
+                  [width]="298"
+                  [height]="200"
+                >
+              </div>
+              <div class="similar-product-info">
+                <h5>{{ similarProduct.title }}</h5>
+                <p class="similar-product-info-p">{{ similarProduct.price }} {{ similarProduct.currency }}</p>
+                <p class="similar-product-info-p">{{ transformDate(similarProduct.createdAt) }}</p>
+              </div>
+              <div class="similar-product-favorites">
+                <div
+                  class="similar-product-add-to-favorites"
+                  [ngClass]="{ 'active': similarProduct.productInFavorites }"
+                  (click)="handleSimilarProductsFavorite(similarProduct, $event)"
+                >
+                  <p class="similar-product-add-to-favorites-p">
+                    {{ t('product.addToFavorites') }}:
+                  </p>
+                  <img
+                    class="similar-product-favorite-icon"
+                    [ngClass]="{ 'active': similarProduct.productInFavorites }"
+                    [ngSrc]="addToFavoriteIcon"
+                    [width]="16"
+                    [height]="16"
+                    alt="Add to favorite"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="product-container"
+      *ngIf="!similarProducts"
+    >
+      <div class="product-area no-products">
+        <h1>{{ t('product.noSimilarProductsTitle') }}</h1>
+        <p>{{ t('product.noSimilarProductsParagraph') }}</p>
       </div>
     </div>
   </ng-container>
