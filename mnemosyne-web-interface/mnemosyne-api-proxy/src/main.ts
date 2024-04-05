@@ -5,36 +5,34 @@ import * as fs from 'fs';
 import * as yaml from 'yaml';
 import * as bodyParser from 'body-parser';
 import { urlencoded, json } from 'express';
-import { ImATeapotException } from '@nestjs/common';
 
 (async () => {
-  const whitelist = ['http://localhost:4200', 'https://mnemosyne.io'];
+  const whitelist = [
+    'http://localhost:4200',
+    'https://mnemosyne.io',
+    'https://proxy.mnemosyne.io'
+  ];
 
-  const app = await NestFactory.create(AppModule, {
-    cors: {
-      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
-      credentials: true,
-      origin: function (origin, callback) {
-        console.log('origin API Proxy: ', origin);
-        if (!origin) {
-          callback(null, true);
-          return;
-        }
-        if (whitelist.includes(origin) || !!origin.match(/mnemosyne\.io$/)) {
-          console.log('Allowed CORS (API Proxy) for: ', origin);
-          callback(null, true);
-        } else {
-          console.log('Blocked CORS (API Proxy) for: ', origin);
-          callback(new ImATeapotException('Not allowed by CORS'), false);
-        }
-      }
-    }
-  });
+  const app = await NestFactory.create(AppModule);
   const port = process.env.PROXY_PORT;
 
   app.setGlobalPrefix('/api');
   app.use(json({ limit: '50mb' }));
   app.use(urlencoded({ extended: true, limit: '50mb' }));
+
+  app.enableCors({
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+    credentials: true,
+    origin: function (origin, callback) {
+      if (whitelist.indexOf(origin) !== -1) {
+        console.log('allowed cors for (API Proxy):', origin);
+        callback(null, true);
+      } else {
+        console.log('blocked cors for:', origin);
+        callback(new Error('Not allowed by CORS (API Proxy)'));
+      }
+    }
+  });
 
   // app.enableCors({
   //   allowedHeaders: ['content-type'],
