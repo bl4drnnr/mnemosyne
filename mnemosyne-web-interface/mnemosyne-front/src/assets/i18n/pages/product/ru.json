@@ -17,5 +17,8 @@
   "productPostedBy": "Опубликовано пользователем",
   "productLocatedAt": "Продукт находится по адресу",
   "similarProducts": "Смотрите также",
-  "addToFavorites": "Добавить в избранное"
+  "addToFavorites": "Добавить в избранное",
+  "noProductPictures": "Нет изображений продукта",
+  "hideContactEmail": "Скрыть контактный адрес электронной почты",
+  "hideContactPhone": "Скрыть контактный телефон"
 }

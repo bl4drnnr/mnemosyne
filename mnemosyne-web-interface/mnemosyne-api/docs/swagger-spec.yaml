@@ -2217,10 +2217,101 @@ paths:
         - basicAuth: []
     get:
       operationId: ProductsController_getUserFavoritesProducts
-      parameters: []
+      summary: Endpoint is responsible for getting user favorite products.
+      parameters:
+        - name: query
+          required: false
+          in: query
+          description: Product query
+          schema:
+            type: string
+        - name: page
+          required: false
+          in: query
+          description: Query for page in order to get list of products.
+          schema:
+            type: string
+        - name: pageSize
+          required: false
+          in: query
+          description: Query for limit in order to get list of products.
+          schema:
+            type: string
+        - name: order
+          required: false
+          in: query
+          description: Query to perform sorting by
+          schema:
+            type: string
+        - name: orderBy
+          required: false
+          in: query
+          description: ASC or DESC
+          schema:
+            type: string
+      responses:
+        "201":
+          description: As a response user gets the list of his favorite products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserFavoriteProductsDto"
+        "400":
+          description: Not found exception is thrown in case if category or subcategory
+            has not been found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ParseException"
+                  - $ref: "#/components/schemas/OrderException"
+                  - $ref: "#/components/schemas/OrderByException"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/products/product-contact-email:
+    get:
+      operationId: ProductsController_getProductContactEmail
+      summary: Endpoint is responsible for getting product contact phone.
+      parameters:
+        - name: productId
+          required: false
+          in: query
+          description: Product ID
+          schema:
+            type: string
       responses:
         "200":
-          description: ""
+          description: As a response user gets product contact email (only in case if user
+            is authorized).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProductContactEmailDto"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
+  /api/products/product-contact-phone:
+    get:
+      operationId: ProductsController_getProductContactPhone
+      summary: Endpoint is responsible for getting product contact phone.
+      parameters:
+        - name: productId
+          required: false
+          in: query
+          description: Product ID
+          schema:
+            type: string
+      responses:
+        "200":
+          description: As a response user gets product contact phone (only in case if user
+            is authorized).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetProductContactEmailDto"
       tags: *a9
       security:
         - x-access-token: []
@@ -3775,10 +3866,7 @@ components:
               - it_books
             category: travels
             contactPerson: John Doe
-            contactPhone: "123123123"
             createdAt: 2023-11-17T11:42:26.534Z
-            productUserFirstName: Joe
-            productUserLastName: Doe
             productInFavorites: "false"
           allOf:
             - $ref: "#/components/schemas/Product"
@@ -4122,6 +4210,49 @@ components:
           example: product-already-in-favorites
       required:
         - message
+    UserFavoriteProductsDto:
+      type: object
+      properties:
+        favoriteProducts:
+          description: List of user's favorite products
+          example:
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              title: My product
+              slug: my-product-123
+              mainPicture: asd
+              currency: PLN
+              price: "15000"
+              category: travels
+              subcategory: it_books
+              created_at: 2023-11-17T11:42:26.534Z
+          type: array
+          items:
+            type: string
+        count:
+          type: number
+          description: Count for the pagination
+          example: "5"
+      required:
+        - favoriteProducts
+        - count
+    GetProductContactEmailDto:
+      type: object
+      properties:
+        contactEmail:
+          type: string
+          description: Email address
+          example: joe@doe.com
+      required:
+        - contactEmail
+    GetProductContactPhoneDto:
+      type: object
+      properties:
+        contactPhone:
+          type: string
+          description: Phone
+          example: "+48123123123"
+      required:
+        - contactPhone
     GetAllCategoriesDto:
       type: object
       properties:

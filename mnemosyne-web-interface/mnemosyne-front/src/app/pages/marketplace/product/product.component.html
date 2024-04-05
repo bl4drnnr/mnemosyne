@@ -46,7 +46,39 @@
 
         <div class="product-content-container">
           <div class="product-main-content">
-            <div class="product-pictures"></div>
+            <div class="product-pictures">
+              <div *ngIf="product.pictures.length === 0">
+                <img
+                  class="product-no-picture"
+                  [src]="noProductPicture"
+                  [width]="300"
+                  [height]="200"
+                  [alt]="noProductPicture"
+                >
+                <h1>{{ t('product.noProductPictures') }}</h1>
+              </div>
+              <div *ngIf="product.pictures.length > 0">
+                <div class="product-pictures-wrapper">
+                  <p-carousel
+                    [value]="product.pictures"
+                    [numVisible]="1"
+                  >
+                    <ng-template let-pic pTemplate="item">
+                      <div class="product-item-content">
+                        <img
+                          class="product-pic"
+                          style="height: 100%;"
+                          [src]="productPicturesBucket + pic + '.png'"
+                          [width]="726"
+                          [height]="400"
+                          alt="Product pic"
+                        >
+                      </div>
+                    </ng-template>
+                  </p-carousel>
+                </div>
+              </div>
+            </div>
             <div class="product-desc-block">
               <h1>{{ t('product.productDescTitle') }}</h1>
               <p>{{ product.description }}</p>
@@ -68,7 +100,7 @@
                     alt="User"
                   >
                   <div class="product-user-info-link">
-                    <p>{{ product.productUserFirstName }} {{ product.productUserLastName }}</p>
+                    <p>{{ product.contactPerson }}</p>
                     <basic-link
                       [label]="t('link.seeMoreProducts')"
                       [href]="''"
@@ -78,12 +110,40 @@
                 <div class="product-contact-info-block buttons">
                   <div class="product-contact-info-button">
                     <basic-button
+                      *ngIf="!contactEmail"
                       [label]="t('button.showContactEmail')"
+                      (buttonClick)="getProductContactEmail()"
                     />
+                    <basic-link
+                      *ngIf="contactEmail"
+                      [label]="contactEmail"
+                      [href]="'mailto:' + contactEmail"
+                    />
+                    <p
+                      class="hide-contact-email-p"
+                      *ngIf="contactEmail"
+                      (click)="contactEmail = ''"
+                    >{{ t('product.hideContactEmail') }}</p>
                   </div>
-                  <basic-button
-                    [label]="t('button.showContactPhone')"
-                  />
+                  <div>
+                    <basic-button
+                      *ngIf="!contactPhone"
+                      [label]="t('button.showContactPhone')"
+                      (buttonClick)="getProductContactPhone()"
+                    />
+                    <div class="contact-email-wrapper">
+                      <basic-link
+                        *ngIf="contactPhone"
+                        [label]="contactPhone"
+                        [href]="'tel:' + contactPhone"
+                      />
+                    </div>
+                    <p
+                      class="hide-contact-email-p"
+                      *ngIf="contactPhone"
+                      (click)="contactPhone = ''"
+                    >{{ t('product.hideContactPhone') }}</p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,13 +170,41 @@
               </div>
               <div class="products-contact-button no-padding">
                 <basic-button
+                  *ngIf="!contactEmail"
                   [label]="t('button.showContactEmail')"
+                  (buttonClick)="getProductContactEmail()"
                 />
+                <div class="contact-email-wrapper">
+                  <basic-link
+                    *ngIf="contactEmail"
+                    [label]="contactEmail"
+                    [href]="'mailto:' + contactEmail"
+                  />
+                </div>
+                <p
+                  class="hide-contact-email-p"
+                  *ngIf="contactEmail"
+                  (click)="contactEmail = ''"
+                >{{ t('product.hideContactEmail') }}</p>
               </div>
               <div class="products-contact-button">
                 <basic-button
+                  *ngIf="!contactPhone"
                   [label]="t('button.showContactPhone')"
+                  (buttonClick)="getProductContactPhone()"
                 />
+                <div class="contact-email-wrapper">
+                  <basic-link
+                    *ngIf="contactPhone"
+                    [label]="contactPhone"
+                    [href]="'tel:' + contactPhone"
+                  />
+                </div>
+                <p
+                  class="hide-contact-email-p"
+                  *ngIf="contactPhone"
+                  (click)="contactPhone = ''"
+                >{{ t('product.hideContactPhone') }}</p>
               </div>
             </div>
             <div class="product-additional-content-block">
@@ -132,7 +220,7 @@
                     alt="User"
                   >
                   <div class="product-user-info-link">
-                    <p>{{ product.productUserFirstName }} {{ product.productUserLastName }}</p>
+                    <p>{{ product.contactPerson }}</p>
                     <basic-link
                       [label]="t('link.seeMoreProducts')"
                       [href]="''"

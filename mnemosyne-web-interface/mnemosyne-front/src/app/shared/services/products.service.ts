@@ -20,6 +20,12 @@ import { AddProductToFavoritesPayload } from '@payloads/add-product-to-favorites
 import { ProductAddedToFavoritesResponse } from '@responses/product-added-to-favorites.interface';
 import { DeleteProductFromFavoritesPaylaod } from '@payloads/delete-product-from-favorites.interface';
 import { ProductDeletedFromFavoritesResponse } from '@responses/product-deleted-from-favorites.interface';
+import { GetUserFavoriteProductsPayload } from '@payloads/get-user-favorite-products.interface';
+import { GetUserFavoriteProductsResponse } from '@responses/get-user-favorite-products.interface';
+import { GetProductContactEmailPayload } from '@payloads/get-product-contact-email.interface';
+import { GetProductContactPhonePayload } from '@payloads/get-product-contact-phone.interface';
+import { GetProductContactEmailResponse } from '@responses/get-product-contact-email.interface';
+import { GetProductContactPhoneResponse } from '@responses/get-product-contact-phone.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -132,6 +138,36 @@ export class ProductsService {
     });
   }
 
-  // @TODO CREATE PAGE WITH FAVORITES
-  getUserFavoritesProducts() {}
+  getUserFavoritesProducts(
+    params: GetUserFavoriteProductsPayload
+  ): Observable<GetUserFavoriteProductsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.GET_FAVORITES,
+      params
+    });
+  }
+
+  getProductContactEmail(
+    params: GetProductContactEmailPayload
+  ): Observable<GetProductContactEmailResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.PRODUCT_CONTACT_EMAIL,
+      params
+    });
+  }
+
+  getProductContactPhone(
+    params: GetProductContactPhonePayload
+  ): Observable<GetProductContactPhoneResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.PRODUCT_CONTACT_PHONE,
+      params
+    });
+  }
 }

@@ -281,14 +281,74 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.GetUserFavoritesProductsDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetUserFavoritesProductsDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetUserFavoritesProductsDocs.ApiResponse)
+  @ApiBadRequestResponse(
+    ProductsDocs.GetUserFavoritesProductsDocs.ApiBadRequestResponse
+  )
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiProductQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageSizeQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderByQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('favorites')
   getUserFavoritesProducts(
+    @Query('query') query: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+    @Query('order') order: string,
+    @Query('orderBy') orderBy: string,
     @UserId() userId: string,
     @TrxDecorator() trx: Transaction
   ) {
-    return this.productsService.getUserFavoritesProducts();
+    return this.productsService.getUserFavoritesProducts({
+      query,
+      page,
+      pageSize,
+      order,
+      orderBy,
+      userId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetProductContactEmailDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactEmailDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactEmailDocs.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactEmailDocs.ApiProductIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('product-contact-email')
+  getProductContactEmail(
+    @Query('productId') productId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getProductContactEmail({
+      productId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetProductContactPhoneDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactPhoneDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactPhoneDocs.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactPhoneDocs.ApiProductIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('product-contact-phone')
+  getProductContactPhone(
+    @Query('productId') productId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getProductContactPhone({
+      productId,
+      trx
+    });
   }
 }

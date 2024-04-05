@@ -1,3 +1,5 @@
+import * as dayjs from 'dayjs';
+import * as LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from '@services/products.service';
 import { TranslationService } from '@services/translation.service';
@@ -5,10 +7,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GetProductBySlug } from '@responses/get-product-by-slug.interface';
 import { Titles } from '@interfaces/titles.enum';
 import { EnvService } from '@shared/env.service';
-import * as dayjs from 'dayjs';
-import * as LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { GlobalMessageService } from '@shared/global-message.service';
+
 dayjs.extend(LocalizedFormat);
 
 @Component({
@@ -20,6 +21,8 @@ export class ProductComponent implements OnInit {
   productSlug: string;
   product: GetProductBySlug;
   showSearchProductsModal = false;
+  contactEmail: string;
+  contactPhone: string;
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
@@ -34,6 +37,8 @@ export class ProductComponent implements OnInit {
   addToFavoriteIcon = `${this.envService.getStaticStorageLink}/icons/heart.svg`;
   userProfilePictureLink = `${this.envService.getStaticStorageLink}/users-profile-pictures/default.png`;
   googleMapsIcon = `${this.envService.getStaticStorageLink}/icons/google-maps-icon.svg`;
+  productPicturesBucket = `${this.envService.getStaticStorageLink}/products/`;
+  noProductPicture = `${this.envService.getStaticStorageLink}/icons/add-photo.svg`;
 
   getProductBySlug() {
     this.productsService
@@ -71,6 +76,24 @@ export class ProductComponent implements OnInit {
   handleProductFavorite() {
     if (this.product.productInFavorites) this.deleteProductFromFavorites();
     else this.addProductToFavorites();
+  }
+
+  getProductContactEmail() {
+    this.productsService
+      .getProductContactEmail({ productId: this.product.id })
+      .subscribe({
+        next: ({ contactEmail }) => (this.contactEmail = contactEmail),
+        error: async () => await this.handleRedirect('login')
+      });
+  }
+
+  getProductContactPhone() {
+    this.productsService
+      .getProductContactPhone({ productId: this.product.id })
+      .subscribe({
+        next: ({ contactPhone }) => (this.contactPhone = contactPhone),
+        error: async () => await this.handleRedirect('login')
+      });
   }
 
   deleteProductFromFavorites() {

@@ -87,5 +87,6 @@
   "order-error": "Nieprawidłowa wartość kolejności",
   "subcategory-not-found": "Nie znaleziono podkategorii",
   "wrong-currency": "Zła waluta",
-  "user-not-logged-in": "Użytkownik niezalogowany"
+  "user-not-logged-in": "Użytkownik niezalogowany",
+  "product-already-in-favorites": "Produkt został już dodany do ulubionych"
 }

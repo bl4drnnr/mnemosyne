@@ -154,5 +154,8 @@
   "marketplaceSearchPlaceholder": "Provide the query for the product",
   "marketplaceSearchInputDesc": "The search of the product will be based on the name, category, subcategory, description, title and slug.",
   "searchTitle": "Search",
-  "searchForProductsHeader": "Search for products..."
+  "searchForProductsHeader": "Search for products...",
+  "favoriteProductsSearchLabel": "Favorites products search",
+  "favoriteProductsSearchPlaceholder": "Favorites products search",
+  "favoriteProductsSearchInputDesc": "You can perform the search of your products based on title, description or slug."
 }

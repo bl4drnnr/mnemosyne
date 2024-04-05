@@ -87,5 +87,6 @@
   "order-error": "Неправильное значение порядка",
   "subcategory-not-found": "Подкатегория не найдена",
   "wrong-currency": "Неправильная валюта",
-  "user-not-logged-in": "Пользователь не вошел в систему"
+  "user-not-logged-in": "Пользователь не вошел в систему",
+  "product-already-in-favorites": "Товар уже добавлен в избранное"
 }

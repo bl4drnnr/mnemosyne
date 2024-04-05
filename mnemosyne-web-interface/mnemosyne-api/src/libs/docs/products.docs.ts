@@ -24,6 +24,9 @@ import { DeleteProductsFromFavoritesDto } from '@dto/delete-products-from-favori
 import { ProductAddedToFavoritesDto } from '@dto/product-added-to-favorites.dto';
 import { ProductAlreadyInFavoritesException } from '@exceptions/product-already-in-favorites.exception';
 import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
+import { UserFavoriteProductsDto } from '@dto/user-favorite-products.dto';
+import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
+import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -515,6 +518,136 @@ export abstract class ProductsDocs {
   }
 
   static get GetUserFavoritesProductsDocs() {
-    return {};
+    const ApiModels = [
+      ParseException,
+      OrderException,
+      OrderByException,
+      UserFavoriteProductsDto
+    ];
+    const BadRequests = [ParseException, OrderException, OrderByException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting user favorite products.';
+    const apiResponseDesc =
+      'As a response user gets the list of his favorite products.';
+    const apiBadRequestRespDesc =
+      'Not found exception is thrown in case if category or subcategory has not been found.';
+
+    const productQueryDesc = 'Product query';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of products.';
+    const pageQueryDesc = 'Query for page in order to get list of products.';
+    const orderQueryDesc = 'Query to perform sorting by';
+    const orderByQueryDesc = 'ASC or DESC';
+
+    const productQuery = {
+      description: productQueryDesc,
+      name: 'query',
+      type: String,
+      required: false
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: false
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: false
+    };
+
+    const orderQuery = {
+      description: orderQueryDesc,
+      name: 'order',
+      type: String,
+      required: false
+    };
+
+    const orderByQuery = {
+      description: orderByQueryDesc,
+      name: 'orderBy',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(UserFavoriteProductsDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiProductQuery: productQuery,
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery,
+      ApiOrderQuery: orderQuery,
+      ApiOrderByQuery: orderByQuery
+    };
+  }
+
+  static get GetProductContactEmailDocs() {
+    const ApiModels = [GetProductContactEmailDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting product contact phone.';
+    const apiResponseDesc =
+      'As a response user gets product contact email (only in case if user is authorized).';
+    const productIdQueryDesc = 'Product ID';
+
+    const productIdQuery = {
+      description: productIdQueryDesc,
+      name: 'productId',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetProductContactEmailDto) }
+      },
+      ApiProductIdQuery: productIdQuery
+    };
+  }
+
+  static get GetProductContactPhoneDocs() {
+    const ApiModels = [GetProductContactPhoneDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting product contact phone.';
+    const apiResponseDesc =
+      'As a response user gets product contact phone (only in case if user is authorized).';
+    const productIdQueryDesc = 'Product ID';
+
+    const productIdQuery = {
+      description: productIdQueryDesc,
+      name: 'productId',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetProductContactEmailDto) }
+      },
+      ApiProductIdQuery: productIdQuery
+    };
   }
 }

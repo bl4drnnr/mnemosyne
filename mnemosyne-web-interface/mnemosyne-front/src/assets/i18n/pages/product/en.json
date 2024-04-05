@@ -17,5 +17,8 @@
   "productPostedBy": "Posted by",
   "productLocatedAt": "Product located at",
   "similarProducts": "See also",
-  "addToFavorites": "Add to favorites"
+  "addToFavorites": "Add to favorites",
+  "noProductPictures": "No product pictures",
+  "hideContactEmail": "Hide contact email",
+  "hideContactPhone": "Hide contact phone"
 }

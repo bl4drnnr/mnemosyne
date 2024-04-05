@@ -83,7 +83,16 @@
           </div>
         </div>
 
-        <div class="dashboard-products-grid" *ngIf="layoutView === 'grid'">
+        <div *ngIf="userProducts && userProducts.length === 0">
+          <h1 class="dashboard-products-not-found">
+            {{ t('dashboard.dashboardProductsNotFound') }}
+          </h1>
+        </div>
+
+        <div
+          class="dashboard-products-grid"
+          *ngIf="userProducts && userProducts.length > 0 && layoutView === 'grid'"
+        >
           <page-product-preview
             *ngFor="let product of userProducts"
             [layoutView]="'grid'"
@@ -106,7 +115,10 @@
           />
         </div>
 
-        <div class="dashboard-products-list" *ngIf="layoutView === 'list'">
+        <div
+          class="dashboard-products-list"
+          *ngIf="userProducts && userProducts.length > 0 && layoutView === 'list'"
+        >
           <page-product-preview
             *ngFor="let product of userProducts"
             [layoutView]="'list'"
@@ -129,7 +141,7 @@
           />
         </div>
 
-        <div class="dashboard-products-pagination">
+        <div class="dashboard-products-pagination" *ngIf="userProducts && userProducts.length > 0">
           <basic-pagination
             [itemsPerPageLabel]="t('dropdown.productsPerPage')"
             [currentPage]="page"

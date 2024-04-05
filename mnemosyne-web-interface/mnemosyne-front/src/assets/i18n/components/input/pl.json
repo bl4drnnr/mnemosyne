@@ -154,5 +154,8 @@
   "marketplaceSearchPlaceholder": "Podaj zapytanie dotyczące produktu",
   "marketplaceSearchInputDesc": "Wyszukiwanie produktu będzie oparte na nazwie, kategorii, podkategorii, opisie, tytule i linku.",
   "searchTitle": "Wyszukaj",
-  "searchForProductsHeader": "Szukaj produktów..."
+  "searchForProductsHeader": "Szukaj produktów...",
+  "favoriteProductsSearchLabel": "Wyszukiwanie ulubionych produktów",
+  "favoriteProductsSearchPlaceholder": "Wyszukiwanie ulubionych produktów",
+  "favoriteProductsSearchInputDesc": "Możesz wyszukiwać swoje produkty na podstawie tytułu, opisu lub linka."
 }

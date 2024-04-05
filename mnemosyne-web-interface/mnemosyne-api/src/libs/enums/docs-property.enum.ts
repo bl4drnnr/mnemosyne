@@ -279,5 +279,6 @@ export enum DocsProperty {
   PRODUCT_DELETED_FROM_FAVORITES_DESC = 'Product deleted from favorites response message',
   PRODUCT_DELETED_FROM_FAVORITES_EXAMPLE = 'product-deleted-from-favorites',
   PRODUCT_IN_FAVORITES_DESC = "Is product in user's favorites",
-  PRODUCT_IN_FAVORITES_EXAMPLE = 'false'
+  PRODUCT_IN_FAVORITES_EXAMPLE = 'false',
+  USER_FAVORITE_PRODUCTS_DESC = "List of user's favorite products"
 }

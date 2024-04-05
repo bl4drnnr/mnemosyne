@@ -156,7 +156,6 @@ export class MarketplaceComponent implements OnInit {
     this.getProducts();
   }
 
-  // @TODO FIX CORS, CREATE PRODUCT PAGE
   clearFilters() {
     this.initCurrencies().then(async () => {
       this.page = '0';
@@ -334,14 +333,33 @@ export class MarketplaceComponent implements OnInit {
         const layoutView = localStorage.getItem('_lv') as 'list' | 'grid';
         this.setLayout(layoutView || 'list');
 
-        // @TODO
-        // const category = this.route.snapshot.queryParamMap.get('category');
-        // const subcategory =
-        //   this.route.snapshot.queryParamMap.get('subcategory');
+        const category = this.route.snapshot.queryParamMap.get('category');
+        const subcategory =
+          this.route.snapshot.queryParamMap.get('subcategory');
 
         await this.initCurrencies();
         await this.initCategories();
         await this.initSubcategories();
+
+        if (category) {
+          this.selectedCategories.push({
+            key: category,
+            value: ''
+          });
+        }
+
+        if (category && subcategory) {
+          this.selectedCategories.push({
+            key: category,
+            value: ''
+          });
+
+          this.selectedSubcategories.push({
+            key: subcategory,
+            value: ''
+          });
+        }
+
         this.getProducts();
       }
     });

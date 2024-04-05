@@ -40,6 +40,12 @@ import { ProductAddedToFavoritesDto } from '@dto/product-added-to-favorites.dto'
 import { AddProductToFavoritesInterface } from '@interfaces/add-product-to-favorites.interface';
 import { ProductAlreadyInFavoritesException } from '@exceptions/product-already-in-favorites.exception';
 import { ProductDeletedFromFavoritesDto } from '@dto/product-deleted-from-favorites.dto';
+import { GetUserFavoriteProductsInterface } from '@interfaces/get-user-favorite-products.interface';
+import { UserFavoriteProductsDto } from '@dto/user-favorite-products.dto';
+import { GetProductContactEmailInterface } from '@interfaces/get-product-contact-email.interface';
+import { GetProductContactPhoneInterface } from '@interfaces/get-product-contact-phone.interface';
+import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
+import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 
 @Injectable()
 export class ProductsService {
@@ -86,10 +92,7 @@ export class ProductsService {
       subcategory: foundProduct.subcategory,
       category: foundProduct.category.name,
       contactPerson: foundProduct.contactPerson,
-      contactPhone: foundProduct.contactPhone,
       createdAt: foundProduct.createdAt,
-      productUserFirstName: foundProduct.user.firstName,
-      productUserLastName: foundProduct.user.lastName,
       productInFavorites: false
     };
 
@@ -282,7 +285,7 @@ export class ProductsService {
       transaction: trx
     });
 
-    let userFavoriteProductsIds: Array<string>;
+    let userFavoriteProductsIds: Array<string> = [];
 
     if (userId) {
       const { favoriteProductsIds } =
@@ -641,7 +644,119 @@ export class ProductsService {
     return new ProductAddedToFavoritesDto();
   }
 
-  getUserFavoritesProducts() {}
+  async getUserFavoritesProducts({
+    query,
+    page,
+    pageSize,
+    order,
+    orderBy,
+    userId,
+    trx
+  }: GetUserFavoriteProductsInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
+    const attributes = [
+      'id',
+      'title',
+      'slug',
+      'pictures',
+      'currency',
+      'price',
+      'subcategory',
+      'createdAt',
+      'created_at'
+    ];
+
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({
+        userId,
+        trx
+      });
+
+    const where = {
+      id: { [Op.in]: favoriteProductsIds }
+    };
+
+    if (query) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${query}%` } },
+        { description: { [Op.iLike]: `%${query}%` } },
+        { slug: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    if (!attributes.includes(order)) throw new OrderException();
+    if (!['DESC', 'ASC'].includes(orderBy.toUpperCase()))
+      throw new OrderByException();
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where,
+      attributes,
+      limit,
+      offset,
+      include: [{ model: Category, attributes: ['name'] }],
+      order: [[order, orderBy]],
+      transaction: trx
+    });
+
+    const foundProducts = rows.map(
+      ({
+        id,
+        title,
+        slug,
+        pictures,
+        currency,
+        price,
+        subcategory,
+        category,
+        createdAt
+      }) => ({
+        id,
+        title,
+        slug,
+        mainPicture: pictures[0],
+        currency,
+        price,
+        subcategory,
+        category: category.name,
+        createdAt
+      })
+    );
+
+    return new UserFavoriteProductsDto(foundProducts, count);
+  }
+
+  async getProductContactEmail({
+    productId,
+    trx
+  }: GetProductContactEmailInterface) {
+    const foundProduct = await this.productRepository.findOne({
+      where: { id: productId },
+      include: [{ model: User, attributes: ['email'] }],
+      transaction: trx
+    });
+
+    return new GetProductContactEmailDto(foundProduct.user.email);
+  }
+
+  async getProductContactPhone({
+    productId,
+    trx
+  }: GetProductContactPhoneInterface) {
+    const foundProduct = await this.productRepository.findOne({
+      attributes: ['contactPhone'],
+      where: { id: productId },
+      transaction: trx
+    });
+
+    return new GetProductContactPhoneDto(foundProduct.contactPhone);
+  }
 
   private generateProductSlug(productName: string) {
     let slug = productName.toLowerCase();

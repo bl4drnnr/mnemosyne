@@ -11,11 +11,9 @@ export interface GetProductBySlug {
   price: number;
   subcategory: string;
   contactPerson: string;
-  contactPhone: string;
+  contactPhone?: string;
   category: ProductCategory;
   createdAt: Date;
-  productUserFirstName?: string;
-  productUserLastName?: string;
   productInFavorites?: boolean;
 }
 

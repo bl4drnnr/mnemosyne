@@ -9,5 +9,7 @@ export enum ProductsEndpoint {
   DELETE_PRODUCT = 'product',
   DELETE_FROM_FAVORITES = 'favorites',
   ADD_TO_FAVORITES = 'favorites',
-  GET_FAVORITES = 'favorites'
+  GET_FAVORITES = 'favorites',
+  PRODUCT_CONTACT_EMAIL = 'product-contact-email',
+  PRODUCT_CONTACT_PHONE = 'product-contact-phone'
 }

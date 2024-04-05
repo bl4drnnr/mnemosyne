@@ -2,6 +2,136 @@
   [userInfo]="userInfo"
 >
   <ng-container *transloco="let t">
+    <div class="favorites-container">
+      <div class="favorites-block">
+        <h2>{{ t('dashboard.favoriteProductsTitle') }}</h2>
 
+        <div class="favorites-products-input">
+          <div class="favorites-search-input">
+            <basic-input
+              [label]="t('input.favoriteProductsSearchLabel')"
+              [placeholder]="t('input.favoriteProductsSearchPlaceholder')"
+              [inputDescription]="t('input.favoriteProductsSearchInputDesc')"
+              [value]="query"
+              (valueChange)="changeQuery($event)"
+            />
+          </div>
+          <div class="favorites-layouts">
+            <button
+              (click)="setLayout('list')"
+              [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
+            >
+              <img
+                [ngSrc]="listIcon"
+                [width]="22"
+                [height]="22"
+                alt="list"
+                class="layout-icon"
+              >
+            </button>
+            <button
+              (click)="setLayout('grid')"
+              [ngClass]="layoutView === 'grid' ? 'order-by-button right-border active': 'order-by-button right-border'"
+            >
+              <img
+                [ngSrc]="gridIcon"
+                [width]="24"
+                [height]="24"
+                alt="gird"
+                class="layout-icon"
+              >
+            </button>
+          </div>
+        </div>
+
+        <div class="favorites-order-items">
+          <div class="favorites-order-item margin-right">
+            <p class="favorites-order-desc">{{ t('dashboard.selectOrderBySubtitle') }}</p>
+            <div class="favorites-order-items">
+              <button
+                (click)="changeOrderBy('DESC')"
+                [ngClass]="orderBy === 'DESC' ? 'order-by-button left-border active': 'order-by-button left-border'"
+              >
+                <p class="order-by-button-label">DESC</p>
+              </button>
+              <button
+                (click)="changeOrderBy('ASC')"
+                [ngClass]="orderBy === 'ASC' ? 'order-by-button right-border active': 'order-by-button right-border'"
+              >
+                <p class="order-by-button-label">ASC</p>
+              </button>
+            </div>
+          </div>
+
+          <div class="favorites-order-item margin-left">
+            <p class="favorites-order-desc">{{ t('dashboard.selectOrderSubtitle') }}</p>
+            <div *ngIf="orderOptionsValue">
+              <basic-dropdown
+                [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
+                [options]="orderOptions"
+                [defaultValue]="orderOptionsValue"
+                (selectedOption)="selectOrderOption($event)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="favoriteProducts && favoriteProducts.length === 0">
+          <h1 class="favorites-products-not-found">
+            {{ t('dashboard.noFavoriteProductsTitle') }}
+          </h1>
+        </div>
+
+        <div class="favorites-products-grid" *ngIf="favoriteProducts && favoriteProducts.length > 0 && layoutView === 'grid'">
+          <page-product-preview
+            *ngFor="let product of favoriteProducts"
+            [layoutView]="'grid'"
+            [productId]="product.id"
+            [slug]="product.slug"
+            [mainPicture]="product.mainPicture"
+            [productTitle]="product.title"
+            [category]="product.category"
+            [subcategory]="product.subcategory"
+            [price]="product.price"
+            [currency]="product.currency"
+            [createdAt]="product.createdAt"
+            [productInFavorites]="true"
+            [showAdditionalInfo]="false"
+            [showManagementButtons]="false"
+          />
+        </div>
+
+        <div class="favorites-products-list" *ngIf="favoriteProducts && favoriteProducts.length > 0 && layoutView === 'list'">
+          <page-product-preview
+            *ngFor="let product of favoriteProducts"
+            [layoutView]="'list'"
+            [productId]="product.id"
+            [slug]="product.slug"
+            [mainPicture]="product.mainPicture"
+            [productTitle]="product.title"
+            [category]="product.category"
+            [subcategory]="product.subcategory"
+            [price]="product.price"
+            [currency]="product.currency"
+            [createdAt]="product.createdAt"
+            [productInFavorites]="true"
+            [showAdditionalInfo]="false"
+            [showManagementButtons]="false"
+          />
+        </div>
+
+        <div class="favorites-products-pagination" *ngIf="favoriteProducts && favoriteProducts.length > 0">
+          <basic-pagination
+            [itemsPerPageLabel]="t('dropdown.productsPerPage')"
+            [currentPage]="page"
+            [itemsPerPage]="pageSize"
+            [totalItems]="totalItems"
+            (setCurrentPage)="page = $event"
+            (setItemsPerPage)="pageSize = $event"
+            (fetchItems)="getUserFavoritesProducts()"
+          />
+        </div>
+      </div>
+    </div>
   </ng-container>
 </layout-default>
