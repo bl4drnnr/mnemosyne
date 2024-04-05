@@ -8,6 +8,7 @@ export class SearchProductsDto {
     description: DocsProperty.SEARCHED_PRODUCTS_DESC,
     example: [
       {
+        id: DocsProperty.PRODUCT_ID_EXAMPLE,
         title: DocsProperty.PRODUCT_TITLE_EXAMPLE,
         slug: DocsProperty.PRODUCT_SLUG_EXAMPLE,
         mainPicture: DocsProperty.PRODUCT_PIC_EXAMPLE,
@@ -15,6 +16,7 @@ export class SearchProductsDto {
         price: DocsProperty.PRODUCT_PRICE_EXAMPLE,
         category: DocsProperty.CATEGORY_NAME_EXAMPLE,
         subcategory: DocsProperty.SUBCATEGORY_EXAMPLE,
+        productInFavorites: DocsProperty.PRODUCT_IN_FAVORITES_EXAMPLE,
         created_at: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE
       }
     ]

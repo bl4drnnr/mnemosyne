@@ -1,12 +1,65 @@
 <ng-container *transloco="let t">
   <div class="sidebar-container" *ngIf="isSidebarOpen" (click)="handleCloseSidebar()">
     <div class="sidebar-box" [@slideInOut]="true">
-      <div class="sidebar-side"></div>
+      <div>
+        <div class="sidebar-user-welcome">
+          <h1>{{ t('sidebar.sidebarWelcomeTitle', { firstName: userInfo.firstName, lastName: userInfo.lastName }) }}</h1>
+          <div class="sidebar-user-preview">
+            <div class="sidebar-user-data">
+              <img
+                [ngSrc]="userProfilePictureLink"
+                class="user-photo"
+                alt="avatar"
+                [width]="100"
+                [height]="100"
+              />
+              <div class="sidebar-user-info">
+                <p>{{ t('sidebar.sidebarUserFullName') }}: <b>{{ userInfo.firstName }} {{ userInfo.lastName }}</b></p>
+                <p>{{ t('sidebar.sidebarUserEmail') }}: <b>{{ userInfo.email }}</b></p>
+                <p>{{ t('sidebar.sidebarUserId') }}: <b>{{ userInfo.userId }}</b></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar-side">
+          <h5 class="sidebar-account-title">{{ t('sidebar.yourAccountSidebarTitle') }}</h5>
+          <div class="sidebar-button-wrapper">
+            <basic-button
+              [label]="t('button.dashboardMainPage')"
+              (buttonClick)="handleRedirect('')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper">
+            <basic-button
+              [label]="t('button.dashboardRedirect')"
+              (buttonClick)="handleRedirect('account/dashboard')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper">
+            <basic-button
+              [label]="t('button.dashboardFavorites')"
+              (buttonClick)="handleRedirect('account/favorites')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper">
+            <basic-button
+              [label]="t('button.settingsRedirect')"
+              (buttonClick)="handleRedirect('account/settings')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper">
+            <basic-button
+              [label]="t('button.postProductRedirect')"
+              (buttonClick)="handleRedirect('marketplace/create-product')"
+            />
+          </div>
+        </div>
+      </div>
 
-      <div class="sidebar-side">
+      <div class="logout-sidebar-side">
         <basic-button
-          [label]="t('sidebar.settings')"
-          (buttonClick)="handleRedirect('account/settings')"
+          [label]="t('button.logOut')"
+          (buttonClick)="logout()"
         />
       </div>
     </div>

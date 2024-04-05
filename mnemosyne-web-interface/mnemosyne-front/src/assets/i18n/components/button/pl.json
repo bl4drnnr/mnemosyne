@@ -35,5 +35,16 @@
   "postProduct": "Opublikuj produkt",
   "editProduct": "Edytuj produkt",
   "deleteProduct": "Usuń produkt",
-  "clearFilters": "Wyczyść filtry"
+  "clearFilters": "Wyczyść filtry",
+  "goToMarketplace": "Marketplace",
+  "dashboardMainPage": "Strona główna",
+  "dashboardRedirect": "Dashboard",
+  "postProductRedirect": "Opublikuj produkt",
+  "settingsRedirect": "Ustawienia konta",
+  "showFilters": "Pokaż filtry",
+  "createAccForMyself": "Chcę założyć konto dla siebie",
+  "createAccForCompany": "Chcę utworzyć konto dla mojej firmy",
+  "dashboardFavorites": "Ulubione produkty",
+  "showContactEmail": "Pokaż kontaktowy adres e-mail",
+  "showContactPhone": "Pokaż telefon kontaktowy"
 }

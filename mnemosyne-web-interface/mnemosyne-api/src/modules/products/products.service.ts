@@ -33,6 +33,19 @@ import { WrongDeletionConfirmationException } from '@exceptions/wrong-deletion-c
 import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
 import { CategoryNotFoundException } from '@exceptions/category-not-found.exception';
 import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
+import { UsersService } from '@modules/users.service';
+import { DeleteProductFromFavoritesInterface } from '@interfaces/delete-product-from-favorites.interface';
+import { GetProductByIdInterface } from '@interfaces/get-product-by-id.interface';
+import { ProductAddedToFavoritesDto } from '@dto/product-added-to-favorites.dto';
+import { AddProductToFavoritesInterface } from '@interfaces/add-product-to-favorites.interface';
+import { ProductAlreadyInFavoritesException } from '@exceptions/product-already-in-favorites.exception';
+import { ProductDeletedFromFavoritesDto } from '@dto/product-deleted-from-favorites.dto';
+import { GetUserFavoriteProductsInterface } from '@interfaces/get-user-favorite-products.interface';
+import { UserFavoriteProductsDto } from '@dto/user-favorite-products.dto';
+import { GetProductContactEmailInterface } from '@interfaces/get-product-contact-email.interface';
+import { GetProductContactPhoneInterface } from '@interfaces/get-product-contact-phone.interface';
+import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
+import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 
 @Injectable()
 export class ProductsService {
@@ -40,11 +53,23 @@ export class ProductsService {
     private readonly configService: ApiConfigService,
     private readonly cryptographicService: CryptographicService,
     private readonly categoriesService: CategoriesService,
+    private readonly usersService: UsersService,
     @InjectModel(Product)
     private readonly productRepository: typeof Product
   ) {}
 
-  async getProductBySlug({ slug, trx }: GetProductBySlugInterface) {
+  async getProductById({ productId, trx }: GetProductByIdInterface) {
+    const foundProduct = await this.productRepository.findOne({
+      where: { id: productId },
+      transaction: trx
+    });
+
+    if (!foundProduct) throw new ProductNotFoundException();
+
+    return foundProduct;
+  }
+
+  async getProductBySlug({ slug, userId, trx }: GetProductBySlugInterface) {
     const foundProduct = await this.productRepository.findOne({
       include: [
         { model: User, attributes: ['firstName', 'lastName'] },
@@ -57,6 +82,7 @@ export class ProductsService {
     if (!foundProduct) throw new ProductNotFoundException();
 
     const product = {
+      id: foundProduct.id,
       title: foundProduct.title,
       description: foundProduct.description,
       pictures: foundProduct.pictures,
@@ -66,10 +92,23 @@ export class ProductsService {
       subcategory: foundProduct.subcategory,
       category: foundProduct.category.name,
       contactPerson: foundProduct.contactPerson,
-      contactPhone: foundProduct.contactPhone,
-      productUserFirstName: foundProduct.user.firstName,
-      productUserLastName: foundProduct.user.lastName
+      createdAt: foundProduct.createdAt,
+      productInFavorites: false
     };
+
+    if (userId) {
+      const { favoriteProductsIds } =
+        await this.usersService.getUserFavoritesProducts({
+          userId,
+          trx
+        });
+
+      const productInFavorites = favoriteProductsIds.find(
+        (id) => id === foundProduct.id
+      );
+
+      product.productInFavorites = !!productInFavorites;
+    }
 
     return new ProductBySlugDto(product);
   }
@@ -79,15 +118,14 @@ export class ProductsService {
       'title',
       'slug',
       'pictures',
-      'location',
       'currency',
       'price',
-      'subcategory',
-      'category'
+      'subcategory'
     ];
 
     const products = await this.productRepository.findAll({
       attributes,
+      include: [{ model: Category, attributes: ['name'] }],
       order: [['created_at', 'DESC']],
       limit: 10,
       offset: 0,
@@ -95,20 +133,10 @@ export class ProductsService {
     });
 
     const latestProducts = products.map(
-      ({
-        title,
-        slug,
-        pictures,
-        location,
-        currency,
-        price,
-        category,
-        subcategory
-      }) => ({
+      ({ title, slug, pictures, currency, price, category, subcategory }) => ({
         title,
         slug,
         mainPicture: pictures[0],
-        location,
         currency,
         price,
         category: category.name,
@@ -130,6 +158,7 @@ export class ProductsService {
     currency,
     categories,
     subcategories,
+    userId,
     trx
   }: SearchProductInterface) {
     const offset = Number(page) * Number(pageSize);
@@ -194,6 +223,7 @@ export class ProductsService {
     }
 
     const attributes = [
+      'id',
       'title',
       'slug',
       'pictures',
@@ -255,8 +285,21 @@ export class ProductsService {
       transaction: trx
     });
 
+    let userFavoriteProductsIds: Array<string> = [];
+
+    if (userId) {
+      const { favoriteProductsIds } =
+        await this.usersService.getUserFavoritesProducts({
+          userId,
+          trx
+        });
+
+      userFavoriteProductsIds = favoriteProductsIds;
+    }
+
     const foundProducts = rows.map(
       ({
+        id,
         title,
         slug,
         pictures,
@@ -266,6 +309,7 @@ export class ProductsService {
         subcategory,
         createdAt
       }) => ({
+        id,
         title,
         slug,
         mainPicture: pictures[0],
@@ -273,6 +317,7 @@ export class ProductsService {
         price,
         category: category.name,
         subcategory,
+        productInFavorites: userFavoriteProductsIds.includes(id),
         createdAt
       })
     );
@@ -350,6 +395,7 @@ export class ProductsService {
       price: productToEdit.price,
       subcategory: productToEdit.subcategory,
       category: productToEdit.category.name,
+      createdAt: productToEdit.createdAt,
       contactPerson: productToEdit.contactPerson,
       contactPhone: productToEdit.contactPhone
     };
@@ -480,6 +526,12 @@ export class ProductsService {
       transaction: trx
     });
 
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({
+        userId,
+        trx
+      });
+
     const foundProducts = rows.map(
       ({
         id,
@@ -506,7 +558,8 @@ export class ProductsService {
         category: category.name,
         createdAt,
         contactPerson,
-        contactPhone
+        contactPhone,
+        productInFavorites: favoriteProductsIds.includes(id)
       })
     );
 
@@ -535,6 +588,174 @@ export class ProductsService {
     });
 
     return new ProductDeletedDto();
+  }
+
+  async deleteProductFromFavorites({
+    userId,
+    payload,
+    trx
+  }: DeleteProductFromFavoritesInterface) {
+    const { productId } = payload;
+
+    const product = await this.getProductById({ productId, trx });
+
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({ userId, trx });
+
+    const updatedFavoriteProducts = favoriteProductsIds.filter(
+      (id) => id !== product.id
+    );
+
+    await this.usersService.updateUserFavoritesProducts({
+      userId,
+      favoriteProductsIds: updatedFavoriteProducts,
+      trx
+    });
+
+    return new ProductDeletedFromFavoritesDto();
+  }
+
+  async addProductToFavorites({
+    userId,
+    payload,
+    trx
+  }: AddProductToFavoritesInterface) {
+    const { productId } = payload;
+
+    const product = await this.getProductById({ productId, trx });
+
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({ userId, trx });
+
+    const foundFavoriteProduct = favoriteProductsIds.find(
+      (id) => id === product.id
+    );
+
+    if (foundFavoriteProduct) throw new ProductAlreadyInFavoritesException();
+
+    favoriteProductsIds.push(productId);
+
+    await this.usersService.updateUserFavoritesProducts({
+      userId,
+      favoriteProductsIds,
+      trx
+    });
+
+    return new ProductAddedToFavoritesDto();
+  }
+
+  async getUserFavoritesProducts({
+    query,
+    page,
+    pageSize,
+    order,
+    orderBy,
+    userId,
+    trx
+  }: GetUserFavoriteProductsInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
+    const attributes = [
+      'id',
+      'title',
+      'slug',
+      'pictures',
+      'currency',
+      'price',
+      'subcategory',
+      'createdAt',
+      'created_at'
+    ];
+
+    const { favoriteProductsIds } =
+      await this.usersService.getUserFavoritesProducts({
+        userId,
+        trx
+      });
+
+    const where = {
+      id: { [Op.in]: favoriteProductsIds }
+    };
+
+    if (query) {
+      where[Op.or] = [
+        { title: { [Op.iLike]: `%${query}%` } },
+        { description: { [Op.iLike]: `%${query}%` } },
+        { slug: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    if (!attributes.includes(order)) throw new OrderException();
+    if (!['DESC', 'ASC'].includes(orderBy.toUpperCase()))
+      throw new OrderByException();
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where,
+      attributes,
+      limit,
+      offset,
+      include: [{ model: Category, attributes: ['name'] }],
+      order: [[order, orderBy]],
+      transaction: trx
+    });
+
+    const foundProducts = rows.map(
+      ({
+        id,
+        title,
+        slug,
+        pictures,
+        currency,
+        price,
+        subcategory,
+        category,
+        createdAt
+      }) => ({
+        id,
+        title,
+        slug,
+        mainPicture: pictures[0],
+        currency,
+        price,
+        subcategory,
+        category: category.name,
+        createdAt
+      })
+    );
+
+    return new UserFavoriteProductsDto(foundProducts, count);
+  }
+
+  async getProductContactEmail({
+    productId,
+    trx
+  }: GetProductContactEmailInterface) {
+    const foundProduct = await this.productRepository.findOne({
+      where: { id: productId },
+      include: [{ model: User, attributes: ['email'] }],
+      transaction: trx
+    });
+
+    return new GetProductContactEmailDto(foundProduct.user.email);
+  }
+
+  async getProductContactPhone({
+    productId,
+    trx
+  }: GetProductContactPhoneInterface) {
+    const foundProduct = await this.productRepository.findOne({
+      attributes: ['contactPhone'],
+      where: { id: productId },
+      transaction: trx
+    });
+
+    return new GetProductContactPhoneDto(foundProduct.contactPhone);
   }
 
   private generateProductSlug(productName: string) {

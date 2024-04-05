@@ -48,6 +48,7 @@ export class DashboardComponent implements OnInit {
 
   setLayout(layoutView: 'list' | 'grid') {
     this.layoutView = layoutView;
+    localStorage.setItem('_lv', layoutView);
   }
 
   getOrderOptionDropdownLabel(orderOption: string) {
@@ -160,6 +161,9 @@ export class DashboardComponent implements OnInit {
         ComponentsTranslation.DROPDOWN
       )
     };
+
+    const layoutView = localStorage.getItem('_lv') as 'list' | 'grid';
+    this.setLayout(layoutView || 'list');
 
     this.getUserProducts();
   }

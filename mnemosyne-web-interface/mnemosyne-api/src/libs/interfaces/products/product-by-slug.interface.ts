@@ -10,8 +10,8 @@ export interface ProductBySlugInterface {
   price: number;
   subcategory: string;
   contactPerson: string;
-  contactPhone: string;
+  contactPhone?: string;
   category: string;
-  productUserFirstName?: string;
-  productUserLastName?: string;
+  createdAt: Date;
+  productInFavorites?: boolean;
 }

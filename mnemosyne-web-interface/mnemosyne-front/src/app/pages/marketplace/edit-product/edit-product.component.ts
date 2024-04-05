@@ -138,7 +138,7 @@ export class EditProductComponent implements OnInit {
           this.productTitle = product.title;
           this.productDescription = product.description;
           this.contactPerson = product.contactPerson;
-          this.contactPhoneNumber = product.contactPhone;
+          this.contactPhoneNumber = product.contactPhone || '';
           this.productLocation = product.location;
           this.productPrice = String(product.price);
           this.translationService.setPageTitle(Titles.EDIT_PRODUCT, {

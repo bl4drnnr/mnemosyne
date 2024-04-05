@@ -71,7 +71,7 @@ export class Product extends Model<Product, ProductCreationAttributes> {
   @Column({ type: DataType.STRING, allowNull: false, unique: true })
   slug: string;
 
-  @Column({ type: DataType.STRING, allowNull: false })
+  @Column({ type: DataType.TEXT, allowNull: false })
   description: string;
 
   @Column({ type: DataType.ARRAY(DataType.STRING), allowNull: false })

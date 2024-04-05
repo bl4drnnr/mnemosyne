@@ -9,6 +9,7 @@ import { ProductComponent } from '@pages/product/product.component';
 import { CreateProductComponent } from '@pages/create-product/create-product.component';
 import { ProductNotFoundComponent } from '@pages/product-not-found/product-not-found.component';
 import { EditProductComponent } from '@pages/edit-product/edit-product.component';
+import { CarouselModule } from 'primeng/carousel';
 
 const components = [
   MarketplaceComponent,
@@ -49,7 +50,8 @@ const routes: Routes = [
     CommonModule,
     NgOptimizedImage,
     LayoutsModule,
-    TranslocoModule
+    TranslocoModule,
+    CarouselModule
   ],
   exports: [...components]
 })

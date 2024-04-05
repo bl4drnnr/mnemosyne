@@ -4,12 +4,15 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as bodyParser from 'body-parser';
 import * as fs from 'fs';
 import * as yaml from 'yaml';
+import { urlencoded, json } from 'express';
 
 (async () => {
   const app = await NestFactory.create(AppModule);
   const port = process.env.API_PORT || 3000;
 
   app.setGlobalPrefix('/api');
+  app.use(json({ limit: '50mb' }));
+  app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   app.enableCors({
     origin: ['http://localhost:4201', 'https://proxy.mnemosyne.io'],

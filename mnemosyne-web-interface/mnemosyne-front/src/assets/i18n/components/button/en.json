@@ -35,5 +35,16 @@
   "postProduct": "Post product",
   "editProduct": "Edit product",
   "deleteProduct": "Delete product",
-  "clearFilters": "Clear filters"
+  "clearFilters": "Clear filters",
+  "goToMarketplace": "Marketplace",
+  "dashboardMainPage": "Main page",
+  "dashboardRedirect": "Dashboard",
+  "postProductRedirect": "Post product",
+  "settingsRedirect": "Account settings",
+  "showFilters": "Show filters",
+  "createAccForMyself": "I want to create an account for myself",
+  "createAccForCompany": "I want to create an account for my company",
+  "dashboardFavorites": "Favorite products",
+  "showContactEmail": "Show contact email",
+  "showContactPhone": "Show contact phone"
 }

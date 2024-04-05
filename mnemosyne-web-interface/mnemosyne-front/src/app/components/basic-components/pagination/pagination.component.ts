@@ -11,6 +11,7 @@ export class PaginationComponent {
   @Input() currentPage: string;
   @Input() itemsPerPage: string;
   @Input() totalItems: number;
+  @Input() onWhite = false;
   @Output() setItemsPerPage = new EventEmitter<string>();
   @Output() setCurrentPage = new EventEmitter<string>();
   @Output() fetchItems = new EventEmitter<void>();

@@ -11,7 +11,7 @@
 }
 
 .welcome-dashboard-title {
-  font-size: 54px;
+  font-size: 42px;
   display: flex;
   align-items: center;
   align-content: center;
@@ -112,4 +112,8 @@
 .dashboard-search-input {
   width: 100%;
   margin-right: 10px;
+}
+
+.dashboard-products-not-found {
+  text-align: center;
 }

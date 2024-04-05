@@ -86,5 +86,7 @@
   "order-by-error": "Wrong order by value",
   "order-error": "Wrong order value",
   "subcategory-not-found": "Subcategory not found",
-  "wrong-currency": "Wrong currency"
+  "wrong-currency": "Wrong currency",
+  "user-not-logged-in": "User not logged in",
+  "product-already-in-favorites": "Product has already been added to favorites"
 }

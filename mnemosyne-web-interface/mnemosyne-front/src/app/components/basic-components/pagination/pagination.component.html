@@ -4,11 +4,13 @@
       <basic-button
         class="pagination-page-button"
         [label]="'<<'"
+        [onWhite]="onWhite"
         (buttonClick)="goToStartPage()"
       />
       <basic-button
         class="pagination-page-button margin-left"
         [label]="'<'"
+        [onWhite]="onWhite"
         (buttonClick)="setNewCurrentPage(-1)"
       />
     </div>
@@ -17,6 +19,7 @@
       <basic-button
         class="pagination-page-button margin-right"
         [label]="'1'"
+        [onWhite]="onWhite"
         [fillButton]="currentPageInt === 1"
         (buttonClick)="goToStartPage()"
       />
@@ -24,12 +27,14 @@
         class="pagination-page-button"
         *ngIf="showPageIndicator()"
         [label]="currentPageInt.toString()"
+        [onWhite]="onWhite"
         [disabled]="true"
       />
       <basic-button
         class="pagination-page-button margin-left"
         [label]="totalPages.toString()"
         [fillButton]="currentPageInt === totalPages"
+        [onWhite]="onWhite"
         (buttonClick)="goToEndPage()"
       />
     </div>
@@ -38,11 +43,13 @@
       <basic-button
         class="pagination-page-button margin-right"
         [label]="'>'"
+        [onWhite]="onWhite"
         (buttonClick)="setNewCurrentPage(1)"
       />
       <basic-button
         class="pagination-page-button"
         [label]="'>>'"
+        [onWhite]="onWhite"
         (buttonClick)="goToEndPage()"
       />
     </div>
@@ -55,6 +62,7 @@
         [label]="itemsPerPageLabel"
         [options]="itemsPerPageOptions"
         [defaultValue]="selectedPaginationOption"
+        [onWhite]="onWhite"
         (selectedOption)="setNewItemsPerPage($event)"
       />
     </div>
@@ -65,6 +73,7 @@
         [label]="t('input.goToPageLabel')"
         [placeholder]="t('input.pagePlaceholder')"
         [value]="currentPageInt.toString()"
+        [onWhite]="onWhite"
         (valueChange)="manuallySetThePage($event)"
       />
     </div>

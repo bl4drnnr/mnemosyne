@@ -7,6 +7,7 @@ import {
   Post,
   Query,
   UseGuards,
+  UseInterceptors,
   UsePipes
 } from '@nestjs/common';
 import {
@@ -30,6 +31,9 @@ import { AuthGuard } from '@guards/auth.guard';
 import { ValidationPipe } from '@pipes/validation.pipe';
 import { PostProductDto } from '@dto/post-product.dto';
 import { DeleteProductDto } from '@dto/delete-product.dto';
+import { DeleteProductsFromFavoritesDto } from '@dto/delete-products-from-favorites.dto';
+import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
+import { UserInterceptor } from '@interceptors/user.interceptor';
 
 @ApiTags('Products')
 @Controller('products')
@@ -42,14 +46,19 @@ export class ProductsController {
   @ApiNotFoundResponse(ProductsDocs.GetProductBySlug.ApiNotFoundResponse)
   @ApiQuery(ProductsDocs.GetProductBySlug.ApiSlugQuery)
   @ApiBasicAuth('basicAuth')
+  @UseInterceptors(UserInterceptor)
   @Get('product')
   getProductBySlug(
     @Query('slug') slug: string,
+    @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
-    return this.productsService.getProductBySlug({ slug, trx });
+    return this.productsService.getProductBySlug({ slug, userId, trx });
   }
 
+  @ApiOperation(ProductsDocs.LatestProducts.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.LatestProducts.ApiExtraModels)
+  @ApiResponse(ProductsDocs.LatestProducts.ApiResponse)
   @ApiBasicAuth('basicAuth')
   @Get('latest-products')
   getLatestProducts(@TrxDecorator() trx: Transaction) {
@@ -72,6 +81,7 @@ export class ProductsController {
   @ApiQuery(ProductsDocs.SearchProduct.ApiCategoryQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiSubcategoryQuery)
   @ApiBasicAuth('basicAuth')
+  @UseInterceptors(UserInterceptor)
   @Get('search-product')
   searchProduct(
     @Query('query') query: string,
@@ -84,6 +94,7 @@ export class ProductsController {
     @Query('currency') currency: string,
     @Query('categories') categories: string,
     @Query('subcategories') subcategories: string,
+    @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.searchProduct({
@@ -97,6 +108,7 @@ export class ProductsController {
       currency,
       categories,
       subcategories,
+      userId,
       trx
     });
   }
@@ -216,6 +228,126 @@ export class ProductsController {
     return this.productsService.deleteProduct({
       userId,
       payload,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.DeleteProductFromFavoritesDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.DeleteProductFromFavoritesDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.DeleteProductFromFavoritesDocs.ApiResponse)
+  @ApiNotFoundResponse(
+    ProductsDocs.DeleteProductFromFavoritesDocs.ApiNotFoundResponse
+  )
+  @ApiBody(ProductsDocs.DeleteProductFromFavoritesDocs.ApiBody)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Delete('favorites')
+  deleteProductFromFavorites(
+    @UserId() userId: string,
+    @Body() payload: DeleteProductsFromFavoritesDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.deleteProductFromFavorites({
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.AddProductToFavoritesDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.AddProductToFavoritesDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.AddProductToFavoritesDocs.ApiResponse)
+  @ApiNotFoundResponse(
+    ProductsDocs.AddProductToFavoritesDocs.ApiNotFoundResponse
+  )
+  @ApiBadRequestResponse(
+    ProductsDocs.AddProductToFavoritesDocs.ApiBadRequestResponse
+  )
+  @ApiBody(ProductsDocs.AddProductToFavoritesDocs.ApiBody)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Post('favorites')
+  addProductToFavorites(
+    @UserId() userId: string,
+    @Body() payload: AddProductToFavoritesDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.addProductToFavorites({
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetUserFavoritesProductsDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetUserFavoritesProductsDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetUserFavoritesProductsDocs.ApiResponse)
+  @ApiBadRequestResponse(
+    ProductsDocs.GetUserFavoritesProductsDocs.ApiBadRequestResponse
+  )
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiProductQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageSizeQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderByQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('favorites')
+  getUserFavoritesProducts(
+    @Query('query') query: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+    @Query('order') order: string,
+    @Query('orderBy') orderBy: string,
+    @UserId() userId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getUserFavoritesProducts({
+      query,
+      page,
+      pageSize,
+      order,
+      orderBy,
+      userId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetProductContactEmailDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactEmailDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactEmailDocs.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactEmailDocs.ApiProductIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('product-contact-email')
+  getProductContactEmail(
+    @Query('productId') productId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getProductContactEmail({
+      productId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetProductContactPhoneDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactPhoneDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactPhoneDocs.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactPhoneDocs.ApiProductIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Get('product-contact-phone')
+  getProductContactPhone(
+    @Query('productId') productId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getProductContactPhone({
+      productId,
       trx
     });
   }

@@ -18,6 +18,15 @@ import { OrderByException } from '@exceptions/order-by.exception';
 import { SearchProductsDto } from '@dto/search-products.dto';
 import { WrongCurrencyException } from '@exceptions/wrong-currency.exception';
 import { SubcategoryNotFoundException } from '@exceptions/subcategory-not-found.exception';
+import { LatestProductsDto } from '@dto/latest-products.dto';
+import { ProductDeletedFromFavoritesDto } from '@dto/product-deleted-from-favorites.dto';
+import { DeleteProductsFromFavoritesDto } from '@dto/delete-products-from-favorites.dto';
+import { ProductAddedToFavoritesDto } from '@dto/product-added-to-favorites.dto';
+import { ProductAlreadyInFavoritesException } from '@exceptions/product-already-in-favorites.exception';
+import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
+import { UserFavoriteProductsDto } from '@dto/user-favorite-products.dto';
+import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
+import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -52,6 +61,24 @@ export abstract class ProductsDocs {
         schema: { $ref: getSchemaPath(ProductNotFoundException) }
       },
       ApiSlugQuery: slugQuery
+    };
+  }
+
+  static get LatestProducts() {
+    const ApiModels = [LatestProductsDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting the list of latest products for the carousel on the main page.';
+    const apiResponseDesc = 'As a response user gets the list of 10 products.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(LatestProductsDto) }
+      }
     };
   }
 
@@ -410,6 +437,217 @@ export abstract class ProductsDocs {
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(DeleteProductDto) }
       } as ApiBodyOptions
+    };
+  }
+
+  static get DeleteProductFromFavoritesDocs() {
+    const ApiModels = [
+      DeleteProductsFromFavoritesDto,
+      ProductDeletedFromFavoritesDto,
+      ProductNotFoundException
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for the for deletion the product from the list of user favorite products.';
+    const apiResponseDesc =
+      'As a response user gets the message that the product has been deleted from the list of favorite products.';
+    const apiBodyDesc = 'Body contains the ID of the product.';
+    const apiNotFoundDesc =
+      'In case if product has not been found, not found exception is thrown.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(ProductDeletedFromFavoritesDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(ProductNotFoundException) }
+      },
+      ApiBody: {
+        type: DeleteProductsFromFavoritesDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(DeleteProductsFromFavoritesDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get AddProductToFavoritesDocs() {
+    const ApiModels = [
+      AddProductToFavoritesDto,
+      ProductAddedToFavoritesDto,
+      ProductAlreadyInFavoritesException,
+      ProductNotFoundException
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for the adding the product to the list of favorite products.';
+    const apiResponseDesc =
+      'As a response user gets the message the product has been deleted from the list of favorite products.';
+    const apiBodyDesc = 'Body contains the ID of the product.';
+    const apiNotFoundDesc =
+      'In case if product has not been found, not found exception is thrown.';
+    const apiBadRequestRespDesc =
+      'Bad request is thrown in case if product is already on the list.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(ProductAddedToFavoritesDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(ProductNotFoundException) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(ProductAlreadyInFavoritesException) }
+      },
+      ApiBody: {
+        type: AddProductToFavoritesDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(AddProductToFavoritesDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get GetUserFavoritesProductsDocs() {
+    const ApiModels = [
+      ParseException,
+      OrderException,
+      OrderByException,
+      UserFavoriteProductsDto
+    ];
+    const BadRequests = [ParseException, OrderException, OrderByException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting user favorite products.';
+    const apiResponseDesc =
+      'As a response user gets the list of his favorite products.';
+    const apiBadRequestRespDesc =
+      'Not found exception is thrown in case if category or subcategory has not been found.';
+
+    const productQueryDesc = 'Product query';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of products.';
+    const pageQueryDesc = 'Query for page in order to get list of products.';
+    const orderQueryDesc = 'Query to perform sorting by';
+    const orderByQueryDesc = 'ASC or DESC';
+
+    const productQuery = {
+      description: productQueryDesc,
+      name: 'query',
+      type: String,
+      required: false
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: false
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: false
+    };
+
+    const orderQuery = {
+      description: orderQueryDesc,
+      name: 'order',
+      type: String,
+      required: false
+    };
+
+    const orderByQuery = {
+      description: orderByQueryDesc,
+      name: 'orderBy',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(UserFavoriteProductsDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiProductQuery: productQuery,
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery,
+      ApiOrderQuery: orderQuery,
+      ApiOrderByQuery: orderByQuery
+    };
+  }
+
+  static get GetProductContactEmailDocs() {
+    const ApiModels = [GetProductContactEmailDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting product contact phone.';
+    const apiResponseDesc =
+      'As a response user gets product contact email (only in case if user is authorized).';
+    const productIdQueryDesc = 'Product ID';
+
+    const productIdQuery = {
+      description: productIdQueryDesc,
+      name: 'productId',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetProductContactEmailDto) }
+      },
+      ApiProductIdQuery: productIdQuery
+    };
+  }
+
+  static get GetProductContactPhoneDocs() {
+    const ApiModels = [GetProductContactPhoneDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting product contact phone.';
+    const apiResponseDesc =
+      'As a response user gets product contact phone (only in case if user is authorized).';
+    const productIdQueryDesc = 'Product ID';
+
+    const productIdQuery = {
+      description: productIdQueryDesc,
+      name: 'productId',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetProductContactEmailDto) }
+      },
+      ApiProductIdQuery: productIdQuery
     };
   }
 }

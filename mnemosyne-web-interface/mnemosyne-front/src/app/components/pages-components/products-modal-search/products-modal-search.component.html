@@ -1,0 +1,170 @@
+<ng-container *transloco="let t">
+  <div class="products-modal-container" *ngIf="showModal">
+    <div class="products-modal-wrapper">
+      <div class="products-modal-filters-container" *ngIf="showFilters">
+        <div class="products-modal-filters-item">
+          <p class="products-modal-text"><b>{{ t('marketplace.marketplaceFiltersCategories') }}:</b></p>
+          <basic-checkbox
+            *ngFor="let category of categoriesList"
+            (checkedChange)="addCategory(category)"
+          >
+            <span content class="products-modal-text">{{ category.value }}</span>
+          </basic-checkbox>
+        </div>
+        <div *ngIf="selectedCategories.length > 0">
+          <div class="products-modal-filters-item" *ngFor="let selectedCategory of selectedCategories">
+            <p class="products-modal-text">
+              {{ t('marketplace.marketplaceFiltersSubcategories') }} <b>{{ selectedCategory.value }}</b>
+            </p>
+            <basic-checkbox
+              *ngFor="let subcategory of getSubcategories(selectedCategory.key)"
+              (checkedChange)="addSubcategory(subcategory)"
+            >
+              <span content class="products-modal-text">{{ subcategory.value }}</span>
+            </basic-checkbox>
+          </div>
+        </div>
+        <div class="products-modal-filters-price">
+          <div class="products-modal-price-fields">
+            <basic-input
+              type="number"
+              [label]="t('input.priceFromLabel')"
+              [placeholder]="t('input.priceFromPlaceholder')"
+              [inputDescription]="t('input.priceFromInputDesc')"
+              [errorMessage]="t('input.priceFromError')"
+              [onWhite]="true"
+              [min]="'0'"
+              [showError]="minPriceError"
+              [value]="minPrice"
+              (valueChange)="checkProductPrice($event, 'min')"
+            />
+            <basic-input
+              type="number"
+              [label]="t('input.priceToLabel')"
+              [placeholder]="t('input.priceToPlaceholder')"
+              [inputDescription]="t('input.priceToInputDesc')"
+              [errorMessage]="t('input.priceToError')"
+              [onWhite]="true"
+              [showError]="maxPriceError"
+              [value]="maxPrice"
+              (valueChange)="checkProductPrice($event, 'max')"
+            />
+          </div>
+          <p class="products-modal-price-error" *ngIf="wrongPriceError">
+            {{ t('marketplace.marketplaceWrongPriceRange') }}
+          </p>
+        </div>
+
+        <div class="products-modal-order-items">
+          <div class="products-modal-order-item margin-right">
+            <p class="products-modal-order-desc">{{ t('marketplace.marketplaceOrderBySubtitle') }}</p>
+            <div class="products-modal-items-buttons">
+              <button
+                (click)="changeOrderBy('DESC')"
+                [ngClass]="orderBy === 'DESC' ? 'order-by-button left-border active': 'order-by-button left-border'"
+              >
+                <p class="order-by-button-label">DESC</p>
+              </button>
+              <button
+                (click)="changeOrderBy('ASC')"
+                [ngClass]="orderBy === 'ASC' ? 'order-by-button right-border active': 'order-by-button right-border'"
+              >
+                <p class="order-by-button-label">ASC</p>
+              </button>
+            </div>
+          </div>
+
+          <div class="products-modal-order-item margin-left">
+            <p class="products-modal-order-desc">{{ t('marketplace.marketplaceOrderSubtitle') }}</p>
+            <div *ngIf="orderOptionsValue">
+              <basic-dropdown
+                [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
+                [options]="orderOptions"
+                [defaultValue]="orderOptionsValue"
+                [onWhite]="true"
+                (selectedOption)="selectOrderOption($event)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="products-modal-filters-buttons">
+          <div class="products-modal-filters-button margin-right">
+            <basic-dropdown
+              [options]="productCurrencyDropdown"
+              [defaultValue]="productCurrencyDropdownValue"
+              [onWhite]="true"
+              (selectedOption)="selectProductCurrency($event)"
+            />
+          </div>
+          <div class="products-modal-filters-button margin-left">
+            <basic-button
+              [label]="t('button.clearFilters')"
+              [onWhite]="true"
+              (buttonClick)="clearFilters()"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="products-modal-window-header">
+        <img
+          [ngSrc]="backArrowModal"
+          [width]="72"
+          [height]="72"
+          (click)="closeModalSearchProducts()"
+          alt="close"
+        >
+        <div class="products-modal-input-wrapper">
+          <basic-input
+            [label]="t('input.searchTitle')"
+            [placeholder]="t('input.searchForProductsHeader')"
+            [value]="productSearchQuery"
+            [onWhite]="true"
+            (valueChange)="changeProductSearchQuery($event)"
+          />
+        </div>
+        <div class="products-modal-filters-wrapper">
+          <basic-button
+            [label]="t('button.showFilters')"
+            [onWhite]="true"
+            (buttonClick)="showSearchFilters()"
+          />
+        </div>
+      </div>
+
+      <table class="products-modal-table" *ngIf="products && products.length > 0">
+        <tr>
+          <th class="products-modal-table-item">{{ t('marketplace.productSearchModal.title') }}</th>
+          <th class="products-modal-table-item">{{ t('marketplace.productSearchModal.price') }}</th>
+          <th class="products-modal-table-item">{{ t('marketplace.productSearchModal.category') }}</th>
+          <th class="products-modal-table-item">{{ t('marketplace.productSearchModal.createdAt') }}</th>
+        </tr>
+        <tr
+          class="products-modal-row"
+          *ngFor="let product of products"
+          (click)="handleRedirect('marketplace/product/' + product.slug)"
+        >
+          <td class="products-modal-table-item">{{ product.title }}</td>
+          <td class="products-modal-table-item">{{ product.price }} {{ product.currency }}</td>
+          <td class="products-modal-table-item">{{ t(translateCategory(product.category)) }}: {{ t(translateSubcategory(product.category, product.subcategory)) }}</td>
+          <td class="products-modal-table-item">{{ transformDate(product.createdAt) }}</td>
+        </tr>
+      </table>
+
+      <div *ngIf="products && products.length > 0" class="products-modal-pagination">
+        <basic-pagination
+          [itemsPerPageLabel]="t('dropdown.productsPerPage')"
+          [currentPage]="page"
+          [itemsPerPage]="pageSize"
+          [totalItems]="totalItems"
+          [onWhite]="true"
+          (setCurrentPage)="page = $event"
+          (setItemsPerPage)="pageSize = $event"
+          (fetchItems)="getProducts()"
+        />
+      </div>
+    </div>
+  </div>
+
+</ng-container>

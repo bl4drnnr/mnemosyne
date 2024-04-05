@@ -271,5 +271,14 @@ export enum DocsProperty {
   WRONG_CURRENCY_EXCEPTION_DESC = 'Wrong currency error message',
   WRONG_CURRENCY_EXCEPTION_EXAMPLE = 'wrong-currency',
   SUBCATEGORY_NOT_FOUND_DESC = 'Subcategory not found error message',
-  SUBCATEGORY_NOT_FOUND_EXAMPLE = 'subcategory-not-found'
+  SUBCATEGORY_NOT_FOUND_EXAMPLE = 'subcategory-not-found',
+  PRODUCT_ADDED_TO_FAVORITES_DESC = 'Product added to favorites response message',
+  PRODUCT_ADDED_TO_FAVORITES_EXAMPLE = 'product-added-to-favorites',
+  PRODUCT_ALREADY_IN_FAVORITES_EXCEPTION_DESC = 'Product already in favorites error message',
+  PRODUCT_ALREADY_IN_FAVORITES_EXCEPTION_EXAMPLE = 'product-already-in-favorites',
+  PRODUCT_DELETED_FROM_FAVORITES_DESC = 'Product deleted from favorites response message',
+  PRODUCT_DELETED_FROM_FAVORITES_EXAMPLE = 'product-deleted-from-favorites',
+  PRODUCT_IN_FAVORITES_DESC = "Is product in user's favorites",
+  PRODUCT_IN_FAVORITES_EXAMPLE = 'false',
+  USER_FAVORITE_PRODUCTS_DESC = "List of user's favorite products"
 }

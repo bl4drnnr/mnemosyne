@@ -9,6 +9,7 @@ import { LayoutsModule } from '@layouts/layouts.module';
 import { RouterModule, Routes } from '@angular/router';
 import { TranslocoModule } from '@ngneat/transloco';
 import { ContactComponent } from '@pages/contact/contact.component';
+import { CarouselModule } from 'primeng/carousel';
 
 const components = [
   TermsAndConditionsComponent,
@@ -49,7 +50,8 @@ const routes: Routes = [
     NgxTypedJsModule,
     NgOptimizedImage,
     LayoutsModule,
-    TranslocoModule
+    TranslocoModule,
+    CarouselModule
   ],
   exports: [...components]
 })

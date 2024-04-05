@@ -1,0 +1,29 @@
+@import 'variables';
+
+.carousel-card {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 4px;
+  margin: 2rem;
+  text-align: center;
+  padding: 5rem 3rem;
+  border-color: var(--border-color);
+  transition: .2s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--color-hover);
+  }
+}
+
+.carousel-image-card {
+  margin-bottom: 0.75rem;
+}
+
+.carousel-image {
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &.no-picture {
+    filter: var(--svg-color);
+  }
+}

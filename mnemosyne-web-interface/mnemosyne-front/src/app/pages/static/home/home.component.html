@@ -97,81 +97,87 @@
       </div>
     </div>
 
-    <div class="product-types-container">
-
-      <div class="product-type-block">
-        <div class="product-type-desc"><h1>{{ t('home.houseTile') }}</h1></div>
-        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
-        <img
-          [src]="stockItemsForHousePic"
-          width="100%"
-          height="100%"
-          alt="stock-items-for-house"
-        >
+    <div class="home-block">
+      <div class="home-block-container">
+        <div class="home-block-text-wrapper border-right">
+          <div class="home-block-text">
+            <h1 class="home-block-title">{{ whateverYouNeedTitle }}</h1>
+            <p class="home-block-paragraph">{{ homeSubtitle1 }}</p>
+          </div>
+        </div>
       </div>
-
-      <div class="product-type-block">
-        <div class="product-type-desc"><h1>{{ t('home.travelsTile') }}</h1></div>
-        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
-        <img
-          [src]="stockItemsForTravelsPic"
-          width="100%"
-          height="100%"
-          alt="stock-items-for-travels"
-        >
+      <div class="home-block-container">
+        <ng-lottie [options]="homeAnimation1" />
       </div>
     </div>
 
-    <div class="product-types-container">
-      <div class="product-type-block">
-        <div class="product-type-desc"><h1>{{ t('home.businessTile') }}</h1></div>
-        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
-        <img
-          [src]="stockItemsForBusinessPic"
-          width="100%"
-          height="100%"
-          alt="stock-items-for-business"
-        >
+    <div class="home-block">
+      <div class="home-block-container">
+        <ng-lottie [options]="homeAnimation2" />
       </div>
-      <div class="product-type-block">
-        <div class="product-type-desc"><h1>{{ t('home.cookingTile') }}</h1></div>
-        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
-        <img
-          [src]="stockItemsForCookingPic"
-          width="100%"
-          height="100%"
-          alt="stock-items-for-cooking"
-        >
+      <div class="home-block-container">
+        <div class="home-block-text-wrapper border-left">
+          <div class="home-block-text">
+            <h1 class="home-block-title">{{ wheneverYouWantTitle }}</h1>
+            <p class="home-block-paragraph">{{ homeSubtitle2 }}</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="product-types-container">
-      <div class="product-type-block">
-        <div class="product-type-desc"><h1>{{ t('home.sportsTile') }}</h1></div>
-        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
-        <img
-          class="product-type-pic"
-          [src]="stockItemsForSportPic"
-          width="100%"
-          height="100%"
-          alt="stock-items-for-sport"
-        >
+    <div class="home-block">
+      <div class="home-block-container">
+        <div class="home-block-text-wrapper border-right">
+          <div class="home-block-text">
+            <h1 class="home-block-title">{{ whereverYouAreaTile }}</h1>
+            <p class="home-block-paragraph">{{ homeSubtitle3 }}</p>
+          </div>
+        </div>
       </div>
-
-      <div class="product-type-block">
-        <div class="product-type-desc"><h1>{{ t('home.computerTile') }}</h1></div>
-        <div class="product-type-button"><h3>{{ t('button.seeMore') }}</h3></div>
-        <img
-          [src]="stockItemsForComputerPic"
-          width="100%"
-          height="100%"
-          alt="stock-items-for-computer"
-        >
+      <div class="home-block-container">
+        <ng-lottie [options]="homeAnimation3" />
       </div>
     </div>
 
     <div class="recent-products-container">
       <h1>See the most recent products</h1>
+    </div>
+
+    <div class="carousel-wrapper">
+      <div class="carousel-container">
+        <page-products-carousel
+          [products]="latestProducts"
+        />
+      </div>
+    </div>
+
+    <div class="home-block">
+      <div class="home-block-container">
+        <div class="home-block-text-wrapper border-right">
+          <div class="home-block-text">
+            <h1 class="home-block-title">{{ loginTitle }}</h1>
+            <p class="home-block-paragraph">{{ loginSubtitle }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="home-block-buttons">
+        <div class="home-block-buttons-wrapper">
+          <div class="home-block-button-wrapper">
+            <basic-button
+              [label]="t('button.createAccForMyself')"
+              (buttonClick)="handleRedirect('registration', { accType: 'private' })"
+              [fillButton]="true"
+            />
+          </div>
+          <div class="home-block-button-wrapper">
+            <basic-button
+              [label]="t('button.createAccForCompany')"
+              (buttonClick)="handleRedirect('registration', { accType: 'company' })"
+              [fillButton]="true"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </ng-container>
 </layout-default>

@@ -1,3 +1,7 @@
 {
-  "settings": "Account settings"
+  "sidebarWelcomeTitle": "Nice to see you again, {{ firstName }} {{ lastName }}",
+  "yourAccountSidebarTitle": "Your account",
+  "sidebarUserFullName": "Full name",
+  "sidebarUserEmail": "Email",
+  "sidebarUserId": "User ID"
 }

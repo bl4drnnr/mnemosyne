@@ -1,4 +1,6 @@
-<layout-default>
+<layout-default
+  [userInfo]="userInfo"
+>
   <ng-container *transloco="let t">
     <div class="dashboard-container">
       <div class="dashboard-block">
@@ -70,7 +72,7 @@
 
           <div class="dashboard-order-item margin-left">
             <p class="dashboard-order-desc">{{ t('dashboard.selectOrderSubtitle') }}</p>
-            <div>
+            <div *ngIf="orderOptionsValue">
               <basic-dropdown
                 [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
                 [options]="orderOptions"
@@ -81,7 +83,16 @@
           </div>
         </div>
 
-        <div class="dashboard-products-grid" *ngIf="layoutView === 'grid'">
+        <div *ngIf="userProducts && userProducts.length === 0">
+          <h1 class="dashboard-products-not-found">
+            {{ t('dashboard.dashboardProductsNotFound') }}
+          </h1>
+        </div>
+
+        <div
+          class="dashboard-products-grid"
+          *ngIf="userProducts && userProducts.length > 0 && layoutView === 'grid'"
+        >
           <page-product-preview
             *ngFor="let product of userProducts"
             [layoutView]="'grid'"
@@ -97,13 +108,17 @@
             [contactPerson]="product.contactPerson"
             [contactPhone]="product.contactPhone"
             [createdAt]="product.createdAt"
+            [productInFavorites]="product.productInFavorites"
             [showAdditionalInfo]="true"
             [showManagementButtons]="true"
             (deleteProductEvent)="deleteProduct($event)"
           />
         </div>
 
-        <div class="dashboard-products-list" *ngIf="layoutView === 'list'">
+        <div
+          class="dashboard-products-list"
+          *ngIf="userProducts && userProducts.length > 0 && layoutView === 'list'"
+        >
           <page-product-preview
             *ngFor="let product of userProducts"
             [layoutView]="'list'"
@@ -119,13 +134,14 @@
             [contactPerson]="product.contactPerson"
             [contactPhone]="product.contactPhone"
             [createdAt]="product.createdAt"
+            [productInFavorites]="product.productInFavorites"
             [showAdditionalInfo]="true"
             [showManagementButtons]="true"
             (deleteProductEvent)="deleteProduct($event)"
           />
         </div>
 
-        <div class="dashboard-products-pagination">
+        <div class="dashboard-products-pagination" *ngIf="userProducts && userProducts.length > 0">
           <basic-pagination
             [itemsPerPageLabel]="t('dropdown.productsPerPage')"
             [currentPage]="page"

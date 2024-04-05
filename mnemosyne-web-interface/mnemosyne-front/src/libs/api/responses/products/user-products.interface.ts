@@ -14,6 +14,7 @@ export interface UserProduct {
   createdAt: Date;
   contactPerson: string;
   contactPhone: string;
+  productInFavorites: boolean;
 }
 
 export interface UserProductsResponse {

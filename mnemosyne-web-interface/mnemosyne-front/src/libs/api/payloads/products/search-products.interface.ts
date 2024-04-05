@@ -1,7 +1,7 @@
 import { Currency } from '@interfaces/currency.type';
 
 export interface SearchProductsPayload {
-  query: string;
+  query?: string;
   page: string;
   pageSize: string;
   order: string;

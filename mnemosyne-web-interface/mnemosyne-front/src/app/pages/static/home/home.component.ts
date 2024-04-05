@@ -11,6 +11,8 @@ import {
 import { TranslationService } from '@services/translation.service';
 import { Titles } from '@interfaces/titles.enum';
 import { PageTranslation } from '@translations/pages.enum';
+import { ProductsService } from '@services/products.service';
+import { LatestProducts } from '@responses/get-latest-products.interface';
 
 @Component({
   selector: 'basic-home',
@@ -57,26 +59,38 @@ export class HomeComponent implements OnInit {
   typedTitle1: string;
   typedTitle2: string;
   typedTitle3: string;
-
-  stockItemsForHousePic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-house.jpeg`;
-  stockItemsForTravelsPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-travels.jpeg`;
-  stockItemsForBusinessPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-business.jpeg`;
-  stockItemsForCookingPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-cooking.jpeg`;
-  stockItemsForSportPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-sport.jpeg`;
-  stockItemsForComputerPic = `${this.envService.getStaticStorageLink}/pictures/pages/home/stock-items-for-computer.jpeg`;
+  homeSubtitle1: string;
+  homeSubtitle2: string;
+  homeSubtitle3: string;
+  loginTitle: string;
+  loginSubtitle: string;
+  latestProducts: Array<LatestProducts>;
 
   constructor(
     private readonly envService: EnvService,
     private readonly translationService: TranslationService,
+    private readonly productsService: ProductsService,
     private readonly router: Router
   ) {}
 
   animationOptions = {
-    path: `${this.envService.getStaticStorageLink}/animations/blockchain_technology_home.json`
+    path: `${this.envService.getStaticStorageLink}/animations/home_animation.json`
   };
 
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
+  homeAnimation1 = {
+    path: `${this.envService.getStaticStorageLink}/animations/animation2.json`
+  };
+
+  homeAnimation2 = {
+    path: `${this.envService.getStaticStorageLink}/animations/animation3.json`
+  };
+
+  homeAnimation3 = {
+    path: `${this.envService.getStaticStorageLink}/animations/animation4.json`
+  };
+
+  async handleRedirect(path: string, queryParams: any = {}) {
+    await this.router.navigate([path], { queryParams });
   }
 
   async ngOnInit() {
@@ -109,5 +123,28 @@ export class HomeComponent implements OnInit {
       'typedTitle3',
       PageTranslation.HOME
     );
+    this.homeSubtitle1 = await this.translationService.translateText(
+      'homeSubtitle1',
+      PageTranslation.HOME
+    );
+    this.homeSubtitle2 = await this.translationService.translateText(
+      'homeSubtitle2',
+      PageTranslation.HOME
+    );
+    this.homeSubtitle3 = await this.translationService.translateText(
+      'homeSubtitle3',
+      PageTranslation.HOME
+    );
+    this.loginTitle = await this.translationService.translateText(
+      'loginTitle',
+      PageTranslation.HOME
+    );
+    this.loginSubtitle = await this.translationService.translateText(
+      'loginSubtitle',
+      PageTranslation.HOME
+    );
+    this.productsService.getLatestProducts().subscribe({
+      next: ({ latestProducts }) => (this.latestProducts = latestProducts)
+    });
   }
 }

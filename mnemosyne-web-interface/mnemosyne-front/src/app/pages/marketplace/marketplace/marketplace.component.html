@@ -63,12 +63,14 @@
             <p class="marketplace-filters-subtitle">
               <b>{{ t('marketplace.marketplaceCurrency') }}:</b>
             </p>
-            <basic-dropdown
-              [label]="t('dropdown.selectCurrency')"
-              [options]="productCurrencyDropdown"
-              [defaultValue]="productCurrencyDropdownValue"
-              (selectedOption)="selectProductCurrency($event)"
-            />
+            <div *ngIf="productCurrencyDropdownValue">
+              <basic-dropdown
+                [label]="t('dropdown.selectCurrency')"
+                [options]="productCurrencyDropdown"
+                [defaultValue]="productCurrencyDropdownValue"
+                (selectedOption)="selectProductCurrency($event)"
+              />
+            </div>
           </div>
           <div class="marketplace-filters-container">
             <p class="marketplace-filters-subtitle">
@@ -151,7 +153,7 @@
 
             <div class="marketplace-order-item margin-left">
               <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderSubtitle') }}</p>
-              <div>
+              <div *ngIf="orderOptionsValue">
                 <basic-dropdown
                   [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
                   [options]="orderOptions"
@@ -162,7 +164,7 @@
             </div>
           </div>
 
-          <div *ngIf="products.length === 0">
+          <div *ngIf="products && products.length === 0">
             <h1 class="marketplace-products-not-found">
               {{ t('marketplace.marketplaceProductsNotFound') }}
             </h1>
@@ -170,11 +172,12 @@
 
           <div
             class="marketplace-products-grid"
-            *ngIf="products.length > 0 && layoutView === 'grid'"
+            *ngIf="products && products.length > 0 && layoutView === 'grid'"
           >
             <page-product-preview
               *ngFor="let product of products"
               [layoutView]="'grid'"
+              [productId]="product.id"
               [slug]="product.slug"
               [mainPicture]="product.mainPicture"
               [productTitle]="product.title"
@@ -183,6 +186,7 @@
               [price]="product.price"
               [currency]="product.currency"
               [createdAt]="product.createdAt"
+              [productInFavorites]="product.productInFavorites"
               [showAdditionalInfo]="false"
               [showManagementButtons]="false"
             />
@@ -190,11 +194,12 @@
 
           <div
             class="marketplace-products-list"
-            *ngIf="products.length > 0 && layoutView === 'list'"
+            *ngIf="products && products.length > 0 && layoutView === 'list'"
           >
             <page-product-preview
               *ngFor="let product of products"
               [layoutView]="'list'"
+              [productId]="product.id"
               [slug]="product.slug"
               [mainPicture]="product.mainPicture"
               [productTitle]="product.title"
@@ -203,12 +208,13 @@
               [price]="product.price"
               [currency]="product.currency"
               [createdAt]="product.createdAt"
+              [productInFavorites]="product.productInFavorites"
               [showAdditionalInfo]="false"
               [showManagementButtons]="false"
             />
           </div>
 
-          <div class="marketplace-pagination" *ngIf="products.length > 0">
+          <div class="marketplace-pagination" *ngIf="products && products.length > 0">
             <basic-pagination
               [itemsPerPageLabel]="t('dropdown.productsPerPage')"
               [currentPage]="page"

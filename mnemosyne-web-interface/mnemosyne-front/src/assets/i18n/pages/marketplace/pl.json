@@ -10,5 +10,11 @@
   "marketplaceCurrency": "Waluta",
   "marketplaceClearFilters": "Wyczyść filtry",
   "marketplaceWrongPriceRange": "Zły przedział cenowy! Cena minimalna nie może być wyższa niż cena maksymalna!",
-  "marketplaceProductsNotFound": "Nie znaleziono produktów... :("
+  "marketplaceProductsNotFound": "Nie znaleziono produktów... :(",
+  "productSearchModal": {
+    "title": "Tytuł",
+    "price": "Cena",
+    "category": "Kategoria",
+    "createdAt": "Opublikowano o"
+  }
 }

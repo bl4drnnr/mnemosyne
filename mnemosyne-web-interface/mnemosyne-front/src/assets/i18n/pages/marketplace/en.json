@@ -10,5 +10,11 @@
   "marketplaceCurrency": "Currency",
   "marketplaceClearFilters": "Clear filters",
   "marketplaceWrongPriceRange": "Wrong price range! Min price cannot be more than max price!",
-  "marketplaceProductsNotFound": "No products found... :("
+  "marketplaceProductsNotFound": "No products found... :(",
+  "productSearchModal": {
+    "title": "Title",
+    "price": "Price",
+    "category": "Category",
+    "createdAt": "Created at"
+  }
 }

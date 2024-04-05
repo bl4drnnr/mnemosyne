@@ -19,7 +19,8 @@ export class UserProductsDto {
         category: DocsProperty.CATEGORY_NAME_EXAMPLE,
         createdAt: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE,
         contactPerson: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE,
-        contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE
+        contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE,
+        productInFavorites: DocsProperty.PRODUCT_IN_FAVORITES_EXAMPLE
       }
     ]
   })

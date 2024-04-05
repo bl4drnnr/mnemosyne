@@ -152,5 +152,10 @@
   "priceToError": "Неправильная максимальная цена! Убедитесь, что это не отрицательное число.",
   "marketplaceSearchLabel": "Ищите любые товары, которые вы хотите",
   "marketplaceSearchPlaceholder": "Введите запрос для продукта",
-  "marketplaceSearchInputDesc": "Поиск продукта будет основан на названии, категории, подкатегории, описании, заголовке и ссылки"
+  "marketplaceSearchInputDesc": "Поиск продукта будет основан на названии, категории, подкатегории, описании, заголовке и ссылки",
+  "searchTitle": "Поиск",
+  "searchForProductsHeader": "Поиск продуктов...",
+  "favoriteProductsSearchLabel": "Поиск по избранным продуктам",
+  "favoriteProductsSearchPlaceholder": "Поиск по избранным продуктам",
+  "favoriteProductsSearchInputDesc": "Вы можете выполнять поиск своих продуктов на основе названия, описания или ссылки."
 }

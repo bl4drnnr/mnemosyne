@@ -26,6 +26,44 @@
   margin: 15px;
 }
 
+.logout-sidebar-side {
+  padding: 15px;
+  border-top: 1px solid var(--border-color);
+}
+
 .sidebar-button-wrapper {
   margin-bottom: 10px;
+}
+
+.sidebar-button-wrapper {
+  margin: 15px 0;
+}
+
+.sidebar-account-title {
+  font-size: 28px;
+}
+
+.sidebar-user-welcome {
+  padding: 15px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-user-preview {
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar-user-data {
+  display: flex;
+}
+
+.user-photo {
+  border-radius: 50%;
+}
+
+.sidebar-user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 15px;
 }

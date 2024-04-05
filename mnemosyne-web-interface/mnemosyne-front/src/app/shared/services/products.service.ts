@@ -15,6 +15,17 @@ import { DeleteProductPayload } from '@payloads/delete-product.interface';
 import { ProductDeletedResponse } from '@responses/product-deleted.enum';
 import { SearchProductsResponse } from '@responses/search-products.interface';
 import { SearchProductsPayload } from '@payloads/search-products.interface';
+import { GetLatestProductsResponse } from '@responses/get-latest-products.interface';
+import { AddProductToFavoritesPayload } from '@payloads/add-product-to-favorites.interface';
+import { ProductAddedToFavoritesResponse } from '@responses/product-added-to-favorites.interface';
+import { DeleteProductFromFavoritesPaylaod } from '@payloads/delete-product-from-favorites.interface';
+import { ProductDeletedFromFavoritesResponse } from '@responses/product-deleted-from-favorites.interface';
+import { GetUserFavoriteProductsPayload } from '@payloads/get-user-favorite-products.interface';
+import { GetUserFavoriteProductsResponse } from '@responses/get-user-favorite-products.interface';
+import { GetProductContactEmailPayload } from '@payloads/get-product-contact-email.interface';
+import { GetProductContactPhonePayload } from '@payloads/get-product-contact-phone.interface';
+import { GetProductContactEmailResponse } from '@responses/get-product-contact-email.interface';
+import { GetProductContactPhoneResponse } from '@responses/get-product-contact-phone.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +41,14 @@ export class ProductsService {
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.GET_PRODUCT,
       params: { slug }
+    });
+  }
+
+  getLatestProducts(): Observable<GetLatestProductsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.LATEST_PRODUCTS
     });
   }
 
@@ -94,6 +113,61 @@ export class ProductsService {
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.DELETE_PRODUCT,
       payload
+    });
+  }
+
+  deleteProductFromFavorites(
+    payload: DeleteProductFromFavoritesPaylaod
+  ): Observable<{ message: ProductDeletedFromFavoritesResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.DELETE,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.DELETE_FROM_FAVORITES,
+      payload
+    });
+  }
+
+  addProductToFavorites(
+    payload: AddProductToFavoritesPayload
+  ): Observable<{ message: ProductAddedToFavoritesResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.POST,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.ADD_TO_FAVORITES,
+      payload
+    });
+  }
+
+  getUserFavoritesProducts(
+    params: GetUserFavoriteProductsPayload
+  ): Observable<GetUserFavoriteProductsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.GET_FAVORITES,
+      params
+    });
+  }
+
+  getProductContactEmail(
+    params: GetProductContactEmailPayload
+  ): Observable<GetProductContactEmailResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.PRODUCT_CONTACT_EMAIL,
+      params
+    });
+  }
+
+  getProductContactPhone(
+    params: GetProductContactPhonePayload
+  ): Observable<GetProductContactPhoneResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.PRODUCT_CONTACT_PHONE,
+      params
     });
   }
 }

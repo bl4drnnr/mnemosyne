@@ -15,4 +15,8 @@
   &.arrow-open {
     transform: translateY(-50%) rotate(180deg);
   }
+
+  &.on-white {
+    border-top: 4px solid $text-color;
+  }
 }

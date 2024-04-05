@@ -7,6 +7,7 @@ import { LoaderComponent } from '@components/loader/loader.component';
 import { TranslocoModule } from '@ngneat/transloco';
 import { BasicComponentsModule } from '@components/basic-components.module';
 import { ModeToggleModule } from '@components/theme-toggle/theme-toggle.module';
+import { PagesComponentsModule } from '@components/pages-components.module';
 
 const components = [
   FooterComponent,
@@ -22,7 +23,8 @@ const components = [
     NgOptimizedImage,
     TranslocoModule,
     BasicComponentsModule,
-    ModeToggleModule
+    ModeToggleModule,
+    PagesComponentsModule
   ],
   exports: [...components]
 })

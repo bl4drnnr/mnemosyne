@@ -10,5 +10,11 @@
   "marketplaceCurrency": "Валюта",
   "marketplaceClearFilters": "Очистить фильтры",
   "marketplaceWrongPriceRange": "Неправильный диапазон цен! Минимальная цена не может быть больше максимальной!",
-  "marketplaceProductsNotFound": "Продукты не найдены... :("
+  "marketplaceProductsNotFound": "Продукты не найдены... :(",
+  "productSearchModal": {
+    "title": "Называние",
+    "price": "Цена",
+    "category": "Категория",
+    "createdAt": "Дата публикации"
+  }
 }

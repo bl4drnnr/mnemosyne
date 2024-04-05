@@ -69,6 +69,14 @@ export class User extends Model<User, UserCreationAttributes> {
   })
   tac: boolean;
 
+  @Default([])
+  @Column({
+    type: DataType.ARRAY(DataType.STRING),
+    allowNull: true,
+    field: 'favorite_products_ids'
+  })
+  favoriteProductsIds: Array<string>;
+
   @HasMany(() => Product)
   products: Array<Product>;
 

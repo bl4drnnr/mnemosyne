@@ -1,3 +1,7 @@
 {
-  "settings": "Настройки аккаунта"
+  "sidebarWelcomeTitle": "Рады вас снова видеть, {{ firstName }} {{ lastName }}",
+  "yourAccountSidebarTitle": "Ваш аккаунт",
+  "sidebarUserFullName": "Полное имя",
+  "sidebarUserEmail": "Электронная почта",
+  "sidebarUserId": "ID пользователя"
 }
