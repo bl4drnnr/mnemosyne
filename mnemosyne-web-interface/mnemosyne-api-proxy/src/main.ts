@@ -15,9 +15,15 @@ import { urlencoded, json } from 'express';
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   app.enableCors({
-    origin: ['http://localhost:4200', 'https://mnemosyne.io'],
+    origin: 'https://mnemosyne.io',
     credentials: true
   });
+
+  // Working in the development mode
+  // app.enableCors({
+  //   origin: ['http://localhost:4200', 'https://mnemosyne.io'],
+  //   credentials: true
+  // });
 
   const config = new DocumentBuilder()
     .setTitle('Mnemosyne')
