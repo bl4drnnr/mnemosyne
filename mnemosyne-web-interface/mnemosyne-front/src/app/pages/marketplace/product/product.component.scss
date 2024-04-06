@@ -79,7 +79,7 @@
 .product-pictures {
   width: 100%;
   min-width: 700px;
-  min-height: 500px;
+  min-height: 600px;
   border: 1px solid var(--border-color);
   border-radius: 8px;
   display: flex;
@@ -116,6 +116,18 @@
   padding: 8px;
   border-radius: 4px;
   border: 1px solid var(--border-color-dark);
+}
+
+.product-log-in-to-contact-block {
+  border: 1px solid var(--border-color);
+  margin-top: 20px;
+  border-radius: 8px;
+  width: 100%;
+  background-color: var(--main-color-hover);
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  align-items: center;
 }
 
 .product-contact-block {
@@ -233,11 +245,15 @@
 
 .product-pic {
   border-radius: 8px;
+  width: 726px;
+  height: 500px;
 }
 
 .product-item-content {
   text-align: center;
   padding-bottom: 10px;
+  width: 726px;
+  height: 500px;
 }
 
 .hide-contact-email-p {

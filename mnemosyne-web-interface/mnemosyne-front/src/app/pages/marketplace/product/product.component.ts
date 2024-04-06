@@ -25,6 +25,7 @@ export class ProductComponent implements OnInit {
   contactEmail: string;
   contactPhone: string;
   similarProducts: Array<SearchedProducts>;
+  isUserLoggedIn = false;
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
@@ -174,6 +175,9 @@ export class ProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    const accessToken = localStorage.getItem('_at');
+    this.isUserLoggedIn = !!accessToken;
+
     this.route.paramMap.subscribe(async (params) => {
       const productSlug = params.get('product-slug');
 

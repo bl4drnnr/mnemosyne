@@ -46,5 +46,6 @@
   "createAccForCompany": "I want to create an account for my company",
   "dashboardFavorites": "Favorite products",
   "showContactEmail": "Show contact email",
-  "showContactPhone": "Show contact phone"
+  "showContactPhone": "Show contact phone",
+  "logInCreateAcc": "Log In / Create account"
 }

@@ -22,5 +22,6 @@
   "hideContactEmail": "Hide contact email",
   "hideContactPhone": "Hide contact phone",
   "noSimilarProductsTitle": "No similar products found",
-  "noSimilarProductsParagraph": "We have not found any similar products..."
+  "noSimilarProductsParagraph": "We have not found any similar products...",
+  "logInToContact": "Well... You will not be able to contact anyone unless you have an account."
 }

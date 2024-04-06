@@ -22,5 +22,6 @@
   "hideContactEmail": "Скрыть контактный адрес электронной почты",
   "hideContactPhone": "Скрыть контактный телефон",
   "noSimilarProductsTitle": "Похожие товары не найдены",
-  "noSimilarProductsParagraph": "Мы не нашли похожих товаров..."
+  "noSimilarProductsParagraph": "Мы не нашли похожих товаров...",
+  "logInToContact": "Хорошо... Вы не сможете связаться с кем-либо, если у вас нет учетной записи."
 }

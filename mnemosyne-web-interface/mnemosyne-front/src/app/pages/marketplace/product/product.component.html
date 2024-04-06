@@ -70,7 +70,7 @@
                           style="height: 100%;"
                           [src]="productPicturesBucket + pic + '.png'"
                           [width]="726"
-                          [height]="400"
+                          [height]="500"
                           alt="Product pic"
                         >
                       </div>
@@ -88,6 +88,14 @@
                 <p class="product-tag">{{ t(translateCategory(product.category)) }}</p>
                 <p class="product-tag">{{ t(translateSubcategory(product.category, product.subcategory)) }}</p>
               </div>
+            </div>
+            <div class="product-log-in-to-contact-block" *ngIf="!isUserLoggedIn">
+              <p>{{ t('product.logInToContact') }}</p>
+              <basic-button
+                [label]="t('button.logInCreateAcc')"
+                [fillButton]="true"
+                (buttonClick)="handleRedirect('login')"
+              />
             </div>
             <div class="product-contact-block">
               <h1>{{ t('product.productContactOwnerTitle') }}</h1>
