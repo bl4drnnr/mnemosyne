@@ -38,34 +38,41 @@ import { urlencoded, json } from 'express';
   //   }
   // });
 
-  app.use(cors({
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Access-Token'],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
-    origin: function (origin, callback) {
-      if (whitelist.indexOf(origin) !== -1) {
-        const message = `allowed cors for (API Proxy): ${origin}\n`;
-        fs.appendFile('cors_logs.txt', message, (err) => {
-          if (err) throw err;
-          console.log('Cors log appended to file');
-        });
-        callback(null, true);
-      } else {
-        const message = `blocked cors for (API Proxy): ${origin}\n`;
-        fs.appendFile('cors_logs.txt', message, (err) => {
-          if (err) throw err;
-          console.log('Cors log appended to file');
-        });
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  }));
+  // app.use(cors({
+  //   allowedHeaders: ['Content-Type', 'Authorization', 'X-Access-Token'],
+  //   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+  //   origin: function (origin, callback) {
+  //     if (whitelist.indexOf(origin) !== -1) {
+  //       const message = `allowed cors for (API Proxy): ${origin}\n`;
+  //       fs.appendFile('cors_logs.txt', message, (err) => {
+  //         if (err) throw err;
+  //         console.log('Cors log appended to file');
+  //       });
+  //       callback(null, true);
+  //     } else {
+  //       const message = `blocked cors for (API Proxy): ${origin}\n`;
+  //       fs.appendFile('cors_logs.txt', message, (err) => {
+  //         if (err) throw err;
+  //         console.log('Cors log appended to file');
+  //       });
+  //       callback(new Error('Not allowed by CORS'));
+  //     }
+  //   },
+  //   credentials: true,
+  // }));
 
   // app.enableCors({
   //   allowedHeaders: ['content-type'],
   //   origin: 'https://mnemosyne.io',
   //   credentials: true
   // });
+
+  app.enableCors({
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Access-Token'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
+    origin: whitelist,
+    credentials: true
+  });
 
   // Working in the development mode
   // app.enableCors({
