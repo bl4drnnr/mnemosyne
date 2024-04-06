@@ -10,7 +10,9 @@ import { urlencoded, json } from 'express';
   const whitelist = [
     'http://localhost:4200',
     'https://mnemosyne.io',
-    'https://proxy.mnemosyne.io'
+    'https://proxy.mnemosyne.io',
+    'http://mnemosyne.io',
+    'http://proxy.mnemosyne.io'
   ];
 
   const app = await NestFactory.create(AppModule);
@@ -21,6 +23,7 @@ import { urlencoded, json } from 'express';
   app.use(urlencoded({ extended: true, limit: '50mb' }));
 
   app.enableCors({
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Access-Token'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'],
     credentials: true,
     origin: function (origin, callback) {
