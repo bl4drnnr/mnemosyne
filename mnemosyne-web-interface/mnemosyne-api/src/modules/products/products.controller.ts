@@ -354,6 +354,9 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.GetMarketplaceUserStatsDocs.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetMarketplaceUserStatsDocs.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetMarketplaceUserStatsDocs.ApiResponse)
   @ApiBasicAuth('basicAuth')
   @Get('marketplace-user-statistics')
   getMarketplaceUserStatistics(

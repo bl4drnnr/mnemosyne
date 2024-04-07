@@ -286,5 +286,13 @@ export enum DocsProperty {
   USER_NOT_FOUND_EXCEPTION_EXAMPLE = 'user-not-found',
   USER_CREATED_AT_DESC = 'User creation date',
   USER_CREATED_AT_EXAMPLE = '2023-11-17T11:42:26.534Z',
-  MARKETPLACE_USER_DESC = 'Public information of the user on the marketplace'
+  MARKETPLACE_USER_DESC = 'Public information of the user on the marketplace',
+  AMOUNT_OF_PRODUCTS_DESC = 'Quantity of all products',
+  AMOUNT_OF_PRODUCTS_EXAMPLE = '100500',
+  PRODUCT_AMOUNT_DESC = 'Quantity of all products per currency',
+  PRODUCT_AMOUNT_EXAMPLE = '100',
+  PRODUCT_MIN_MAX_PRICE_DESC = 'Min or max price of all products per currency',
+  PRODUCT_MIN_MAX_PRICE_EXAMPLE = '1337',
+  PRODUCT_AVG_AMOUNT_DESC = 'Average amount of all products per currency',
+  PRODUCT_AVG_AMOUNT_EXAMPLE = '228'
 }

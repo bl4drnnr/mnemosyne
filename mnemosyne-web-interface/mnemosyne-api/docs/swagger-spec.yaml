@@ -2339,6 +2339,7 @@ paths:
   /api/products/marketplace-user-statistics:
     get:
       operationId: ProductsController_getMarketplaceUserStatistics
+      summary: Endpoint is responsible for getting marketplace user statistics.
       parameters:
         - name: marketplaceUserId
           required: true
@@ -2347,7 +2348,12 @@ paths:
             type: string
       responses:
         "200":
-          description: ""
+          description: As a response user gets a couple of different numbers about all
+            user products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMarketplaceUserStatsDto"
       tags: *a9
       security:
         - basicAuth: []
@@ -4290,6 +4296,75 @@ components:
           example: "+48123123123"
       required:
         - contactPhone
+    GetMarketplaceUserStatsDto:
+      type: object
+      properties:
+        amountOfProducts:
+          type: number
+          description: Quantity of all products
+          example: "100500"
+        plnProductsAmount:
+          type: number
+          description: Quantity of all products per currency
+          example: "100"
+        usdProductsAmount:
+          type: number
+          description: Quantity of all products per currency
+          example: "100"
+        eurProductsAmount:
+          type: number
+          description: Quantity of all products per currency
+          example: "100"
+        plnProductsAvgAmount:
+          type: number
+          description: Average amount of all products per currency
+          example: "228"
+        usdProductsAvgAmount:
+          type: number
+          description: Average amount of all products per currency
+          example: "228"
+        eurProductsAvgAmount:
+          type: number
+          description: Average amount of all products per currency
+          example: "228"
+        plnMinPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        plnMaxPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        usdMinPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        usdMaxPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        eurMinPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        eurMaxPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+      required:
+        - amountOfProducts
+        - plnProductsAmount
+        - usdProductsAmount
+        - eurProductsAmount
+        - plnProductsAvgAmount
+        - usdProductsAvgAmount
+        - eurProductsAvgAmount
+        - plnMinPrice
+        - plnMaxPrice
+        - usdMinPrice
+        - usdMaxPrice
+        - eurMinPrice
+        - eurMaxPrice
     GetAllCategoriesDto:
       type: object
       properties:

@@ -27,6 +27,7 @@ import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
 import { UserFavoriteProductsDto } from '@dto/user-favorite-products.dto';
 import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
 import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
+import { GetMarketplaceUserStatsDto } from '@dto/get-marketplace-user-stats.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -648,6 +649,25 @@ export abstract class ProductsDocs {
         schema: { $ref: getSchemaPath(GetProductContactEmailDto) }
       },
       ApiProductIdQuery: productIdQuery
+    };
+  }
+
+  static get GetMarketplaceUserStatsDocs() {
+    const ApiModels = [GetMarketplaceUserStatsDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting marketplace user statistics.';
+    const apiResponseDesc =
+      'As a response user gets a couple of different numbers about all user products.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetMarketplaceUserStatsDto) }
+      }
     };
   }
 }

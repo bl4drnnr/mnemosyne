@@ -116,6 +116,7 @@ export class UsersController {
     });
   }
 
+  // @TODO Write docs
   @ApiBasicAuth('basicAuth')
   @UseInterceptors(UserInterceptor)
   @Get('marketplace-user')

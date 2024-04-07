@@ -47,6 +47,7 @@ import { GetProductContactPhoneInterface } from '@interfaces/get-product-contact
 import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
 import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 import { GetMarketplaceUserStatisticsInterface } from '@interfaces/get-marketplace-user-statistics.interface';
+import { GetMarketplaceUserStatsDto } from '@dto/get-marketplace-user-stats.dto';
 
 @Injectable()
 export class ProductsService {
@@ -282,7 +283,7 @@ export class ProductsService {
     }
 
     if (marketplaceUserId) {
-      where[Op.and].push([{ userId: marketplaceUserId }]);
+      where[Op.and].push([{ user_id: marketplaceUserId }]);
     }
 
     if (currency !== 'all') {
@@ -794,8 +795,48 @@ export class ProductsService {
       where: { userId: marketplaceUserId },
       transaction: trx
     });
-    console.log('rows', rows);
-    console.log('count', count);
+    const amountOfProducts = count;
+
+    const plnProducts = rows.filter(({ currency }) => currency === 'PLN');
+    const usdProducts = rows.filter(({ currency }) => currency === 'USD');
+    const eurProducts = rows.filter(({ currency }) => currency === 'EUR');
+
+    const plnProductsAmount = plnProducts.length;
+    const usdProductsAmount = usdProducts.length;
+    const eurProductsAmount = eurProducts.length;
+
+    const plnProductsAvgAmount =
+      plnProducts.map((p) => p.price).reduce((a, b) => a + b) /
+      plnProductsAmount;
+    const usdProductsAvgAmount =
+      usdProducts.map((p) => p.price).reduce((a, b) => a + b) /
+      usdProductsAmount;
+    const eurProductsAvgAmount =
+      eurProducts.map((p) => p.price).reduce((a, b) => a + b) /
+      eurProductsAmount;
+
+    const plnMinPrice = Math.min(...plnProducts.map((p) => p.price));
+    const plnMaxPrice = Math.max(...plnProducts.map((p) => p.price));
+    const usdMinPrice = Math.min(...usdProducts.map((p) => p.price));
+    const usdMaxPrice = Math.max(...usdProducts.map((p) => p.price));
+    const eurMinPrice = Math.min(...eurProducts.map((p) => p.price));
+    const eurMaxPrice = Math.max(...eurProducts.map((p) => p.price));
+
+    return new GetMarketplaceUserStatsDto({
+      amountOfProducts,
+      plnProductsAmount,
+      usdProductsAmount,
+      eurProductsAmount,
+      plnProductsAvgAmount,
+      usdProductsAvgAmount,
+      eurProductsAvgAmount,
+      plnMinPrice,
+      plnMaxPrice,
+      usdMinPrice,
+      usdMaxPrice,
+      eurMinPrice,
+      eurMaxPrice
+    });
   }
 
   private generateProductSlug(productName: string) {
