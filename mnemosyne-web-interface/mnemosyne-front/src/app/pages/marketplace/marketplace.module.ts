@@ -11,6 +11,7 @@ import { CreateProductComponent } from '@pages/create-product/create-product.com
 import { ProductNotFoundComponent } from '@pages/product-not-found/product-not-found.component';
 import { EditProductComponent } from '@pages/edit-product/edit-product.component';
 import { MarketplaceUserComponent } from '@pages/marketplace-user/marketplace-user.component';
+import { MarketplaceCompanyComponent } from '@pages/marketplace-company/marketplace-company.component';
 
 const components = [
   MarketplaceComponent,
@@ -18,7 +19,8 @@ const components = [
   CreateProductComponent,
   ProductNotFoundComponent,
   EditProductComponent,
-  MarketplaceUserComponent
+  MarketplaceUserComponent,
+  MarketplaceCompanyComponent
 ];
 
 const routes: Routes = [
@@ -45,6 +47,10 @@ const routes: Routes = [
   {
     path: 'marketplace/user/:userId',
     component: MarketplaceUserComponent
+  },
+  {
+    path: 'marketplace/company/:companyId',
+    component: MarketplaceCompanyComponent
   }
 ];
 

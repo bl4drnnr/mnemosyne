@@ -19,5 +19,13 @@
   },
   "marketplaceUserRegDate": "Data rejestracji: {{ date }}",
   "marketplaceUserPronounced": "Wymawiane jako: {{ namePronunciation }}",
-  "marketplaceUserEmail": "Aby uzyskać adres e-mail użytkownika, musisz się zalogować."
+  "marketplaceUserEmail": "Aby uzyskać adres e-mail użytkownika, musisz się zalogować.",
+  "marketplaceUsersProducts": "Spójrz na produkty użytkownika",
+  "marketplaceUsersNoProducts": "Ten użytkownik nie opublikował jeszcze żadnych produktów",
+  "statsAmountOfProducts": "Ilość produktów",
+  "statsAvgPrice": "Średnia cena",
+  "statsMinPrice": "Minimalna cena",
+  "statsMaxPrice": "Maksymalna cena",
+  "statsTitle": "Statystyki produktów użytkownika",
+  "statsTotalAmount": "Całkowita ilość produktów: {{ amount }}"
 }

@@ -19,5 +19,13 @@
   },
   "marketplaceUserRegDate": "Registration date: {{ date }}",
   "marketplaceUserPronounced": "Pronounced as: {{ namePronunciation }}",
-  "marketplaceUserEmail": "In order to get marketplace user's email address, you need to signed in."
+  "marketplaceUserEmail": "In order to get marketplace user's email address, you need to signed in.",
+  "marketplaceUsersProducts": "Take a look at user's products",
+  "marketplaceUsersNoProducts": "This user has not posted any products yet",
+  "statsAmountOfProducts": "Amount of products",
+  "statsAvgPrice": "Average price",
+  "statsMinPrice": "Minimal price",
+  "statsMaxPrice": "Maximum price",
+  "statsTitle": "User products' statistics",
+  "statsTotalAmount": "Total amount of products: {{ amount }}"
 }

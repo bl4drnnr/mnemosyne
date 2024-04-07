@@ -19,5 +19,13 @@
   },
   "marketplaceUserRegDate": "Дата регистрации: {{ date }}",
   "marketplaceUserPronounced": "Произносится как: {{ namePronunciation }}",
-  "marketplaceUserEmail": "Чтобы получить адрес электронной почты пользователя, вам необходимо войти в систему."
+  "marketplaceUserEmail": "Чтобы получить адрес электронной почты пользователя, вам необходимо войти в систему.",
+  "marketplaceUsersProducts": "Взгляните на продукты пользователя",
+  "marketplaceUsersNoProducts": "Этот пользователь еще не публиковал никаких продуктов",
+  "statsAmountOfProducts": "Количество товаров",
+  "statsAvgPrice": "Средняя цена",
+  "statsMinPrice": "Минимальная цена",
+  "statsMaxPrice": "Максимальная цена",
+  "statsTitle": "Статистика пользовательских продуктов",
+  "statsTotalAmount": "Общее количество продуктов: {{ amount }}"
 }
