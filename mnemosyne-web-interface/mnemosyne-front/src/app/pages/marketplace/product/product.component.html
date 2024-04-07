@@ -67,10 +67,7 @@
                       <div class="product-item-content">
                         <img
                           class="product-pic"
-                          style="height: 100%;"
                           [src]="productPicturesBucket + pic + '.png'"
-                          [width]="726"
-                          [height]="500"
                           alt="Product pic"
                         >
                       </div>
@@ -102,16 +99,15 @@
               <div class="product-contact-info">
                 <div class="product-contact-info-block">
                   <img
-                    [ngSrc]="userProfilePictureLink"
-                    [width]="50"
-                    [height]="50"
+                    [src]="userProfilePictureLink"
+                    class="user-profile-picture"
                     alt="User"
                   >
                   <div class="product-user-info-link">
                     <p>{{ product.contactPerson }}</p>
                     <basic-link
                       [label]="t('link.seeMoreProducts')"
-                      [href]="''"
+                      [href]="'marketplace/user/' + product.ownerId"
                     />
                   </div>
                 </div>
@@ -222,16 +218,15 @@
               <div class="product-user-info-wrapper">
                 <div class="product-user-info">
                   <img
-                    [ngSrc]="userProfilePictureLink"
-                    [width]="50"
-                    [height]="50"
+                    [src]="userProfilePictureLink"
+                    class="user-profile-picture"
                     alt="User"
                   >
                   <div class="product-user-info-link">
                     <p>{{ product.contactPerson }}</p>
                     <basic-link
                       [label]="t('link.seeMoreProducts')"
-                      [href]="''"
+                      [href]="'marketplace/user/' + product.ownerId"
                     />
                   </div>
                 </div>
@@ -264,7 +259,7 @@
 
     <div
       class="product-container"
-      *ngIf="similarProducts && similarProducts.length > 0"
+      *ngIf="similarProducts && similarProducts.length >= 2"
     >
       <div class="product-area">
         <h1>{{ t('product.similarProducts') }}</h1>

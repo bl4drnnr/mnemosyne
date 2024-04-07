@@ -46,6 +46,7 @@ import { GetProductContactEmailInterface } from '@interfaces/get-product-contact
 import { GetProductContactPhoneInterface } from '@interfaces/get-product-contact-phone.interface';
 import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
 import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
+import { GetMarketplaceUserStatisticsInterface } from '@interfaces/get-marketplace-user-statistics.interface';
 
 @Injectable()
 export class ProductsService {
@@ -71,15 +72,35 @@ export class ProductsService {
 
   async getProductBySlug({ slug, userId, trx }: GetProductBySlugInterface) {
     const foundProduct = await this.productRepository.findOne({
-      include: [
-        { model: User, attributes: ['firstName', 'lastName'] },
-        { model: Category, attributes: ['name'] }
-      ],
+      include: [{ model: Category, attributes: ['name'] }],
       where: { slug },
       transaction: trx
     });
 
     if (!foundProduct) throw new ProductNotFoundException();
+
+    const userIdHash = this.cryptographicService.hash({
+      data: foundProduct.userId,
+      algorithm: CryptoHashAlgorithm.MD5
+    });
+
+    let isProfilePicPresent = true;
+
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    try {
+      await s3
+        .headObject({
+          Bucket: bucketName,
+          Key: `users-profile-pictures/${userIdHash}.png`
+        })
+        .promise();
+    } catch (e) {
+      isProfilePicPresent = false;
+    }
 
     const product = {
       id: foundProduct.id,
@@ -93,7 +114,9 @@ export class ProductsService {
       category: foundProduct.category.name,
       contactPerson: foundProduct.contactPerson,
       createdAt: foundProduct.createdAt,
-      productInFavorites: false
+      productInFavorites: false,
+      ownerId: foundProduct.userId,
+      ownerIdHash: isProfilePicPresent ? userIdHash : null
     };
 
     if (userId) {
@@ -158,6 +181,7 @@ export class ProductsService {
     currency,
     categories,
     subcategories,
+    marketplaceUserId,
     userId,
     trx
   }: SearchProductInterface) {
@@ -255,6 +279,10 @@ export class ProductsService {
       where[Op.and].push([{ price: { [Op.gte]: minPrice } }]);
     } else if (maxPrice) {
       where[Op.and].push([{ price: { [Op.lte]: maxPrice } }]);
+    }
+
+    if (marketplaceUserId) {
+      where[Op.and].push([{ userId: marketplaceUserId }]);
     }
 
     if (currency !== 'all') {
@@ -756,6 +784,18 @@ export class ProductsService {
     });
 
     return new GetProductContactPhoneDto(foundProduct.contactPhone);
+  }
+
+  async getMarketplaceUserStatistics({
+    marketplaceUserId,
+    trx
+  }: GetMarketplaceUserStatisticsInterface) {
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where: { userId: marketplaceUserId },
+      transaction: trx
+    });
+    console.log('rows', rows);
+    console.log('count', count);
   }
 
   private generateProductSlug(productName: string) {

@@ -1,0 +1,63 @@
+<ng-container *transloco="let t">
+  <div *ngIf="products && products.length === 0">
+    <h1 class="marketplace-products-not-found">
+      {{ t('marketplace.marketplaceProductsNotFound') }}
+    </h1>
+  </div>
+
+  <div
+    class="marketplace-products-grid"
+    *ngIf="products && products.length > 0 && layoutView === 'grid'"
+  >
+    <page-product-preview
+      *ngFor="let product of products"
+      [layoutView]="'grid'"
+      [productId]="product.id"
+      [slug]="product.slug"
+      [mainPicture]="product.mainPicture"
+      [productTitle]="product.title"
+      [category]="product.category"
+      [subcategory]="product.subcategory"
+      [price]="product.price"
+      [currency]="product.currency"
+      [createdAt]="product.createdAt"
+      [productInFavorites]="product.productInFavorites"
+      [showAdditionalInfo]="false"
+      [showManagementButtons]="false"
+    />
+  </div>
+
+  <div
+    class="marketplace-products-list"
+    *ngIf="products && products.length > 0 && layoutView === 'list'"
+  >
+    <page-product-preview
+      *ngFor="let product of products"
+      [layoutView]="'list'"
+      [productId]="product.id"
+      [slug]="product.slug"
+      [mainPicture]="product.mainPicture"
+      [productTitle]="product.title"
+      [category]="product.category"
+      [subcategory]="product.subcategory"
+      [price]="product.price"
+      [currency]="product.currency"
+      [createdAt]="product.createdAt"
+      [productInFavorites]="product.productInFavorites"
+      [showAdditionalInfo]="false"
+      [showManagementButtons]="false"
+    />
+  </div>
+
+  <div class="marketplace-pagination" *ngIf="products && products.length > 0">
+    <basic-pagination
+      [itemsPerPageLabel]="t('dropdown.productsPerPage')"
+      [currentPage]="page"
+      [itemsPerPage]="pageSize"
+      [totalItems]="totalItems"
+      (setCurrentPage)="setPage.emit($event)"
+      (setItemsPerPage)="setPageSize.emit($event)"
+      (fetchItems)="getProductsEvent.emit()"
+    />
+  </div>
+</ng-container>

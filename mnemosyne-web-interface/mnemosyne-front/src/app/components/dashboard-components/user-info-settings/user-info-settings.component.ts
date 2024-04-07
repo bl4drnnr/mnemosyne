@@ -28,7 +28,7 @@ import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
 })
 export class UserInfoSettingsComponent {
   @Input() userInfo: UserInfoResponse;
-  @Input() userId: string;
+  @Input() userIdHash: string;
 
   @Input() firstName: string;
   @Input() lastName: string;

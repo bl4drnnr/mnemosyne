@@ -94,6 +94,7 @@ export class ProductsController {
     @Query('currency') currency: string,
     @Query('categories') categories: string,
     @Query('subcategories') subcategories: string,
+    @Query('marketplaceUserId') marketplaceUserId: string,
     @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
@@ -108,6 +109,7 @@ export class ProductsController {
       currency,
       categories,
       subcategories,
+      marketplaceUserId,
       userId,
       trx
     });
@@ -348,6 +350,18 @@ export class ProductsController {
   ) {
     return this.productsService.getProductContactPhone({
       productId,
+      trx
+    });
+  }
+
+  @ApiBasicAuth('basicAuth')
+  @Get('marketplace-user-statistics')
+  getMarketplaceUserStatistics(
+    @Query('marketplaceUserId') marketplaceUserId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getMarketplaceUserStatistics({
+      marketplaceUserId,
       trx
     });
   }

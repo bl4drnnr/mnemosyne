@@ -49,6 +49,10 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { CompanyUser } from '@models/company-user.model';
 import { GetUserFavoritesProductsInterface } from '@interfaces/get-user-favorites-products.interface';
 import { UpdateUserFavoritesInterface } from '@interfaces/update-user-favorites.interface';
+import { GetMarketplaceUserByIdInterface } from '@interfaces/get-marketplace-user-by-id.interface';
+import { ProductsService } from '@modules/products.service';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { GetMarketplaceUserByIdDto } from '@dto/get-marketplace-user-by-id.dto';
 
 @Injectable()
 export class UsersService {
@@ -304,7 +308,7 @@ export class UsersService {
     const isCompanyMember = !!company;
 
     return new GetUserInfoResponseDto({
-      userId: userIdHash,
+      userIdHash,
       firstName,
       lastName,
       namePronunciation,
@@ -351,6 +355,56 @@ export class UsersService {
     await this.updateUser({ payload, userId, trx });
 
     return new UserUpdatedDto();
+  }
+
+  async getMarketplaceUserById({
+    loggedUserId,
+    marketplaceUserId,
+    trx
+  }: GetMarketplaceUserByIdInterface) {
+    const user = await this.getUserById({ id: marketplaceUserId, trx });
+
+    if (!user) throw new UserNotFoundException();
+
+    const userIdHash = this.cryptographicService.hash({
+      data: marketplaceUserId,
+      algorithm: CryptoHashAlgorithm.MD5
+    });
+
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    let isProfilePicPresent = true;
+
+    try {
+      await s3
+        .headObject({
+          Bucket: bucketName,
+          Key: `users-profile-pictures/${userIdHash}.png`
+        })
+        .promise();
+    } catch (e) {
+      isProfilePicPresent = false;
+    }
+
+    // @TODO Get company
+    // @TODO Create company page
+    const marketplaceUser = {
+      email: undefined,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      homeAddress: user.homeAddress,
+      homePhone: user.homePhone,
+      namePronunciation: user.namePronunciation,
+      createdAt: user.createdAt,
+      userIdHash: isProfilePicPresent ? userIdHash : null
+    };
+
+    if (loggedUserId) marketplaceUser.email = user.email;
+
+    return new GetMarketplaceUserByIdDto(marketplaceUser);
   }
 
   async getUserByRecoveryKeysFingerprint({

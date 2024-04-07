@@ -17,6 +17,8 @@ import { SearchedProducts } from '@responses/search-products.interface';
 import { TranslationService } from '@services/translation.service';
 import { CategoriesService } from '@services/categories.service';
 import { Router } from '@angular/router';
+import { SubcategoriesListType } from '@interfaces/subcategories-list.type';
+import { UtilsService } from '@services/utils.service';
 
 @Component({
   selector: 'page-products-modal-search',
@@ -39,17 +41,18 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
   maxPrice: string;
   maxPriceError: boolean;
   wrongPriceError: boolean;
+
   orderOptions: Array<DropdownInterface> = [];
   orderOptionsValue: DropdownInterface;
+
   categories: Array<GetAllCategoriesResponse>;
   products: Array<SearchedProducts> = [];
+
   categoriesList: Array<DropdownInterface>;
   selectedCategories: Array<DropdownInterface> = [];
-  subcategoriesList: Array<{
-    categoryKey: string;
-    subcategories: Array<DropdownInterface>;
-  }>;
+  subcategoriesList: SubcategoriesListType;
   selectedSubcategories: Array<DropdownInterface> = [];
+
   productCurrencyDropdown: Array<DropdownInterface>;
   productCurrencyDropdownValue: DropdownInterface;
   totalItems: number;
@@ -58,6 +61,7 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
     private readonly translationService: TranslationService,
     private readonly categoriesService: CategoriesService,
     private readonly productsService: ProductsService,
+    private readonly utilsService: UtilsService,
     private readonly envService: EnvService,
     private readonly router: Router
   ) {}
@@ -71,58 +75,6 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
   closeModalSearchProducts() {
     this.closeModal.emit();
     this.clearFilters(false);
-  }
-
-  getProducts() {
-    if (this.minPriceError || this.maxPriceError || this.wrongPriceError)
-      return;
-
-    const selectedCategories = this.selectedCategories
-      .map(({ key }) => key)
-      .join(',');
-    const selectedSubcategories = this.selectedSubcategories
-      .map(({ key }) => key)
-      .join(',');
-
-    this.productsService
-      .searchProducts({
-        page: this.page,
-        pageSize: this.pageSize,
-        order: this.order,
-        orderBy: this.orderBy,
-        query: this.productSearchQuery,
-        categories: selectedCategories,
-        currency: this.productCurrencyDropdownValue.key,
-        maxPrice: this.maxPrice,
-        minPrice: this.minPrice,
-        subcategories: selectedSubcategories
-      })
-      .subscribe({
-        next: async ({ products, count }) => {
-          this.orderOptions = [];
-          const orderOptions = [
-            'title',
-            'slug',
-            'currency',
-            'price',
-            'subcategory',
-            'created_at'
-          ];
-
-          for (const orderOption of orderOptions) {
-            this.orderOptions.push({
-              key: orderOption,
-              value: await this.translationService.translateText(
-                `productOrderOptions.${orderOption}`,
-                ComponentsTranslation.DROPDOWN
-              )
-            });
-          }
-
-          this.products = products;
-          this.totalItems = count;
-        }
-      });
   }
 
   async initCurrencies() {
@@ -140,39 +92,14 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
   }
 
   async initCategories() {
-    this.categoriesList = await Promise.all(
-      this.categories.map(async ({ name }) => {
-        return {
-          key: name,
-          value: await this.translationService.translateText(
-            name,
-            ComponentsTranslation.DROPDOWN
-          )
-        };
-      })
+    this.categoriesList = await this.utilsService.initCategories(
+      this.categories
     );
   }
 
   async initSubcategories() {
-    this.subcategoriesList = await Promise.all(
-      this.categories.map(async ({ name }) => {
-        const subcategories: { [key: string]: string } =
-          await this.translationService.translateObject(
-            `${name}Subcategory`,
-            ComponentsTranslation.DROPDOWN
-          );
-
-        const subcategoriesList = Object.entries(subcategories).map((key) => {
-          const subcategoryKey = key[0];
-          const subcategoryValue = key[1];
-          return { key: subcategoryKey, value: subcategoryValue };
-        });
-
-        return {
-          categoryKey: name,
-          subcategories: subcategoriesList
-        };
-      })
+    this.subcategoriesList = await this.utilsService.initSubcategories(
+      this.categories
     );
   }
 
@@ -188,70 +115,49 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
   }
 
   addCategory(category: DropdownInterface) {
-    const index = this.selectedCategories.findIndex(
-      (item) => item.key === category.key
-    );
-
-    if (index === -1) {
-      this.selectedCategories.push({
-        key: category.key,
-        value: category.value
-      });
-    } else {
-      this.selectedCategories.splice(index, 1);
-      const categorySubcategories = this.getSubcategories(category.key);
-      this.selectedSubcategories = this.selectedCategories.filter(
-        (sub) => !categorySubcategories.find((sub2) => sub.key === sub2.key)
+    const { selectedSubcategories, selectedCategories } =
+      this.utilsService.addCategory(
+        this.selectedSubcategories,
+        this.subcategoriesList,
+        this.selectedCategories,
+        category
       );
-    }
+    this.selectedSubcategories = selectedSubcategories;
+    this.selectedCategories = selectedCategories;
 
     this.getProducts();
   }
 
   addSubcategory(subcategory: DropdownInterface) {
-    const index = this.selectedSubcategories.findIndex(
-      (item) => item.key === subcategory.key
+    this.selectedSubcategories = this.utilsService.addSubcategory(
+      this.selectedSubcategories,
+      subcategory
     );
-
-    if (index === -1) {
-      this.selectedSubcategories.push({
-        key: subcategory.key,
-        value: subcategory.value
-      });
-    } else {
-      this.selectedSubcategories.splice(index, 1);
-    }
-
     this.getProducts();
   }
 
   checkProductPrice(price: string, priceType: 'min' | 'max') {
-    const priceNumber = Number(price);
+    const {
+      minPrice,
+      maxPrice,
+      minPriceError,
+      maxPriceError,
+      wrongPriceError
+    } = this.utilsService.checkProductPrice(
+      price,
+      priceType,
+      this.minPrice,
+      this.maxPrice,
+      this.minPriceError,
+      this.maxPriceError,
+      this.wrongPriceError
+    );
 
-    if (priceType === 'min' && priceNumber < 0) {
-      this.minPrice = '';
-      this.minPriceError = true;
-      return;
-    } else if (priceType === 'max' && priceNumber < 0) {
-      this.maxPrice = '';
-      this.maxPriceError = true;
-      return;
-    } else if (priceType === 'min' && priceNumber >= 0) {
-      this.minPrice = price;
-      this.minPriceError = false;
-    } else if (priceType === 'max' && priceNumber >= 0) {
-      this.maxPrice = price;
-      this.maxPriceError = false;
-    }
-
-    if (
-      this.minPrice &&
-      this.maxPrice &&
-      Number(this.minPrice) > Number(this.maxPrice)
-    ) {
-      this.wrongPriceError = true;
-      return;
-    }
+    this.minPrice = minPrice;
+    this.maxPrice = maxPrice;
+    this.minPriceError = minPriceError;
+    this.maxPriceError = maxPriceError;
+    this.wrongPriceError = wrongPriceError;
 
     this.getProducts();
   }
@@ -338,6 +244,16 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
     this.getProducts();
   }
 
+  async initOrderOptions(orderOption: string) {
+    this.orderOptions.push({
+      key: orderOption,
+      value: await this.translationService.translateText(
+        `productOrderOptions.${orderOption}`,
+        ComponentsTranslation.DROPDOWN
+      )
+    });
+  }
+
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
   }
@@ -347,6 +263,56 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
       changes['showModal'] && changes['showModal'].currentValue === true
         ? 'hidden'
         : 'auto';
+  }
+
+  getProducts() {
+    if (this.minPriceError || this.maxPriceError || this.wrongPriceError)
+      return;
+
+    const selectedCategories = this.utilsService.joinSelectedCategories(
+      this.selectedCategories
+    );
+    const selectedSubcategories = this.utilsService.joinSelectedSubcategories(
+      this.selectedSubcategories
+    );
+
+    const searchProductsPayload = {
+      page: this.page,
+      pageSize: this.pageSize,
+      order: this.order,
+      orderBy: this.orderBy,
+      query: this.productSearchQuery,
+      categories: selectedCategories,
+      currency: this.productCurrencyDropdownValue.key,
+      maxPrice: this.maxPrice,
+      minPrice: this.minPrice,
+      subcategories: selectedSubcategories
+    };
+
+    this.productsService
+      .searchProducts({
+        ...searchProductsPayload
+      })
+      .subscribe({
+        next: async ({ products, count }) => {
+          this.orderOptions = [];
+          const orderOptions = [
+            'title',
+            'slug',
+            'currency',
+            'price',
+            'subcategory',
+            'created_at'
+          ];
+
+          for (const orderOption of orderOptions) {
+            await this.initOrderOptions(orderOption);
+          }
+
+          this.products = products;
+          this.totalItems = count;
+        }
+      });
   }
 
   ngOnInit() {

@@ -153,6 +153,8 @@ export enum DocsProperty {
   WRONG_PICTURE_FORMAT_EXAMPLE = 'wrong-picture-format',
   USER_ID_DESC = 'User ID',
   USER_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c',
+  USER_HASH_DESC = 'User MD5 hashed ID',
+  USER_HASH_EXAMPLE = '71956c9eea017cb85242a49f416fd859',
   IS_USER_PROFILE_PIC_DESC = 'Is user profile picture present',
   IS_USER_PROFILE_PIC_EXAMPLE = 'true',
   IS_TWO_FA_SET_UP_DESC = 'Is 2FA set up',
@@ -278,7 +280,11 @@ export enum DocsProperty {
   PRODUCT_ALREADY_IN_FAVORITES_EXCEPTION_EXAMPLE = 'product-already-in-favorites',
   PRODUCT_DELETED_FROM_FAVORITES_DESC = 'Product deleted from favorites response message',
   PRODUCT_DELETED_FROM_FAVORITES_EXAMPLE = 'product-deleted-from-favorites',
-  PRODUCT_IN_FAVORITES_DESC = "Is product in user's favorites",
   PRODUCT_IN_FAVORITES_EXAMPLE = 'false',
-  USER_FAVORITE_PRODUCTS_DESC = "List of user's favorite products"
+  USER_FAVORITE_PRODUCTS_DESC = "List of user's favorite products",
+  USER_NOT_FOUND_EXCEPTION_DESC = 'Marketplace user not found error message',
+  USER_NOT_FOUND_EXCEPTION_EXAMPLE = 'user-not-found',
+  USER_CREATED_AT_DESC = 'User creation date',
+  USER_CREATED_AT_EXAMPLE = '2023-11-17T11:42:26.534Z',
+  MARKETPLACE_USER_DESC = 'Public information of the user on the marketplace'
 }

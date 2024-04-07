@@ -14,6 +14,8 @@ export interface GetProductBySlug {
   contactPhone?: string;
   category: ProductCategory;
   createdAt: Date;
+  ownerId?: string;
+  ownerIdHash?: string;
   productInFavorites?: boolean;
 }
 

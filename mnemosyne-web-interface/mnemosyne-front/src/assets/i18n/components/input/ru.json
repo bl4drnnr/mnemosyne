@@ -157,5 +157,6 @@
   "searchForProductsHeader": "Поиск продуктов...",
   "favoriteProductsSearchLabel": "Поиск по избранным продуктам",
   "favoriteProductsSearchPlaceholder": "Поиск по избранным продуктам",
-  "favoriteProductsSearchInputDesc": "Вы можете выполнять поиск своих продуктов на основе названия, описания или ссылки."
+  "favoriteProductsSearchInputDesc": "Вы можете выполнять поиск своих продуктов на основе названия, описания или ссылки.",
+  "clickToCopy": "Нажмите на поле ввода для копирования."
 }

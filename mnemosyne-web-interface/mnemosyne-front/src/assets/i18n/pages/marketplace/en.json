@@ -16,5 +16,8 @@
     "price": "Price",
     "category": "Category",
     "createdAt": "Created at"
-  }
+  },
+  "marketplaceUserRegDate": "Registration date: {{ date }}",
+  "marketplaceUserPronounced": "Pronounced as: {{ namePronunciation }}",
+  "marketplaceUserEmail": "In order to get marketplace user's email address, you need to signed in."
 }

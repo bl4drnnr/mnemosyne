@@ -88,5 +88,6 @@
   "subcategory-not-found": "Подкатегория не найдена",
   "wrong-currency": "Неправильная валюта",
   "user-not-logged-in": "Пользователь не вошел в систему",
-  "product-already-in-favorites": "Товар уже добавлен в избранное"
+  "product-already-in-favorites": "Товар уже добавлен в избранное",
+  "user-not-found": "Пользователь не найден"
 }

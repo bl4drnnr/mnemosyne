@@ -20,7 +20,9 @@ export class ProductBySlugDto {
       category: DocsProperty.CATEGORY_NAME_EXAMPLE,
       contactPerson: DocsProperty.PRODUCT_CONTACT_PERSON_EXAMPLE,
       createdAt: DocsProperty.PRODUCT_CREATED_AT_EXAMPLE,
-      productInFavorites: DocsProperty.PRODUCT_IN_FAVORITES_EXAMPLE
+      productInFavorites: DocsProperty.PRODUCT_IN_FAVORITES_EXAMPLE,
+      ownerId: DocsProperty.USER_ID_EXAMPLE,
+      ownerIdHash: DocsProperty.USER_HASH_EXAMPLE
     }
   })
   readonly product: ProductBySlugInterface;

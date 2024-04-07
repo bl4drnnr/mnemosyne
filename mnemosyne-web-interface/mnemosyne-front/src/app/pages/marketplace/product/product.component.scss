@@ -2,7 +2,6 @@
 
 .product-container {
   width: 100%;
-  margin-top: 50px;
 }
 
 .product-area {
@@ -135,7 +134,7 @@
   width: 100%;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  margin-top: 20px;
+  margin: 20px 0;
 }
 
 .similar-products {
@@ -239,14 +238,22 @@
   }
 }
 
+.user-profile-picture {
+  border-radius: 50%;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+}
+
 .product-contact-info-button {
   margin-right: 10px;
 }
 
 .product-pic {
   border-radius: 8px;
-  width: 726px;
-  height: 500px;
+  height: 100%;
+  object-fit: cover;
 }
 
 .product-item-content {

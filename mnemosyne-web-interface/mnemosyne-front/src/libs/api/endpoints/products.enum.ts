@@ -11,5 +11,6 @@ export enum ProductsEndpoint {
   ADD_TO_FAVORITES = 'favorites',
   GET_FAVORITES = 'favorites',
   PRODUCT_CONTACT_EMAIL = 'product-contact-email',
-  PRODUCT_CONTACT_PHONE = 'product-contact-phone'
+  PRODUCT_CONTACT_PHONE = 'product-contact-phone',
+  MARKETPLACE_USER_STATISTICS = 'marketplace-user-statistics'
 }

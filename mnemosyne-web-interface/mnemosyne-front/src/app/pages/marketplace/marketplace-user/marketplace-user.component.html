@@ -1,0 +1,58 @@
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="marketplace-user-container">
+      <div>
+        <img
+          [src]="userProfilePictureLink"
+          class="marketplace-user-photo"
+          alt="user"
+        />
+        <p class="marketplace-user-registration-date">
+          {{ t('marketplace.marketplaceUserRegDate', { date: transformDate(createdAt) }) }}
+        </p>
+      </div>
+      <div class="marketplace-user-info-container">
+        <h1 class="marketplace-user-name">{{ firstName }} {{ lastName }}</h1>
+        <p class="marketplace-user-pronunciation" *ngIf="namePronunciation">
+          {{ t('marketplace.marketplaceUserPronounced', { namePronunciation }) }}
+        </p>
+        <basic-input
+          *ngIf="homeAddress"
+          [label]="t('input.homeAddress')"
+          [inputDescription]="t('input.clickToCopy')"
+          [value]="homeAddress"
+          [readOnly]="true"
+        />
+        <basic-input
+          *ngIf="homePhone"
+          [label]="t('input.homePhone')"
+          [inputDescription]="t('input.clickToCopy')"
+          [value]="homePhone"
+          [readOnly]="true"
+        />
+        <div class="marketplace-user-email-container" *ngIf="!isUserLoggedIn">
+          <p>{{ t('marketplace.marketplaceUserEmail') }}</p>
+          <basic-button
+            [label]="t('button.logInCreateAcc')"
+            [fillButton]="true"
+            (buttonClick)="handleRedirect('login')"
+          />
+        </div>
+        <div *ngIf="isUserLoggedIn && email">
+          <basic-input
+            [label]="t('input.email')"
+            [inputDescription]="t('input.clickToCopy')"
+            [value]="email"
+            [readOnly]="true"
+          />
+        </div>
+      </div>
+    </div>
+
+<!--    <div class="marketplace-user-container no-margin">-->
+<!--      <h1>User products statistics</h1>-->
+<!--    </div>-->
+  </ng-container>
+</layout-default>

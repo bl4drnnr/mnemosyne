@@ -16,6 +16,7 @@ import { ProductSubcategory } from '@interfaces/product-subcategory.type';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
+import { SubcategoriesListType } from '@interfaces/subcategories-list.type';
 
 @Component({
   selector: 'page-edit-product',
@@ -47,10 +48,7 @@ export class EditProductComponent implements OnInit {
     key: '',
     value: ''
   };
-  subcategoriesDropdowns: Array<{
-    categoryKey: string;
-    subcategories: Array<DropdownInterface>;
-  }>;
+  subcategoriesDropdowns: SubcategoriesListType;
   subcategoriesDropdown: Array<DropdownInterface>;
   selectProductSubcategoryTitle: string;
   productPriceDropdown: Array<DropdownInterface> = [

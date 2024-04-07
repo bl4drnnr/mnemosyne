@@ -16,5 +16,8 @@
     "price": "Cena",
     "category": "Kategoria",
     "createdAt": "Opublikowano o"
-  }
+  },
+  "marketplaceUserRegDate": "Data rejestracji: {{ date }}",
+  "marketplaceUserPronounced": "Wymawiane jako: {{ namePronunciation }}",
+  "marketplaceUserEmail": "Aby uzyskać adres e-mail użytkownika, musisz się zalogować."
 }

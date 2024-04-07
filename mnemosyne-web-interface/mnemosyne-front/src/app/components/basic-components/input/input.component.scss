@@ -80,6 +80,7 @@
 
   &.read-only {
     cursor: pointer;
+    pointer-events: none;
   }
 }
 

@@ -16,5 +16,8 @@
     "price": "Цена",
     "category": "Категория",
     "createdAt": "Дата публикации"
-  }
+  },
+  "marketplaceUserRegDate": "Дата регистрации: {{ date }}",
+  "marketplaceUserPronounced": "Произносится как: {{ namePronunciation }}",
+  "marketplaceUserEmail": "Чтобы получить адрес электронной почты пользователя, вам необходимо войти в систему."
 }

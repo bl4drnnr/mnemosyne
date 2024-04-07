@@ -11,4 +11,5 @@ export interface SearchProductsPayload {
   currency: Currency | string;
   categories: string;
   subcategories: string;
+  marketplaceUserId?: string | undefined;
 }

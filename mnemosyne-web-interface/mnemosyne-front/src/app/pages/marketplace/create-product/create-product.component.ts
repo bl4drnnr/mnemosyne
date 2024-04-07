@@ -15,6 +15,7 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { Router } from '@angular/router';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
+import { SubcategoriesListType } from '@interfaces/subcategories-list.type';
 
 @Component({
   selector: 'page-create-product',
@@ -43,10 +44,7 @@ export class CreateProductComponent implements OnInit {
 
   categories: Array<GetAllCategoriesResponse>;
   categoriesDropdown: Array<DropdownInterface>;
-  subcategoriesDropdowns: Array<{
-    categoryKey: string;
-    subcategories: Array<DropdownInterface>;
-  }>;
+  subcategoriesDropdowns: SubcategoriesListType;
   subcategoriesDropdown: Array<DropdownInterface>;
   categoryDropdownValue: DropdownInterface = {
     key: '',

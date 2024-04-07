@@ -9,6 +9,9 @@
 .user-photo {
   border-radius: 50%;
   position: relative;
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
 }
 
 .select-photo-button {

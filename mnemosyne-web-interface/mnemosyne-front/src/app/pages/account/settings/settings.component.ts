@@ -18,7 +18,7 @@ import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
   styleUrls: ['./settings.component.scss']
 })
 export class SettingsComponent implements OnInit {
-  userId: string;
+  userIdHash: string;
   firstName: string;
   lastName: string;
   namePronunciation: string;
@@ -125,7 +125,7 @@ export class SettingsComponent implements OnInit {
       userInfoRequest.subscribe({
         next: (userInfo) => {
           this.userInfo = userInfo;
-          this.userId = userInfo.userId;
+          this.userIdHash = userInfo.userIdHash;
           this.firstName = userInfo.firstName;
           this.lastName = userInfo.lastName;
           this.namePronunciation = userInfo.namePronunciation;

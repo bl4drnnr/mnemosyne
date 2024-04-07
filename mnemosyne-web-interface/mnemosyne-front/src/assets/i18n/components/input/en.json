@@ -157,5 +157,6 @@
   "searchForProductsHeader": "Search for products...",
   "favoriteProductsSearchLabel": "Favorites products search",
   "favoriteProductsSearchPlaceholder": "Favorites products search",
-  "favoriteProductsSearchInputDesc": "You can perform the search of your products based on title, description or slug."
+  "favoriteProductsSearchInputDesc": "You can perform the search of your products based on title, description or slug.",
+  "clickToCopy": "Click on the input field in order to copy."
 }

@@ -4,10 +4,10 @@ import { DocsProperty } from '@interfaces/docs-property.enum';
 export class GetUserInfoResponseDto {
   @ApiProperty({
     type: String,
-    description: DocsProperty.USER_ID_DESC,
-    example: DocsProperty.USER_ID_EXAMPLE
+    description: DocsProperty.USER_HASH_DESC,
+    example: DocsProperty.USER_HASH_EXAMPLE
   })
-  readonly userId: string;
+  readonly userIdHash: string;
 
   @ApiProperty({
     type: String,
@@ -66,7 +66,7 @@ export class GetUserInfoResponseDto {
   readonly isCompanyMember: boolean;
 
   constructor({
-    userId,
+    userIdHash,
     firstName,
     lastName,
     namePronunciation,
@@ -76,7 +76,7 @@ export class GetUserInfoResponseDto {
     isProfilePicPresent,
     isCompanyMember
   }: {
-    userId: string;
+    userIdHash: string;
     firstName: string;
     lastName: string;
     namePronunciation: string | null;
@@ -86,7 +86,7 @@ export class GetUserInfoResponseDto {
     isProfilePicPresent: boolean;
     isCompanyMember: boolean;
   }) {
-    this.userId = userId;
+    this.userIdHash = userIdHash;
     this.firstName = firstName;
     this.lastName = lastName;
     this.namePronunciation = namePronunciation;

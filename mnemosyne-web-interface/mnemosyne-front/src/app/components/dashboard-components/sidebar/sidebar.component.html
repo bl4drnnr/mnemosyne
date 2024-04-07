@@ -7,16 +7,14 @@
           <div class="sidebar-user-preview">
             <div class="sidebar-user-data">
               <img
-                [ngSrc]="userProfilePictureLink"
+                [src]="staticStorageLink + '/users-profile-pictures/' + userInfo.userIdHash + '.png'"
                 class="user-photo"
                 alt="avatar"
-                [width]="100"
-                [height]="100"
               />
               <div class="sidebar-user-info">
                 <p>{{ t('sidebar.sidebarUserFullName') }}: <b>{{ userInfo.firstName }} {{ userInfo.lastName }}</b></p>
                 <p>{{ t('sidebar.sidebarUserEmail') }}: <b>{{ userInfo.email }}</b></p>
-                <p>{{ t('sidebar.sidebarUserId') }}: <b>{{ userInfo.userId }}</b></p>
+                <p>{{ t('sidebar.sidebarUserId') }}: <b>{{ userInfo.userIdHash }}</b></p>
               </div>
             </div>
           </div>

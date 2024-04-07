@@ -59,6 +59,10 @@
 
 .user-photo {
   border-radius: 50%;
+  position: relative;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
 }
 
 .sidebar-user-info {

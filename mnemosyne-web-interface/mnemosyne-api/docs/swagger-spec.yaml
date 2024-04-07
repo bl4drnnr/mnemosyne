@@ -122,6 +122,21 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/users/marketplace-user:
+    get:
+      operationId: UsersController_getMarketplaceUserById
+      parameters:
+        - name: marketplaceUserId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a1
+      security:
+        - basicAuth: []
   /api/confirmation-hash/account-confirmation:
     get:
       operationId: ConfirmationHashController_confirmAccount
@@ -1965,6 +1980,11 @@ paths:
           description: Products subcategories
           schema:
             type: string
+        - name: marketplaceUserId
+          required: true
+          in: query
+          schema:
+            type: string
       responses:
         "200":
           description: As a response user gets a list of products under certain criteria
@@ -2316,6 +2336,21 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/products/marketplace-user-statistics:
+    get:
+      operationId: ProductsController_getMarketplaceUserStatistics
+      parameters:
+        - name: marketplaceUserId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a9
+      security:
+        - basicAuth: []
   /api/categories/all-categories:
     get:
       operationId: CategoriesController_getAllCategories
@@ -2429,10 +2464,10 @@ components:
     GetUserInfoResponseDto:
       type: object
       properties:
-        userId:
+        userIdHash:
           type: string
-          description: User ID
-          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+          description: User MD5 hashed ID
+          example: 71956c9eea017cb85242a49f416fd859
         firstName:
           type: string
           description: First name
@@ -2467,7 +2502,7 @@ components:
           description: Flag if the user is company member
           example: "false"
       required:
-        - userId
+        - userIdHash
         - firstName
         - lastName
         - email
@@ -3868,6 +3903,8 @@ components:
             contactPerson: John Doe
             createdAt: 2023-11-17T11:42:26.534Z
             productInFavorites: "false"
+            ownerId: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+            ownerIdHash: 71956c9eea017cb85242a49f416fd859
           allOf:
             - $ref: "#/components/schemas/Product"
       required:

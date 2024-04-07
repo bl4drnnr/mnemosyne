@@ -88,5 +88,6 @@
   "subcategory-not-found": "Subcategory not found",
   "wrong-currency": "Wrong currency",
   "user-not-logged-in": "User not logged in",
-  "product-already-in-favorites": "Product has already been added to favorites"
+  "product-already-in-favorites": "Product has already been added to favorites",
+  "user-not-found": "Marketplace user has not been found"
 }

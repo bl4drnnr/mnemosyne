@@ -15,6 +15,8 @@ import { AccountDeletedResponse } from '@responses/account-deleted.enum';
 import { SecurityEndpoint } from '@interfaces/security.enum';
 import { ChangePasswordPayload } from '@payloads/change-password.interface';
 import { PasswordChangedResponse } from '@responses/password-changed.enum';
+import { GetMarketplaceUserByIdPayload } from '@payloads/get-marketplace-user-by-id.interface';
+import { GetMarketplaceUserByIdResponse } from '@responses/get-marketplace-user-by-id.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +81,17 @@ export class UsersService {
       controller: Controller.SECURITY,
       action: SecurityEndpoint.CHANGE_PASSWORD,
       payload
+    });
+  }
+
+  getMarketplaceUserById(
+    params: GetMarketplaceUserByIdPayload
+  ): Observable<GetMarketplaceUserByIdResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.USERS,
+      action: UsersEndpoint.MARKETPLACE_USER,
+      params
     });
   }
 }

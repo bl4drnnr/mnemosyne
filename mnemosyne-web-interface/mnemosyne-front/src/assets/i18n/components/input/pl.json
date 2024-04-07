@@ -157,5 +157,6 @@
   "searchForProductsHeader": "Szukaj produktów...",
   "favoriteProductsSearchLabel": "Wyszukiwanie ulubionych produktów",
   "favoriteProductsSearchPlaceholder": "Wyszukiwanie ulubionych produktów",
-  "favoriteProductsSearchInputDesc": "Możesz wyszukiwać swoje produkty na podstawie tytułu, opisu lub linka."
+  "favoriteProductsSearchInputDesc": "Możesz wyszukiwać swoje produkty na podstawie tytułu, opisu lub linka.",
+  "clickToCopy": "Kliknij pole wprowadzania, aby skopiować."
 }

@@ -12,6 +12,7 @@ import { ProductPreviewComponent } from '@components/product-preview/product-pre
 import { ProductsModalSearchComponent } from '@components/products-modal-search/products-modal-search.component';
 import { ProductsCarouselComponent } from '@components/products-carousel/products-carousel.component';
 import { CarouselModule } from 'primeng/carousel';
+import { MarketplaceProductListComponent } from '@components/marketplace-product-list/marketplace-product-list.component';
 
 const components = [
   AltRegistrationComponent,
@@ -22,7 +23,8 @@ const components = [
   UploadProductPictureComponent,
   ProductPreviewComponent,
   ProductsModalSearchComponent,
-  ProductsCarouselComponent
+  ProductsCarouselComponent,
+  MarketplaceProductListComponent
 ];
 
 @NgModule({

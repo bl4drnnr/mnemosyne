@@ -1,5 +1,5 @@
 export interface UserInfoResponse {
-  userId: string;
+  userIdHash: string;
   firstName: string;
   lastName: string;
   namePronunciation: string;
