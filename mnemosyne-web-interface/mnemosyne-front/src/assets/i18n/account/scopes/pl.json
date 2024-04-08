@@ -4,5 +4,7 @@
   "ROLES_MANAGEMENT": "Zarządzanie rolami",
   "ROLES_MANAGEMENT_DESC": "Pozwala tworzyć, usuwać i modyfikować role wraz z ich zakresami oraz przypisywać je użytkownikom w firmie.",
   "COMPANY_INFORMATION_MANAGEMENT": "Zarządzanie informacjami w firmie",
-  "COMPANY_INFORMATION_MANAGEMENT_DESC": "Pozwala edytować informacje o firmie."
+  "COMPANY_INFORMATION_MANAGEMENT_DESC": "Pozwala edytować informacje o firmie.",
+  "PRODUCT_MANAGEMENT": "Zarządzanie produktem",
+  "PRODUCT_MANAGEMENT_DESC": "Umożliwia zarządzanie produktami należącymi do firmy"
 }

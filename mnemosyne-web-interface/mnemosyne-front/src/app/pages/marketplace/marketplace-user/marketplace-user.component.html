@@ -52,10 +52,13 @@
     </div>
 
     <div
+      *ngIf="userStats"
       class="marketplace-user-container block"
-      *ngIf="products && products.length > 0"
     >
-      <h1>{{ t('marketplace.statsTitle') }}</h1>
+      <h1 class="user-info-title">
+        <span>{{ t('marketplace.statsTitle') }}&nbsp;</span>
+        <basic-emoji emoji="star.png" [width]="48" [height]="48" />
+      </h1>
       <table class="user-stats-table">
         <thead>
         <tr>
@@ -68,27 +71,27 @@
         <tbody>
         <tr>
           <td>{{ t('marketplace.statsAmountOfProducts') }}</td>
-          <td>{{ userStats.plnProductsAmount || '' }}</td>
-          <td>{{ userStats.usdProductsAmount || '' }}</td>
-          <td>{{ userStats.eurProductsAmount || '' }}</td>
+          <td>{{ userStats.plnProductsAmount }}</td>
+          <td>{{ userStats.usdProductsAmount }}</td>
+          <td>{{ userStats.eurProductsAmount }}</td>
         </tr>
         <tr>
           <td>{{ t('marketplace.statsAvgPrice') }}</td>
-          <td>{{ userStats.plnProductsAvgAmount || '' }}</td>
-          <td>{{ userStats.usdProductsAvgAmount || '' }}</td>
-          <td>{{ userStats.eurProductsAvgAmount || '' }}</td>
+          <td>{{ userStats.plnProductsAvgAmount }}</td>
+          <td>{{ userStats.usdProductsAvgAmount }}</td>
+          <td>{{ userStats.eurProductsAvgAmount }}</td>
         </tr>
         <tr>
           <td>{{ t('marketplace.statsMinPrice') }}</td>
-          <td>{{ userStats.plnMinPrice || '' }}</td>
-          <td>{{ userStats.usdMinPrice || '' }}</td>
-          <td>{{ userStats.eurMinPrice || '' }}</td>
+          <td>{{ userStats.plnMinPrice }}</td>
+          <td>{{ userStats.usdMinPrice }}</td>
+          <td>{{ userStats.eurMinPrice }}</td>
         </tr>
         <tr>
           <td>{{ t('marketplace.statsMaxPrice') }}</td>
-          <td>{{ userStats.plnMaxPrice || '' }}</td>
-          <td>{{ userStats.usdMaxPrice || '' }}</td>
-          <td>{{ userStats.eurMaxPrice || '' }}</td>
+          <td>{{ userStats.plnMaxPrice }}</td>
+          <td>{{ userStats.usdMaxPrice }}</td>
+          <td>{{ userStats.eurMaxPrice }}</td>
         </tr>
         </tbody>
       </table>
@@ -101,8 +104,9 @@
       *ngIf="products && products.length > 0"
       class="marketplace-user-products-container"
     >
-      <h1 class="marketplace-user-products-title">
-        {{ t('marketplace.marketplaceUsersProducts') }}
+      <h1 class="marketplace-user-products-title user-info-title">
+        <span>{{ t('marketplace.marketplaceUsersProducts') }}&nbsp;</span>
+        <basic-emoji emoji="eyes.png" [width]="48" [height]="48" />
       </h1>
       <div class="user-products-container user-products-filter-container">
         <p><b>{{ t('marketplace.marketplaceFiltersCategories') }}:</b></p>

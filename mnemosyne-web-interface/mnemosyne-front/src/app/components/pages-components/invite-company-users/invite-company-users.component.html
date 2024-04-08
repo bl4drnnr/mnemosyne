@@ -1,4 +1,4 @@
-<div class="member-container" *ngIf="companyMembers.length > 0">
+<div class="member-container" *ngIf="companyMembers && companyMembers.length > 0">
   <div
     class="member-box"
     [ngClass]="{ 'on-white': onWhite }"
@@ -12,7 +12,6 @@
     </div>
 
     <div class="member-right-side">
-
       <div
         class="role-box"
         [ngClass]="{ 'on-white': onWhite }"
@@ -32,6 +31,59 @@
           (click)="changeUserRole(member.email, role.key, role.value)"
         >
           {{ role.value }}
+        </button>
+      </div>
+
+      <div
+        class="member-remove"
+        [ngClass]="{ 'on-white': onWhite }"
+        (click)="removeMember(member.email)"
+      >
+        <img
+          [ngSrc]="closeButtonUrl"
+          [width]="15"
+          [height]="15"
+          alt="close"
+        >
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="member-container" *ngIf="companyCustomMembers && companyCustomMembers.length > 0">
+  <div
+    class="member-box"
+    [ngClass]="{ 'on-white': onWhite }"
+    *ngFor="let member of companyCustomMembers"
+  >
+    <div class="member-email">
+      <p
+        class="paragraph"
+        [ngClass]="{ 'on-white': onWhite }"
+      >{{ member.email }}</p>
+    </div>
+
+    <div class="member-right-side">
+      <div
+        class="role-box"
+        [ngClass]="{ 'on-white': onWhite }"
+        (click)="toggleCustomMembersDropdown(member.email)"
+      >
+        <basic-arrow [isArrowOpen]="member.isRoleDropDownOpen" />
+        <p
+          class="paragraph role-value"
+          [ngClass]="{ 'on-white': onWhite }"
+        >{{ member.roleName }}</p>
+      </div>
+
+      <div class="dropdown-menu" [ngClass]="{ 'show': member.isRoleDropDownOpen }">
+        <button
+          *ngFor="let role of removePrimaryRole()"
+          class="dropdown-item"
+          (click)="changeUserCustomRole(member.email, role.id, role.name)"
+        >
+          <span>{{ role.name }}</span>
         </button>
       </div>
 

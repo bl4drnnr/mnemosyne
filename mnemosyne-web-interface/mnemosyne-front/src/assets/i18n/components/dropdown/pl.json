@@ -68,5 +68,6 @@
   },
   "selectProductOrder": "Wybierz pole sortowania produktów",
   "productsPerPage": "Produktów na stronie",
-  "allCurrencies": "Wszystkie waluty"
+  "allCurrencies": "Wszystkie waluty",
+  "newRoleForOldOwnerTitle": "Nowa rola dla starego właściciela"
 }

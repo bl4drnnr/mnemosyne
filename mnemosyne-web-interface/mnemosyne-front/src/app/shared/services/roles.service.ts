@@ -10,9 +10,8 @@ import { CompanyRoleUpdatedResponse } from '@responses/company-role-updated.enum
 import { AssignCompanyRolePayload } from '@payloads/assign-company-role.interface';
 import { CompanyRoleAssignedResponse } from '@responses/company-role-assigned.enum';
 import { Injectable } from '@angular/core';
-import { RevokeCompanyRolePayload } from '@payloads/revoke-company-role.interface';
-import { CompanyRoleRevokedResponse } from '@responses/company-role-revoked.enum';
 import { GetCompanyRolesPayload } from '@responses/get-company-roles.interface';
+import { CompanyRoleType } from '@interfaces/company-role.type';
 
 @Injectable({
   providedIn: 'root'
@@ -57,17 +56,6 @@ export class RolesService {
       method: Method.PATCH,
       controller: Controller.ROLES,
       action: RolesEndpoint.ASSIGN_ROLE,
-      payload
-    });
-  }
-
-  revokeCompanyMemberRole(
-    payload: RevokeCompanyRolePayload
-  ): Observable<{ message: CompanyRoleRevokedResponse }> {
-    return this.apiService.apiProxyRequest({
-      method: Method.PATCH,
-      controller: Controller.ROLES,
-      action: RolesEndpoint.REVOKE_ROLE,
       payload
     });
   }

@@ -36,9 +36,7 @@ export class RoleGuard implements CanActivate {
 
     const user = this.jwtService.verify(token);
 
-    const ifUserHasRole = user.roles.some((role) =>
-      requiredRoles.includes(role.name)
-    );
+    const ifUserHasRole = requiredRoles.includes(user.role.name);
 
     if (!ifUserHasRole) throw new ForbiddenResourceException();
     else return true;

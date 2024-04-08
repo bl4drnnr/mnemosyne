@@ -8,6 +8,8 @@ import { ValidationService } from '@services/validation.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { DeleteCompanyPayload } from '@payloads/delete-company.interface';
 import { CompanyDeletedResponse } from '@responses/company-deleted.enum';
+import { CompanyRoleType } from '@interfaces/company-role.type';
+import { DropdownInterface } from '@interfaces/dropdown.interface';
 
 @Component({
   selector: 'dashboard-company-security-settings',
@@ -28,8 +30,12 @@ import { CompanyDeletedResponse } from '@responses/company-deleted.enum';
 })
 export class CompanySecuritySettingsComponent {
   @Input() companyOwnerEmail: string;
+  @Input() companyRoles: CompanyRoleType;
+
   @Output() transferCompanyOwnership = new EventEmitter<string>();
   @Output() deleteCompanyAccount = new EventEmitter<string>();
+
+  defaultCompanyRole: DropdownInterface = { key: '', value: '' };
 
   // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service) -- delete seeder, add companyId to the table with roles, once the company is created, add 3 default roles to the roles table
   // @TODO GENERAL -- Complete all unfinished functions and perform the global test
@@ -87,6 +93,7 @@ export class CompanySecuritySettingsComponent {
     this.transferOwnershipIsMfaRequired = false;
     this.transferOwnershipPhoneCodeSent = false;
     this.showOwnershipTransferModal = false;
+    this.defaultCompanyRole = { key: '', value: '' };
   }
 
   closeDeleteCompanyModal() {
@@ -220,7 +227,8 @@ export class CompanySecuritySettingsComponent {
 
   transferOwnership() {
     const payload: TransferCompanyOwnershipPayload = {
-      newCompanyOwnerEmail: this.newCompanyOwnerEmail
+      newCompanyOwnerEmail: this.newCompanyOwnerEmail,
+      newRoleForOldOwnerId: this.defaultCompanyRole.key
     };
 
     if (this.transferOwnershipPhoneCode?.length === 6)
@@ -277,7 +285,11 @@ export class CompanySecuritySettingsComponent {
   disabledTransferOwnershipButton() {
     switch (this.transferOwnershipStep) {
       case 1:
-        return this.incorrectNewCompanyOwnerEmail || !this.newCompanyOwnerEmail;
+        return (
+          this.incorrectNewCompanyOwnerEmail ||
+          !this.newCompanyOwnerEmail ||
+          !this.defaultCompanyRole.key
+        );
       case 2:
         if (this.transferOwnershipIsPhoneRequired) {
           return this.transferOwnershipVerifyPhoneDisable();
@@ -304,6 +316,18 @@ export class CompanySecuritySettingsComponent {
       min: 8,
       max: 128
     });
+  }
+
+  transformCompanyRoles() {
+    return this.companyRoles
+      .map(({ id, name }) => {
+        return { key: id, value: name };
+      })
+      .filter(({ value }) => value !== 'PRIMARY_ADMIN');
+  }
+
+  selectCompanyRole({ key, value }: DropdownInterface) {
+    this.defaultCompanyRole = { key, value };
   }
 
   selectFile(event: any) {

@@ -29,8 +29,14 @@
 
     <div class="company-role" *ngFor="let role of companyRoles; let idx = index">
       <p class="company-roles-id">{{ idx + 1 }}</p>
-      <p class="company-roles-name">{{ role.name }}</p>
-      <p class="company-roles-desc">{{ role.description }}</p>
+      <p
+        *ngIf="defaultRolesTranslations"
+        class="company-roles-name"
+      >{{ translateRole(role.name) }}</p>
+      <p
+        *ngIf="defaultRolesDescTranslations"
+        class="company-roles-desc"
+      >{{ translateRoleDesc(role.description) }}</p>
       <p
         (click)="showRoleMoreInfo(role)"
         class="company-roles-more-icon"
@@ -184,7 +190,7 @@
     </div>
 
     <basic-checkbox
-      [checked]="false"
+      [checked]="newRoleScopes.includes(Scopes.USER_MANAGEMENT)"
       [isWithDescription]="true"
       (checkedChange)="pushNewRoleScope(Scopes.USER_MANAGEMENT)"
     >
@@ -193,22 +199,30 @@
     </basic-checkbox>
 
     <basic-checkbox
-      [checked]="false"
+      [checked]="newRoleScopes.includes(Scopes.ROLES_MANAGEMENT)"
       [isWithDescription]="true"
       (checkedChange)="pushNewRoleScope(Scopes.ROLES_MANAGEMENT)"
     >
       <span class="on-white-checkbox" content>{{ t('scopes.ROLES_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.ROLES_MANAGEMENT_DESC') }}</span>
-
     </basic-checkbox>
 
     <basic-checkbox
-      [checked]="false"
+      [checked]="newRoleScopes.includes(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
       [isWithDescription]="true"
       (checkedChange)="pushNewRoleScope(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
     >
       <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
+    </basic-checkbox>
+
+    <basic-checkbox
+      [checked]="newRoleScopes.includes(Scopes.PRODUCT_MANAGEMENT)"
+      [isWithDescription]="true"
+      (checkedChange)="pushNewRoleScope(Scopes.PRODUCT_MANAGEMENT)"
+    >
+      <span class="on-white-checkbox" content>{{ t('scopes.PRODUCT_MANAGEMENT') }}</span>
+      <span class="on-white-checkbox-desc" desc>{{ t('scopes.PRODUCT_MANAGEMENT_DESC') }}</span>
     </basic-checkbox>
 
     <div class="last-button">

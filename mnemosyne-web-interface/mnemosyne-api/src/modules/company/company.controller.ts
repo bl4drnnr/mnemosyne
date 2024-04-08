@@ -5,6 +5,7 @@ import {
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -121,11 +122,18 @@ export class CompanyController {
     });
   }
 
-  // @TODO Write docs here, but it is going to depend on the fact of what we are going to do with roles part of the whole project
+  @ApiOperation(CompanyDocs.TransferCompanyOwnership.ApiOperation)
+  @ApiExtraModels(...CompanyDocs.TransferCompanyOwnership.ApiExtraModels)
+  @ApiResponse(CompanyDocs.TransferCompanyOwnership.ApiResponse)
+  @ApiBadRequestResponse(
+    CompanyDocs.TransferCompanyOwnership.ApiBadRequestResponse
+  )
+  @ApiNotFoundResponse(CompanyDocs.TransferCompanyOwnership.ApiNotFoundResponse)
+  @ApiBody(CompanyDocs.TransferCompanyOwnership.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('PRIMARY_ADMIN')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Post('transfer-ownership')

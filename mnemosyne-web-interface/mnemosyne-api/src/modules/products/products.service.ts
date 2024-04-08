@@ -805,22 +805,39 @@ export class ProductsService {
     const usdProductsAmount = usdProducts.length;
     const eurProductsAmount = eurProducts.length;
 
-    const plnProductsAvgAmount =
-      plnProducts.map((p) => p.price).reduce((a, b) => a + b) /
-      plnProductsAmount;
-    const usdProductsAvgAmount =
-      usdProducts.map((p) => p.price).reduce((a, b) => a + b) /
-      usdProductsAmount;
-    const eurProductsAvgAmount =
-      eurProducts.map((p) => p.price).reduce((a, b) => a + b) /
-      eurProductsAmount;
+    let plnProductsAvgAmount = 0;
+    let usdProductsAvgAmount = 0;
+    let eurProductsAvgAmount = 0;
+    let plnMinPrice = 0;
+    let plnMaxPrice = 0;
+    let usdMinPrice = 0;
+    let usdMaxPrice = 0;
+    let eurMinPrice = 0;
+    let eurMaxPrice = 0;
 
-    const plnMinPrice = Math.min(...plnProducts.map((p) => p.price));
-    const plnMaxPrice = Math.max(...plnProducts.map((p) => p.price));
-    const usdMinPrice = Math.min(...usdProducts.map((p) => p.price));
-    const usdMaxPrice = Math.max(...usdProducts.map((p) => p.price));
-    const eurMinPrice = Math.min(...eurProducts.map((p) => p.price));
-    const eurMaxPrice = Math.max(...eurProducts.map((p) => p.price));
+    if (plnProductsAmount > 0) {
+      plnProductsAvgAmount =
+        plnProducts.map((p) => p.price).reduce((a, b) => a + b) /
+        plnProductsAmount;
+      plnMinPrice = Math.min(...plnProducts.map((p) => p.price));
+      plnMaxPrice = Math.max(...plnProducts.map((p) => p.price));
+    }
+
+    if (usdProductsAmount > 0) {
+      usdProductsAvgAmount =
+        usdProducts.map((p) => p.price).reduce((a, b) => a + b) /
+        usdProductsAmount;
+      usdMinPrice = Math.min(...usdProducts.map((p) => p.price));
+      usdMaxPrice = Math.max(...usdProducts.map((p) => p.price));
+    }
+
+    if (eurProductsAmount > 0) {
+      eurProductsAvgAmount =
+        eurProducts.map((p) => p.price).reduce((a, b) => a + b) /
+        eurProductsAmount;
+      eurMinPrice = Math.min(...eurProducts.map((p) => p.price));
+      eurMaxPrice = Math.max(...eurProducts.map((p) => p.price));
+    }
 
     return new GetMarketplaceUserStatsDto({
       amountOfProducts,

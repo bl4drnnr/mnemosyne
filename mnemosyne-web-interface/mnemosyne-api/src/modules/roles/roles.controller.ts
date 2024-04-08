@@ -123,23 +123,4 @@ export class RolesController {
       trx
     });
   }
-
-  @ApiBasicAuth('basicAuth')
-  @ApiBearerAuth('x-access-token')
-  @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
-  @Patch('revoke-role')
-  revokeUserRole(
-    @CompanyId() companyId: string,
-    @Body() payload: RevokeRoleDto,
-    @TrxDecorator() trx: Transaction
-  ) {
-    return this.rolesService.revokeUserRole({
-      companyId,
-      payload,
-      trx
-    });
-  }
 }

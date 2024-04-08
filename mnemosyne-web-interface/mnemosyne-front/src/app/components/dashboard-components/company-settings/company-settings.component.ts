@@ -130,5 +130,6 @@ export class CompanySettingsComponent implements OnInit {
 
   ngOnInit() {
     this.fetchCompanyInformation();
+    this.fetchCompanyRoles();
   }
 }

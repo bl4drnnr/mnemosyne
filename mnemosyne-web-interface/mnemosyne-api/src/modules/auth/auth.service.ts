@@ -115,7 +115,7 @@ export class AuthService {
     };
 
     if (companyUser) {
-      generateTokensPayload.roles =
+      generateTokensPayload.role =
         await this.rolesService.getUserRolesByCompanyUserId({
           companyUserId: companyUser.id,
           trx
@@ -201,7 +201,7 @@ export class AuthService {
     };
 
     if (companyUser) {
-      generateTokensPayload.roles =
+      generateTokensPayload.role =
         await this.rolesService.getUserRolesByCompanyUserId({
           companyUserId: companyUser.id,
           trx
@@ -293,9 +293,9 @@ export class AuthService {
   private generateAccessToken({
     userId,
     companyId,
-    roles
+    role
   }: GenerateAccessTokenInterface) {
-    const payload = { roles, userId, companyId, type: 'access' };
+    const payload = { role, userId, companyId, type: 'access' };
 
     const options = {
       expiresIn: this.configService.jwtAuthConfig.accessExpiresIn,
@@ -356,13 +356,13 @@ export class AuthService {
   }
 
   async generateTokens({
-    roles,
+    role,
     userId,
     companyId,
     trx
   }: GenerateTokensInterface) {
     const _at = this.generateAccessToken({
-      roles,
+      role,
       companyId,
       userId
     });

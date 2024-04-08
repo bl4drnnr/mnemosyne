@@ -51,7 +51,7 @@ export class SidebarComponent {
     await this.handleRedirect('');
   }
 
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
+  async handleRedirect(path: string, queryParams: any = {}) {
+    await this.router.navigate([path], { queryParams });
   }
 }

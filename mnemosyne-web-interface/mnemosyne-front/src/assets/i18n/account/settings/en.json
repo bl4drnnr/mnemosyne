@@ -100,5 +100,15 @@
     "roleDeletionRule": "If you want to delete the role, you will have to revoke this role from each user in the company. Once it is done, the role will be deleted automatically.",
     "foundCompanyMembers": "Found company members",
     "roleWillBeAssigned": "Role will be assigned to the following"
+  },
+  "defaultRoles": {
+    "DEFAULT": "Default",
+    "ADMIN": "Administrator",
+    "PRIMARY_ADMIN": "Primary admin"
+  },
+  "defaultRolesDesc": {
+    "primary_admin_desc": "The owner of the company account.",
+    "admin_desc": "The default administrator of the company account.",
+    "default_desc": "The role of the default user."
   }
 }

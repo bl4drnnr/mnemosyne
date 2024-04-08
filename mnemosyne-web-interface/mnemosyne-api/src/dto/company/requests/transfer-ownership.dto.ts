@@ -17,6 +17,13 @@ export class TransferOwnershipDto {
 
   @ApiProperty({
     type: String,
+    description: DocsProperty.COMPANY_ROLE_ID_DESC,
+    example: DocsProperty.COMPANY_ROLE_ID_EXAMPLE
+  })
+  readonly newRoleForOldOwnerId: string;
+
+  @ApiProperty({
+    type: String,
     description: DocsProperty.AUTH_MFA_CODE_DESC,
     example: DocsProperty.MFA_CODE_EXAMPLE
   })

@@ -2,11 +2,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UsersList } from '@interfaces/users-list.type';
 import { CompanyMembersType } from '@interfaces/company-members.type';
 import { GlobalMessageService } from '@shared/global-message.service';
-import { Role } from '@interfaces/role.type';
-import { CredentialsTranslation } from '@translations/credentials.enum';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { TranslationService } from '@services/translation.service';
-import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
 import { CompanyUsersService } from '@services/company-users.service';
 import { CompanyMemberInfoResponse } from '@responses/company-member-info.interface';
 import {
@@ -21,7 +18,9 @@ import { DeleteCompanyMemberPayload } from '@payloads/delete-company-member.inte
 import { CompanyMemberDeletedResponse } from '@responses/company-member-deleted.enum';
 import { PhoneService } from '@services/phone.service';
 import { ValidationService } from '@services/validation.service';
-import { DefaultRoles } from '@interfaces/default-roles.enum';
+import { AccountTranslation } from '@translations/account.enum';
+import { CompanyRoleType } from '@interfaces/company-role.type';
+import { CustomCompanyMemberInterface } from '@interfaces/custom-company-member.interface';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -44,6 +43,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   @Input() pageSize: string;
   @Input() totalItems: number;
   @Input() companyUsers: UsersList;
+  @Input() companyCustomRoles: CompanyRoleType;
 
   @Output() fetchCompanyUsers = new EventEmitter<void>();
   @Output() setNewCurrentPage = new EventEmitter<string>();
@@ -57,10 +57,9 @@ export class CompanyUsersSettingsComponent implements OnInit {
 
   companyMember: string;
   companyMembers: CompanyMembersType = [];
+  companyCustomMembers: Array<CustomCompanyMemberInterface> = [];
   companyRoles: CompanyRolesType;
   incorrectMemberEmail: boolean;
-  companyMemberDefaultRoleValue: string;
-  companyMemberDefaultRoleKey: Role;
 
   currentCompanyMember: CompanyMemberInfoResponse;
   currentCompanyMemberEmail: string;
@@ -80,6 +79,12 @@ export class CompanyUsersSettingsComponent implements OnInit {
   deleteCompanyMemberPhoneRequired: boolean;
   deleteCompanyMemberPhoneCodeSent: boolean;
 
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
+
   constructor(
     private readonly validationService: ValidationService,
     private readonly companyUsersService: CompanyUsersService,
@@ -90,16 +95,15 @@ export class CompanyUsersSettingsComponent implements OnInit {
 
   async openInviteUserModal() {
     this.showInviteUserModal = true;
-    await this.initDefaultRoles();
   }
 
   closeInviteUserModal() {
-    this.companyMembers = [];
+    this.companyCustomMembers = [];
     this.showInviteUserModal = false;
   }
 
   async addCompanyMember() {
-    const isEmailPresent = this.companyMembers.find(
+    const isEmailPresent = this.companyCustomMembers.find(
       ({ email }) => email === this.companyMember
     );
 
@@ -109,62 +113,40 @@ export class CompanyUsersSettingsComponent implements OnInit {
       });
     }
 
+    const noPrimaryRole = this.companyCustomRoles.filter(
+      (role) => role.name !== 'PRIMARY_ADMIN'
+    );
+
     if (!this.incorrectMemberEmail) {
-      this.companyMembers.push({
+      this.companyCustomMembers.push({
         email: this.companyMember,
-        roleKey: this.companyMemberDefaultRoleKey,
-        roleValue: this.companyMemberDefaultRoleValue
+        roleId: noPrimaryRole[0].id,
+        roleName: noPrimaryRole[0].name
       });
     }
 
     this.companyMember = '';
   }
 
-  async initDefaultRoles() {
-    const roles: {
-      primaryAdmin: string;
-      admin: string;
-      default: string;
-    } = await this.translationService.translateObject(
-      'roles',
-      CredentialsTranslation.REGISTRATION
-    );
-
-    this.companyRoles = [
-      {
-        key: DefaultRoles.ADMIN,
-        value: roles.admin
-      },
-      {
-        key: DefaultRoles.DEFAULT,
-        value: roles.default
-      }
-    ];
-
-    this.companyMemberDefaultRoleValue = roles.default;
-    this.companyMemberDefaultRoleKey = DefaultRoles.DEFAULT;
-  }
-
   removeMember(memberEmail: string) {
-    this.companyMembers = this.companyMembers.filter(
+    this.companyCustomMembers = this.companyCustomMembers.filter(
       ({ email }) => email !== memberEmail
     );
   }
 
-  async changeUserRole({
+  async changeUserCustomRole({
     email,
-    roleKey,
-    roleValue
-  }: RegistrationCompanyMemberInterface) {
-    const companyMemberIdx = this.companyMembers.findIndex(
+    roleId,
+    roleName
+  }: CustomCompanyMemberInterface) {
+    const companyMemberIdx = this.companyCustomMembers.findIndex(
       (m) => m.email === email
     );
-    this.companyMembers[companyMemberIdx] = { email, roleKey, roleValue };
-    await this.initDefaultRoles();
+    this.companyCustomMembers[companyMemberIdx] = { email, roleId, roleName };
   }
 
   inviteUsers() {
-    // @TODO Implement this function
+    console.log('this.companyCustomMembers', this.companyCustomMembers);
   }
 
   fetchCompanyMemberInformation(memberId: string) {
@@ -340,15 +322,28 @@ export class CompanyUsersSettingsComponent implements OnInit {
     this.fetchCompanyUsers.emit();
   }
 
-  printUsersRoles(roles: Array<{ id: string; name: string }>) {
-    return roles.map(({ name }) => name).join(', ');
+  translateRole(role: string) {
+    if (role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
   }
 
   clearSmsCode() {
     this.phoneService.clearSmsCode().subscribe();
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     this.fetchUsers();
+    await this.translateRoles();
   }
 }

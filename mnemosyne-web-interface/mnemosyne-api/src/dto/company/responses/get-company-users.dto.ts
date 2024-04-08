@@ -12,12 +12,10 @@ export class GetCompanyUsersDto {
       {
         id: DocsProperty.USER_ID_EXAMPLE,
         email: DocsProperty.EMAIL_EXAMPLE,
-        roles: [
-          {
-            id: DocsProperty.ROLE_ID_EXAMPLE,
-            name: DocsProperty.ROLE_ID_NAME
-          }
-        ],
+        role: {
+          id: DocsProperty.ROLE_ID_EXAMPLE,
+          name: DocsProperty.ROLE_ID_NAME
+        },
         registrationHash: {
           confirmed: DocsProperty.CONFIRMED_HASH_EXAMPLE,
           createdAt: DocsProperty.CONFIRMATION_HASH_CREATED_AT_EXAMPLE

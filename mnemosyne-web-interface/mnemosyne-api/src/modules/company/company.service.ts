@@ -40,6 +40,9 @@ import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exce
 import { CompanyDeletedDto } from '@dto/company-deleted.dto';
 import { CompanyUser } from '@models/company-user.model';
 import { CompanyUserType } from '@custom-types/company-user.type';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { UserRole } from '@models/user-role.model';
+import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
 
 @Injectable()
 export class CompanyService {
@@ -282,7 +285,7 @@ export class CompanyService {
       };
 
       if (companyUser) {
-        payload.roles = await this.rolesService.getUserRolesByCompanyUserId({
+        payload.role = await this.rolesService.getUserRolesByCompanyUserId({
           companyUserId: companyUser.id,
           trx: transaction
         });
@@ -435,12 +438,36 @@ export class CompanyService {
     payload,
     trx
   }: TransferOwnershipInterface) {
-    const { mfaCode, phoneCode, language, newCompanyOwnerEmail } = payload;
+    const {
+      mfaCode,
+      phoneCode,
+      language,
+      newCompanyOwnerEmail,
+      newRoleForOldOwnerId
+    } = payload;
 
     const { userSettings } = await this.usersService.getUserById({
       id: userId,
       trx
     });
+
+    const newCompanyOwner = await this.usersService.getUserByEmail({
+      email: newCompanyOwnerEmail,
+      trx
+    });
+
+    if (!newCompanyOwner) throw new UserNotFoundException();
+
+    const newCompanyOwnerCompanyUser =
+      await this.companyUsersService.getCompanyUserByUserId({
+        userId: newCompanyOwner.id
+      });
+
+    if (
+      !newCompanyOwnerCompanyUser ||
+      newCompanyOwnerCompanyUser.companyId !== companyId
+    )
+      throw new UserNotFoundException();
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
@@ -457,6 +484,43 @@ export class CompanyService {
       throw new HttpException(e.response.message, e.status);
     }
 
+    const { companyRoles } = await this.rolesService.getCompanyRoles({
+      companyId,
+      trx
+    });
+
+    const primaryRole = companyRoles.find(
+      ({ name }) => name === Roles.PRIMARY_ADMIN
+    );
+
+    const newRoleForOldOwner = await this.rolesService.getRoleById({
+      id: newRoleForOldOwnerId,
+      trx
+    });
+
+    if (!newRoleForOldOwner) throw new RoleDoesntExistException();
+
+    const oldCompanyOwnerCompanyUser =
+      await this.companyUsersService.getCompanyUserByUserId({
+        userId,
+        trx
+      });
+
+    await this.rolesService.updateUserRole({
+      companyUserId: newCompanyOwnerCompanyUser.id,
+      companyId,
+      newRoleId: primaryRole.id,
+      trx
+    });
+
+    await this.rolesService.updateUserRole({
+      companyUserId: oldCompanyOwnerCompanyUser.id,
+      companyId,
+      newRoleId: newRoleForOldOwner.id,
+      trx
+    });
+
+    // @TODO continue here, handle message on the FE + check for the role on FE
     return new CompanyOwnershipTransferredDto();
   }
 

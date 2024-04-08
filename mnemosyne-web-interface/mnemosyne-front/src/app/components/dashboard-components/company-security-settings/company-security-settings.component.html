@@ -43,6 +43,15 @@
         (valueChange)="newCompanyOwnerEmail = $event"
         (incorrectInput)="incorrectNewCompanyOwnerEmail = $event"
       />
+      <div class="new-role-dropdown-wrapper">
+        <basic-dropdown
+          [defaultLabel]="t('dropdown.newRoleForOldOwnerTitle')"
+          [options]="transformCompanyRoles()"
+          [defaultValue]="defaultCompanyRole"
+          [onWhite]="true"
+          (selectedOption)="selectCompanyRole($event)"
+        />
+      </div>
       <basic-button
         [label]="t('button.transferOwnershipButton')"
         [onWhite]="true"
@@ -72,6 +81,17 @@
         (incorrectInput)="incorrectNewCompanyOwnerEmail = $event"
         [disabled]="true"
       />
+
+      <div class="new-role-dropdown-wrapper">
+        <basic-dropdown
+          [defaultLabel]="t('dropdown.newRoleForOldOwnerTitle')"
+          [options]="transformCompanyRoles()"
+          [defaultValue]="defaultCompanyRole"
+          [onWhite]="true"
+          [disabled]="true"
+          (selectedOption)="selectCompanyRole($event)"
+        />
+      </div>
 
       <div *ngIf="transferOwnershipIsPhoneRequired">
         <p class="paragraph on-white">

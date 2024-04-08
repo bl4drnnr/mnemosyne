@@ -4,5 +4,7 @@
   "ROLES_MANAGEMENT": "Управление ролями",
   "ROLES_MANAGEMENT_DESC": "Позволяет создавать, удалять и изменять роли вместе с их областями и назначать их пользователям в компании.",
   "COMPANY_INFORMATION_MANAGEMENT": "Управление информацией компании",
-  "COMPANY_INFORMATION_MANAGEMENT_DESC": "Позволяет редактировать информацию о компании."
+  "COMPANY_INFORMATION_MANAGEMENT_DESC": "Позволяет редактировать информацию о компании.",
+  "PRODUCT_MANAGEMENT": "Управление продуктом",
+  "PRODUCT_MANAGEMENT_DESC": "Позволяет управлять продуктами, принадлежащими компании."
 }

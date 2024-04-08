@@ -4,7 +4,7 @@
   <ng-container *transloco="let t">
     <div class="dashboard-container">
       <div class="dashboard-block">
-        <h1 class="welcome-dashboard-title">
+        <h1 *ngIf="userInfo" class="welcome-dashboard-title">
           <span>{{ t('dashboard.welcomeTitle', { firstName: userInfo.firstName, lastName: userInfo.lastName }) }}&nbsp;</span>
           <basic-emoji emoji="dizzy.png" [width]="48" [height]="48"/>
         </h1>

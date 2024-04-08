@@ -27,9 +27,6 @@ describe('RolesController', () => {
     }),
     assignRoleToUser: jest.fn().mockImplementation(() => {
       return;
-    }),
-    revokeUserRole: jest.fn().mockImplementation(() => {
-      return;
     })
   };
 
@@ -118,22 +115,6 @@ describe('RolesController', () => {
       await controller.assignRoleToUser(companyId, payload, trx);
 
       expect(rolesService.assignRoleToUser).toHaveBeenCalledWith({
-        companyId,
-        payload,
-        trx
-      });
-    }, 20000);
-  });
-
-  describe('revokeUserRole', () => {
-    it('Should call revokeUserRole method with correct parameters', async () => {
-      const companyId = 'test-company-id';
-      const payload: RevokeRoleDto = {};
-      const trx: any = {};
-
-      await controller.revokeUserRole(companyId, payload, trx);
-
-      expect(rolesService.revokeUserRole).toHaveBeenCalledWith({
         companyId,
         payload,
         trx

@@ -34,16 +34,16 @@
 
     <page-component-invite-company-users
       [onWhite]="true"
-      [companyRoles]="companyRoles"
-      [companyMembers]="companyMembers"
+      [companyCustomMembers]="companyCustomMembers"
+      [companyCustomRoles]="companyCustomRoles"
       (removeCompanyMember)="removeMember($event)"
-      (changeCompanyMemberRole)="changeUserRole($event)"
+      (changeCompanyMemberCustomRole)="changeUserCustomRole($event)"
     />
 
     <basic-button
       [onWhite]="true"
       [label]="t('settings.companySettingsSection.inviteUser')"
-      [disabled]="companyMembers.length === 0"
+      [disabled]="companyCustomMembers.length === 0"
       (buttonClick)="inviteUsers()"
     />
   </basic-modal>
@@ -68,7 +68,7 @@
     <div class="company-user" *ngFor="let user of companyUsers; let idx = index">
       <p class="company-users-header-id">{{ idx + 1 }}</p>
       <p class="company-users-header-email">{{ user.email }}</p>
-      <p class="company-users-header-role">{{ printUsersRoles(user.roles) }}</p>
+      <p class="company-users-header-role">{{ translateRole(user.role.name) }}</p>
       <p class="company-users-header-confirmation">
         <span *ngIf="user.registrationHash.confirmed">
           <basic-emoji emoji="large-green-circle.png" [width]="24" [height]="24" />

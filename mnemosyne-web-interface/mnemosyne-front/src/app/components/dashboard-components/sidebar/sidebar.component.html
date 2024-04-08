@@ -7,7 +7,7 @@
           <div class="sidebar-user-preview">
             <div class="sidebar-user-data">
               <img
-                [src]="staticStorageLink + '/users-profile-pictures/' + userInfo.userIdHash + '.png'"
+                [src]="userInfo.isProfilePicPresent ? staticStorageLink + '/users-profile-pictures/' + userInfo.userIdHash + '.png' : staticStorageLink + '/users-profile-pictures/default.png'"
                 class="user-photo"
                 alt="avatar"
               />
@@ -49,6 +49,13 @@
             <basic-button
               [label]="t('button.postProductRedirect')"
               (buttonClick)="handleRedirect('marketplace/create-product')"
+            />
+          </div>
+          <div *ngIf="!userInfo.isCompanyMember" class="sidebar-button-wrapper">
+            <basic-button
+              [label]="t('button.createCompanyAcc')"
+              [fillButton]="true"
+              (buttonClick)="handleRedirect('registration', { accType: 'company' })"
             />
           </div>
         </div>

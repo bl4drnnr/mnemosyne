@@ -825,23 +825,6 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
-  /api/roles/revoke-role:
-    patch:
-      operationId: RolesController_revokeUserRole
-      parameters: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/RevokeRoleDto"
-      responses:
-        "200":
-          description: ""
-      tags: *a5
-      security:
-        - x-access-token: []
-        - basicAuth: []
   /api/company-users/invite-user:
     post:
       operationId: CompanyUsersController_inviteUser
@@ -3120,9 +3103,9 @@ components:
           example:
             - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
               email: joe@doe.com
-              roles:
-                - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
-                  name: PRIMARY_ADMIN
+              role:
+                id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
+                name: PRIMARY_ADMIN
               registrationHash:
                 confirmed: "false"
                 createdAt: 2023-11-17T11:42:26.534Z
@@ -3180,6 +3163,10 @@ components:
           type: string
           description: Email address
           example: joe@doe.com
+        newRoleForOldOwnerId:
+          type: string
+          description: Company role ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         mfaCode:
           type: string
           description: User authentication application code - MFA
@@ -3198,6 +3185,7 @@ components:
           example: pl
       required:
         - newCompanyOwnerEmail
+        - newRoleForOldOwnerId
     DeleteCompanyDto:
       type: object
       properties:
@@ -3266,7 +3254,8 @@ components:
         companyRoles:
           description: Getting company roles response
           example:
-            - name: My Test Role
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              name: My Test Role
               description: My Test Role Description
               roleScope:
                 - USER_MANAGEMENT
@@ -3366,9 +3355,6 @@ components:
     AssignRoleDto:
       type: object
       properties: {}
-    RevokeRoleDto:
-      type: object
-      properties: {}
     InviteUserToCompanyDto:
       type: object
       properties:
@@ -3382,6 +3368,7 @@ components:
             - PRIMARY_ADMIN
             - ADMIN
             - DEFAULT
+            - PRODUCT_MANAGEMENT
           description: Available user members
         language:
           type: string

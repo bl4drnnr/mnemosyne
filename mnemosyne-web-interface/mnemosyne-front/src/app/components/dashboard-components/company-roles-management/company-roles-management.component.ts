@@ -16,6 +16,8 @@ import {
 import { CompanyUsersService } from '@services/company-users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { RoleAssigneeInterface } from '@interfaces/role-assignee.interface';
+import { TranslationService } from '@services/translation.service';
+import { AccountTranslation } from '@translations/account.enum';
 
 @Component({
   selector: 'dashboard-company-roles-management',
@@ -54,6 +56,17 @@ export class CompanyRolesManagementComponent implements OnInit {
   currentRoleRolesManagementScope: boolean;
   currentRoleCompanyInfoManagementScope: boolean;
 
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
+  defaultRolesDescTranslations: {
+    primary_admin_desc: string;
+    admin_desc: string;
+    default_desc: string;
+  };
+
   @Input() companyRoles: CompanyRoleType;
   @Output() createNewRoleEvent = new EventEmitter<CreateCompanyRolePayload>();
   @Output() getCompanyRoles = new EventEmitter<void>();
@@ -63,7 +76,8 @@ export class CompanyRolesManagementComponent implements OnInit {
   constructor(
     private readonly utilsService: UtilsService,
     private readonly companyUsersService: CompanyUsersService,
-    private readonly globalMessageService: GlobalMessageService
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly translationService: TranslationService
   ) {}
 
   createNewRole() {
@@ -244,8 +258,42 @@ export class CompanyRolesManagementComponent implements OnInit {
     return roleScopes;
   }
 
-  ngOnInit() {
+  translateRole(role: string) {
+    if (role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  translateRoleDesc(roleDesc: string) {
+    if (roleDesc in this.defaultRolesDescTranslations)
+      return this.defaultRolesDescTranslations[
+        roleDesc as 'primary_admin_desc' | 'admin_desc' | 'default_desc'
+      ];
+    else return roleDesc;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
+  }
+
+  async translateRolesDesc() {
+    this.defaultRolesDescTranslations =
+      await this.translationService.translateObject(
+        'defaultRolesDesc',
+        AccountTranslation.SETTINGS
+      );
+  }
+
+  async ngOnInit() {
     this.fetchCompanyRoles();
+    await this.translateRoles();
+    await this.translateRolesDesc();
   }
 
   protected readonly Scopes = Scopes;
