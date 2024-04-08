@@ -12,5 +12,6 @@
   "product-updated": "Produkt został pomyślnie zaktualizowany",
   "product-deleted": "Produkt został pomyślnie usunięty",
   "product-deleted-from-favorites": "Produkt został usunięty z ulubionych",
-  "product-added-to-favorites": "Produkt został dodany do ulubionych"
+  "product-added-to-favorites": "Produkt został dodany do ulubionych",
+  "company-ownership-transferred": "Własność firmy została pomyślnie przeniesiona"
 }

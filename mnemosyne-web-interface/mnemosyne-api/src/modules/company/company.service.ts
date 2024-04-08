@@ -520,7 +520,6 @@ export class CompanyService {
       trx
     });
 
-    // @TODO continue here, handle message on the FE + check for the role on FE
     return new CompanyOwnershipTransferredDto();
   }
 

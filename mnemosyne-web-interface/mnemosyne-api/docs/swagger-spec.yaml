@@ -675,16 +675,44 @@ paths:
   /api/company/transfer-ownership:
     post:
       operationId: CompanyController_transferCompanyOwnership
+      summary: Endpoint is responsible for transferring the ownership of the account.
       parameters: []
       requestBody:
         required: true
+        description: Body contains new owner email and role id for the old owner along
+          with MFA.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/TransferOwnershipDto"
       responses:
         "201":
-          description: ""
+          description: As a response user gets a message that ownership has been
+            transferred or anything else related to MFA.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/CompanyOwnershipTransferredDto"
+                  - $ref: "#/components/schemas/FullMfaRequiredDto"
+                  - $ref: "#/components/schemas/TokenTwoFaRequiredDto"
+                  - $ref: "#/components/schemas/PhoneMfaRequiredDto"
+        "400":
+          description: Bad request error is thrown in case if there is something wrong
+            with MFA.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/SmsExpiredException"
+                  - $ref: "#/components/schemas/WrongCredentialsException"
+                  - $ref: "#/components/schemas/WrongCodeException"
+        "404":
+          description: Not found error is thrown in case if user has not been found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotFoundException"
       tags: *a4
       security:
         - x-access-token: []
@@ -3186,6 +3214,33 @@ components:
       required:
         - newCompanyOwnerEmail
         - newRoleForOldOwnerId
+    UserNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Marketplace user not found error message
+          example: user-not-found
+      required:
+        - message
+    RoleDoesntExistException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Roles does not exist error message
+          example: role-doesnt-exists
+      required:
+        - message
+    CompanyOwnershipTransferredDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company ownership transferred response message
+          example: company-ownership-transferred
+      required:
+        - message
     DeleteCompanyDto:
       type: object
       properties:
@@ -3341,15 +3396,6 @@ components:
           type: string
           description: Company role updated response message
           example: company-role-updated
-      required:
-        - message
-    RoleDoesntExistException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Roles does not exist error message
-          example: role-doesnt-exists
       required:
         - message
     AssignRoleDto:

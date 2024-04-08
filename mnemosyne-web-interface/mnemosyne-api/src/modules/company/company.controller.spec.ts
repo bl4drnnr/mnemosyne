@@ -143,6 +143,7 @@ describe('CompanyController', () => {
       const userId = 'user-id';
       const payload: TransferOwnershipDto = {
         newCompanyOwnerEmail: 'test2@test.com',
+        newRoleForOldOwnerId: 'id',
         mfaCode: '123123',
         phoneCode: '123123',
         language: Language.PL

@@ -19,5 +19,7 @@
   "editProduct": "Mnemosyne | Edit product - {{ product }}",
   "marketplace": "Mnemosyne | Marketplace",
   "favorites": "Mnemosyne | Favorite products",
-  "marketplaceUser": "Mnemosyne | User | {{ firstName }} {{ lastName }}"
+  "marketplaceUser": "Mnemosyne | User | {{ firstName }} {{ lastName }}",
+  "companySettings": "Mnemosyne | Company settings",
+  "companyProductsSettings": "Mnemosyne | Company products settings"
 }

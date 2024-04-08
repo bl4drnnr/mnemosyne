@@ -135,7 +135,17 @@
       </div>
     </div>
 
-    <div *ngIf="transferOwnershipStep === 3" [@fadeInOut]="true"></div>
+    <div
+      class="close-button-wrapper"
+      *ngIf="transferOwnershipStep === 3"
+      [@fadeInOut]="true"
+    >
+      <basic-button
+        [onWhite]="true"
+        [label]="t('button.close')"
+        (buttonClick)="closeOwnershipTransferModal()"
+      />
+    </div>
   </basic-modal>
 
   <security-setting-section

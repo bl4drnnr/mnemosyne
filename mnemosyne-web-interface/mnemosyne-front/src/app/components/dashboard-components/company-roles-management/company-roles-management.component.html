@@ -106,6 +106,15 @@
         <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
       </basic-checkbox>
 
+      <basic-checkbox
+        [checked]="currentRoleProductManagementScope"
+        [isWithDescription]="true"
+        (checkedChange)="changeCurrentRoleScope(Scopes.PRODUCT_MANAGEMENT)"
+      >
+        <span class="on-white-checkbox" content>{{ t('scopes.PRODUCT_MANAGEMENT') }}</span>
+        <span class="on-white-checkbox-desc" desc>{{ t('scopes.PRODUCT_MANAGEMENT_DESC') }}</span>
+      </basic-checkbox>
+
       <p class="modal-paragraph">
         {{ t('settings.companySettingsSection.roleDeletionRule') }}
       </p>

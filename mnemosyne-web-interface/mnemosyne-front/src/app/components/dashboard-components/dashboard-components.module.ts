@@ -7,7 +7,6 @@ import { UserPhotoComponent } from '@components/user-photo/user-photo.component'
 import { TranslocoModule } from '@ngneat/transloco';
 import { BasicComponentsModule } from '@components/basic-components.module';
 import { PagesComponentsModule } from '@components/pages-components.module';
-import { CompanySettingsComponent } from '@components/dashboard-components/company-settings/company-settings.component';
 import { CompanyInfoSettingsComponent } from '@components/company-info-settings/company-info-settings.component';
 import { CompanyUsersSettingsComponent } from '@components/company-users-settings/company-users-settings.component';
 import { CompanySecuritySettingsComponent } from '@components/company-security-settings/company-security-settings.component';
@@ -20,7 +19,6 @@ const components = [
   SidebarComponent,
   UserInfoSettingsComponent,
   UserPhotoComponent,
-  CompanySettingsComponent,
   CompanyInfoSettingsComponent,
   CompanyUsersSettingsComponent,
   CompanySecuritySettingsComponent,

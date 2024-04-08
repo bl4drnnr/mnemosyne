@@ -3,5 +3,6 @@
   "yourAccountSidebarTitle": "Twoje konto",
   "sidebarUserFullName": "Imię i nazwisko",
   "sidebarUserEmail": "Email",
-  "sidebarUserId": "Identyfikator ID"
+  "sidebarUserId": "Identyfikator ID",
+  "companySettingsSidebarTitle": "Twoja firma"
 }

@@ -7,8 +7,16 @@ import { TranslocoModule } from '@ngneat/transloco';
 import { RouterModule, Routes } from '@angular/router';
 import { FavoritesComponent } from '@pages/favorites/favorites.component';
 import { SettingsComponent } from '@pages/settings/settings.component';
+import { CompanyProductsSettingsComponent } from '@pages/company-products-settings/company-products-settings.component';
+import { CompanySettingsComponent } from '@pages/company-settings/company-settings.component';
 
-const components = [DashboardComponent, SettingsComponent, FavoritesComponent];
+const components = [
+  DashboardComponent,
+  SettingsComponent,
+  FavoritesComponent,
+  CompanySettingsComponent,
+  CompanyProductsSettingsComponent
+];
 
 const router: Routes = [
   {
@@ -26,6 +34,14 @@ const router: Routes = [
   {
     path: 'account/favorites',
     component: FavoritesComponent
+  },
+  {
+    path: 'company/company-settings',
+    component: CompanySettingsComponent
+  },
+  {
+    path: 'company/company-products',
+    component: CompanyProductsSettingsComponent
   }
 ];
 

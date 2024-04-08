@@ -47,5 +47,6 @@
   "dashboardFavorites": "Favorite products",
   "showContactEmail": "Show contact email",
   "showContactPhone": "Show contact phone",
-  "logInCreateAcc": "Log In / Create account"
+  "logInCreateAcc": "Log In / Create account",
+  "companySettings": "Company settings"
 }

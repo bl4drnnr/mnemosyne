@@ -47,5 +47,6 @@
   "dashboardFavorites": "Избранные продукты",
   "showContactEmail": "Показать контактный адрес электронной почты",
   "showContactPhone": "Показать контактный телефон",
-  "logInCreateAcc": "Войти / Создать аккаунт"
+  "logInCreateAcc": "Войти / Создать аккаунт",
+  "companySettings": "Настройки компании"
 }

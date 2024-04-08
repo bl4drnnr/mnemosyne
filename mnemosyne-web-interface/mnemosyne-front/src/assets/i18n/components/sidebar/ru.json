@@ -3,5 +3,6 @@
   "yourAccountSidebarTitle": "Ваш аккаунт",
   "sidebarUserFullName": "Полное имя",
   "sidebarUserEmail": "Электронная почта",
-  "sidebarUserId": "ID пользователя"
+  "sidebarUserId": "ID пользователя",
+  "companySettingsSidebarTitle": "Ваша компания"
 }

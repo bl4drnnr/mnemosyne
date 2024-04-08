@@ -51,11 +51,19 @@
               (buttonClick)="handleRedirect('marketplace/create-product')"
             />
           </div>
-          <div *ngIf="!userInfo.isCompanyMember" class="sidebar-button-wrapper">
+          <h5 class="sidebar-account-title">{{ t('sidebar.companySettingsSidebarTitle') }}</h5>
+          <div class="sidebar-button-wrapper" *ngIf="!userInfo.isCompanyMember">
             <basic-button
               [label]="t('button.createCompanyAcc')"
               [fillButton]="true"
               (buttonClick)="handleRedirect('registration', { accType: 'company' })"
+            />
+          </div>
+          <div class="sidebar-button-wrapper" *ngIf="userInfo.isCompanyMember">
+            <basic-button
+              [label]="t('button.companySettings')"
+              [fillButton]="true"
+              (buttonClick)="handleRedirect('company/company-settings')"
             />
           </div>
         </div>

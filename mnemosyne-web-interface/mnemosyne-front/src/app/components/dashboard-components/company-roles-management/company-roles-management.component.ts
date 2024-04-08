@@ -55,6 +55,7 @@ export class CompanyRolesManagementComponent implements OnInit {
   currentRoleUsersManagementScope: boolean;
   currentRoleRolesManagementScope: boolean;
   currentRoleCompanyInfoManagementScope: boolean;
+  currentRoleProductManagementScope: boolean;
 
   defaultRolesTranslations: {
     DEFAULT: string;
@@ -124,6 +125,9 @@ export class CompanyRolesManagementComponent implements OnInit {
     this.currentRoleCompanyInfoManagementScope = !!scopes.find(
       (s) => s === Scopes.COMPANY_INFORMATION_MANAGEMENT
     );
+    this.currentRoleProductManagementScope = !!scopes.find(
+      (s) => s === Scopes.PRODUCT_MANAGEMENT
+    );
   }
 
   changeCurrentRoleScope(roleScope: RoleScope) {
@@ -140,6 +144,9 @@ export class CompanyRolesManagementComponent implements OnInit {
         this.currentRoleCompanyInfoManagementScope =
           !this.currentRoleCompanyInfoManagementScope;
         break;
+      case 'PRODUCT_MANAGEMENT':
+        this.currentRoleProductManagementScope =
+          !this.currentRoleProductManagementScope;
     }
   }
 
@@ -254,6 +261,9 @@ export class CompanyRolesManagementComponent implements OnInit {
 
     if (this.currentRoleCompanyInfoManagementScope)
       roleScopes.push(Scopes.COMPANY_INFORMATION_MANAGEMENT);
+
+    if (this.currentRoleProductManagementScope)
+      roleScopes.push(Scopes.PRODUCT_MANAGEMENT);
 
     return roleScopes;
   }

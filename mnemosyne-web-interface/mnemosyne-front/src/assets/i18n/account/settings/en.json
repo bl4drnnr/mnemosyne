@@ -5,7 +5,6 @@
   "managePersonalSettings": "Manage your personal information",
   "securitySettings": "Security settings",
   "manageSecuritySettings": "Manage the security settings of your account",
-  "companySettings": "Company settings",
   "manageCompanySettings": "Manage and review your company members and settings",
   "securitySettingsRules": {
     "title": "Manage security settings of your account and make sure it is secured",

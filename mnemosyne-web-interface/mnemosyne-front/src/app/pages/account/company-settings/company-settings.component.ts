@@ -1,28 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { CompanyService } from '@services/company.service';
-import { GetCompanyInfoByIdResponse } from '@responses/get-company-by-id.interface';
+import { Component } from '@angular/core';
 import { CompanySettingsSectionType } from '@interfaces/company-settings-section.type';
-import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interface';
-import { TranslationService } from '@services/translation.service';
-import { MessagesTranslation } from '@translations/messages.enum';
+import { GetCompanyInfoByIdResponse } from '@responses/get-company-by-id.interface';
+import { UsersList } from '@interfaces/users-list.type';
+import { CompanyRoleType } from '@interfaces/company-role.type';
+import { RolesService } from '@services/roles.service';
+import { CompanyUsersService } from '@services/company-users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { RefreshTokensService } from '@services/refresh-tokens.service';
-import { UsersList } from '@interfaces/users-list.type';
+import { TranslationService } from '@services/translation.service';
+import { CompanyService } from '@services/company.service';
+import { UpdateCompanyInfoPayload } from '@payloads/update-company-info.interface';
 import { UpdateUserInfoPayload } from '@payloads/update-user-info.interface';
-import { CompanyUsersService } from '@services/company-users.service';
 import { CreateCompanyRolePayload } from '@payloads/create-company-role.interface';
-import { RolesService } from '@services/roles.service';
-import { CompanyRoleType } from '@interfaces/company-role.type';
 import { UpdateCompanyRolePayload } from '@payloads/update-company-role.interface';
+import { MessagesTranslation } from '@translations/messages.enum';
+import { UserInfoResponse } from '@responses/user-info.interface';
+import { Titles } from '@interfaces/titles.enum';
 
 @Component({
-  selector: 'dashboard-company-settings',
+  selector: 'page-company-settings',
   templateUrl: './company-settings.component.html',
   styleUrls: ['./company-settings.component.scss']
 })
-export class CompanySettingsComponent implements OnInit {
+export class CompanySettingsComponent {
   companySettingsSection: CompanySettingsSectionType = 'info';
   companyInformation: GetCompanyInfoByIdResponse;
+  userInfo: UserInfoResponse;
 
   page: string = '0';
   pageSize: string = '10';
@@ -128,7 +131,17 @@ export class CompanySettingsComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.translationService.setPageTitle(Titles.COMPANY_SETTINGS);
+
+    const userInfoRequest = await this.refreshTokensService.refreshTokens();
+
+    if (userInfoRequest) {
+      userInfoRequest.subscribe({
+        next: (userInfo) => (this.userInfo = userInfo)
+      });
+    }
+
     this.fetchCompanyInformation();
     this.fetchCompanyRoles();
   }

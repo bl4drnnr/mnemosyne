@@ -24,7 +24,8 @@ describe('RolesService', () => {
   const userRoleRepositoryToken = getModelToken(UserRole);
 
   const mockUserRoleRepository = {
-    create: jest.fn()
+    create: jest.fn(),
+    destroy: jest.fn()
   };
   const mockRoleRepository = {
     findAll: jest.fn(),
@@ -67,11 +68,13 @@ describe('RolesService', () => {
       const trx: any = {};
       const allAssignedRoles = [
         {
+          id: 'role1-id',
           name: 'role1',
           description: 'description1',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>
         },
         {
+          id: 'role2-id',
           name: 'role2',
           description: 'description2',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>
@@ -80,11 +83,13 @@ describe('RolesService', () => {
 
       const expectedResult = [
         {
+          id: 'role1-id',
           name: 'role1',
           description: 'description1',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>
         },
         {
+          id: 'role2-id',
           name: 'role2',
           description: 'description2',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>
