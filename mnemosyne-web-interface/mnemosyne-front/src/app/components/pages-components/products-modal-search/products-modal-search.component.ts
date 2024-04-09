@@ -57,6 +57,9 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
   productCurrencyDropdownValue: DropdownInterface;
   totalItems: number;
 
+  privateProductsFlag: boolean = false;
+  companyProductsFlag: boolean = false;
+
   constructor(
     private readonly translationService: TranslationService,
     private readonly categoriesService: CategoriesService,
@@ -111,6 +114,14 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
 
   changeProductSearchQuery(query: string) {
     this.productSearchQuery = query;
+    this.getProducts();
+  }
+
+  changeProductType(productType: 'private' | 'company') {
+    if (productType === 'private')
+      this.privateProductsFlag = !this.privateProductsFlag;
+    else if (productType === 'company')
+      this.companyProductsFlag = !this.companyProductsFlag;
     this.getProducts();
   }
 
@@ -286,7 +297,9 @@ export class ProductsModalSearchComponent implements OnChanges, OnInit {
       currency: this.productCurrencyDropdownValue.key,
       maxPrice: this.maxPrice,
       minPrice: this.minPrice,
-      subcategories: selectedSubcategories
+      subcategories: selectedSubcategories,
+      privateProducts: this.privateProductsFlag,
+      companyProducts: this.companyProductsFlag
     };
 
     this.productsService

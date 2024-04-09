@@ -158,5 +158,9 @@
   "favoriteProductsSearchLabel": "Favorites products search",
   "favoriteProductsSearchPlaceholder": "Favorites products search",
   "favoriteProductsSearchInputDesc": "You can perform the search of your products based on title, description or slug.",
-  "clickToCopy": "Click on the input field in order to copy."
+  "clickToCopy": "Click on the input field in order to copy.",
+  "companyMemberSearchLabel": "Company member email",
+  "companyMemberSearchPlaceholder": "Search for members of your company",
+  "noHomeAddress": "No home address specified",
+  "noHomePhone": "No home phone specified"
 }

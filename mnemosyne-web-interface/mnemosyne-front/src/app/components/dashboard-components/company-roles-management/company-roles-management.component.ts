@@ -46,6 +46,7 @@ export class CompanyRolesManagementComponent implements OnInit {
   newRoleMembers: Array<RoleAssigneeInterface> = [];
   newRoleFoundMembers: Array<RoleAssigneeInterface> = [];
 
+  currentOriginalRoleName: string;
   showRoleMoreInfoModal: boolean;
   currentRole: OneCompanyRoleType;
   currentRoleName: string;
@@ -99,7 +100,7 @@ export class CompanyRolesManagementComponent implements OnInit {
     const roleScopes = this.transformScopesToArray();
 
     this.updateRole.emit({
-      name: this.currentRoleName,
+      name: this.currentOriginalRoleName,
       description: this.currentRoleDescription,
       roleScopes
     });
@@ -113,8 +114,10 @@ export class CompanyRolesManagementComponent implements OnInit {
     const scopes = role.roleScopes;
 
     this.showRoleMoreInfoModal = true;
-    this.currentRoleName = role.name;
-    this.currentRoleDescription = role.description;
+
+    this.currentOriginalRoleName = role.name;
+    this.currentRoleName = this.translateRole(role.name);
+    this.currentRoleDescription = this.translateRoleDesc(role.description);
 
     this.currentRoleUsersManagementScope = !!scopes.find(
       (s) => s === Scopes.USER_MANAGEMENT

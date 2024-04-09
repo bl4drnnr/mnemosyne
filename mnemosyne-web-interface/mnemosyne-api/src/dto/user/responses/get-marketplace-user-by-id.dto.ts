@@ -7,56 +7,70 @@ class MarketplaceUser {
     description: DocsProperty.EMAIL_DESC,
     example: DocsProperty.EMAIL_EXAMPLE
   })
-  email: string | undefined;
+  readonly email: string | undefined;
 
   @ApiProperty({
     type: String,
     description: DocsProperty.FIRST_NAME_DESC,
     example: DocsProperty.FIRST_NAME_EXAMPLE
   })
-  firstName: string;
+  readonly firstName: string;
 
   @ApiProperty({
     type: String,
     description: DocsProperty.LAST_NAME_DESC,
     example: DocsProperty.LAST_NAME_EXAMPLE
   })
-  lastName: string;
+  readonly lastName: string;
 
   @ApiProperty({
     type: String,
     description: DocsProperty.HOME_ADDRESS_DESC,
     example: DocsProperty.HOME_ADDRESS_EXAMPLE
   })
-  homeAddress: string | null;
+  readonly homeAddress: string | null;
 
   @ApiProperty({
     type: String,
     description: DocsProperty.HOME_PHONE_DESC,
     example: DocsProperty.HOME_PHONE_EXAMPLE
   })
-  homePhone: string | null;
+  readonly homePhone: string | null;
 
   @ApiProperty({
     type: String,
     description: DocsProperty.NAME_PRONUNS_DESC,
     example: DocsProperty.NAME_PRONUNS_EXAMPLE
   })
-  namePronunciation: string | null;
+  readonly namePronunciation: string | null;
 
   @ApiProperty({
     type: Date,
     description: DocsProperty.USER_CREATED_AT_DESC,
     example: DocsProperty.USER_CREATED_AT_EXAMPLE
   })
-  createdAt: Date;
+  readonly createdAt: Date;
 
   @ApiProperty({
     type: String,
     description: DocsProperty.USER_HASH_DESC,
     example: DocsProperty.USER_HASH_EXAMPLE
   })
-  userIdHash: string | null;
+  readonly userIdHash: string | null;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_ID_DESC,
+    example: DocsProperty.COMPANY_ID_EXAMPLE
+  })
+  readonly companyId: string | null;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_NAME_DESC,
+    example: DocsProperty.COMPANY_NAME_EXAMPLE
+  })
+  readonly companyName: string | null;
 }
 
 export class GetMarketplaceUserByIdDto {
@@ -71,7 +85,9 @@ export class GetMarketplaceUserByIdDto {
       homePhone: DocsProperty.HOME_PHONE_EXAMPLE,
       namePronunciation: DocsProperty.NAME_PRONUNS_EXAMPLE,
       createdAt: DocsProperty.USER_CREATED_AT_EXAMPLE,
-      userIdHash: DocsProperty.USER_HASH_EXAMPLE
+      userIdHash: DocsProperty.USER_HASH_EXAMPLE,
+      companyId: DocsProperty.COMPANY_ID_EXAMPLE,
+      companyName: DocsProperty.COMPANY_NAME_EXAMPLE
     }
   })
   readonly marketplaceUser: MarketplaceUser;

@@ -48,6 +48,13 @@
     />
   </basic-modal>
 
+  <basic-input
+    [label]="t('input.companyMemberSearchLabel')"
+    [placeholder]="t('input.companyMemberSearchPlaceholder')"
+    [value]="query"
+    (valueChange)="searchForCompanyMember($event)"
+  />
+
   <div class="company-users-container">
     <div class="company-users-header">
       <p class="company-users-header-id">ID</p>

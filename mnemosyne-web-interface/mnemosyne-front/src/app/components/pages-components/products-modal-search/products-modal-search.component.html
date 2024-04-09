@@ -97,13 +97,29 @@
               (selectedOption)="selectProductCurrency($event)"
             />
           </div>
-          <div class="products-modal-filters-button margin-left">
-            <basic-button
-              [label]="t('button.clearFilters')"
-              [onWhite]="true"
-              (buttonClick)="clearFilters()"
-            />
+          <div class="products-modal-filters-button margin-left flex">
+            <basic-checkbox
+              [checked]="privateProductsFlag"
+              (checkedChange)="changeProductType('private')"
+            >
+              <span content>{{ t('marketplace.marketplacePrivateProducts') }}</span>
+            </basic-checkbox>
+
+            <basic-checkbox
+              [checked]="companyProductsFlag"
+              (checkedChange)="changeProductType('company')"
+            >
+              <span content>{{ t('marketplace.marketplaceCompanyProducts') }}</span>
+            </basic-checkbox>
           </div>
+        </div>
+
+        <div class="products-modal-clear-filter-button">
+          <basic-button
+            [label]="t('button.clearFilters')"
+            [onWhite]="true"
+            (buttonClick)="clearFilters()"
+          />
         </div>
       </div>
 

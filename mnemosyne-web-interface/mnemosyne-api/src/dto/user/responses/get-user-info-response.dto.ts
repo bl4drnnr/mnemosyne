@@ -1,5 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
+import { RoleScope } from '@custom-types/role-scope.type';
+
+interface UserInfoResponse {
+  userIdHash: string;
+  firstName: string;
+  lastName: string;
+  namePronunciation: string | null;
+  homeAddress: string | null;
+  homePhone: string | null;
+  email: string;
+  isProfilePicPresent: boolean;
+  isCompanyMember: boolean;
+  companyName: string | null;
+  roleName: string | null;
+  roleScopes: Array<RoleScope> | null;
+}
 
 export class GetUserInfoResponseDto {
   @ApiProperty({
@@ -65,6 +81,28 @@ export class GetUserInfoResponseDto {
   })
   readonly isCompanyMember: boolean;
 
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_NAME_DESC,
+    example: DocsProperty.COMPANY_NAME_EXAMPLE
+  })
+  readonly companyName: string | null;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_ROLE_NAME_DESC,
+    example: DocsProperty.COMPANY_ROLE_NAME_EXAMPLE
+  })
+  readonly roleName: string | null;
+
+  @ApiProperty({
+    type: Array<RoleScope>,
+    description: DocsProperty.COMPANY_ROLE_SCOPES_DESC,
+    example: [DocsProperty.COMPANY_ROLE_SCOPE_EXAMPLE],
+    isArray: true
+  })
+  readonly roleScopes: Array<RoleScope> | null;
+
   constructor({
     userIdHash,
     firstName,
@@ -74,18 +112,11 @@ export class GetUserInfoResponseDto {
     homePhone,
     email,
     isProfilePicPresent,
-    isCompanyMember
-  }: {
-    userIdHash: string;
-    firstName: string;
-    lastName: string;
-    namePronunciation: string | null;
-    homeAddress: string | null;
-    homePhone: string | null;
-    email: string;
-    isProfilePicPresent: boolean;
-    isCompanyMember: boolean;
-  }) {
+    isCompanyMember,
+    companyName,
+    roleName,
+    roleScopes
+  }: UserInfoResponse) {
     this.userIdHash = userIdHash;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -95,5 +126,8 @@ export class GetUserInfoResponseDto {
     this.email = email;
     this.isProfilePicPresent = isProfilePicPresent;
     this.isCompanyMember = isCompanyMember;
+    this.companyName = companyName;
+    this.roleName = roleName;
+    this.roleScopes = roleScopes;
   }
 }

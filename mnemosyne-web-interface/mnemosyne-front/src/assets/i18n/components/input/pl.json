@@ -158,5 +158,9 @@
   "favoriteProductsSearchLabel": "Wyszukiwanie ulubionych produktów",
   "favoriteProductsSearchPlaceholder": "Wyszukiwanie ulubionych produktów",
   "favoriteProductsSearchInputDesc": "Możesz wyszukiwać swoje produkty na podstawie tytułu, opisu lub linka.",
-  "clickToCopy": "Kliknij pole wprowadzania, aby skopiować."
+  "clickToCopy": "Kliknij pole wprowadzania, aby skopiować.",
+  "companyMemberSearchLabel":"E-mail członka firmy",
+  "companyMemberSearchPlaceholder": "Szukaj członków Twojej firmy",
+  "noHomeAddress": "Nie podano adresu domowego",
+  "noHomePhone": "Nie określono telefonu domowego"
 }

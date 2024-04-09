@@ -12,6 +12,19 @@
         <p class="marketplace-user-registration-date">
           {{ t('marketplace.marketplaceUserRegDate', { date: transformDate(createdAt) }) }}
         </p>
+        <p
+          class="marketplace-user-company-link"
+          *ngIf="companyId && companyName"
+        >
+          <basic-link
+            [label]="t('link.memberOfCompany', { companyName })"
+            [href]="'/marketplace/company/' + companyId"
+          />
+        </p>
+        <p
+          class="marketplace-user-registration-date"
+          *ngIf="!companyId || !companyName"
+        >{{ t('marketplace.marketplaceUserNoCompany') }}</p>
       </div>
       <div class="marketplace-user-info-container">
         <h1 class="marketplace-user-name">{{ firstName }} {{ lastName }}</h1>
@@ -19,18 +32,18 @@
           {{ t('marketplace.marketplaceUserPronounced', { namePronunciation }) }}
         </p>
         <basic-input
-          *ngIf="homeAddress"
           [label]="t('input.homeAddress')"
-          [inputDescription]="t('input.clickToCopy')"
-          [value]="homeAddress"
+          [inputDescription]="homeAddress ? t('input.clickToCopy') : ''"
+          [value]="homeAddress || t('input.noHomeAddress')"
           [readOnly]="true"
+          [disabled]="!(!!homeAddress)"
         />
         <basic-input
-          *ngIf="homePhone"
           [label]="t('input.homePhone')"
-          [inputDescription]="t('input.clickToCopy')"
-          [value]="homePhone"
+          [inputDescription]="homePhone ? t('input.clickToCopy') : ''"
+          [value]="homePhone || t('input.noHomePhone')"
           [readOnly]="true"
+          [disabled]="!(!!homePhone)"
         />
         <div class="marketplace-user-email-container" *ngIf="!isUserLoggedIn">
           <p>{{ t('marketplace.marketplaceUserEmail') }}</p>
@@ -218,8 +231,8 @@
           />
         </div>
       </div>
-      <div class="marketplace-filters-container user-products-filter-container">
-        <div class="marketplace-filters-layouts">
+      <div class="marketplace-filters-container user-products-filter-container flex">
+        <div class="marketplace-filters-layouts width100">
           <button
             (click)="setLayout('list')"
             [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
@@ -244,6 +257,22 @@
               class="layout-icon"
             >
           </button>
+        </div>
+
+        <div class="marketplace-products-filters-layouts width100">
+          <basic-checkbox
+            [checked]="privateProductsFlag"
+            (checkedChange)="changeProductType('private')"
+          >
+            <span content>{{ t('marketplace.marketplacePrivateProducts') }}</span>
+          </basic-checkbox>
+
+          <basic-checkbox
+            [checked]="companyProductsFlag"
+            (checkedChange)="changeProductType('company')"
+          >
+            <span content>{{ t('marketplace.marketplaceCompanyProducts') }}</span>
+          </basic-checkbox>
         </div>
       </div>
     </div>

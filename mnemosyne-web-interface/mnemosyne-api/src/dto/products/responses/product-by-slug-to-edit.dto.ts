@@ -18,7 +18,8 @@ export class ProductBySlugToEditDto {
       subcategory: [DocsProperty.SUBCATEGORY_EXAMPLE],
       category: DocsProperty.CATEGORY_NAME_EXAMPLE,
       contactPerson: DocsProperty.PRODUCT_CONTACT_PERSON_EXAMPLE,
-      contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE
+      contactPhone: DocsProperty.PRODUCT_CONTACT_PHONE_EXAMPLE,
+      onBehalfOfCompany: DocsProperty.PRODUCT_ON_BEHALF_OF_COMPANY_EXAMPLE
     }
   })
   readonly product: ProductBySlugInterface;

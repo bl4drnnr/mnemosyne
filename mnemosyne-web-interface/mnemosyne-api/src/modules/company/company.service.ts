@@ -41,8 +41,9 @@ import { CompanyDeletedDto } from '@dto/company-deleted.dto';
 import { CompanyUser } from '@models/company-user.model';
 import { CompanyUserType } from '@custom-types/company-user.type';
 import { UserNotFoundException } from '@exceptions/user-not-found.exception';
-import { UserRole } from '@models/user-role.model';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
+import { Op } from 'sequelize';
+import { GetCompanyUserRolesInterface } from '@interfaces/get-company-user-roles.interface';
 
 @Injectable()
 export class CompanyService {
@@ -243,6 +244,7 @@ export class CompanyService {
     companyId,
     page,
     pageSize,
+    query,
     trx: transaction
   }: GetCompanyUsersInterface) {
     const offset = Number(page) * Number(pageSize);
@@ -262,9 +264,22 @@ export class CompanyService {
       (companyUser) => companyUser.userId
     );
 
+    const where = {};
+
+    if (query) {
+      where[Op.or] = [
+        { email: { [Op.iLike]: `%${query}%` } },
+        { firstName: { [Op.iLike]: `%${query}%` } },
+        { lastName: { [Op.iLike]: `%${query}%` } },
+        { namePronunciation: { [Op.iLike]: `%${query}%` } },
+        { homeAddress: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
     const { rows, count } = await this.usersService.getUsersByIds({
       offset,
       limit,
+      where,
       ids: companyUsersIds,
       attributes: ['id', 'email'],
       trx: transaction
@@ -608,6 +623,16 @@ export class CompanyService {
     });
 
     return new CompanyDeletedDto();
+  }
+
+  async getCompanyUserRole({
+    companyUserId,
+    trx
+  }: GetCompanyUserRolesInterface) {
+    return await this.rolesService.getUserRolesByCompanyUserId({
+      companyUserId,
+      trx
+    });
   }
 
   async createCompanyAccount({

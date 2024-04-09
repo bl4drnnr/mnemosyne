@@ -53,6 +53,7 @@ import { GetMarketplaceUserByIdInterface } from '@interfaces/get-marketplace-use
 import { ProductsService } from '@modules/products.service';
 import { UserNotFoundException } from '@exceptions/user-not-found.exception';
 import { GetMarketplaceUserByIdDto } from '@dto/get-marketplace-user-by-id.dto';
+import { RoleScope } from '@custom-types/role-scope.type';
 
 @Injectable()
 export class UsersService {
@@ -130,6 +131,7 @@ export class UsersService {
     limit,
     ids,
     attributes,
+    where,
     trx: transaction
   }: GetUsersByIdsInterface) {
     return await this.userRepository.findAndCountAll({
@@ -143,7 +145,7 @@ export class UsersService {
           model: CompanyUser
         }
       ],
-      where: { id: ids },
+      where: { id: ids, ...where },
       limit,
       offset,
       attributes,
@@ -306,6 +308,20 @@ export class UsersService {
     });
 
     const isCompanyMember = !!company;
+    let roleName: string;
+    let roleScopes: Array<RoleScope>;
+
+    if (company) {
+      const companyUserId = company.companyUsers.find(
+        (user) => user.userId === userId
+      ).id;
+      const companyUserRole = await this.companyService.getCompanyUserRole({
+        companyUserId,
+        trx
+      });
+      roleName = companyUserRole.name;
+      roleScopes = companyUserRole.roleScopes;
+    }
 
     return new GetUserInfoResponseDto({
       userIdHash,
@@ -316,7 +332,10 @@ export class UsersService {
       homePhone,
       email,
       isProfilePicPresent,
-      isCompanyMember
+      isCompanyMember,
+      companyName: isCompanyMember ? company.companyName : null,
+      roleName: roleName ? roleName : null,
+      roleScopes: roleScopes ? roleScopes : null
     });
   }
 
@@ -389,8 +408,15 @@ export class UsersService {
       isProfilePicPresent = false;
     }
 
-    // @TODO Get company
-    // @TODO Create company page
+    const company = await this.companyService.getCompanyByUserId({
+      userId: marketplaceUserId,
+      trx
+    });
+
+    const companyId = company ? company.id : null;
+    const companyName = company ? company.companyName : null;
+    const userHash = isProfilePicPresent ? userIdHash : null;
+
     const marketplaceUser = {
       email: undefined,
       firstName: user.firstName,
@@ -399,7 +425,9 @@ export class UsersService {
       homePhone: user.homePhone,
       namePronunciation: user.namePronunciation,
       createdAt: user.createdAt,
-      userIdHash: isProfilePicPresent ? userIdHash : null
+      userIdHash: userHash,
+      companyId,
+      companyName
     };
 
     if (loggedUserId) marketplaceUser.email = user.email;

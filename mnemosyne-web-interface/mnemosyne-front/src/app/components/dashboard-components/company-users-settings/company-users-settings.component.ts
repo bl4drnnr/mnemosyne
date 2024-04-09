@@ -41,6 +41,7 @@ import { CustomCompanyMemberInterface } from '@interfaces/custom-company-member.
 export class CompanyUsersSettingsComponent implements OnInit {
   @Input() page: string;
   @Input() pageSize: string;
+  @Input() query: string;
   @Input() totalItems: number;
   @Input() companyUsers: UsersList;
   @Input() companyCustomRoles: CompanyRoleType;
@@ -48,6 +49,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   @Output() fetchCompanyUsers = new EventEmitter<void>();
   @Output() setNewCurrentPage = new EventEmitter<string>();
   @Output() setNewUsersPerPage = new EventEmitter<string>();
+  @Output() setNewQuery = new EventEmitter<string>();
   @Output() inviteUsersToCompany = new EventEmitter<void>();
   @Output() saveCompanyMemberInformation =
     new EventEmitter<UpdateUserInfoPayload>();
@@ -143,6 +145,11 @@ export class CompanyUsersSettingsComponent implements OnInit {
       (m) => m.email === email
     );
     this.companyCustomMembers[companyMemberIdx] = { email, roleId, roleName };
+  }
+
+  searchForCompanyMember(query: string) {
+    this.setNewQuery.emit(query);
+    this.fetchUsers();
   }
 
   inviteUsers() {

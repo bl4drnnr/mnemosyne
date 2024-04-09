@@ -81,7 +81,20 @@
               <p>{{ product.description }}</p>
               <h1>{{ t('product.productTagsTitle') }}</h1>
               <div class="product-tags">
-<!--                <p class="product-tag">Private</p>-->
+                <p
+                  class="product-tag flex"
+                  *ngIf="!product.onBehalfOfCompany"
+                >
+                  <span>{{ t('product.privateProduct') }}&nbsp;</span>
+                  <basic-emoji emoji="person.png" [width]="22" [height]="22" />
+                </p>
+                <p
+                  class="product-tag flex"
+                  *ngIf="product.onBehalfOfCompany"
+                >
+                  <span>{{ t('product.companyProduct') }}&nbsp;</span>
+                  <basic-emoji emoji="office-building.png" [width]="22" [height]="22" />
+                </p>
                 <p class="product-tag">{{ t(translateCategory(product.category)) }}</p>
                 <p class="product-tag">{{ t(translateSubcategory(product.category, product.subcategory)) }}</p>
               </div>
@@ -106,8 +119,14 @@
                   <div class="product-user-info-link">
                     <p>{{ product.contactPerson }}</p>
                     <basic-link
+                      *ngIf="!product.onBehalfOfCompany"
                       [label]="t('link.seeMoreProducts')"
                       [href]="'marketplace/user/' + product.ownerId"
+                    />
+                    <basic-link
+                      *ngIf="product.onBehalfOfCompany"
+                      [label]="t('link.seeMoreCompanyProducts', { companyName: product.companyName })"
+                      [href]="'marketplace/company/' + product.companyId"
                     />
                   </div>
                 </div>
@@ -225,8 +244,14 @@
                   <div class="product-user-info-link">
                     <p>{{ product.contactPerson }}</p>
                     <basic-link
+                      *ngIf="!product.onBehalfOfCompany"
                       [label]="t('link.seeMoreProducts')"
                       [href]="'marketplace/user/' + product.ownerId"
+                    />
+                    <basic-link
+                      *ngIf="product.onBehalfOfCompany"
+                      [label]="t('link.seeMoreCompanyProducts', { companyName: product.companyName })"
+                      [href]="'marketplace/company/' + product.companyId"
                     />
                   </div>
                 </div>

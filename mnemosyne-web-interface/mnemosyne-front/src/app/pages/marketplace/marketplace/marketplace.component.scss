@@ -120,6 +120,10 @@
 
 .marketplace-filters-container {
   padding: 0 20px;
+
+  &.margin-bottom {
+    margin-bottom: 10px
+  }
 }
 
 .marketplace-filters-subtitle {

@@ -5,5 +5,6 @@ export interface GetUsersByIdsInterface {
   offset: number;
   ids: Array<string>;
   attributes: Array<string>;
+  where?: any;
   trx?: Transaction;
 }

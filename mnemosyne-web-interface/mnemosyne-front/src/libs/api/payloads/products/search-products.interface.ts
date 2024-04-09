@@ -11,5 +11,7 @@ export interface SearchProductsPayload {
   currency: Currency | string;
   categories: string;
   subcategories: string;
+  companyProducts?: boolean;
+  privateProducts?: boolean;
   marketplaceUserId?: string | undefined;
 }

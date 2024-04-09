@@ -16,4 +16,7 @@ export interface ProductBySlugInterface {
   ownerId?: string;
   ownerIdHash?: string;
   productInFavorites?: boolean;
+  onBehalfOfCompany: boolean;
+  companyId?: string;
+  companyName?: string;
 }

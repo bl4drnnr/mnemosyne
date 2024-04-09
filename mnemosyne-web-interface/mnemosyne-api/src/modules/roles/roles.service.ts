@@ -162,12 +162,13 @@ export class RolesService {
       transaction
     });
 
-    const { name, description, id } = await this.roleRepository.findOne({
-      where: { id: userRole.roleId },
-      transaction
-    });
+    const { name, description, id, roleScopes } =
+      await this.roleRepository.findOne({
+        where: { id: userRole.roleId },
+        transaction
+      });
 
-    return { name, description, id };
+    return { name, description, id, roleScopes };
   }
 
   async grantInitRole({

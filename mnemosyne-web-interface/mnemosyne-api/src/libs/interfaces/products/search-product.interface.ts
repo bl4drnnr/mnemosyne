@@ -11,6 +11,8 @@ export interface SearchProductInterface {
   currency: string;
   categories: string;
   subcategories: string;
+  companyProducts: string;
+  privateProducts: string;
   marketplaceUserId: string | undefined;
   userId: string | undefined;
   trx?: Transaction;

@@ -70,6 +70,7 @@
         <div *ngIf="companySettingsSection === 'users'">
           <dashboard-company-users-settings
             [page]="page"
+            [query]="query"
             [pageSize]="pageSize"
             [totalItems]="totalItems"
             [companyUsers]="companyUsers"
@@ -79,6 +80,7 @@
             (deleteCompanyMemberEvent)="deleteCompanyMember($event)"
             (setNewCurrentPage)="page = $event"
             (setNewUsersPerPage)="pageSize = $event"
+            (setNewQuery)="query = $event"
           />
         </div>
 

@@ -16,6 +16,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiQuery,
@@ -80,6 +81,9 @@ export class ProductsController {
   @ApiQuery(ProductsDocs.SearchProduct.ApiCurrencyQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiCategoryQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiSubcategoryQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiCompanyProductsQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiPrivateProductsQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiMarketplaceUserIdQuery)
   @ApiBasicAuth('basicAuth')
   @UseInterceptors(UserInterceptor)
   @Get('search-product')
@@ -94,6 +98,8 @@ export class ProductsController {
     @Query('currency') currency: string,
     @Query('categories') categories: string,
     @Query('subcategories') subcategories: string,
+    @Query('companyProducts') companyProducts: string,
+    @Query('privateProducts') privateProducts: string,
     @Query('marketplaceUserId') marketplaceUserId: string,
     @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
@@ -109,6 +115,8 @@ export class ProductsController {
       currency,
       categories,
       subcategories,
+      companyProducts,
+      privateProducts,
       marketplaceUserId,
       userId,
       trx
@@ -119,6 +127,7 @@ export class ProductsController {
   @ApiExtraModels(...ProductsDocs.CreateProduct.ApiExtraModels)
   @ApiResponse(ProductsDocs.CreateProduct.ApiResponse)
   @ApiBadRequestResponse(ProductsDocs.CreateProduct.ApiBadRequestResponse)
+  @ApiForbiddenResponse(ProductsDocs.CreateProduct.ApiForbiddenResponse)
   @ApiBody(ProductsDocs.CreateProduct.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
@@ -160,6 +169,8 @@ export class ProductsController {
   @ApiOperation(ProductsDocs.UpdateProduct.ApiOperation)
   @ApiExtraModels(...ProductsDocs.UpdateProduct.ApiExtraModels)
   @ApiResponse(ProductsDocs.UpdateProduct.ApiResponse)
+  @ApiBadRequestResponse(ProductsDocs.UpdateProduct.ApiBadRequestResponse)
+  @ApiForbiddenResponse(ProductsDocs.UpdateProduct.ApiForbiddenResponse)
   @ApiNotFoundResponse(ProductsDocs.UpdateProduct.ApiNotFoundResponse)
   @ApiBody(ProductsDocs.UpdateProduct.ApiBody)
   @ApiBasicAuth('basicAuth')
@@ -234,13 +245,13 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.DeleteProductFromFavoritesDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.DeleteProductFromFavoritesDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.DeleteProductFromFavoritesDocs.ApiResponse)
+  @ApiOperation(ProductsDocs.DeleteProductFromFavorites.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.DeleteProductFromFavorites.ApiExtraModels)
+  @ApiResponse(ProductsDocs.DeleteProductFromFavorites.ApiResponse)
   @ApiNotFoundResponse(
-    ProductsDocs.DeleteProductFromFavoritesDocs.ApiNotFoundResponse
+    ProductsDocs.DeleteProductFromFavorites.ApiNotFoundResponse
   )
-  @ApiBody(ProductsDocs.DeleteProductFromFavoritesDocs.ApiBody)
+  @ApiBody(ProductsDocs.DeleteProductFromFavorites.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -257,16 +268,14 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.AddProductToFavoritesDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.AddProductToFavoritesDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.AddProductToFavoritesDocs.ApiResponse)
-  @ApiNotFoundResponse(
-    ProductsDocs.AddProductToFavoritesDocs.ApiNotFoundResponse
-  )
+  @ApiOperation(ProductsDocs.AddProductToFavorites.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.AddProductToFavorites.ApiExtraModels)
+  @ApiResponse(ProductsDocs.AddProductToFavorites.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.AddProductToFavorites.ApiNotFoundResponse)
   @ApiBadRequestResponse(
-    ProductsDocs.AddProductToFavoritesDocs.ApiBadRequestResponse
+    ProductsDocs.AddProductToFavorites.ApiBadRequestResponse
   )
-  @ApiBody(ProductsDocs.AddProductToFavoritesDocs.ApiBody)
+  @ApiBody(ProductsDocs.AddProductToFavorites.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -283,17 +292,17 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.GetUserFavoritesProductsDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.GetUserFavoritesProductsDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.GetUserFavoritesProductsDocs.ApiResponse)
+  @ApiOperation(ProductsDocs.GetUserFavoritesProducts.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetUserFavoritesProducts.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetUserFavoritesProducts.ApiResponse)
   @ApiBadRequestResponse(
-    ProductsDocs.GetUserFavoritesProductsDocs.ApiBadRequestResponse
+    ProductsDocs.GetUserFavoritesProducts.ApiBadRequestResponse
   )
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiProductQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageSizeQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderByQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiProductQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiPageSizeQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiPageQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiOrderQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiOrderByQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -318,10 +327,10 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.GetProductContactEmailDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.GetProductContactEmailDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.GetProductContactEmailDocs.ApiResponse)
-  @ApiQuery(ProductsDocs.GetProductContactEmailDocs.ApiProductIdQuery)
+  @ApiOperation(ProductsDocs.GetProductContactEmail.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactEmail.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactEmail.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactEmail.ApiProductIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -336,10 +345,10 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.GetProductContactPhoneDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.GetProductContactPhoneDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.GetProductContactPhoneDocs.ApiResponse)
-  @ApiQuery(ProductsDocs.GetProductContactPhoneDocs.ApiProductIdQuery)
+  @ApiOperation(ProductsDocs.GetProductContactPhone.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactPhone.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactPhone.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactPhone.ApiProductIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -354,9 +363,9 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.GetMarketplaceUserStatsDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.GetMarketplaceUserStatsDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.GetMarketplaceUserStatsDocs.ApiResponse)
+  @ApiOperation(ProductsDocs.GetMarketplaceUserStats.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetMarketplaceUserStats.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetMarketplaceUserStats.ApiResponse)
   @ApiBasicAuth('basicAuth')
   @Get('marketplace-user-statistics')
   getMarketplaceUserStatistics(

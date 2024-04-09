@@ -8,7 +8,7 @@ import { ForgotPasswordDto } from '@dto/forgot-password.dto';
 import { Language } from '@interfaces/language.enum';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
-import {UserInterceptor} from "@interceptors/user.interceptor";
+import { UserInterceptor } from '@interceptors/user.interceptor';
 
 dotenv.config({ path: '.env.test' });
 

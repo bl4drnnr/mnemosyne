@@ -81,6 +81,7 @@ export class CompanyController {
   @ApiBadRequestResponse(CompanyDocs.GetCompanyUsers.ApiBadRequestResponse)
   @ApiQuery(CompanyDocs.GetCompanyUsers.ApiPageSizeQuery)
   @ApiQuery(CompanyDocs.GetCompanyUsers.ApiPageQuery)
+  @ApiQuery(CompanyDocs.GetCompanyUsers.ApiMemberQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -89,12 +90,14 @@ export class CompanyController {
     @CompanyId() companyId: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
+    @Query('query') query: string,
     @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.getCompanyUsers({
       companyId,
       page,
       pageSize,
+      query,
       trx
     });
   }

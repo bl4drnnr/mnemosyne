@@ -294,5 +294,11 @@ export enum DocsProperty {
   PRODUCT_MIN_MAX_PRICE_DESC = 'Min or max price of all products per currency',
   PRODUCT_MIN_MAX_PRICE_EXAMPLE = '1337',
   PRODUCT_AVG_AMOUNT_DESC = 'Average amount of all products per currency',
-  PRODUCT_AVG_AMOUNT_EXAMPLE = '228'
+  PRODUCT_AVG_AMOUNT_EXAMPLE = '228',
+  PRODUCT_ON_BEHALF_OF_COMPANY_DESC = 'Is product posted on behalf of company',
+  PRODUCT_ON_BEHALF_OF_COMPANY_EXAMPLE = 'false',
+  USER_NOT_COMPANY_MEMBER_EXCEPTION_DESC = 'User not company member error message',
+  USER_NOT_COMPANY_MEMBER_EXCEPTION_EXAMPLE = 'user-not-company-member',
+  COMPANY_ID_DESC = 'Company ID',
+  COMPANY_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c'
 }

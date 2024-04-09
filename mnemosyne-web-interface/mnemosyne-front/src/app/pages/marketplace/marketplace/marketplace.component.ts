@@ -33,6 +33,8 @@ export class MarketplaceComponent implements OnInit {
   layoutView: 'list' | 'grid' = 'list';
   products: Array<SearchedProducts>;
   totalItems: number;
+  privateProductsFlag: boolean = false;
+  companyProductsFlag: boolean = false;
 
   orderOptions: Array<DropdownInterface> = [];
   orderOptionsValue: DropdownInterface;
@@ -175,6 +177,14 @@ export class MarketplaceComponent implements OnInit {
     });
   }
 
+  changeProductType(productType: 'private' | 'company') {
+    if (productType === 'private')
+      this.privateProductsFlag = !this.privateProductsFlag;
+    else if (productType === 'company')
+      this.companyProductsFlag = !this.companyProductsFlag;
+    this.getProducts();
+  }
+
   getOrderOptionDropdownLabel(orderOption: string) {
     switch (orderOption) {
       case 'title':
@@ -261,7 +271,9 @@ export class MarketplaceComponent implements OnInit {
       currency: this.productCurrencyDropdownValue.key,
       maxPrice: this.maxPrice,
       minPrice: this.minPrice,
-      subcategories: selectedSubcategories
+      subcategories: selectedSubcategories,
+      privateProducts: this.privateProductsFlag,
+      companyProducts: this.companyProductsFlag
     };
 
     this.productsService

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CompanyService } from '@services/company.service';
 import { CompanyOwnershipTransferredResponse } from '@responses/company-ownership-transferred.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -10,6 +10,8 @@ import { DeleteCompanyPayload } from '@payloads/delete-company.interface';
 import { CompanyDeletedResponse } from '@responses/company-deleted.enum';
 import { CompanyRoleType } from '@interfaces/company-role.type';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
+import { AccountTranslation } from '@translations/account.enum';
+import { TranslationService } from '@services/translation.service';
 
 @Component({
   selector: 'dashboard-company-security-settings',
@@ -28,7 +30,7 @@ import { DropdownInterface } from '@interfaces/dropdown.interface';
     ])
   ]
 })
-export class CompanySecuritySettingsComponent {
+export class CompanySecuritySettingsComponent implements OnInit {
   @Input() companyOwnerEmail: string;
   @Input() companyRoles: CompanyRoleType;
 
@@ -75,7 +77,14 @@ export class CompanySecuritySettingsComponent {
   transferOwnershipIsMfaRequired: boolean;
   transferOwnershipPhoneCodeSent = false;
 
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
+
   constructor(
+    private readonly translationService: TranslationService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly validationService: ValidationService,
     private readonly companyService: CompanyService,
@@ -320,10 +329,26 @@ export class CompanySecuritySettingsComponent {
 
   transformCompanyRoles() {
     return this.companyRoles
+      .filter(({ name }) => name !== 'PRIMARY_ADMIN')
       .map(({ id, name }) => {
-        return { key: id, value: name };
-      })
-      .filter(({ value }) => value !== 'PRIMARY_ADMIN');
+        return { key: id, value: this.translateRole(name) };
+      });
+  }
+
+  translateRole(role: string) {
+    if (this.defaultRolesTranslations && role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
   }
 
   selectCompanyRole({ key, value }: DropdownInterface) {
@@ -357,5 +382,9 @@ export class CompanySecuritySettingsComponent {
     };
 
     fileReader.readAsText(file);
+  }
+
+  async ngOnInit() {
+    await this.translateRoles();
   }
 }

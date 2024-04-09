@@ -52,9 +52,11 @@ export class ProductComponent implements OnInit {
       .subscribe({
         next: ({ product }) => {
           this.product = product;
+
           this.translationService.setPageTitle(Titles.PRODUCT, {
             product: product.title
           });
+
           this.userProfilePictureLink = product.ownerIdHash
             ? `${this.staticStorageLink}/users-profile-pictures/${product.ownerIdHash}.png`
             : `${this.staticStorageLink}/users-profile-pictures/default.png`;

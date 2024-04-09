@@ -48,6 +48,11 @@ import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
 import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 import { GetMarketplaceUserStatisticsInterface } from '@interfaces/get-marketplace-user-statistics.interface';
 import { GetMarketplaceUserStatsDto } from '@dto/get-marketplace-user-stats.dto';
+import { CompanyService } from '@modules/company.service';
+import { UserNotMemberException } from '@exceptions/user-not-member.exception';
+import { Roles } from '@interfaces/roles.enum';
+import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
+import { CheckForProductPermissionsInterface } from '@interfaces/check-for-product-permissions.interface';
 
 @Injectable()
 export class ProductsService {
@@ -56,6 +61,7 @@ export class ProductsService {
     private readonly cryptographicService: CryptographicService,
     private readonly categoriesService: CategoriesService,
     private readonly usersService: UsersService,
+    private readonly companyService: CompanyService,
     @InjectModel(Product)
     private readonly productRepository: typeof Product
   ) {}
@@ -103,6 +109,20 @@ export class ProductsService {
       isProfilePicPresent = false;
     }
 
+    let companyId: string;
+    let companyName: string;
+    const onBehalfOfCompany = foundProduct.onBehalfOfCompany;
+
+    if (onBehalfOfCompany) {
+      const { id, companyName: name } =
+        await this.companyService.getCompanyByUserId({
+          userId: foundProduct.userId,
+          trx
+        });
+      companyId = id;
+      companyName = name;
+    }
+
     const product = {
       id: foundProduct.id,
       title: foundProduct.title,
@@ -117,7 +137,10 @@ export class ProductsService {
       createdAt: foundProduct.createdAt,
       productInFavorites: false,
       ownerId: foundProduct.userId,
-      ownerIdHash: isProfilePicPresent ? userIdHash : null
+      ownerIdHash: isProfilePicPresent ? userIdHash : null,
+      onBehalfOfCompany,
+      companyId: onBehalfOfCompany ? companyId : null,
+      companyName: onBehalfOfCompany ? companyName : null
     };
 
     if (userId) {
@@ -182,6 +205,8 @@ export class ProductsService {
     currency,
     categories,
     subcategories,
+    companyProducts,
+    privateProducts,
     marketplaceUserId,
     userId,
     trx
@@ -213,6 +238,26 @@ export class ProductsService {
 
     if (!['PLN', 'USD', 'EUR', 'all'].includes(currency))
       throw new WrongCurrencyException();
+
+    const productsTypeFlags = ['true', 'false'];
+    let getCompanyProducts: boolean;
+    let getPrivateProducts: boolean;
+
+    if (companyProducts) {
+      if (!productsTypeFlags.includes(companyProducts.toLowerCase()))
+        throw new ParseException();
+      else {
+        getCompanyProducts = companyProducts.toLowerCase() === 'true';
+      }
+    }
+
+    if (privateProducts) {
+      if (!productsTypeFlags.includes(privateProducts.toLowerCase()))
+        throw new ParseException();
+      else {
+        getPrivateProducts = privateProducts.toLowerCase() === 'true';
+      }
+    }
 
     const providedCategories = categories
       .split(',')
@@ -269,6 +314,12 @@ export class ProductsService {
         { description: { [Op.iLike]: `%${query}%` } },
         { slug: { [Op.iLike]: `%${query}%` } }
       ];
+    }
+
+    if (getCompanyProducts && !getPrivateProducts) {
+      where[Op.and].push([{ on_behalf_of_company: true }]);
+    } else if (getPrivateProducts && !getCompanyProducts) {
+      where[Op.and].push([{ on_behalf_of_company: false }]);
     }
 
     if (minPrice && maxPrice) {
@@ -365,8 +416,16 @@ export class ProductsService {
       contactPhone,
       contactPerson,
       category,
-      subcategory
+      subcategory,
+      postOnBehalfOfCompany
     } = payload;
+
+    const productPostedOnBehalfOfCompany =
+      await this.checkForUserProductManagementPermissions({
+        postOnBehalfOfCompany,
+        userId,
+        trx
+      });
 
     const slug = this.generateProductSlug(title);
     const picturesHashes = await this.uploadProductPictures(pictures);
@@ -389,7 +448,8 @@ export class ProductsService {
         contactPhone,
         contactPerson,
         userId,
-        categoryId
+        categoryId,
+        onBehalfOfCompany: productPostedOnBehalfOfCompany
       },
       {
         transaction: trx
@@ -426,7 +486,8 @@ export class ProductsService {
       category: productToEdit.category.name,
       createdAt: productToEdit.createdAt,
       contactPerson: productToEdit.contactPerson,
-      contactPhone: productToEdit.contactPhone
+      contactPhone: productToEdit.contactPhone,
+      onBehalfOfCompany: productToEdit.onBehalfOfCompany
     };
 
     return new ProductBySlugToEditDto(product);
@@ -444,8 +505,16 @@ export class ProductsService {
       contactPhone,
       contactPerson,
       category,
-      subcategory
+      subcategory,
+      postOnBehalfOfCompany
     } = payload;
+
+    const productPostedOnBehalfOfCompany =
+      await this.checkForUserProductManagementPermissions({
+        postOnBehalfOfCompany,
+        userId,
+        trx
+      });
 
     const editedProduct = await this.productRepository.findOne({
       where: { userId, id },
@@ -486,7 +555,8 @@ export class ProductsService {
         contactPhone,
         contactPerson,
         categoryId,
-        subcategory
+        subcategory,
+        onBehalfOfCompany: productPostedOnBehalfOfCompany
       },
       {
         returning: false,
@@ -854,6 +924,39 @@ export class ProductsService {
       eurMinPrice,
       eurMaxPrice
     });
+  }
+
+  private async checkForUserProductManagementPermissions({
+    postOnBehalfOfCompany,
+    userId,
+    trx
+  }: CheckForProductPermissionsInterface) {
+    let productPostedOnBehalfOfCompany = false;
+
+    const company = await this.companyService.getCompanyByUserId({
+      userId,
+      trx
+    });
+
+    if (!company && postOnBehalfOfCompany) {
+      throw new UserNotMemberException();
+    } else if (company && postOnBehalfOfCompany) {
+      const companyUserId = company.companyUsers.find(
+        (user) => user.userId === userId
+      ).id;
+      const { roleScopes } = await this.companyService.getCompanyUserRole({
+        companyUserId,
+        trx
+      });
+
+      if (!roleScopes.includes(Roles.PRODUCT_MANAGEMENT)) {
+        throw new ForbiddenResourceException();
+      } else {
+        productPostedOnBehalfOfCompany = true;
+      }
+    }
+
+    return productPostedOnBehalfOfCompany;
   }
 
   private generateProductSlug(productName: string) {

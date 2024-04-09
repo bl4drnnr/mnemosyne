@@ -61,10 +61,16 @@ export class MarketplaceUserComponent implements OnInit {
   namePronunciation: string | null;
   createdAt: Date;
   userIdHash: string | null;
+  companyId: string | null;
+  companyName: string | null;
+
   userId: string;
   userNotFound: boolean;
   isUserLoggedIn: boolean;
   userProfilePictureLink: string;
+
+  privateProductsFlag: boolean = false;
+  companyProductsFlag: boolean = false;
 
   userStats: GetMarketplaceUserStatsResponse;
 
@@ -254,6 +260,14 @@ export class MarketplaceUserComponent implements OnInit {
     });
   }
 
+  changeProductType(productType: 'private' | 'company') {
+    if (productType === 'private')
+      this.privateProductsFlag = !this.privateProductsFlag;
+    else if (productType === 'company')
+      this.companyProductsFlag = !this.companyProductsFlag;
+    this.getMarketplaceUserProducts();
+  }
+
   getMarketplaceUserStatistics() {
     this.productsService
       .getMarketplaceUserStatistics({
@@ -286,7 +300,9 @@ export class MarketplaceUserComponent implements OnInit {
       maxPrice: this.maxPrice,
       minPrice: this.minPrice,
       subcategories: selectedSubcategories,
-      marketplaceUserId: this.userId
+      marketplaceUserId: this.userId,
+      privateProducts: this.privateProductsFlag,
+      companyProducts: this.companyProductsFlag
     };
 
     this.productsService
@@ -330,7 +346,9 @@ export class MarketplaceUserComponent implements OnInit {
             homePhone,
             namePronunciation,
             createdAt,
-            userIdHash
+            userIdHash,
+            companyId,
+            companyName
           } = marketplaceUser;
 
           this.email = email;
@@ -341,6 +359,8 @@ export class MarketplaceUserComponent implements OnInit {
           this.namePronunciation = namePronunciation;
           this.createdAt = createdAt;
           this.userIdHash = userIdHash;
+          this.companyId = companyId;
+          this.companyName = companyName;
 
           this.translationService.setPageTitle(Titles.MARKETPLACE_USER, {
             firstName,

@@ -125,15 +125,29 @@ paths:
   /api/users/marketplace-user:
     get:
       operationId: UsersController_getMarketplaceUserById
+      summary: Endpoint is responsible for getting public marketplace user information.
       parameters:
         - name: marketplaceUserId
           required: true
           in: query
+          description: Marketplace user ID (or just user ID)
           schema:
             type: string
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets a message with public information about
+            user along with optional information about company.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMarketplaceUserByIdDto"
+        "404":
+          description: In case if marketplace user ID has been modified and user has not
+            been found user gets not found error message.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserNotFoundException"
       tags: *a1
       security:
         - basicAuth: []
@@ -627,6 +641,12 @@ paths:
           required: true
           in: query
           description: Query for limit in order to get list of company users.
+          schema:
+            type: string
+        - name: query
+          required: false
+          in: query
+          description: Member query
           schema:
             type: string
       responses:
@@ -1991,9 +2011,22 @@ paths:
           description: Products subcategories
           schema:
             type: string
-        - name: marketplaceUserId
-          required: true
+        - name: companyProducts
+          required: false
           in: query
+          description: Company products flag
+          schema:
+            type: string
+        - name: privateProducts
+          required: false
+          in: query
+          description: Private products flag
+          schema:
+            type: string
+        - name: marketplaceUserId
+          required: false
+          in: query
+          description: Marketplace user ID (or just user ID)
           schema:
             type: string
       responses:
@@ -2054,7 +2087,16 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/WrongPictureException"
+                oneOf:
+                  - $ref: "#/components/schemas/WrongPictureException"
+                  - $ref: "#/components/schemas/UserNotMemberException"
+        "403":
+          description: Forbidden request is thrown in case if user who has no access is
+            trying to post a product on behalf of a company.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResourceException"
       tags: *a9
       security:
         - x-access-token: []
@@ -2107,6 +2149,22 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ProductUpdatedDto"
+        "400":
+          description: If user tries to upload something else except of base64-encoded PNG
+            picture.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/WrongPictureException"
+                  - $ref: "#/components/schemas/UserNotMemberException"
+        "403":
+          description: Forbidden request is thrown in case if user who has no access is
+            trying to post a product on behalf of a company.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResourceException"
         "404":
           description: Not found exception is thrown in case if product category or
             product itself is not found.
@@ -2518,6 +2576,21 @@ components:
           type: boolean
           description: Flag if the user is company member
           example: "false"
+        companyName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        roleName:
+          type: string
+          description: Company custom role name
+          example: My Test Role
+        roleScopes:
+          description: The array of the scopes for company custom role
+          example:
+            - USER_MANAGEMENT
+          type: array
+          items:
+            type: array
       required:
         - userIdHash
         - firstName
@@ -2528,6 +2601,9 @@ components:
         - homeAddress
         - homePhone
         - isCompanyMember
+        - companyName
+        - roleName
+        - roleScopes
     PhoneStatus:
       type: object
       properties:
@@ -2602,6 +2678,91 @@ components:
           type: string
           description: User home phone
           example: (800) 1231-1234
+    UserNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Marketplace user not found error message
+          example: user-not-found
+      required:
+        - message
+    MarketplaceUser:
+      type: object
+      properties:
+        email:
+          type: string
+          description: Email address
+          example: joe@doe.com
+        firstName:
+          type: string
+          description: First name
+          example: Joe
+        lastName:
+          type: string
+          description: Last name
+          example: Doe
+        homeAddress:
+          type: string
+          description: User home address
+          example: One Apple Park Way, United States
+        homePhone:
+          type: string
+          description: User home phone
+          example: (800) 1231-1234
+        namePronunciation:
+          type: string
+          description: This could be a phonetic pronunciation, or an example of something
+            your name sounds like
+          example: Zoe ("zo-ee")
+        createdAt:
+          format: date-time
+          type: string
+          description: User creation date
+          example: 2023-11-17T11:42:26.534Z
+        userIdHash:
+          type: string
+          description: User MD5 hashed ID
+          example: 71956c9eea017cb85242a49f416fd859
+        companyId:
+          type: string
+          description: Company ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+        companyName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+      required:
+        - email
+        - firstName
+        - lastName
+        - homeAddress
+        - homePhone
+        - namePronunciation
+        - createdAt
+        - userIdHash
+        - companyId
+        - companyName
+    GetMarketplaceUserByIdDto:
+      type: object
+      properties:
+        marketplaceUser:
+          description: Public information of the user on the marketplace
+          example:
+            email: joe@doe.com
+            firstName: Joe
+            lastName: Doe
+            homeAddress: One Apple Park Way, United States
+            homePhone: (800) 1231-1234
+            namePronunciation: Zoe ("zo-ee")
+            createdAt: 2023-11-17T11:42:26.534Z
+            userIdHash: 71956c9eea017cb85242a49f416fd859
+            companyId: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+            companyName: Apple Inc.
+          allOf:
+            - $ref: "#/components/schemas/MarketplaceUser"
+      required:
+        - marketplaceUser
     AccountConfirmedDto:
       type: object
       properties:
@@ -3214,15 +3375,6 @@ components:
       required:
         - newCompanyOwnerEmail
         - newRoleForOldOwnerId
-    UserNotFoundException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Marketplace user not found error message
-          example: user-not-found
-      required:
-        - message
     RoleDoesntExistException:
       type: object
       properties:
@@ -3944,6 +4096,8 @@ components:
             productInFavorites: "false"
             ownerId: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
             ownerIdHash: 71956c9eea017cb85242a49f416fd859
+            companyId: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+            companyName: Apple Inc.
           allOf:
             - $ref: "#/components/schemas/Product"
       required:
@@ -4127,6 +4281,10 @@ components:
             - it_books
           description: Subcategory description
           example: it_books
+        postOnBehalfOfCompany:
+          type: boolean
+          description: Is product posted on behalf of company
+          example: "false"
       required:
         - title
         - description
@@ -4152,6 +4310,24 @@ components:
       required:
         - message
         - link
+    UserNotMemberException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: User not company member error message
+          example: user-not-company-member
+      required:
+        - message
+    ForbiddenResourceException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Forbidden resource error message
+          example: forbidden
+      required:
+        - message
     ProductBySlugToEditDto:
       type: object
       properties:
@@ -4170,6 +4346,7 @@ components:
             category: travels
             contactPerson: John Doe
             contactPhone: "123123123"
+            onBehalfOfCompany: "false"
           allOf:
             - $ref: "#/components/schemas/Product"
       required:

@@ -10,5 +10,9 @@
   "productPicsUploadDesc": "Zdjęcia będą wyświetlane w kolejności, w jakiej je przesyłasz. Pierwsze zdjęcie będzie głównym zdjęciem postu. Aby przesłać zdjęcie, kliknij przycisk Podgląd poniżej. Aby usunąć zdjęcie, którego nie chcesz być w poście, kliknij go ponownie.",
   "onlyPngAllowed": "Dozwolone są tylko zdjęcia PNG! Różne formaty spowodują błąd i nie będziesz mógł ich przesłać!",
   "productWasModified": "Produkt został zmodyfikowany. Zapisz zmiany, w przeciwnym razie postęp zostanie utracony.",
-  "productWasNotModified": "Produkt nie został zmodyfikowany"
+  "productWasNotModified": "Produkt nie został zmodyfikowany",
+  "youAreCompanyMemberTitle": "Wygląda na to, że jesteś członkiem firmy",
+  "postOnCompanyBehalfParagraph": "Wygląda na to, że jesteś członkiem {{ companyName }} firmy i możesz publikować produkty w imieniu firmy. Chcesz to zrobić?",
+  "postOnCompanyBehalfConfirm": "Tak, chcę, aby ten produkt został opublikowany w imieniu {{ companyName }} firmy.",
+  "postOnCompanyBehalfNotAllowed": "Eh... Wygląda na to, że nie możesz publikować produktów w imieniu swojej roli. Jeśli uważasz, że to błąd, skontaktuj się z administratorem i poproś go o zmodyfikowanie roli {{ roleName }}."
 }

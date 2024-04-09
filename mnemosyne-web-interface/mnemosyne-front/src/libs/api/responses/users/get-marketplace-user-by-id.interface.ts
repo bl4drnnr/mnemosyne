@@ -7,6 +7,8 @@ export interface MarketplaceUser {
   namePronunciation: string | null;
   createdAt: Date;
   userIdHash: string | null;
+  companyId: string | null;
+  companyName: string | null;
 }
 
 export interface GetMarketplaceUserByIdResponse {

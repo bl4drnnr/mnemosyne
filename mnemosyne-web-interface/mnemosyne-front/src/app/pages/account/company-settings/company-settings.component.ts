@@ -29,6 +29,7 @@ export class CompanySettingsComponent {
 
   page: string = '0';
   pageSize: string = '10';
+  query: string;
   totalItems: number;
   companyUsers: UsersList;
   companyRoles: CompanyRoleType;
@@ -54,7 +55,8 @@ export class CompanySettingsComponent {
     this.companyService
       .getCompanyUsers({
         page: this.page,
-        pageSize: this.pageSize
+        pageSize: this.pageSize,
+        query: this.query
       })
       .subscribe({
         next: ({ companyUsers, count }) => {

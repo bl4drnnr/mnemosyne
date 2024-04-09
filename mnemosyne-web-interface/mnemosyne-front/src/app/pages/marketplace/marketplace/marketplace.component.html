@@ -114,6 +114,25 @@
               </button>
             </div>
           </div>
+          <div class="marketplace-filters-container margin-bottom">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceFiltersProductTypes') }}:</b>
+            </p>
+
+            <basic-checkbox
+              [checked]="privateProductsFlag"
+              (checkedChange)="changeProductType('private')"
+            >
+              <span content>{{ t('marketplace.marketplacePrivateProducts') }}</span>
+            </basic-checkbox>
+
+            <basic-checkbox
+              [checked]="companyProductsFlag"
+              (checkedChange)="changeProductType('company')"
+            >
+              <span content>{{ t('marketplace.marketplaceCompanyProducts') }}</span>
+            </basic-checkbox>
+          </div>
         </div>
 
         <h1 class="marketplace-title">

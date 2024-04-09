@@ -16,7 +16,9 @@ import {
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
@@ -116,7 +118,11 @@ export class UsersController {
     });
   }
 
-  // @TODO Write docs
+  @ApiOperation(UsersDocs.GetMarketplaceUserById.ApiOperation)
+  @ApiExtraModels(...UsersDocs.GetMarketplaceUserById.ApiExtraModels)
+  @ApiResponse(UsersDocs.GetMarketplaceUserById.ApiResponse)
+  @ApiNotFoundResponse(UsersDocs.GetMarketplaceUserById.ApiNotFoundResponse)
+  @ApiQuery(UsersDocs.GetMarketplaceUserById.ApiMarketplaceUserIdQuery)
   @ApiBasicAuth('basicAuth')
   @UseInterceptors(UserInterceptor)
   @Get('marketplace-user')

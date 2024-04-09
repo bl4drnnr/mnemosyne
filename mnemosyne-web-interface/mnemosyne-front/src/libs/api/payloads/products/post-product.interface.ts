@@ -14,4 +14,5 @@ export interface PostProductPayload {
   contactPerson: string;
   category: ProductCategory;
   subcategory: ProductSubcategory;
+  postOnBehalfOfCompany: boolean;
 }

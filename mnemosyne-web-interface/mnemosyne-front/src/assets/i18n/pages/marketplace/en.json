@@ -4,6 +4,7 @@
   "marketplaceFiltersSubcategories": "Subcategories for",
   "marketplaceFiltersPriceRange": "Price range",
   "marketplaceFiltersLayout": "Layout view",
+  "marketplaceFiltersProductTypes": "Product types",
   "marketplaceWelcomeTitle": "Welcome to the marketplace!",
   "marketplaceOrderBySubtitle": "Select the order you want products to be sorted. ASC represents sorting in ascending order, and DESC represents sorting in descending order.",
   "marketplaceOrderSubtitle": "Select the field by which the order (ASC or DESC) will be performed. The default field is the creation date of the product.",
@@ -27,5 +28,8 @@
   "statsMinPrice": "Minimal price",
   "statsMaxPrice": "Maximum price",
   "statsTitle": "User products' statistics",
-  "statsTotalAmount": "Total amount of products: {{ amount }}"
+  "statsTotalAmount": "Total amount of products: {{ amount }}",
+  "marketplaceUserNoCompany": "No company membership",
+  "marketplacePrivateProducts": "Private products",
+  "marketplaceCompanyProducts": "Company products"
 }

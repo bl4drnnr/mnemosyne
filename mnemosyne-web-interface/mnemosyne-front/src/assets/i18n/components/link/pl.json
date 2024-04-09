@@ -7,5 +7,7 @@
   "maybeForgotPass": "A może po prostu zapomniałeś hasła?",
   "here": "tutaj",
   "productGoToMainPage": "Strona główna",
-  "seeMoreProducts": "Zobacz więcej produktów"
+  "seeMoreProducts": "Zobacz więcej produktów",
+  "seeMoreCompanyProducts": "Zobacz więcej produktów firmy {{ companyName }}",
+  "memberOfCompany": "Członek firmy: {{ companyName }}"
 }

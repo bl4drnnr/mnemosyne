@@ -28,6 +28,8 @@ import { UserFavoriteProductsDto } from '@dto/user-favorite-products.dto';
 import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
 import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 import { GetMarketplaceUserStatsDto } from '@dto/get-marketplace-user-stats.dto';
+import { UserNotMemberException } from '@exceptions/user-not-member.exception';
+import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -123,6 +125,9 @@ export abstract class ProductsDocs {
     const currencyQueryDesc = 'Product currency';
     const categoryQueryDesc = 'Products categories';
     const subcategoryQueryDesc = 'Products subcategories';
+    const companyProductsQueryDesc = 'Company products flag';
+    const privateProductsQueryDesc = 'Private products flag';
+    const marketplaceUserIdQueryDesc = 'Marketplace user ID (or just user ID)';
 
     const productQuery = {
       description: productQueryDesc,
@@ -194,6 +199,27 @@ export abstract class ProductsDocs {
       required: false
     };
 
+    const companyProductsQuery = {
+      description: companyProductsQueryDesc,
+      name: 'companyProducts',
+      type: String,
+      required: false
+    };
+
+    const privateProductsQuery = {
+      description: privateProductsQueryDesc,
+      name: 'privateProducts',
+      type: String,
+      required: false
+    };
+
+    const marketplaceUserIdQuery = {
+      description: marketplaceUserIdQueryDesc,
+      name: 'marketplaceUserId',
+      type: String,
+      required: false
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -219,12 +245,22 @@ export abstract class ProductsDocs {
       ApiMaxPriceQuery: maxPriceQuery,
       ApiCurrencyQuery: currencyQuery,
       ApiCategoryQuery: categoryQuery,
-      ApiSubcategoryQuery: subcategoryQuery
+      ApiSubcategoryQuery: subcategoryQuery,
+      ApiCompanyProductsQuery: companyProductsQuery,
+      ApiPrivateProductsQuery: privateProductsQuery,
+      ApiMarketplaceUserIdQuery: marketplaceUserIdQuery
     };
   }
 
   static get CreateProduct() {
-    const ApiModels = [PostProductDto, ProductPostedDto, WrongPictureException];
+    const ApiModels = [
+      PostProductDto,
+      ProductPostedDto,
+      WrongPictureException,
+      UserNotMemberException,
+      ForbiddenResourceException
+    ];
+    const BadRequests = [WrongPictureException, UserNotMemberException];
 
     const apiOperationSum =
       'Endpoint is responsible for the creation of the product on the marketplace.';
@@ -234,6 +270,8 @@ export abstract class ProductsDocs {
       'Body contains all needed fields in order to create a product.';
     const apiBadRequestRespDesc =
       'If user tries to upload something else except of base64-encoded PNG picture.';
+    const apiForbiddenRespDesc =
+      'Forbidden request is thrown in case if user who has no access is trying to post a product on behalf of a company.';
 
     return {
       ApiOperation: { summary: apiOperationSum },
@@ -245,7 +283,11 @@ export abstract class ProductsDocs {
       },
       ApiBadRequestResponse: {
         description: apiBadRequestRespDesc,
-        schema: { $ref: getSchemaPath(WrongPictureException) }
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
       },
       ApiBody: {
         type: PostProductDto,
@@ -286,12 +328,14 @@ export abstract class ProductsDocs {
       ProductUpdatedDto,
       WrongPictureException,
       CategoryNotFoundException,
-      PostProductDto
+      PostProductDto,
+      UserNotMemberException
     ];
     const NotFoundRequests = [
       ProductNotFoundException,
       CategoryNotFoundException
     ];
+    const BadRequests = [WrongPictureException, UserNotMemberException];
 
     const apiOperationSum = 'Endpoint is responsible for a product update.';
     const apiResponseDesc =
@@ -300,6 +344,10 @@ export abstract class ProductsDocs {
       'Body contains all needed fields in order to create a product.';
     const apiNotFoundDesc =
       'Not found exception is thrown in case if product category or product itself is not found.';
+    const apiBadRequestRespDesc =
+      'If user tries to upload something else except of base64-encoded PNG picture.';
+    const apiForbiddenRespDesc =
+      'Forbidden request is thrown in case if user who has no access is trying to post a product on behalf of a company.';
 
     return {
       ApiOperation: { summary: apiOperationSum },
@@ -308,6 +356,14 @@ export abstract class ProductsDocs {
         status: 201,
         description: apiResponseDesc,
         schema: { $ref: getSchemaPath(ProductUpdatedDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
       },
       ApiNotFoundResponse: {
         description: apiNotFoundDesc,
@@ -441,7 +497,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get DeleteProductFromFavoritesDocs() {
+  static get DeleteProductFromFavorites() {
     const ApiModels = [
       DeleteProductsFromFavoritesDto,
       ProductDeletedFromFavoritesDto,
@@ -476,7 +532,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get AddProductToFavoritesDocs() {
+  static get AddProductToFavorites() {
     const ApiModels = [
       AddProductToFavoritesDto,
       ProductAddedToFavoritesDto,
@@ -518,7 +574,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get GetUserFavoritesProductsDocs() {
+  static get GetUserFavoritesProducts() {
     const ApiModels = [
       ParseException,
       OrderException,
@@ -596,7 +652,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get GetProductContactEmailDocs() {
+  static get GetProductContactEmail() {
     const ApiModels = [GetProductContactEmailDto];
 
     const apiOperationSum =
@@ -624,7 +680,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get GetProductContactPhoneDocs() {
+  static get GetProductContactPhone() {
     const ApiModels = [GetProductContactPhoneDto];
 
     const apiOperationSum =
@@ -652,7 +708,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get GetMarketplaceUserStatsDocs() {
+  static get GetMarketplaceUserStats() {
     const ApiModels = [GetMarketplaceUserStatsDto];
 
     const apiOperationSum =

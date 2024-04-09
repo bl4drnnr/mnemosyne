@@ -45,15 +45,14 @@ export class CompanyService {
     });
   }
 
-  getCompanyUsers({
-    page,
-    pageSize
-  }: GetCompanyUsersPayload): Observable<GetCompanyUsersResponse> {
+  getCompanyUsers(
+    params: GetCompanyUsersPayload
+  ): Observable<GetCompanyUsersResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.GET_COMPANY_USERS,
-      params: { page, pageSize }
+      params
     });
   }
 

@@ -17,6 +17,9 @@ import { MessagesTranslation } from '@translations/messages.enum';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
 import { SubcategoriesListType } from '@interfaces/subcategories-list.type';
+import { RoleScope } from '@interfaces/role-scope.type';
+import { Scopes } from '@interfaces/role-scopes.enum';
+import { AccountTranslation } from '@translations/account.enum';
 
 @Component({
   selector: 'page-edit-product',
@@ -35,6 +38,7 @@ export class EditProductComponent implements OnInit {
   contactPhoneNumber: string;
   productPrice: string;
   productLocation: string;
+  postOnBehalfOfCompany: boolean;
 
   product: GetProductBySlug;
 
@@ -66,6 +70,17 @@ export class EditProductComponent implements OnInit {
   productPic6: string | ArrayBuffer | null;
   productPic7: string | ArrayBuffer | null;
   productPic8: string | ArrayBuffer | null;
+
+  isCompanyMember: boolean;
+  companyName: string | null;
+  roleName: string | null;
+  roleScopes: Array<RoleScope> | null;
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
+
   @ViewChild('fileInput1') fileInput1!: UploadProductPictureComponent;
   @ViewChild('fileInput2') fileInput2!: UploadProductPictureComponent;
   @ViewChild('fileInput3') fileInput3!: UploadProductPictureComponent;
@@ -109,7 +124,8 @@ export class EditProductComponent implements OnInit {
         contactPhone: this.contactPhoneNumber,
         contactPerson: this.contactPerson,
         category: this.categoryDropdownValue.key as ProductCategory,
-        subcategory: this.subcategoryDropdownValue.key as ProductSubcategory
+        subcategory: this.subcategoryDropdownValue.key as ProductSubcategory,
+        postOnBehalfOfCompany: this.postOnBehalfOfCompany
       })
       .subscribe({
         next: async ({ message, link }) => {
@@ -146,6 +162,7 @@ export class EditProductComponent implements OnInit {
             key: product.currency,
             value: product.currency
           };
+          this.postOnBehalfOfCompany = product.onBehalfOfCompany;
 
           const picturesIndex: Array<number> = [];
 
@@ -224,7 +241,8 @@ export class EditProductComponent implements OnInit {
         this.subcategoryDropdownValue.key !== this.product.subcategory ||
         this.productPriceDropdownValue.key !== this.product.currency ||
         JSON.stringify(productPictures) !==
-          JSON.stringify(this.product.pictures)
+          JSON.stringify(this.product.pictures) ||
+        this.postOnBehalfOfCompany !== this.product.onBehalfOfCompany
       );
     } else {
       return true;
@@ -435,6 +453,26 @@ export class EditProductComponent implements OnInit {
     }
   }
 
+  userIsAllowedToPostProducts() {
+    return this.roleScopes?.includes(Scopes.PRODUCT_MANAGEMENT);
+  }
+
+  translateRole(role: string) {
+    if (this.defaultRolesTranslations && role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
+  }
+
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
   }
@@ -456,10 +494,17 @@ export class EditProductComponent implements OnInit {
 
             if (userInfoRequest) {
               userInfoRequest.subscribe({
-                next: (userInfo) => (this.contactEmail = userInfo.email)
+                next: (userInfo) => {
+                  this.contactEmail = userInfo.email;
+                  this.isCompanyMember = userInfo.isCompanyMember;
+                  this.companyName = userInfo.companyName;
+                  this.roleName = userInfo.roleName;
+                  this.roleScopes = userInfo.roleScopes;
+                }
               });
             }
 
+            await this.translateRoles();
             this.getProductBySlugToEdit();
           }
         });

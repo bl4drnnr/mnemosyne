@@ -17,6 +17,9 @@ export interface GetProductBySlug {
   ownerId?: string;
   ownerIdHash?: string;
   productInFavorites?: boolean;
+  onBehalfOfCompany: boolean;
+  companyId?: string | null;
+  companyName?: string | null;
 }
 
 export interface GetProductBySlugResponse {

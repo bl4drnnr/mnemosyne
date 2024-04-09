@@ -202,6 +202,30 @@
           />
         </div>
 
+        <div
+          *ngIf="isCompanyMember"
+          class="info-product-container"
+        >
+          <h2 class="flex">
+            <span>{{ t('create-product.youAreCompanyMemberTitle') }}&nbsp;</span>
+            <basic-emoji emoji="office-building.png" [width]="32" [height]="32" />
+          </h2>
+
+          <div *ngIf="userIsAllowedToPostProducts()">
+            <p>{{ t('create-product.postOnCompanyBehalfParagraph', { companyName }) }}</p>
+            <basic-checkbox
+              [checked]="postOnBehalfOfCompany"
+              (checkedChange)="postOnBehalfOfCompany = !postOnBehalfOfCompany"
+            >
+              <span content>{{ t('create-product.postOnCompanyBehalfConfirm', { companyName }) }}</span>
+            </basic-checkbox>
+          </div>
+
+          <div *ngIf="!userIsAllowedToPostProducts()">
+            <p>{{ t('create-product.postOnCompanyBehalfNotAllowed', { roleName: translateRole(roleName!) }) }}</p>
+          </div>
+        </div>
+
         <div class="buttons-product-container">
           <div>
             <p>{{ t('create-product.postProductAccept') }}&nbsp;<basic-link
