@@ -53,6 +53,8 @@ import { UserNotMemberException } from '@exceptions/user-not-member.exception';
 import { Roles } from '@interfaces/roles.enum';
 import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
 import { CheckForProductPermissionsInterface } from '@interfaces/check-for-product-permissions.interface';
+import { GetCompanyProductsStatsInterface } from '@interfaces/get-company-products-stats.interface';
+import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
 
 @Injectable()
 export class ProductsService {
@@ -867,6 +869,40 @@ export class ProductsService {
     });
     const amountOfProducts = count;
 
+    const userStats = this.marketplaceProductsStats(rows);
+
+    return new GetMarketplaceUserStatsDto({ amountOfProducts, ...userStats });
+  }
+
+  async getCompanyProductsStatistics({
+    companyId,
+    trx
+  }: GetCompanyProductsStatsInterface) {
+    const allCompanyUsers = await this.companyService.getAllCompanyUsers({
+      companyId,
+      trx
+    });
+
+    const allCompanyUsersIds = allCompanyUsers.rows.map(({ id }) => id);
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where: {
+        userId: { [Op.in]: allCompanyUsersIds },
+        onBehalfOfCompany: true
+      },
+      transaction: trx
+    });
+    const amountOfProducts = count;
+
+    const companyStats = this.marketplaceProductsStats(rows);
+
+    return new GetMarketplaceCompanyStatsDto({
+      amountOfProducts,
+      ...companyStats
+    });
+  }
+
+  private marketplaceProductsStats(rows: Array<Product>) {
     const plnProducts = rows.filter(({ currency }) => currency === 'PLN');
     const usdProducts = rows.filter(({ currency }) => currency === 'USD');
     const eurProducts = rows.filter(({ currency }) => currency === 'EUR');
@@ -909,8 +945,7 @@ export class ProductsService {
       eurMaxPrice = Math.max(...eurProducts.map((p) => p.price));
     }
 
-    return new GetMarketplaceUserStatsDto({
-      amountOfProducts,
+    return {
       plnProductsAmount,
       usdProductsAmount,
       eurProductsAmount,
@@ -923,7 +958,7 @@ export class ProductsService {
       usdMaxPrice,
       eurMinPrice,
       eurMaxPrice
-    });
+    };
   }
 
   private async checkForUserProductManagementPermissions({

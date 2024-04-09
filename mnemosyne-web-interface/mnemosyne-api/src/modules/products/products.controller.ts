@@ -366,6 +366,7 @@ export class ProductsController {
   @ApiOperation(ProductsDocs.GetMarketplaceUserStats.ApiOperation)
   @ApiExtraModels(...ProductsDocs.GetMarketplaceUserStats.ApiExtraModels)
   @ApiResponse(ProductsDocs.GetMarketplaceUserStats.ApiResponse)
+  @ApiQuery(ProductsDocs.GetMarketplaceUserStats.ApiMarketplaceUserIdQuery)
   @ApiBasicAuth('basicAuth')
   @Get('marketplace-user-statistics')
   getMarketplaceUserStatistics(
@@ -374,6 +375,24 @@ export class ProductsController {
   ) {
     return this.productsService.getMarketplaceUserStatistics({
       marketplaceUserId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetMarketplaceCompanyStats.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetMarketplaceCompanyStats.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetMarketplaceCompanyStats.ApiResponse)
+  @ApiQuery(
+    ProductsDocs.GetMarketplaceCompanyStats.ApiMarketplaceCompanyIdQuery
+  )
+  @ApiBasicAuth('basicAuth')
+  @Get('marketplace-company-statistics')
+  getCompanyProductsStatistics(
+    @Query('companyId') companyId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getCompanyProductsStatistics({
+      companyId,
       trx
     });
   }

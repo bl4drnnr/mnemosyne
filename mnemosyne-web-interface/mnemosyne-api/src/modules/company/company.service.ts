@@ -47,6 +47,7 @@ import { GetCompanyUserRolesInterface } from '@interfaces/get-company-user-roles
 import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
 import { GetCompanyPublicInformationInterface } from '@interfaces/get-company-public-information.interface';
 import { GetCompanyPublicInfoDto } from '@dto/get-company-public-info.dto';
+import { GetAllCompanyUsersInterface } from '@interfaces/get-all-company-users.interface';
 
 @Injectable()
 export class CompanyService {
@@ -387,6 +388,24 @@ export class CompanyService {
     return new GetCompanyUsersDto({
       companyUsers: users,
       count
+    });
+  }
+
+  async getAllCompanyUsers({ companyId, trx }: GetAllCompanyUsersInterface) {
+    const company = await this.companyRepository.findOne({
+      where: { id: companyId },
+      include: { all: true },
+      transaction: trx
+    });
+
+    if (!company) throw new CompanyNotFoundException();
+
+    const companyUsersIds = company.companyUsers.map(({ userId }) => userId);
+
+    return await this.usersService.getUsersByIds({
+      attributes: ['id', 'firstName', 'lastName'],
+      ids: companyUsersIds,
+      trx
     });
   }
 

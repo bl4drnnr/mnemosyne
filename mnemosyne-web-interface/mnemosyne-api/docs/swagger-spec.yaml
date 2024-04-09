@@ -2479,6 +2479,21 @@ paths:
       tags: *a9
       security:
         - basicAuth: []
+  /api/products/marketplace-company-statistics:
+    get:
+      operationId: ProductsController_getCompanyProductsStatistics
+      parameters:
+        - name: companyId
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: ""
+      tags: *a9
+      security:
+        - basicAuth: []
   /api/categories/all-categories:
     get:
       operationId: CategoriesController_getAllCategories

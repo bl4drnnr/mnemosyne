@@ -30,6 +30,8 @@ import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
 import { GetMarketplaceUserStatsDto } from '@dto/get-marketplace-user-stats.dto';
 import { UserNotMemberException } from '@exceptions/user-not-member.exception';
 import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
+import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -716,6 +718,15 @@ export abstract class ProductsDocs {
     const apiResponseDesc =
       'As a response user gets a couple of different numbers about all user products.';
 
+    const marketplaceUserIdQueryDesc = 'Marketplace user ID (or just user ID)';
+
+    const marketplaceUserIdQuery = {
+      description: marketplaceUserIdQueryDesc,
+      name: 'marketplaceUserId',
+      type: String,
+      required: true
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -723,7 +734,43 @@ export abstract class ProductsDocs {
         status: 200,
         description: apiResponseDesc,
         schema: { $ref: getSchemaPath(GetMarketplaceUserStatsDto) }
-      }
+      },
+      ApiMarketplaceUserIdQuery: marketplaceUserIdQuery
+    };
+  }
+
+  static get GetMarketplaceCompanyStats() {
+    const ApiModels = [GetMarketplaceCompanyStatsDto, CompanyNotFoundException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting marketplace company statistics.';
+    const apiResponseDesc =
+      'As a response user gets a couple of different numbers about all company products.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if company ID has been modified and company not found.';
+
+    const marketplaceCompanyIdQueryDesc = 'Company ID';
+
+    const marketplaceCompanyIdQuery = {
+      description: marketplaceCompanyIdQueryDesc,
+      name: 'companyId',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(CompanyNotFoundException) }
+      },
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetMarketplaceCompanyStatsDto) }
+      },
+      ApiMarketplaceCompanyIdQuery: marketplaceCompanyIdQuery
     };
   }
 }

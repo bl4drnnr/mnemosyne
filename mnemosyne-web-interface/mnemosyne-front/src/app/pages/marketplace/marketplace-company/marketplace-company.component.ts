@@ -71,6 +71,22 @@ export class MarketplaceCompanyComponent implements OnInit {
           this.companyLocation = companyLocation;
           this.companyWebsite = companyWebsite;
           this.companyMembers = companyMembers;
+        },
+        error: () => {
+          // @TODO handle not found here and everywhere else
+        }
+      });
+  }
+
+  getCompanyProductsStatistics() {
+    this.productsService
+      .getCompanyProductsStatistics({
+        companyId: this.companyId
+      })
+      .subscribe({
+        next: (res) => {
+          // @TODO Create on the company page list of products, users and stats
+          console.log('res', res);
         }
       });
   }
@@ -91,6 +107,7 @@ export class MarketplaceCompanyComponent implements OnInit {
       } else {
         this.companyId = companyId;
         this.getCompany();
+        this.getCompanyProductsStatistics();
       }
     });
   }

@@ -134,7 +134,7 @@ export class UsersService {
     where,
     trx: transaction
   }: GetUsersByIdsInterface) {
-    return await this.userRepository.findAndCountAll({
+    const options = {
       include: [
         {
           model: ConfirmationHash,
@@ -146,11 +146,14 @@ export class UsersService {
         }
       ],
       where: { id: ids, ...where },
-      limit,
-      offset,
       attributes,
       transaction
-    });
+    };
+
+    if (limit) options['limit'] = limit;
+    if (offset) options['offset'] = offset;
+
+    return await this.userRepository.findAndCountAll(options);
   }
 
   async getUserByPhone({ phone, trx: transaction }: GetUserByPhoneInterface) {
