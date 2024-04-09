@@ -72,7 +72,6 @@
     "roleHeader": "Role",
     "confirmedHeader": "Confirmed",
     "moreInfoUserButtonHeader": "More",
-    "usersPerPage": "Users per page",
     "inviteUser": "Invite user(-s)",
     "inviteUserModalHeader": "Invite user(-s) to the company",
     "inviteUserModalDesc": "Below you will find the input field in order to invite the user in your company. To do that, provide the email and press Space bar to add user to the list. You can either remove user from the list of change their role. Once everything is provided, press the Invitation button.",

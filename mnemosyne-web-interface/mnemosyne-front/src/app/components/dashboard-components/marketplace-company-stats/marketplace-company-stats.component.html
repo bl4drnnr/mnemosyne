@@ -1,0 +1,43 @@
+<ng-container *transloco="let t">
+  <h1 class="company-stats-title">
+    <span>{{ t('marketplace.statsTitle') }}&nbsp;</span>
+    <basic-emoji emoji="star.png" [width]="48" [height]="48" />
+  </h1>
+  <table class="company-stats-table">
+    <thead>
+    <tr>
+      <th></th>
+      <th>PLN</th>
+      <th>USD</th>
+      <th>EUR</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td>{{ t('marketplace.statsAmountOfProducts') }}</td>
+      <td>{{ companyStats.plnProductsAmount }}</td>
+      <td>{{ companyStats.usdProductsAmount }}</td>
+      <td>{{ companyStats.eurProductsAmount }}</td>
+    </tr>
+    <tr>
+      <td>{{ t('marketplace.statsAvgPrice') }}</td>
+      <td>{{ companyStats.plnProductsAvgAmount }}</td>
+      <td>{{ companyStats.usdProductsAvgAmount }}</td>
+      <td>{{ companyStats.eurProductsAvgAmount }}</td>
+    </tr>
+    <tr>
+      <td>{{ t('marketplace.statsMinPrice') }}</td>
+      <td>{{ companyStats.plnMinPrice }}</td>
+      <td>{{ companyStats.usdMinPrice }}</td>
+      <td>{{ companyStats.eurMinPrice }}</td>
+    </tr>
+    <tr>
+      <td>{{ t('marketplace.statsMaxPrice') }}</td>
+      <td>{{ companyStats.plnMaxPrice }}</td>
+      <td>{{ companyStats.usdMaxPrice }}</td>
+      <td>{{ companyStats.eurMaxPrice }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</ng-container>

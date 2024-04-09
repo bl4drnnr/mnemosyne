@@ -58,7 +58,7 @@ export class CreateCompanyDto {
 
   @ApiProperty({
     type: Array<MemberRoleDto>,
-    description: DocsProperty.COMPANY_MEMBERS_DESC,
+    description: DocsProperty.COMPANY_MEMBERS_EMAIL_DESC,
     example: [
       { email: DocsProperty.COMPANY_MEMBER_EMAIL_EXAMPLE, role: Roles.DEFAULT }
     ],

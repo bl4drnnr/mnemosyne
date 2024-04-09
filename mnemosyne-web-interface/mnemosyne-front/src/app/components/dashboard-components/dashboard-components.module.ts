@@ -12,6 +12,9 @@ import { CompanyUsersSettingsComponent } from '@components/company-users-setting
 import { CompanySecuritySettingsComponent } from '@components/company-security-settings/company-security-settings.component';
 import { CompanyRolesManagementComponent } from '@components/company-roles-management/company-roles-management.component';
 import { SecuritySettingSectionComponent } from '@components/shared/security-setting-section/security-setting-section.component';
+import { MarketplaceCompanyProductsComponent } from '@components/marketplace-company-products/marketplace-company-products.component';
+import { MarketplaceCompanyUsersComponent } from '@components/marketplace-company-users/marketplace-company-users.component';
+import { MarketplaceCompanyStatsComponent } from '@components/marketplace-company-stats/marketplace-company-stats.component';
 
 const components = [
   SecuritySettingsComponent,
@@ -22,7 +25,10 @@ const components = [
   CompanyInfoSettingsComponent,
   CompanyUsersSettingsComponent,
   CompanySecuritySettingsComponent,
-  CompanyRolesManagementComponent
+  CompanyRolesManagementComponent,
+  MarketplaceCompanyProductsComponent,
+  MarketplaceCompanyUsersComponent,
+  MarketplaceCompanyStatsComponent
 ];
 
 @NgModule({

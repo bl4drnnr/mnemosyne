@@ -2466,6 +2466,7 @@ paths:
         - name: marketplaceUserId
           required: true
           in: query
+          description: Marketplace user ID (or just user ID)
           schema:
             type: string
       responses:
@@ -2482,15 +2483,22 @@ paths:
   /api/products/marketplace-company-statistics:
     get:
       operationId: ProductsController_getCompanyProductsStatistics
+      summary: Endpoint is responsible for getting marketplace company statistics.
       parameters:
         - name: companyId
           required: true
           in: query
+          description: Company ID
           schema:
             type: string
       responses:
         "200":
-          description: ""
+          description: As a response user gets a couple of different numbers about all
+            company products.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetMarketplaceCompanyStatsDto"
       tags: *a9
       security:
         - basicAuth: []
@@ -3280,7 +3288,7 @@ components:
           description: Email address
           example: joe@doe.com
         companyMembers:
-          description: List of company members
+          description: List of company members emails
           example:
             - email: tim.cook@icloud.com
               role: DEFAULT
@@ -3398,8 +3406,9 @@ components:
           description: Company website
           example: apple.com
         companyMembers:
-          description: ""
-          example: ""
+          description: List of company members IDs (user IDs)
+          example:
+            - 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
           type: array
           items:
             type: string
@@ -3407,6 +3416,10 @@ components:
           type: number
           description: Count for the pagination
           example: "5"
+        quantityOfUsers:
+          type: number
+          description: Quantity of all company users
+          example: "345"
       required:
         - companyOwnerId
         - companyOwnerFirstName
@@ -3416,6 +3429,7 @@ components:
         - companyWebsite
         - companyMembers
         - count
+        - quantityOfUsers
     GetCompanyUsersDto:
       type: object
       properties:
@@ -4630,6 +4644,75 @@ components:
       required:
         - contactPhone
     GetMarketplaceUserStatsDto:
+      type: object
+      properties:
+        amountOfProducts:
+          type: number
+          description: Quantity of all products
+          example: "100500"
+        plnProductsAmount:
+          type: number
+          description: Quantity of all products per currency
+          example: "100"
+        usdProductsAmount:
+          type: number
+          description: Quantity of all products per currency
+          example: "100"
+        eurProductsAmount:
+          type: number
+          description: Quantity of all products per currency
+          example: "100"
+        plnProductsAvgAmount:
+          type: number
+          description: Average amount of all products per currency
+          example: "228"
+        usdProductsAvgAmount:
+          type: number
+          description: Average amount of all products per currency
+          example: "228"
+        eurProductsAvgAmount:
+          type: number
+          description: Average amount of all products per currency
+          example: "228"
+        plnMinPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        plnMaxPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        usdMinPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        usdMaxPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        eurMinPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+        eurMaxPrice:
+          type: number
+          description: Min or max price of all products per currency
+          example: "1337"
+      required:
+        - amountOfProducts
+        - plnProductsAmount
+        - usdProductsAmount
+        - eurProductsAmount
+        - plnProductsAvgAmount
+        - usdProductsAvgAmount
+        - eurProductsAvgAmount
+        - plnMinPrice
+        - plnMaxPrice
+        - usdMinPrice
+        - usdMaxPrice
+        - eurMinPrice
+        - eurMaxPrice
+    GetMarketplaceCompanyStatsDto:
       type: object
       properties:
         amountOfProducts:

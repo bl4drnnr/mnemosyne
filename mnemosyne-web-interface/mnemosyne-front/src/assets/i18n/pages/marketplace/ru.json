@@ -27,9 +27,18 @@
   "statsAvgPrice": "Средняя цена",
   "statsMinPrice": "Минимальная цена",
   "statsMaxPrice": "Максимальная цена",
-  "statsTitle": "Статистика пользовательских продуктов",
+  "statsTitle": "Статистика продуктов",
   "statsTotalAmount": "Общее количество продуктов: {{ amount }}",
   "marketplaceUserNoCompany": "Не является участником",
   "marketplacePrivateProducts": "Приватные продукты",
-  "marketplaceCompanyProducts": "Продукты компании"
+  "marketplaceCompanyProducts": "Продукты компании",
+  "marketplaceCompanyNameTitle": "Компани: {{ companyName }}",
+  "marketplaceCompanyAmountOfProds": "Кол-во продуктов: {{ amountOfProducts }}",
+  "marketplaceCompanyAmountOfUsers": "Кол-во работников: {{ quantityOfUsers }}",
+  "marketplaceCompanyProductsSection": "Продукты компании",
+  "marketplaceCompanyUsersSection": "Работники компании",
+  "marketplaceCompanyStatsSection": "Статистика компании",
+  "marketplaceCompanyInfoIntro": "Вот страница с общедоступной информацией о компании {{ companyName }}. Начиная с этой страницы, вы сможете найти все, что вам нужно знать об этой компании, включая местоположение, их веб-сайт, количество размещенных продуктов и количество всех сотрудников. Не стесняйтесь нажимать на местоположение компании и ссылку, чтобы получить более подробную информацию.",
+  "marketplaceCompanyOwner": "Владелец компании:",
+  "marketplaceUserNotFound": "Пользователь не был найден :("
 }

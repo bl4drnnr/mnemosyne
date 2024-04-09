@@ -1,0 +1,49 @@
+<ng-container *transloco="let t">
+  <basic-input
+    [label]="t('input.companyMemberSearchLabel')"
+    [placeholder]="t('input.companyMemberSearchPlaceholder')"
+    [inputDescription]="t('input.companyMemberSearchInputDesc')"
+    [value]="query"
+    (valueChange)="changeCompanyQuery($event)"
+  />
+
+  <h1
+    class="no-company-users-title"
+    *ngIf="companyMembers.length === 0"
+  >{{ t('marketplace.marketplaceUserNotFound') }}</h1>
+
+  <div class="company-users-container" *ngIf="companyMembers && companyMembers.length > 0">
+    <div class="company-users-header">
+      <p class="company-users-header-id">ID</p>
+      <p class="company-users-header-name">
+        {{ t('settings.companySettingsSection.emailHeader') }}
+      </p>
+      <p class="company-users-header-more">
+        {{ t('settings.companySettingsSection.moreInfoUserButtonHeader') }}
+      </p>
+    </div>
+
+    <div class="company-user" *ngFor="let user of companyMembers; let idx = index">
+      <p class="company-users-header-id">{{ idx + 1 }}</p>
+      <p class="company-users-header-name">{{ user.firstName }} {{ user.lastName }}</p>
+      <div class="company-users-header-more">
+        <basic-button
+          [label]="t('button.goToUserProfile')"
+          (buttonClick)="handleRedirect('marketplace/user/' + user.id)"
+        />
+      </div>
+    </div>
+  </div>
+
+  <div class="company-users-pagination" *ngIf="companyMembers.length !== 0">
+    <basic-pagination
+      [itemsPerPageLabel]="t('dropdown.productsPerPage')"
+      [currentPage]="page"
+      [itemsPerPage]="pageSize"
+      [totalItems]="totalItems"
+      (setCurrentPage)="setCurrentPage($event)"
+      (setItemsPerPage)="setUsersPerPage($event)"
+      (fetchItems)="emitGetCompany()"
+    />
+  </div>
+</ng-container>

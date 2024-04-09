@@ -3,6 +3,7 @@ import { DocsProperty } from '@interfaces/docs-property.enum';
 
 interface GetCompanyPublicInfo {
   count: number;
+  quantityOfUsers: number;
   companyOwnerId: string;
   companyOwnerFirstName: string;
   companyOwnerLastName: string;
@@ -80,8 +81,8 @@ export class GetCompanyPublicInfoDto {
 
   @ApiProperty({
     type: Array<CompanyMember>,
-    description: '',
-    example: ''
+    description: DocsProperty.COMPANY_MEMBERS_IDS_LIST_DESC,
+    example: [DocsProperty.COMPANY_MEMBERS_IDS_LIST_EXAMPLE]
   })
   readonly companyMembers: Array<CompanyMember>;
 
@@ -92,8 +93,16 @@ export class GetCompanyPublicInfoDto {
   })
   readonly count: number;
 
+  @ApiProperty({
+    type: Number,
+    description: DocsProperty.QUANTITY_OF_COMPANY_MEMBERS_DESC,
+    example: DocsProperty.QUANTITY_OF_COMPANY_MEMBERS_EXAMPLE
+  })
+  readonly quantityOfUsers: number;
+
   constructor({
     count,
+    quantityOfUsers,
     companyOwnerId,
     companyOwnerFirstName,
     companyOwnerLastName,
@@ -103,6 +112,7 @@ export class GetCompanyPublicInfoDto {
     companyMembers
   }: GetCompanyPublicInfo) {
     this.count = count;
+    this.quantityOfUsers = quantityOfUsers;
     this.companyOwnerId = companyOwnerId;
     this.companyOwnerFirstName = companyOwnerFirstName;
     this.companyOwnerLastName = companyOwnerLastName;

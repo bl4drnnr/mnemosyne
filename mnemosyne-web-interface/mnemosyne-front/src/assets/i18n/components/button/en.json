@@ -48,5 +48,6 @@
   "showContactEmail": "Show contact email",
   "showContactPhone": "Show contact phone",
   "logInCreateAcc": "Log In / Create account",
-  "companySettings": "Company settings"
+  "companySettings": "Company settings",
+  "goToUserProfile": "Go to user profile"
 }

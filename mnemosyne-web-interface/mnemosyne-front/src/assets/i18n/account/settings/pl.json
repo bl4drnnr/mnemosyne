@@ -72,7 +72,6 @@
     "roleHeader": "Rola",
     "confirmedHeader": "Potwierdzenie",
     "moreInfoUserButtonHeader": "Więcej",
-    "usersPerPage": "Użytkownicy na stronę",
     "inviteUser": "Zaproś użytkownika(-ów)",
     "inviteUserModalHeader": "Zaproś użytkownika(-ów) do firmy",
     "inviteUserModalDesc": "Poniżej znajdziesz pole wejściowe, w którym możesz zaprosić użytkownika w swojej firmie. Aby to zrobić, podaj adres e-mail i naciśnij spację, aby dodać użytkownika do listy. Możesz albo usunąć użytkownika z listy zmian ich rolę. Gdy już wszystko zostanie podane, naciśnij przycisk Zaproszenie.",

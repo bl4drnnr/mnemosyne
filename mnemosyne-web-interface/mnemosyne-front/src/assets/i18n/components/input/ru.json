@@ -159,8 +159,11 @@
   "favoriteProductsSearchPlaceholder": "Поиск по избранным продуктам",
   "favoriteProductsSearchInputDesc": "Вы можете выполнять поиск своих продуктов на основе названия, описания или ссылки.",
   "clickToCopy": "Нажмите на поле ввода для копирования.",
-  "companyMemberSearchLabel": "Электронная почта участника компании",
-  "companyMemberSearchPlaceholder": "Поиск сотрудников вашей компании",
+  "companyMemberSearchEmailLabel": "Электронная почта участника компании",
+  "companyMemberSearchEmailPlaceholder": "Поиск сотрудников вашей компании",
   "noHomeAddress": "Домашний адрес не указан",
-  "noHomePhone": "Домашний телефон не указан"
+  "noHomePhone": "Домашний телефон не указан",
+  "companyMemberSearchLabel": "Поиск участников компании",
+  "companyMemberSearchPlaceholder": "Поиск участников компании",
+  "companyMemberSearchInputDesc": "Поиск участников компании по имени и фамилии"
 }

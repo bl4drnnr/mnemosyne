@@ -69,5 +69,6 @@
   "selectProductOrder": "Wybierz pole sortowania produktów",
   "productsPerPage": "Produktów na stronie",
   "allCurrencies": "Wszystkie waluty",
-  "newRoleForOldOwnerTitle": "Nowa rola dla starego właściciela"
+  "newRoleForOldOwnerTitle": "Nowa rola dla starego właściciela",
+  "usersPerPage": "Użytkownicy na stronę"
 }

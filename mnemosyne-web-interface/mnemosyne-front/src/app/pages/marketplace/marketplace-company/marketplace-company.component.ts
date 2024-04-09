@@ -8,6 +8,7 @@ import { CategoriesService } from '@services/categories.service';
 import { CompanyService } from '@services/company.service';
 import { Titles } from '@interfaces/titles.enum';
 import { CompanyMember } from '@responses/get-company-public-info.interface';
+import { GetMarketplaceCompanyStatsResponse } from '@responses/get-marketplace-company-stats.interface';
 
 dayjs.extend(LocalizedFormat);
 
@@ -24,6 +25,7 @@ export class MarketplaceCompanyComponent implements OnInit {
   isUserLoggedIn: boolean;
 
   totalItems: number;
+  quantityOfUsers: number;
   companyOwnerId: string;
   companyOwnerFirstName: string;
   companyOwnerLastName: string;
@@ -31,6 +33,8 @@ export class MarketplaceCompanyComponent implements OnInit {
   companyLocation: string;
   companyWebsite: string;
   companyMembers: Array<CompanyMember>;
+  companyStats: GetMarketplaceCompanyStatsResponse;
+  currentSection: 'products' | 'users' | 'stats' = 'products';
 
   constructor(
     private readonly router: Router,
@@ -52,6 +56,7 @@ export class MarketplaceCompanyComponent implements OnInit {
       .subscribe({
         next: ({
           count,
+          quantityOfUsers,
           companyOwnerId,
           companyOwnerFirstName,
           companyOwnerLastName,
@@ -63,7 +68,7 @@ export class MarketplaceCompanyComponent implements OnInit {
           this.translationService.setPageTitle(Titles.COMPANY, { companyName });
 
           this.totalItems = count;
-
+          this.quantityOfUsers = quantityOfUsers;
           this.companyOwnerFirstName = companyOwnerFirstName;
           this.companyOwnerLastName = companyOwnerLastName;
           this.companyOwnerId = companyOwnerId;
@@ -72,9 +77,7 @@ export class MarketplaceCompanyComponent implements OnInit {
           this.companyWebsite = companyWebsite;
           this.companyMembers = companyMembers;
         },
-        error: () => {
-          // @TODO handle not found here and everywhere else
-        }
+        error: async () => await this.handleRedirect('marketplace')
       });
   }
 
@@ -84,15 +87,36 @@ export class MarketplaceCompanyComponent implements OnInit {
         companyId: this.companyId
       })
       .subscribe({
-        next: (res) => {
-          // @TODO Create on the company page list of products, users and stats
-          console.log('res', res);
-        }
+        next: (companyStats) => (this.companyStats = companyStats)
       });
+  }
+
+  changeCompanyQuery(query: string) {
+    this.query = query;
+    this.getCompany();
+  }
+
+  changeCompanyUsersPerPage(usersPerPage: string) {
+    this.pageSize = usersPerPage;
+    this.getCompany();
+  }
+
+  changeCompanyUsersPage(page: string) {
+    this.page = page;
+    this.getCompany();
   }
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  handleExternalRedirect(path: string) {
+    document.location.href = path;
+  }
+
+  handleExternalRedirectLink(path: string) {
+    if (path.includes('http')) document.location.href = path;
+    else document.location.href = `https://${path}`;
   }
 
   ngOnInit() {

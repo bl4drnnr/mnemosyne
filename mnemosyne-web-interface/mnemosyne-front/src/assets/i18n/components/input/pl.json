@@ -159,8 +159,11 @@
   "favoriteProductsSearchPlaceholder": "Wyszukiwanie ulubionych produktów",
   "favoriteProductsSearchInputDesc": "Możesz wyszukiwać swoje produkty na podstawie tytułu, opisu lub linka.",
   "clickToCopy": "Kliknij pole wprowadzania, aby skopiować.",
-  "companyMemberSearchLabel":"E-mail członka firmy",
-  "companyMemberSearchPlaceholder": "Szukaj członków Twojej firmy",
+  "companyMemberSearchEmailLabel":"E-mail członka firmy",
+  "companyMemberSearchEmailPlaceholder": "Szukaj członków Twojej firmy",
   "noHomeAddress": "Nie podano adresu domowego",
-  "noHomePhone": "Nie określono telefonu domowego"
+  "noHomePhone": "Nie określono telefonu domowego",
+  "companyMemberSearchLabel": "Wyszukiwanie członków firmy",
+  "companyMemberSearchPlaceholder": "Szukaj członka firmy",
+  "companyMemberSearchInputDesc": "Szukaj członków firmy używając imienia i nazwiska"
 }

@@ -176,7 +176,7 @@ export class ProductComponent implements OnInit {
     await this.router.navigate([path]);
   }
 
-  async handleExternalRedirect(path: string) {
+  handleExternalRedirect(path: string) {
     document.location.href = path;
   }
 

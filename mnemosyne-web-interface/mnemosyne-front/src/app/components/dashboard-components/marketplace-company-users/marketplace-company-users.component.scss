@@ -1,0 +1,50 @@
+@import 'variables';
+
+.no-company-users-title {
+  text-align: center;
+}
+
+.company-users-container {
+  margin: 25px 0;
+}
+
+.company-users-header {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  opacity: .5;
+}
+
+.company-users-header-id {
+  width: 10%;
+  padding: 15px;
+}
+
+.company-users-header-name {
+  width: 70%;
+  border-left: 1px solid var(--border-color);
+  padding: 15px;
+}
+
+.company-users-header-more {
+  width: 20%;
+  border-left: 1px solid var(--border-color);
+  padding: 15px;
+}
+
+.company-user {
+  display: flex;
+  border-bottom: 1px solid var(--border-color);
+  transition: .2s;
+
+  &:hover {
+    background-color: var(--disabled-color);
+  }
+}
+
+.company-users-pagination {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}

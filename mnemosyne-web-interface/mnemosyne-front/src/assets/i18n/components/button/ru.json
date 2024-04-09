@@ -48,5 +48,6 @@
   "showContactEmail": "Показать контактный адрес электронной почты",
   "showContactPhone": "Показать контактный телефон",
   "logInCreateAcc": "Войти / Создать аккаунт",
-  "companySettings": "Настройки компании"
+  "companySettings": "Настройки компании",
+  "goToUserProfile": "Профиль пользователя"
 }

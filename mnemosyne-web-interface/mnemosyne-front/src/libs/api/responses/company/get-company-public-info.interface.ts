@@ -6,6 +6,7 @@ export interface CompanyMember {
 
 export interface GetCompanyPublicInfoInfoResponse {
   count: number;
+  quantityOfUsers: number;
   companyOwnerId: string;
   companyOwnerFirstName: string;
   companyOwnerLastName: string;

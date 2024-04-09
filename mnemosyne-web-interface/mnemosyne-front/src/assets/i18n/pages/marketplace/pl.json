@@ -27,9 +27,18 @@
   "statsAvgPrice": "Średnia cena",
   "statsMinPrice": "Minimalna cena",
   "statsMaxPrice": "Maksymalna cena",
-  "statsTitle": "Statystyki produktów użytkownika",
+  "statsTitle": "Statystyki produktów",
   "statsTotalAmount": "Całkowita ilość produktów: {{ amount }}",
   "marketplaceUserNoCompany": "Brak firmy",
   "marketplacePrivateProducts": "Produkty prywatne",
-  "marketplaceCompanyProducts": "Produkty firmowe"
+  "marketplaceCompanyProducts": "Produkty firmowe",
+  "marketplaceCompanyNameTitle": "Firma: {{ companyName }}",
+  "marketplaceCompanyAmountOfProds": "Ilość produktów: {{ amountOfProducts }}",
+  "marketplaceCompanyAmountOfUsers": "Ilość pracowników: {{ quantityOfUsers }}",
+  "marketplaceCompanyProductsSection": "Produkty firmy",
+  "marketplaceCompanyUsersSection": "Pracownicy firmy",
+  "marketplaceCompanyStatsSection": "Statystyka firmy",
+  "marketplaceCompanyInfoIntro": "Oto strona informacji publicznej firmy {{ companyName }}. Zaczynając od tego miejsca, będziesz mógł znaleźć wszystko, co musisz wiedzieć o tej firmie, w tym lokalizację, ich stronę internetową, ilość opublikowanych produktów i liczbę wszystkich pracowników. Kliknij lokalizację firmy i link, aby uzyskać więcej informacji.",
+  "marketplaceCompanyOwner": "Właściciel firmy:",
+  "marketplaceUserNotFound": "Użytkownik nie został znaleziony :("
 }

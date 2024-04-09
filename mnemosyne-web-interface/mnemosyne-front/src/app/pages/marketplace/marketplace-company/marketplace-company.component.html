@@ -2,6 +2,105 @@
   [showHeaderBurger]="false"
 >
   <ng-container *transloco="let t">
+    <div class="marketplace-company-container">
+      <h1 class="marketplace-company-title">
+        {{ t('marketplace.marketplaceCompanyNameTitle', { companyName }) }}
+      </h1>
+      <p>{{ t('marketplace.marketplaceCompanyInfoIntro', { companyName }) }}</p>
+      <div class="marketplace-company-container-info">
+        <h2
+          class="marketplace-container-info clickable"
+          (click)="handleExternalRedirect('https://www.google.com/maps/place/' + companyLocation)"
+        >
+          <span>{{ companyLocation }}&nbsp;</span>
+          <basic-emoji emoji="globe.png" [width]="32" [height]="32" />
+        </h2>
+        <h2
+          class="marketplace-container-info clickable"
+          (click)="handleExternalRedirectLink(companyWebsite)"
+        >
+          <span class="marketplace-company-website">{{ companyWebsite }}&nbsp;</span>
+          <basic-emoji emoji="pushpin.png" [width]="32" [height]="32" />
+        </h2>
+        <h2 class="marketplace-container-info" *ngIf="companyStats">
+          <span>{{ t('marketplace.marketplaceCompanyAmountOfProds', { amountOfProducts: companyStats.amountOfProducts }) }}&nbsp;</span>
+          <basic-emoji emoji="scroll.png" [width]="32" [height]="32" />
+        </h2>
+        <h2 class="marketplace-container-info">
+          <span>{{ t('marketplace.marketplaceCompanyAmountOfUsers', { quantityOfUsers }) }}&nbsp;</span>
+          <basic-emoji emoji="person.png" [width]="32" [height]="32" />
+        </h2>
+      </div>
+      <p>
+        {{ t('marketplace.marketplaceCompanyOwner') }}
+        <basic-link
+          label="{{ companyOwnerFirstName }} {{ companyOwnerLastName }}"
+          href="marketplace/user/{{ companyOwnerId }}"
+        />
+      </p>
+    </div>
 
+    <div class="company-header-container">
+      <div
+        class="company-header-box"
+        [ngClass]="{ active: currentSection === 'products' }"
+        (click)="currentSection = 'products'"
+      >
+        <h3 class="company-header-title">
+          {{ t('marketplace.marketplaceCompanyProductsSection') }}
+        </h3>
+      </div>
+      <div
+        class="company-header-box"
+        [ngClass]="{ active: currentSection === 'users' }"
+        (click)="currentSection = 'users'"
+      >
+        <h3 class="company-header-title">
+          {{ t('marketplace.marketplaceCompanyUsersSection') }}
+        </h3>
+      </div>
+      <div
+        class="company-header-box"
+        [ngClass]="{ active: currentSection === 'stats' }"
+        (click)="currentSection = 'stats'"
+      >
+        <h3 class="company-header-title">
+          {{ t('marketplace.marketplaceCompanyStatsSection') }}
+        </h3>
+      </div>
+    </div>
+
+    <div
+      class="company-section"
+      *ngIf="currentSection === 'products'"
+    >
+
+    </div>
+
+    <div
+      class="company-section"
+      *ngIf="currentSection === 'users'"
+    >
+      <dashboard-marketplace-company-users
+        [page]="page"
+        [pageSize]="pageSize"
+        [query]="query"
+        [totalItems]="totalItems"
+        [companyMembers]="companyMembers"
+        (getCompanyEvent)="getCompany()"
+        (setNewCurrentPage)="changeCompanyUsersPage($event)"
+        (setNewUsersPerPage)="changeCompanyUsersPerPage($event)"
+        (setNewQuery)="changeCompanyQuery($event)"
+      />
+    </div>
+
+    <div
+      class="company-section"
+      *ngIf="companyStats && currentSection === 'stats'"
+    >
+      <dashboard-marketplace-company-stats
+        [companyStats]="companyStats"
+      />
+    </div>
   </ng-container>
 </layout-default>

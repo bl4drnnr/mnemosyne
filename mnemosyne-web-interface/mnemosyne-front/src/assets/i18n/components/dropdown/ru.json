@@ -69,5 +69,6 @@
   "selectProductOrder": "Выберите поле сортировки продуктов",
   "productsPerPage": "Товаров на странице",
   "allCurrencies": "Все валюты",
-  "newRoleForOldOwnerTitle": "Новая роль для старого владельца"
+  "newRoleForOldOwnerTitle": "Новая роль для старого владельца",
+  "usersPerPage": "Пользователей на страницу"
 }

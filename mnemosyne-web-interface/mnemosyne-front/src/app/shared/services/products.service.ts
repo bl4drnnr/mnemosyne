@@ -29,6 +29,7 @@ import { GetProductContactPhoneResponse } from '@responses/get-product-contact-p
 import { GetMarketplaceUserStatsPayload } from '@payloads/get-marketplace-user-stats.interface';
 import { GetMarketplaceUserStatsResponse } from '@responses/get-marketplace-user-stats.interface';
 import { GetMarketplaceCompanyStatsPayload } from '@payloads/get-marketplace-company-stats.interface';
+import { GetMarketplaceCompanyStatsResponse } from '@responses/get-marketplace-company-stats.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -185,7 +186,9 @@ export class ProductsService {
     });
   }
 
-  getCompanyProductsStatistics(params: GetMarketplaceCompanyStatsPayload) {
+  getCompanyProductsStatistics(
+    params: GetMarketplaceCompanyStatsPayload
+  ): Observable<GetMarketplaceCompanyStatsResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.PRODUCTS,

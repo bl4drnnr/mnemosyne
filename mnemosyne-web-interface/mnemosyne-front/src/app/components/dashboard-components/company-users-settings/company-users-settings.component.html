@@ -49,8 +49,8 @@
   </basic-modal>
 
   <basic-input
-    [label]="t('input.companyMemberSearchLabel')"
-    [placeholder]="t('input.companyMemberSearchPlaceholder')"
+    [label]="t('input.companyMemberSearchEmailLabel')"
+    [placeholder]="t('input.companyMemberSearchEmailPlaceholder')"
     [value]="query"
     (valueChange)="searchForCompanyMember($event)"
   />
@@ -230,7 +230,7 @@
 
   <div class="pagination-container">
     <basic-pagination
-      [itemsPerPageLabel]="t('settings.companySettingsSection.usersPerPage')"
+      [itemsPerPageLabel]="t('dropdown.usersPerPage')"
       [currentPage]="page"
       [itemsPerPage]="pageSize"
       [totalItems]="totalItems"

@@ -275,6 +275,7 @@ export class CompanyService {
     } = company;
 
     const companyUsersIds = companyUsers.map(({ userId }) => userId);
+    const quantityOfUsers = companyUsers.length;
 
     const where = {};
 
@@ -306,6 +307,7 @@ export class CompanyService {
 
     return new GetCompanyPublicInfoDto({
       count,
+      quantityOfUsers,
       companyOwnerId,
       companyOwnerFirstName,
       companyOwnerLastName,
