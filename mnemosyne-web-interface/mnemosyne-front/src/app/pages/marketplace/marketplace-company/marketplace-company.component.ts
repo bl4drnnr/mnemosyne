@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductsService } from '@services/products.service';
 import { CategoriesService } from '@services/categories.service';
 import { CompanyService } from '@services/company.service';
+import { Titles } from '@interfaces/titles.enum';
+import { CompanyMember } from '@responses/get-company-public-info.interface';
 
 dayjs.extend(LocalizedFormat);
 
@@ -16,7 +18,19 @@ dayjs.extend(LocalizedFormat);
 })
 export class MarketplaceCompanyComponent implements OnInit {
   companyId: string;
+  page: string = '0';
+  pageSize: string = '10';
+  query: string;
   isUserLoggedIn: boolean;
+
+  totalItems: number;
+  companyOwnerId: string;
+  companyOwnerFirstName: string;
+  companyOwnerLastName: string;
+  companyName: string;
+  companyLocation: string;
+  companyWebsite: string;
+  companyMembers: Array<CompanyMember>;
 
   constructor(
     private readonly router: Router,
@@ -28,7 +42,37 @@ export class MarketplaceCompanyComponent implements OnInit {
   ) {}
 
   getCompany() {
-    //
+    this.companyService
+      .getCompanyPublicInformation({
+        companyId: this.companyId,
+        page: this.page,
+        pageSize: this.pageSize,
+        query: this.query
+      })
+      .subscribe({
+        next: ({
+          count,
+          companyOwnerId,
+          companyOwnerFirstName,
+          companyOwnerLastName,
+          companyName,
+          companyLocation,
+          companyWebsite,
+          companyMembers
+        }) => {
+          this.translationService.setPageTitle(Titles.COMPANY, { companyName });
+
+          this.totalItems = count;
+
+          this.companyOwnerFirstName = companyOwnerFirstName;
+          this.companyOwnerLastName = companyOwnerLastName;
+          this.companyOwnerId = companyOwnerId;
+          this.companyName = companyName;
+          this.companyLocation = companyLocation;
+          this.companyWebsite = companyWebsite;
+          this.companyMembers = companyMembers;
+        }
+      });
   }
 
   async handleRedirect(path: string) {

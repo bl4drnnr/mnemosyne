@@ -21,5 +21,6 @@
   "favorites": "Mnemosyne | Избранные продукты",
   "marketplaceUser": "Mnemosyne | Пользователь | {{ firstName }} {{ lastName }}",
   "companySettings": "Mnemosyne | Настройки компании",
-  "companyProductsSettings": "Mnemosyne | Настройки продуктов компании"
+  "companyProductsSettings": "Mnemosyne | Настройки продуктов компании",
+  "company": "Mnemosyne | Компания | {{ companyName }}"
 }

@@ -625,6 +625,59 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/company/company-public-information:
+    get:
+      operationId: CompanyController_getCompanyPublicInformation
+      summary: Endpoint is responsible for getting company public information.
+      parameters:
+        - name: companyId
+          required: true
+          in: query
+          description: Company ID
+          schema:
+            type: string
+        - name: page
+          required: true
+          in: query
+          description: Query for page in order to get list of company users.
+          schema:
+            type: string
+        - name: pageSize
+          required: true
+          in: query
+          description: Query for limit in order to get list of company users.
+          schema:
+            type: string
+        - name: query
+          required: false
+          in: query
+          description: Member query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: As a response user gets all public information about company
+            including users.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCompanyByIdDto"
+        "400":
+          description: Bad request error is thrown in case of parse exception.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ParseException"
+        "404":
+          description: Not found error is thrown in case if company ID has been modified
+            and company not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyNotFoundException"
+      tags: *a4
+      security:
+        - basicAuth: []
   /api/company/company-users:
     get:
       operationId: CompanyController_getCompanyUsers
@@ -3284,6 +3337,70 @@ components:
         - companyWebsite
         - companyOwnerId
         - companyOwnerEmail
+    ParseException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Parse exception
+          example: parse-error
+      required:
+        - message
+    CompanyNotFoundException:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company not found error message
+          example: company-not-found
+      required:
+        - message
+    GetCompanyPublicInfoDto:
+      type: object
+      properties:
+        companyOwnerId:
+          type: string
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+        companyOwnerFirstName:
+          type: string
+          description: First name
+          example: Joe
+        companyOwnerLastName:
+          type: string
+          description: Last name
+          example: Doe
+        companyName:
+          type: string
+          description: Company name
+          example: Apple Inc.
+        companyLocation:
+          type: string
+          description: Company location
+          example: Cupertino, CA 95014
+        companyWebsite:
+          type: string
+          description: Company website
+          example: apple.com
+        companyMembers:
+          description: ""
+          example: ""
+          type: array
+          items:
+            type: string
+        count:
+          type: number
+          description: Count for the pagination
+          example: "5"
+      required:
+        - companyOwnerId
+        - companyOwnerFirstName
+        - companyOwnerLastName
+        - companyName
+        - companyLocation
+        - companyWebsite
+        - companyMembers
+        - count
     GetCompanyUsersDto:
       type: object
       properties:
@@ -3308,15 +3425,6 @@ components:
       required:
         - companyUsers
         - count
-    ParseException:
-      type: object
-      properties:
-        message:
-          type: string
-          description: Parse exception
-          example: parse-error
-      required:
-        - message
     CompanyUpdatedDto:
       type: object
       properties:

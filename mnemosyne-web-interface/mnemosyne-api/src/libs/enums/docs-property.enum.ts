@@ -300,5 +300,7 @@ export enum DocsProperty {
   USER_NOT_COMPANY_MEMBER_EXCEPTION_DESC = 'User not company member error message',
   USER_NOT_COMPANY_MEMBER_EXCEPTION_EXAMPLE = 'user-not-company-member',
   COMPANY_ID_DESC = 'Company ID',
-  COMPANY_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c'
+  COMPANY_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c',
+  COMPANY_NOT_FOUND_EXCEPTION_DESC = 'Company not found error message',
+  COMPANY_NOT_FOUND_EXCEPTION_EXAMPLE = 'company-not-found'
 }

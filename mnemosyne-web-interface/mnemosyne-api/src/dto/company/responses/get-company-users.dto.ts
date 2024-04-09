@@ -4,6 +4,11 @@ import { CompanyUserType } from '@custom-types/company-user.type';
 
 type UsersList = Array<CompanyUserType>;
 
+interface CompanyUsers {
+  companyUsers: UsersList;
+  count: number;
+}
+
 export class GetCompanyUsersDto {
   @ApiProperty({
     type: Array<CompanyUserType>,
@@ -33,13 +38,7 @@ export class GetCompanyUsersDto {
   })
   readonly count: number;
 
-  constructor({
-    companyUsers,
-    count
-  }: {
-    companyUsers: UsersList;
-    count: number;
-  }) {
+  constructor({ companyUsers, count }: CompanyUsers) {
     this.companyUsers = companyUsers;
     this.count = count;
   }

@@ -22,6 +22,8 @@ import { UserNotFoundException } from '@exceptions/user-not-found.exception';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
 import { SmsExpiredException } from '@exceptions/sms-expired.exception';
 import { WrongCodeException } from '@exceptions/wrong-code.exception';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { GetCompanyPublicInfoDto } from '@dto/get-company-public-info.dto';
 
 export abstract class CompanyDocs {
   static get CreateCompany() {
@@ -85,6 +87,80 @@ export abstract class CompanyDocs {
     };
   }
 
+  static get GetCompanyPublicInfo() {
+    const ApiModels = [
+      ParseException,
+      CompanyNotFoundException,
+      GetCompanyPublicInfoDto
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting company public information.';
+    const apiResponseDesc =
+      'As a response user gets all public information about company including users.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if company ID has been modified and company not found.';
+    const apiBadRequestRespDesc =
+      'Bad request error is thrown in case of parse exception.';
+
+    const companyIdQueryDesc = 'Company ID';
+    const memberQueryDesc = 'Member query';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of company users.';
+    const pageQueryDesc =
+      'Query for page in order to get list of company users.';
+
+    const companyIdQuery = {
+      description: companyIdQueryDesc,
+      name: 'companyId',
+      type: String,
+      required: true
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: true
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: true
+    };
+
+    const memberQuery = {
+      description: memberQueryDesc,
+      name: 'query',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetCompanyByIdDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(ParseException) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(CompanyNotFoundException) }
+      },
+      ApiCompanyIdQuery: companyIdQuery,
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery,
+      ApiMemberQuery: memberQuery
+    };
+  }
+
   static get GetCompanyUsers() {
     const ApiModels = [GetCompanyUsersDto, ParseException];
 
@@ -96,7 +172,6 @@ export abstract class CompanyDocs {
       'Parse exception is thrown in case if page or limit params cannot be parsed as number.';
 
     const memberQueryDesc = 'Member query';
-
     const pageSizeQueryDesc =
       'Query for limit in order to get list of company users.';
     const pageQueryDesc =

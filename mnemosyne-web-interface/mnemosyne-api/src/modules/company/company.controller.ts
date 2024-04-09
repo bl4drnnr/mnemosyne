@@ -75,6 +75,33 @@ export class CompanyController {
     });
   }
 
+  @ApiOperation(CompanyDocs.GetCompanyPublicInfo.ApiOperation)
+  @ApiExtraModels(...CompanyDocs.GetCompanyPublicInfo.ApiExtraModels)
+  @ApiResponse(CompanyDocs.GetCompanyPublicInfo.ApiResponse)
+  @ApiBadRequestResponse(CompanyDocs.GetCompanyPublicInfo.ApiBadRequestResponse)
+  @ApiNotFoundResponse(CompanyDocs.GetCompanyPublicInfo.ApiNotFoundResponse)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiCompanyIdQuery)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiPageSizeQuery)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiPageQuery)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiMemberQuery)
+  @ApiBasicAuth('basicAuth')
+  @Get('company-public-information')
+  getCompanyPublicInformation(
+    @Query('companyId') companyId: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+    @Query('query') query: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.companyService.getCompanyPublicInformation({
+      companyId,
+      page,
+      pageSize,
+      query,
+      trx
+    });
+  }
+
   @ApiOperation(CompanyDocs.GetCompanyUsers.ApiOperation)
   @ApiExtraModels(...CompanyDocs.GetCompanyUsers.ApiExtraModels)
   @ApiResponse(CompanyDocs.GetCompanyUsers.ApiResponse)

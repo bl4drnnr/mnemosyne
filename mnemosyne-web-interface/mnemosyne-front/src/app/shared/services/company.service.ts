@@ -15,6 +15,8 @@ import { CompanyOwnershipTransferredResponse } from '@responses/company-ownershi
 import { TransferCompanyOwnershipPayload } from '@payloads/transfer-company-ownership.interface';
 import { DeleteCompanyPayload } from '@payloads/delete-company.interface';
 import { CompanyDeletedResponse } from '@responses/company-deleted.enum';
+import { GetCompanyPublicInfoPayload } from '@payloads/get-company-public-info.interface';
+import { GetCompanyPublicInfoInfoResponse } from '@responses/get-company-public-info.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -42,6 +44,17 @@ export class CompanyService {
       method: Method.GET,
       controller: Controller.COMPANY,
       action: CompanyEndpoint.GET_COMPANY_INFORMATION_BY_ID
+    });
+  }
+
+  getCompanyPublicInformation(
+    params: GetCompanyPublicInfoPayload
+  ): Observable<GetCompanyPublicInfoInfoResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.COMPANY,
+      action: CompanyEndpoint.COMPANY_PUBLIC_INFORMATION,
+      params
     });
   }
 

@@ -44,6 +44,9 @@ import { UserNotFoundException } from '@exceptions/user-not-found.exception';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
 import { Op } from 'sequelize';
 import { GetCompanyUserRolesInterface } from '@interfaces/get-company-user-roles.interface';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { GetCompanyPublicInformationInterface } from '@interfaces/get-company-public-information.interface';
+import { GetCompanyPublicInfoDto } from '@dto/get-company-public-info.dto';
 
 @Injectable()
 export class CompanyService {
@@ -237,6 +240,78 @@ export class CompanyService {
       companyWebsite,
       companyOwnerId,
       companyOwnerEmail
+    });
+  }
+
+  async getCompanyPublicInformation({
+    companyId,
+    page,
+    pageSize,
+    query,
+    trx: transaction
+  }: GetCompanyPublicInformationInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
+    const company = await this.companyRepository.findByPk(companyId, {
+      transaction,
+      include: { all: true }
+    });
+
+    if (!company) throw new CompanyNotFoundException();
+
+    const {
+      companyName,
+      companyLocation,
+      companyUsers,
+      companyWebsite,
+      companyOwnerId
+    } = company;
+
+    const companyUsersIds = companyUsers.map(({ userId }) => userId);
+
+    const where = {};
+
+    if (query) {
+      where[Op.or] = [
+        { firstName: { [Op.iLike]: `%${query}%` } },
+        { lastName: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    const { count, rows } = await this.usersService.getUsersByIds({
+      offset,
+      limit,
+      where,
+      ids: companyUsersIds,
+      attributes: ['id', 'firstName', 'lastName'],
+      trx: transaction
+    });
+
+    const companyMembers = rows.map(({ id, firstName, lastName }) => {
+      return { id, firstName, lastName };
+    });
+
+    const { firstName: companyOwnerFirstName, lastName: companyOwnerLastName } =
+      await this.usersService.getUserById({
+        id: companyOwnerId,
+        trx: transaction
+      });
+
+    return new GetCompanyPublicInfoDto({
+      count,
+      companyOwnerId,
+      companyOwnerFirstName,
+      companyOwnerLastName,
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyMembers
     });
   }
 

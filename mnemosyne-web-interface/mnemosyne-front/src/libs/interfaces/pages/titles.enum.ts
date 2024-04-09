@@ -21,5 +21,6 @@ export enum Titles {
   FAVORITES = 'favorites',
   MARKETPLACE_USER = 'marketplaceUser',
   COMPANY_SETTINGS = 'companySettings',
-  COMPANY_PRODUCTS_SETTINGS = 'companyProductsSettings'
+  COMPANY_PRODUCTS_SETTINGS = 'companyProductsSettings',
+  COMPANY = 'company'
 }
