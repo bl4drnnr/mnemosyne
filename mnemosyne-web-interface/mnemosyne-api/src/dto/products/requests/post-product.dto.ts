@@ -139,4 +139,14 @@ export class PostProductDto {
   @IsOptional()
   @IsBoolean()
   readonly postOnBehalfOfCompany: boolean;
+
+  @ApiProperty({
+    type: Boolean,
+    description: DocsProperty.PRODUCT_COMPANY_EDIT_FLAG_DESC,
+    example: DocsProperty.PRODUCT_COMPANY_EDIT_FLAG_EXAMPLE
+  })
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  readonly companyEdit: boolean;
 }

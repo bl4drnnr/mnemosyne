@@ -2174,6 +2174,13 @@ paths:
         - name: slug
           required: true
           in: query
+          description: Slug that is used in order to get the product by slug.
+          schema:
+            type: string
+        - name: companyEdit
+          required: false
+          in: query
+          description: Flag that describes whether a product can be edited as a company one.
           schema:
             type: string
       responses:
@@ -4477,6 +4484,11 @@ components:
           type: boolean
           description: Is product posted on behalf of company
           example: "false"
+        companyEdit:
+          type: boolean
+          description: Flag that defines either the action on the product is performed on
+            behalf of company
+          example: "true"
       required:
         - title
         - description

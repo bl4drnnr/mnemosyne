@@ -711,8 +711,6 @@ export class CompanyService {
       });
     }
 
-    // @TODO Refactor this part of code once the database is rebuilt
-    // Basically, it means, check if the deletion process is the cascade one
     await this.companyRepository.destroy({
       where: { id: companyId },
       transaction: trx

@@ -78,14 +78,14 @@ export class ProductsService {
     });
   }
 
-  getProductBySlugToEdit({
-    slug
-  }: GetProductBySlugPayload): Observable<GetProductBySlugResponse> {
+  getProductBySlugToEdit(
+    params: GetProductBySlugPayload
+  ): Observable<GetProductBySlugResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.GET_PRODUCT_TO_UPDATE,
-      params: { slug }
+      params
     });
   }
 

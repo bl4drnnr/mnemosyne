@@ -39,6 +39,7 @@ export class EditProductComponent implements OnInit {
   productPrice: string;
   productLocation: string;
   postOnBehalfOfCompany: boolean;
+  companyEdit: boolean = false;
 
   product: GetProductBySlug;
 
@@ -125,7 +126,8 @@ export class EditProductComponent implements OnInit {
         contactPerson: this.contactPerson,
         category: this.categoryDropdownValue.key as ProductCategory,
         subcategory: this.subcategoryDropdownValue.key as ProductSubcategory,
-        postOnBehalfOfCompany: this.postOnBehalfOfCompany
+        postOnBehalfOfCompany: this.postOnBehalfOfCompany,
+        companyEdit: this.companyEdit
       })
       .subscribe({
         next: async ({ message, link }) => {
@@ -144,7 +146,8 @@ export class EditProductComponent implements OnInit {
   getProductBySlugToEdit() {
     this.productsService
       .getProductBySlugToEdit({
-        slug: this.productSlug
+        slug: this.productSlug,
+        companyEdit: this.companyEdit
       })
       .subscribe({
         next: async ({ product }) => {
@@ -478,6 +481,11 @@ export class EditProductComponent implements OnInit {
   }
 
   ngOnInit() {
+    const companyProductEdit =
+      this.route.snapshot.queryParamMap.get('productCompanyEdit');
+
+    this.companyEdit = companyProductEdit === 'true';
+
     this.route.paramMap.subscribe(async (params) => {
       const productSlug = params.get('product-slug');
 

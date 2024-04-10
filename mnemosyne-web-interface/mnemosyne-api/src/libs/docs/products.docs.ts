@@ -329,6 +329,25 @@ export abstract class ProductsDocs {
     const apiNotFoundDesc =
       'In case if the slug of the product has not been found, user gets this error message.';
 
+    const slugQueryDesc =
+      'Slug that is used in order to get the product by slug.';
+    const companyEditQueryDesc =
+      'Flag that describes whether a product can be edited as a company one.';
+
+    const slugQuery = {
+      description: slugQueryDesc,
+      name: 'slug',
+      type: String,
+      required: true
+    };
+
+    const companyEditQuery = {
+      description: companyEditQueryDesc,
+      name: 'companyEdit',
+      type: String,
+      required: false
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -340,7 +359,9 @@ export abstract class ProductsDocs {
       ApiNotFoundResponse: {
         description: apiNotFoundDesc,
         schema: { $ref: getSchemaPath(ProductNotFoundException) }
-      }
+      },
+      ApiSlugQuery: slugQuery,
+      ApiCompanyEditQuery: companyEditQuery
     };
   }
 

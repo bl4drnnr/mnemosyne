@@ -57,7 +57,7 @@
         <basic-button
           [label]="t('button.editProduct')"
           [fillButton]="true"
-          (buttonClick)="handleRedirect('/marketplace/product/' + slug + '/edit')"
+          (buttonClick)="handleExternalRedirect('/marketplace/product/' + slug + '/edit' + (productCompanyEdit ? '?productCompanyEdit=true' : ''))"
         />
       </div>
       <div
@@ -137,7 +137,7 @@
           <basic-button
             [label]="t('button.editProduct')"
             [fillButton]="true"
-            (buttonClick)="handleRedirect('/marketplace/product/' + slug + '/edit')"
+            (buttonClick)="handleExternalRedirect('/marketplace/product/' + slug + '/edit' + (productCompanyEdit ? '?productCompanyEdit=true' : ''))"
           />
         </div>
         <div

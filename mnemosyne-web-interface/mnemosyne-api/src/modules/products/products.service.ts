@@ -57,6 +57,7 @@ import { GetCompanyProductsStatsInterface } from '@interfaces/get-company-produc
 import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
 import { GetCompanyInternalStatsInterface } from '@interfaces/get-company-internal-stats.interface';
 import { GetCompanyInternalStatsDto } from '@dto/get-company-internal-stats.dto';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
 
 @Injectable()
 export class ProductsService {
@@ -519,38 +520,71 @@ export class ProductsService {
   }
 
   async getProductBySlugToEdit({
+    companyId,
     userId,
     slug,
+    companyEdit,
     trx
   }: GetProductBySlugToEditInterface) {
-    const productToEdit = await this.productRepository.findOne({
-      where: { userId, slug },
-      include: [{ model: Category, attributes: ['name'] }],
-      transaction: trx
-    });
+    let product: Product;
 
-    if (!productToEdit) throw new ProductNotFoundException();
+    if (companyEdit === 'true') {
+      product = await this.productRepository.findOne({
+        where: { slug, onBehalfOfCompany: true },
+        include: [
+          { model: Category, attributes: ['name'] },
+          { model: User, attributes: ['email'] }
+        ],
+        transaction: trx
+      });
 
-    const product = {
-      id: productToEdit.id,
-      title: productToEdit.title,
-      description: productToEdit.description,
-      pictures: productToEdit.pictures,
-      location: productToEdit.location,
-      currency: productToEdit.currency,
-      price: productToEdit.price,
-      subcategory: productToEdit.subcategory,
-      category: productToEdit.category.name,
-      createdAt: productToEdit.createdAt,
-      contactPerson: productToEdit.contactPerson,
-      contactPhone: productToEdit.contactPhone,
-      onBehalfOfCompany: productToEdit.onBehalfOfCompany
+      if (!product) throw new ProductNotFoundException();
+
+      const { rows } = await this.companyService.getAllCompanyUsers({
+        companyId,
+        trx
+      });
+
+      const productOwner = rows.filter(
+        ({ email }) => email === product.user.email
+      );
+
+      if (!productOwner) throw new UserNotFoundException();
+    } else {
+      product = await this.productRepository.findOne({
+        where: { userId, slug },
+        include: [{ model: Category, attributes: ['name'] }],
+        transaction: trx
+      });
+
+      if (!product) throw new ProductNotFoundException();
+    }
+
+    const foundProduct = {
+      id: product.id,
+      title: product.title,
+      description: product.description,
+      pictures: product.pictures,
+      location: product.location,
+      currency: product.currency,
+      price: product.price,
+      subcategory: product.subcategory,
+      category: product.category.name,
+      createdAt: product.createdAt,
+      contactPerson: product.contactPerson,
+      contactPhone: product.contactPhone,
+      onBehalfOfCompany: product.onBehalfOfCompany
     };
 
-    return new ProductBySlugToEditDto(product);
+    return new ProductBySlugToEditDto(foundProduct);
   }
 
-  async updateProduct({ userId, payload, trx }: PostProductInterface) {
+  async updateProduct({
+    companyId,
+    userId,
+    payload,
+    trx
+  }: PostProductInterface) {
     const {
       id,
       title,
@@ -563,7 +597,8 @@ export class ProductsService {
       contactPerson,
       category,
       subcategory,
-      postOnBehalfOfCompany
+      postOnBehalfOfCompany,
+      companyEdit
     } = payload;
 
     const productPostedOnBehalfOfCompany =
@@ -573,10 +608,35 @@ export class ProductsService {
         trx
       });
 
-    const editedProduct = await this.productRepository.findOne({
-      where: { userId, id },
-      transaction: trx
-    });
+    let editedProduct: Product;
+
+    if (companyEdit) {
+      editedProduct = await this.productRepository.findOne({
+        where: { id, onBehalfOfCompany: true },
+        include: [
+          { model: Category, attributes: ['name'] },
+          { model: User, attributes: ['email'] }
+        ]
+      });
+
+      if (!editedProduct) throw new ProductNotFoundException();
+
+      const { rows } = await this.companyService.getAllCompanyUsers({
+        companyId,
+        trx
+      });
+
+      const productOwner = rows.filter(
+        ({ email }) => email === editedProduct.user.email
+      );
+
+      if (!productOwner) throw new UserNotFoundException();
+    } else {
+      editedProduct = await this.productRepository.findOne({
+        where: { userId, id },
+        transaction: trx
+      });
+    }
 
     if (!editedProduct) throw new ProductNotFoundException();
 
@@ -617,7 +677,7 @@ export class ProductsService {
       },
       {
         returning: false,
-        where: { userId, id },
+        where: { id },
         transaction: trx
       }
     );

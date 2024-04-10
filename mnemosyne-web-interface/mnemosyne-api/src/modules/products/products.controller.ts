@@ -159,18 +159,24 @@ export class ProductsController {
   @ApiExtraModels(...ProductsDocs.GetProductBySlugToEdit.ApiExtraModels)
   @ApiResponse(ProductsDocs.GetProductBySlugToEdit.ApiResponse)
   @ApiNotFoundResponse(ProductsDocs.GetProductBySlugToEdit.ApiNotFoundResponse)
+  @ApiQuery(ProductsDocs.GetProductBySlugToEdit.ApiSlugQuery)
+  @ApiQuery(ProductsDocs.GetProductBySlugToEdit.ApiCompanyEditQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('get-product-by-slug-to-edit')
   getProductBySlugToEdit(
+    @CompanyId() companyId: string,
     @UserId() userId: string,
     @Query('slug') slug: string,
+    @Query('companyEdit') companyEdit: string,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.getProductBySlugToEdit({
+      companyId,
       userId,
       slug,
+      companyEdit,
       trx
     });
   }
@@ -188,11 +194,13 @@ export class ProductsController {
   @UseGuards(AuthGuard)
   @Patch('update-product')
   updateProduct(
+    @CompanyId() companyId: string,
     @UserId() userId: string,
     @Body() payload: PostProductDto,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.updateProduct({
+      companyId,
       userId,
       payload,
       trx

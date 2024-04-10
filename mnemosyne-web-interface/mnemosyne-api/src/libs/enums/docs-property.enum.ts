@@ -307,5 +307,7 @@ export enum DocsProperty {
   COMPANY_MEMBERS_IDS_LIST_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c',
   QUANTITY_OF_COMPANY_MEMBERS_DESC = 'Quantity of all company users',
   QUANTITY_OF_COMPANY_MEMBERS_EXAMPLE = '345',
-  COMPANY_INTERNAL_STATS_DESC = 'Company internal statistics'
+  COMPANY_INTERNAL_STATS_DESC = 'Company internal statistics',
+  PRODUCT_COMPANY_EDIT_FLAG_DESC = 'Flag that defines either the action on the product is performed on behalf of company',
+  PRODUCT_COMPANY_EDIT_FLAG_EXAMPLE = 'true'
 }

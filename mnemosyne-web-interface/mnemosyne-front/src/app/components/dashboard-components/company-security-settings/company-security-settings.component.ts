@@ -39,8 +39,6 @@ export class CompanySecuritySettingsComponent implements OnInit {
 
   defaultCompanyRole: DropdownInterface = { key: '', value: '' };
 
-  // @TODO GENERAL -- Complete all unfinished functions and perform the global test
-  // @TODO Implement logs but for clients (both end users and companies)
   showOwnershipTransferModal = false;
 
   deleteCompanyModal = false;

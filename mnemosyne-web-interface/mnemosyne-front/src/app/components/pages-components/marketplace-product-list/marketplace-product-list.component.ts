@@ -14,6 +14,7 @@ export class MarketplaceProductListComponent {
   @Input() layoutView: 'list' | 'grid' = 'list';
   @Input() showAdditionalInfo = false;
   @Input() showManagementButtons = false;
+  @Input() productCompanyEdit = false;
 
   @Output() getProductsEvent = new EventEmitter<void>();
   @Output() setPage = new EventEmitter<string>();

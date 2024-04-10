@@ -15,4 +15,5 @@ export interface PostProductPayload {
   category: ProductCategory;
   subcategory: ProductSubcategory;
   postOnBehalfOfCompany: boolean;
+  companyEdit?: boolean;
 }

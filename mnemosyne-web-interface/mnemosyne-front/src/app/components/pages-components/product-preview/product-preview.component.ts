@@ -35,6 +35,7 @@ export class ProductPreviewComponent {
   @Input() productInFavorites: boolean;
   @Input() showAdditionalInfo: boolean = false;
   @Input() showManagementButtons: boolean = false;
+  @Input() productCompanyEdit: boolean = false;
 
   @Output() deleteProductEvent = new EventEmitter<DeleteProductPayload>();
 
@@ -52,6 +53,10 @@ export class ProductPreviewComponent {
 
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
+  }
+
+  handleExternalRedirect(path: string) {
+    document.location.href = path;
   }
 
   handleProductFavorite(event: MouseEvent) {
