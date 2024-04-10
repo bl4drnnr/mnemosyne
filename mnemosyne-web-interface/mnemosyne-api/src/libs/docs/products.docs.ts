@@ -130,6 +130,8 @@ export abstract class ProductsDocs {
     const companyProductsQueryDesc = 'Company products flag';
     const privateProductsQueryDesc = 'Private products flag';
     const marketplaceUserIdQueryDesc = 'Marketplace user ID (or just user ID)';
+    const marketplaceCompanyIdQueryDesc =
+      'Marketplace company ID (or just company ID)';
 
     const productQuery = {
       description: productQueryDesc,
@@ -222,6 +224,13 @@ export abstract class ProductsDocs {
       required: false
     };
 
+    const marketplaceCompanyIdQuery = {
+      description: marketplaceCompanyIdQueryDesc,
+      name: 'marketplaceCompanyId',
+      type: String,
+      required: false
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -250,7 +259,8 @@ export abstract class ProductsDocs {
       ApiSubcategoryQuery: subcategoryQuery,
       ApiCompanyProductsQuery: companyProductsQuery,
       ApiPrivateProductsQuery: privateProductsQuery,
-      ApiMarketplaceUserIdQuery: marketplaceUserIdQuery
+      ApiMarketplaceUserIdQuery: marketplaceUserIdQuery,
+      ApiMarketplaceCompanyIdQuery: marketplaceCompanyIdQuery
     };
   }
 

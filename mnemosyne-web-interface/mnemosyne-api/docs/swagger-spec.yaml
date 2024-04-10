@@ -2082,6 +2082,12 @@ paths:
           description: Marketplace user ID (or just user ID)
           schema:
             type: string
+        - name: marketplaceCompanyId
+          required: false
+          in: query
+          description: Marketplace company ID (or just company ID)
+          schema:
+            type: string
       responses:
         "200":
           description: As a response user gets a list of products under certain criteria

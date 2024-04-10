@@ -84,6 +84,7 @@ export class ProductsController {
   @ApiQuery(ProductsDocs.SearchProduct.ApiCompanyProductsQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiPrivateProductsQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiMarketplaceUserIdQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiMarketplaceCompanyIdQuery)
   @ApiBasicAuth('basicAuth')
   @UseInterceptors(UserInterceptor)
   @Get('search-product')
@@ -101,6 +102,7 @@ export class ProductsController {
     @Query('companyProducts') companyProducts: string,
     @Query('privateProducts') privateProducts: string,
     @Query('marketplaceUserId') marketplaceUserId: string,
+    @Query('marketplaceCompanyId') marketplaceCompanyId: string,
     @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
@@ -118,6 +120,7 @@ export class ProductsController {
       companyProducts,
       privateProducts,
       marketplaceUserId,
+      marketplaceCompanyId,
       userId,
       trx
     });

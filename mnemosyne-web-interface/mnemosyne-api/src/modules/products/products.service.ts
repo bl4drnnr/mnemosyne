@@ -210,6 +210,7 @@ export class ProductsService {
     companyProducts,
     privateProducts,
     marketplaceUserId,
+    marketplaceCompanyId,
     userId,
     trx
   }: SearchProductInterface) {
@@ -337,6 +338,22 @@ export class ProductsService {
 
     if (marketplaceUserId) {
       where[Op.and].push([{ user_id: marketplaceUserId }]);
+    }
+
+    if (marketplaceCompanyId) {
+      const allCompanyUsers = await this.companyService.getAllCompanyUsers({
+        companyId: marketplaceCompanyId,
+        trx
+      });
+
+      const allCompanyUsersIds = allCompanyUsers.rows.map(({ id }) => id);
+
+      where[Op.and].push([
+        {
+          user_id: { [Op.in]: allCompanyUsersIds },
+          on_behalf_of_company: true
+        }
+      ]);
     }
 
     if (currency !== 'all') {

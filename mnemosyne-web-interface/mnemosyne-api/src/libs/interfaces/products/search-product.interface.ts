@@ -14,6 +14,7 @@ export interface SearchProductInterface {
   companyProducts: string;
   privateProducts: string;
   marketplaceUserId: string | undefined;
+  marketplaceCompanyId: string | undefined;
   userId: string | undefined;
   trx?: Transaction;
 }

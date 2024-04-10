@@ -100,13 +100,7 @@ export class MarketplaceComponent implements OnInit {
   }
 
   checkProductPrice(price: string, priceType: 'min' | 'max') {
-    const {
-      minPrice,
-      maxPrice,
-      minPriceError,
-      maxPriceError,
-      wrongPriceError
-    } = this.utilsService.checkProductPrice(
+    const productPrice = this.utilsService.checkProductPrice(
       price,
       priceType,
       this.minPrice,
@@ -116,11 +110,11 @@ export class MarketplaceComponent implements OnInit {
       this.wrongPriceError
     );
 
-    this.minPrice = minPrice;
-    this.maxPrice = maxPrice;
-    this.minPriceError = minPriceError;
-    this.maxPriceError = maxPriceError;
-    this.wrongPriceError = wrongPriceError;
+    this.minPrice = productPrice.minPrice;
+    this.maxPrice = productPrice.maxPrice;
+    this.minPriceError = productPrice.minPriceError;
+    this.maxPriceError = productPrice.maxPriceError;
+    this.wrongPriceError = productPrice.wrongPriceError;
 
     this.getProducts();
   }
