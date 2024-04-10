@@ -40,7 +40,7 @@
             <p>{{ t('settings.companySettingsSection.rolesManagement') }}</p>
           </div>
         </div>
-        <div class="menu-option">
+        <div class="menu-option" *ngIf="userIsAllowedToManageSecurity()">
           <div
             class="menu-option-wrapper"
             [ngClass]="{ 'active': companySettingsSection === 'security' }"
@@ -57,6 +57,7 @@
       <div class="content-block" *ngIf="companyInformation">
         <div *ngIf="companySettingsSection === 'info'">
           <dashboard-company-info-settings
+            [readOnly]="!userIsAllowedToManageCompanyInfo()"
             [companyInformation]="companyInformation"
             [companyName]="companyInformation.companyName"
             [companyLocation]="companyInformation.companyLocation"
@@ -69,6 +70,7 @@
 
         <div *ngIf="companySettingsSection === 'users'">
           <dashboard-company-users-settings
+            [readOnly]="!userIsAllowedToManageUsers()"
             [page]="page"
             [query]="query"
             [pageSize]="pageSize"
@@ -86,6 +88,7 @@
 
         <div *ngIf="companySettingsSection === 'roles'">
           <dashboard-company-roles-management
+            [readOnly]="!userIsAllowedToManageRoles()"
             [companyRoles]="companyRoles"
             (getCompanyRoles)="fetchCompanyRoles()"
             (createNewRoleEvent)="createNewRole($event)"

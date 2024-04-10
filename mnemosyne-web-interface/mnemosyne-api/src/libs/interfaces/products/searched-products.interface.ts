@@ -8,6 +8,9 @@ export interface SearchedProductsInterface {
   price: number;
   category: string;
   subcategory: string;
+  location: string | null;
+  contactPhone: string | null;
+  contactPerson: string | null;
   productInFavorites: boolean;
   createdAt: Date;
 }

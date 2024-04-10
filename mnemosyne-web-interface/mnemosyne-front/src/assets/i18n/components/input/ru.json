@@ -165,5 +165,8 @@
   "noHomePhone": "Домашний телефон не указан",
   "companyMemberSearchLabel": "Поиск участников компании",
   "companyMemberSearchPlaceholder": "Поиск участников компании",
-  "companyMemberSearchInputDesc": "Поиск участников компании по имени и фамилии"
+  "companyMemberSearchInputDesc": "Поиск участников компании по имени и фамилии",
+  "companyEmployeeLabel": "Сотрудник компании",
+  "companyEmployeePlaceholder": "Поиск сотрудника компании",
+  "companyEmployeeInputDesc": "Поиск сотрудника компании по электронной почте, имени или фамилии."
 }

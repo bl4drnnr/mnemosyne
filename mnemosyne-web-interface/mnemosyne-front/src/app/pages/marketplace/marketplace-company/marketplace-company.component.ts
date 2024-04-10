@@ -123,9 +123,8 @@ export class MarketplaceCompanyComponent implements OnInit {
             'created_at'
           ];
 
-          for (const orderOption of orderOptions) {
+          for (const orderOption of orderOptions)
             await this.initOrderOptions(orderOption);
-          }
 
           this.companyProducts = products;
           this.productsTotalItems = count;

@@ -165,5 +165,8 @@
   "noHomePhone": "Nie określono telefonu domowego",
   "companyMemberSearchLabel": "Wyszukiwanie członków firmy",
   "companyMemberSearchPlaceholder": "Szukaj członka firmy",
-  "companyMemberSearchInputDesc": "Szukaj członków firmy używając imienia i nazwiska"
+  "companyMemberSearchInputDesc": "Szukaj członków firmy używając imienia i nazwiska",
+  "companyEmployeeLabel": "Pracownik firmy",
+  "companyEmployeePlaceholder": "Szukaj pracownika firmy",
+  "companyEmployeeInputDesc": "Wyszukaj pracownika firmy na podstawie adresu e-mail, imienia lub nazwiska"
 }

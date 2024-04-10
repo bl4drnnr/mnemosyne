@@ -96,8 +96,12 @@
     "roleDescHeader": "Description",
     "roleMoreInfoHeader": "More information",
     "roleDeletionRule": "If you want to delete the role, you will have to revoke this role from each user in the company. Once it is done, the role will be deleted automatically.",
+    "primaryAdminRole": "Primary admin role cannot be deleted, this role can only be transferred and can be deleted only with deletion of the company.",
     "foundCompanyMembers": "Found company members",
-    "roleWillBeAssigned": "Role will be assigned to the following"
+    "roleWillBeAssigned": "Role will be assigned to the following",
+    "readOnlyCompanyInfo": "You are not allowed to manage company information. If you think that this is not how it is supposed to be, please, contact your company owner or administrator.",
+    "readOnlyCompanyUsers": "You are not allowed to manage and/or invite company users. If you think that this is not how it is supposed to be, please, contact your company owner or administrator.",
+    "readOnlyCompanyRoles": "You are not allowed to manage and/or modify company roles. If you think that this is not how it is supposed to be, please, contact your company owner or administrator."
   },
   "defaultRoles": {
     "DEFAULT": "Default",

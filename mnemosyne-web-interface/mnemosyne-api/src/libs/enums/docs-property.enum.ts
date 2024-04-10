@@ -306,5 +306,6 @@ export enum DocsProperty {
   COMPANY_MEMBERS_IDS_LIST_DESC = 'List of company members IDs (user IDs)',
   COMPANY_MEMBERS_IDS_LIST_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c',
   QUANTITY_OF_COMPANY_MEMBERS_DESC = 'Quantity of all company users',
-  QUANTITY_OF_COMPANY_MEMBERS_EXAMPLE = '345'
+  QUANTITY_OF_COMPANY_MEMBERS_EXAMPLE = '345',
+  COMPANY_INTERNAL_STATS_DESC = 'Company internal statistics'
 }

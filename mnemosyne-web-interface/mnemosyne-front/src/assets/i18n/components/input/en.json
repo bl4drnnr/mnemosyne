@@ -165,5 +165,8 @@
   "noHomePhone": "No home phone specified",
   "companyMemberSearchLabel": "Company member search",
   "companyMemberSearchPlaceholder": "Search for company member",
-  "companyMemberSearchInputDesc": "Search for company members using first and last name"
+  "companyMemberSearchInputDesc": "Search for company members using first and last name",
+  "companyEmployeeLabel": "Company employee",
+  "companyEmployeePlaceholder": "Search company employee",
+  "companyEmployeeInputDesc": "Search company employee based on email, first name or last name"
 }

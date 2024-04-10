@@ -55,6 +55,8 @@ import { ForbiddenResourceException } from '@exceptions/forbidden-resource.excep
 import { CheckForProductPermissionsInterface } from '@interfaces/check-for-product-permissions.interface';
 import { GetCompanyProductsStatsInterface } from '@interfaces/get-company-products-stats.interface';
 import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
+import { GetCompanyInternalStatsInterface } from '@interfaces/get-company-internal-stats.interface';
+import { GetCompanyInternalStatsDto } from '@dto/get-company-internal-stats.dto';
 
 @Injectable()
 export class ProductsService {
@@ -211,6 +213,7 @@ export class ProductsService {
     privateProducts,
     marketplaceUserId,
     marketplaceCompanyId,
+    companyExtended,
     userId,
     trx
   }: SearchProductInterface) {
@@ -303,6 +306,9 @@ export class ProductsService {
       'currency',
       'price',
       'subcategory',
+      'location',
+      'contactPhone',
+      'contactPerson',
       'createdAt',
       'created_at'
     ];
@@ -396,6 +402,32 @@ export class ProductsService {
       userFavoriteProductsIds = favoriteProductsIds;
     }
 
+    let companyExtendedProductsInfo = false;
+
+    const companyExtendedInfo = ['true', 'false'];
+
+    if (companyExtended) {
+      if (companyExtendedInfo.includes(companyExtended) && userId) {
+        const {
+          companyUser: { id: companyUserId }
+        } = await this.usersService.getUserById({
+          id: userId,
+          trx
+        });
+        const { roleScopes } = await this.companyService.getCompanyUserRole({
+          companyUserId,
+          trx
+        });
+        if (!roleScopes.includes(Roles.PRODUCT_MANAGEMENT)) {
+          throw new ForbiddenResourceException();
+        } else {
+          companyExtendedProductsInfo = true;
+        }
+      } else {
+        throw new ParseException();
+      }
+    }
+
     const foundProducts = rows.map(
       ({
         id,
@@ -406,6 +438,9 @@ export class ProductsService {
         price,
         category,
         subcategory,
+        location,
+        contactPhone,
+        contactPerson,
         createdAt
       }) => ({
         id,
@@ -416,6 +451,9 @@ export class ProductsService {
         price,
         category: category.name,
         subcategory,
+        location: companyExtendedProductsInfo ? location : null,
+        contactPhone: companyExtendedProductsInfo ? contactPhone : null,
+        contactPerson: companyExtendedProductsInfo ? contactPerson : null,
         productInFavorites: userFavoriteProductsIds.includes(id),
         createdAt
       })
@@ -917,6 +955,66 @@ export class ProductsService {
       amountOfProducts,
       ...companyStats
     });
+  }
+
+  async getCompanyInternalStatistics({
+    companyId,
+    userId,
+    query,
+    trx
+  }: GetCompanyInternalStatsInterface) {
+    const allCompanyUsers = await this.companyService.getAllCompanyUsers({
+      companyId,
+      trx
+    });
+
+    const {
+      companyUser: { id: companyUserId }
+    } = await this.usersService.getUserById({
+      id: userId,
+      trx
+    });
+
+    const { roleScopes } = await this.companyService.getCompanyUserRole({
+      companyUserId,
+      trx
+    });
+
+    if (!roleScopes.includes(Roles.PRODUCT_MANAGEMENT))
+      throw new ForbiddenResourceException();
+
+    let companyUsersFiltered = allCompanyUsers.rows;
+
+    if (query) {
+      companyUsersFiltered = allCompanyUsers.rows.filter(({ email }) =>
+        email.includes(query.toLowerCase())
+      );
+    }
+
+    const companyInternalStats = [];
+
+    for (const companyEmployee of companyUsersFiltered) {
+      const { rows, count } = await this.productRepository.findAndCountAll({
+        where: {
+          userId: companyEmployee.id,
+          onBehalfOfCompany: true
+        },
+        transaction: trx
+      });
+      const amountOfUserProducts = count;
+      const companyUserProductsStatus = this.marketplaceProductsStats(rows);
+
+      companyInternalStats.push({
+        id: companyEmployee.id,
+        email: companyEmployee.email,
+        firstName: companyEmployee.firstName,
+        lastName: companyEmployee.lastName,
+        amountOfUserProducts,
+        companyUserProductsStatus
+      });
+    }
+
+    return new GetCompanyInternalStatsDto(companyInternalStats);
   }
 
   private marketplaceProductsStats(rows: Array<Product>) {

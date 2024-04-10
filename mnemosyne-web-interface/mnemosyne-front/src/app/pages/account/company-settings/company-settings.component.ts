@@ -16,6 +16,7 @@ import { UpdateCompanyRolePayload } from '@payloads/update-company-role.interfac
 import { MessagesTranslation } from '@translations/messages.enum';
 import { UserInfoResponse } from '@responses/user-info.interface';
 import { Titles } from '@interfaces/titles.enum';
+import { Scopes } from '@interfaces/role-scopes.enum';
 
 @Component({
   selector: 'page-company-settings',
@@ -42,6 +43,24 @@ export class CompanySettingsComponent {
     private readonly translationService: TranslationService,
     private readonly companyService: CompanyService
   ) {}
+
+  userIsAllowedToManageCompanyInfo() {
+    return this.userInfo.roleScopes?.includes(
+      Scopes.COMPANY_INFORMATION_MANAGEMENT
+    );
+  }
+
+  userIsAllowedToManageUsers() {
+    return this.userInfo.roleScopes?.includes(Scopes.USER_MANAGEMENT);
+  }
+
+  userIsAllowedToManageRoles() {
+    return this.userInfo.roleScopes?.includes(Scopes.ROLES_MANAGEMENT);
+  }
+
+  userIsAllowedToManageSecurity() {
+    return this.userInfo.roleName === 'PRIMARY_ADMIN';
+  }
 
   fetchCompanyInformation() {
     this.companyService.getCompanyInformationById().subscribe({
@@ -145,6 +164,5 @@ export class CompanySettingsComponent {
     }
 
     this.fetchCompanyInformation();
-    this.fetchCompanyRoles();
   }
 }

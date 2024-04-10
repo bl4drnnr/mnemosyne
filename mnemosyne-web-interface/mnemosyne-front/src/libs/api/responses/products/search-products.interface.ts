@@ -10,6 +10,9 @@ export interface SearchedProducts {
   price: number;
   category: ProductCategory;
   subcategory: string;
+  location: string | null;
+  contactPhone: string | null;
+  contactPerson: string | null;
   productInFavorites: boolean;
   createdAt: Date;
 }

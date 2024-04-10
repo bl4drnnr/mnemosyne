@@ -6,6 +6,13 @@
 
   <p>{{ t('settings.companySettingsSection.companyInfoDesc') }}</p>
 
+  <p
+    class="readonly-warning"
+    *ngIf="readOnly"
+  >
+    {{ t('settings.companySettingsSection.readOnlyCompanyInfo') }}
+  </p>
+
   <basic-input
     [label]="t('input.companyName')"
     [placeholder]="t('input.provideCompanyName')"
@@ -16,6 +23,7 @@
     [maxLength]="64"
     (valueChange)="companyName = $event"
     (incorrectInput)="incorrectCompanyName = $event"
+    [disabled]="readOnly"
   />
   <basic-input
     [label]="t('input.companyLocation')"
@@ -27,6 +35,7 @@
     [maxLength]="128"
     (valueChange)="companyLocation = $event"
     (incorrectInput)="incorrectLocationName = $event"
+    [disabled]="readOnly"
   />
   <basic-input
     [label]="t('input.companyWebsite')"
@@ -36,6 +45,7 @@
     [errorMessage]="t('input.wrongFQDN')"
     [value]="companyWebsite"
     (valueChange)="checkAndWriteCompanyWebsite($event)"
+    [disabled]="readOnly"
   />
   <basic-input
     type="email"

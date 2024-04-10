@@ -30,6 +30,8 @@ import { GetMarketplaceUserStatsPayload } from '@payloads/get-marketplace-user-s
 import { GetMarketplaceUserStatsResponse } from '@responses/get-marketplace-user-stats.interface';
 import { GetMarketplaceCompanyStatsPayload } from '@payloads/get-marketplace-company-stats.interface';
 import { GetMarketplaceCompanyStatsResponse } from '@responses/get-marketplace-company-stats.interface';
+import { GetCompanyInternalStatsPayload } from '@payloads/get-company-internal-stats.interface';
+import { GetCompanyInternalStatsResponse } from '@responses/get-company-internal-stats.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -193,6 +195,17 @@ export class ProductsService {
       method: Method.GET,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.MARKETPLACE_COMPANY_STATISTICS,
+      params
+    });
+  }
+
+  getCompanyInternalStatistics(
+    params: GetCompanyInternalStatsPayload
+  ): Observable<GetCompanyInternalStatsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.MARKETPLACE_COMPANY_INTERNAL_STATISTICS,
       params
     });
   }

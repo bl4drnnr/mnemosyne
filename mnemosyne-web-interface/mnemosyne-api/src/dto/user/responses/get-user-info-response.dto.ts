@@ -13,6 +13,7 @@ interface UserInfoResponse {
   isProfilePicPresent: boolean;
   isCompanyMember: boolean;
   companyName: string | null;
+  companyId: string | null;
   roleName: string | null;
   roleScopes: Array<RoleScope> | null;
 }
@@ -90,6 +91,13 @@ export class GetUserInfoResponseDto {
 
   @ApiProperty({
     type: String,
+    description: DocsProperty.COMPANY_ID_DESC,
+    example: DocsProperty.COMPANY_ID_EXAMPLE
+  })
+  readonly companyId: string | null;
+
+  @ApiProperty({
+    type: String,
     description: DocsProperty.COMPANY_ROLE_NAME_DESC,
     example: DocsProperty.COMPANY_ROLE_NAME_EXAMPLE
   })
@@ -114,6 +122,7 @@ export class GetUserInfoResponseDto {
     isProfilePicPresent,
     isCompanyMember,
     companyName,
+    companyId,
     roleName,
     roleScopes
   }: UserInfoResponse) {
@@ -127,6 +136,7 @@ export class GetUserInfoResponseDto {
     this.isProfilePicPresent = isProfilePicPresent;
     this.isCompanyMember = isCompanyMember;
     this.companyName = companyName;
+    this.companyId = companyId;
     this.roleName = roleName;
     this.roleScopes = roleScopes;
   }

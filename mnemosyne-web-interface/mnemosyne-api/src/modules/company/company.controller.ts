@@ -136,7 +136,7 @@ export class CompanyController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('COMPANY_INFORMATION_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Patch('update-company')
@@ -163,7 +163,12 @@ export class CompanyController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('PRIMARY_ADMIN')
+  @Roles(
+    'USER_MANAGEMENT',
+    'ROLES_MANAGEMENT',
+    'COMPANY_INFORMATION_MANAGEMENT',
+    'PRODUCT_MANAGEMENT'
+  )
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Post('transfer-ownership')
@@ -189,7 +194,12 @@ export class CompanyController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles(
+    'USER_MANAGEMENT',
+    'ROLES_MANAGEMENT',
+    'COMPANY_INFORMATION_MANAGEMENT',
+    'PRODUCT_MANAGEMENT'
+  )
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Delete('delete-company')

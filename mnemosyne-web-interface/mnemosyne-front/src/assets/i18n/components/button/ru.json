@@ -49,5 +49,6 @@
   "showContactPhone": "Показать контактный телефон",
   "logInCreateAcc": "Войти / Создать аккаунт",
   "companySettings": "Настройки компании",
-  "goToUserProfile": "Профиль пользователя"
+  "goToUserProfile": "Профиль пользователя",
+  "companyProduct": "Продукты компании"
 }

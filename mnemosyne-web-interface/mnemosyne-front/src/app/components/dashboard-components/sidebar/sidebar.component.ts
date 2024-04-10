@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { UserInfoResponse } from '@responses/user-info.interface';
 import { EnvService } from '@shared/env.service';
+import { Scopes } from '@interfaces/role-scopes.enum';
 
 @Component({
   selector: 'dashboard-sidebar',

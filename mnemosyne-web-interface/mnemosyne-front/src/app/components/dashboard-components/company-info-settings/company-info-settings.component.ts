@@ -32,6 +32,7 @@ export class CompanyInfoSettingsComponent {
   @Input() companyLocation: string;
   @Input() companyWebsite: string;
   @Input() companyOwnerEmail: string;
+  @Input() readOnly: boolean;
   @Output() saveCompanyInformationEvent =
     new EventEmitter<UpdateCompanyInfoPayload>();
   @Output() getCompanyInformationEvent = new EventEmitter<any>();

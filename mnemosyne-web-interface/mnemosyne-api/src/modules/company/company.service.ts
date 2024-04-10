@@ -405,7 +405,7 @@ export class CompanyService {
     const companyUsersIds = company.companyUsers.map(({ userId }) => userId);
 
     return await this.usersService.getUsersByIds({
-      attributes: ['id', 'firstName', 'lastName'],
+      attributes: ['id', 'email', 'firstName', 'lastName'],
       ids: companyUsersIds,
       trx
     });

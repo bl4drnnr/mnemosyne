@@ -13,5 +13,6 @@ export enum ProductsEndpoint {
   PRODUCT_CONTACT_EMAIL = 'product-contact-email',
   PRODUCT_CONTACT_PHONE = 'product-contact-phone',
   MARKETPLACE_USER_STATISTICS = 'marketplace-user-statistics',
-  MARKETPLACE_COMPANY_STATISTICS = 'marketplace-company-statistics'
+  MARKETPLACE_COMPANY_STATISTICS = 'marketplace-company-statistics',
+  MARKETPLACE_COMPANY_INTERNAL_STATISTICS = 'marketplace-company-internal-statistics'
 }

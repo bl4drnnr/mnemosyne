@@ -12,6 +12,8 @@ export class MarketplaceProductListComponent {
   @Input() products: Array<SearchedProducts>;
   @Input() totalItems: number;
   @Input() layoutView: 'list' | 'grid' = 'list';
+  @Input() showAdditionalInfo = false;
+  @Input() showManagementButtons = false;
 
   @Output() getProductsEvent = new EventEmitter<void>();
   @Output() setPage = new EventEmitter<string>();

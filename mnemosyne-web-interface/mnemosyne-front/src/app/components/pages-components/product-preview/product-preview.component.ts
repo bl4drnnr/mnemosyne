@@ -28,9 +28,9 @@ export class ProductPreviewComponent {
   @Input() subcategory: string;
   @Input() price: number;
   @Input() currency: Currency;
-  @Input() location: string;
-  @Input() contactPerson: string;
-  @Input() contactPhone: string;
+  @Input() location: string | null;
+  @Input() contactPerson: string | null;
+  @Input() contactPhone: string | null;
   @Input() createdAt: Date;
   @Input() productInFavorites: boolean;
   @Input() showAdditionalInfo: boolean = false;

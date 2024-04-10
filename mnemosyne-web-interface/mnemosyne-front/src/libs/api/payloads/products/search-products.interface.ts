@@ -15,4 +15,5 @@ export interface SearchProductsPayload {
   privateProducts?: boolean;
   marketplaceUserId?: string | undefined;
   marketplaceCompanyId?: string | undefined;
+  companyExtended?: boolean;
 }

@@ -51,7 +51,8 @@
               (buttonClick)="handleRedirect('marketplace/create-product')"
             />
           </div>
-          <h5 class="sidebar-account-title">{{ t('sidebar.companySettingsSidebarTitle') }}</h5>
+          <h5 class="sidebar-account-title" *ngIf="!userInfo.isCompanyMember">{{ t('sidebar.companySettingsSidebarTitle') }}</h5>
+          <h5 class="sidebar-account-title" *ngIf="userInfo.isCompanyMember">{{ t('sidebar.companySettingsSidebarTitle') }} {{ userInfo.companyName }}</h5>
           <div class="sidebar-button-wrapper" *ngIf="!userInfo.isCompanyMember">
             <basic-button
               [label]="t('button.createCompanyAcc')"
@@ -64,6 +65,13 @@
               [label]="t('button.companySettings')"
               [fillButton]="true"
               (buttonClick)="handleRedirect('company/company-settings')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper" *ngIf="userInfo.isCompanyMember">
+            <basic-button
+              [label]="t('button.companyProduct')"
+              [fillButton]="true"
+              (buttonClick)="handleRedirect('company/company-products')"
             />
           </div>
         </div>

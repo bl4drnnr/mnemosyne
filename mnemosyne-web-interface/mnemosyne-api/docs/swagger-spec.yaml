@@ -2088,6 +2088,12 @@ paths:
           description: Marketplace company ID (or just company ID)
           schema:
             type: string
+        - name: companyExtended
+          required: false
+          in: query
+          description: Company extended information flag
+          schema:
+            type: string
       responses:
         "200":
           description: As a response user gets a list of products under certain criteria
@@ -2508,6 +2514,41 @@ paths:
       tags: *a9
       security:
         - basicAuth: []
+  /api/products/marketplace-company-internal-statistics:
+    get:
+      operationId: ProductsController_getCompanyInternalStatistics
+      summary: Endpoint is responsible for getting internal company statistics.
+      parameters:
+        - name: query
+          required: true
+          in: query
+          description: Member query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: As a response user gets stats per company employee.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GetCompanyInternalStatsDto"
+        "403":
+          description: Forbidden error is thrown in case if user is trying to access
+            without proper access.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResourceException"
+        "404":
+          description: Not found error is thrown in case if company is not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyNotFoundException"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/categories/all-categories:
     get:
       operationId: CategoriesController_getAllCategories
@@ -2662,6 +2703,10 @@ components:
           type: string
           description: Company name
           example: Apple Inc.
+        companyId:
+          type: string
+          description: Company ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
         roleName:
           type: string
           description: Company custom role name
@@ -2684,6 +2729,7 @@ components:
         - homePhone
         - isCompanyMember
         - companyName
+        - companyId
         - roleName
         - roleScopes
     PhoneStatus:
@@ -4286,8 +4332,11 @@ components:
               price: "15000"
               category: travels
               subcategory: it_books
+              location: 5th Avenu
+              contactPhone: "123123123"
+              contactPerson: John Doe
               productInFavorites: "false"
-              created_at: 2023-11-17T11:42:26.534Z
+              createdAt: 2023-11-17T11:42:26.534Z
           type: array
           items:
             type: string
@@ -4787,6 +4836,35 @@ components:
         - usdMaxPrice
         - eurMinPrice
         - eurMaxPrice
+    GetCompanyInternalStatsDto:
+      type: object
+      properties:
+        companyInternalStats:
+          description: Company internal statistics
+          example:
+            - id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+              email: joe@doe.com
+              firstName: Joe
+              lastName: Doe
+              amountOfUserProducts: "100500"
+              companyUserProductsStatus:
+                plnProductsAmount: "100"
+                usdProductsAmount: "100"
+                eurProductsAmount: "100"
+                plnProductsAvgAmount: "228"
+                usdProductsAvgAmount: "228"
+                eurProductsAvgAmount: "228"
+                plnMinPrice: "1337"
+                plnMaxPrice: "1337"
+                usdMinPrice: "1337"
+                usdMaxPrice: "1337"
+                eurMinPrice: "1337"
+                eurMaxPrice: "1337"
+          type: array
+          items:
+            type: string
+      required:
+        - companyInternalStats
     GetAllCategoriesDto:
       type: object
       properties:

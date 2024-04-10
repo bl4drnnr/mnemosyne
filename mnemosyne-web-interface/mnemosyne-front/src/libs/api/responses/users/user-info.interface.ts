@@ -11,6 +11,7 @@ export interface UserInfoResponse {
   isProfilePicPresent: boolean;
   isCompanyMember: boolean;
   companyName: string | null;
+  companyId: string | null;
   roleName: string | null;
   roleScopes: Array<RoleScope> | null;
 }

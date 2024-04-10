@@ -286,9 +286,8 @@ export class MarketplaceComponent implements OnInit {
             'created_at'
           ];
 
-          for (const orderOption of orderOptions) {
+          for (const orderOption of orderOptions)
             await this.initOrderOptions(orderOption);
-          }
 
           this.products = products;
           this.totalItems = count;

@@ -96,8 +96,12 @@
     "roleDescHeader": "Opis",
     "roleMoreInfoHeader": "Więcej informacji",
     "roleDeletionRule": "Jeśli chcesz usunąć rolę, będziesz musiał odebrać tę rolę każdemu użytkownikowi w firmie. Gdy to zrobisz, rola zostanie automatycznie usunięta.",
+    "primaryAdminRole": "Podstawowej roli administratora nie można usunąć, tę rolę można przenieść i można ją usunąć tylko po usunięciu firmy.",
     "foundCompanyMembers": "Znaleziono członków firmy",
-    "roleWillBeAssigned": "Rola zostanie przypisana następującym osobom"
+    "roleWillBeAssigned": "Rola zostanie przypisana następującym osobom",
+    "readOnlyCompanyInfo": "Nie możesz zarządzać informacjami o firmie. Jeśli uważasz, że tak nie powinno być, skontaktuj się z właścicielem lub administratorem swojej firmy.",
+    "readOnlyCompanyUsers": "Nie możesz zarządzać i/lub zapraszać użytkowników firmy. Jeśli uważasz, że tak nie powinno być, skontaktuj się z właścicielem lub administratorem swojej firmy.",
+    "readOnlyCompanyRoles": "Nie możesz zarządzać i/lub modyfikować ról firmy. Jeśli uważasz, że tak nie powinno być, skontaktuj się z właścicielem lub administratorem swojej firmy."
   },
   "defaultRoles": {
     "DEFAULT": "Domyślna",

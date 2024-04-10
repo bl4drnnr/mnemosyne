@@ -36,9 +36,15 @@ export class RoleGuard implements CanActivate {
 
     const user = this.jwtService.verify(token);
 
-    const ifUserHasRole = requiredRoles.includes(user.role.name);
+    const roleScopes = user.role.roleScopes;
 
-    if (!ifUserHasRole) throw new ForbiddenResourceException();
+    let ifUserHasPermissions = false;
+
+    requiredRoles.forEach((requiredRole) => {
+      ifUserHasPermissions = roleScopes.includes(requiredRole);
+    });
+
+    if (!ifUserHasPermissions) throw new ForbiddenResourceException();
     else return true;
   }
 }

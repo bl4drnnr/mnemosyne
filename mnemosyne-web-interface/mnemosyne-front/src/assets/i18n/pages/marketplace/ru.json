@@ -28,6 +28,12 @@
   "statsMinPrice": "Минимальная цена",
   "statsMaxPrice": "Максимальная цена",
   "statsTitle": "Статистика продуктов",
+  "internalStatsTitle": "Внутренняя статистика компании",
+  "internalStats": {
+    "amnt": "Кол-во продуктов",
+    "currProducts": "Продукты {{ currency }}",
+    "currAvgAmnt": "Ср. Кол-во {{ currency }}"
+  },
   "statsTotalAmount": "Общее количество продуктов: {{ amount }}",
   "marketplaceUserNoCompany": "Не является участником",
   "marketplacePrivateProducts": "Приватные продукты",
@@ -40,5 +46,7 @@
   "marketplaceCompanyStatsSection": "Статистика компании",
   "marketplaceCompanyInfoIntro": "Вот страница с общедоступной информацией о компании {{ companyName }}. Начиная с этой страницы, вы сможете найти все, что вам нужно знать об этой компании, включая местоположение, их веб-сайт, количество размещенных продуктов и количество всех сотрудников. Не стесняйтесь нажимать на местоположение компании и ссылку, чтобы получить более подробную информацию.",
   "marketplaceCompanyOwner": "Владелец компании:",
-  "marketplaceUserNotFound": "Пользователь не был найден :("
+  "marketplaceUserNotFound": "Пользователь не был найден :(",
+  "marketplaceProductsManagementTitle": "Управление продуктами компании",
+  "marketplaceProductsManagementSubtitle": "Вот страница, на которой вы можете управлять всеми продуктами, принадлежащими вашей компании."
 }

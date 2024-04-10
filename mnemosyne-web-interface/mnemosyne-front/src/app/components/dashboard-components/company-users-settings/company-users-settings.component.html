@@ -6,10 +6,18 @@
 
   <p>{{ t('settings.companySettingsSection.usersManagementDesc') }}</p>
 
+  <p
+    class="readonly-warning"
+    *ngIf="readOnly"
+  >
+    {{ t('settings.companySettingsSection.readOnlyCompanyUsers') }}
+  </p>
+
   <div class="invite-user-button-box">
     <basic-button
       [label]="t('settings.companySettingsSection.inviteUser')"
       (buttonClick)="openInviteUserModal()"
+      [disabled]="readOnly"
     />
   </div>
 

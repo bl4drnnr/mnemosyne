@@ -1,0 +1,56 @@
+<ng-container *transloco="let t">
+  <h1 class="company-stats-title">
+    <span>{{ t('marketplace.internalStatsTitle') }}&nbsp;</span>
+    <basic-emoji emoji="star.png" [width]="48" [height]="48" />
+  </h1>
+  <basic-input
+    [label]="t('input.companyEmployeeLabel')"
+    [placeholder]="t('input.companyEmployeePlaceholder')"
+    [inputDescription]="t('input.companyEmployeeInputDesc')"
+    [value]="internalStatsQuery"
+    (valueChange)="changeInternalStatsQuery($event)"
+  />
+  <table class="company-stats-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>{{ t('marketplace.internalStats.amnt') }}</th>
+        <th>{{ t('marketplace.internalStats.currProducts', { currency: 'PLN' }) }}</th>
+        <th>{{ t('marketplace.internalStats.currProducts', { currency: 'USD' }) }}</th>
+        <th>{{ t('marketplace.internalStats.currProducts', { currency: 'EUR' }) }}</th>
+        <th>{{ t('marketplace.internalStats.currAvgAmnt', { currency: 'PLN' }) }}</th>
+        <th>{{ t('marketplace.internalStats.currAvgAmnt', { currency: 'USD' }) }}</th>
+        <th>{{ t('marketplace.internalStats.currAvgAmnt', { currency: 'EUR' }) }}</th>
+        <th>PLN Min</th>
+        <th>USD Min</th>
+        <th>EUR Min</th>
+        <th>PLN Max</th>
+        <th>USD Max</th>
+        <th>EUR Max</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stat of companyInternalStats">
+        <td
+          class="table-link"
+          (click)="handleRedirect('marketplace/user/' + stat.id)"
+        >
+          {{ stat.email }} ({{ stat.firstName }} {{ stat.lastName }})
+        </td>
+        <td>{{ stat.amountOfUserProducts }}</td>
+        <td>{{ stat.companyUserProductsStatus.plnProductsAmount }}</td>
+        <td>{{ stat.companyUserProductsStatus.usdProductsAmount }}</td>
+        <td>{{ stat.companyUserProductsStatus.eurProductsAmount }}</td>
+        <td>{{ stat.companyUserProductsStatus.plnProductsAvgAmount }}</td>
+        <td>{{ stat.companyUserProductsStatus.usdProductsAvgAmount }}</td>
+        <td>{{ stat.companyUserProductsStatus.eurProductsAvgAmount }}</td>
+        <td>{{ stat.companyUserProductsStatus.plnMinPrice }}</td>
+        <td>{{ stat.companyUserProductsStatus.usdMinPrice }}</td>
+        <td>{{ stat.companyUserProductsStatus.eurMinPrice }}</td>
+        <td>{{ stat.companyUserProductsStatus.plnMinPrice }}</td>
+        <td>{{ stat.companyUserProductsStatus.usdMinPrice }}</td>
+        <td>{{ stat.companyUserProductsStatus.eurMinPrice }}</td>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>

@@ -28,6 +28,12 @@
   "statsMinPrice": "Minimalna cena",
   "statsMaxPrice": "Maksymalna cena",
   "statsTitle": "Statystyki produktów",
+  "internalStatsTitle": "Statystyki wewnętrzne firmy",
+  "internalStats": {
+    "amnt": "Ilść. produktów",
+    "currProducts": "Produkty {{ currency }}",
+    "currAvgAmnt": "{{ currency }} Śr. Ilść."
+  },
   "statsTotalAmount": "Całkowita ilość produktów: {{ amount }}",
   "marketplaceUserNoCompany": "Brak firmy",
   "marketplacePrivateProducts": "Produkty prywatne",
@@ -40,5 +46,7 @@
   "marketplaceCompanyStatsSection": "Statystyka firmy",
   "marketplaceCompanyInfoIntro": "Oto strona informacji publicznej firmy {{ companyName }}. Zaczynając od tego miejsca, będziesz mógł znaleźć wszystko, co musisz wiedzieć o tej firmie, w tym lokalizację, ich stronę internetową, ilość opublikowanych produktów i liczbę wszystkich pracowników. Kliknij lokalizację firmy i link, aby uzyskać więcej informacji.",
   "marketplaceCompanyOwner": "Właściciel firmy:",
-  "marketplaceUserNotFound": "Użytkownik nie został znaleziony :("
+  "marketplaceUserNotFound": "Użytkownik nie został znaleziony :(",
+  "marketplaceProductsManagementTitle": "Zarządzanie produktami firmy",
+  "marketplaceProductsManagementSubtitle": "Oto strona, na której możesz zarządzać wszystkimi produktami należącymi do Twojej firmy."
 }

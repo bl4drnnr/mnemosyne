@@ -45,6 +45,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   @Input() totalItems: number;
   @Input() companyUsers: UsersList;
   @Input() companyCustomRoles: CompanyRoleType;
+  @Input() readOnly: boolean;
 
   @Output() fetchCompanyUsers = new EventEmitter<void>();
   @Output() setNewCurrentPage = new EventEmitter<string>();

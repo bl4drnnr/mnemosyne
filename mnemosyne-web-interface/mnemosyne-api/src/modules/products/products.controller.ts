@@ -35,6 +35,9 @@ import { DeleteProductDto } from '@dto/delete-product.dto';
 import { DeleteProductsFromFavoritesDto } from '@dto/delete-products-from-favorites.dto';
 import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
 import { UserInterceptor } from '@interceptors/user.interceptor';
+import { Roles } from '@decorators/roles.decorator';
+import { RoleGuard } from '@guards/role.guard';
+import { CompanyId } from '@decorators/company-id.decorator';
 
 @ApiTags('Products')
 @Controller('products')
@@ -85,6 +88,7 @@ export class ProductsController {
   @ApiQuery(ProductsDocs.SearchProduct.ApiPrivateProductsQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiMarketplaceUserIdQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiMarketplaceCompanyIdQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiCompanyExtendedQuery)
   @ApiBasicAuth('basicAuth')
   @UseInterceptors(UserInterceptor)
   @Get('search-product')
@@ -103,6 +107,7 @@ export class ProductsController {
     @Query('privateProducts') privateProducts: string,
     @Query('marketplaceUserId') marketplaceUserId: string,
     @Query('marketplaceCompanyId') marketplaceCompanyId: string,
+    @Query('companyExtended') companyExtended: string,
     @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
@@ -121,6 +126,7 @@ export class ProductsController {
       privateProducts,
       marketplaceUserId,
       marketplaceCompanyId,
+      companyExtended,
       userId,
       trx
     });
@@ -396,6 +402,36 @@ export class ProductsController {
   ) {
     return this.productsService.getCompanyProductsStatistics({
       companyId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetCompanyInternalStatistics.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetCompanyInternalStatistics.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetCompanyInternalStatistics.ApiResponse)
+  @ApiNotFoundResponse(
+    ProductsDocs.GetCompanyInternalStatistics.ApiNotFoundResponse
+  )
+  @ApiForbiddenResponse(
+    ProductsDocs.GetCompanyInternalStatistics.ApiForbiddenResponse
+  )
+  @ApiQuery(ProductsDocs.GetCompanyInternalStatistics.ApiMemberQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @Roles('PRODUCT_MANAGEMENT')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Get('marketplace-company-internal-statistics')
+  getCompanyInternalStatistics(
+    @CompanyId() companyId: string,
+    @UserId() userId: string,
+    @Query('query') query: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getCompanyInternalStatistics({
+      companyId,
+      userId,
+      query,
       trx
     });
   }

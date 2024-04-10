@@ -337,6 +337,7 @@ export class UsersService {
       isProfilePicPresent,
       isCompanyMember,
       companyName: isCompanyMember ? company.companyName : null,
+      companyId: isCompanyMember ? company.id : null,
       roleName: roleName ? roleName : null,
       roleScopes: roleScopes ? roleScopes : null
     });

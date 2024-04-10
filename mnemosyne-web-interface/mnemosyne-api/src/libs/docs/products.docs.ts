@@ -32,6 +32,7 @@ import { UserNotMemberException } from '@exceptions/user-not-member.exception';
 import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
 import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
 import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { GetCompanyInternalStatsDto } from '@dto/get-company-internal-stats.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -132,6 +133,7 @@ export abstract class ProductsDocs {
     const marketplaceUserIdQueryDesc = 'Marketplace user ID (or just user ID)';
     const marketplaceCompanyIdQueryDesc =
       'Marketplace company ID (or just company ID)';
+    const companyExtendedQueryDesc = 'Company extended information flag';
 
     const productQuery = {
       description: productQueryDesc,
@@ -231,6 +233,13 @@ export abstract class ProductsDocs {
       required: false
     };
 
+    const companyExtendedQuery = {
+      description: companyExtendedQueryDesc,
+      name: 'companyExtended',
+      type: String,
+      required: false
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -260,7 +269,8 @@ export abstract class ProductsDocs {
       ApiCompanyProductsQuery: companyProductsQuery,
       ApiPrivateProductsQuery: privateProductsQuery,
       ApiMarketplaceUserIdQuery: marketplaceUserIdQuery,
-      ApiMarketplaceCompanyIdQuery: marketplaceCompanyIdQuery
+      ApiMarketplaceCompanyIdQuery: marketplaceCompanyIdQuery,
+      ApiCompanyExtendedQuery: companyExtendedQuery
     };
   }
 
@@ -781,6 +791,51 @@ export abstract class ProductsDocs {
         schema: { $ref: getSchemaPath(GetMarketplaceCompanyStatsDto) }
       },
       ApiMarketplaceCompanyIdQuery: marketplaceCompanyIdQuery
+    };
+  }
+
+  static get GetCompanyInternalStatistics() {
+    const ApiModels = [
+      CompanyNotFoundException,
+      ForbiddenResourceException,
+      GetCompanyInternalStatsDto
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting internal company statistics.';
+    const apiResponseDesc =
+      'As a response user gets stats per company employee.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if company is not found.';
+    const apiForbiddenRespDesc =
+      'Forbidden error is thrown in case if user is trying to access without proper access.';
+
+    const memberQueryDesc = 'Member query';
+
+    const memberQuery = {
+      description: memberQueryDesc,
+      name: 'query',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetCompanyInternalStatsDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(CompanyNotFoundException) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
+      },
+      ApiMemberQuery: memberQuery
     };
   }
 }

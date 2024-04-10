@@ -36,6 +36,13 @@ import { AccountTranslation } from '@translations/account.enum';
   ]
 })
 export class CompanyRolesManagementComponent implements OnInit {
+  @Input() readOnly: boolean;
+  @Input() companyRoles: CompanyRoleType;
+  @Output() createNewRoleEvent = new EventEmitter<CreateCompanyRolePayload>();
+  @Output() getCompanyRoles = new EventEmitter<void>();
+  @Output() deleteCompanyRole = new EventEmitter<string>();
+  @Output() updateRole = new EventEmitter<UpdateCompanyRolePayload>();
+
   showCreateNewRoleModal: boolean;
   newRoleName: string;
   incorrectNewRoleName: boolean;
@@ -68,12 +75,6 @@ export class CompanyRolesManagementComponent implements OnInit {
     admin_desc: string;
     default_desc: string;
   };
-
-  @Input() companyRoles: CompanyRoleType;
-  @Output() createNewRoleEvent = new EventEmitter<CreateCompanyRolePayload>();
-  @Output() getCompanyRoles = new EventEmitter<void>();
-  @Output() deleteCompanyRole = new EventEmitter<string>();
-  @Output() updateRole = new EventEmitter<UpdateCompanyRolePayload>();
 
   constructor(
     private readonly utilsService: UtilsService,
