@@ -1,1 +1,4 @@
-export class AssignRoleDto {}
+export class AssignRoleDto {
+  readonly roleId: string;
+  readonly companyUserId: string;
+}

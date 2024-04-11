@@ -3799,18 +3799,16 @@ components:
     InviteUserToCompanyDto:
       type: object
       properties:
-        email:
-          type: string
-          description: Email address
-          example: joe@doe.com
-        role:
-          type: string
-          enum:
-            - PRIMARY_ADMIN
-            - ADMIN
-            - DEFAULT
-            - PRODUCT_MANAGEMENT
-          description: Available user members
+        invitedUsers:
+          description: The list of invited users
+          example:
+            - email: joe@doe.com
+              roleId: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
+              roleName: My Test Role
+          type: array
+          items:
+            type: array
+            minLength: 1
         language:
           type: string
           enum:
@@ -3820,8 +3818,7 @@ components:
           description: One of 3 available languages
           example: pl
       required:
-        - email
-        - role
+        - invitedUsers
     UserInvitedDto:
       type: object
       properties:

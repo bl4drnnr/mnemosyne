@@ -163,6 +163,7 @@ export class CompanySettingsComponent {
       });
     }
 
+    this.fetchCompanyRoles();
     this.fetchCompanyInformation();
   }
 }

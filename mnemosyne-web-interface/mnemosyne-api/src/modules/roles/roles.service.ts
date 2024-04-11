@@ -149,7 +149,14 @@ export class RolesService {
     return new CompanyRoleUpdatedDto();
   }
 
-  assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
+  async assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
+    await this.userRoleRepository.create(
+      {
+        companyId,
+        ...payload
+      },
+      { transaction: trx }
+    );
     return new CompanyRoleAssignedDto();
   }
 

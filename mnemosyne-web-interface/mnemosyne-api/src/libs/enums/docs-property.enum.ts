@@ -311,5 +311,6 @@ export enum DocsProperty {
   QUANTITY_OF_COMPANY_MEMBERS_EXAMPLE = '345',
   COMPANY_INTERNAL_STATS_DESC = 'Company internal statistics',
   PRODUCT_COMPANY_EDIT_FLAG_DESC = 'Flag that defines either the action on the product is performed on behalf of company',
-  PRODUCT_COMPANY_EDIT_FLAG_EXAMPLE = 'true'
+  PRODUCT_COMPANY_EDIT_FLAG_EXAMPLE = 'true',
+  INVITED_USER_DESC = 'The list of invited users'
 }

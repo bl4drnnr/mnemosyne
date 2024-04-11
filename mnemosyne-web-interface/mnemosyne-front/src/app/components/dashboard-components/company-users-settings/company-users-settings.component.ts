@@ -21,6 +21,8 @@ import { ValidationService } from '@services/validation.service';
 import { AccountTranslation } from '@translations/account.enum';
 import { CompanyRoleType } from '@interfaces/company-role.type';
 import { CustomCompanyMemberInterface } from '@interfaces/custom-company-member.interface';
+import { MessagesTranslation } from '@translations/messages.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -89,6 +91,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   };
 
   constructor(
+    private readonly router: Router,
     private readonly validationService: ValidationService,
     private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
@@ -154,7 +157,25 @@ export class CompanyUsersSettingsComponent implements OnInit {
   }
 
   inviteUsers() {
-    console.log('this.companyCustomMembers', this.companyCustomMembers);
+    const invitedUsers = this.companyCustomMembers.map(
+      ({ email, roleId, roleName }) => {
+        return { email, roleId, roleName };
+      }
+    );
+    this.companyUsersService.inviteUserToCompany({ invitedUsers }).subscribe({
+      next: async ({ message }) => {
+        const globalMessage = await this.translationService.translateText(
+          message,
+          MessagesTranslation.RESPONSES
+        );
+        this.globalMessageService.handle({
+          message: globalMessage
+        });
+        this.closeInviteUserModal();
+        this.fetchUsers();
+      },
+      error: async () => await this.handleRedirect('login')
+    });
   }
 
   fetchCompanyMemberInformation(memberId: string) {
@@ -348,6 +369,10 @@ export class CompanyUsersSettingsComponent implements OnInit {
 
   clearSmsCode() {
     this.phoneService.clearSmsCode().subscribe();
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
   }
 
   async ngOnInit() {

@@ -132,6 +132,13 @@ export class CompanyService {
       trx
     });
 
+    await this.rolesService.grantInitRole({
+      role: Roles.DEFAULT,
+      companyUserId,
+      companyId,
+      trx
+    });
+
     const to = ownerExistingAccount
       ? ownerExistingAccount.email
       : companyOwnerEmail;

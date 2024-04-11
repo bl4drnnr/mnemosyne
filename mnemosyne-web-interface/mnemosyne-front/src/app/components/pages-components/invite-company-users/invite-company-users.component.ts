@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { EnvService } from '@shared/env.service';
 import { Role } from '@interfaces/role.type';
 import { CompanyMembersType } from '@interfaces/company-members.type';
@@ -6,6 +6,8 @@ import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { RegistrationCompanyMemberInterface } from '@interfaces/registration-company-member.interface';
 import { CompanyRoleType } from '@interfaces/company-role.type';
 import { CustomCompanyMemberInterface } from '@interfaces/custom-company-member.interface';
+import { AccountTranslation } from '@translations/account.enum';
+import { TranslationService } from '@services/translation.service';
 
 @Component({
   selector: 'page-component-invite-company-users',
@@ -16,7 +18,7 @@ import { CustomCompanyMemberInterface } from '@interfaces/custom-company-member.
     '../../../components/basic-components/dropdown/dropdown.component.scss'
   ]
 })
-export class InviteCompanyUsersComponent {
+export class InviteCompanyUsersComponent implements OnInit {
   @Input() onWhite: boolean;
   @Input() companyRoles: CompanyRolesType;
   @Input() companyMembers: CompanyMembersType;
@@ -29,7 +31,16 @@ export class InviteCompanyUsersComponent {
   @Output() changeCompanyMemberCustomRole =
     new EventEmitter<CustomCompanyMemberInterface>();
 
-  constructor(private readonly envService: EnvService) {}
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
+
+  constructor(
+    private readonly envService: EnvService,
+    private readonly translationService: TranslationService
+  ) {}
 
   closeButtonUrl = `${this.envService.getStaticStorageLink}/icons/close.svg`;
 
@@ -73,5 +84,25 @@ export class InviteCompanyUsersComponent {
     return this.companyCustomRoles.filter(
       (role) => role.name !== 'PRIMARY_ADMIN'
     );
+  }
+
+  translateRole(role: string) {
+    if (role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
+  }
+
+  async ngOnInit() {
+    await this.translateRoles();
   }
 }

@@ -65,7 +65,8 @@
     "wrong-product-contact-person-length": "Wrong product contact person length",
     "wrong-product-location-format": "Wrong product location format",
     "wrong-product-location-length": "Wrong product location length",
-    "wrong-product-price-format": "Wrong product price format"
+    "wrong-product-price-format": "Wrong product price format",
+    "wrong-invited-users-list": "Wrong invited users list"
   },
   "wrong-timeframe": "Wrong timeframe",
   "invalid-recovery-keys": "Invalid recovery keys",

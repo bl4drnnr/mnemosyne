@@ -30,7 +30,7 @@
           [ngClass]="role.key === member.roleKey ? 'dropdown-item active' : 'dropdown-item'"
           (click)="changeUserRole(member.email, role.key, role.value)"
         >
-          {{ role.value }}
+          {{ translateRole(role.value) }}
         </button>
       </div>
 
@@ -74,7 +74,7 @@
         <p
           class="paragraph role-value"
           [ngClass]="{ 'on-white': onWhite }"
-        >{{ member.roleName }}</p>
+        >{{ translateRole(member.roleName) }}</p>
       </div>
 
       <div class="dropdown-menu" [ngClass]="{ 'show': member.isRoleDropDownOpen }">
@@ -83,7 +83,7 @@
           class="dropdown-item"
           (click)="changeUserCustomRole(member.email, role.id, role.name)"
         >
-          <span>{{ role.name }}</span>
+          <span>{{ translateRole(role.name) }}</span>
         </button>
       </div>
 
