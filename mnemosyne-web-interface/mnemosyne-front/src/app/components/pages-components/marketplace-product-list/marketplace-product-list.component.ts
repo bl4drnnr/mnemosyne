@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SearchedProducts } from '@responses/search-products.interface';
+import { DeleteProductPayload } from '@payloads/delete-product.interface';
 
 @Component({
   selector: 'page-marketplace-product-list',
@@ -19,4 +20,5 @@ export class MarketplaceProductListComponent {
   @Output() getProductsEvent = new EventEmitter<void>();
   @Output() setPage = new EventEmitter<string>();
   @Output() setPageSize = new EventEmitter<string>();
+  @Output() deleteProduct = new EventEmitter<DeleteProductPayload>();
 }

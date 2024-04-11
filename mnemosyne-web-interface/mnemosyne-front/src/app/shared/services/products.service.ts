@@ -32,6 +32,7 @@ import { GetMarketplaceCompanyStatsPayload } from '@payloads/get-marketplace-com
 import { GetMarketplaceCompanyStatsResponse } from '@responses/get-marketplace-company-stats.interface';
 import { GetCompanyInternalStatsPayload } from '@payloads/get-company-internal-stats.interface';
 import { GetCompanyInternalStatsResponse } from '@responses/get-company-internal-stats.interface';
+import { CompanyProductDeletedResponse } from '@responses/company-product-deleted.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -118,6 +119,17 @@ export class ProductsService {
       method: Method.DELETE,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.DELETE_PRODUCT,
+      payload
+    });
+  }
+
+  deleteCompanyProduct(
+    payload: DeleteProductPayload
+  ): Observable<{ message: CompanyProductDeletedResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.DELETE,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.DELETE_COMPANY_PRODUCT,
       payload
     });
   }

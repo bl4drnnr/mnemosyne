@@ -7,7 +7,14 @@
         <span>{{ t('marketplace.marketplaceProductsManagementTitle') }}&nbsp;</span>
         <basic-emoji emoji="writing-hand.png" [width]="48" [height]="48" />
       </h1>
+
       <p>{{ t('marketplace.marketplaceProductsManagementSubtitle') }}</p>
+      <p
+        class="company-products-readonly"
+        *ngIf="isCompanyProductsReadOnly"
+      >
+        {{ t('marketplace.marketplaceCompanyProductsReadonly', { roleName: userInfo.roleName }) }}
+      </p>
 
       <div class="company-products-header-container">
         <div
@@ -192,12 +199,13 @@
                 [products]="companyProducts"
                 [totalItems]="productsTotalItems"
                 [layoutView]="layoutView"
-                [showAdditionalInfo]="true"
-                [showManagementButtons]="true"
-                [productCompanyEdit]="true"
+                [showAdditionalInfo]="!isCompanyProductsReadOnly"
+                [showManagementButtons]="!isCompanyProductsReadOnly"
+                [productCompanyEdit]="!isCompanyProductsReadOnly"
                 (getProductsEvent)="getCompanyProducts()"
                 (setPage)="setPage($event)"
                 (setPageSize)="setPageSize($event)"
+                (deleteProduct)="deleteCompanyProduct($event)"
               />
             </div>
           </div>
@@ -208,12 +216,14 @@
         <dashboard-marketplace-company-stats
           [companyStats]="companyStats"
         />
-        <dashboard-marketplace-company-internal-stats
-          [internalStatsQuery]="internalStatsQuery"
-          [companyInternalStats]="companyInternalStats"
-          (changeInternalStatsQueryEvent)="internalStatsQuery = $event"
-          (fetchCompanyInternalStats)="getCompanyInternalStatistics()"
-        />
+        <div *ngIf="!isCompanyProductsReadOnly">
+          <dashboard-marketplace-company-internal-stats
+            [internalStatsQuery]="internalStatsQuery"
+            [companyInternalStats]="companyInternalStats"
+            (changeInternalStatsQueryEvent)="internalStatsQuery = $event"
+            (fetchCompanyInternalStats)="getCompanyInternalStatistics()"
+          />
+        </div>
       </div>
     </div>
   </ng-container>

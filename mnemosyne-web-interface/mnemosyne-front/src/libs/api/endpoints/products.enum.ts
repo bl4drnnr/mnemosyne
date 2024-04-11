@@ -7,6 +7,7 @@ export enum ProductsEndpoint {
   UPDATE_PRODUCT = 'update-product',
   USER_PRODUCTS = 'user-products',
   DELETE_PRODUCT = 'product',
+  DELETE_COMPANY_PRODUCT = 'company-product',
   DELETE_FROM_FAVORITES = 'favorites',
   ADD_TO_FAVORITES = 'favorites',
   GET_FAVORITES = 'favorites',

@@ -12,6 +12,12 @@
   align-content: center;
 }
 
+.company-products-readonly {
+  margin-top: 10px;
+  opacity: .75;
+  color: var(--error-color);
+}
+
 .marketplace-container {
   min-height: 100vh;
   width: 100%;

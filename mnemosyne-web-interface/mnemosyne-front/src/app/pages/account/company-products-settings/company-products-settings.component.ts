@@ -19,6 +19,9 @@ import {
   CompanyInternalStats,
   GetCompanyInternalStatsResponse
 } from '@responses/get-company-internal-stats.interface';
+import { DeleteProductPayload } from '@payloads/delete-product.interface';
+import { MessagesTranslation } from '@translations/messages.enum';
+import { GlobalMessageService } from '@shared/global-message.service';
 
 @Component({
   selector: 'page-company-products-settings',
@@ -56,6 +59,7 @@ export class CompanyProductsSettingsComponent implements OnInit {
   companyProducts: Array<SearchedProducts>;
   productsTotalItems: number;
   companyInternalStats: CompanyInternalStats;
+  isCompanyProductsReadOnly: boolean;
 
   listIcon = `${this.envService.getStaticStorageLink}/icons/list-icon.svg`;
   gridIcon = `${this.envService.getStaticStorageLink}/icons/grid-icon.svg`;
@@ -67,8 +71,24 @@ export class CompanyProductsSettingsComponent implements OnInit {
     private readonly categoriesService: CategoriesService,
     private readonly translationService: TranslationService,
     private readonly refreshTokensService: RefreshTokensService,
+    private readonly globalMessageService: GlobalMessageService,
     public utilsService: UtilsService
   ) {}
+
+  deleteCompanyProduct(payload: DeleteProductPayload) {
+    this.productsService.deleteProduct(payload).subscribe({
+      next: async ({ message }) => {
+        const globalMessage = await this.translationService.translateText(
+          message,
+          MessagesTranslation.RESPONSES
+        );
+        this.globalMessageService.handle({
+          message: globalMessage
+        });
+        this.getCompanyProducts();
+      }
+    });
+  }
 
   getCompanyProductsStatistics() {
     this.productsService
@@ -329,8 +349,9 @@ export class CompanyProductsSettingsComponent implements OnInit {
           this.companyId = userInfo.companyId!;
           this.userInfo = userInfo;
 
-          if (!userInfo.roleScopes?.includes(Scopes.PRODUCT_MANAGEMENT))
-            await this.handleRedirect('marketplace');
+          this.isCompanyProductsReadOnly = !userInfo.roleScopes?.includes(
+            Scopes.PRODUCT_MANAGEMENT
+          );
 
           this.categoriesService.getAllCategories().subscribe({
             next: async ({ categories }) => {
@@ -352,7 +373,9 @@ export class CompanyProductsSettingsComponent implements OnInit {
               await this.initSubcategories();
               this.getCompanyProducts();
               this.getCompanyProductsStatistics();
-              this.getCompanyInternalStatistics();
+
+              if (!this.isCompanyProductsReadOnly)
+                this.getCompanyInternalStatistics();
             }
           });
         }

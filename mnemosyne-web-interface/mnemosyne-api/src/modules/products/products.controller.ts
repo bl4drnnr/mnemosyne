@@ -262,6 +262,33 @@ export class ProductsController {
     });
   }
 
+  @ApiOperation(ProductsDocs.DeleteCompanyProduct.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.DeleteCompanyProduct.ApiExtraModels)
+  @ApiResponse(ProductsDocs.DeleteCompanyProduct.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.DeleteCompanyProduct.ApiNotFoundResponse)
+  @ApiBadRequestResponse(
+    ProductsDocs.DeleteCompanyProduct.ApiBadRequestResponse
+  )
+  @ApiForbiddenResponse(ProductsDocs.DeleteCompanyProduct.ApiForbiddenResponse)
+  @ApiBody(ProductsDocs.DeleteCompanyProduct.ApiBody)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Delete('company-product')
+  deleteCompanyProduct(
+    @CompanyId() companyId: string,
+    @UserId() userId: string,
+    @Body() payload: DeleteProductDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.deleteCompanyProduct({
+      companyId,
+      userId,
+      payload,
+      trx
+    });
+  }
+
   @ApiOperation(ProductsDocs.DeleteProductFromFavorites.ApiOperation)
   @ApiExtraModels(...ProductsDocs.DeleteProductFromFavorites.ApiExtraModels)
   @ApiResponse(ProductsDocs.DeleteProductFromFavorites.ApiResponse)

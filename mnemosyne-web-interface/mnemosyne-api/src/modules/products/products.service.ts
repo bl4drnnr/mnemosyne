@@ -58,6 +58,8 @@ import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stat
 import { GetCompanyInternalStatsInterface } from '@interfaces/get-company-internal-stats.interface';
 import { GetCompanyInternalStatsDto } from '@dto/get-company-internal-stats.dto';
 import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { DeleteCompanyProductInterface } from '@interfaces/delete-company-product.interface';
+import { CompanyProductDeletedDto } from '@dto/company-product-deleted.dto';
 
 @Injectable()
 export class ProductsService {
@@ -408,25 +410,9 @@ export class ProductsService {
     const companyExtendedInfo = ['true', 'false'];
 
     if (companyExtended) {
-      if (companyExtendedInfo.includes(companyExtended) && userId) {
-        const {
-          companyUser: { id: companyUserId }
-        } = await this.usersService.getUserById({
-          id: userId,
-          trx
-        });
-        const { roleScopes } = await this.companyService.getCompanyUserRole({
-          companyUserId,
-          trx
-        });
-        if (!roleScopes.includes(Roles.PRODUCT_MANAGEMENT)) {
-          throw new ForbiddenResourceException();
-        } else {
-          companyExtendedProductsInfo = true;
-        }
-      } else {
-        throw new ParseException();
-      }
+      if (companyExtendedInfo.includes(companyExtended) && userId)
+        companyExtendedProductsInfo = true;
+      else throw new ParseException();
     }
 
     const foundProducts = rows.map(
@@ -804,6 +790,52 @@ export class ProductsService {
     });
 
     return new ProductDeletedDto();
+  }
+
+  async deleteCompanyProduct({
+    companyId,
+    userId,
+    payload,
+    trx
+  }: DeleteCompanyProductInterface) {
+    const { fullName, productId } = payload;
+
+    const deletedProduct = await this.productRepository.findOne({
+      where: { id: productId },
+      include: [{ model: User, attributes: ['firstName', 'lastName'] }],
+      transaction: trx
+    });
+
+    if (!deletedProduct) throw new ProductNotFoundException();
+
+    const { rows: companyUsers } = await this.companyService.getAllCompanyUsers(
+      {
+        companyId,
+        trx
+      }
+    );
+
+    const companyUser = companyUsers.find(({ id }) => id === userId);
+
+    if (!companyUser) throw new UserNotFoundException();
+
+    await this.checkForUserProductManagementPermissions({
+      postOnBehalfOfCompany: deletedProduct.onBehalfOfCompany,
+      userId,
+      trx
+    });
+
+    const { firstName, lastName } = deletedProduct.user;
+
+    if (fullName !== `${firstName} ${lastName}`)
+      throw new WrongDeletionConfirmationException();
+
+    await this.productRepository.destroy({
+      where: { id: productId },
+      transaction: trx
+    });
+
+    return new CompanyProductDeletedDto();
   }
 
   async deleteProductFromFavorites({

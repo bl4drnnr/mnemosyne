@@ -6,6 +6,7 @@
   "marketplaceFiltersLayout": "Layout view",
   "marketplaceFiltersProductTypes": "Product types",
   "marketplaceWelcomeTitle": "Welcome to the marketplace!",
+  "marketplaceCompanyProductsReadonly": "It look like you have read only to company products. Therefore, you will be able to access the list of all company products, but you will not be able to modify and delete products. If you think that this is a mistake, please, contact your administrator so they can modify your role ({{ roleName }}).",
   "marketplaceOrderBySubtitle": "Select the order you want products to be sorted. ASC represents sorting in ascending order, and DESC represents sorting in descending order.",
   "marketplaceOrderSubtitle": "Select the field by which the order (ASC or DESC) will be performed. The default field is the creation date of the product.",
   "marketplaceCurrency": "Currency",

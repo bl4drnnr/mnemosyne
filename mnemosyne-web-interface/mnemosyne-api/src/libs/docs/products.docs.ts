@@ -33,6 +33,12 @@ import { ForbiddenResourceException } from '@exceptions/forbidden-resource.excep
 import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
 import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
 import { GetCompanyInternalStatsDto } from '@dto/get-company-internal-stats.dto';
+import { CompanyProductDeletedDto } from '@dto/company-product-deleted.dto';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { HashNotFoundException } from '@exceptions/hash-not-found.exception';
+import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
+import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
+import { CreateCompanyDto } from '@dto/create-company.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -531,6 +537,63 @@ export abstract class ProductsDocs {
       ApiBadRequestResponse: {
         description: apiBadRequestRespDesc,
         schema: { $ref: getSchemaPath(WrongDeletionConfirmationException) }
+      },
+      ApiBody: {
+        type: DeleteProductDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(DeleteProductDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get DeleteCompanyProduct() {
+    const ApiModels = [
+      DeleteProductDto,
+      CompanyProductDeletedDto,
+      WrongDeletionConfirmationException,
+      ProductNotFoundException,
+      UserNotFoundException,
+      CompanyNotFoundException,
+      ForbiddenResourceException
+    ];
+
+    const NotFound = [
+      ProductNotFoundException,
+      UserNotFoundException,
+      CompanyNotFoundException
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for deletion of the product on behalf on company.';
+    const apiResponseDesc =
+      'As a response user gets a message with information that company product has been deleted.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if either product, user or company not found.';
+    const apiBadRequestRespDesc =
+      'Bad request error is thrown in case if user provides the wrong first and last name.';
+    const apiForbiddenRespDesc =
+      'Forbidden error is thrown in case if user has no access.';
+    const apiBodyDesc = 'Body contains user full name along with product ID.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(CompanyProductDeletedDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { oneOf: refs(...NotFound) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(WrongDeletionConfirmationException) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
       },
       ApiBody: {
         type: DeleteProductDto,

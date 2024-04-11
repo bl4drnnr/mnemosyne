@@ -270,6 +270,8 @@ export enum DocsProperty {
   ORDER_BY_EXCEPTION_EXAMPLE = 'order-by-error',
   PRODUCT_DELETED_DESC = 'Product deleted response message',
   PRODUCT_DELETED_EXAMPLE = 'product-deleted',
+  COMPANY_PRODUCT_DELETED_DESC = 'Company product deleted response message',
+  COMPANY_PRODUCT_DELETED_EXAMPLE = 'company-product-deleted',
   WRONG_CURRENCY_EXCEPTION_DESC = 'Wrong currency error message',
   WRONG_CURRENCY_EXCEPTION_EXAMPLE = 'wrong-currency',
   SUBCATEGORY_NOT_FOUND_DESC = 'Subcategory not found error message',

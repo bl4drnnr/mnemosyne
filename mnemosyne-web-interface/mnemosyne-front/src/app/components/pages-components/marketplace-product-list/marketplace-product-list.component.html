@@ -28,6 +28,7 @@
       [showAdditionalInfo]="showAdditionalInfo"
       [showManagementButtons]="showManagementButtons"
       [productCompanyEdit]="productCompanyEdit"
+      (deleteProductEvent)="deleteProduct.emit($event)"
     />
   </div>
 
@@ -54,6 +55,7 @@
       [showAdditionalInfo]="showAdditionalInfo"
       [showManagementButtons]="showManagementButtons"
       [productCompanyEdit]="productCompanyEdit"
+      (deleteProductEvent)="deleteProduct.emit($event)"
     />
   </div>
 

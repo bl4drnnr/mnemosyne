@@ -11,6 +11,7 @@
   "product-posted": "Product has been successfully posted",
   "product-updated": "Product has been successfully updated",
   "product-deleted": "Product has been successfully deleted",
+  "company-product-deleted": "Company product has been deleted",
   "product-deleted-from-favorites": "Product has been deleted from favorites",
   "product-added-to-favorites": "Product has been added to favorites",
   "company-ownership-transferred": "Company ownership has been successfully transferred"

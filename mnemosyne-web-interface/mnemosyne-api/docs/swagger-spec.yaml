@@ -2309,6 +2309,53 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
+  /api/products/company-product:
+    delete:
+      operationId: ProductsController_deleteCompanyProduct
+      summary: Endpoint is responsible for deletion of the product on behalf on company.
+      parameters: []
+      requestBody:
+        required: true
+        description: Body contains user full name along with product ID.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeleteProductDto"
+      responses:
+        "201":
+          description: As a response user gets a message with information that company
+            product has been deleted.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyProductDeletedDto"
+        "400":
+          description: Bad request error is thrown in case if user provides the wrong
+            first and last name.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WrongDeletionConfirmationException"
+        "403":
+          description: Forbidden error is thrown in case if user has no access.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ForbiddenResourceException"
+        "404":
+          description: Not found error is thrown in case if either product, user or
+            company not found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/ProductNotFoundException"
+                  - $ref: "#/components/schemas/UserNotFoundException"
+                  - $ref: "#/components/schemas/CompanyNotFoundException"
+      tags: *a9
+      security:
+        - x-access-token: []
+        - basicAuth: []
   /api/products/favorites:
     delete:
       operationId: ProductsController_deleteProductFromFavorites
@@ -4620,6 +4667,15 @@ components:
           type: string
           description: Product deleted response message
           example: product-deleted
+      required:
+        - message
+    CompanyProductDeletedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company product deleted response message
+          example: company-product-deleted
       required:
         - message
     DeleteProductsFromFavoritesDto:

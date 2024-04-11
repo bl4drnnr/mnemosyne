@@ -6,6 +6,7 @@
   "marketplaceFiltersLayout":"Widok układu",
   "marketplaceFiltersProductTypes": "Typy produktów",
   "marketplaceWelcomeTitle": "Witamy na marketplasie!",
+  "marketplaceCompanyProductsReadonly": "Wygląda na to, że przeczytałeś tylko produkty firmy. Dzięki temu będziesz mieć dostęp do listy wszystkich produktów firmy, ale nie będziesz mógł modyfikować ani usuwać produktów. Jeśli uważasz, że to błąd, skontaktuj się z administratorem, aby mógł zmodyfikować twoją rolę ({{ roleName }}).",
   "marketplaceOrderBySubtitle": "Wybierz kolejność, w jakiej chcesz posortować produkty. ASC reprezentuje sortowanie w porządku rosnącym, a DESC reprezentuje sortowanie w porządku malejącym.",
   "marketplaceOrderSubtitle": "Wybierz pole, w którym zostanie wykonane zamówienie (ASC lub DESC). Domyślnym polem jest data utworzenia produktu.",
   "marketplaceCurrency": "Waluta",
