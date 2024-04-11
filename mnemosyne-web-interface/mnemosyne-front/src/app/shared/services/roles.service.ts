@@ -49,13 +49,13 @@ export class RolesService {
     });
   }
 
-  assignCompanyMemberRole(
+  changeCompanyMemberRole(
     payload: AssignCompanyRolePayload
   ): Observable<{ message: CompanyRoleAssignedResponse }> {
     return this.apiService.apiProxyRequest({
       method: Method.PATCH,
       controller: Controller.ROLES,
-      action: RolesEndpoint.ASSIGN_ROLE,
+      action: RolesEndpoint.CHANGE_COMPANY_MEMBER_ROLE,
       payload
     });
   }

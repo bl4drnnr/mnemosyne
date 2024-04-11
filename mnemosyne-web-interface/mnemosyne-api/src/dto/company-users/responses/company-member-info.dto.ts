@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
+import { RoleScope } from '@custom-types/role-scope.type';
+
+class CompanyMemberRole {
+  id: string;
+  name: string;
+  description: string;
+  roleScopes: Array<RoleScope>;
+}
 
 export class CompanyMemberInfoDto {
   @ApiProperty({
@@ -51,6 +59,18 @@ export class CompanyMemberInfoDto {
   })
   readonly homePhone: string | null;
 
+  @ApiProperty({
+    type: CompanyMemberRole,
+    description: DocsProperty.COMPANY_MEMBER_ROLE_DESC,
+    example: {
+      id: DocsProperty.ROLE_ID_EXAMPLE,
+      name: DocsProperty.COMPANY_ROLE_NAME_EXAMPLE,
+      description: DocsProperty.COMPANY_ROLE_DESC_EXAMPLE,
+      roleScopes: [DocsProperty.COMPANY_ROLE_SCOPE_EXAMPLE]
+    }
+  })
+  readonly companyMemberRole: CompanyMemberRole;
+
   constructor({
     memberId,
     email,
@@ -58,7 +78,8 @@ export class CompanyMemberInfoDto {
     lastName,
     namePronunciation,
     homeAddress,
-    homePhone
+    homePhone,
+    companyMemberRole
   }: {
     memberId: string;
     email: string;
@@ -67,6 +88,7 @@ export class CompanyMemberInfoDto {
     namePronunciation: string | null;
     homeAddress: string | null;
     homePhone: string | null;
+    companyMemberRole: CompanyMemberRole;
   }) {
     this.memberId = memberId;
     this.email = email;
@@ -75,5 +97,6 @@ export class CompanyMemberInfoDto {
     this.namePronunciation = namePronunciation;
     this.homeAddress = homeAddress;
     this.homePhone = homePhone;
+    this.companyMemberRole = companyMemberRole;
   }
 }

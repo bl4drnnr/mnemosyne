@@ -15,8 +15,8 @@ import { RolesModule } from '@modules/roles.module';
     SequelizeModule.forFeature([CompanyUser]),
     forwardRef(() => UsersModule),
     forwardRef(() => CompanyModule),
-    AuthModule,
-    RolesModule
+    forwardRef(() => RolesModule),
+    AuthModule
   ],
   exports: [CompanyUsersService]
 })

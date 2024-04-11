@@ -5,7 +5,10 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { CompanyRolesType } from '@interfaces/company-roles.type';
 import { TranslationService } from '@services/translation.service';
 import { CompanyUsersService } from '@services/company-users.service';
-import { CompanyMemberInfoResponse } from '@responses/company-member-info.interface';
+import {
+  CompanyMemberInfoResponse,
+  CompanyMemberRole
+} from '@responses/company-member-info.interface';
 import {
   animate,
   state,
@@ -23,6 +26,8 @@ import { CompanyRoleType } from '@interfaces/company-role.type';
 import { CustomCompanyMemberInterface } from '@interfaces/custom-company-member.interface';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { Router } from '@angular/router';
+import { DropdownInterface } from '@interfaces/dropdown.interface';
+import { RolesService } from '@services/roles.service';
 
 @Component({
   selector: 'dashboard-company-users-settings',
@@ -57,6 +62,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
   @Output() saveCompanyMemberInformation =
     new EventEmitter<UpdateUserInfoPayload>();
   @Output() deleteCompanyMemberEvent = new EventEmitter<string>();
+  @Output() changeCompanyMemberRole = new EventEmitter<string>();
 
   showInviteUserModal: boolean;
 
@@ -74,6 +80,9 @@ export class CompanyUsersSettingsComponent implements OnInit {
   currentCompanyMemberHomeAddress: string;
   currentCompanyMemberHomePhone: string;
   currentCompanyMemberModal: boolean;
+  currentCompanyMemberRole: CompanyMemberRole;
+  currentCompanyMemberDefaultRole: DropdownInterface = { key: '', value: '' };
+
   incorrectCompanyMemberFirstName: boolean;
   incorrectCompanyMemberLastName: boolean;
 
@@ -96,6 +105,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
     private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly phoneService: PhoneService,
+    private readonly rolesService: RolesService,
     private readonly translationService: TranslationService
   ) {}
 
@@ -156,6 +166,31 @@ export class CompanyUsersSettingsComponent implements OnInit {
     this.fetchUsers();
   }
 
+  transformCompanyRoles() {
+    return this.companyCustomRoles
+      .filter(({ name }) => name !== 'PRIMARY_ADMIN')
+      .map(({ id, name }) => {
+        return { key: id, value: this.translateRole(name) };
+      });
+  }
+
+  selectCompanyRole({ key, value }: DropdownInterface) {
+    this.currentCompanyMemberDefaultRole = { key, value };
+
+    this.rolesService
+      .changeCompanyMemberRole({
+        newRoleId: key,
+        userId: this.currentCompanyMember.memberId
+      })
+      .subscribe({
+        next: async ({ message }) => {
+          this.changeCompanyMemberRole.emit(message);
+          this.fetchCompanyUsers.emit();
+          this.closeCompanyMemberInformationModal();
+        }
+      });
+  }
+
   inviteUsers() {
     const invitedUsers = this.companyCustomMembers.map(
       ({ email, roleId, roleName }) => {
@@ -194,6 +229,14 @@ export class CompanyUsersSettingsComponent implements OnInit {
           this.currentCompanyMemberHomeAddress =
             currentCompanyMember.homeAddress;
           this.currentCompanyMemberHomePhone = currentCompanyMember.homePhone;
+          this.currentCompanyMemberRole =
+            currentCompanyMember.companyMemberRole;
+          this.currentCompanyMemberDefaultRole = {
+            key: currentCompanyMember.companyMemberRole.id,
+            value: this.translateRole(
+              currentCompanyMember.companyMemberRole.name
+            )
+          };
           this.currentCompanyMemberModal = true;
         }
       });

@@ -312,5 +312,8 @@ export enum DocsProperty {
   COMPANY_INTERNAL_STATS_DESC = 'Company internal statistics',
   PRODUCT_COMPANY_EDIT_FLAG_DESC = 'Flag that defines either the action on the product is performed on behalf of company',
   PRODUCT_COMPANY_EDIT_FLAG_EXAMPLE = 'true',
-  INVITED_USER_DESC = 'The list of invited users'
+  INVITED_USER_DESC = 'The list of invited users',
+  COMPANY_MEMBER_ROLE_DESC = 'All information about company member role',
+  COMPANY_MEMBER_ROLE_CHANGED_DESC = 'Company member role changed response message',
+  COMPANY_MEMBER_ROLE_CHANGED_EXAMPLE = 'company-member-role-changed'
 }

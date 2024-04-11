@@ -42,6 +42,7 @@ export class CompanyUsersService {
     private readonly emailService: EmailService,
     @Inject(forwardRef(() => AuthService))
     private readonly authService: AuthService,
+    @Inject(forwardRef(() => RolesService))
     private readonly rolesService: RolesService
   ) {}
 
@@ -97,10 +98,8 @@ export class CompanyUsersService {
 
       await this.rolesService.assignRoleToUser({
         companyId,
-        payload: {
-          roleId: companyRole.id,
-          companyUserId: createCompanyUser.id
-        },
+        roleId: companyRole.id,
+        companyUserId: createCompanyUser.id,
         trx
       });
 
@@ -155,6 +154,12 @@ export class CompanyUsersService {
 
     if (!companyMember) throw new CompanyMemberNotFoundException();
 
+    const companyMemberRole =
+      await this.rolesService.getUserRolesByCompanyUserId({
+        companyUserId: companyMember.id,
+        trx
+      });
+
     const {
       email,
       firstName,
@@ -171,7 +176,8 @@ export class CompanyUsersService {
       lastName,
       namePronunciation,
       homeAddress,
-      homePhone
+      homePhone,
+      companyMemberRole
     });
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { GrantInitRoleInterface } from '@interfaces/grant-init-role.interface';
 import { Role } from '@models/role.model';
@@ -22,11 +22,17 @@ import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exce
 import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
 import { UpdateUserRoleInterface } from '@interfaces/update-user-role.interface';
 import { GetRoleByIdInterface } from '@interfaces/get-role-by-id.interface';
+import { ChangeCompanyMemberRoleInterface } from '@interfaces/change-company-member-role.interface';
+import { CompanyUsersService } from '@modules/company-users.service';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { CompanyMemberRoleChangedDto } from '@dto/company-member-role-changed.dto';
 
 @Injectable()
 export class RolesService {
   constructor(
     private readonly utilsService: UtilsService,
+    @Inject(forwardRef(() => CompanyUsersService))
+    private readonly companyUsersService: CompanyUsersService,
     @InjectModel(Role) private readonly roleRepository: typeof Role,
     @InjectModel(UserRole) private readonly userRoleRepository: typeof UserRole
   ) {}
@@ -149,11 +155,49 @@ export class RolesService {
     return new CompanyRoleUpdatedDto();
   }
 
-  async assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
+  async changeCompanyMemberRole({
+    companyId,
+    payload,
+    trx
+  }: ChangeCompanyMemberRoleInterface) {
+    const { newRoleId, userId } = payload;
+
+    const companyUser = await this.companyUsersService.getCompanyUserByUserId({
+      userId,
+      trx
+    });
+
+    if (!companyUser) throw new UserNotFoundException();
+
+    const newRole = await this.roleRepository.findByPk(newRoleId, {
+      transaction: trx
+    });
+
+    if (!newRole) throw new RoleDoesntExistException();
+
+    if (newRole.name === 'PRIMARY_ADMIN') throw new RoleDoesntExistException();
+
+    await this.userRoleRepository.update(
+      {
+        roleId: newRole.id
+      },
+      { where: { companyId, companyUserId: companyUser.id } }
+    );
+
+    return new CompanyMemberRoleChangedDto();
+  }
+
+  async assignRoleToUser({
+    companyId,
+    roleId,
+    companyUserId,
+    trx
+  }: AssignRoleInterface) {
     await this.userRoleRepository.create(
       {
         companyId,
-        ...payload
+        roleId,
+        companyUserId
       },
       { transaction: trx }
     );

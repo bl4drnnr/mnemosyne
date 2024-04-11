@@ -909,16 +909,16 @@ paths:
       security:
         - x-access-token: []
         - basicAuth: []
-  /api/roles/assign-role:
+  /api/roles/change-company-member-role:
     patch:
-      operationId: RolesController_assignRoleToUser
+      operationId: RolesController_changeCompanyMemberRole
       parameters: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/AssignRoleDto"
+              $ref: "#/components/schemas/ChangeCompanyMemberRoleDto"
       responses:
         "200":
           description: ""
@@ -3793,9 +3793,20 @@ components:
           example: company-role-updated
       required:
         - message
-    AssignRoleDto:
+    ChangeCompanyMemberRoleDto:
       type: object
-      properties: {}
+      properties:
+        newRoleId:
+          type: string
+          description: Company role ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+        userId:
+          type: string
+          description: User ID
+          example: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c
+      required:
+        - newRoleId
+        - userId
     InviteUserToCompanyDto:
       type: object
       properties:
@@ -3828,6 +3839,9 @@ components:
           example: user-invited
       required:
         - message
+    CompanyMemberRole:
+      type: object
+      properties: {}
     CompanyMemberInfoDto:
       type: object
       properties:
@@ -3860,6 +3874,16 @@ components:
           type: string
           description: User home phone
           example: (800) 1231-1234
+        companyMemberRole:
+          description: All information about company member role
+          example:
+            id: 4eea51f7-ebf1-4470-b54e-eb3b8c79bf8c
+            name: My Test Role
+            description: My Test Role Description
+            roleScopes:
+              - USER_MANAGEMENT
+          allOf:
+            - $ref: "#/components/schemas/CompanyMemberRole"
       required:
         - memberId
         - email
@@ -3868,6 +3892,7 @@ components:
         - namePronunciation
         - homeAddress
         - homePhone
+        - companyMemberRole
     CompanyMemberNotFoundException:
       type: object
       properties:

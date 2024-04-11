@@ -163,6 +163,14 @@
         [value]="currentCompanyMemberHomePhone"
         (valueChange)="currentCompanyMemberHomePhone = $event"
       />
+      <div class="company-user-role-dropdown-wrapper">
+        <basic-dropdown
+          [options]="transformCompanyRoles()"
+          [defaultValue]="currentCompanyMemberDefaultRole"
+          [onWhite]="true"
+          (selectedOption)="selectCompanyRole($event)"
+        />
+      </div>
 
       <div
         class="info-changed"

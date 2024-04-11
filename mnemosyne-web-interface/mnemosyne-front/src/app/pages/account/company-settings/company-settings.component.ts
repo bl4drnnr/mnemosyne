@@ -134,6 +134,10 @@ export class CompanySettingsComponent {
     await this.handleGlobalMessage(message);
   }
 
+  async changeCompanyMemberRole(message: string) {
+    await this.handleGlobalMessage(message);
+  }
+
   async transferCompanyOwnership(message: string) {
     await this.handleGlobalMessage(message);
   }
