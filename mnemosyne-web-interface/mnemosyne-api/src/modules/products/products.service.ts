@@ -91,6 +91,8 @@ export class ProductsService {
       transaction: trx
     });
 
+    console.log('foundProduct', foundProduct)
+
     if (!foundProduct) throw new ProductNotFoundException();
 
     const userIdHash = this.cryptographicService.hash({
@@ -98,12 +100,18 @@ export class ProductsService {
       algorithm: CryptoHashAlgorithm.MD5
     });
 
+    console.log('userIdHash', userIdHash);
+
     let isProfilePicPresent = true;
 
     const { accessKeyId, secretAccessKey, bucketName } =
       this.configService.awsSdkCredentials;
 
+    console.log({ accessKeyId, secretAccessKey, bucketName })
+
     const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    console.log('s3', s3)
 
     try {
       await s3
@@ -149,6 +157,8 @@ export class ProductsService {
       companyId: onBehalfOfCompany ? companyId : null,
       companyName: onBehalfOfCompany ? companyName : null
     };
+
+    console.log('product', product);
 
     if (userId) {
       const { favoriteProductsIds } =
