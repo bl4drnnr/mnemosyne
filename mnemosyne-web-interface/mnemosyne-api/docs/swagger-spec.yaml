@@ -912,16 +912,32 @@ paths:
   /api/roles/change-company-member-role:
     patch:
       operationId: RolesController_changeCompanyMemberRole
+      summary: Endpoint is responsible for changing users' roles.
       parameters: []
       requestBody:
         required: true
+        description: Body contains user ID and new role ID.
         content:
           application/json:
             schema:
               $ref: "#/components/schemas/ChangeCompanyMemberRoleDto"
       responses:
-        "200":
-          description: ""
+        "201":
+          description: As a response user gets a message saying that user role has been
+            changed.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CompanyMemberRoleChangedDto"
+        "404":
+          description: Not found error is thrown in case if either user or role have not
+            been found.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: "#/components/schemas/UserNotFoundException"
+                  - $ref: "#/components/schemas/RoleDoesntExistException"
       tags: *a5
       security:
         - x-access-token: []
@@ -3807,6 +3823,15 @@ components:
       required:
         - newRoleId
         - userId
+    CompanyMemberRoleChangedDto:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Company member role changed response message
+          example: company-member-role-changed
+      required:
+        - message
     InviteUserToCompanyDto:
       type: object
       properties:

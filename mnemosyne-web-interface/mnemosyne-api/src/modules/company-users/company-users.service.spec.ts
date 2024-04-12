@@ -10,12 +10,14 @@ import { CompanyUser } from '@models/company-user.model';
 import { getModelToken } from '@nestjs/sequelize';
 import { Language } from '@interfaces/language.enum';
 import { User } from '@models/user.model';
-import { Role } from '@custom-types/role.type';
 import { Company } from '@models/company.model';
 import { CompanyMemberNotFoundException } from '@exceptions/company-member-not-found.exception';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { CompanyMemberDeletedDto } from '@dto/company-member-deleted.dto';
 import { HttpException } from '@nestjs/common';
+import { InviteUserToCompanyDto } from '@dto/invite-user-to-company.dto';
+import { RolesService } from '@modules/roles.service';
+import { Role } from '@models/role.model';
 
 dotenv.config({ path: '.env.test' });
 
@@ -25,6 +27,7 @@ describe('CompanyUsersService', () => {
   let companyService: CompanyService;
   let emailService: EmailService;
   let authService: AuthService;
+  let rolesService: RolesService;
   let companyUserRepository: typeof CompanyUser;
 
   const companyUserRepositoryToken = getModelToken(CompanyUser);
@@ -51,11 +54,20 @@ describe('CompanyUsersService', () => {
   const mockAuthService = {
     checkUserMfaStatus: jest.fn()
   };
+  const mockRolesService = {
+    getRoleById: jest.fn(),
+    getUserRolesByCompanyUserId: jest.fn(),
+    assignRoleToUser: jest.fn()
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CompanyUsersService,
+        {
+          provide: RolesService,
+          useValue: mockRolesService
+        },
         {
           provide: AuthService,
           useValue: mockAuthService
@@ -84,6 +96,7 @@ describe('CompanyUsersService', () => {
     companyService = module.get<CompanyService>(CompanyService);
     emailService = module.get<EmailService>(EmailService);
     authService = module.get<AuthService>(AuthService);
+    rolesService = module.get<RolesService>(RolesService);
     companyUserRepository = module.get<typeof CompanyUser>(
       companyUserRepositoryToken
     );
@@ -96,9 +109,8 @@ describe('CompanyUsersService', () => {
   describe('inviteUserToCompany', () => {
     it('should invite user to the company and send email', async () => {
       const userId = uuid.v4();
-      const payload = {
-        email: 'test@example.com',
-        role: 'ADMIN' as Role,
+      const payload: InviteUserToCompanyDto = {
+        invitedUsers: [{ email: 'test2@test.com', roleId: 'role-id' }],
         language: Language.PL
       };
       const trx: any = {};
@@ -136,6 +148,14 @@ describe('CompanyUsersService', () => {
         company: { id: companyInfoId }
       } as unknown as User);
 
+      jest
+        .spyOn(rolesService, 'getRoleById')
+        .mockResolvedValueOnce({ id: 'role-id' } as unknown as Role);
+
+      jest
+        .spyOn(companyUserRepository, 'create')
+        .mockResolvedValueOnce({ id: 'company-member-id' } as any);
+
       await service.inviteUserToCompany({ userId, payload, trx });
 
       expect(usersService.getUserById).toHaveBeenCalledWith({
@@ -143,11 +163,11 @@ describe('CompanyUsersService', () => {
         trx
       });
       expect(usersService.getUserByEmail).toHaveBeenCalledWith({
-        email: payload.email,
+        email: payload.invitedUsers[0].email,
         trx
       });
       expect(usersService.createUser).toHaveBeenCalledWith({
-        payload: { email: payload.email },
+        payload: { email: payload.invitedUsers[0].email },
         trx
       });
       expect(companyService.getCompanyByUserId).toHaveBeenCalledWith({
@@ -157,14 +177,14 @@ describe('CompanyUsersService', () => {
 
       expect(emailService.sendCompanyMemberEmail).toHaveBeenCalledWith({
         payload: {
-          to: payload.email,
+          to: payload.invitedUsers[0].email,
           confirmationType: 'COMPANY_INVITATION',
           userId: createdUser.id
         },
         isUserExists: false,
         companyInfo,
         userInfo: {
-          email: payload.email,
+          email: payload.invitedUsers[0].email,
           firstName: null,
           lastName: null
         },

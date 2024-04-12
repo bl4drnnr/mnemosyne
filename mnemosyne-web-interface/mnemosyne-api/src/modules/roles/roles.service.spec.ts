@@ -14,11 +14,13 @@ import { CompanyRoleCreatedDto } from '@dto/company-role-created.dto';
 import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
 import { CompanyRoleUpdatedDto } from '@dto/company-role-updated.dto';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
+import { CompanyUsersService } from '@modules/company-users.service';
 
 dotenv.config({ path: '.env.test' });
 
 describe('RolesService', () => {
   let service: RolesService;
+  let companyUsersService: CompanyUsersService;
 
   const roleRepositoryToken = getModelToken(Role);
   const userRoleRepositoryToken = getModelToken(UserRole);
@@ -35,11 +37,16 @@ describe('RolesService', () => {
   const mockUtilsService = {
     removeDuplicates: jest.fn()
   };
+  const mockCompanyUsersService = {};
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RolesService,
+        {
+          provide: CompanyUsersService,
+          useValue: mockCompanyUsersService
+        },
         {
           provide: UtilsService,
           useValue: mockUtilsService
@@ -56,6 +63,7 @@ describe('RolesService', () => {
     }).compile();
 
     service = module.get<RolesService>(RolesService);
+    companyUsersService = module.get<CompanyUsersService>(CompanyUsersService);
   });
 
   it('Should be defined', () => {

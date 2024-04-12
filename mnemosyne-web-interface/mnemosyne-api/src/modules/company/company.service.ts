@@ -526,6 +526,12 @@ export class CompanyService {
 
     await this.companyUsersService.confirmCompanyMembership({ userId, trx });
 
+    await this.usersService.updateUser({
+      payload: { tac: true },
+      userId,
+      trx
+    });
+
     await this.emailService.sendCompanyMemberConfirmCompleteEmail({
       to: email,
       companyName,
