@@ -60,8 +60,7 @@ import { Category } from '@models/category.model';
         Product,
         Category
       ],
-      autoLoadModels: true,
-      sync: { force: true }
+      autoLoadModels: true
     }),
     UsersModule,
     RolesModule,
