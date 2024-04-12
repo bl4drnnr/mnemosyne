@@ -79,7 +79,12 @@ export class Company extends Model<Company, CompanyCreationAttributes> {
   @HasMany(() => CompanyUser)
   companyUsers: Array<CompanyUser>;
 
-  @BelongsToMany(() => Role, () => UserRole)
+  @BelongsToMany(() => Role, {
+    through: {
+      model: () => UserRole,
+      unique: false
+    }
+  })
   roles: Array<Role>;
 
   @CreatedAt

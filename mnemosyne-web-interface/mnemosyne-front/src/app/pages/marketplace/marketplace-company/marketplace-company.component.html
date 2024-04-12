@@ -1,0 +1,275 @@
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="marketplace-company-container">
+      <h1 class="marketplace-company-title">
+        {{ t('marketplace.marketplaceCompanyNameTitle', { companyName }) }}
+      </h1>
+      <p>{{ t('marketplace.marketplaceCompanyInfoIntro', { companyName }) }}</p>
+      <div class="marketplace-company-container-info">
+        <h2
+          class="marketplace-container-info clickable"
+          (click)="handleExternalRedirect('https://www.google.com/maps/place/' + companyLocation)"
+        >
+          <span>{{ companyLocation }}&nbsp;</span>
+          <basic-emoji emoji="globe.png" [width]="32" [height]="32" />
+        </h2>
+        <h2
+          class="marketplace-container-info clickable"
+          (click)="handleExternalRedirectLink(companyWebsite)"
+        >
+          <span class="marketplace-company-website">{{ companyWebsite }}&nbsp;</span>
+          <basic-emoji emoji="pushpin.png" [width]="32" [height]="32" />
+        </h2>
+        <h2 class="marketplace-container-info" *ngIf="companyStats">
+          <span>{{ t('marketplace.marketplaceCompanyAmountOfProds', { amountOfProducts: companyStats.amountOfProducts }) }}&nbsp;</span>
+          <basic-emoji emoji="scroll.png" [width]="32" [height]="32" />
+        </h2>
+        <h2 class="marketplace-container-info">
+          <span>{{ t('marketplace.marketplaceCompanyAmountOfUsers', { quantityOfUsers }) }}&nbsp;</span>
+          <basic-emoji emoji="person.png" [width]="32" [height]="32" />
+        </h2>
+      </div>
+      <p>
+        {{ t('marketplace.marketplaceCompanyOwner') }}
+        <basic-link
+          label="{{ companyOwnerFirstName }} {{ companyOwnerLastName }}"
+          href="marketplace/user/{{ companyOwnerId }}"
+        />
+      </p>
+    </div>
+
+    <div class="company-header-container">
+      <div
+        class="company-header-box"
+        [ngClass]="{ active: currentSection === 'products' }"
+        (click)="currentSection = 'products'"
+      >
+        <h3 class="company-header-title">
+          {{ t('marketplace.marketplaceCompanyProductsSection') }}
+        </h3>
+      </div>
+      <div
+        class="company-header-box"
+        [ngClass]="{ active: currentSection === 'users' }"
+        (click)="currentSection = 'users'"
+      >
+        <h3 class="company-header-title">
+          {{ t('marketplace.marketplaceCompanyUsersSection') }}
+        </h3>
+      </div>
+      <div
+        class="company-header-box"
+        [ngClass]="{ active: currentSection === 'stats' }"
+        (click)="currentSection = 'stats'"
+      >
+        <h3 class="company-header-title">
+          {{ t('marketplace.marketplaceCompanyStatsSection') }}
+        </h3>
+      </div>
+    </div>
+
+    <div
+      class="company-section"
+      *ngIf="currentSection === 'products'"
+    >
+      <div class="marketplace-container">
+        <div class="marketplace-area">
+          <div class="marketplace-filters">
+            <h3 class="marketplace-filters-title">
+              {{ t('marketplace.marketplaceFiltersTitle') }}
+            </h3>
+            <div class="marketplace-filters-container">
+              <p><b>{{ t('marketplace.marketplaceFiltersCategories') }}:</b></p>
+              <basic-checkbox
+                *ngFor="let category of categoriesList"
+                (checkedChange)="addCategory(category)"
+              >
+                <span content>{{ category.value }}</span>
+              </basic-checkbox>
+            </div>
+            <div *ngIf="selectedCategories.length > 0" class="marketplace-filters-container">
+              <div *ngFor="let selectedCategory of selectedCategories">
+                <p class="marketplace-filters-subtitle">
+                  {{ t('marketplace.marketplaceFiltersSubcategories') }} <b>{{ selectedCategory.value }}</b>
+                </p>
+                <basic-checkbox
+                  *ngFor="let subcategory of utilsService.getSubcategories(subcategoriesList, selectedCategory.key)"
+                  (checkedChange)="addSubcategory(subcategory)"
+                >
+                  <span content>{{ subcategory.value }}</span>
+                </basic-checkbox>
+              </div>
+            </div>
+            <div class="marketplace-filters-container">
+              <p class="marketplace-filters-subtitle">
+                <b>{{ t('marketplace.marketplaceFiltersPriceRange') }}:</b>
+              </p>
+              <basic-input
+                type="number"
+                [label]="t('input.priceFromLabel')"
+                [placeholder]="t('input.priceFromPlaceholder')"
+                [inputDescription]="t('input.priceFromInputDesc')"
+                [errorMessage]="t('input.priceFromError')"
+                [min]="'0'"
+                [showError]="minPriceError"
+                [value]="minPrice"
+                (valueChange)="checkProductPrice($event, 'min')"
+              />
+              <basic-input
+                type="number"
+                [label]="t('input.priceToLabel')"
+                [placeholder]="t('input.priceToPlaceholder')"
+                [inputDescription]="t('input.priceToInputDesc')"
+                [errorMessage]="t('input.priceToError')"
+                [showError]="maxPriceError"
+                [value]="maxPrice"
+                (valueChange)="checkProductPrice($event, 'max')"
+              />
+              <p class="marketplace-price-error" *ngIf="wrongPriceError">
+                {{ t('marketplace.marketplaceWrongPriceRange') }}
+              </p>
+            </div>
+            <div class="marketplace-filters-container">
+              <p class="marketplace-filters-subtitle">
+                <b>{{ t('marketplace.marketplaceCurrency') }}:</b>
+              </p>
+              <div *ngIf="productCurrencyDropdownValue">
+                <basic-dropdown
+                  [label]="t('dropdown.selectCurrency')"
+                  [options]="productCurrencyDropdown"
+                  [defaultValue]="productCurrencyDropdownValue"
+                  (selectedOption)="selectProductCurrency($event)"
+                />
+              </div>
+            </div>
+            <div class="marketplace-filters-container">
+              <p class="marketplace-filters-subtitle">
+                <b>{{ t('marketplace.marketplaceClearFilters') }}:</b>
+              </p>
+              <div class="marketplace-clear-filters-button-wrapper">
+                <basic-button
+                  [label]="t('button.clearFilters')"
+                  (buttonClick)="clearFilters()"
+                />
+              </div>
+            </div>
+            <div class="marketplace-filters-container">
+              <p class="marketplace-filters-subtitle">
+                <b>{{ t('marketplace.marketplaceFiltersLayout') }}:</b>
+              </p>
+              <div class="marketplace-filters-layouts">
+                <button
+                  (click)="setLayout('list')"
+                  [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
+                >
+                  <img
+                    [ngSrc]="listIcon"
+                    [width]="22"
+                    [height]="22"
+                    alt="list"
+                    class="layout-icon"
+                  >
+                </button>
+                <button
+                  (click)="setLayout('grid')"
+                  [ngClass]="layoutView === 'grid' ? 'order-by-button right-border active': 'order-by-button right-border'"
+                >
+                  <img
+                    [ngSrc]="gridIcon"
+                    [width]="24"
+                    [height]="24"
+                    alt="gird"
+                    class="layout-icon"
+                  >
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="marketplace-search-area">
+            <basic-input
+              [label]="t('input.marketplaceSearchLabel')"
+              [placeholder]="t('input.marketplaceSearchPlaceholder')"
+              [inputDescription]="t('input.marketplaceSearchInputDesc')"
+              [value]="productSearchQuery"
+              (valueChange)="changeProductSearchQuery($event)"
+            />
+
+            <div class="marketplace-order-items">
+              <div class="marketplace-order-item margin-right">
+                <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderBySubtitle') }}</p>
+                <div class="marketplace-order-items-buttons">
+                  <button
+                    (click)="changeOrderBy('DESC')"
+                    [ngClass]="productOrderBy === 'DESC' ? 'order-by-button left-border active': 'order-by-button left-border'"
+                  >
+                    <p class="order-by-button-label">DESC</p>
+                  </button>
+                  <button
+                    (click)="changeOrderBy('ASC')"
+                    [ngClass]="productOrderBy === 'ASC' ? 'order-by-button right-border active': 'order-by-button right-border'"
+                  >
+                    <p class="order-by-button-label">ASC</p>
+                  </button>
+                </div>
+              </div>
+
+              <div class="marketplace-order-item margin-left">
+                <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderSubtitle') }}</p>
+                <div *ngIf="orderOptionsValue">
+                  <basic-dropdown
+                    [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
+                    [options]="orderOptions"
+                    [defaultValue]="orderOptionsValue"
+                    (selectedOption)="selectOrderOption($event)"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div class="marketplace-products-list-container">
+              <page-marketplace-product-list
+                [page]="productPage"
+                [pageSize]="productPageSize"
+                [products]="companyProducts"
+                [totalItems]="productsTotalItems"
+                [layoutView]="layoutView"
+                (getProductsEvent)="getCompanyProducts()"
+                (setPage)="setPage($event)"
+                (setPageSize)="setPageSize($event)"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="company-section"
+      *ngIf="currentSection === 'users'"
+    >
+      <dashboard-marketplace-company-users
+        [page]="usersPage"
+        [pageSize]="usersPageSize"
+        [query]="usersQuery"
+        [totalItems]="usersTotalItems"
+        [companyMembers]="companyMembers"
+        (getCompanyEvent)="getCompany()"
+        (setNewCurrentPage)="changeCompanyUsersPage($event)"
+        (setNewUsersPerPage)="changeCompanyUsersPerPage($event)"
+        (setNewQuery)="changeCompanyQuery($event)"
+      />
+    </div>
+
+    <div
+      class="company-section"
+      *ngIf="companyStats && currentSection === 'stats'"
+    >
+      <dashboard-marketplace-company-stats
+        [companyStats]="companyStats"
+      />
+    </div>
+  </ng-container>
+</layout-default>

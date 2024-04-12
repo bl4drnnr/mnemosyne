@@ -25,6 +25,8 @@ export class ProductComponent implements OnInit {
   contactEmail: string;
   contactPhone: string;
   similarProducts: Array<SearchedProducts>;
+  isUserLoggedIn = false;
+  userProfilePictureLink: string;
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
@@ -37,10 +39,10 @@ export class ProductComponent implements OnInit {
 
   backArrowIcon = `${this.envService.getStaticStorageLink}/icons/backarrowmodal.svg`;
   addToFavoriteIcon = `${this.envService.getStaticStorageLink}/icons/heart.svg`;
-  userProfilePictureLink = `${this.envService.getStaticStorageLink}/users-profile-pictures/default.png`;
   googleMapsIcon = `${this.envService.getStaticStorageLink}/icons/google-maps-icon.svg`;
   productPicturesBucket = `${this.envService.getStaticStorageLink}/products/`;
   noProductPicture = `${this.envService.getStaticStorageLink}/icons/add-photo.svg`;
+  staticStorageLink = this.envService.getStaticStorageLink;
 
   getProductBySlug() {
     this.productsService
@@ -50,9 +52,14 @@ export class ProductComponent implements OnInit {
       .subscribe({
         next: ({ product }) => {
           this.product = product;
+
           this.translationService.setPageTitle(Titles.PRODUCT, {
             product: product.title
           });
+
+          this.userProfilePictureLink = product.ownerIdHash
+            ? `${this.staticStorageLink}/users-profile-pictures/${product.ownerIdHash}.png`
+            : `${this.staticStorageLink}/users-profile-pictures/default.png`;
           this.getSimilarProducts();
         },
         error: async () =>
@@ -169,11 +176,14 @@ export class ProductComponent implements OnInit {
     await this.router.navigate([path]);
   }
 
-  async handleExternalRedirect(path: string) {
+  handleExternalRedirect(path: string) {
     document.location.href = path;
   }
 
   ngOnInit() {
+    const accessToken = localStorage.getItem('_at');
+    this.isUserLoggedIn = !!accessToken;
+
     this.route.paramMap.subscribe(async (params) => {
       const productSlug = params.get('product-slug');
 

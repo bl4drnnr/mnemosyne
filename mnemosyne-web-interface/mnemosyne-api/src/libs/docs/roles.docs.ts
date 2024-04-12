@@ -1,4 +1,4 @@
-import { getSchemaPath } from '@nestjs/swagger';
+import { getSchemaPath, refs } from '@nestjs/swagger';
 import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
 import { CompanyRoleUpdatedDto } from '@dto/company-role-updated.dto';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
@@ -7,6 +7,10 @@ import { UpdateCompanyRoleDto } from '@dto/update-company-role.dto';
 import { CreateCompanyRoleDto } from '@dto/create-company-role.dto';
 import { CompanyRoleCreatedDto } from '@dto/company-role-created.dto';
 import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
+import { ChangeCompanyMemberRoleDto } from '@dto/change-company-member-role.dto';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { CompanyMemberRoleChangedDto } from '@dto/company-member-role-changed.dto';
+import { CompanyMemberNotFoundException } from '@exceptions/company-member-not-found.exception';
 
 export abstract class RolesDocs {
   static get GetCompanyRoles() {
@@ -96,6 +100,44 @@ export abstract class RolesDocs {
         type: UpdateCompanyRoleDto,
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(UpdateCompanyRoleDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get ChangeCompanyMemberRole() {
+    const ApiModels = [
+      ChangeCompanyMemberRoleDto,
+      UserNotFoundException,
+      RoleDoesntExistException,
+      CompanyMemberRoleChangedDto
+    ];
+
+    const NotFound = [UserNotFoundException, RoleDoesntExistException];
+
+    const apiOperationSum =
+      "Endpoint is responsible for changing users' roles.";
+    const apiResponseDesc =
+      'As a response user gets a message saying that user role has been changed.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if either user or role have not been found.';
+    const apiBodyDesc = 'Body contains user ID and new role ID.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(CompanyMemberRoleChangedDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { oneOf: refs(...NotFound) }
+      },
+      ApiBody: {
+        type: ChangeCompanyMemberRoleDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(ChangeCompanyMemberRoleDto) }
       } as ApiBodyOptions
     };
   }

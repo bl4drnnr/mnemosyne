@@ -28,9 +28,8 @@ import { CreateCompanyRoleDto } from '@dto/create-company-role.dto';
 import { TrxDecorator } from '@decorators/transaction.decorator';
 import { Transaction } from 'sequelize';
 import { UpdateCompanyRoleDto } from '@dto/update-company-role.dto';
-import { AssignRoleDto } from '@dto/assign-role.dto';
-import { RevokeRoleDto } from '@dto/revoke-role.dto';
 import { RolesDocs } from '@docs/roles.docs';
+import { ChangeCompanyMemberRoleDto } from '@dto/change-company-member-role.dto';
 
 @ApiTags('Roles')
 @Controller('roles')
@@ -43,7 +42,7 @@ export class RolesController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('ROLES_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Get('get-company-roles')
@@ -65,7 +64,7 @@ export class RolesController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('ROLES_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Post('create-role')
@@ -89,7 +88,7 @@ export class RolesController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('ROLES_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Patch('update-role')
@@ -105,38 +104,24 @@ export class RolesController {
     });
   }
 
+  @ApiOperation(RolesDocs.ChangeCompanyMemberRole.ApiOperation)
+  @ApiExtraModels(...RolesDocs.ChangeCompanyMemberRole.ApiExtraModels)
+  @ApiResponse(RolesDocs.ChangeCompanyMemberRole.ApiResponse)
+  @ApiNotFoundResponse(RolesDocs.ChangeCompanyMemberRole.ApiNotFoundResponse)
+  @ApiBody(RolesDocs.ChangeCompanyMemberRole.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('ROLES_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
-  @Patch('assign-role')
-  assignRoleToUser(
+  @Patch('change-company-member-role')
+  changeCompanyMemberRole(
     @CompanyId() companyId: string,
-    @Body() payload: AssignRoleDto,
+    @Body() payload: ChangeCompanyMemberRoleDto,
     @TrxDecorator() trx: Transaction
   ) {
-    return this.rolesService.assignRoleToUser({
-      companyId,
-      payload,
-      trx
-    });
-  }
-
-  @ApiBasicAuth('basicAuth')
-  @ApiBearerAuth('x-access-token')
-  @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
-  @UseGuards(RoleGuard)
-  @UseGuards(AuthGuard)
-  @Patch('revoke-role')
-  revokeUserRole(
-    @CompanyId() companyId: string,
-    @Body() payload: RevokeRoleDto,
-    @TrxDecorator() trx: Transaction
-  ) {
-    return this.rolesService.revokeUserRole({
+    return this.rolesService.changeCompanyMemberRole({
       companyId,
       payload,
       trx

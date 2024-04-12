@@ -1,9 +1,10 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { trigger, style, animate, transition } from '@angular/animations';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '@services/authentication.service';
 import { UserInfoResponse } from '@responses/user-info.interface';
 import { EnvService } from '@shared/env.service';
+import { Scopes } from '@interfaces/role-scopes.enum';
 
 @Component({
   selector: 'dashboard-sidebar',
@@ -21,7 +22,7 @@ import { EnvService } from '@shared/env.service';
     ])
   ]
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent {
   @Input() isSidebarOpen = false;
   @Input() userInfo: UserInfoResponse;
   @Output() closeSidebar = new EventEmitter<void>();
@@ -33,8 +34,6 @@ export class SidebarComponent implements OnInit {
     private readonly envService: EnvService,
     private readonly router: Router
   ) {}
-
-  userProfilePictureLink: string = `${this.staticStorageLink}/users-profile-pictures/default.png`;
 
   handleCloseSidebar() {
     this.isSidebarOpen = false;
@@ -53,15 +52,7 @@ export class SidebarComponent implements OnInit {
     await this.handleRedirect('');
   }
 
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
-  }
-
-  ngOnInit() {
-    if (this.userInfo) {
-      this.userProfilePictureLink = this.userInfo.isProfilePicPresent
-        ? `${this.staticStorageLink}/users-profile-pictures/${this.userInfo.userId}.png`
-        : `${this.staticStorageLink}/users-profile-pictures/default.png`;
-    }
+  async handleRedirect(path: string, queryParams: any = {}) {
+    await this.router.navigate([path], { queryParams });
   }
 }

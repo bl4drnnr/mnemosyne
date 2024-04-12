@@ -2,10 +2,13 @@
   <div class="personal-settings-container">
     <dashboard-user-photo
       [isProfilePicPresent]="isProfilePicPresent"
-      [userId]="userId"
+      [userIdHash]="userIdHash"
     />
     <div class="personal-settings-inputs">
-      <h1>{{ t('settings.managePersonalSettings') }}</h1>
+      <h1 class="personal-settings-title">
+        <span>{{ t('settings.managePersonalSettings') }}&nbsp;</span>
+        <basic-emoji emoji="eyes.png" [width]="48" [height]="48" />
+      </h1>
 
       <div class="dived-line"></div>
 

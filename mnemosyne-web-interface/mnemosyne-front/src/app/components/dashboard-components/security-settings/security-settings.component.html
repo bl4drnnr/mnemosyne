@@ -1,6 +1,9 @@
 <ng-container *transloco="let t">
   <div class="security-settings-container">
-    <h1>{{ t('settings.securitySettingsRules.title') }}</h1>
+    <h1 class="security-settings-title">
+      <span>{{ t('settings.securitySettingsRules.title') }}&nbsp;</span>
+      <basic-emoji emoji="shield.png" [width]="48" [height]="48"/>
+    </h1>
     <ul class="rules-list">
       <li class="rule">{{ t('settings.securitySettingsRules.rule1') }}</li>
       <li class="rule">{{ t('settings.securitySettingsRules.rule2') }}</li>

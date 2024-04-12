@@ -29,6 +29,6 @@ export class UpdateCompanyRoleDto {
     example: [DocsProperty.COMPANY_ROLE_SCOPE_EXAMPLE],
     isArray: true
   })
-  @ArrayMinSize(1, { message: ValidationError.WRONG_COMPANY_ROLE_SCOPE_LENGTH })
+  @ArrayMinSize(0, { message: ValidationError.WRONG_COMPANY_ROLE_SCOPE_LENGTH })
   readonly roleScopes: Array<RoleScope>;
 }

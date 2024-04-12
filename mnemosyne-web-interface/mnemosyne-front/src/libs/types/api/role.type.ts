@@ -1,1 +1,1 @@
-export type Role = 'PRIMARY_ADMIN' | 'ADMIN' | 'DEFAULT';
+export type Role = 'PRIMARY_ADMIN' | 'ADMIN' | 'DEFAULT' | 'PRODUCT_MANAGEMENT';

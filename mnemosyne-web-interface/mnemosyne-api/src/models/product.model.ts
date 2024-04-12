@@ -56,6 +56,7 @@ interface ProductCreationAttributes {
   contactPhone: string;
   userId: string;
   categoryId: string;
+  onBehalfOfCompany: boolean;
 }
 
 @Table({ tableName: 'products' })
@@ -97,6 +98,13 @@ export class Product extends Model<Product, ProductCreationAttributes> {
 
   @Column({ type: DataType.STRING, allowNull: false, field: 'contact_phone' })
   contactPhone: string;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: true,
+    field: 'on_behalf_of_company'
+  })
+  onBehalfOfCompany: boolean;
 
   @ForeignKey(() => Category)
   @Column({ type: DataType.UUID, allowNull: false, field: 'category_id' })

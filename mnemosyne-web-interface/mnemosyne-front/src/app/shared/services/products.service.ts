@@ -26,6 +26,13 @@ import { GetProductContactEmailPayload } from '@payloads/get-product-contact-ema
 import { GetProductContactPhonePayload } from '@payloads/get-product-contact-phone.interface';
 import { GetProductContactEmailResponse } from '@responses/get-product-contact-email.interface';
 import { GetProductContactPhoneResponse } from '@responses/get-product-contact-phone.interface';
+import { GetMarketplaceUserStatsPayload } from '@payloads/get-marketplace-user-stats.interface';
+import { GetMarketplaceUserStatsResponse } from '@responses/get-marketplace-user-stats.interface';
+import { GetMarketplaceCompanyStatsPayload } from '@payloads/get-marketplace-company-stats.interface';
+import { GetMarketplaceCompanyStatsResponse } from '@responses/get-marketplace-company-stats.interface';
+import { GetCompanyInternalStatsPayload } from '@payloads/get-company-internal-stats.interface';
+import { GetCompanyInternalStatsResponse } from '@responses/get-company-internal-stats.interface';
+import { CompanyProductDeletedResponse } from '@responses/company-product-deleted.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -72,14 +79,14 @@ export class ProductsService {
     });
   }
 
-  getProductBySlugToEdit({
-    slug
-  }: GetProductBySlugPayload): Observable<GetProductBySlugResponse> {
+  getProductBySlugToEdit(
+    params: GetProductBySlugPayload
+  ): Observable<GetProductBySlugResponse> {
     return this.apiService.apiProxyRequest({
       method: Method.GET,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.GET_PRODUCT_TO_UPDATE,
-      params: { slug }
+      params
     });
   }
 
@@ -112,6 +119,17 @@ export class ProductsService {
       method: Method.DELETE,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.DELETE_PRODUCT,
+      payload
+    });
+  }
+
+  deleteCompanyProduct(
+    payload: DeleteProductPayload
+  ): Observable<{ message: CompanyProductDeletedResponse }> {
+    return this.apiService.apiProxyRequest({
+      method: Method.DELETE,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.DELETE_COMPANY_PRODUCT,
       payload
     });
   }
@@ -167,6 +185,39 @@ export class ProductsService {
       method: Method.GET,
       controller: Controller.PRODUCTS,
       action: ProductsEndpoint.PRODUCT_CONTACT_PHONE,
+      params
+    });
+  }
+
+  getMarketplaceUserStatistics(
+    params: GetMarketplaceUserStatsPayload
+  ): Observable<GetMarketplaceUserStatsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.MARKETPLACE_USER_STATISTICS,
+      params
+    });
+  }
+
+  getCompanyProductsStatistics(
+    params: GetMarketplaceCompanyStatsPayload
+  ): Observable<GetMarketplaceCompanyStatsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.MARKETPLACE_COMPANY_STATISTICS,
+      params
+    });
+  }
+
+  getCompanyInternalStatistics(
+    params: GetCompanyInternalStatsPayload
+  ): Observable<GetCompanyInternalStatsResponse> {
+    return this.apiService.apiProxyRequest({
+      method: Method.GET,
+      controller: Controller.PRODUCTS,
+      action: ProductsEndpoint.MARKETPLACE_COMPANY_INTERNAL_STATISTICS,
       params
     });
   }

@@ -57,7 +57,7 @@
         <basic-button
           [label]="t('button.editProduct')"
           [fillButton]="true"
-          (buttonClick)="handleRedirect('/marketplace/product/' + slug + '/edit')"
+          (buttonClick)="handleExternalRedirect('/marketplace/product/' + slug + '/edit' + (productCompanyEdit ? '?productCompanyEdit=true' : ''))"
         />
       </div>
       <div
@@ -81,8 +81,6 @@
       *ngIf="mainPicture"
       class="product-picture-preview-list"
       [src]="productPicturesBucket + mainPicture + '.png'"
-      [width]="300"
-      [height]="200"
       alt="Product picture"
     >
     <div *ngIf="!mainPicture" class="no-picture-icon-list-wrapper">
@@ -139,7 +137,7 @@
           <basic-button
             [label]="t('button.editProduct')"
             [fillButton]="true"
-            (buttonClick)="handleRedirect('/marketplace/product/' + slug + '/edit')"
+            (buttonClick)="handleExternalRedirect('/marketplace/product/' + slug + '/edit' + (productCompanyEdit ? '?productCompanyEdit=true' : ''))"
           />
         </div>
         <div

@@ -36,5 +36,6 @@ export enum ValidationError {
   WRONG_PRODUCT_CONTACT_PERSON_LENGTH = 'wrong-product-contact-person-length',
   WRONG_PRODUCT_LOCATION_FORMAT = 'wrong-product-location-format',
   WRONG_PRODUCT_LOCATION_LENGTH = 'wrong-product-location-length',
-  WRONG_PRODUCT_PRICE_FORMAT = 'wrong-product-price-format'
+  WRONG_PRODUCT_PRICE_FORMAT = 'wrong-product-price-format',
+  WRONG_INVITED_USERS_LIST = 'wrong-invited-users-list'
 }

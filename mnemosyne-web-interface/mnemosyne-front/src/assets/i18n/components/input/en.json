@@ -157,5 +157,16 @@
   "searchForProductsHeader": "Search for products...",
   "favoriteProductsSearchLabel": "Favorites products search",
   "favoriteProductsSearchPlaceholder": "Favorites products search",
-  "favoriteProductsSearchInputDesc": "You can perform the search of your products based on title, description or slug."
+  "favoriteProductsSearchInputDesc": "You can perform the search of your products based on title, description or slug.",
+  "clickToCopy": "Click on the input field in order to copy.",
+  "companyMemberSearchEmailLabel": "Company member email",
+  "companyMemberSearchEmailPlaceholder": "Search for members of your company",
+  "noHomeAddress": "No home address specified",
+  "noHomePhone": "No home phone specified",
+  "companyMemberSearchLabel": "Company member search",
+  "companyMemberSearchPlaceholder": "Search for company member",
+  "companyMemberSearchInputDesc": "Search for company members using first and last name",
+  "companyEmployeeLabel": "Company employee",
+  "companyEmployeePlaceholder": "Search company employee",
+  "companyEmployeeInputDesc": "Search company employee based on email, first name or last name"
 }

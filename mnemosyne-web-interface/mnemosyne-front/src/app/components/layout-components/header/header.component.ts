@@ -47,6 +47,7 @@ export class HeaderComponent implements OnInit {
 
   async logoutUser() {
     localStorage.removeItem('_at');
+    this.isUserLoggedIn = false;
     await this.handleRedirect('');
   }
 

@@ -18,5 +18,9 @@
   "productNotFound": "Mnemosyne | Oops... Product not found",
   "editProduct": "Mnemosyne | Edit product - {{ product }}",
   "marketplace": "Mnemosyne | Marketplace",
-  "favorites": "Mnemosyne | Favorite products"
+  "favorites": "Mnemosyne | Favorite products",
+  "marketplaceUser": "Mnemosyne | User | {{ firstName }} {{ lastName }}",
+  "companySettings": "Mnemosyne | Company settings",
+  "companyProductsSettings": "Mnemosyne | Company products settings",
+  "company": "Mnemosyne | Company | {{ companyName }}"
 }

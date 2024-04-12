@@ -1,5 +1,7 @@
+import { RoleScope } from '@interfaces/role-scope.type';
+
 export interface UserInfoResponse {
-  userId: string;
+  userIdHash: string;
   firstName: string;
   lastName: string;
   namePronunciation: string;
@@ -8,4 +10,8 @@ export interface UserInfoResponse {
   email: string;
   isProfilePicPresent: boolean;
   isCompanyMember: boolean;
+  companyName: string | null;
+  companyId: string | null;
+  roleName: string | null;
+  roleScopes: Array<RoleScope> | null;
 }

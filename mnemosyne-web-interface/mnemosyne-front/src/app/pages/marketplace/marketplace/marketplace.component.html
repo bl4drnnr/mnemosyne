@@ -23,7 +23,7 @@
                 {{ t('marketplace.marketplaceFiltersSubcategories') }} <b>{{ selectedCategory.value }}</b>
               </p>
               <basic-checkbox
-                *ngFor="let subcategory of getSubcategories(selectedCategory.key)"
+                *ngFor="let subcategory of utilsService.getSubcategories(subcategoriesList, selectedCategory.key)"
                 (checkedChange)="addSubcategory(subcategory)"
               >
                 <span content>{{ subcategory.value }}</span>
@@ -114,6 +114,25 @@
               </button>
             </div>
           </div>
+          <div class="marketplace-filters-container margin-bottom">
+            <p class="marketplace-filters-subtitle">
+              <b>{{ t('marketplace.marketplaceFiltersProductTypes') }}:</b>
+            </p>
+
+            <basic-checkbox
+              [checked]="privateProductsFlag"
+              (checkedChange)="changeProductType('private')"
+            >
+              <span content>{{ t('marketplace.marketplacePrivateProducts') }}</span>
+            </basic-checkbox>
+
+            <basic-checkbox
+              [checked]="companyProductsFlag"
+              (checkedChange)="changeProductType('company')"
+            >
+              <span content>{{ t('marketplace.marketplaceCompanyProducts') }}</span>
+            </basic-checkbox>
+          </div>
         </div>
 
         <h1 class="marketplace-title">
@@ -122,15 +141,13 @@
         </h1>
 
         <div class="marketplace-search-area">
-          <div class="marketplace-search">
-            <basic-input
-              [label]="t('input.marketplaceSearchLabel')"
-              [placeholder]="t('input.marketplaceSearchPlaceholder')"
-              [inputDescription]="t('input.marketplaceSearchInputDesc')"
-              [value]="productSearchQuery"
-              (valueChange)="changeProductSearchQuery($event)"
-            />
-          </div>
+          <basic-input
+            [label]="t('input.marketplaceSearchLabel')"
+            [placeholder]="t('input.marketplaceSearchPlaceholder')"
+            [inputDescription]="t('input.marketplaceSearchInputDesc')"
+            [value]="productSearchQuery"
+            (valueChange)="changeProductSearchQuery($event)"
+          />
 
           <div class="marketplace-order-items">
             <div class="marketplace-order-item margin-right">
@@ -164,65 +181,16 @@
             </div>
           </div>
 
-          <div *ngIf="products && products.length === 0">
-            <h1 class="marketplace-products-not-found">
-              {{ t('marketplace.marketplaceProductsNotFound') }}
-            </h1>
-          </div>
-
-          <div
-            class="marketplace-products-grid"
-            *ngIf="products && products.length > 0 && layoutView === 'grid'"
-          >
-            <page-product-preview
-              *ngFor="let product of products"
-              [layoutView]="'grid'"
-              [productId]="product.id"
-              [slug]="product.slug"
-              [mainPicture]="product.mainPicture"
-              [productTitle]="product.title"
-              [category]="product.category"
-              [subcategory]="product.subcategory"
-              [price]="product.price"
-              [currency]="product.currency"
-              [createdAt]="product.createdAt"
-              [productInFavorites]="product.productInFavorites"
-              [showAdditionalInfo]="false"
-              [showManagementButtons]="false"
-            />
-          </div>
-
-          <div
-            class="marketplace-products-list"
-            *ngIf="products && products.length > 0 && layoutView === 'list'"
-          >
-            <page-product-preview
-              *ngFor="let product of products"
-              [layoutView]="'list'"
-              [productId]="product.id"
-              [slug]="product.slug"
-              [mainPicture]="product.mainPicture"
-              [productTitle]="product.title"
-              [category]="product.category"
-              [subcategory]="product.subcategory"
-              [price]="product.price"
-              [currency]="product.currency"
-              [createdAt]="product.createdAt"
-              [productInFavorites]="product.productInFavorites"
-              [showAdditionalInfo]="false"
-              [showManagementButtons]="false"
-            />
-          </div>
-
-          <div class="marketplace-pagination" *ngIf="products && products.length > 0">
-            <basic-pagination
-              [itemsPerPageLabel]="t('dropdown.productsPerPage')"
-              [currentPage]="page"
-              [itemsPerPage]="pageSize"
+          <div class="marketplace-products-list-container">
+            <page-marketplace-product-list
+              [page]="page"
+              [pageSize]="pageSize"
+              [products]="products"
               [totalItems]="totalItems"
-              (setCurrentPage)="page = $event"
-              (setItemsPerPage)="pageSize = $event"
-              (fetchItems)="getProducts()"
+              [layoutView]="layoutView"
+              (getProductsEvent)="getProducts()"
+              (setPage)="setPage($event)"
+              (setPageSize)="setPageSize($event)"
             />
           </div>
         </div>

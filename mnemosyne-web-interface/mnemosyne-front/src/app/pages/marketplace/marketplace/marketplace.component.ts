@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TranslationService } from '@services/translation.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CategoriesService } from '@services/categories.service';
-import { ProductsService } from '@services/products.service';
 import { Titles } from '@interfaces/titles.enum';
 import { GetAllCategoriesResponse } from '@responses/get-all-categories.interface';
 import { DropdownInterface } from '@interfaces/dropdown.interface';
 import { ComponentsTranslation } from '@translations/components.enum';
-import { SearchedProducts } from '@responses/search-products.interface';
 import { EnvService } from '@shared/env.service';
+import { MarketplaceProductListComponent } from '@components/marketplace-product-list/marketplace-product-list.component';
+import { UtilsService } from '@services/utils.service';
+import { CategoriesService } from '@services/categories.service';
+import { ProductsService } from '@services/products.service';
+import { SearchedProducts } from '@responses/search-products.interface';
+import { SubcategoriesListType } from '@interfaces/subcategories-list.type';
 
 @Component({
   selector: 'page-marketplace',
@@ -22,29 +25,38 @@ export class MarketplaceComponent implements OnInit {
   orderBy: string = 'DESC';
   productSearchQuery: string;
   minPrice: string;
-  minPriceError: boolean;
   maxPrice: string;
+  minPriceError: boolean;
   maxPriceError: boolean;
   wrongPriceError: boolean;
+
+  layoutView: 'list' | 'grid' = 'list';
+  products: Array<SearchedProducts>;
+  totalItems: number;
+  privateProductsFlag: boolean = false;
+  companyProductsFlag: boolean = false;
+
   orderOptions: Array<DropdownInterface> = [];
   orderOptionsValue: DropdownInterface;
+
   categories: Array<GetAllCategoriesResponse>;
-  products: Array<SearchedProducts>;
+
   categoriesList: Array<DropdownInterface>;
   selectedCategories: Array<DropdownInterface> = [];
-  subcategoriesList: Array<{
-    categoryKey: string;
-    subcategories: Array<DropdownInterface>;
-  }>;
+  subcategoriesList: SubcategoriesListType;
   selectedSubcategories: Array<DropdownInterface> = [];
+
   productCurrencyDropdown: Array<DropdownInterface>;
   productCurrencyDropdownValue: DropdownInterface;
-  totalItems: number;
-  layoutView: 'list' | 'grid' = 'list';
+
   listIcon = `${this.envService.getStaticStorageLink}/icons/list-icon.svg`;
   gridIcon = `${this.envService.getStaticStorageLink}/icons/grid-icon.svg`;
 
+  @ViewChild('pageMarketplaceProductList')
+  public marketplaceProducts: MarketplaceProductListComponent;
+
   constructor(
+    public utilsService: UtilsService,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly envService: EnvService,
@@ -53,6 +65,11 @@ export class MarketplaceComponent implements OnInit {
     private readonly productsService: ProductsService
   ) {}
 
+  setLayout(layoutView: 'list' | 'grid') {
+    this.layoutView = layoutView;
+    localStorage.setItem('_lv', layoutView);
+  }
+
   changeOrderBy(orderBy: string) {
     if (this.orderBy !== orderBy) {
       this.orderBy = orderBy;
@@ -60,84 +77,46 @@ export class MarketplaceComponent implements OnInit {
     }
   }
 
-  getSubcategories(key: string) {
-    return this.subcategoriesList.find(
-      ({ categoryKey }) => categoryKey === key
-    )!.subcategories;
-  }
-
   addCategory(category: DropdownInterface) {
-    const index = this.selectedCategories.findIndex(
-      (item) => item.key === category.key
-    );
-
-    if (index === -1) {
-      this.selectedCategories.push({
-        key: category.key,
-        value: category.value
-      });
-    } else {
-      this.selectedCategories.splice(index, 1);
-      const categorySubcategories = this.getSubcategories(category.key);
-      this.selectedSubcategories = this.selectedCategories.filter(
-        (sub) => !categorySubcategories.find((sub2) => sub.key === sub2.key)
+    const { selectedSubcategories, selectedCategories } =
+      this.utilsService.addCategory(
+        this.selectedSubcategories,
+        this.subcategoriesList,
+        this.selectedCategories,
+        category
       );
-    }
+    this.selectedSubcategories = selectedSubcategories;
+    this.selectedCategories = selectedCategories;
 
     this.getProducts();
   }
 
   addSubcategory(subcategory: DropdownInterface) {
-    const index = this.selectedSubcategories.findIndex(
-      (item) => item.key === subcategory.key
+    this.selectedSubcategories = this.utilsService.addSubcategory(
+      this.selectedSubcategories,
+      subcategory
     );
-
-    if (index === -1) {
-      this.selectedSubcategories.push({
-        key: subcategory.key,
-        value: subcategory.value
-      });
-    } else {
-      this.selectedSubcategories.splice(index, 1);
-    }
-
     this.getProducts();
   }
 
   checkProductPrice(price: string, priceType: 'min' | 'max') {
-    const priceNumber = Number(price);
+    const productPrice = this.utilsService.checkProductPrice(
+      price,
+      priceType,
+      this.minPrice,
+      this.maxPrice,
+      this.minPriceError,
+      this.maxPriceError,
+      this.wrongPriceError
+    );
 
-    if (priceType === 'min' && priceNumber < 0) {
-      this.minPrice = '';
-      this.minPriceError = true;
-      return;
-    } else if (priceType === 'max' && priceNumber < 0) {
-      this.maxPrice = '';
-      this.maxPriceError = true;
-      return;
-    } else if (priceType === 'min' && priceNumber >= 0) {
-      this.minPrice = price;
-      this.minPriceError = false;
-    } else if (priceType === 'max' && priceNumber >= 0) {
-      this.maxPrice = price;
-      this.maxPriceError = false;
-    }
-
-    if (
-      this.minPrice &&
-      this.maxPrice &&
-      Number(this.minPrice) > Number(this.maxPrice)
-    ) {
-      this.wrongPriceError = true;
-      return;
-    }
+    this.minPrice = productPrice.minPrice;
+    this.maxPrice = productPrice.maxPrice;
+    this.minPriceError = productPrice.minPriceError;
+    this.maxPriceError = productPrice.maxPriceError;
+    this.wrongPriceError = productPrice.wrongPriceError;
 
     this.getProducts();
-  }
-
-  setLayout(layoutView: 'list' | 'grid') {
-    this.layoutView = layoutView;
-    localStorage.setItem('_lv', layoutView);
   }
 
   selectProductCurrency({ key, value }: DropdownInterface) {
@@ -153,6 +132,16 @@ export class MarketplaceComponent implements OnInit {
 
   changeProductSearchQuery(query: string) {
     this.productSearchQuery = query;
+    this.getProducts();
+  }
+
+  setPage(page: string) {
+    this.page = page;
+    this.getProducts();
+  }
+
+  setPageSize(pageSize: string) {
+    this.pageSize = pageSize;
     this.getProducts();
   }
 
@@ -176,11 +165,18 @@ export class MarketplaceComponent implements OnInit {
           ComponentsTranslation.DROPDOWN
         )
       };
-      this.products = [];
       this.selectedCategories = [];
       this.selectedSubcategories = [];
       this.getProducts();
     });
+  }
+
+  changeProductType(productType: 'private' | 'company') {
+    if (productType === 'private')
+      this.privateProductsFlag = !this.privateProductsFlag;
+    else if (productType === 'company')
+      this.companyProductsFlag = !this.companyProductsFlag;
+    this.getProducts();
   }
 
   getOrderOptionDropdownLabel(orderOption: string) {
@@ -208,43 +204,6 @@ export class MarketplaceComponent implements OnInit {
     }
   }
 
-  async initCategories() {
-    this.categoriesList = await Promise.all(
-      this.categories.map(async ({ name }) => {
-        return {
-          key: name,
-          value: await this.translationService.translateText(
-            name,
-            ComponentsTranslation.DROPDOWN
-          )
-        };
-      })
-    );
-  }
-
-  async initSubcategories() {
-    this.subcategoriesList = await Promise.all(
-      this.categories.map(async ({ name }) => {
-        const subcategories: { [key: string]: string } =
-          await this.translationService.translateObject(
-            `${name}Subcategory`,
-            ComponentsTranslation.DROPDOWN
-          );
-
-        const subcategoriesList = Object.entries(subcategories).map((key) => {
-          const subcategoryKey = key[0];
-          const subcategoryValue = key[1];
-          return { key: subcategoryKey, value: subcategoryValue };
-        });
-
-        return {
-          categoryKey: name,
-          subcategories: subcategoriesList
-        };
-      })
-    );
-  }
-
   async initCurrencies() {
     const allCurrencies = await this.translationService.translateText(
       'allCurrencies',
@@ -259,29 +218,61 @@ export class MarketplaceComponent implements OnInit {
     this.productCurrencyDropdownValue = { key: 'all', value: allCurrencies };
   }
 
+  async initCategories() {
+    this.categoriesList = await this.utilsService.initCategories(
+      this.categories
+    );
+  }
+
+  async initSubcategories() {
+    this.subcategoriesList = await this.utilsService.initSubcategories(
+      this.categories
+    );
+  }
+
+  async initOrderOptions(orderOption: string) {
+    this.orderOptions.push({
+      key: orderOption,
+      value: await this.translationService.translateText(
+        `productOrderOptions.${orderOption}`,
+        ComponentsTranslation.DROPDOWN
+      )
+    });
+  }
+
+  async handleRedirect(path: string) {
+    await this.router.navigate([path]);
+  }
+
   getProducts() {
     if (this.minPriceError || this.maxPriceError || this.wrongPriceError)
       return;
 
-    const selectedCategories = this.selectedCategories
-      .map(({ key }) => key)
-      .join(',');
-    const selectedSubcategories = this.selectedSubcategories
-      .map(({ key }) => key)
-      .join(',');
+    const selectedCategories = this.utilsService.joinSelectedCategories(
+      this.selectedCategories
+    );
+    const selectedSubcategories = this.utilsService.joinSelectedSubcategories(
+      this.selectedSubcategories
+    );
+
+    const searchProductsPayload = {
+      page: this.page,
+      pageSize: this.pageSize,
+      order: this.order,
+      orderBy: this.orderBy,
+      query: this.productSearchQuery,
+      categories: selectedCategories,
+      currency: this.productCurrencyDropdownValue.key,
+      maxPrice: this.maxPrice,
+      minPrice: this.minPrice,
+      subcategories: selectedSubcategories,
+      privateProducts: this.privateProductsFlag,
+      companyProducts: this.companyProductsFlag
+    };
 
     this.productsService
       .searchProducts({
-        page: this.page,
-        pageSize: this.pageSize,
-        order: this.order,
-        orderBy: this.orderBy,
-        query: this.productSearchQuery,
-        categories: selectedCategories,
-        currency: this.productCurrencyDropdownValue.key,
-        maxPrice: this.maxPrice,
-        minPrice: this.minPrice,
-        subcategories: selectedSubcategories
+        ...searchProductsPayload
       })
       .subscribe({
         next: async ({ products, count }) => {
@@ -295,15 +286,8 @@ export class MarketplaceComponent implements OnInit {
             'created_at'
           ];
 
-          for (const orderOption of orderOptions) {
-            this.orderOptions.push({
-              key: orderOption,
-              value: await this.translationService.translateText(
-                `productOrderOptions.${orderOption}`,
-                ComponentsTranslation.DROPDOWN
-              )
-            });
-          }
+          for (const orderOption of orderOptions)
+            await this.initOrderOptions(orderOption);
 
           this.products = products;
           this.totalItems = count;
@@ -311,23 +295,11 @@ export class MarketplaceComponent implements OnInit {
       });
   }
 
-  async handleRedirect(path: string) {
-    await this.router.navigate([path]);
-  }
-
-  ngOnInit() {
+  async ngOnInit() {
     this.translationService.setPageTitle(Titles.MARKETPLACE);
 
     this.categoriesService.getAllCategories().subscribe({
       next: async ({ categories }) => {
-        this.orderOptionsValue = {
-          key: 'selectProductOrder',
-          value: await this.translationService.translateText(
-            'selectProductOrder',
-            ComponentsTranslation.DROPDOWN
-          )
-        };
-
         this.categories = categories;
 
         const layoutView = localStorage.getItem('_lv') as 'list' | 'grid';
@@ -336,6 +308,14 @@ export class MarketplaceComponent implements OnInit {
         const category = this.route.snapshot.queryParamMap.get('category');
         const subcategory =
           this.route.snapshot.queryParamMap.get('subcategory');
+
+        this.orderOptionsValue = {
+          key: 'selectProductOrder',
+          value: await this.translationService.translateText(
+            'selectProductOrder',
+            ComponentsTranslation.DROPDOWN
+          )
+        };
 
         await this.initCurrencies();
         await this.initCategories();

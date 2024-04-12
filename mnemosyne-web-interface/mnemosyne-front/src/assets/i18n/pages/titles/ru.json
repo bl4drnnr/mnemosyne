@@ -18,5 +18,9 @@
   "productNotFound": "Mnemosyne | Ой... Товар не найден",
   "editProduct": "Mnemosyne | Модификация продукта - {{ product }}",
   "marketplace": "Mnemosyne | Маркетплейс",
-  "favorites": "Mnemosyne | Избранные продукты"
+  "favorites": "Mnemosyne | Избранные продукты",
+  "marketplaceUser": "Mnemosyne | Пользователь | {{ firstName }} {{ lastName }}",
+  "companySettings": "Mnemosyne | Настройки компании",
+  "companyProductsSettings": "Mnemosyne | Настройки продуктов компании",
+  "company": "Mnemosyne | Компания | {{ companyName }}"
 }

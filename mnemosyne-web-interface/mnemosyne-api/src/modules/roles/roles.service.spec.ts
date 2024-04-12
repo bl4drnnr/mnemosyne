@@ -14,17 +14,20 @@ import { CompanyRoleCreatedDto } from '@dto/company-role-created.dto';
 import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
 import { CompanyRoleUpdatedDto } from '@dto/company-role-updated.dto';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
+import { CompanyUsersService } from '@modules/company-users.service';
 
 dotenv.config({ path: '.env.test' });
 
 describe('RolesService', () => {
   let service: RolesService;
+  let companyUsersService: CompanyUsersService;
 
   const roleRepositoryToken = getModelToken(Role);
   const userRoleRepositoryToken = getModelToken(UserRole);
 
   const mockUserRoleRepository = {
-    create: jest.fn()
+    create: jest.fn(),
+    destroy: jest.fn()
   };
   const mockRoleRepository = {
     findAll: jest.fn(),
@@ -34,11 +37,16 @@ describe('RolesService', () => {
   const mockUtilsService = {
     removeDuplicates: jest.fn()
   };
+  const mockCompanyUsersService = {};
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         RolesService,
+        {
+          provide: CompanyUsersService,
+          useValue: mockCompanyUsersService
+        },
         {
           provide: UtilsService,
           useValue: mockUtilsService
@@ -55,6 +63,7 @@ describe('RolesService', () => {
     }).compile();
 
     service = module.get<RolesService>(RolesService);
+    companyUsersService = module.get<CompanyUsersService>(CompanyUsersService);
   });
 
   it('Should be defined', () => {
@@ -67,11 +76,13 @@ describe('RolesService', () => {
       const trx: any = {};
       const allAssignedRoles = [
         {
+          id: 'role1-id',
           name: 'role1',
           description: 'description1',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>
         },
         {
+          id: 'role2-id',
           name: 'role2',
           description: 'description2',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>
@@ -80,11 +91,13 @@ describe('RolesService', () => {
 
       const expectedResult = [
         {
+          id: 'role1-id',
           name: 'role1',
           description: 'description1',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>
         },
         {
+          id: 'role2-id',
           name: 'role2',
           description: 'description2',
           roleScopes: ['USER_MANAGEMENT'] as Array<RoleScope>

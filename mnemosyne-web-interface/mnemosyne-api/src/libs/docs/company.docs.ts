@@ -16,6 +16,14 @@ import { CompanyDeletedDto } from '@dto/company-deleted.dto';
 import { WrongCredentialsException } from '@exceptions/wrong-credentials.exception';
 import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exception';
 import { DeleteCompanyDto } from '@dto/delete-company.dto';
+import { TransferOwnershipDto } from '@dto/transfer-ownership.dto';
+import { CompanyOwnershipTransferredDto } from '@dto/company-ownership-transferred.dto';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
+import { SmsExpiredException } from '@exceptions/sms-expired.exception';
+import { WrongCodeException } from '@exceptions/wrong-code.exception';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { GetCompanyPublicInfoDto } from '@dto/get-company-public-info.dto';
 
 export abstract class CompanyDocs {
   static get CreateCompany() {
@@ -79,6 +87,80 @@ export abstract class CompanyDocs {
     };
   }
 
+  static get GetCompanyPublicInfo() {
+    const ApiModels = [
+      ParseException,
+      CompanyNotFoundException,
+      GetCompanyPublicInfoDto
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting company public information.';
+    const apiResponseDesc =
+      'As a response user gets all public information about company including users.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if company ID has been modified and company not found.';
+    const apiBadRequestRespDesc =
+      'Bad request error is thrown in case of parse exception.';
+
+    const companyIdQueryDesc = 'Company ID';
+    const memberQueryDesc = 'Member query';
+    const pageSizeQueryDesc =
+      'Query for limit in order to get list of company users.';
+    const pageQueryDesc =
+      'Query for page in order to get list of company users.';
+
+    const companyIdQuery = {
+      description: companyIdQueryDesc,
+      name: 'companyId',
+      type: String,
+      required: true
+    };
+
+    const pageSizeQuery = {
+      description: pageSizeQueryDesc,
+      name: 'pageSize',
+      type: String,
+      required: true
+    };
+
+    const pageQuery = {
+      description: pageQueryDesc,
+      name: 'page',
+      type: String,
+      required: true
+    };
+
+    const memberQuery = {
+      description: memberQueryDesc,
+      name: 'query',
+      type: String,
+      required: false
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetCompanyByIdDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(ParseException) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(CompanyNotFoundException) }
+      },
+      ApiCompanyIdQuery: companyIdQuery,
+      ApiPageSizeQuery: pageSizeQuery,
+      ApiPageQuery: pageQuery,
+      ApiMemberQuery: memberQuery
+    };
+  }
+
   static get GetCompanyUsers() {
     const ApiModels = [GetCompanyUsersDto, ParseException];
 
@@ -89,6 +171,7 @@ export abstract class CompanyDocs {
     const apiBadRequestRespDesc =
       'Parse exception is thrown in case if page or limit params cannot be parsed as number.';
 
+    const memberQueryDesc = 'Member query';
     const pageSizeQueryDesc =
       'Query for limit in order to get list of company users.';
     const pageQueryDesc =
@@ -108,6 +191,13 @@ export abstract class CompanyDocs {
       required: true
     };
 
+    const memberQuery = {
+      description: memberQueryDesc,
+      name: 'query',
+      type: String,
+      required: false
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -121,7 +211,8 @@ export abstract class CompanyDocs {
         schema: { $ref: getSchemaPath(ParseException) }
       },
       ApiPageSizeQuery: pageSizeQuery,
-      ApiPageQuery: pageQuery
+      ApiPageQuery: pageQuery,
+      ApiMemberQuery: memberQuery
     };
   }
 
@@ -151,7 +242,63 @@ export abstract class CompanyDocs {
   }
 
   static get TransferCompanyOwnership() {
-    return {};
+    const ApiModels = [
+      TransferOwnershipDto,
+      UserNotFoundException,
+      RoleDoesntExistException,
+      CompanyOwnershipTransferredDto,
+      FullMfaRequiredDto,
+      TokenTwoFaRequiredDto,
+      PhoneMfaRequiredDto,
+      SmsExpiredException,
+      WrongCredentialsException,
+      WrongCodeException
+    ];
+    const ApiResponses = [
+      CompanyOwnershipTransferredDto,
+      FullMfaRequiredDto,
+      TokenTwoFaRequiredDto,
+      PhoneMfaRequiredDto
+    ];
+    const BadRequests = [
+      SmsExpiredException,
+      WrongCredentialsException,
+      WrongCodeException
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for transferring the ownership of the account.';
+    const apiResponseDesc =
+      'As a response user gets a message that ownership has been transferred or anything else related to MFA.';
+    const apiBadRequestRespDesc =
+      'Bad request error is thrown in case if there is something wrong with MFA.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if user has not been found.';
+    const apiBodyDesc =
+      'Body contains new owner email and role id for the old owner along with MFA.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { oneOf: refs(...ApiResponses) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(UserNotFoundException) }
+      },
+      ApiBody: {
+        type: TransferOwnershipDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(TransferOwnershipDto) }
+      } as ApiBodyOptions
+    };
   }
 
   static get DeleteCompanyAccount() {

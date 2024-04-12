@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ApiConfigService } from '@shared/config.service';
 import { CategoriesModule } from '@modules/categories.module';
 import { UsersModule } from '@modules/users.module';
+import { CompanyModule } from '@modules/company.module';
 
 @Module({
   controllers: [ProductsController],
@@ -14,6 +15,7 @@ import { UsersModule } from '@modules/users.module';
   imports: [
     UsersModule,
     CategoriesModule,
+    CompanyModule,
     SequelizeModule.forFeature([Product]),
     JwtModule.registerAsync({
       useFactory: async (configService: ApiConfigService) => ({

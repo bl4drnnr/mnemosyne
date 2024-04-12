@@ -1,7 +1,9 @@
-import { Role } from '@interfaces/role.type';
+export type InvitedUser = Array<{
+  email: string;
+  roleId: string;
+}>;
 
 export interface InviteUserPayload {
-  email: string;
-  role: Role;
+  invitedUsers: InvitedUser;
   language?: string;
 }

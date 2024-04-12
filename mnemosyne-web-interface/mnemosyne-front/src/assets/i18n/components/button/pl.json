@@ -46,5 +46,9 @@
   "createAccForCompany": "Chcę utworzyć konto dla mojej firmy",
   "dashboardFavorites": "Ulubione produkty",
   "showContactEmail": "Pokaż kontaktowy adres e-mail",
-  "showContactPhone": "Pokaż telefon kontaktowy"
+  "showContactPhone": "Pokaż telefon kontaktowy",
+  "logInCreateAcc": "Zaloguj się / Załóż konto",
+  "companySettings": "Ustawienia firmy",
+  "goToUserProfile": "Profil użytkownika",
+  "companyProduct": "Produkty firmowe"
 }

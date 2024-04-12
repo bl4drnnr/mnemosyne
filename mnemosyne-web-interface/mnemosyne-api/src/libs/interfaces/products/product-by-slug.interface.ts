@@ -13,5 +13,10 @@ export interface ProductBySlugInterface {
   contactPhone?: string;
   category: string;
   createdAt: Date;
+  ownerId?: string;
+  ownerIdHash?: string;
   productInFavorites?: boolean;
+  onBehalfOfCompany: boolean;
+  companyId?: string;
+  companyName?: string;
 }

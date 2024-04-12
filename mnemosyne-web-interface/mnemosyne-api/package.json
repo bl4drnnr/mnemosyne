@@ -21,8 +21,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "database:dev:undo": "npx sequelize-cli db:seed:undo --seed wipe.js",
-    "database:categories": "npx sequelize-cli db:seed --seed categories.js",
-    "database:categories:undo": "npx sequelize-cli db:seed:undo --seed categories.js"
+    "database:mock": "npx sequelize-cli db:seed --seed mock.js",
+    "database:mock:undo": "npx sequelize-cli db:seed:undo --seed mock.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.2.4",

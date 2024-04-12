@@ -1,0 +1,112 @@
+<layout-default
+  [userInfo]="userInfo"
+>
+  <ng-container *transloco="let t">
+    <div class="company-settings-container">
+      <div class="menu-bar">
+        <div class="menu-option">
+          <div
+            class="menu-option-wrapper"
+            [ngClass]="{ 'active': companySettingsSection === 'info' }"
+            (click)="companySettingsSection = 'info'"
+          >
+            <div class="emoji-wrapper">
+              <basic-emoji emoji="books.png" [width]="24" [height]="24"/>
+            </div>
+            <p>{{ t('settings.companySettingsSection.generalInfo') }}</p>
+          </div>
+        </div>
+        <div class="menu-option">
+          <div
+            class="menu-option-wrapper"
+            [ngClass]="{ 'active': companySettingsSection === 'users' }"
+            (click)="companySettingsSection = 'users'"
+          >
+            <div class="emoji-wrapper">
+              <basic-emoji emoji="technologist.png" [width]="24" [height]="24"/>
+            </div>
+            <p>{{ t('settings.companySettingsSection.usersManagement') }}</p>
+          </div>
+        </div>
+        <div class="menu-option">
+          <div
+            class="menu-option-wrapper"
+            [ngClass]="{ 'active': companySettingsSection === 'roles' }"
+            (click)="companySettingsSection = 'roles'"
+          >
+            <div class="emoji-wrapper">
+              <basic-emoji emoji="warning.png" [width]="24" [height]="24"/>
+            </div>
+            <p>{{ t('settings.companySettingsSection.rolesManagement') }}</p>
+          </div>
+        </div>
+        <div class="menu-option" *ngIf="userIsAllowedToManageSecurity()">
+          <div
+            class="menu-option-wrapper"
+            [ngClass]="{ 'active': companySettingsSection === 'security' }"
+            (click)="companySettingsSection = 'security'"
+          >
+            <div class="emoji-wrapper">
+              <basic-emoji emoji="shield.png" [width]="24" [height]="24"/>
+            </div>
+            <p>{{ t('settings.companySettingsSection.securitySettings') }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-block" *ngIf="companyInformation">
+        <div *ngIf="companySettingsSection === 'info'">
+          <dashboard-company-info-settings
+            [readOnly]="!userIsAllowedToManageCompanyInfo()"
+            [companyInformation]="companyInformation"
+            [companyName]="companyInformation.companyName"
+            [companyLocation]="companyInformation.companyLocation"
+            [companyWebsite]="companyInformation.companyWebsite"
+            [companyOwnerEmail]="companyInformation.companyOwnerEmail"
+            (getCompanyInformationEvent)="fetchCompanyInformation()"
+            (saveCompanyInformationEvent)="saveCompanyInformation($event)"
+          />
+        </div>
+
+        <div *ngIf="companySettingsSection === 'users'">
+          <dashboard-company-users-settings
+            [readOnly]="!userIsAllowedToManageUsers()"
+            [page]="page"
+            [query]="query"
+            [pageSize]="pageSize"
+            [totalItems]="totalItems"
+            [companyUsers]="companyUsers"
+            [companyCustomRoles]="companyRoles"
+            (fetchCompanyUsers)="fetchCompanyUsers()"
+            (saveCompanyMemberInformation)="saveCompanyMemberInformation($event)"
+            (deleteCompanyMemberEvent)="deleteCompanyMember($event)"
+            (changeCompanyMemberRole)="changeCompanyMemberRole($event)"
+            (setNewCurrentPage)="page = $event"
+            (setNewUsersPerPage)="pageSize = $event"
+            (setNewQuery)="query = $event"
+          />
+        </div>
+
+        <div *ngIf="companySettingsSection === 'roles'">
+          <dashboard-company-roles-management
+            [readOnly]="!userIsAllowedToManageRoles()"
+            [companyRoles]="companyRoles"
+            (getCompanyRoles)="fetchCompanyRoles()"
+            (createNewRoleEvent)="createNewRole($event)"
+            (deleteCompanyRole)="deleteCompanyRole($event)"
+            (updateRole)="updateRole($event)"
+          />
+        </div>
+
+        <div *ngIf="companySettingsSection === 'security'">
+          <dashboard-company-security-settings
+            [companyRoles]="companyRoles"
+            [companyOwnerEmail]="companyInformation.companyOwnerEmail"
+            (transferCompanyOwnership)="transferCompanyOwnership($event)"
+            (deleteCompanyAccount)="deleteCompanyAccount($event)"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</layout-default>

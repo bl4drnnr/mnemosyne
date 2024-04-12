@@ -7,6 +7,7 @@ import {
   ArrayMaxSize,
   ArrayMinSize,
   IsArray,
+  IsBoolean,
   IsEnum,
   IsNumber,
   IsOptional,
@@ -128,4 +129,24 @@ export class PostProductDto {
   })
   @IsEnum(ProductSubcategory)
   readonly subcategory: ProductSubcategory;
+
+  @ApiProperty({
+    type: Boolean,
+    description: DocsProperty.PRODUCT_ON_BEHALF_OF_COMPANY_DESC,
+    example: DocsProperty.PRODUCT_ON_BEHALF_OF_COMPANY_EXAMPLE
+  })
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  readonly postOnBehalfOfCompany: boolean;
+
+  @ApiProperty({
+    type: Boolean,
+    description: DocsProperty.PRODUCT_COMPANY_EDIT_FLAG_DESC,
+    example: DocsProperty.PRODUCT_COMPANY_EDIT_FLAG_EXAMPLE
+  })
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  readonly companyEdit: boolean;
 }

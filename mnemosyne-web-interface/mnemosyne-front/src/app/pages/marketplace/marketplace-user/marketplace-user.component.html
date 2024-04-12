@@ -1,0 +1,303 @@
+<layout-default
+  [showHeaderBurger]="false"
+>
+  <ng-container *transloco="let t">
+    <div class="marketplace-user-container">
+      <div>
+        <img
+          [src]="userProfilePictureLink"
+          class="marketplace-user-photo"
+          alt="user"
+        />
+        <p class="marketplace-user-registration-date">
+          {{ t('marketplace.marketplaceUserRegDate', { date: transformDate(createdAt) }) }}
+        </p>
+        <p
+          class="marketplace-user-company-link"
+          *ngIf="companyId && companyName"
+        >
+          <basic-link
+            [label]="t('link.memberOfCompany', { companyName })"
+            [href]="'/marketplace/company/' + companyId"
+          />
+        </p>
+        <p
+          class="marketplace-user-registration-date"
+          *ngIf="!companyId || !companyName"
+        >{{ t('marketplace.marketplaceUserNoCompany') }}</p>
+      </div>
+      <div class="marketplace-user-info-container">
+        <h1 class="marketplace-user-name">{{ firstName }} {{ lastName }}</h1>
+        <p class="marketplace-user-pronunciation" *ngIf="namePronunciation">
+          {{ t('marketplace.marketplaceUserPronounced', { namePronunciation }) }}
+        </p>
+        <basic-input
+          [label]="t('input.homeAddress')"
+          [inputDescription]="homeAddress ? t('input.clickToCopy') : ''"
+          [value]="homeAddress || t('input.noHomeAddress')"
+          [readOnly]="true"
+          [disabled]="!(!!homeAddress)"
+        />
+        <basic-input
+          [label]="t('input.homePhone')"
+          [inputDescription]="homePhone ? t('input.clickToCopy') : ''"
+          [value]="homePhone || t('input.noHomePhone')"
+          [readOnly]="true"
+          [disabled]="!(!!homePhone)"
+        />
+        <div class="marketplace-user-email-container" *ngIf="!isUserLoggedIn">
+          <p>{{ t('marketplace.marketplaceUserEmail') }}</p>
+          <basic-button
+            [label]="t('button.logInCreateAcc')"
+            [fillButton]="true"
+            (buttonClick)="handleRedirect('login')"
+          />
+        </div>
+        <div *ngIf="isUserLoggedIn && email">
+          <basic-input
+            [label]="t('input.email')"
+            [inputDescription]="t('input.clickToCopy')"
+            [value]="email"
+            [readOnly]="true"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="userStats"
+      class="marketplace-user-container block"
+    >
+      <h1 class="user-info-title">
+        <span>{{ t('marketplace.statsTitle') }}&nbsp;</span>
+        <basic-emoji emoji="star.png" [width]="48" [height]="48" />
+      </h1>
+      <table class="user-stats-table">
+        <thead>
+        <tr>
+          <th></th>
+          <th>PLN</th>
+          <th>USD</th>
+          <th>EUR</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>{{ t('marketplace.statsAmountOfProducts') }}</td>
+          <td>{{ userStats.plnProductsAmount }}</td>
+          <td>{{ userStats.usdProductsAmount }}</td>
+          <td>{{ userStats.eurProductsAmount }}</td>
+        </tr>
+        <tr>
+          <td>{{ t('marketplace.statsAvgPrice') }}</td>
+          <td>{{ userStats.plnProductsAvgAmount }}</td>
+          <td>{{ userStats.usdProductsAvgAmount }}</td>
+          <td>{{ userStats.eurProductsAvgAmount }}</td>
+        </tr>
+        <tr>
+          <td>{{ t('marketplace.statsMinPrice') }}</td>
+          <td>{{ userStats.plnMinPrice }}</td>
+          <td>{{ userStats.usdMinPrice }}</td>
+          <td>{{ userStats.eurMinPrice }}</td>
+        </tr>
+        <tr>
+          <td>{{ t('marketplace.statsMaxPrice') }}</td>
+          <td>{{ userStats.plnMaxPrice }}</td>
+          <td>{{ userStats.usdMaxPrice }}</td>
+          <td>{{ userStats.eurMaxPrice }}</td>
+        </tr>
+        </tbody>
+      </table>
+      <p class="user-stats-total-amount">
+        {{ t('marketplace.statsTotalAmount', { amount: userStats.amountOfProducts }) }}
+      </p>
+    </div>
+
+    <div
+      *ngIf="products && products.length > 0"
+      class="marketplace-user-products-container"
+    >
+      <h1 class="marketplace-user-products-title user-info-title">
+        <span>{{ t('marketplace.marketplaceUsersProducts') }}&nbsp;</span>
+        <basic-emoji emoji="eyes.png" [width]="48" [height]="48" />
+      </h1>
+      <div class="user-products-container user-products-filter-container">
+        <p><b>{{ t('marketplace.marketplaceFiltersCategories') }}:</b></p>
+        <basic-checkbox
+          *ngFor="let category of categoriesList"
+          (checkedChange)="addCategory(category)"
+        >
+          <span content>{{ category.value }}</span>
+        </basic-checkbox>
+      </div>
+      <div class="user-products-filter-container" *ngIf="selectedCategories.length > 0">
+        <div class="user-products-container" *ngFor="let selectedCategory of selectedCategories">
+          <p class="marketplace-filters-subtitle">
+            {{ t('marketplace.marketplaceFiltersSubcategories') }} <b>{{ selectedCategory.value }}</b>
+          </p>
+          <basic-checkbox
+            *ngFor="let subcategory of utilsService.getSubcategories(subcategoriesList, selectedCategory.key)"
+            (checkedChange)="addSubcategory(subcategory)"
+          >
+            <span content>{{ subcategory.value }}</span>
+          </basic-checkbox>
+        </div>
+      </div>
+      <div class="user-products-filter-container padding-bottom">
+        <basic-input
+          [label]="t('input.marketplaceSearchLabel')"
+          [placeholder]="t('input.marketplaceSearchPlaceholder')"
+          [inputDescription]="t('input.marketplaceSearchInputDesc')"
+          [value]="productSearchQuery"
+          (valueChange)="changeProductSearchQuery($event)"
+        />
+      </div>
+      <div class="user-products-filters-container user-products-filter-container">
+        <div class="user-products-price-range margin-right">
+          <basic-input
+            type="number"
+            [label]="t('input.priceFromLabel')"
+            [placeholder]="t('input.priceFromPlaceholder')"
+            [inputDescription]="t('input.priceFromInputDesc')"
+            [errorMessage]="t('input.priceFromError')"
+            [min]="'0'"
+            [showError]="minPriceError"
+            [value]="minPrice"
+            (valueChange)="checkProductPrice($event, 'min')"
+          />
+        </div>
+        <div class="user-products-price-range margin-left">
+          <basic-input
+            type="number"
+            [label]="t('input.priceToLabel')"
+            [placeholder]="t('input.priceToPlaceholder')"
+            [inputDescription]="t('input.priceToInputDesc')"
+            [errorMessage]="t('input.priceToError')"
+            [showError]="maxPriceError"
+            [value]="maxPrice"
+            (valueChange)="checkProductPrice($event, 'max')"
+          />
+        </div>
+      </div>
+      <p class="user-products-price-error" *ngIf="wrongPriceError">
+        {{ t('marketplace.marketplaceWrongPriceRange') }}
+      </p>
+      <div class="marketplace-order-items user-products-filter-container padding-bottom">
+        <div class="marketplace-order-item margin-right">
+          <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderBySubtitle') }}</p>
+          <div class="marketplace-order-items-buttons">
+            <button
+              (click)="changeOrderBy('DESC')"
+              [ngClass]="orderBy === 'DESC' ? 'order-by-button left-border active': 'order-by-button left-border'"
+            >
+              <p class="order-by-button-label">DESC</p>
+            </button>
+            <button
+              (click)="changeOrderBy('ASC')"
+              [ngClass]="orderBy === 'ASC' ? 'order-by-button right-border active': 'order-by-button right-border'"
+            >
+              <p class="order-by-button-label">ASC</p>
+            </button>
+          </div>
+        </div>
+
+        <div class="marketplace-order-item margin-left">
+          <p class="marketplace-order-desc">{{ t('marketplace.marketplaceOrderSubtitle') }}</p>
+          <div *ngIf="orderOptionsValue">
+            <basic-dropdown
+              [defaultLabel]="t(getOrderOptionDropdownLabel(orderOptionsValue.key))"
+              [options]="orderOptions"
+              [defaultValue]="orderOptionsValue"
+              (selectedOption)="selectOrderOption($event)"
+            />
+          </div>
+        </div>
+      </div>
+      <div
+        class="user-products-filter-container padding-bottom flex"
+        *ngIf="productCurrencyDropdownValue"
+      >
+        <div class="user-products-price-range margin-right">
+          <basic-dropdown
+            [options]="productCurrencyDropdown"
+            [defaultValue]="productCurrencyDropdownValue"
+            (selectedOption)="selectProductCurrency($event)"
+          />
+        </div>
+        <div class="user-products-price-range margin-left">
+          <basic-button
+            [label]="t('button.clearFilters')"
+            (buttonClick)="clearFilters()"
+          />
+        </div>
+      </div>
+      <div class="marketplace-filters-container user-products-filter-container flex">
+        <div class="marketplace-filters-layouts width100">
+          <button
+            (click)="setLayout('list')"
+            [ngClass]="layoutView === 'list' ? 'order-by-button left-border active': 'order-by-button left-border'"
+          >
+            <img
+              [ngSrc]="listIcon"
+              [width]="22"
+              [height]="22"
+              alt="list"
+              class="layout-icon"
+            >
+          </button>
+          <button
+            (click)="setLayout('grid')"
+            [ngClass]="layoutView === 'grid' ? 'order-by-button right-border active': 'order-by-button right-border'"
+          >
+            <img
+              [ngSrc]="gridIcon"
+              [width]="24"
+              [height]="24"
+              alt="gird"
+              class="layout-icon"
+            >
+          </button>
+        </div>
+
+        <div class="marketplace-products-filters-layouts width100">
+          <basic-checkbox
+            [checked]="privateProductsFlag"
+            (checkedChange)="changeProductType('private')"
+          >
+            <span content>{{ t('marketplace.marketplacePrivateProducts') }}</span>
+          </basic-checkbox>
+
+          <basic-checkbox
+            [checked]="companyProductsFlag"
+            (checkedChange)="changeProductType('company')"
+          >
+            <span content>{{ t('marketplace.marketplaceCompanyProducts') }}</span>
+          </basic-checkbox>
+        </div>
+      </div>
+    </div>
+
+    <h1
+      *ngIf="!products"
+      class="marketplace-user-no-products"
+    >
+      {{ t('marketplace.marketplaceUsersNoProducts') }}
+    </h1>
+
+    <div
+      *ngIf="products && products.length > 0"
+      class="marketplace-user-container"
+    >
+      <page-marketplace-product-list
+        [page]="page"
+        [pageSize]="pageSize"
+        [products]="products"
+        [totalItems]="totalItems"
+        [layoutView]="layoutView"
+        (getProductsEvent)="getMarketplaceUserProducts()"
+        (setPage)="setPage($event)"
+        (setPageSize)="setPageSize($event)"
+      />
+    </div>
+  </ng-container>
+</layout-default>

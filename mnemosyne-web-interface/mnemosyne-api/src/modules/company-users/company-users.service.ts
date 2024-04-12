@@ -26,6 +26,8 @@ import { Company } from '@models/company.model';
 import { Op } from 'sequelize';
 import { SearchCompanyMembersDto } from '@dto/search-company-members.dto';
 import { ParseException } from '@exceptions/parse.exception';
+import { RolesService } from '@modules/roles.service';
+import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
 
 @Injectable()
 export class CompanyUsersService {
@@ -39,7 +41,9 @@ export class CompanyUsersService {
     @Inject(forwardRef(() => EmailService))
     private readonly emailService: EmailService,
     @Inject(forwardRef(() => AuthService))
-    private readonly authService: AuthService
+    private readonly authService: AuthService,
+    @Inject(forwardRef(() => RolesService))
+    private readonly rolesService: RolesService
   ) {}
 
   async inviteUserToCompany({
@@ -47,7 +51,7 @@ export class CompanyUsersService {
     payload,
     trx
   }: InviteUserToCompanyInterface) {
-    const { email, role, language } = payload;
+    const { invitedUsers, language } = payload;
 
     const {
       company: { id: companyId }
@@ -56,69 +60,83 @@ export class CompanyUsersService {
       trx
     });
 
-    let createdUser: User;
+    for (const invitedUser of invitedUsers) {
+      let createdUser: User;
 
-    const userInfo: UserInfoInterface = {};
+      const userInfo: UserInfoInterface = {};
 
-    const existingUser = await this.usersService.getUserByEmail({
-      email,
-      trx
-    });
+      const existingUser = await this.usersService.getUserByEmail({
+        email: invitedUser.email,
+        trx
+      });
 
-    if (!existingUser) {
-      createdUser = await this.usersService.createUser({
-        payload: { email },
+      if (!existingUser) {
+        createdUser = await this.usersService.createUser({
+          payload: { email: invitedUser.email },
+          trx
+        });
+      }
+
+      userInfo.email = existingUser ? existingUser.email : invitedUser.email;
+      userInfo.firstName = existingUser ? existingUser.firstName : null;
+      userInfo.lastName = existingUser ? existingUser.lastName : null;
+
+      const companyUserId = existingUser ? existingUser.id : createdUser.id;
+
+      const createCompanyUser = await this.createCompanyUser({
+        userId: companyUserId,
+        companyId,
+        trx
+      });
+
+      const companyRole = await this.rolesService.getRoleById({
+        id: invitedUser.roleId,
+        trx
+      });
+
+      if (!companyRole) throw new RoleDoesntExistException();
+
+      await this.rolesService.assignRoleToUser({
+        companyId,
+        roleId: companyRole.id,
+        companyUserId: createCompanyUser.id,
+        trx
+      });
+
+      const companyMemberRegEmailPayload: VerificationEmailInterface = {
+        to: userInfo.email,
+        confirmationType: Confirmation.COMPANY_INVITATION,
+        userId: companyUserId
+      };
+
+      const { companyName, companyLocation, companyWebsite, companyOwnerId } =
+        await this.companyService.getCompanyByUserId({
+          userId,
+          trx
+        });
+
+      const companyOwner = await this.usersService.getUserById({
+        id: companyOwnerId,
+        trx
+      });
+
+      const companyInfo = {
+        companyName,
+        companyLocation,
+        companyWebsite,
+        companyOwnerEmail: companyOwner.email
+      };
+      const isUserExists = !!existingUser;
+
+      await this.emailService.sendCompanyMemberEmail({
+        payload: { ...companyMemberRegEmailPayload },
+        isUserExists,
+        companyInfo,
+        userInfo,
+        language,
         trx
       });
     }
-
-    // @TODO Grant custom role to the user
-
-    userInfo.email = existingUser ? existingUser.email : email;
-    userInfo.firstName = existingUser ? existingUser.firstName : null;
-    userInfo.lastName = existingUser ? existingUser.lastName : null;
-
-    const companyUserId = existingUser ? existingUser.id : createdUser.id;
-
-    await this.createCompanyUser({
-      userId: companyUserId,
-      companyId,
-      trx
-    });
-
-    const companyMemberRegEmailPayload: VerificationEmailInterface = {
-      to: userInfo.email,
-      confirmationType: Confirmation.COMPANY_INVITATION,
-      userId: companyUserId
-    };
-
-    const { companyName, companyLocation, companyWebsite, companyOwnerId } =
-      await this.companyService.getCompanyByUserId({
-        userId,
-        trx
-      });
-
-    const companyOwner = await this.usersService.getUserById({
-      id: companyOwnerId,
-      trx
-    });
-
-    const companyInfo = {
-      companyName,
-      companyLocation,
-      companyWebsite,
-      companyOwnerEmail: companyOwner.email
-    };
-    const isUserExists = !!existingUser;
-
-    await this.emailService.sendCompanyMemberEmail({
-      payload: { ...companyMemberRegEmailPayload },
-      isUserExists,
-      companyInfo,
-      userInfo,
-      language,
-      trx
-    });
 
     return new UserInvitedDto();
   }
@@ -136,6 +154,12 @@ export class CompanyUsersService {
 
     if (!companyMember) throw new CompanyMemberNotFoundException();
 
+    const companyMemberRole =
+      await this.rolesService.getUserRolesByCompanyUserId({
+        companyUserId: companyMember.id,
+        trx
+      });
+
     const {
       email,
       firstName,
@@ -152,7 +176,8 @@ export class CompanyUsersService {
       lastName,
       namePronunciation,
       homeAddress,
-      homePhone
+      homePhone,
+      companyMemberRole
     });
   }
 

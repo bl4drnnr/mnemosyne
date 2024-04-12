@@ -60,9 +60,8 @@ describe('CompanyUsersController', () => {
     it('Should call inviteUserToCompany method with correct parameters', async () => {
       const userId = 'user-id';
       const payload: InviteUserToCompanyDto = {
-        email: 'test2@test.com',
-        language: Language.PL,
-        role: 'ADMIN'
+        invitedUsers: [{ email: 'test2@test.com', roleId: 'role-id' }],
+        language: Language.PL
       };
       const trx: any = {};
 

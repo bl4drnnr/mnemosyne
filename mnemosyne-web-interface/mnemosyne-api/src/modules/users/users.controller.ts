@@ -4,7 +4,9 @@ import {
   Get,
   Patch,
   Post,
+  Query,
   UseGuards,
+  UseInterceptors,
   UsePipes
 } from '@nestjs/common';
 import {
@@ -14,7 +16,9 @@ import {
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOperation,
+  ApiQuery,
   ApiResponse,
   ApiTags
 } from '@nestjs/swagger';
@@ -28,6 +32,7 @@ import { UserId } from '@decorators/user-id.decorator';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UsersDocs } from '@docs/users.docs';
+import { UserInterceptor } from '@interceptors/user.interceptor';
 
 @ApiTags('Users')
 @Controller('users')
@@ -109,6 +114,26 @@ export class UsersController {
     return this.usersService.updateUserInfo({
       userId,
       payload,
+      trx
+    });
+  }
+
+  @ApiOperation(UsersDocs.GetMarketplaceUserById.ApiOperation)
+  @ApiExtraModels(...UsersDocs.GetMarketplaceUserById.ApiExtraModels)
+  @ApiResponse(UsersDocs.GetMarketplaceUserById.ApiResponse)
+  @ApiNotFoundResponse(UsersDocs.GetMarketplaceUserById.ApiNotFoundResponse)
+  @ApiQuery(UsersDocs.GetMarketplaceUserById.ApiMarketplaceUserIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @UseInterceptors(UserInterceptor)
+  @Get('marketplace-user')
+  getMarketplaceUserById(
+    @UserId() loggedUserId: string | undefined,
+    @Query('marketplaceUserId') marketplaceUserId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.usersService.getMarketplaceUserById({
+      loggedUserId,
+      marketplaceUserId,
       trx
     });
   }

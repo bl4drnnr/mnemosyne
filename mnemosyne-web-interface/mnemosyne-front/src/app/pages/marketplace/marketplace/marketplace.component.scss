@@ -32,13 +32,8 @@
 }
 
 .marketplace-search-area {
-  border-bottom: 1px solid var(--border-color);
   margin: 0 20px;
   padding-bottom: 20px;
-}
-
-.marketplace-search {
-  margin: 0 20px;
 }
 
 .marketplace-order-items {
@@ -63,13 +58,11 @@
   width: 100%;
 
   &.margin-right {
-    margin-left: 20px;
     margin-right: 5px;
   }
 
   &.margin-left {
     margin-left: 5px;
-    margin-right: 20px;
   }
 }
 
@@ -127,6 +120,10 @@
 
 .marketplace-filters-container {
   padding: 0 20px;
+
+  &.margin-bottom {
+    margin-bottom: 10px
+  }
 }
 
 .marketplace-filters-subtitle {
@@ -140,30 +137,6 @@
   color: var(--error-color);
 }
 
-.marketplace-products-grid {
-  padding: 25px 0;
-  margin-top: 25px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
-}
-
-.marketplace-products-list {
-  margin-top: 25px;
-}
-
-.marketplace-pagination {
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-}
-
 .marketplace-clear-filters-button-wrapper {
   margin-top: 5px;
-}
-
-.marketplace-products-not-found {
-  text-align: center;
 }

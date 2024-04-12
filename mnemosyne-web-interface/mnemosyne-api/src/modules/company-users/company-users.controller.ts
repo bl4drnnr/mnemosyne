@@ -45,7 +45,7 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('USER_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Post('invite-user')
@@ -71,7 +71,7 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('USER_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Get('company-member-info')
@@ -98,7 +98,7 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('USER_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Patch('company-member-info')
@@ -125,7 +125,12 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles(
+    'USER_MANAGEMENT',
+    'ROLES_MANAGEMENT',
+    'COMPANY_INFORMATION_MANAGEMENT',
+    'PRODUCT_MANAGEMENT'
+  )
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Delete('delete-company-member')
@@ -154,7 +159,7 @@ export class CompanyUsersController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('USER_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Get('search-company-members')

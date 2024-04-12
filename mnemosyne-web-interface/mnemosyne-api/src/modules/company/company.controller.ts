@@ -5,6 +5,7 @@ import {
   ApiBody,
   ApiExtraModels,
   ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOperation,
   ApiQuery,
   ApiResponse,
@@ -74,12 +75,40 @@ export class CompanyController {
     });
   }
 
+  @ApiOperation(CompanyDocs.GetCompanyPublicInfo.ApiOperation)
+  @ApiExtraModels(...CompanyDocs.GetCompanyPublicInfo.ApiExtraModels)
+  @ApiResponse(CompanyDocs.GetCompanyPublicInfo.ApiResponse)
+  @ApiBadRequestResponse(CompanyDocs.GetCompanyPublicInfo.ApiBadRequestResponse)
+  @ApiNotFoundResponse(CompanyDocs.GetCompanyPublicInfo.ApiNotFoundResponse)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiCompanyIdQuery)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiPageSizeQuery)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiPageQuery)
+  @ApiQuery(CompanyDocs.GetCompanyPublicInfo.ApiMemberQuery)
+  @ApiBasicAuth('basicAuth')
+  @Get('company-public-information')
+  getCompanyPublicInformation(
+    @Query('companyId') companyId: string,
+    @Query('page') page: string,
+    @Query('pageSize') pageSize: string,
+    @Query('query') query: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.companyService.getCompanyPublicInformation({
+      companyId,
+      page,
+      pageSize,
+      query,
+      trx
+    });
+  }
+
   @ApiOperation(CompanyDocs.GetCompanyUsers.ApiOperation)
   @ApiExtraModels(...CompanyDocs.GetCompanyUsers.ApiExtraModels)
   @ApiResponse(CompanyDocs.GetCompanyUsers.ApiResponse)
   @ApiBadRequestResponse(CompanyDocs.GetCompanyUsers.ApiBadRequestResponse)
   @ApiQuery(CompanyDocs.GetCompanyUsers.ApiPageSizeQuery)
   @ApiQuery(CompanyDocs.GetCompanyUsers.ApiPageQuery)
+  @ApiQuery(CompanyDocs.GetCompanyUsers.ApiMemberQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -88,12 +117,14 @@ export class CompanyController {
     @CompanyId() companyId: string,
     @Query('page') page: string,
     @Query('pageSize') pageSize: string,
+    @Query('query') query: string,
     @TrxDecorator() trx: Transaction
   ) {
     return this.companyService.getCompanyUsers({
       companyId,
       page,
       pageSize,
+      query,
       trx
     });
   }
@@ -105,7 +136,7 @@ export class CompanyController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles('COMPANY_INFORMATION_MANAGEMENT')
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Patch('update-company')
@@ -121,11 +152,23 @@ export class CompanyController {
     });
   }
 
-  // @TODO Write docs here, but it is going to depend on the fact of what we are going to do with roles part of the whole project
+  @ApiOperation(CompanyDocs.TransferCompanyOwnership.ApiOperation)
+  @ApiExtraModels(...CompanyDocs.TransferCompanyOwnership.ApiExtraModels)
+  @ApiResponse(CompanyDocs.TransferCompanyOwnership.ApiResponse)
+  @ApiBadRequestResponse(
+    CompanyDocs.TransferCompanyOwnership.ApiBadRequestResponse
+  )
+  @ApiNotFoundResponse(CompanyDocs.TransferCompanyOwnership.ApiNotFoundResponse)
+  @ApiBody(CompanyDocs.TransferCompanyOwnership.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles(
+    'USER_MANAGEMENT',
+    'ROLES_MANAGEMENT',
+    'COMPANY_INFORMATION_MANAGEMENT',
+    'PRODUCT_MANAGEMENT'
+  )
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Post('transfer-ownership')
@@ -151,7 +194,12 @@ export class CompanyController {
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UsePipes(ValidationPipe)
-  @Roles('ADMIN', 'PRIMARY_ADMIN')
+  @Roles(
+    'USER_MANAGEMENT',
+    'ROLES_MANAGEMENT',
+    'COMPANY_INFORMATION_MANAGEMENT',
+    'PRODUCT_MANAGEMENT'
+  )
   @UseGuards(RoleGuard)
   @UseGuards(AuthGuard)
   @Delete('delete-company')

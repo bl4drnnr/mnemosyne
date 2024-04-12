@@ -6,10 +6,18 @@
 
   <p>{{ t('settings.companySettingsSection.usersManagementDesc') }}</p>
 
+  <p
+    class="readonly-warning"
+    *ngIf="readOnly"
+  >
+    {{ t('settings.companySettingsSection.readOnlyCompanyUsers') }}
+  </p>
+
   <div class="invite-user-button-box">
     <basic-button
       [label]="t('settings.companySettingsSection.inviteUser')"
       (buttonClick)="openInviteUserModal()"
+      [disabled]="readOnly"
     />
   </div>
 
@@ -34,19 +42,26 @@
 
     <page-component-invite-company-users
       [onWhite]="true"
-      [companyRoles]="companyRoles"
-      [companyMembers]="companyMembers"
+      [companyCustomMembers]="companyCustomMembers"
+      [companyCustomRoles]="companyCustomRoles"
       (removeCompanyMember)="removeMember($event)"
-      (changeCompanyMemberRole)="changeUserRole($event)"
+      (changeCompanyMemberCustomRole)="changeUserCustomRole($event)"
     />
 
     <basic-button
       [onWhite]="true"
       [label]="t('settings.companySettingsSection.inviteUser')"
-      [disabled]="companyMembers.length === 0"
+      [disabled]="companyCustomMembers.length === 0"
       (buttonClick)="inviteUsers()"
     />
   </basic-modal>
+
+  <basic-input
+    [label]="t('input.companyMemberSearchEmailLabel')"
+    [placeholder]="t('input.companyMemberSearchEmailPlaceholder')"
+    [value]="query"
+    (valueChange)="searchForCompanyMember($event)"
+  />
 
   <div class="company-users-container">
     <div class="company-users-header">
@@ -68,7 +83,7 @@
     <div class="company-user" *ngFor="let user of companyUsers; let idx = index">
       <p class="company-users-header-id">{{ idx + 1 }}</p>
       <p class="company-users-header-email">{{ user.email }}</p>
-      <p class="company-users-header-role">{{ printUsersRoles(user.roles) }}</p>
+      <p class="company-users-header-role">{{ translateRole(user.role.name) }}</p>
       <p class="company-users-header-confirmation">
         <span *ngIf="user.registrationHash.confirmed">
           <basic-emoji emoji="large-green-circle.png" [width]="24" [height]="24" />
@@ -148,6 +163,14 @@
         [value]="currentCompanyMemberHomePhone"
         (valueChange)="currentCompanyMemberHomePhone = $event"
       />
+      <div class="company-user-role-dropdown-wrapper">
+        <basic-dropdown
+          [options]="transformCompanyRoles()"
+          [defaultValue]="currentCompanyMemberDefaultRole"
+          [onWhite]="true"
+          (selectedOption)="selectCompanyRole($event)"
+        />
+      </div>
 
       <div
         class="info-changed"
@@ -223,7 +246,7 @@
 
   <div class="pagination-container">
     <basic-pagination
-      [itemsPerPageLabel]="t('settings.companySettingsSection.usersPerPage')"
+      [itemsPerPageLabel]="t('dropdown.usersPerPage')"
       [currentPage]="page"
       [itemsPerPage]="pageSize"
       [totalItems]="totalItems"

@@ -6,14 +6,22 @@
 
   <p>{{ t('settings.companySettingsSection.roleManagementDesc') }}</p>
 
+  <p
+    class="readonly-warning"
+    *ngIf="readOnly"
+  >
+    {{ t('settings.companySettingsSection.readOnlyCompanyRoles') }}
+  </p>
+
   <div class="create-new-role-button-box">
     <basic-button
       [label]="t('button.createNewRole')"
       (buttonClick)="openCreateNewRoleModal()"
+      [disabled]="readOnly"
     />
   </div>
 
-  <div class="company-roles-container">
+  <div class="company-roles-container" *ngIf="!readOnly">
     <div class="company-roles-header">
       <p class="company-roles-id">ID</p>
       <p class="company-roles-name">
@@ -29,8 +37,14 @@
 
     <div class="company-role" *ngFor="let role of companyRoles; let idx = index">
       <p class="company-roles-id">{{ idx + 1 }}</p>
-      <p class="company-roles-name">{{ role.name }}</p>
-      <p class="company-roles-desc">{{ role.description }}</p>
+      <p
+        *ngIf="defaultRolesTranslations"
+        class="company-roles-name"
+      >{{ translateRole(role.name) }}</p>
+      <p
+        *ngIf="defaultRolesDescTranslations"
+        class="company-roles-desc"
+      >{{ translateRoleDesc(role.description) }}</p>
       <p
         (click)="showRoleMoreInfo(role)"
         class="company-roles-more-icon"
@@ -58,6 +72,7 @@
         [value]="currentRoleName"
         (valueChange)="currentRoleName = $event"
         (incorrectInput)="incorrectCurrentRoleName = $event"
+        [disabled]="currentOriginalRoleName === 'PRIMARY_ADMIN'"
       />
       <basic-input
         [onWhite]="true"
@@ -70,41 +85,62 @@
         [value]="currentRoleDescription"
         (valueChange)="currentRoleDescription = $event"
         (incorrectInput)="incorrectCurrentRoleDescription = $event"
+        [disabled]="currentOriginalRoleName === 'PRIMARY_ADMIN'"
       />
 
-      <basic-checkbox
-        [checked]="currentRoleUsersManagementScope"
-        [isWithDescription]="true"
-        (checkedChange)="changeCurrentRoleScope(Scopes.USER_MANAGEMENT)"
-      >
-        <span class="on-white-checkbox" content>{{ t('scopes.USER_MANAGEMENT') }}</span>
-        <span class="on-white-checkbox-desc" desc>{{ t('scopes.USER_MANAGEMENT_DESC') }}</span>
-      </basic-checkbox>
+      <div *ngIf="currentOriginalRoleName !== 'PRIMARY_ADMIN'">
+        <basic-checkbox
+          [checked]="currentRoleUsersManagementScope"
+          [isWithDescription]="true"
+          (checkedChange)="changeCurrentRoleScope(Scopes.USER_MANAGEMENT)"
+        >
+          <span class="on-white-checkbox" content>{{ t('scopes.USER_MANAGEMENT') }}</span>
+          <span class="on-white-checkbox-desc" desc>{{ t('scopes.USER_MANAGEMENT_DESC') }}</span>
+        </basic-checkbox>
 
-      <basic-checkbox
-        [checked]="currentRoleRolesManagementScope"
-        [isWithDescription]="true"
-        (checkedChange)="changeCurrentRoleScope(Scopes.ROLES_MANAGEMENT)"
-      >
-        <span class="on-white-checkbox" content>{{ t('scopes.ROLES_MANAGEMENT') }}</span>
-        <span class="on-white-checkbox-desc" desc>{{ t('scopes.ROLES_MANAGEMENT_DESC') }}</span>
+        <basic-checkbox
+          [checked]="currentRoleRolesManagementScope"
+          [isWithDescription]="true"
+          (checkedChange)="changeCurrentRoleScope(Scopes.ROLES_MANAGEMENT)"
+        >
+          <span class="on-white-checkbox" content>{{ t('scopes.ROLES_MANAGEMENT') }}</span>
+          <span class="on-white-checkbox-desc" desc>{{ t('scopes.ROLES_MANAGEMENT_DESC') }}</span>
+        </basic-checkbox>
 
-      </basic-checkbox>
+        <basic-checkbox
+          [checked]="currentRoleCompanyInfoManagementScope"
+          [isWithDescription]="true"
+          (checkedChange)="changeCurrentRoleScope(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
+        >
+          <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
+          <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
+        </basic-checkbox>
 
-      <basic-checkbox
-        [checked]="currentRoleCompanyInfoManagementScope"
-        [isWithDescription]="true"
-        (checkedChange)="changeCurrentRoleScope(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
+        <basic-checkbox
+          [checked]="currentRoleProductManagementScope"
+          [isWithDescription]="true"
+          (checkedChange)="changeCurrentRoleScope(Scopes.PRODUCT_MANAGEMENT)"
+        >
+          <span class="on-white-checkbox" content>{{ t('scopes.PRODUCT_MANAGEMENT') }}</span>
+          <span class="on-white-checkbox-desc" desc>{{ t('scopes.PRODUCT_MANAGEMENT_DESC') }}</span>
+        </basic-checkbox>
+      </div>
+
+      <p
+        class="modal-paragraph"
+        *ngIf="currentOriginalRoleName === 'PRIMARY_ADMIN'"
       >
-        <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
-        <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
-      </basic-checkbox>
+        {{ t('settings.companySettingsSection.primaryAdminRole') }}
+      </p>
 
       <p class="modal-paragraph">
         {{ t('settings.companySettingsSection.roleDeletionRule') }}
       </p>
 
-      <div class="last-button">
+      <div
+        class="last-button"
+        *ngIf="currentOriginalRoleName !== 'PRIMARY_ADMIN'"
+      >
         <basic-button
           [onWhite]="true"
           [label]="t('button.saveChanges')"
@@ -184,7 +220,7 @@
     </div>
 
     <basic-checkbox
-      [checked]="false"
+      [checked]="newRoleScopes.includes(Scopes.USER_MANAGEMENT)"
       [isWithDescription]="true"
       (checkedChange)="pushNewRoleScope(Scopes.USER_MANAGEMENT)"
     >
@@ -193,22 +229,30 @@
     </basic-checkbox>
 
     <basic-checkbox
-      [checked]="false"
+      [checked]="newRoleScopes.includes(Scopes.ROLES_MANAGEMENT)"
       [isWithDescription]="true"
       (checkedChange)="pushNewRoleScope(Scopes.ROLES_MANAGEMENT)"
     >
       <span class="on-white-checkbox" content>{{ t('scopes.ROLES_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.ROLES_MANAGEMENT_DESC') }}</span>
-
     </basic-checkbox>
 
     <basic-checkbox
-      [checked]="false"
+      [checked]="newRoleScopes.includes(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
       [isWithDescription]="true"
       (checkedChange)="pushNewRoleScope(Scopes.COMPANY_INFORMATION_MANAGEMENT)"
     >
       <span class="on-white-checkbox" content>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT') }}</span>
       <span class="on-white-checkbox-desc" desc>{{ t('scopes.COMPANY_INFORMATION_MANAGEMENT_DESC') }}</span>
+    </basic-checkbox>
+
+    <basic-checkbox
+      [checked]="newRoleScopes.includes(Scopes.PRODUCT_MANAGEMENT)"
+      [isWithDescription]="true"
+      (checkedChange)="pushNewRoleScope(Scopes.PRODUCT_MANAGEMENT)"
+    >
+      <span class="on-white-checkbox" content>{{ t('scopes.PRODUCT_MANAGEMENT') }}</span>
+      <span class="on-white-checkbox-desc" desc>{{ t('scopes.PRODUCT_MANAGEMENT_DESC') }}</span>
     </basic-checkbox>
 
     <div class="last-button">

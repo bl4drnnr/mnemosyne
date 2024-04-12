@@ -61,7 +61,12 @@ export class CompanyUser extends Model<
   @BelongsTo(() => Company)
   company: Company;
 
-  @BelongsToMany(() => Role, () => UserRole)
+  @BelongsToMany(() => Role, {
+    through: {
+      model: () => UserRole,
+      unique: false
+    }
+  })
   roles: Array<Role>;
 
   @CreatedAt

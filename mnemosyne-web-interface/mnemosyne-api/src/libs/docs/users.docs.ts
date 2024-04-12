@@ -11,6 +11,8 @@ import { GetUserSecResponseDto } from '@dto/get-user-sec-response.dto';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
 import { UserUpdatedDto } from '@dto/user-updated.dto';
 import { ApiBodyOptions } from '@nestjs/swagger/dist/decorators/api-body.decorator';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { GetMarketplaceUserByIdDto } from '@dto/get-marketplace-user-by-id.dto';
 
 export abstract class UsersDocs {
   static get ForgotPassword() {
@@ -145,6 +147,41 @@ export abstract class UsersDocs {
         description: apiBodyDesc,
         schema: { $ref: getSchemaPath(UpdateUserInfoDto) }
       } as ApiBodyOptions
+    };
+  }
+
+  static get GetMarketplaceUserById() {
+    const ApiModels = [UserNotFoundException, GetMarketplaceUserByIdDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting public marketplace user information.';
+    const apiResponseDesc =
+      'As a response user gets a message with public information about user along with optional information about company.';
+    const apiNotFoundDesc =
+      'In case if marketplace user ID has been modified and user has not been found user gets not found error message.';
+
+    const marketplaceUserIdQueryDesc = 'Marketplace user ID (or just user ID)';
+
+    const marketplaceUserIdQuery = {
+      description: marketplaceUserIdQueryDesc,
+      name: 'marketplaceUserId',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetMarketplaceUserByIdDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(UserNotFoundException) }
+      },
+      ApiMarketplaceUserIdQuery: marketplaceUserIdQuery
     };
   }
 }

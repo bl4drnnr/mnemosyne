@@ -7,12 +7,14 @@ import { UserPhotoComponent } from '@components/user-photo/user-photo.component'
 import { TranslocoModule } from '@ngneat/transloco';
 import { BasicComponentsModule } from '@components/basic-components.module';
 import { PagesComponentsModule } from '@components/pages-components.module';
-import { CompanySettingsComponent } from '@components/dashboard-components/company-settings/company-settings.component';
 import { CompanyInfoSettingsComponent } from '@components/company-info-settings/company-info-settings.component';
 import { CompanyUsersSettingsComponent } from '@components/company-users-settings/company-users-settings.component';
 import { CompanySecuritySettingsComponent } from '@components/company-security-settings/company-security-settings.component';
 import { CompanyRolesManagementComponent } from '@components/company-roles-management/company-roles-management.component';
 import { SecuritySettingSectionComponent } from '@components/shared/security-setting-section/security-setting-section.component';
+import { MarketplaceCompanyUsersComponent } from '@components/marketplace-company-users/marketplace-company-users.component';
+import { MarketplaceCompanyStatsComponent } from '@components/marketplace-company-stats/marketplace-company-stats.component';
+import { MarketplaceCompanyInternalStatsComponent } from '@components/marketplace-company-internal-stats/marketplace-company-internal-stats.component';
 
 const components = [
   SecuritySettingsComponent,
@@ -20,11 +22,13 @@ const components = [
   SidebarComponent,
   UserInfoSettingsComponent,
   UserPhotoComponent,
-  CompanySettingsComponent,
   CompanyInfoSettingsComponent,
   CompanyUsersSettingsComponent,
   CompanySecuritySettingsComponent,
-  CompanyRolesManagementComponent
+  CompanyRolesManagementComponent,
+  MarketplaceCompanyUsersComponent,
+  MarketplaceCompanyStatsComponent,
+  MarketplaceCompanyInternalStatsComponent
 ];
 
 @NgModule({

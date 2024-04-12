@@ -15,6 +15,10 @@ import { GlobalMessageService } from '@shared/global-message.service';
 import { MessagesTranslation } from '@translations/messages.enum';
 import { Router } from '@angular/router';
 import { UploadProductPictureComponent } from '@components/upload-product-picture/upload-product-picture.component';
+import { SubcategoriesListType } from '@interfaces/subcategories-list.type';
+import { RoleScope } from '@interfaces/role-scope.type';
+import { Scopes } from '@interfaces/role-scopes.enum';
+import { AccountTranslation } from '@translations/account.enum';
 
 @Component({
   selector: 'page-create-product',
@@ -32,6 +36,8 @@ export class CreateProductComponent implements OnInit {
   contactPhoneNumber: string;
   productPrice: string = '0';
   productLocation: string;
+  postOnBehalfOfCompany: boolean;
+
   productPic1: string | ArrayBuffer | null;
   productPic2: string | ArrayBuffer | null;
   productPic3: string | ArrayBuffer | null;
@@ -43,10 +49,7 @@ export class CreateProductComponent implements OnInit {
 
   categories: Array<GetAllCategoriesResponse>;
   categoriesDropdown: Array<DropdownInterface>;
-  subcategoriesDropdowns: Array<{
-    categoryKey: string;
-    subcategories: Array<DropdownInterface>;
-  }>;
+  subcategoriesDropdowns: SubcategoriesListType;
   subcategoriesDropdown: Array<DropdownInterface>;
   categoryDropdownValue: DropdownInterface = {
     key: '',
@@ -64,6 +67,16 @@ export class CreateProductComponent implements OnInit {
     { key: 'USD', value: 'USD' }
   ];
   productPriceDropdownValue: DropdownInterface = { key: 'PLN', value: 'PLN' };
+
+  isCompanyMember: boolean;
+  companyName: string | null;
+  roleName: string | null;
+  roleScopes: Array<RoleScope> | null;
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
 
   @ViewChild('fileInput1') fileInput1!: UploadProductPictureComponent;
   @ViewChild('fileInput2') fileInput2!: UploadProductPictureComponent;
@@ -106,7 +119,8 @@ export class CreateProductComponent implements OnInit {
         contactPhone: this.contactPhoneNumber,
         contactPerson: this.contactPerson,
         category: this.categoryDropdownValue.key as ProductCategory,
-        subcategory: this.subcategoryDropdownValue.key as ProductSubcategory
+        subcategory: this.subcategoryDropdownValue.key as ProductSubcategory,
+        postOnBehalfOfCompany: this.postOnBehalfOfCompany
       })
       .subscribe({
         next: async ({ message, link }) => {
@@ -199,9 +213,11 @@ export class CreateProductComponent implements OnInit {
   }
 
   initSubcategoryDropdown(category: string) {
-    this.subcategoriesDropdown = this.subcategoriesDropdowns.find(
-      ({ categoryKey }) => categoryKey === category
-    )!.subcategories;
+    if (this.subcategoriesDropdowns) {
+      this.subcategoriesDropdown = this.subcategoriesDropdowns.find(
+        ({ categoryKey }) => categoryKey === category
+      )!.subcategories;
+    }
   }
 
   async initSubcategoriesDropdowns() {
@@ -352,6 +368,26 @@ export class CreateProductComponent implements OnInit {
     }
   }
 
+  userIsAllowedToPostProducts() {
+    return this.roleScopes?.includes(Scopes.PRODUCT_MANAGEMENT);
+  }
+
+  translateRole(role: string) {
+    if (this.defaultRolesTranslations && role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
+  }
+
   async handleRedirect(path: string) {
     await this.router.navigate([path]);
   }
@@ -366,12 +402,19 @@ export class CreateProductComponent implements OnInit {
 
         if (userInfoRequest) {
           userInfoRequest.subscribe({
-            next: (userInfo) => (this.contactEmail = userInfo.email)
+            next: (userInfo) => {
+              this.contactEmail = userInfo.email;
+              this.isCompanyMember = userInfo.isCompanyMember;
+              this.companyName = userInfo.companyName;
+              this.roleName = userInfo.roleName;
+              this.roleScopes = userInfo.roleScopes;
+            }
           });
         }
 
         await this.initCategoriesDropdown();
         await this.initSubcategoriesDropdowns();
+        await this.translateRoles();
       }
     });
   }

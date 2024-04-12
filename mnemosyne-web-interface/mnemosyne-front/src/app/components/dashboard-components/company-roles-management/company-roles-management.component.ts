@@ -16,6 +16,8 @@ import {
 import { CompanyUsersService } from '@services/company-users.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { RoleAssigneeInterface } from '@interfaces/role-assignee.interface';
+import { TranslationService } from '@services/translation.service';
+import { AccountTranslation } from '@translations/account.enum';
 
 @Component({
   selector: 'dashboard-company-roles-management',
@@ -34,6 +36,13 @@ import { RoleAssigneeInterface } from '@interfaces/role-assignee.interface';
   ]
 })
 export class CompanyRolesManagementComponent implements OnInit {
+  @Input() readOnly: boolean;
+  @Input() companyRoles: CompanyRoleType;
+  @Output() createNewRoleEvent = new EventEmitter<CreateCompanyRolePayload>();
+  @Output() getCompanyRoles = new EventEmitter<void>();
+  @Output() deleteCompanyRole = new EventEmitter<string>();
+  @Output() updateRole = new EventEmitter<UpdateCompanyRolePayload>();
+
   showCreateNewRoleModal: boolean;
   newRoleName: string;
   incorrectNewRoleName: boolean;
@@ -44,6 +53,7 @@ export class CompanyRolesManagementComponent implements OnInit {
   newRoleMembers: Array<RoleAssigneeInterface> = [];
   newRoleFoundMembers: Array<RoleAssigneeInterface> = [];
 
+  currentOriginalRoleName: string;
   showRoleMoreInfoModal: boolean;
   currentRole: OneCompanyRoleType;
   currentRoleName: string;
@@ -53,17 +63,24 @@ export class CompanyRolesManagementComponent implements OnInit {
   currentRoleUsersManagementScope: boolean;
   currentRoleRolesManagementScope: boolean;
   currentRoleCompanyInfoManagementScope: boolean;
+  currentRoleProductManagementScope: boolean;
 
-  @Input() companyRoles: CompanyRoleType;
-  @Output() createNewRoleEvent = new EventEmitter<CreateCompanyRolePayload>();
-  @Output() getCompanyRoles = new EventEmitter<void>();
-  @Output() deleteCompanyRole = new EventEmitter<string>();
-  @Output() updateRole = new EventEmitter<UpdateCompanyRolePayload>();
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
+  defaultRolesDescTranslations: {
+    primary_admin_desc: string;
+    admin_desc: string;
+    default_desc: string;
+  };
 
   constructor(
     private readonly utilsService: UtilsService,
     private readonly companyUsersService: CompanyUsersService,
-    private readonly globalMessageService: GlobalMessageService
+    private readonly globalMessageService: GlobalMessageService,
+    private readonly translationService: TranslationService
   ) {}
 
   createNewRole() {
@@ -84,7 +101,7 @@ export class CompanyRolesManagementComponent implements OnInit {
     const roleScopes = this.transformScopesToArray();
 
     this.updateRole.emit({
-      name: this.currentRoleName,
+      name: this.currentOriginalRoleName,
       description: this.currentRoleDescription,
       roleScopes
     });
@@ -98,8 +115,10 @@ export class CompanyRolesManagementComponent implements OnInit {
     const scopes = role.roleScopes;
 
     this.showRoleMoreInfoModal = true;
-    this.currentRoleName = role.name;
-    this.currentRoleDescription = role.description;
+
+    this.currentOriginalRoleName = role.name;
+    this.currentRoleName = this.translateRole(role.name);
+    this.currentRoleDescription = this.translateRoleDesc(role.description);
 
     this.currentRoleUsersManagementScope = !!scopes.find(
       (s) => s === Scopes.USER_MANAGEMENT
@@ -109,6 +128,9 @@ export class CompanyRolesManagementComponent implements OnInit {
     );
     this.currentRoleCompanyInfoManagementScope = !!scopes.find(
       (s) => s === Scopes.COMPANY_INFORMATION_MANAGEMENT
+    );
+    this.currentRoleProductManagementScope = !!scopes.find(
+      (s) => s === Scopes.PRODUCT_MANAGEMENT
     );
   }
 
@@ -126,6 +148,9 @@ export class CompanyRolesManagementComponent implements OnInit {
         this.currentRoleCompanyInfoManagementScope =
           !this.currentRoleCompanyInfoManagementScope;
         break;
+      case 'PRODUCT_MANAGEMENT':
+        this.currentRoleProductManagementScope =
+          !this.currentRoleProductManagementScope;
     }
   }
 
@@ -241,11 +266,48 @@ export class CompanyRolesManagementComponent implements OnInit {
     if (this.currentRoleCompanyInfoManagementScope)
       roleScopes.push(Scopes.COMPANY_INFORMATION_MANAGEMENT);
 
+    if (this.currentRoleProductManagementScope)
+      roleScopes.push(Scopes.PRODUCT_MANAGEMENT);
+
     return roleScopes;
   }
 
-  ngOnInit() {
+  translateRole(role: string) {
+    if (role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  translateRoleDesc(roleDesc: string) {
+    if (roleDesc in this.defaultRolesDescTranslations)
+      return this.defaultRolesDescTranslations[
+        roleDesc as 'primary_admin_desc' | 'admin_desc' | 'default_desc'
+      ];
+    else return roleDesc;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
+  }
+
+  async translateRolesDesc() {
+    this.defaultRolesDescTranslations =
+      await this.translationService.translateObject(
+        'defaultRolesDesc',
+        AccountTranslation.SETTINGS
+      );
+  }
+
+  async ngOnInit() {
     this.fetchCompanyRoles();
+    await this.translateRoles();
+    await this.translateRolesDesc();
   }
 
   protected readonly Scopes = Scopes;

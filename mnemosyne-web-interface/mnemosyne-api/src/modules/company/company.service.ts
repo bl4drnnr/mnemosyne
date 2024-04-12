@@ -40,6 +40,14 @@ import { WrongRecoveryKeysException } from '@exceptions/wrong-recovery-keys.exce
 import { CompanyDeletedDto } from '@dto/company-deleted.dto';
 import { CompanyUser } from '@models/company-user.model';
 import { CompanyUserType } from '@custom-types/company-user.type';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
+import { Op } from 'sequelize';
+import { GetCompanyUserRolesInterface } from '@interfaces/get-company-user-roles.interface';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { GetCompanyPublicInformationInterface } from '@interfaces/get-company-public-information.interface';
+import { GetCompanyPublicInfoDto } from '@dto/get-company-public-info.dto';
+import { GetAllCompanyUsersInterface } from '@interfaces/get-all-company-users.interface';
 
 @Injectable()
 export class CompanyService {
@@ -119,6 +127,13 @@ export class CompanyService {
 
     await this.rolesService.grantInitRole({
       role: Roles.PRIMARY_ADMIN,
+      companyUserId,
+      companyId,
+      trx
+    });
+
+    await this.rolesService.grantInitRole({
+      role: Roles.DEFAULT,
       companyUserId,
       companyId,
       trx
@@ -236,10 +251,85 @@ export class CompanyService {
     });
   }
 
+  async getCompanyPublicInformation({
+    companyId,
+    page,
+    pageSize,
+    query,
+    trx: transaction
+  }: GetCompanyPublicInformationInterface) {
+    const offset = Number(page) * Number(pageSize);
+    const limit = Number(pageSize);
+
+    const paginationParseError =
+      isNaN(offset) || isNaN(limit) || offset < 0 || limit < 0;
+
+    if (paginationParseError) throw new ParseException();
+
+    const company = await this.companyRepository.findByPk(companyId, {
+      transaction,
+      include: { all: true }
+    });
+
+    if (!company) throw new CompanyNotFoundException();
+
+    const {
+      companyName,
+      companyLocation,
+      companyUsers,
+      companyWebsite,
+      companyOwnerId
+    } = company;
+
+    const companyUsersIds = companyUsers.map(({ userId }) => userId);
+    const quantityOfUsers = companyUsers.length;
+
+    const where = {};
+
+    if (query) {
+      where[Op.or] = [
+        { firstName: { [Op.iLike]: `%${query}%` } },
+        { lastName: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
+    const { count, rows } = await this.usersService.getUsersByIds({
+      offset,
+      limit,
+      where,
+      ids: companyUsersIds,
+      attributes: ['id', 'firstName', 'lastName'],
+      trx: transaction
+    });
+
+    const companyMembers = rows.map(({ id, firstName, lastName }) => {
+      return { id, firstName, lastName };
+    });
+
+    const { firstName: companyOwnerFirstName, lastName: companyOwnerLastName } =
+      await this.usersService.getUserById({
+        id: companyOwnerId,
+        trx: transaction
+      });
+
+    return new GetCompanyPublicInfoDto({
+      count,
+      quantityOfUsers,
+      companyOwnerId,
+      companyOwnerFirstName,
+      companyOwnerLastName,
+      companyName,
+      companyLocation,
+      companyWebsite,
+      companyMembers
+    });
+  }
+
   async getCompanyUsers({
     companyId,
     page,
     pageSize,
+    query,
     trx: transaction
   }: GetCompanyUsersInterface) {
     const offset = Number(page) * Number(pageSize);
@@ -259,9 +349,22 @@ export class CompanyService {
       (companyUser) => companyUser.userId
     );
 
+    const where = {};
+
+    if (query) {
+      where[Op.or] = [
+        { email: { [Op.iLike]: `%${query}%` } },
+        { firstName: { [Op.iLike]: `%${query}%` } },
+        { lastName: { [Op.iLike]: `%${query}%` } },
+        { namePronunciation: { [Op.iLike]: `%${query}%` } },
+        { homeAddress: { [Op.iLike]: `%${query}%` } }
+      ];
+    }
+
     const { rows, count } = await this.usersService.getUsersByIds({
       offset,
       limit,
+      where,
       ids: companyUsersIds,
       attributes: ['id', 'email'],
       trx: transaction
@@ -282,7 +385,7 @@ export class CompanyService {
       };
 
       if (companyUser) {
-        payload.roles = await this.rolesService.getUserRolesByCompanyUserId({
+        payload.role = await this.rolesService.getUserRolesByCompanyUserId({
           companyUserId: companyUser.id,
           trx: transaction
         });
@@ -294,6 +397,24 @@ export class CompanyService {
     return new GetCompanyUsersDto({
       companyUsers: users,
       count
+    });
+  }
+
+  async getAllCompanyUsers({ companyId, trx }: GetAllCompanyUsersInterface) {
+    const company = await this.companyRepository.findOne({
+      where: { id: companyId },
+      include: { all: true },
+      transaction: trx
+    });
+
+    if (!company) throw new CompanyNotFoundException();
+
+    const companyUsersIds = company.companyUsers.map(({ userId }) => userId);
+
+    return await this.usersService.getUsersByIds({
+      attributes: ['id', 'email', 'firstName', 'lastName'],
+      ids: companyUsersIds,
+      trx
     });
   }
 
@@ -405,6 +526,12 @@ export class CompanyService {
 
     await this.companyUsersService.confirmCompanyMembership({ userId, trx });
 
+    await this.usersService.updateUser({
+      payload: { tac: true },
+      userId,
+      trx
+    });
+
     await this.emailService.sendCompanyMemberConfirmCompleteEmail({
       to: email,
       companyName,
@@ -435,12 +562,36 @@ export class CompanyService {
     payload,
     trx
   }: TransferOwnershipInterface) {
-    const { mfaCode, phoneCode, language, newCompanyOwnerEmail } = payload;
+    const {
+      mfaCode,
+      phoneCode,
+      language,
+      newCompanyOwnerEmail,
+      newRoleForOldOwnerId
+    } = payload;
 
     const { userSettings } = await this.usersService.getUserById({
       id: userId,
       trx
     });
+
+    const newCompanyOwner = await this.usersService.getUserByEmail({
+      email: newCompanyOwnerEmail,
+      trx
+    });
+
+    if (!newCompanyOwner) throw new UserNotFoundException();
+
+    const newCompanyOwnerCompanyUser =
+      await this.companyUsersService.getCompanyUserByUserId({
+        userId: newCompanyOwner.id
+      });
+
+    if (
+      !newCompanyOwnerCompanyUser ||
+      newCompanyOwnerCompanyUser.companyId !== companyId
+    )
+      throw new UserNotFoundException();
 
     try {
       const mfaStatusResponse = await this.authService.checkUserMfaStatus({
@@ -456,6 +607,42 @@ export class CompanyService {
     } catch (e: any) {
       throw new HttpException(e.response.message, e.status);
     }
+
+    const { companyRoles } = await this.rolesService.getCompanyRoles({
+      companyId,
+      trx
+    });
+
+    const primaryRole = companyRoles.find(
+      ({ name }) => name === Roles.PRIMARY_ADMIN
+    );
+
+    const newRoleForOldOwner = await this.rolesService.getRoleById({
+      id: newRoleForOldOwnerId,
+      trx
+    });
+
+    if (!newRoleForOldOwner) throw new RoleDoesntExistException();
+
+    const oldCompanyOwnerCompanyUser =
+      await this.companyUsersService.getCompanyUserByUserId({
+        userId,
+        trx
+      });
+
+    await this.rolesService.updateUserRole({
+      companyUserId: newCompanyOwnerCompanyUser.id,
+      companyId,
+      newRoleId: primaryRole.id,
+      trx
+    });
+
+    await this.rolesService.updateUserRole({
+      companyUserId: oldCompanyOwnerCompanyUser.id,
+      companyId,
+      newRoleId: newRoleForOldOwner.id,
+      trx
+    });
 
     return new CompanyOwnershipTransferredDto();
   }
@@ -537,14 +724,22 @@ export class CompanyService {
       });
     }
 
-    // @TODO Refactor this part of code once the database is rebuilt
-    // Basically, it means, check if the deletion process is the cascade one
     await this.companyRepository.destroy({
       where: { id: companyId },
       transaction: trx
     });
 
     return new CompanyDeletedDto();
+  }
+
+  async getCompanyUserRole({
+    companyUserId,
+    trx
+  }: GetCompanyUserRolesInterface) {
+    return await this.rolesService.getUserRolesByCompanyUserId({
+      companyUserId,
+      trx
+    });
   }
 
   async createCompanyAccount({

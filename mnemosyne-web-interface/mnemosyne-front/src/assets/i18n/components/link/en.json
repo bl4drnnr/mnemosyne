@@ -7,5 +7,7 @@
   "maybeForgotPass": "Or maybe you just forgot your password?",
   "here": "here",
   "productGoToMainPage": "Main page",
-  "seeMoreProducts": "See more products"
+  "seeMoreProducts": "See more products",
+  "seeMoreCompanyProducts": "See more products by {{ companyName }} company",
+  "memberOfCompany": "Member of company: {{ companyName }}"
 }

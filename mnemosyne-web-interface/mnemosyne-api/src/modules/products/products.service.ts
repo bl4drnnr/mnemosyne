@@ -46,6 +46,20 @@ import { GetProductContactEmailInterface } from '@interfaces/get-product-contact
 import { GetProductContactPhoneInterface } from '@interfaces/get-product-contact-phone.interface';
 import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
 import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
+import { GetMarketplaceUserStatisticsInterface } from '@interfaces/get-marketplace-user-statistics.interface';
+import { GetMarketplaceUserStatsDto } from '@dto/get-marketplace-user-stats.dto';
+import { CompanyService } from '@modules/company.service';
+import { UserNotMemberException } from '@exceptions/user-not-member.exception';
+import { Roles } from '@interfaces/roles.enum';
+import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
+import { CheckForProductPermissionsInterface } from '@interfaces/check-for-product-permissions.interface';
+import { GetCompanyProductsStatsInterface } from '@interfaces/get-company-products-stats.interface';
+import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
+import { GetCompanyInternalStatsInterface } from '@interfaces/get-company-internal-stats.interface';
+import { GetCompanyInternalStatsDto } from '@dto/get-company-internal-stats.dto';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { DeleteCompanyProductInterface } from '@interfaces/delete-company-product.interface';
+import { CompanyProductDeletedDto } from '@dto/company-product-deleted.dto';
 
 @Injectable()
 export class ProductsService {
@@ -54,6 +68,7 @@ export class ProductsService {
     private readonly cryptographicService: CryptographicService,
     private readonly categoriesService: CategoriesService,
     private readonly usersService: UsersService,
+    private readonly companyService: CompanyService,
     @InjectModel(Product)
     private readonly productRepository: typeof Product
   ) {}
@@ -71,15 +86,49 @@ export class ProductsService {
 
   async getProductBySlug({ slug, userId, trx }: GetProductBySlugInterface) {
     const foundProduct = await this.productRepository.findOne({
-      include: [
-        { model: User, attributes: ['firstName', 'lastName'] },
-        { model: Category, attributes: ['name'] }
-      ],
+      include: [{ model: Category, attributes: ['name'] }],
       where: { slug },
       transaction: trx
     });
 
     if (!foundProduct) throw new ProductNotFoundException();
+
+    const userIdHash = this.cryptographicService.hash({
+      data: foundProduct.userId,
+      algorithm: CryptoHashAlgorithm.MD5
+    });
+
+    let isProfilePicPresent = true;
+
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    try {
+      await s3
+        .headObject({
+          Bucket: bucketName,
+          Key: `users-profile-pictures/${userIdHash}.png`
+        })
+        .promise();
+    } catch (e) {
+      isProfilePicPresent = false;
+    }
+
+    let companyId: string;
+    let companyName: string;
+    const onBehalfOfCompany = foundProduct.onBehalfOfCompany;
+
+    if (onBehalfOfCompany) {
+      const { id, companyName: name } =
+        await this.companyService.getCompanyByUserId({
+          userId: foundProduct.userId,
+          trx
+        });
+      companyId = id;
+      companyName = name;
+    }
 
     const product = {
       id: foundProduct.id,
@@ -93,7 +142,12 @@ export class ProductsService {
       category: foundProduct.category.name,
       contactPerson: foundProduct.contactPerson,
       createdAt: foundProduct.createdAt,
-      productInFavorites: false
+      productInFavorites: false,
+      ownerId: foundProduct.userId,
+      ownerIdHash: isProfilePicPresent ? userIdHash : null,
+      onBehalfOfCompany,
+      companyId: onBehalfOfCompany ? companyId : null,
+      companyName: onBehalfOfCompany ? companyName : null
     };
 
     if (userId) {
@@ -158,6 +212,11 @@ export class ProductsService {
     currency,
     categories,
     subcategories,
+    companyProducts,
+    privateProducts,
+    marketplaceUserId,
+    marketplaceCompanyId,
+    companyExtended,
     userId,
     trx
   }: SearchProductInterface) {
@@ -188,6 +247,26 @@ export class ProductsService {
 
     if (!['PLN', 'USD', 'EUR', 'all'].includes(currency))
       throw new WrongCurrencyException();
+
+    const productsTypeFlags = ['true', 'false'];
+    let getCompanyProducts: boolean;
+    let getPrivateProducts: boolean;
+
+    if (companyProducts) {
+      if (!productsTypeFlags.includes(companyProducts.toLowerCase()))
+        throw new ParseException();
+      else {
+        getCompanyProducts = companyProducts.toLowerCase() === 'true';
+      }
+    }
+
+    if (privateProducts) {
+      if (!productsTypeFlags.includes(privateProducts.toLowerCase()))
+        throw new ParseException();
+      else {
+        getPrivateProducts = privateProducts.toLowerCase() === 'true';
+      }
+    }
 
     const providedCategories = categories
       .split(',')
@@ -230,6 +309,9 @@ export class ProductsService {
       'currency',
       'price',
       'subcategory',
+      'location',
+      'contactPhone',
+      'contactPerson',
       'createdAt',
       'created_at'
     ];
@@ -246,6 +328,12 @@ export class ProductsService {
       ];
     }
 
+    if (getCompanyProducts && !getPrivateProducts) {
+      where[Op.and].push([{ on_behalf_of_company: true }]);
+    } else if (getPrivateProducts && !getCompanyProducts) {
+      where[Op.and].push([{ on_behalf_of_company: false }]);
+    }
+
     if (minPrice && maxPrice) {
       where[Op.and].push([
         { price: { [Op.gte]: minPrice } },
@@ -255,6 +343,26 @@ export class ProductsService {
       where[Op.and].push([{ price: { [Op.gte]: minPrice } }]);
     } else if (maxPrice) {
       where[Op.and].push([{ price: { [Op.lte]: maxPrice } }]);
+    }
+
+    if (marketplaceUserId) {
+      where[Op.and].push([{ user_id: marketplaceUserId }]);
+    }
+
+    if (marketplaceCompanyId) {
+      const allCompanyUsers = await this.companyService.getAllCompanyUsers({
+        companyId: marketplaceCompanyId,
+        trx
+      });
+
+      const allCompanyUsersIds = allCompanyUsers.rows.map(({ id }) => id);
+
+      where[Op.and].push([
+        {
+          user_id: { [Op.in]: allCompanyUsersIds },
+          on_behalf_of_company: true
+        }
+      ]);
     }
 
     if (currency !== 'all') {
@@ -297,6 +405,16 @@ export class ProductsService {
       userFavoriteProductsIds = favoriteProductsIds;
     }
 
+    let companyExtendedProductsInfo = false;
+
+    const companyExtendedInfo = ['true', 'false'];
+
+    if (companyExtended) {
+      if (companyExtendedInfo.includes(companyExtended) && userId)
+        companyExtendedProductsInfo = true;
+      else throw new ParseException();
+    }
+
     const foundProducts = rows.map(
       ({
         id,
@@ -307,6 +425,9 @@ export class ProductsService {
         price,
         category,
         subcategory,
+        location,
+        contactPhone,
+        contactPerson,
         createdAt
       }) => ({
         id,
@@ -317,6 +438,9 @@ export class ProductsService {
         price,
         category: category.name,
         subcategory,
+        location: companyExtendedProductsInfo ? location : null,
+        contactPhone: companyExtendedProductsInfo ? contactPhone : null,
+        contactPerson: companyExtendedProductsInfo ? contactPerson : null,
         productInFavorites: userFavoriteProductsIds.includes(id),
         createdAt
       })
@@ -336,8 +460,16 @@ export class ProductsService {
       contactPhone,
       contactPerson,
       category,
-      subcategory
+      subcategory,
+      postOnBehalfOfCompany
     } = payload;
+
+    const productPostedOnBehalfOfCompany =
+      await this.checkForUserProductManagementPermissions({
+        postOnBehalfOfCompany,
+        userId,
+        trx
+      });
 
     const slug = this.generateProductSlug(title);
     const picturesHashes = await this.uploadProductPictures(pictures);
@@ -360,7 +492,8 @@ export class ProductsService {
         contactPhone,
         contactPerson,
         userId,
-        categoryId
+        categoryId,
+        onBehalfOfCompany: productPostedOnBehalfOfCompany
       },
       {
         transaction: trx
@@ -373,37 +506,71 @@ export class ProductsService {
   }
 
   async getProductBySlugToEdit({
+    companyId,
     userId,
     slug,
+    companyEdit,
     trx
   }: GetProductBySlugToEditInterface) {
-    const productToEdit = await this.productRepository.findOne({
-      where: { userId, slug },
-      include: [{ model: Category, attributes: ['name'] }],
-      transaction: trx
-    });
+    let product: Product;
 
-    if (!productToEdit) throw new ProductNotFoundException();
+    if (companyEdit === 'true') {
+      product = await this.productRepository.findOne({
+        where: { slug, onBehalfOfCompany: true },
+        include: [
+          { model: Category, attributes: ['name'] },
+          { model: User, attributes: ['email'] }
+        ],
+        transaction: trx
+      });
 
-    const product = {
-      id: productToEdit.id,
-      title: productToEdit.title,
-      description: productToEdit.description,
-      pictures: productToEdit.pictures,
-      location: productToEdit.location,
-      currency: productToEdit.currency,
-      price: productToEdit.price,
-      subcategory: productToEdit.subcategory,
-      category: productToEdit.category.name,
-      createdAt: productToEdit.createdAt,
-      contactPerson: productToEdit.contactPerson,
-      contactPhone: productToEdit.contactPhone
+      if (!product) throw new ProductNotFoundException();
+
+      const { rows } = await this.companyService.getAllCompanyUsers({
+        companyId,
+        trx
+      });
+
+      const productOwner = rows.filter(
+        ({ email }) => email === product.user.email
+      );
+
+      if (!productOwner) throw new UserNotFoundException();
+    } else {
+      product = await this.productRepository.findOne({
+        where: { userId, slug },
+        include: [{ model: Category, attributes: ['name'] }],
+        transaction: trx
+      });
+
+      if (!product) throw new ProductNotFoundException();
+    }
+
+    const foundProduct = {
+      id: product.id,
+      title: product.title,
+      description: product.description,
+      pictures: product.pictures,
+      location: product.location,
+      currency: product.currency,
+      price: product.price,
+      subcategory: product.subcategory,
+      category: product.category.name,
+      createdAt: product.createdAt,
+      contactPerson: product.contactPerson,
+      contactPhone: product.contactPhone,
+      onBehalfOfCompany: product.onBehalfOfCompany
     };
 
-    return new ProductBySlugToEditDto(product);
+    return new ProductBySlugToEditDto(foundProduct);
   }
 
-  async updateProduct({ userId, payload, trx }: PostProductInterface) {
+  async updateProduct({
+    companyId,
+    userId,
+    payload,
+    trx
+  }: PostProductInterface) {
     const {
       id,
       title,
@@ -415,13 +582,47 @@ export class ProductsService {
       contactPhone,
       contactPerson,
       category,
-      subcategory
+      subcategory,
+      postOnBehalfOfCompany,
+      companyEdit
     } = payload;
 
-    const editedProduct = await this.productRepository.findOne({
-      where: { userId, id },
-      transaction: trx
-    });
+    const productPostedOnBehalfOfCompany =
+      await this.checkForUserProductManagementPermissions({
+        postOnBehalfOfCompany,
+        userId,
+        trx
+      });
+
+    let editedProduct: Product;
+
+    if (companyEdit) {
+      editedProduct = await this.productRepository.findOne({
+        where: { id, onBehalfOfCompany: true },
+        include: [
+          { model: Category, attributes: ['name'] },
+          { model: User, attributes: ['email'] }
+        ]
+      });
+
+      if (!editedProduct) throw new ProductNotFoundException();
+
+      const { rows } = await this.companyService.getAllCompanyUsers({
+        companyId,
+        trx
+      });
+
+      const productOwner = rows.filter(
+        ({ email }) => email === editedProduct.user.email
+      );
+
+      if (!productOwner) throw new UserNotFoundException();
+    } else {
+      editedProduct = await this.productRepository.findOne({
+        where: { userId, id },
+        transaction: trx
+      });
+    }
 
     if (!editedProduct) throw new ProductNotFoundException();
 
@@ -457,11 +658,12 @@ export class ProductsService {
         contactPhone,
         contactPerson,
         categoryId,
-        subcategory
+        subcategory,
+        onBehalfOfCompany: productPostedOnBehalfOfCompany
       },
       {
         returning: false,
-        where: { userId, id },
+        where: { id },
         transaction: trx
       }
     );
@@ -588,6 +790,52 @@ export class ProductsService {
     });
 
     return new ProductDeletedDto();
+  }
+
+  async deleteCompanyProduct({
+    companyId,
+    userId,
+    payload,
+    trx
+  }: DeleteCompanyProductInterface) {
+    const { fullName, productId } = payload;
+
+    const deletedProduct = await this.productRepository.findOne({
+      where: { id: productId },
+      include: [{ model: User, attributes: ['firstName', 'lastName'] }],
+      transaction: trx
+    });
+
+    if (!deletedProduct) throw new ProductNotFoundException();
+
+    const { rows: companyUsers } = await this.companyService.getAllCompanyUsers(
+      {
+        companyId,
+        trx
+      }
+    );
+
+    const companyUser = companyUsers.find(({ id }) => id === userId);
+
+    if (!companyUser) throw new UserNotFoundException();
+
+    await this.checkForUserProductManagementPermissions({
+      postOnBehalfOfCompany: deletedProduct.onBehalfOfCompany,
+      userId,
+      trx
+    });
+
+    const { firstName, lastName } = deletedProduct.user;
+
+    if (fullName !== `${firstName} ${lastName}`)
+      throw new WrongDeletionConfirmationException();
+
+    await this.productRepository.destroy({
+      where: { id: productId },
+      transaction: trx
+    });
+
+    return new CompanyProductDeletedDto();
   }
 
   async deleteProductFromFavorites({
@@ -756,6 +1004,201 @@ export class ProductsService {
     });
 
     return new GetProductContactPhoneDto(foundProduct.contactPhone);
+  }
+
+  async getMarketplaceUserStatistics({
+    marketplaceUserId,
+    trx
+  }: GetMarketplaceUserStatisticsInterface) {
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where: { userId: marketplaceUserId },
+      transaction: trx
+    });
+    const amountOfProducts = count;
+
+    const userStats = this.marketplaceProductsStats(rows);
+
+    return new GetMarketplaceUserStatsDto({ amountOfProducts, ...userStats });
+  }
+
+  async getCompanyProductsStatistics({
+    companyId,
+    trx
+  }: GetCompanyProductsStatsInterface) {
+    const allCompanyUsers = await this.companyService.getAllCompanyUsers({
+      companyId,
+      trx
+    });
+
+    const allCompanyUsersIds = allCompanyUsers.rows.map(({ id }) => id);
+
+    const { rows, count } = await this.productRepository.findAndCountAll({
+      where: {
+        userId: { [Op.in]: allCompanyUsersIds },
+        onBehalfOfCompany: true
+      },
+      transaction: trx
+    });
+    const amountOfProducts = count;
+
+    const companyStats = this.marketplaceProductsStats(rows);
+
+    return new GetMarketplaceCompanyStatsDto({
+      amountOfProducts,
+      ...companyStats
+    });
+  }
+
+  async getCompanyInternalStatistics({
+    companyId,
+    userId,
+    query,
+    trx
+  }: GetCompanyInternalStatsInterface) {
+    const allCompanyUsers = await this.companyService.getAllCompanyUsers({
+      companyId,
+      trx
+    });
+
+    const {
+      companyUser: { id: companyUserId }
+    } = await this.usersService.getUserById({
+      id: userId,
+      trx
+    });
+
+    const { roleScopes } = await this.companyService.getCompanyUserRole({
+      companyUserId,
+      trx
+    });
+
+    if (!roleScopes.includes(Roles.PRODUCT_MANAGEMENT))
+      throw new ForbiddenResourceException();
+
+    let companyUsersFiltered = allCompanyUsers.rows;
+
+    if (query) {
+      companyUsersFiltered = allCompanyUsers.rows.filter(({ email }) =>
+        email.includes(query.toLowerCase())
+      );
+    }
+
+    const companyInternalStats = [];
+
+    for (const companyEmployee of companyUsersFiltered) {
+      const { rows, count } = await this.productRepository.findAndCountAll({
+        where: {
+          userId: companyEmployee.id,
+          onBehalfOfCompany: true
+        },
+        transaction: trx
+      });
+      const amountOfUserProducts = count;
+      const companyUserProductsStatus = this.marketplaceProductsStats(rows);
+
+      companyInternalStats.push({
+        id: companyEmployee.id,
+        email: companyEmployee.email,
+        firstName: companyEmployee.firstName,
+        lastName: companyEmployee.lastName,
+        amountOfUserProducts,
+        companyUserProductsStatus
+      });
+    }
+
+    return new GetCompanyInternalStatsDto(companyInternalStats);
+  }
+
+  private marketplaceProductsStats(rows: Array<Product>) {
+    const plnProducts = rows.filter(({ currency }) => currency === 'PLN');
+    const usdProducts = rows.filter(({ currency }) => currency === 'USD');
+    const eurProducts = rows.filter(({ currency }) => currency === 'EUR');
+
+    const plnProductsAmount = plnProducts.length;
+    const usdProductsAmount = usdProducts.length;
+    const eurProductsAmount = eurProducts.length;
+
+    let plnProductsAvgAmount = 0;
+    let usdProductsAvgAmount = 0;
+    let eurProductsAvgAmount = 0;
+    let plnMinPrice = 0;
+    let plnMaxPrice = 0;
+    let usdMinPrice = 0;
+    let usdMaxPrice = 0;
+    let eurMinPrice = 0;
+    let eurMaxPrice = 0;
+
+    if (plnProductsAmount > 0) {
+      plnProductsAvgAmount =
+        plnProducts.map((p) => p.price).reduce((a, b) => a + b) /
+        plnProductsAmount;
+      plnMinPrice = Math.min(...plnProducts.map((p) => p.price));
+      plnMaxPrice = Math.max(...plnProducts.map((p) => p.price));
+    }
+
+    if (usdProductsAmount > 0) {
+      usdProductsAvgAmount =
+        usdProducts.map((p) => p.price).reduce((a, b) => a + b) /
+        usdProductsAmount;
+      usdMinPrice = Math.min(...usdProducts.map((p) => p.price));
+      usdMaxPrice = Math.max(...usdProducts.map((p) => p.price));
+    }
+
+    if (eurProductsAmount > 0) {
+      eurProductsAvgAmount =
+        eurProducts.map((p) => p.price).reduce((a, b) => a + b) /
+        eurProductsAmount;
+      eurMinPrice = Math.min(...eurProducts.map((p) => p.price));
+      eurMaxPrice = Math.max(...eurProducts.map((p) => p.price));
+    }
+
+    return {
+      plnProductsAmount,
+      usdProductsAmount,
+      eurProductsAmount,
+      plnProductsAvgAmount,
+      usdProductsAvgAmount,
+      eurProductsAvgAmount,
+      plnMinPrice,
+      plnMaxPrice,
+      usdMinPrice,
+      usdMaxPrice,
+      eurMinPrice,
+      eurMaxPrice
+    };
+  }
+
+  private async checkForUserProductManagementPermissions({
+    postOnBehalfOfCompany,
+    userId,
+    trx
+  }: CheckForProductPermissionsInterface) {
+    let productPostedOnBehalfOfCompany = false;
+
+    const company = await this.companyService.getCompanyByUserId({
+      userId,
+      trx
+    });
+
+    if (!company && postOnBehalfOfCompany) {
+      throw new UserNotMemberException();
+    } else if (company && postOnBehalfOfCompany) {
+      const companyUserId = company.companyUsers.find(
+        (user) => user.userId === userId
+      ).id;
+      const { roleScopes } = await this.companyService.getCompanyUserRole({
+        companyUserId,
+        trx
+      });
+
+      if (!roleScopes.includes(Roles.PRODUCT_MANAGEMENT)) {
+        throw new ForbiddenResourceException();
+      } else {
+        productPostedOnBehalfOfCompany = true;
+      }
+    }
+
+    return productPostedOnBehalfOfCompany;
   }
 
   private generateProductSlug(productName: string) {

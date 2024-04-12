@@ -5,7 +5,6 @@
   "managePersonalSettings": "Zarządzaj swoimi danymi osobowymi",
   "securitySettings": "Ustawienia bezpieczeństwa",
   "manageSecuritySettings": "Zarządzaj ustawieniami bezpieczeństwa swojego konta",
-  "companySettings": "Ustawienia firmy",
   "manageCompanySettings": "Zarządzaj i przeglądaj członków swojej firmy oraz ustawienia",
   "securitySettingsRules": {
     "title": "Zarządzaj ustawieniami bezpieczeństwa swojego konta i upewnij się, że jest ono zabezpieczone",
@@ -73,7 +72,6 @@
     "roleHeader": "Rola",
     "confirmedHeader": "Potwierdzenie",
     "moreInfoUserButtonHeader": "Więcej",
-    "usersPerPage": "Użytkownicy na stronę",
     "inviteUser": "Zaproś użytkownika(-ów)",
     "inviteUserModalHeader": "Zaproś użytkownika(-ów) do firmy",
     "inviteUserModalDesc": "Poniżej znajdziesz pole wejściowe, w którym możesz zaprosić użytkownika w swojej firmie. Aby to zrobić, podaj adres e-mail i naciśnij spację, aby dodać użytkownika do listy. Możesz albo usunąć użytkownika z listy zmian ich rolę. Gdy już wszystko zostanie podane, naciśnij przycisk Zaproszenie.",
@@ -98,7 +96,21 @@
     "roleDescHeader": "Opis",
     "roleMoreInfoHeader": "Więcej informacji",
     "roleDeletionRule": "Jeśli chcesz usunąć rolę, będziesz musiał odebrać tę rolę każdemu użytkownikowi w firmie. Gdy to zrobisz, rola zostanie automatycznie usunięta.",
+    "primaryAdminRole": "Podstawowej roli administratora nie można usunąć, tę rolę można przenieść i można ją usunąć tylko po usunięciu firmy.",
     "foundCompanyMembers": "Znaleziono członków firmy",
-    "roleWillBeAssigned": "Rola zostanie przypisana następującym osobom"
+    "roleWillBeAssigned": "Rola zostanie przypisana następującym osobom",
+    "readOnlyCompanyInfo": "Nie możesz zarządzać informacjami o firmie. Jeśli uważasz, że tak nie powinno być, skontaktuj się z właścicielem lub administratorem swojej firmy.",
+    "readOnlyCompanyUsers": "Nie możesz zarządzać i/lub zapraszać użytkowników firmy. Jeśli uważasz, że tak nie powinno być, skontaktuj się z właścicielem lub administratorem swojej firmy.",
+    "readOnlyCompanyRoles": "Nie możesz zarządzać i/lub modyfikować ról firmy. Jeśli uważasz, że tak nie powinno być, skontaktuj się z właścicielem lub administratorem swojej firmy."
+  },
+  "defaultRoles": {
+    "DEFAULT": "Domyślna",
+    "ADMIN": "Administrator",
+    "PRIMARY_ADMIN": "Główny administrator"
+  },
+  "defaultRolesDesc": {
+    "primary_admin_desc": "Właściciel konta firmowego.",
+    "admin_desc": "Domyślny administrator konta firmowego.",
+    "default_desc": "Rola domyślnego użytkownika."
   }
 }

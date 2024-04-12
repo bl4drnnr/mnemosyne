@@ -6,8 +6,6 @@ import { RoleGuard } from '@guards/role.guard';
 import { RolesService } from '@modules/roles.service';
 import { CreateCompanyRoleDto } from '@dto/create-company-role.dto';
 import { UpdateCompanyRoleDto } from '@dto/update-company-role.dto';
-import { AssignRoleDto } from '@dto/assign-role.dto';
-import { RevokeRoleDto } from '@dto/revoke-role.dto';
 
 dotenv.config({ path: '.env.test' });
 
@@ -26,9 +24,6 @@ describe('RolesController', () => {
       return;
     }),
     assignRoleToUser: jest.fn().mockImplementation(() => {
-      return;
-    }),
-    revokeUserRole: jest.fn().mockImplementation(() => {
       return;
     })
   };
@@ -102,38 +97,6 @@ describe('RolesController', () => {
       await controller.updateCompanyRole(companyId, payload, trx);
 
       expect(rolesService.updateCompanyRole).toHaveBeenCalledWith({
-        companyId,
-        payload,
-        trx
-      });
-    }, 20000);
-  });
-
-  describe('assignRoleToUser', () => {
-    it('Should call assignRoleToUser method with correct parameters', async () => {
-      const companyId = 'test-company-id';
-      const payload: AssignRoleDto = {};
-      const trx: any = {};
-
-      await controller.assignRoleToUser(companyId, payload, trx);
-
-      expect(rolesService.assignRoleToUser).toHaveBeenCalledWith({
-        companyId,
-        payload,
-        trx
-      });
-    }, 20000);
-  });
-
-  describe('revokeUserRole', () => {
-    it('Should call revokeUserRole method with correct parameters', async () => {
-      const companyId = 'test-company-id';
-      const payload: RevokeRoleDto = {};
-      const trx: any = {};
-
-      await controller.revokeUserRole(companyId, payload, trx);
-
-      expect(rolesService.revokeUserRole).toHaveBeenCalledWith({
         companyId,
         payload,
         trx

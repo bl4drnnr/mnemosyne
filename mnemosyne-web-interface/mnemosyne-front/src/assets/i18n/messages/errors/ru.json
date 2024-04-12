@@ -65,7 +65,8 @@
     "wrong-product-contact-person-length": "Неправильная длина контактного лица по продукту",
     "wrong-product-location-format": "Неправильный формат расположения продукта",
     "wrong-product-location-length": "Неправильная длина расположения продукта",
-    "wrong-product-price-format": "Неправильный формат цены продукта"
+    "wrong-product-price-format": "Неправильный формат цены продукта",
+    "wrong-invited-users-list": "Неправильный список приглашенных пользователей"
   },
   "wrong-timeframe": "Неверный таймфрейм",
   "invalid-recovery-keys": "Недействительные ключи восстановления",
@@ -88,5 +89,6 @@
   "subcategory-not-found": "Подкатегория не найдена",
   "wrong-currency": "Неправильная валюта",
   "user-not-logged-in": "Пользователь не вошел в систему",
-  "product-already-in-favorites": "Товар уже добавлен в избранное"
+  "product-already-in-favorites": "Товар уже добавлен в избранное",
+  "user-not-found": "Пользователь не найден"
 }

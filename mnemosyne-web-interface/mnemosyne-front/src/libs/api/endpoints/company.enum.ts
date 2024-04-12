@@ -4,5 +4,6 @@ export enum CompanyEndpoint {
   UPDATE_COMPANY_INFORMATION = 'update-company',
   GET_COMPANY_USERS = 'company-users',
   TRANSFER_OWNERSHIP = 'transfer-ownership',
-  DELETE_COMPANY = 'delete-company'
+  DELETE_COMPANY = 'delete-company',
+  COMPANY_PUBLIC_INFORMATION = 'company-public-information'
 }

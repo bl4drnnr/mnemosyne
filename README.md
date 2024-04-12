@@ -63,7 +63,7 @@ ALLOWED_ENDPOINTS_SECURITY=registration-generate-2fa-qr,login-generate-2fa-qr,ge
 ALLOWED_ENDPOINTS_USERS=forgot-password,upload-user-photo,user-info,user-security,user-info
 ALLOWED_ENDPOINTS_COMPANY=create-company,company-information,delete-company,update-company,company-users,transfer-ownership
 ALLOWED_ENDPOINTS_COMPANY_USERS=invite-user,company-member-info,delete-company-member,search-company-members
-ALLOWED_ENDPOINTS_ROLES=create-role,update-role,assign-role,get-company-roles
+ALLOWED_ENDPOINTS_ROLES=create-role,update-role,get-company-roles
 
 ALLOWED_CONTROLLERS=auth,security,confirmation-hash,users,recovery,company,company-users,roles
 

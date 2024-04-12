@@ -65,7 +65,8 @@
     "wrong-product-contact-person-length": "Niewłaściwa długość osoby kontaktowej produktu",
     "wrong-product-location-format": "Niewłaściwy format lokalizacji produktu",
     "wrong-product-location-length": "Niewłaściwa długość lokalizacji produktu",
-    "wrong-product-price-format": "Niewłaściwy format ceny produktu"
+    "wrong-product-price-format": "Niewłaściwy format ceny produktu",
+    "wrong-invited-users-list": "Niewłaściwa lista zaproszonych użytkowników"
   },
   "wrong-timeframe": "Niewłaściwy przedział czasowy",
   "invalid-recovery-keys": "Nieprawidłowe klucze odzyskiwania",
@@ -88,5 +89,6 @@
   "subcategory-not-found": "Nie znaleziono podkategorii",
   "wrong-currency": "Zła waluta",
   "user-not-logged-in": "Użytkownik niezalogowany",
-  "product-already-in-favorites": "Produkt został już dodany do ulubionych"
+  "product-already-in-favorites": "Produkt został już dodany do ulubionych",
+  "user-not-found": "Użytkownik nie został znaleziony"
 }

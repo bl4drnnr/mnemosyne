@@ -1,13 +1,30 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { DocsProperty } from '@interfaces/docs-property.enum';
+import { RoleScope } from '@custom-types/role-scope.type';
+
+interface UserInfoResponse {
+  userIdHash: string;
+  firstName: string;
+  lastName: string;
+  namePronunciation: string | null;
+  homeAddress: string | null;
+  homePhone: string | null;
+  email: string;
+  isProfilePicPresent: boolean;
+  isCompanyMember: boolean;
+  companyName: string | null;
+  companyId: string | null;
+  roleName: string | null;
+  roleScopes: Array<RoleScope> | null;
+}
 
 export class GetUserInfoResponseDto {
   @ApiProperty({
     type: String,
-    description: DocsProperty.USER_ID_DESC,
-    example: DocsProperty.USER_ID_EXAMPLE
+    description: DocsProperty.USER_HASH_DESC,
+    example: DocsProperty.USER_HASH_EXAMPLE
   })
-  readonly userId: string;
+  readonly userIdHash: string;
 
   @ApiProperty({
     type: String,
@@ -65,8 +82,37 @@ export class GetUserInfoResponseDto {
   })
   readonly isCompanyMember: boolean;
 
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_NAME_DESC,
+    example: DocsProperty.COMPANY_NAME_EXAMPLE
+  })
+  readonly companyName: string | null;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_ID_DESC,
+    example: DocsProperty.COMPANY_ID_EXAMPLE
+  })
+  readonly companyId: string | null;
+
+  @ApiProperty({
+    type: String,
+    description: DocsProperty.COMPANY_ROLE_NAME_DESC,
+    example: DocsProperty.COMPANY_ROLE_NAME_EXAMPLE
+  })
+  readonly roleName: string | null;
+
+  @ApiProperty({
+    type: Array<RoleScope>,
+    description: DocsProperty.COMPANY_ROLE_SCOPES_DESC,
+    example: [DocsProperty.COMPANY_ROLE_SCOPE_EXAMPLE],
+    isArray: true
+  })
+  readonly roleScopes: Array<RoleScope> | null;
+
   constructor({
-    userId,
+    userIdHash,
     firstName,
     lastName,
     namePronunciation,
@@ -74,19 +120,13 @@ export class GetUserInfoResponseDto {
     homePhone,
     email,
     isProfilePicPresent,
-    isCompanyMember
-  }: {
-    userId: string;
-    firstName: string;
-    lastName: string;
-    namePronunciation: string | null;
-    homeAddress: string | null;
-    homePhone: string | null;
-    email: string;
-    isProfilePicPresent: boolean;
-    isCompanyMember: boolean;
-  }) {
-    this.userId = userId;
+    isCompanyMember,
+    companyName,
+    companyId,
+    roleName,
+    roleScopes
+  }: UserInfoResponse) {
+    this.userIdHash = userIdHash;
     this.firstName = firstName;
     this.lastName = lastName;
     this.namePronunciation = namePronunciation;
@@ -95,5 +135,9 @@ export class GetUserInfoResponseDto {
     this.email = email;
     this.isProfilePicPresent = isProfilePicPresent;
     this.isCompanyMember = isCompanyMember;
+    this.companyName = companyName;
+    this.companyId = companyId;
+    this.roleName = roleName;
+    this.roleScopes = roleScopes;
   }
 }

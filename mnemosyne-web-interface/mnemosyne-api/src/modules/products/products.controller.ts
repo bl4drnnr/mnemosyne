@@ -16,6 +16,7 @@ import {
   ApiBearerAuth,
   ApiBody,
   ApiExtraModels,
+  ApiForbiddenResponse,
   ApiNotFoundResponse,
   ApiOperation,
   ApiQuery,
@@ -34,6 +35,9 @@ import { DeleteProductDto } from '@dto/delete-product.dto';
 import { DeleteProductsFromFavoritesDto } from '@dto/delete-products-from-favorites.dto';
 import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
 import { UserInterceptor } from '@interceptors/user.interceptor';
+import { Roles } from '@decorators/roles.decorator';
+import { RoleGuard } from '@guards/role.guard';
+import { CompanyId } from '@decorators/company-id.decorator';
 
 @ApiTags('Products')
 @Controller('products')
@@ -80,6 +84,11 @@ export class ProductsController {
   @ApiQuery(ProductsDocs.SearchProduct.ApiCurrencyQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiCategoryQuery)
   @ApiQuery(ProductsDocs.SearchProduct.ApiSubcategoryQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiCompanyProductsQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiPrivateProductsQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiMarketplaceUserIdQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiMarketplaceCompanyIdQuery)
+  @ApiQuery(ProductsDocs.SearchProduct.ApiCompanyExtendedQuery)
   @ApiBasicAuth('basicAuth')
   @UseInterceptors(UserInterceptor)
   @Get('search-product')
@@ -94,6 +103,11 @@ export class ProductsController {
     @Query('currency') currency: string,
     @Query('categories') categories: string,
     @Query('subcategories') subcategories: string,
+    @Query('companyProducts') companyProducts: string,
+    @Query('privateProducts') privateProducts: string,
+    @Query('marketplaceUserId') marketplaceUserId: string,
+    @Query('marketplaceCompanyId') marketplaceCompanyId: string,
+    @Query('companyExtended') companyExtended: string,
     @UserId() userId: string | undefined,
     @TrxDecorator() trx: Transaction
   ) {
@@ -108,6 +122,11 @@ export class ProductsController {
       currency,
       categories,
       subcategories,
+      companyProducts,
+      privateProducts,
+      marketplaceUserId,
+      marketplaceCompanyId,
+      companyExtended,
       userId,
       trx
     });
@@ -117,6 +136,7 @@ export class ProductsController {
   @ApiExtraModels(...ProductsDocs.CreateProduct.ApiExtraModels)
   @ApiResponse(ProductsDocs.CreateProduct.ApiResponse)
   @ApiBadRequestResponse(ProductsDocs.CreateProduct.ApiBadRequestResponse)
+  @ApiForbiddenResponse(ProductsDocs.CreateProduct.ApiForbiddenResponse)
   @ApiBody(ProductsDocs.CreateProduct.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
@@ -139,18 +159,24 @@ export class ProductsController {
   @ApiExtraModels(...ProductsDocs.GetProductBySlugToEdit.ApiExtraModels)
   @ApiResponse(ProductsDocs.GetProductBySlugToEdit.ApiResponse)
   @ApiNotFoundResponse(ProductsDocs.GetProductBySlugToEdit.ApiNotFoundResponse)
+  @ApiQuery(ProductsDocs.GetProductBySlugToEdit.ApiSlugQuery)
+  @ApiQuery(ProductsDocs.GetProductBySlugToEdit.ApiCompanyEditQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
   @Get('get-product-by-slug-to-edit')
   getProductBySlugToEdit(
+    @CompanyId() companyId: string,
     @UserId() userId: string,
     @Query('slug') slug: string,
+    @Query('companyEdit') companyEdit: string,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.getProductBySlugToEdit({
+      companyId,
       userId,
       slug,
+      companyEdit,
       trx
     });
   }
@@ -158,6 +184,8 @@ export class ProductsController {
   @ApiOperation(ProductsDocs.UpdateProduct.ApiOperation)
   @ApiExtraModels(...ProductsDocs.UpdateProduct.ApiExtraModels)
   @ApiResponse(ProductsDocs.UpdateProduct.ApiResponse)
+  @ApiBadRequestResponse(ProductsDocs.UpdateProduct.ApiBadRequestResponse)
+  @ApiForbiddenResponse(ProductsDocs.UpdateProduct.ApiForbiddenResponse)
   @ApiNotFoundResponse(ProductsDocs.UpdateProduct.ApiNotFoundResponse)
   @ApiBody(ProductsDocs.UpdateProduct.ApiBody)
   @ApiBasicAuth('basicAuth')
@@ -166,11 +194,13 @@ export class ProductsController {
   @UseGuards(AuthGuard)
   @Patch('update-product')
   updateProduct(
+    @CompanyId() companyId: string,
     @UserId() userId: string,
     @Body() payload: PostProductDto,
     @TrxDecorator() trx: Transaction
   ) {
     return this.productsService.updateProduct({
+      companyId,
       userId,
       payload,
       trx
@@ -232,13 +262,40 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.DeleteProductFromFavoritesDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.DeleteProductFromFavoritesDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.DeleteProductFromFavoritesDocs.ApiResponse)
-  @ApiNotFoundResponse(
-    ProductsDocs.DeleteProductFromFavoritesDocs.ApiNotFoundResponse
+  @ApiOperation(ProductsDocs.DeleteCompanyProduct.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.DeleteCompanyProduct.ApiExtraModels)
+  @ApiResponse(ProductsDocs.DeleteCompanyProduct.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.DeleteCompanyProduct.ApiNotFoundResponse)
+  @ApiBadRequestResponse(
+    ProductsDocs.DeleteCompanyProduct.ApiBadRequestResponse
   )
-  @ApiBody(ProductsDocs.DeleteProductFromFavoritesDocs.ApiBody)
+  @ApiForbiddenResponse(ProductsDocs.DeleteCompanyProduct.ApiForbiddenResponse)
+  @ApiBody(ProductsDocs.DeleteCompanyProduct.ApiBody)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @UseGuards(AuthGuard)
+  @Delete('company-product')
+  deleteCompanyProduct(
+    @CompanyId() companyId: string,
+    @UserId() userId: string,
+    @Body() payload: DeleteProductDto,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.deleteCompanyProduct({
+      companyId,
+      userId,
+      payload,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.DeleteProductFromFavorites.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.DeleteProductFromFavorites.ApiExtraModels)
+  @ApiResponse(ProductsDocs.DeleteProductFromFavorites.ApiResponse)
+  @ApiNotFoundResponse(
+    ProductsDocs.DeleteProductFromFavorites.ApiNotFoundResponse
+  )
+  @ApiBody(ProductsDocs.DeleteProductFromFavorites.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -255,16 +312,14 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.AddProductToFavoritesDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.AddProductToFavoritesDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.AddProductToFavoritesDocs.ApiResponse)
-  @ApiNotFoundResponse(
-    ProductsDocs.AddProductToFavoritesDocs.ApiNotFoundResponse
-  )
+  @ApiOperation(ProductsDocs.AddProductToFavorites.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.AddProductToFavorites.ApiExtraModels)
+  @ApiResponse(ProductsDocs.AddProductToFavorites.ApiResponse)
+  @ApiNotFoundResponse(ProductsDocs.AddProductToFavorites.ApiNotFoundResponse)
   @ApiBadRequestResponse(
-    ProductsDocs.AddProductToFavoritesDocs.ApiBadRequestResponse
+    ProductsDocs.AddProductToFavorites.ApiBadRequestResponse
   )
-  @ApiBody(ProductsDocs.AddProductToFavoritesDocs.ApiBody)
+  @ApiBody(ProductsDocs.AddProductToFavorites.ApiBody)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -281,17 +336,17 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.GetUserFavoritesProductsDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.GetUserFavoritesProductsDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.GetUserFavoritesProductsDocs.ApiResponse)
+  @ApiOperation(ProductsDocs.GetUserFavoritesProducts.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetUserFavoritesProducts.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetUserFavoritesProducts.ApiResponse)
   @ApiBadRequestResponse(
-    ProductsDocs.GetUserFavoritesProductsDocs.ApiBadRequestResponse
+    ProductsDocs.GetUserFavoritesProducts.ApiBadRequestResponse
   )
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiProductQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageSizeQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiPageQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderQuery)
-  @ApiQuery(ProductsDocs.GetUserFavoritesProductsDocs.ApiOrderByQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiProductQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiPageSizeQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiPageQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiOrderQuery)
+  @ApiQuery(ProductsDocs.GetUserFavoritesProducts.ApiOrderByQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -316,10 +371,10 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.GetProductContactEmailDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.GetProductContactEmailDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.GetProductContactEmailDocs.ApiResponse)
-  @ApiQuery(ProductsDocs.GetProductContactEmailDocs.ApiProductIdQuery)
+  @ApiOperation(ProductsDocs.GetProductContactEmail.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactEmail.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactEmail.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactEmail.ApiProductIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -334,10 +389,10 @@ export class ProductsController {
     });
   }
 
-  @ApiOperation(ProductsDocs.GetProductContactPhoneDocs.ApiOperation)
-  @ApiExtraModels(...ProductsDocs.GetProductContactPhoneDocs.ApiExtraModels)
-  @ApiResponse(ProductsDocs.GetProductContactPhoneDocs.ApiResponse)
-  @ApiQuery(ProductsDocs.GetProductContactPhoneDocs.ApiProductIdQuery)
+  @ApiOperation(ProductsDocs.GetProductContactPhone.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetProductContactPhone.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetProductContactPhone.ApiResponse)
+  @ApiQuery(ProductsDocs.GetProductContactPhone.ApiProductIdQuery)
   @ApiBasicAuth('basicAuth')
   @ApiBearerAuth('x-access-token')
   @UseGuards(AuthGuard)
@@ -348,6 +403,70 @@ export class ProductsController {
   ) {
     return this.productsService.getProductContactPhone({
       productId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetMarketplaceUserStats.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetMarketplaceUserStats.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetMarketplaceUserStats.ApiResponse)
+  @ApiQuery(ProductsDocs.GetMarketplaceUserStats.ApiMarketplaceUserIdQuery)
+  @ApiBasicAuth('basicAuth')
+  @Get('marketplace-user-statistics')
+  getMarketplaceUserStatistics(
+    @Query('marketplaceUserId') marketplaceUserId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getMarketplaceUserStatistics({
+      marketplaceUserId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetMarketplaceCompanyStats.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetMarketplaceCompanyStats.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetMarketplaceCompanyStats.ApiResponse)
+  @ApiQuery(
+    ProductsDocs.GetMarketplaceCompanyStats.ApiMarketplaceCompanyIdQuery
+  )
+  @ApiBasicAuth('basicAuth')
+  @Get('marketplace-company-statistics')
+  getCompanyProductsStatistics(
+    @Query('companyId') companyId: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getCompanyProductsStatistics({
+      companyId,
+      trx
+    });
+  }
+
+  @ApiOperation(ProductsDocs.GetCompanyInternalStatistics.ApiOperation)
+  @ApiExtraModels(...ProductsDocs.GetCompanyInternalStatistics.ApiExtraModels)
+  @ApiResponse(ProductsDocs.GetCompanyInternalStatistics.ApiResponse)
+  @ApiNotFoundResponse(
+    ProductsDocs.GetCompanyInternalStatistics.ApiNotFoundResponse
+  )
+  @ApiForbiddenResponse(
+    ProductsDocs.GetCompanyInternalStatistics.ApiForbiddenResponse
+  )
+  @ApiQuery(ProductsDocs.GetCompanyInternalStatistics.ApiMemberQuery)
+  @ApiBasicAuth('basicAuth')
+  @ApiBearerAuth('x-access-token')
+  @Roles('PRODUCT_MANAGEMENT')
+  @UseGuards(RoleGuard)
+  @UseGuards(AuthGuard)
+  @Get('marketplace-company-internal-statistics')
+  getCompanyInternalStatistics(
+    @CompanyId() companyId: string,
+    @UserId() userId: string,
+    @Query('query') query: string,
+    @TrxDecorator() trx: Transaction
+  ) {
+    return this.productsService.getCompanyInternalStatistics({
+      companyId,
+      userId,
+      query,
       trx
     });
   }

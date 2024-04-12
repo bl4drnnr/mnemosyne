@@ -1,1 +1,4 @@
-export interface AssignCompanyRolePayload {}
+export interface AssignCompanyRolePayload {
+  newRoleId: string;
+  userId: string;
+}

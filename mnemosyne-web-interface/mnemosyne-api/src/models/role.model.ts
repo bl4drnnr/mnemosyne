@@ -18,7 +18,8 @@ import { Scopes } from '@interfaces/role-scopes.enum';
 const roleScopes = [
   Scopes.USER_MANAGEMENT,
   Scopes.ROLES_MANAGEMENT,
-  Scopes.COMPANY_INFORMATION_MANAGEMENT
+  Scopes.COMPANY_INFORMATION_MANAGEMENT,
+  Scopes.PRODUCT_MANAGEMENT
 ];
 
 @Table({ tableName: 'roles' })
@@ -41,10 +42,20 @@ export class Role extends Model<Role> {
   })
   roleScopes: Array<RoleScope>;
 
-  @BelongsToMany(() => CompanyUser, () => UserRole)
+  @BelongsToMany(() => CompanyUser, {
+    through: {
+      model: () => UserRole,
+      unique: false
+    }
+  })
   companyUsers: Array<CompanyUser>;
 
-  @BelongsToMany(() => Company, () => UserRole)
+  @BelongsToMany(() => Company, {
+    through: {
+      model: () => UserRole,
+      unique: false
+    }
+  })
   companies: Array<Company>;
 
   @CreatedAt

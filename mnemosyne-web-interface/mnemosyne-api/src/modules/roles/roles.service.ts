@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { GrantInitRoleInterface } from '@interfaces/grant-init-role.interface';
 import { Role } from '@models/role.model';
@@ -14,22 +14,35 @@ import { UpdateCompanyRoleInterface } from '@interfaces/update-company-role.inte
 import { CompanyRoleUpdatedDto } from '@dto/company-role-updated.dto';
 import { AssignRoleInterface } from '@interfaces/assign-role.interface';
 import { CompanyRoleAssignedDto } from '@dto/company-role-assigned.dto';
-import { RevokeRoleInterface } from '@interfaces/revoke-role.interface';
-import { CompanyRoleRevokedDto } from '@dto/company-role-revoked.dto';
 import { GetCompanyRolesInterface } from '@interfaces/get-company-roles.interface';
 import { Company } from '@models/company.model';
 import { UtilsService } from '@shared/utils.service';
-import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
 import { RoleDoesntExistException } from '@exceptions/role-doesnt-exist.exception';
 import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
+import { GetCompanyRolesDto } from '@dto/get-company-roles.dto';
+import { UpdateUserRoleInterface } from '@interfaces/update-user-role.interface';
+import { GetRoleByIdInterface } from '@interfaces/get-role-by-id.interface';
+import { ChangeCompanyMemberRoleInterface } from '@interfaces/change-company-member-role.interface';
+import { CompanyUsersService } from '@modules/company-users.service';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { CompanyMemberRoleChangedDto } from '@dto/company-member-role-changed.dto';
 
 @Injectable()
 export class RolesService {
   constructor(
     private readonly utilsService: UtilsService,
+    @Inject(forwardRef(() => CompanyUsersService))
+    private readonly companyUsersService: CompanyUsersService,
     @InjectModel(Role) private readonly roleRepository: typeof Role,
     @InjectModel(UserRole) private readonly userRoleRepository: typeof UserRole
   ) {}
+
+  async getRoleById({ id, trx: transaction }: GetRoleByIdInterface) {
+    return await this.roleRepository.findOne({
+      where: { id },
+      transaction
+    });
+  }
 
   async getCompanyRoles({
     companyId,
@@ -43,9 +56,11 @@ export class RolesService {
       transaction
     });
 
-    const roles = allAssignedRoles.map(({ name, description, roleScopes }) => {
-      return { name, description, roleScopes };
-    });
+    const roles = allAssignedRoles.map(
+      ({ id, name, description, roleScopes }) => {
+        return { id, name, description, roleScopes };
+      }
+    );
 
     const companyRoles = this.utilsService.removeDuplicates(roles, 'name');
 
@@ -84,11 +99,21 @@ export class RolesService {
     );
 
     for (const companyUserId of roleAssignees) {
-      await this.userRoleRepository.create({
-        companyId,
-        companyUserId,
-        roleId: createdRole.id
+      await this.userRoleRepository.destroy({
+        where: { companyUserId },
+        transaction
       });
+    }
+
+    for (const companyUserId of roleAssignees) {
+      await this.userRoleRepository.create(
+        {
+          companyId,
+          companyUserId,
+          roleId: createdRole.id
+        },
+        { transaction }
+      );
     }
 
     return new CompanyRoleCreatedDto();
@@ -130,36 +155,71 @@ export class RolesService {
     return new CompanyRoleUpdatedDto();
   }
 
-  assignRoleToUser({ companyId, payload, trx }: AssignRoleInterface) {
-    return new CompanyRoleAssignedDto();
+  async changeCompanyMemberRole({
+    companyId,
+    payload,
+    trx
+  }: ChangeCompanyMemberRoleInterface) {
+    const { newRoleId, userId } = payload;
+
+    const companyUser = await this.companyUsersService.getCompanyUserByUserId({
+      userId,
+      trx
+    });
+
+    if (!companyUser) throw new UserNotFoundException();
+
+    const newRole = await this.roleRepository.findByPk(newRoleId, {
+      transaction: trx
+    });
+
+    if (!newRole) throw new RoleDoesntExistException();
+
+    if (newRole.name === 'PRIMARY_ADMIN') throw new RoleDoesntExistException();
+
+    await this.userRoleRepository.update(
+      {
+        roleId: newRole.id
+      },
+      { where: { companyId, companyUserId: companyUser.id } }
+    );
+
+    return new CompanyMemberRoleChangedDto();
   }
 
-  revokeUserRole({ companyId, payload, trx }: RevokeRoleInterface) {
-    return new CompanyRoleRevokedDto();
+  async assignRoleToUser({
+    companyId,
+    roleId,
+    companyUserId,
+    trx
+  }: AssignRoleInterface) {
+    await this.userRoleRepository.create(
+      {
+        companyId,
+        roleId,
+        companyUserId
+      },
+      { transaction: trx }
+    );
+    return new CompanyRoleAssignedDto();
   }
 
   async getUserRolesByCompanyUserId({
     companyUserId,
     trx: transaction
   }: GetUserRolesByCompanyUserIdInterface) {
-    const userRoles = await this.userRoleRepository.findAll({
+    const userRole = await this.userRoleRepository.findOne({
       where: { companyUserId },
       transaction
     });
 
-    const userRolesIds = userRoles.map(({ roleId }) => roleId);
+    const { name, description, id, roleScopes } =
+      await this.roleRepository.findOne({
+        where: { id: userRole.roleId },
+        transaction
+      });
 
-    const roles = await this.roleRepository.findAll({
-      where: {
-        id: {
-          [Op.in]: userRolesIds
-        }
-      }
-    });
-
-    return roles.map(({ id, name, description }) => {
-      return { name, description, id };
-    });
+    return { name, description, id, roleScopes };
   }
 
   async grantInitRole({
@@ -205,6 +265,20 @@ export class RolesService {
     );
   }
 
+  async updateUserRole({
+    companyUserId,
+    companyId,
+    newRoleId,
+    trx
+  }: UpdateUserRoleInterface) {
+    await this.userRoleRepository.update(
+      {
+        roleId: newRoleId
+      },
+      { where: { companyUserId, companyId }, transaction: trx }
+    );
+  }
+
   private async createInitRole({
     role,
     trx: transaction
@@ -224,27 +298,41 @@ export class RolesService {
       case 'PRIMARY_ADMIN':
         return {
           name: initRole,
-          description: 'The owner of the company account.',
+          description: 'primary_admin_desc',
           roleScopes: [
             Scopes.USER_MANAGEMENT,
             Scopes.ROLES_MANAGEMENT,
-            Scopes.COMPANY_INFORMATION_MANAGEMENT
+            Scopes.COMPANY_INFORMATION_MANAGEMENT,
+            Scopes.PRODUCT_MANAGEMENT
           ]
         };
       case 'ADMIN':
         return {
           name: initRole,
-          description: 'The default administrator of the company account',
+          description: 'admin_desc',
           roleScopes: [
             Scopes.USER_MANAGEMENT,
             Scopes.ROLES_MANAGEMENT,
-            Scopes.COMPANY_INFORMATION_MANAGEMENT
+            Scopes.COMPANY_INFORMATION_MANAGEMENT,
+            Scopes.PRODUCT_MANAGEMENT
           ]
         };
       case 'DEFAULT':
         return {
           name: initRole,
-          description: 'The role of the default user',
+          description: 'default_desc',
+          roleScopes: []
+        };
+      case 'PRODUCT_MANAGEMENT':
+        return {
+          name: initRole,
+          description: 'product_management_desc',
+          roleScopes: [Scopes.PRODUCT_MANAGEMENT]
+        };
+      default:
+        return {
+          name: initRole,
+          description: 'default_desc',
           roleScopes: []
         };
     }

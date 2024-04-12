@@ -8,6 +8,7 @@ export class GetCompanyRolesDto {
     description: DocsProperty.COMPANY_ROLES_DESC,
     example: [
       {
+        id: DocsProperty.COMPANY_ROLE_ID_EXAMPLE,
         name: DocsProperty.COMPANY_ROLE_NAME_EXAMPLE,
         description: DocsProperty.COMPANY_ROLE_DESC_EXAMPLE,
         roleScope: [DocsProperty.COMPANY_ROLE_SCOPE_EXAMPLE]

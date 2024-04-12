@@ -27,6 +27,18 @@ import { AddProductToFavoritesDto } from '@dto/add-product-to-favorites.dto';
 import { UserFavoriteProductsDto } from '@dto/user-favorite-products.dto';
 import { GetProductContactEmailDto } from '@dto/get-product-contact-email.dto';
 import { GetProductContactPhoneDto } from '@dto/get-product-contact-phone.dto';
+import { GetMarketplaceUserStatsDto } from '@dto/get-marketplace-user-stats.dto';
+import { UserNotMemberException } from '@exceptions/user-not-member.exception';
+import { ForbiddenResourceException } from '@exceptions/forbidden-resource.exception';
+import { GetMarketplaceCompanyStatsDto } from '@dto/get-marketplace-company.stats.dto';
+import { CompanyNotFoundException } from '@exceptions/company-not-found.exception';
+import { GetCompanyInternalStatsDto } from '@dto/get-company-internal-stats.dto';
+import { CompanyProductDeletedDto } from '@dto/company-product-deleted.dto';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { HashNotFoundException } from '@exceptions/hash-not-found.exception';
+import { RoleAlreadyExistsException } from '@exceptions/role-already-exists.exception';
+import { AccountAlreadyConfirmedException } from '@exceptions/account-already-confirmed.exception';
+import { CreateCompanyDto } from '@dto/create-company.dto';
 
 export abstract class ProductsDocs {
   static get GetProductBySlug() {
@@ -122,6 +134,12 @@ export abstract class ProductsDocs {
     const currencyQueryDesc = 'Product currency';
     const categoryQueryDesc = 'Products categories';
     const subcategoryQueryDesc = 'Products subcategories';
+    const companyProductsQueryDesc = 'Company products flag';
+    const privateProductsQueryDesc = 'Private products flag';
+    const marketplaceUserIdQueryDesc = 'Marketplace user ID (or just user ID)';
+    const marketplaceCompanyIdQueryDesc =
+      'Marketplace company ID (or just company ID)';
+    const companyExtendedQueryDesc = 'Company extended information flag';
 
     const productQuery = {
       description: productQueryDesc,
@@ -193,6 +211,41 @@ export abstract class ProductsDocs {
       required: false
     };
 
+    const companyProductsQuery = {
+      description: companyProductsQueryDesc,
+      name: 'companyProducts',
+      type: String,
+      required: false
+    };
+
+    const privateProductsQuery = {
+      description: privateProductsQueryDesc,
+      name: 'privateProducts',
+      type: String,
+      required: false
+    };
+
+    const marketplaceUserIdQuery = {
+      description: marketplaceUserIdQueryDesc,
+      name: 'marketplaceUserId',
+      type: String,
+      required: false
+    };
+
+    const marketplaceCompanyIdQuery = {
+      description: marketplaceCompanyIdQueryDesc,
+      name: 'marketplaceCompanyId',
+      type: String,
+      required: false
+    };
+
+    const companyExtendedQuery = {
+      description: companyExtendedQueryDesc,
+      name: 'companyExtended',
+      type: String,
+      required: false
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -218,12 +271,24 @@ export abstract class ProductsDocs {
       ApiMaxPriceQuery: maxPriceQuery,
       ApiCurrencyQuery: currencyQuery,
       ApiCategoryQuery: categoryQuery,
-      ApiSubcategoryQuery: subcategoryQuery
+      ApiSubcategoryQuery: subcategoryQuery,
+      ApiCompanyProductsQuery: companyProductsQuery,
+      ApiPrivateProductsQuery: privateProductsQuery,
+      ApiMarketplaceUserIdQuery: marketplaceUserIdQuery,
+      ApiMarketplaceCompanyIdQuery: marketplaceCompanyIdQuery,
+      ApiCompanyExtendedQuery: companyExtendedQuery
     };
   }
 
   static get CreateProduct() {
-    const ApiModels = [PostProductDto, ProductPostedDto, WrongPictureException];
+    const ApiModels = [
+      PostProductDto,
+      ProductPostedDto,
+      WrongPictureException,
+      UserNotMemberException,
+      ForbiddenResourceException
+    ];
+    const BadRequests = [WrongPictureException, UserNotMemberException];
 
     const apiOperationSum =
       'Endpoint is responsible for the creation of the product on the marketplace.';
@@ -233,6 +298,8 @@ export abstract class ProductsDocs {
       'Body contains all needed fields in order to create a product.';
     const apiBadRequestRespDesc =
       'If user tries to upload something else except of base64-encoded PNG picture.';
+    const apiForbiddenRespDesc =
+      'Forbidden request is thrown in case if user who has no access is trying to post a product on behalf of a company.';
 
     return {
       ApiOperation: { summary: apiOperationSum },
@@ -244,7 +311,11 @@ export abstract class ProductsDocs {
       },
       ApiBadRequestResponse: {
         description: apiBadRequestRespDesc,
-        schema: { $ref: getSchemaPath(WrongPictureException) }
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
       },
       ApiBody: {
         type: PostProductDto,
@@ -264,6 +335,25 @@ export abstract class ProductsDocs {
     const apiNotFoundDesc =
       'In case if the slug of the product has not been found, user gets this error message.';
 
+    const slugQueryDesc =
+      'Slug that is used in order to get the product by slug.';
+    const companyEditQueryDesc =
+      'Flag that describes whether a product can be edited as a company one.';
+
+    const slugQuery = {
+      description: slugQueryDesc,
+      name: 'slug',
+      type: String,
+      required: true
+    };
+
+    const companyEditQuery = {
+      description: companyEditQueryDesc,
+      name: 'companyEdit',
+      type: String,
+      required: false
+    };
+
     return {
       ApiOperation: { summary: apiOperationSum },
       ApiExtraModels: ApiModels,
@@ -275,7 +365,9 @@ export abstract class ProductsDocs {
       ApiNotFoundResponse: {
         description: apiNotFoundDesc,
         schema: { $ref: getSchemaPath(ProductNotFoundException) }
-      }
+      },
+      ApiSlugQuery: slugQuery,
+      ApiCompanyEditQuery: companyEditQuery
     };
   }
 
@@ -285,12 +377,14 @@ export abstract class ProductsDocs {
       ProductUpdatedDto,
       WrongPictureException,
       CategoryNotFoundException,
-      PostProductDto
+      PostProductDto,
+      UserNotMemberException
     ];
     const NotFoundRequests = [
       ProductNotFoundException,
       CategoryNotFoundException
     ];
+    const BadRequests = [WrongPictureException, UserNotMemberException];
 
     const apiOperationSum = 'Endpoint is responsible for a product update.';
     const apiResponseDesc =
@@ -299,6 +393,10 @@ export abstract class ProductsDocs {
       'Body contains all needed fields in order to create a product.';
     const apiNotFoundDesc =
       'Not found exception is thrown in case if product category or product itself is not found.';
+    const apiBadRequestRespDesc =
+      'If user tries to upload something else except of base64-encoded PNG picture.';
+    const apiForbiddenRespDesc =
+      'Forbidden request is thrown in case if user who has no access is trying to post a product on behalf of a company.';
 
     return {
       ApiOperation: { summary: apiOperationSum },
@@ -307,6 +405,14 @@ export abstract class ProductsDocs {
         status: 201,
         description: apiResponseDesc,
         schema: { $ref: getSchemaPath(ProductUpdatedDto) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { oneOf: refs(...BadRequests) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
       },
       ApiNotFoundResponse: {
         description: apiNotFoundDesc,
@@ -440,7 +546,64 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get DeleteProductFromFavoritesDocs() {
+  static get DeleteCompanyProduct() {
+    const ApiModels = [
+      DeleteProductDto,
+      CompanyProductDeletedDto,
+      WrongDeletionConfirmationException,
+      ProductNotFoundException,
+      UserNotFoundException,
+      CompanyNotFoundException,
+      ForbiddenResourceException
+    ];
+
+    const NotFound = [
+      ProductNotFoundException,
+      UserNotFoundException,
+      CompanyNotFoundException
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for deletion of the product on behalf on company.';
+    const apiResponseDesc =
+      'As a response user gets a message with information that company product has been deleted.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if either product, user or company not found.';
+    const apiBadRequestRespDesc =
+      'Bad request error is thrown in case if user provides the wrong first and last name.';
+    const apiForbiddenRespDesc =
+      'Forbidden error is thrown in case if user has no access.';
+    const apiBodyDesc = 'Body contains user full name along with product ID.';
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 201,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(CompanyProductDeletedDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { oneOf: refs(...NotFound) }
+      },
+      ApiBadRequestResponse: {
+        description: apiBadRequestRespDesc,
+        schema: { $ref: getSchemaPath(WrongDeletionConfirmationException) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
+      },
+      ApiBody: {
+        type: DeleteProductDto,
+        description: apiBodyDesc,
+        schema: { $ref: getSchemaPath(DeleteProductDto) }
+      } as ApiBodyOptions
+    };
+  }
+
+  static get DeleteProductFromFavorites() {
     const ApiModels = [
       DeleteProductsFromFavoritesDto,
       ProductDeletedFromFavoritesDto,
@@ -475,7 +638,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get AddProductToFavoritesDocs() {
+  static get AddProductToFavorites() {
     const ApiModels = [
       AddProductToFavoritesDto,
       ProductAddedToFavoritesDto,
@@ -517,7 +680,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get GetUserFavoritesProductsDocs() {
+  static get GetUserFavoritesProducts() {
     const ApiModels = [
       ParseException,
       OrderException,
@@ -595,7 +758,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get GetProductContactEmailDocs() {
+  static get GetProductContactEmail() {
     const ApiModels = [GetProductContactEmailDto];
 
     const apiOperationSum =
@@ -623,7 +786,7 @@ export abstract class ProductsDocs {
     };
   }
 
-  static get GetProductContactPhoneDocs() {
+  static get GetProductContactPhone() {
     const ApiModels = [GetProductContactPhoneDto];
 
     const apiOperationSum =
@@ -648,6 +811,115 @@ export abstract class ProductsDocs {
         schema: { $ref: getSchemaPath(GetProductContactEmailDto) }
       },
       ApiProductIdQuery: productIdQuery
+    };
+  }
+
+  static get GetMarketplaceUserStats() {
+    const ApiModels = [GetMarketplaceUserStatsDto];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting marketplace user statistics.';
+    const apiResponseDesc =
+      'As a response user gets a couple of different numbers about all user products.';
+
+    const marketplaceUserIdQueryDesc = 'Marketplace user ID (or just user ID)';
+
+    const marketplaceUserIdQuery = {
+      description: marketplaceUserIdQueryDesc,
+      name: 'marketplaceUserId',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetMarketplaceUserStatsDto) }
+      },
+      ApiMarketplaceUserIdQuery: marketplaceUserIdQuery
+    };
+  }
+
+  static get GetMarketplaceCompanyStats() {
+    const ApiModels = [GetMarketplaceCompanyStatsDto, CompanyNotFoundException];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting marketplace company statistics.';
+    const apiResponseDesc =
+      'As a response user gets a couple of different numbers about all company products.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if company ID has been modified and company not found.';
+
+    const marketplaceCompanyIdQueryDesc = 'Company ID';
+
+    const marketplaceCompanyIdQuery = {
+      description: marketplaceCompanyIdQueryDesc,
+      name: 'companyId',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(CompanyNotFoundException) }
+      },
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetMarketplaceCompanyStatsDto) }
+      },
+      ApiMarketplaceCompanyIdQuery: marketplaceCompanyIdQuery
+    };
+  }
+
+  static get GetCompanyInternalStatistics() {
+    const ApiModels = [
+      CompanyNotFoundException,
+      ForbiddenResourceException,
+      GetCompanyInternalStatsDto
+    ];
+
+    const apiOperationSum =
+      'Endpoint is responsible for getting internal company statistics.';
+    const apiResponseDesc =
+      'As a response user gets stats per company employee.';
+    const apiNotFoundDesc =
+      'Not found error is thrown in case if company is not found.';
+    const apiForbiddenRespDesc =
+      'Forbidden error is thrown in case if user is trying to access without proper access.';
+
+    const memberQueryDesc = 'Member query';
+
+    const memberQuery = {
+      description: memberQueryDesc,
+      name: 'query',
+      type: String,
+      required: true
+    };
+
+    return {
+      ApiOperation: { summary: apiOperationSum },
+      ApiExtraModels: ApiModels,
+      ApiResponse: {
+        status: 200,
+        description: apiResponseDesc,
+        schema: { $ref: getSchemaPath(GetCompanyInternalStatsDto) }
+      },
+      ApiNotFoundResponse: {
+        description: apiNotFoundDesc,
+        schema: { $ref: getSchemaPath(CompanyNotFoundException) }
+      },
+      ApiForbiddenResponse: {
+        description: apiForbiddenRespDesc,
+        schema: { $ref: getSchemaPath(ForbiddenResourceException) }
+      },
+      ApiMemberQuery: memberQuery
     };
   }
 }

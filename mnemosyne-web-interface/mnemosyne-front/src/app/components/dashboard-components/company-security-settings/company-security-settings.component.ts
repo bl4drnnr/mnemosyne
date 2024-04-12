@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CompanyService } from '@services/company.service';
 import { CompanyOwnershipTransferredResponse } from '@responses/company-ownership-transferred.enum';
 import { animate, style, transition, trigger } from '@angular/animations';
@@ -8,6 +8,10 @@ import { ValidationService } from '@services/validation.service';
 import { GlobalMessageService } from '@shared/global-message.service';
 import { DeleteCompanyPayload } from '@payloads/delete-company.interface';
 import { CompanyDeletedResponse } from '@responses/company-deleted.enum';
+import { CompanyRoleType } from '@interfaces/company-role.type';
+import { DropdownInterface } from '@interfaces/dropdown.interface';
+import { AccountTranslation } from '@translations/account.enum';
+import { TranslationService } from '@services/translation.service';
 
 @Component({
   selector: 'dashboard-company-security-settings',
@@ -26,16 +30,15 @@ import { CompanyDeletedResponse } from '@responses/company-deleted.enum';
     ])
   ]
 })
-export class CompanySecuritySettingsComponent {
+export class CompanySecuritySettingsComponent implements OnInit {
   @Input() companyOwnerEmail: string;
+  @Input() companyRoles: CompanyRoleType;
+
   @Output() transferCompanyOwnership = new EventEmitter<string>();
   @Output() deleteCompanyAccount = new EventEmitter<string>();
 
-  // @TODO Creation, modification, deletion and assigning of roles to users + front end section (also check if there is something that can be done to current role controller and service) -- delete seeder, add companyId to the table with roles, once the company is created, add 3 default roles to the roles table
-  // @TODO GENERAL -- Complete all unfinished functions and perform the global test
-  // @TODO Implement logs but for clients (both end users and companies)
-  // @TODO Add read write scopes for existing scopes
-  // @TODO Refactor error codes for custom errors and check on the Internet what should be thrown
+  defaultCompanyRole: DropdownInterface = { key: '', value: '' };
+
   showOwnershipTransferModal = false;
 
   deleteCompanyModal = false;
@@ -69,7 +72,14 @@ export class CompanySecuritySettingsComponent {
   transferOwnershipIsMfaRequired: boolean;
   transferOwnershipPhoneCodeSent = false;
 
+  defaultRolesTranslations: {
+    DEFAULT: string;
+    ADMIN: string;
+    PRIMARY_ADMIN: string;
+  };
+
   constructor(
+    private readonly translationService: TranslationService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly validationService: ValidationService,
     private readonly companyService: CompanyService,
@@ -87,6 +97,7 @@ export class CompanySecuritySettingsComponent {
     this.transferOwnershipIsMfaRequired = false;
     this.transferOwnershipPhoneCodeSent = false;
     this.showOwnershipTransferModal = false;
+    this.defaultCompanyRole = { key: '', value: '' };
   }
 
   closeDeleteCompanyModal() {
@@ -220,7 +231,8 @@ export class CompanySecuritySettingsComponent {
 
   transferOwnership() {
     const payload: TransferCompanyOwnershipPayload = {
-      newCompanyOwnerEmail: this.newCompanyOwnerEmail
+      newCompanyOwnerEmail: this.newCompanyOwnerEmail,
+      newRoleForOldOwnerId: this.defaultCompanyRole.key
     };
 
     if (this.transferOwnershipPhoneCode?.length === 6)
@@ -277,7 +289,11 @@ export class CompanySecuritySettingsComponent {
   disabledTransferOwnershipButton() {
     switch (this.transferOwnershipStep) {
       case 1:
-        return this.incorrectNewCompanyOwnerEmail || !this.newCompanyOwnerEmail;
+        return (
+          this.incorrectNewCompanyOwnerEmail ||
+          !this.newCompanyOwnerEmail ||
+          !this.defaultCompanyRole.key
+        );
       case 2:
         if (this.transferOwnershipIsPhoneRequired) {
           return this.transferOwnershipVerifyPhoneDisable();
@@ -304,6 +320,34 @@ export class CompanySecuritySettingsComponent {
       min: 8,
       max: 128
     });
+  }
+
+  transformCompanyRoles() {
+    return this.companyRoles
+      .filter(({ name }) => name !== 'PRIMARY_ADMIN')
+      .map(({ id, name }) => {
+        return { key: id, value: this.translateRole(name) };
+      });
+  }
+
+  translateRole(role: string) {
+    if (this.defaultRolesTranslations && role in this.defaultRolesTranslations)
+      return this.defaultRolesTranslations[
+        role as 'DEFAULT' | 'ADMIN' | 'PRIMARY_ADMIN'
+      ];
+    else return role;
+  }
+
+  async translateRoles() {
+    this.defaultRolesTranslations =
+      await this.translationService.translateObject(
+        'defaultRoles',
+        AccountTranslation.SETTINGS
+      );
+  }
+
+  selectCompanyRole({ key, value }: DropdownInterface) {
+    this.defaultCompanyRole = { key, value };
   }
 
   selectFile(event: any) {
@@ -333,5 +377,9 @@ export class CompanySecuritySettingsComponent {
     };
 
     fileReader.readAsText(file);
+  }
+
+  async ngOnInit() {
+    await this.translateRoles();
   }
 }

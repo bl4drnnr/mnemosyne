@@ -157,5 +157,16 @@
   "searchForProductsHeader": "Szukaj produktów...",
   "favoriteProductsSearchLabel": "Wyszukiwanie ulubionych produktów",
   "favoriteProductsSearchPlaceholder": "Wyszukiwanie ulubionych produktów",
-  "favoriteProductsSearchInputDesc": "Możesz wyszukiwać swoje produkty na podstawie tytułu, opisu lub linka."
+  "favoriteProductsSearchInputDesc": "Możesz wyszukiwać swoje produkty na podstawie tytułu, opisu lub linka.",
+  "clickToCopy": "Kliknij pole wprowadzania, aby skopiować.",
+  "companyMemberSearchEmailLabel":"E-mail członka firmy",
+  "companyMemberSearchEmailPlaceholder": "Szukaj członków Twojej firmy",
+  "noHomeAddress": "Nie podano adresu domowego",
+  "noHomePhone": "Nie określono telefonu domowego",
+  "companyMemberSearchLabel": "Wyszukiwanie członków firmy",
+  "companyMemberSearchPlaceholder": "Szukaj członka firmy",
+  "companyMemberSearchInputDesc": "Szukaj członków firmy używając imienia i nazwiska",
+  "companyEmployeeLabel": "Pracownik firmy",
+  "companyEmployeePlaceholder": "Szukaj pracownika firmy",
+  "companyEmployeeInputDesc": "Wyszukaj pracownika firmy na podstawie adresu e-mail, imienia lub nazwiska"
 }

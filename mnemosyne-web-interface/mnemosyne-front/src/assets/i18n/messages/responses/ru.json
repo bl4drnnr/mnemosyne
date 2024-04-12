@@ -11,6 +11,10 @@
   "product-posted": "Продукт был успешно размещен",
   "product-updated": "Продукт успешно обновлен",
   "product-deleted": "Продукт был успешно удален",
+  "company-product-deleted": "Продукт компании был успешно удален",
   "product-deleted-from-favorites": "Товар был удален из избранного",
-  "product-added-to-favorites": "Товар был добавлен в избранное."
+  "product-added-to-favorites": "Товар был добавлен в избранное",
+  "company-ownership-transferred": "Передача права собственности на компанию была успешно завершена",
+  "user-invited": "Пользователь(и) были приглашены в компанию",
+  "company-member-role-changed": "Роль участника компании была успешно изменена"
 }

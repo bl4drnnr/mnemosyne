@@ -14,7 +14,7 @@ import { MessagesTranslation } from '@translations/messages.enum';
 export class UserPhotoComponent implements OnInit {
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
   @Input() isProfilePicPresent: boolean;
-  @Input() userId: string;
+  @Input() userIdHash: string;
 
   selectedFiles?: FileList;
   preview: string | ArrayBuffer | null = '';
@@ -77,7 +77,7 @@ export class UserPhotoComponent implements OnInit {
 
   ngOnInit() {
     this.userProfilePictureLink = this.isProfilePicPresent
-      ? `${this.staticStorageLink}/users-profile-pictures/${this.userId}.png`
+      ? `${this.staticStorageLink}/users-profile-pictures/${this.userIdHash}.png`
       : `${this.staticStorageLink}/users-profile-pictures/default.png`;
   }
 }

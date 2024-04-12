@@ -1,0 +1,25 @@
+@import 'variables';
+
+.marketplace-products-not-found {
+  text-align: center;
+}
+
+.marketplace-products-grid {
+  padding: 25px 0;
+  margin-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.marketplace-products-list {
+  margin-top: 25px;
+}
+
+.marketplace-pagination {
+  border-bottom: 1px solid var(--border-color);
+  margin-bottom: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}

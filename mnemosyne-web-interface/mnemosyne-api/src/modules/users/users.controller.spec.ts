@@ -8,6 +8,7 @@ import { ForgotPasswordDto } from '@dto/forgot-password.dto';
 import { Language } from '@interfaces/language.enum';
 import { UploadPhotoDto } from '@dto/upload-photo.dto';
 import { UpdateUserInfoDto } from '@dto/update-user-info.dto';
+import { UserInterceptor } from '@interceptors/user.interceptor';
 
 dotenv.config({ path: '.env.test' });
 
@@ -38,6 +39,8 @@ describe('UsersController', () => {
       controllers: [UsersController],
       providers: [{ provide: UsersService, useValue: mockUsersService }]
     })
+      .overrideInterceptor(UserInterceptor)
+      .useValue({ intercept: jest.fn(() => 'mocked result') })
       .overrideProvider(UsersService)
       .useValue(mockUsersService)
       .overrideGuard(AuthGuard)

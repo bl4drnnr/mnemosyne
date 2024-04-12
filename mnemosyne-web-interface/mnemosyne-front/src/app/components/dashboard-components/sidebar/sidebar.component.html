@@ -7,16 +7,14 @@
           <div class="sidebar-user-preview">
             <div class="sidebar-user-data">
               <img
-                [ngSrc]="userProfilePictureLink"
+                [src]="userInfo.isProfilePicPresent ? staticStorageLink + '/users-profile-pictures/' + userInfo.userIdHash + '.png' : staticStorageLink + '/users-profile-pictures/default.png'"
                 class="user-photo"
                 alt="avatar"
-                [width]="100"
-                [height]="100"
               />
               <div class="sidebar-user-info">
                 <p>{{ t('sidebar.sidebarUserFullName') }}: <b>{{ userInfo.firstName }} {{ userInfo.lastName }}</b></p>
                 <p>{{ t('sidebar.sidebarUserEmail') }}: <b>{{ userInfo.email }}</b></p>
-                <p>{{ t('sidebar.sidebarUserId') }}: <b>{{ userInfo.userId }}</b></p>
+                <p>{{ t('sidebar.sidebarUserId') }}: <b>{{ userInfo.userIdHash }}</b></p>
               </div>
             </div>
           </div>
@@ -51,6 +49,29 @@
             <basic-button
               [label]="t('button.postProductRedirect')"
               (buttonClick)="handleRedirect('marketplace/create-product')"
+            />
+          </div>
+          <h5 class="sidebar-account-title" *ngIf="!userInfo.isCompanyMember">{{ t('sidebar.companySettingsSidebarTitle') }}</h5>
+          <h5 class="sidebar-account-title" *ngIf="userInfo.isCompanyMember">{{ t('sidebar.companySettingsSidebarTitle') }} {{ userInfo.companyName }}</h5>
+          <div class="sidebar-button-wrapper" *ngIf="!userInfo.isCompanyMember">
+            <basic-button
+              [label]="t('button.createCompanyAcc')"
+              [fillButton]="true"
+              (buttonClick)="handleRedirect('registration', { accType: 'company' })"
+            />
+          </div>
+          <div class="sidebar-button-wrapper" *ngIf="userInfo.isCompanyMember">
+            <basic-button
+              [label]="t('button.companySettings')"
+              [fillButton]="true"
+              (buttonClick)="handleRedirect('company/company-settings')"
+            />
+          </div>
+          <div class="sidebar-button-wrapper" *ngIf="userInfo.isCompanyMember">
+            <basic-button
+              [label]="t('button.companyProduct')"
+              [fillButton]="true"
+              (buttonClick)="handleRedirect('company/company-products')"
             />
           </div>
         </div>

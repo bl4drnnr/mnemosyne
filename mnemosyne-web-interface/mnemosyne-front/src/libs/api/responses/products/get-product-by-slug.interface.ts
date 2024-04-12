@@ -14,7 +14,12 @@ export interface GetProductBySlug {
   contactPhone?: string;
   category: ProductCategory;
   createdAt: Date;
+  ownerId?: string;
+  ownerIdHash?: string;
   productInFavorites?: boolean;
+  onBehalfOfCompany: boolean;
+  companyId?: string | null;
+  companyName?: string | null;
 }
 
 export interface GetProductBySlugResponse {

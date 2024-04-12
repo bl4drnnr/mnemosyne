@@ -104,14 +104,16 @@ describe('CompanyController', () => {
       const companyId = 'test-company-id';
       const page = '0';
       const pageSize = '5';
+      const query = '';
       const trx: any = {};
 
-      await controller.getCompanyUsers(companyId, page, pageSize, trx);
+      await controller.getCompanyUsers(companyId, page, pageSize, query, trx);
 
       expect(companyService.getCompanyUsers).toHaveBeenCalledWith({
         companyId,
         page,
         pageSize,
+        query,
         trx
       });
     }, 20000);
@@ -143,6 +145,7 @@ describe('CompanyController', () => {
       const userId = 'user-id';
       const payload: TransferOwnershipDto = {
         newCompanyOwnerEmail: 'test2@test.com',
+        newRoleForOldOwnerId: 'id',
         mfaCode: '123123',
         phoneCode: '123123',
         language: Language.PL

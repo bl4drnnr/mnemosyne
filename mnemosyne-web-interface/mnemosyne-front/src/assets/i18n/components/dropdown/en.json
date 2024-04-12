@@ -68,5 +68,7 @@
   },
   "selectProductOrder": "Select product order",
   "productsPerPage": "Products per page",
-  "allCurrencies": "All currencies"
+  "allCurrencies": "All currencies",
+  "newRoleForOldOwnerTitle": "New role for old owner",
+  "usersPerPage": "Users per page"
 }

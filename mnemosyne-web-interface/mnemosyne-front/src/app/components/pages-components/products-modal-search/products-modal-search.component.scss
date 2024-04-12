@@ -95,6 +95,10 @@
   align-items: flex-end;
 }
 
+.products-modal-clear-filter-button {
+  margin: 0 15px 15px 15px;
+}
+
 .products-modal-filters-button {
   width: 100%;
 
@@ -104,6 +108,11 @@
 
   &.margin-left {
     margin-left: 15px;
+  }
+
+  &.flex {
+    display: flex;
+    justify-content: space-between;
   }
 }
 

@@ -49,6 +49,11 @@ import { ConfirmationHash } from '@models/confirmation-hash.model';
 import { CompanyUser } from '@models/company-user.model';
 import { GetUserFavoritesProductsInterface } from '@interfaces/get-user-favorites-products.interface';
 import { UpdateUserFavoritesInterface } from '@interfaces/update-user-favorites.interface';
+import { GetMarketplaceUserByIdInterface } from '@interfaces/get-marketplace-user-by-id.interface';
+import { ProductsService } from '@modules/products.service';
+import { UserNotFoundException } from '@exceptions/user-not-found.exception';
+import { GetMarketplaceUserByIdDto } from '@dto/get-marketplace-user-by-id.dto';
+import { RoleScope } from '@custom-types/role-scope.type';
 
 @Injectable()
 export class UsersService {
@@ -126,9 +131,10 @@ export class UsersService {
     limit,
     ids,
     attributes,
+    where,
     trx: transaction
   }: GetUsersByIdsInterface) {
-    return await this.userRepository.findAndCountAll({
+    const options = {
       include: [
         {
           model: ConfirmationHash,
@@ -139,12 +145,15 @@ export class UsersService {
           model: CompanyUser
         }
       ],
-      where: { id: ids },
-      limit,
-      offset,
+      where: { id: ids, ...where },
       attributes,
       transaction
-    });
+    };
+
+    if (limit) options['limit'] = limit;
+    if (offset) options['offset'] = offset;
+
+    return await this.userRepository.findAndCountAll(options);
   }
 
   async getUserByPhone({ phone, trx: transaction }: GetUserByPhoneInterface) {
@@ -302,9 +311,23 @@ export class UsersService {
     });
 
     const isCompanyMember = !!company;
+    let roleName: string;
+    let roleScopes: Array<RoleScope>;
+
+    if (company) {
+      const companyUserId = company.companyUsers.find(
+        (user) => user.userId === userId
+      ).id;
+      const companyUserRole = await this.companyService.getCompanyUserRole({
+        companyUserId,
+        trx
+      });
+      roleName = companyUserRole.name;
+      roleScopes = companyUserRole.roleScopes;
+    }
 
     return new GetUserInfoResponseDto({
-      userId: userIdHash,
+      userIdHash,
       firstName,
       lastName,
       namePronunciation,
@@ -312,7 +335,11 @@ export class UsersService {
       homePhone,
       email,
       isProfilePicPresent,
-      isCompanyMember
+      isCompanyMember,
+      companyName: isCompanyMember ? company.companyName : null,
+      companyId: isCompanyMember ? company.id : null,
+      roleName: roleName ? roleName : null,
+      roleScopes: roleScopes ? roleScopes : null
     });
   }
 
@@ -351,6 +378,65 @@ export class UsersService {
     await this.updateUser({ payload, userId, trx });
 
     return new UserUpdatedDto();
+  }
+
+  async getMarketplaceUserById({
+    loggedUserId,
+    marketplaceUserId,
+    trx
+  }: GetMarketplaceUserByIdInterface) {
+    const user = await this.getUserById({ id: marketplaceUserId, trx });
+
+    if (!user) throw new UserNotFoundException();
+
+    const userIdHash = this.cryptographicService.hash({
+      data: marketplaceUserId,
+      algorithm: CryptoHashAlgorithm.MD5
+    });
+
+    const { accessKeyId, secretAccessKey, bucketName } =
+      this.configService.awsSdkCredentials;
+
+    const s3 = new S3({ accessKeyId, secretAccessKey });
+
+    let isProfilePicPresent = true;
+
+    try {
+      await s3
+        .headObject({
+          Bucket: bucketName,
+          Key: `users-profile-pictures/${userIdHash}.png`
+        })
+        .promise();
+    } catch (e) {
+      isProfilePicPresent = false;
+    }
+
+    const company = await this.companyService.getCompanyByUserId({
+      userId: marketplaceUserId,
+      trx
+    });
+
+    const companyId = company ? company.id : null;
+    const companyName = company ? company.companyName : null;
+    const userHash = isProfilePicPresent ? userIdHash : null;
+
+    const marketplaceUser = {
+      email: undefined,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      homeAddress: user.homeAddress,
+      homePhone: user.homePhone,
+      namePronunciation: user.namePronunciation,
+      createdAt: user.createdAt,
+      userIdHash: userHash,
+      companyId,
+      companyName
+    };
+
+    if (loggedUserId) marketplaceUser.email = user.email;
+
+    return new GetMarketplaceUserByIdDto(marketplaceUser);
   }
 
   async getUserByRecoveryKeysFingerprint({

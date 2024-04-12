@@ -22,5 +22,8 @@
   "hideContactEmail": "Ukryj kontaktowy adres e-mail",
   "hideContactPhone": "Ukryj telefon kontaktowy",
   "noSimilarProductsTitle": "Nie znaleziono podobnych produktów",
-  "noSimilarProductsParagraph": "Nie znaleźliśmy żadnych podobnych produktów..."
+  "noSimilarProductsParagraph": "Nie znaleźliśmy żadnych podobnych produktów...",
+  "logInToContact": "Cóż... Nie będziesz mógł się z nikim skontaktować, chyba że masz konto.",
+  "privateProduct": "Produkt prywatny",
+  "companyProduct": "Produkt firmowy"
 }
