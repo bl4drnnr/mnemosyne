@@ -91,8 +91,6 @@ export class ProductsService {
       transaction: trx
     });
 
-    console.log('foundProduct', foundProduct)
-
     if (!foundProduct) throw new ProductNotFoundException();
 
     const userIdHash = this.cryptographicService.hash({
@@ -100,29 +98,23 @@ export class ProductsService {
       algorithm: CryptoHashAlgorithm.MD5
     });
 
-    console.log('userIdHash', userIdHash);
+    // let isProfilePicPresent = true;
 
-    let isProfilePicPresent = true;
-
-    const { accessKeyId, secretAccessKey, bucketName } =
-      this.configService.awsSdkCredentials;
-
-    console.log({ accessKeyId, secretAccessKey, bucketName })
-
-    const s3 = new S3({ accessKeyId, secretAccessKey });
-
-    console.log('s3', s3)
-
-    try {
-      await s3
-        .headObject({
-          Bucket: bucketName,
-          Key: `users-profile-pictures/${userIdHash}.png`
-        })
-        .promise();
-    } catch (e) {
-      isProfilePicPresent = false;
-    }
+    // const { accessKeyId, secretAccessKey, bucketName } =
+    //   this.configService.awsSdkCredentials;
+    //
+    // const s3 = new S3({ accessKeyId, secretAccessKey });
+    //
+    // try {
+    //   await s3
+    //     .headObject({
+    //       Bucket: bucketName,
+    //       Key: `users-profile-pictures/${userIdHash}.png`
+    //     })
+    //     .promise();
+    // } catch (e) {
+    //   isProfilePicPresent = false;
+    // }
 
     let companyId: string;
     let companyName: string;
@@ -152,13 +144,11 @@ export class ProductsService {
       createdAt: foundProduct.createdAt,
       productInFavorites: false,
       ownerId: foundProduct.userId,
-      ownerIdHash: isProfilePicPresent ? userIdHash : null,
+      ownerIdHash: userIdHash,
       onBehalfOfCompany,
       companyId: onBehalfOfCompany ? companyId : null,
       companyName: onBehalfOfCompany ? companyName : null
     };
-
-    console.log('product', product);
 
     if (userId) {
       const { favoriteProductsIds } =
