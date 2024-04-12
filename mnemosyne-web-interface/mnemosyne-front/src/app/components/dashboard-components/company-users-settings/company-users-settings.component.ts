@@ -105,7 +105,7 @@ export class CompanyUsersSettingsComponent implements OnInit {
     private readonly companyUsersService: CompanyUsersService,
     private readonly globalMessageService: GlobalMessageService,
     private readonly phoneService: PhoneService,
-    private readonly rolesService: Roles,
+    private readonly rolesService: RolesService,
     private readonly translationService: TranslationService
   ) {}
 
