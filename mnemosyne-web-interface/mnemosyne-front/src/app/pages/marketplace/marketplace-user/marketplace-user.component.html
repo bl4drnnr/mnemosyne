@@ -8,6 +8,7 @@
           [src]="userProfilePictureLink"
           class="marketplace-user-photo"
           alt="user"
+          (error)="onImgError($event)"
         />
         <p class="marketplace-user-registration-date">
           {{ t('marketplace.marketplaceUserRegDate', { date: transformDate(createdAt) }) }}

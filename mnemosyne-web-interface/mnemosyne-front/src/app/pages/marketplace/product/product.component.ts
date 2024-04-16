@@ -59,8 +59,8 @@ export class ProductComponent implements OnInit {
           });
 
           this.userProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/${product.ownerIdHash}.png`;
-
           this.defaultUserProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/default.png`;
+
           this.getSimilarProducts();
         },
         error: async () =>

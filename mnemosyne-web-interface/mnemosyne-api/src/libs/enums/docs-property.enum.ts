@@ -155,8 +155,6 @@ export enum DocsProperty {
   USER_ID_EXAMPLE = '4eea51f7-ebf1-4470-b54e-eb3b8c79bf2c',
   USER_HASH_DESC = 'User MD5 hashed ID',
   USER_HASH_EXAMPLE = '71956c9eea017cb85242a49f416fd859',
-  IS_USER_PROFILE_PIC_DESC = 'Is user profile picture present',
-  IS_USER_PROFILE_PIC_EXAMPLE = 'true',
   IS_TWO_FA_SET_UP_DESC = 'Is 2FA set up',
   IS_TWO_FA_SET_UP_EXAMPLE = 'true',
   IS_EMAIL_CHANGED_DESC = 'Is email changed',

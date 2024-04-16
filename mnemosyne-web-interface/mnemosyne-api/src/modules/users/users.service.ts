@@ -50,7 +50,6 @@ import { CompanyUser } from '@models/company-user.model';
 import { GetUserFavoritesProductsInterface } from '@interfaces/get-user-favorites-products.interface';
 import { UpdateUserFavoritesInterface } from '@interfaces/update-user-favorites.interface';
 import { GetMarketplaceUserByIdInterface } from '@interfaces/get-marketplace-user-by-id.interface';
-import { ProductsService } from '@modules/products.service';
 import { UserNotFoundException } from '@exceptions/user-not-found.exception';
 import { GetMarketplaceUserByIdDto } from '@dto/get-marketplace-user-by-id.dto';
 import { RoleScope } from '@custom-types/role-scope.type';
@@ -270,28 +269,10 @@ export class UsersService {
   }
 
   async getUserInfo({ userId, trx }: GetUserInfoInterface) {
-    const { accessKeyId, secretAccessKey, bucketName } =
-      this.configService.awsSdkCredentials;
-
-    const s3 = new S3({ accessKeyId, secretAccessKey });
-
     const userIdHash = this.cryptographicService.hash({
       data: userId,
       algorithm: CryptoHashAlgorithm.MD5
     });
-
-    let isProfilePicPresent = true;
-
-    try {
-      await s3
-        .headObject({
-          Bucket: bucketName,
-          Key: `users-profile-pictures/${userIdHash}.png`
-        })
-        .promise();
-    } catch (e) {
-      isProfilePicPresent = false;
-    }
 
     const {
       firstName,
@@ -334,7 +315,6 @@ export class UsersService {
       homeAddress,
       homePhone,
       email,
-      isProfilePicPresent,
       isCompanyMember,
       companyName: isCompanyMember ? company.companyName : null,
       companyId: isCompanyMember ? company.id : null,
@@ -394,24 +374,6 @@ export class UsersService {
       algorithm: CryptoHashAlgorithm.MD5
     });
 
-    const { accessKeyId, secretAccessKey, bucketName } =
-      this.configService.awsSdkCredentials;
-
-    const s3 = new S3({ accessKeyId, secretAccessKey });
-
-    let isProfilePicPresent = true;
-
-    try {
-      await s3
-        .headObject({
-          Bucket: bucketName,
-          Key: `users-profile-pictures/${userIdHash}.png`
-        })
-        .promise();
-    } catch (e) {
-      isProfilePicPresent = false;
-    }
-
     const company = await this.companyService.getCompanyByUserId({
       userId: marketplaceUserId,
       trx
@@ -419,7 +381,6 @@ export class UsersService {
 
     const companyId = company ? company.id : null;
     const companyName = company ? company.companyName : null;
-    const userHash = isProfilePicPresent ? userIdHash : null;
 
     const marketplaceUser = {
       email: undefined,
@@ -429,7 +390,7 @@ export class UsersService {
       homePhone: user.homePhone,
       namePronunciation: user.namePronunciation,
       createdAt: user.createdAt,
-      userIdHash: userHash,
+      userIdHash: userIdHash,
       companyId,
       companyName
     };

@@ -47,6 +47,10 @@ export class SidebarComponent {
     });
   }
 
+  onImgError(event: any) {
+    event.target.src = `${this.staticStorageLink}/users-profile-pictures/default.png`;
+  }
+
   async logoutUser() {
     localStorage.removeItem('_at');
     await this.handleRedirect('');

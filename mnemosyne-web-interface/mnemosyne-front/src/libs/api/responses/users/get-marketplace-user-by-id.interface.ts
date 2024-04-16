@@ -6,7 +6,7 @@ export interface MarketplaceUser {
   homePhone: string | null;
   namePronunciation: string | null;
   createdAt: Date;
-  userIdHash: string | null;
+  userIdHash: string;
   companyId: string | null;
   companyName: string | null;
 }

@@ -25,7 +25,6 @@ export class SettingsComponent implements OnInit {
   homeAddress: string;
   homePhone: string;
   email: string;
-  isProfilePicPresent: boolean;
   isCompanyMember: boolean;
 
   userInfo: UserInfoResponse;
@@ -132,7 +131,6 @@ export class SettingsComponent implements OnInit {
           this.homeAddress = userInfo.homeAddress;
           this.homePhone = userInfo.homePhone;
           this.email = userInfo.email;
-          this.isProfilePicPresent = userInfo.isProfilePicPresent;
           this.isCompanyMember = userInfo.isCompanyMember;
         }
       });

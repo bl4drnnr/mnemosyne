@@ -37,7 +37,6 @@ export class UserInfoSettingsComponent {
   @Input() homePhone: string;
 
   @Input() email: string;
-  @Input() isProfilePicPresent: boolean;
   @Output() saveUserInfoEvent = new EventEmitter<UpdateUserInfoPayload>();
   @Output() getUserInfoEvent = new EventEmitter<void>();
 

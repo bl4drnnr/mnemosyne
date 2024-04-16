@@ -13,12 +13,12 @@ import { MessagesTranslation } from '@translations/messages.enum';
 })
 export class UserPhotoComponent implements OnInit {
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
-  @Input() isProfilePicPresent: boolean;
   @Input() userIdHash: string;
 
   selectedFiles?: FileList;
   preview: string | ArrayBuffer | null = '';
   userProfilePictureLink: string;
+  defaultUserProfilePictureLink: string;
   showText: boolean;
 
   staticStorageLink = this.envService.getStaticStorageLink;
@@ -75,9 +75,12 @@ export class UserPhotoComponent implements OnInit {
     return this.validationService.checkBase64PngImage(this.preview as string);
   }
 
+  onImgError(event: any) {
+    event.target.src = this.defaultUserProfilePictureLink;
+  }
+
   ngOnInit() {
-    this.userProfilePictureLink = this.isProfilePicPresent
-      ? `${this.staticStorageLink}/users-profile-pictures/${this.userIdHash}.png`
-      : `${this.staticStorageLink}/users-profile-pictures/default.png`;
+    this.userProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/${this.userIdHash}.png`;
+    this.defaultUserProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/default.png`;
   }
 }
