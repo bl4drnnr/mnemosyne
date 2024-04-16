@@ -98,26 +98,23 @@ export class ProductsService {
       algorithm: CryptoHashAlgorithm.MD5
     });
 
-    let isProfilePicPresent = true;
-
-    const { accessKeyId, secretAccessKey, bucketName } =
-      this.configService.awsSdkCredentials;
-
-    console.log({ accessKeyId, secretAccessKey, bucketName })
-
-    const s3 = new S3({ accessKeyId, secretAccessKey });
-
-    try {
-      await s3
-        .headObject({
-          Bucket: bucketName,
-          Key: `users-profile-pictures/${userIdHash}.png`
-        })
-        .promise();
-    } catch (e) {
-      console.log('eeeeeeee', e);
-      isProfilePicPresent = false;
-    }
+    // let isProfilePicPresent = true;
+    //
+    // const { accessKeyId, secretAccessKey, bucketName } =
+    //   this.configService.awsSdkCredentials;
+    //
+    // const s3 = new S3({ accessKeyId, secretAccessKey });
+    //
+    // try {
+    //   await s3
+    //     .headObject({
+    //       Bucket: bucketName,
+    //       Key: `users-profile-pictures/${userIdHash}.png`
+    //     })
+    //     .promise();
+    // } catch (e) {
+    //   isProfilePicPresent = false;
+    // }
 
     let companyId: string;
     let companyName: string;
@@ -147,7 +144,7 @@ export class ProductsService {
       createdAt: foundProduct.createdAt,
       productInFavorites: false,
       ownerId: foundProduct.userId,
-      ownerIdHash: isProfilePicPresent ? userIdHash : null,
+      ownerIdHash: userIdHash,
       onBehalfOfCompany,
       companyId: onBehalfOfCompany ? companyId : null,
       companyName: onBehalfOfCompany ? companyName : null

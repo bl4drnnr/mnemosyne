@@ -27,6 +27,7 @@ export class ProductComponent implements OnInit {
   similarProducts: Array<SearchedProducts>;
   isUserLoggedIn = false;
   userProfilePictureLink: string;
+  defaultUserProfilePictureLink: string;
 
   constructor(
     private readonly globalMessageService: GlobalMessageService,
@@ -57,14 +58,18 @@ export class ProductComponent implements OnInit {
             product: product.title
           });
 
-          this.userProfilePictureLink = product.ownerIdHash
-            ? `${this.staticStorageLink}/users-profile-pictures/${product.ownerIdHash}.png`
-            : `${this.staticStorageLink}/users-profile-pictures/default.png`;
+          this.userProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/${product.ownerIdHash}.png`;
+
+          this.defaultUserProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/default.png`;
           this.getSimilarProducts();
         },
         error: async () =>
           await this.handleRedirect('marketplace/product-not-found')
       });
+  }
+
+  onImgError(event: any) {
+    event.target.src = this.defaultUserProfilePictureLink;
   }
 
   closeSearchProductsModal() {
