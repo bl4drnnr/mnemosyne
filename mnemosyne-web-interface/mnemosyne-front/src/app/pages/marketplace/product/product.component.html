@@ -114,7 +114,8 @@
                   <img
                     [src]="userProfilePictureLink"
                     class="user-profile-picture"
-                    alt="User"
+                    [alt]="defaultUserProfilePictureLink"
+                    (error)="onImgError($event)"
                   >
                   <div class="product-user-info-link">
                     <p>{{ product.contactPerson }}</p>
@@ -239,7 +240,8 @@
                   <img
                     [src]="userProfilePictureLink"
                     class="user-profile-picture"
-                    alt="User"
+                    [alt]="defaultUserProfilePictureLink"
+                    (error)="onImgError($event)"
                   >
                   <div class="product-user-info-link">
                     <p>{{ product.contactPerson }}</p>
