@@ -7,9 +7,10 @@
           <div class="sidebar-user-preview">
             <div class="sidebar-user-data">
               <img
-                [src]="userInfo.isProfilePicPresent ? staticStorageLink + '/users-profile-pictures/' + userInfo.userIdHash + '.png' : staticStorageLink + '/users-profile-pictures/default.png'"
+                [src]="staticStorageLink + '/users-profile-pictures/' + userInfo.userIdHash + '.png'"
                 class="user-photo"
                 alt="avatar"
+                (error)="onImgError($event)"
               />
               <div class="sidebar-user-info">
                 <p>{{ t('sidebar.sidebarUserFullName') }}: <b>{{ userInfo.firstName }} {{ userInfo.lastName }}</b></p>

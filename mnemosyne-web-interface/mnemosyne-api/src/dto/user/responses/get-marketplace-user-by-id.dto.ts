@@ -56,7 +56,7 @@ class MarketplaceUser {
     description: DocsProperty.USER_HASH_DESC,
     example: DocsProperty.USER_HASH_EXAMPLE
   })
-  readonly userIdHash: string | null;
+  readonly userIdHash: string;
 
   @ApiProperty({
     type: String,

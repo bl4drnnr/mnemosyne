@@ -10,7 +10,6 @@ interface UserInfoResponse {
   homeAddress: string | null;
   homePhone: string | null;
   email: string;
-  isProfilePicPresent: boolean;
   isCompanyMember: boolean;
   companyName: string | null;
   companyId: string | null;
@@ -46,13 +45,6 @@ export class GetUserInfoResponseDto {
     example: DocsProperty.EMAIL_EXAMPLE
   })
   readonly email: string;
-
-  @ApiProperty({
-    type: Boolean,
-    description: DocsProperty.IS_USER_PROFILE_PIC_DESC,
-    example: DocsProperty.IS_USER_PROFILE_PIC_EXAMPLE
-  })
-  readonly isProfilePicPresent: boolean;
 
   @ApiProperty({
     type: String,
@@ -119,7 +111,6 @@ export class GetUserInfoResponseDto {
     homeAddress,
     homePhone,
     email,
-    isProfilePicPresent,
     isCompanyMember,
     companyName,
     companyId,
@@ -133,7 +124,6 @@ export class GetUserInfoResponseDto {
     this.homeAddress = homeAddress;
     this.homePhone = homePhone;
     this.email = email;
-    this.isProfilePicPresent = isProfilePicPresent;
     this.isCompanyMember = isCompanyMember;
     this.companyName = companyName;
     this.companyId = companyId;

@@ -8,7 +8,6 @@ export interface UserInfoResponse {
   homeAddress: string;
   homePhone: string;
   email: string;
-  isProfilePicPresent: boolean;
   isCompanyMember: boolean;
   companyName: string | null;
   companyId: string | null;

@@ -98,24 +98,6 @@ export class ProductsService {
       algorithm: CryptoHashAlgorithm.MD5
     });
 
-    // let isProfilePicPresent = true;
-    //
-    // const { accessKeyId, secretAccessKey, bucketName } =
-    //   this.configService.awsSdkCredentials;
-    //
-    // const s3 = new S3({ accessKeyId, secretAccessKey });
-    //
-    // try {
-    //   await s3
-    //     .headObject({
-    //       Bucket: bucketName,
-    //       Key: `users-profile-pictures/${userIdHash}.png`
-    //     })
-    //     .promise();
-    // } catch (e) {
-    //   isProfilePicPresent = false;
-    // }
-
     let companyId: string;
     let companyName: string;
     const onBehalfOfCompany = foundProduct.onBehalfOfCompany;

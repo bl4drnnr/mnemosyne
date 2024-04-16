@@ -68,6 +68,7 @@ export class MarketplaceUserComponent implements OnInit {
   userNotFound: boolean;
   isUserLoggedIn: boolean;
   userProfilePictureLink: string;
+  defaultUserProfilePictureLink: string;
 
   privateProductsFlag: boolean = false;
   companyProductsFlag: boolean = false;
@@ -366,14 +367,17 @@ export class MarketplaceUserComponent implements OnInit {
             lastName
           });
 
-          this.userProfilePictureLink = userIdHash
-            ? `${this.staticStorageLink}/users-profile-pictures/${userIdHash}.png`
-            : `${this.staticStorageLink}/users-profile-pictures/default.png`;
+          this.userProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/${userIdHash}.png`;
+          this.defaultUserProfilePictureLink = `${this.staticStorageLink}/users-profile-pictures/default.png`;
 
           this.getMarketplaceUserProducts();
         },
         error: () => (this.userNotFound = true)
       });
+  }
+
+  onImgError(event: any) {
+    event.target.src = this.defaultUserProfilePictureLink;
   }
 
   transformDate(date: Date) {
