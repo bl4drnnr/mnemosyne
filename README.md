@@ -6,9 +6,9 @@
 
 ### Requirements
 
-- Node.js - >= v18.15.0
-- Docker - Docker version >= 24.0.2
-- Docker Compose - >= v2.18.1
+- Node.js - >= `v18.15.0`
+- Docker - Docker version >= `24.0.2`
+- Docker Compose - >= `v2.18.1`
 
 ### Steps
 
