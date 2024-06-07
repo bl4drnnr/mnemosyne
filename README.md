@@ -2,7 +2,6 @@
     MNEMOSYNE
 </h1>
 
-
 ## How to run the project
 
 ### Requirements
