@@ -6,7 +6,7 @@
 1. [Introduction](#introduction)
 2. [Thesis](#thesis)
 3. [Technologies](#technologies)
-4. [Security](#security)
+4. [Security and its implementation](#security-and-its-implementation)
 [Links and References](#links-and-references)
 
 # Introduction
@@ -15,6 +15,6 @@
 
 # Technologies
 
-# Security
+# Security and its implementation
 
 # Links and References
