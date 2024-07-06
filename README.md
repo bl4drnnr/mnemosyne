@@ -22,3 +22,7 @@
 # Links and References
 
 ---
+
+<p align="center">
+    Mikhail Bahdashych (c) 2024
+</p>
