@@ -15,6 +15,10 @@
 
 # Technologies
 
+## Front-end
+
+## Back-end
+
 # Security mechanisms and implementation
 
 # Infrastructure
