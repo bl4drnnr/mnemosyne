@@ -19,6 +19,8 @@
 
 ## Back-end
 
+## Cloud
+
 # Security mechanisms and implementation
 
 # Infrastructure
