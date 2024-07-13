@@ -21,7 +21,7 @@
 
 ## Back-end
 
-## Cloud
+## Cloud infrastructure
 
 # Security mechanisms and implementation
 
