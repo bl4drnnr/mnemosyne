@@ -6,6 +6,7 @@
 1. [Introduction](#introduction)
 2. [Thesis](#thesis)
 3. [Technologies](#technologies)
+    1. [Front end](#front-end)
 4. [Security mechanisms and implementation](#security-mechanisms-and-implementation)
 [Links and References](#links-and-references)
 
