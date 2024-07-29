@@ -2441,8 +2441,6 @@ User login workflow with multi-factor authentication and interoperability of all
 |:--:|
 | *Annex 1. User login workflow. Source: own work* |
 
----
-
 <p align="center">
     <b>Mikhail Bahdashych (c) 2024</b>
 </p>
