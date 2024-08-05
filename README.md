@@ -2435,7 +2435,7 @@ Despite all the work done and the implementation of all the above business tasks
 
 # Annexes
 
-User login workflow with multi-factor authentication and interoperability of all application infrastructure elements.
+User authentication workflow with multi-factor authentication and interoperability of all application infrastructure elements.
 
 | ![Annex1.png](static/Annex1.png) |
 |:--:|
